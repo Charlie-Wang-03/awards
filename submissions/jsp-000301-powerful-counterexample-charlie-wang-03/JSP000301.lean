@@ -24,10 +24,10 @@ lemma powerful_sq_mul_cube (a b : ℕ) : Powerful (a ^ 2 * b ^ 3) := by
     ring
 
 theorem powerful_12167 : Powerful 12167 := by
-  convert powerful_sq_mul_cube 1 23 using 1 <;> norm_num
+  exact powerful_sq_mul_cube 1 23
 
 theorem powerful_12168 : Powerful 12168 := by
-  convert powerful_sq_mul_cube 39 2 using 1 <;> norm_num
+  exact powerful_sq_mul_cube 39 2
 
 private lemma not_square_in_gap {n : ℕ} (hlo : 110 ^ 2 < n) (hhi : n < 111 ^ 2) :
     ¬ IsSquare n := by
