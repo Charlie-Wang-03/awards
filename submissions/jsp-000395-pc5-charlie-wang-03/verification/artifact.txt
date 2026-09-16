@@ -1,0 +1,12 @@
+GitHub Actions verification artifact
+
+Run ID: 35127171862
+Artifact name: jsp-000395-pc5-verification
+Artifact ID: 10459483087
+Artifact size: 1351 bytes
+Artifact ZIP SHA-256: 75c59091f1489ee2d7979a19db7282b62c479a87c613bda0a1d965c71c70746b
+Artifact URL: https://github.com/Charlie-Wang-03/awards/actions/runs/35127171862/artifacts/10459483087
+
+The artifact contains the `verification-run.txt` output produced by `verify.sh` on staging commit 6c45d37755a40c469eaf80f1848ae6731f168c62.
+
+This GitHub Actions artifact is public verification evidence subject to GitHub's artifact-retention policy; it is not represented as a permanent archival DOI or independent verification record.
