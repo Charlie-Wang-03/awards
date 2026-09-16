@@ -1,0 +1,13 @@
+GitHub Actions verification artifact
+
+Workflow run ID: 35139863025
+Job ID: 104941391786
+Artifact name: jsp-000301-verification
+Artifact ID: 10464697168
+Artifact size: 1032 bytes
+Artifact ZIP SHA-256: 92444068d8d61c8100abf2bbf4f738b1290902a158e77337449310daea4c69fe
+Artifact URL: https://github.com/Charlie-Wang-03/awards/actions/runs/35139863025/artifacts/10464697168
+Created: 2026-09-16T19:21:47Z
+Expires: 2026-12-15T19:19:28Z
+
+This GitHub Actions artifact is reproducibility evidence with a retention deadline. It is not the permanent external archive required for an upstream submission.
