@@ -1,3 +1,4 @@
+import Probe.MaximalLinks
 import Probe.MaximalNoBridges
 import Probe.MaximalConnectivity
 import Probe.PendantInsertion
@@ -113,3 +114,8 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.RotationSystem.maximal_face_edge_injective
 #print axioms JSP512Probe.RotationSystem.maximal_face_two_steps_ne
 #print axioms JSP512Probe.RotationSystem.maximal_rotations_nonfixed
+
+#print axioms JSP512Probe.RotationSystem.maximal_consecutive_neighbors_adj
+#print axioms JSP512Probe.RotationSystem.maximal_neighbor_preconnected
+#print axioms JSP512Probe.RotationSystem.maximal_vertex_deleted_preconnected
+#print axioms JSP512Probe.RotationSystem.maximal_vertex_deleted_connected

@@ -123,6 +123,25 @@ orbits; length-one orbits are already excluded by `face_ne_self`.
 These results do not yet exclude repeated vertices within a face and do not
 prove that faces are triangles.
 
+## Neighbor links and deletion of a vertex
+
+`maximal_consecutive_neighbors_adj` proves adjacency between distinct
+consecutive neighbors in a vertex rotation. Both occur on one facial orbit,
+so the existing maximal-cofacial adjacency theorem applies.
+`maximal_neighbor_preconnected` follows the rotation cycle to construct
+reachability inside the actual graph induced on the neighbor set.
+
+`maximal_vertex_deleted_preconnected` proves that deleting any vertex leaves
+all surviving vertices pairwise reachable. The proof maps an old walk to
+reachability in the induced survivor graph: steps through the removed vertex
+are replaced using connectivity of its neighbor-induced graph.
+`maximal_vertex_deleted_connected` gives connectedness when the original
+vertex type is nontrivial. No geometric embedding theorem is used.
+
+The connection from this vertex-deletion property to absence of repeated
+vertices on facial walks is not formalized here yet; triangular faces and
+the coloring theorem remain unproved.
+
 ## Relationship to JSP-000512
 
 These theorems support a possible future formalization of ordinary planar
