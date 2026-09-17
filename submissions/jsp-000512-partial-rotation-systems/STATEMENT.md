@@ -55,9 +55,8 @@ face count increases by one; edge count also increases by one, while support
 and component counts remain unchanged. All of these concern the explicit
 combinatorial rotation model.
 
-General triangulation is still not proved. The isolated-endpoint graph
-construction is also not supplied, despite the separate permutation-level
-fresh-source lemma. The correspondence with geometric planar embeddings
+General triangulation is still not proved. Pendant insertion with one isolated
+endpoint is supplied below. The correspondence with geometric planar embeddings
 remains outside this submission.
 
 ## Maximal extensions
@@ -72,8 +71,8 @@ that vertex type. No triangular-face property is assumed in this definition.
 adjacent, using the verified cofacial insertion theorem.
 `maximal_bridge_endpoints_fixed` shows that every bridge has singleton
 rotations at both endpoints, so neither endpoint can have another incident
-edge. This excludes nontrivial bridge attachments but does not itself prove
-connectedness of maximal extensions or that their facial walks are triangles.
+edge. This excludes nontrivial bridge attachments. Connectedness is proved
+separately below; triangular facial walks are not yet proved.
 
 ## Joining components
 
@@ -86,9 +85,25 @@ preserves genus zero for the actual augmented rotation system.
 
 `RotationSystem.maximal_dart_sources_reachable` and
 `maximal_support_reachable` consequently prove that all nonisolated vertices
-of a maximal genus-zero graph lie in one connected component. Isolated vertices
-are not covered: full connectedness and triangular facial walks remain open
-in this formalization.
+of a maximal genus-zero graph lie in one connected component. The next
+construction removes the nonisolated-vertex restriction.
+
+## Pendant insertion and full connectedness
+
+`EdgeInsertion.addPendant` constructs an actual rotation system after connecting
+an existing nonisolated source to an isolated vertex. `pendant_face_formula`
+identifies its face permutation as two insertions into an old face cycle;
+`pendant_face_count` proves the face count is unchanged. The inserted edge is
+a bridge whose deletion recovers the original graph. With the verified deletion
+counts, `pendant_defect` and `pendant_genusZero` prove preservation of Euler
+defect and genus zero.
+
+`maximal_support_univ` excludes isolated vertices in a maximal genus-zero graph
+containing an edge. `singleEdgeRotation` and `singleEdge_genusZero` supply the
+single-edge witness needed for the edgeless case. `maximal_preconnected` proves
+pairwise reachability without a nonemptiness assumption, while
+`maximal_connected` proves connectedness on every nonempty vertex type.
+This does not establish triangular faces or a coloring theorem.
 
 ## Relationship to JSP-000512
 

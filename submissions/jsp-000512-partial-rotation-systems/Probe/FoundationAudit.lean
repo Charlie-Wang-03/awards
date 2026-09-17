@@ -1,3 +1,5 @@
+import Probe.MaximalConnectivity
+import Probe.PendantInsertion
 import Probe.ComponentInsertion
 import Probe.RotationSystem
 import Probe.CycleSurgery
@@ -88,3 +90,17 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.EdgeInsertion.separate_genusZero
 #print axioms JSP512Probe.RotationSystem.maximal_dart_sources_reachable
 #print axioms JSP512Probe.RotationSystem.maximal_support_reachable
+
+#print axioms JSP512Probe.EdgeInsertion.pendant_cycles
+#print axioms JSP512Probe.EdgeInsertion.addPendant
+#print axioms JSP512Probe.EdgeInsertion.pendant_face_formula
+#print axioms JSP512Probe.EdgeInsertion.pendant_face_count
+#print axioms JSP512Probe.EdgeInsertion.delete_pendant_edge
+#print axioms JSP512Probe.EdgeInsertion.pendant_defect
+#print axioms JSP512Probe.EdgeInsertion.pendant_genusZero
+#print axioms JSP512Probe.RotationSystem.maximal_support_univ
+#print axioms JSP512Probe.RotationSystem.maximal_connected_of_dart
+#print axioms JSP512Probe.EdgeInsertion.singleEdgeRotation
+#print axioms JSP512Probe.EdgeInsertion.singleEdge_genusZero
+#print axioms JSP512Probe.RotationSystem.maximal_preconnected
+#print axioms JSP512Probe.RotationSystem.maximal_connected
