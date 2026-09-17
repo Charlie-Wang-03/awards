@@ -1,0 +1,56 @@
+import Probe.GenusZeroListColoring
+import Probe.ChordProtectedVertices
+import Probe.ColorGluing
+import Probe.DiskListReduction
+import Probe.DiskBaseCase
+import Probe.ListColorExtension
+import Probe.TriangularNeighborOrder
+
+#print axioms JSP512Probe.ListColoring.reserve_two
+#print axioms JSP512Probe.ListColoring.five_to_three
+#print axioms JSP512Probe.ListColoring.extend_two_choices
+#print axioms JSP512Probe.ListColoring.old_boundary_list_unchanged
+#print axioms JSP512Probe.ListColoring.reduced_list_bounds
+#print axioms JSP512Probe.ListColoring.protected_lists_unchanged
+#print axioms JSP512Probe.ListColoring.three_list_reduction
+#print axioms JSP512Probe.RotationSystem.triangular_sector_endpoints
+#print axioms JSP512Probe.RotationSystem.triangular_neighbors_adj
+#print axioms JSP512Probe.RotationSystem.neighborRotation_sameCycle
+#print axioms JSP512Probe.RotationSystem.neighborRotation_adj
+#print axioms JSP512Probe.RotationSystem.neighborRotation_ne_self
+
+#print axioms JSP512Probe.RotationSystem.sector_endpoints_of_closed
+#print axioms JSP512Probe.RotationSystem.neighborRotation_adj_except
+
+#print axioms JSP512Probe.RotationSystem.IsTriangulatedDisk.reroot
+#print axioms JSP512Probe.RotationSystem.disk_delete_instance
+#print axioms JSP512Probe.RotationSystem.deleted_outer_edge
+#print axioms JSP512Probe.RotationSystem.disk_list_reduction
+#print axioms JSP512Probe.RotationSystem.disk_backtracking_vertices
+#print axioms JSP512Probe.RotationSystem.disk_backtracking_coloring
+
+#print axioms JSP512Probe.ListColoring.glue_induced
+#print axioms JSP512Probe.ListColoring.glue_induced_lists
+#print axioms JSP512Probe.ListColoring.glue_along_chord
+#print axioms JSP512Probe.ListColoring.chord_endpoint_colors_ne
+#print axioms JSP512Probe.ListColoring.chordLists_unchanged
+#print axioms JSP512Probe.ListColoring.chord_list_bounds
+
+#print axioms JSP512Probe.RotationSystem.induced_disk_list_bounds
+
+#print axioms JSP512Probe.RotationSystem.induced_chord_list_bounds
+
+#print axioms JSP512Probe.ListColoring.protected_edge_side
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.predecessor_not_restored_exposed
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.protected_vertices
+
+#print axioms JSP512Probe.RotationSystem.facialVertices_reroot
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.precolored_step
+#print axioms JSP512Probe.RotationSystem.disk_list_reduction_region
+#print axioms JSP512Probe.RotationSystem.precolored_delete_step
+#print axioms JSP512Probe.RotationSystem.triangulated_disk_precolored
+#print axioms JSP512Probe.RotationSystem.triangulated_disk_list_coloring
+#print axioms JSP512Probe.RotationSystem.small_graph_list_coloring
+#print axioms JSP512Probe.RotationSystem.genusZero_five_list_coloring

@@ -8,7 +8,9 @@ claimed. All executable imports are supplied modules or pinned Mathlib modules.
 The motivation is JSP-000512 / Erdős #631 and Thomassen's known theorem:
 Carsten Thomassen, *Every Planar Graph Is 5-Choosable*, 1994,
 [DOI 10.1006/jctb.1994.1062](https://doi.org/10.1006/jctb.1994.1062).
-That coloring theorem is not proved in this submission.
+The upper bound is proved here for the explicit finite genus-zero rotation
+model. Its correspondence with geometric planarity and its sharpness remain
+unproved.
 
 Prior sources inspected during the broader investigation:
 

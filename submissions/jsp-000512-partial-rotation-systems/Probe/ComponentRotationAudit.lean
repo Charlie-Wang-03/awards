@@ -1,0 +1,25 @@
+import Probe.ComponentGenus
+
+#print axioms JSP512Probe.RotationSystem.closedDartEquiv
+#print axioms JSP512Probe.RotationSystem.restrictClosed
+#print axioms JSP512Probe.RotationSystem.restrictClosed_face
+#print axioms JSP512Probe.RotationSystem.restrictClosed_face_cycles
+#print axioms JSP512Probe.RotationSystem.face_cycle_in_closed
+#print axioms JSP512Probe.RotationSystem.restrictClosed_faceLength
+#print axioms JSP512Probe.RotationSystem.restrictClosed_triangle
+#print axioms JSP512Probe.RotationSystem.componentRotation
+
+#print axioms JSP512Probe.RotationSystem.sum_component_vertices
+#print axioms JSP512Probe.RotationSystem.componentDartsEquiv
+#print axioms JSP512Probe.RotationSystem.sum_component_edges
+#print axioms JSP512Probe.RotationSystem.componentSupportEquiv
+#print axioms JSP512Probe.RotationSystem.sum_component_support
+#print axioms JSP512Probe.RotationSystem.faceComponent
+#print axioms JSP512Probe.RotationSystem.componentFaceMap
+#print axioms JSP512Probe.RotationSystem.faceComponent_map
+#print axioms JSP512Probe.RotationSystem.componentFacesEquiv
+#print axioms JSP512Probe.RotationSystem.sum_component_faces
+#print axioms JSP512Probe.RotationSystem.componentDefect
+#print axioms JSP512Probe.RotationSystem.componentDefect_nonnegative
+#print axioms JSP512Probe.RotationSystem.sum_componentDefect
+#print axioms JSP512Probe.RotationSystem.componentRotation_genusZero

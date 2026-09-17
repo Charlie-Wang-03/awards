@@ -1,0 +1,197 @@
+import Probe.ChordBoundaryExceptions
+import Probe.OldBoundarySideResidual
+import Probe.ChordDiskSeparator
+import Probe.ChordBoundaryDisk
+import Probe.ChordSectorData
+import Probe.RestoredRouteIso
+import Probe.ExposedSideDisk
+import Probe.BoundarySideDisk
+import Probe.SplitSideChosenOuter
+import Probe.BoundarySideResidual
+import Probe.SplitSideDartTransport
+import Probe.SectorResidualBoundary
+import Probe.ChordNeighborAssembly
+import Probe.SectorNeighborCoverage
+import Probe.ComplementarySectorSide
+import Probe.ComplementarySectorInterval
+import Probe.SplitSideFullRoute
+import Probe.ChordSectorRoute
+import Probe.SplitSideDarts
+import Probe.SourceSectorInterval
+
+#print axioms JSP512Probe.RotationSystem.split_cycles_at
+#print axioms JSP512Probe.RotationSystem.split_reaches_copies
+#print axioms JSP512Probe.RotationSystem.split_component_count_le_two
+#print axioms JSP512Probe.RotationSystem.split_separates_genusZero
+#print axioms JSP512Probe.RotationSystem.split_copies_not_reachable
+
+#print axioms JSP512Probe.RotationSystem.chord_exposes_repeated_vertex
+#print axioms JSP512Probe.RotationSystem.chord_deletion_separates
+
+#print axioms JSP512Probe.RotationSystem.split_sides_cover
+#print axioms JSP512Probe.RotationSystem.split_sides_edges
+#print axioms JSP512Probe.RotationSystem.split_sides_inter
+#print axioms JSP512Probe.RotationSystem.split_sides_proper
+#print axioms JSP512Probe.RotationSystem.split_sides_card_lt
+#print axioms JSP512Probe.RotationSystem.survivor_mem_restoreSide
+#print axioms JSP512Probe.RotationSystem.restore_separator
+#print axioms JSP512Probe.RotationSystem.chord_vertex_separator
+
+#print axioms JSP512Probe.RefinedRotation.projectHom
+#print axioms JSP512Probe.RotationSystem.splitSide_connected
+#print axioms JSP512Probe.RotationSystem.split_project_injective_on_component
+#print axioms JSP512Probe.RotationSystem.restoreSide_connected
+#print axioms JSP512Probe.RotationSystem.chord_connected_separator
+
+#print axioms JSP512Probe.RotationSystem.split_project_reflects_adj
+#print axioms JSP512Probe.RotationSystem.split_component_iso
+
+#print axioms JSP512Probe.RotationSystem.splitSideRotation
+#print axioms JSP512Probe.RotationSystem.splitSideRotation_genusZero
+
+#print axioms JSP512Probe.CycleSurgery.split_cycle_partition
+#print axioms JSP512Probe.RefinedRotation.face_dart
+#print axioms JSP512Probe.RotationSystem.split_face_cycles
+#print axioms JSP512Probe.RotationSystem.split_outer_partition
+#print axioms JSP512Probe.RotationSystem.split_preserves_inner_triangle
+#print axioms JSP512Probe.RotationSystem.split_inner_faces
+#print axioms JSP512Probe.RotationSystem.split_component_inner
+#print axioms JSP512Probe.RotationSystem.split_restricted_inner
+#print axioms JSP512Probe.RotationSystem.splitSideRotation_inner
+
+#print axioms JSP512Probe.CycleSurgery.split_cycle_interval
+#print axioms JSP512Probe.RotationSystem.split_outer_interval
+#print axioms JSP512Probe.EdgeInsertion.FaceRoute.power_list
+
+#print axioms JSP512Probe.EdgeInsertion.FaceRoute.of_steps
+#print axioms JSP512Probe.RotationSystem.sector_target_injective
+#print axioms JSP512Probe.RotationSystem.sector_interval_route
+#print axioms JSP512Probe.RotationSystem.sector_interval_targets
+#print axioms JSP512Probe.RotationSystem.sector_interval_start_route
+#print axioms JSP512Probe.RotationSystem.source_sector_interval
+#print axioms JSP512Probe.RotationSystem.outer_source_sector_interval
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart
+#print axioms JSP512Probe.RotationSystem.splitSideDart_face
+#print axioms JSP512Probe.RotationSystem.split_path_in_component
+#print axioms JSP512Probe.RotationSystem.splitSideDart_route
+#print axioms JSP512Probe.RotationSystem.splitSideDart_start_route
+
+#print axioms JSP512Probe.RotationSystem.chord_exposes_marked_vertex
+#print axioms JSP512Probe.RotationSystem.deleted_sector_not_old_outer
+#print axioms JSP512Probe.RotationSystem.chord_sector_cut_avoidance
+#print axioms JSP512Probe.RotationSystem.chord_sector_side_route
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_full_start_route
+
+#print axioms JSP512Probe.RotationSystem.sector_interval_avoids_predecessor
+#print axioms JSP512Probe.RotationSystem.sector_interval_source_avoidance
+#print axioms JSP512Probe.RotationSystem.chord_sector_full_side_route
+
+#print axioms JSP512Probe.CycleSurgery.two_cycle_intervals
+
+#print axioms JSP512Probe.RotationSystem.source_neighbor_partition
+
+#print axioms JSP512Probe.RotationSystem.complementary_sector_interval
+
+#print axioms JSP512Probe.RotationSystem.outer_complementary_sector_interval
+
+#print axioms JSP512Probe.RotationSystem.split_path_ending_at_cut
+
+#print axioms JSP512Probe.RotationSystem.complementary_sector_side
+
+#print axioms JSP512Probe.RotationSystem.complementary_sector_full_side_route
+
+#print axioms JSP512Probe.RotationSystem.sector_paths_cover
+
+#print axioms JSP512Probe.RotationSystem.sector_paths_neighbors
+
+#print axioms JSP512Probe.RotationSystem.split_side_neighbor_coverage
+
+#print axioms JSP512Probe.RotationSystem.chord_sector_neighbors
+
+#print axioms JSP512Probe.RotationSystem.outer_region_path_cover
+
+#print axioms JSP512Probe.RotationSystem.split_residual_old_boundary
+
+#print axioms JSP512Probe.RotationSystem.old_boundary_survivors_simple
+
+#print axioms JSP512Probe.RotationSystem.old_boundary_avoids_attachment
+
+#print axioms JSP512Probe.RotationSystem.old_boundary_avoids_other_cut
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_surjective
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_injective
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_face_cycles
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_outer_lift
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_residual_lift
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_residual_conditions
+
+#print axioms JSP512Probe.RotationSystem.exposed_side_residual_conditions
+
+#print axioms JSP512Probe.RotationSystem.boundary_side_residual_conditions
+
+#print axioms JSP512Probe.RotationSystem.split_outer_same_component
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_triangle
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_inner_at
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_anchor_inner
+
+#print axioms JSP512Probe.RotationSystem.exposed_side_disk
+
+#print axioms JSP512Probe.RotationSystem.boundary_side_disk
+
+#print axioms JSP512Probe.RotationSystem.mapIso_disk
+
+#print axioms JSP512Probe.RotationSystem.mapIso_facialVertices
+
+#print axioms JSP512Probe.RotationSystem.restored_route_center
+
+#print axioms JSP512Probe.RotationSystem.restoredRouteIso
+
+#print axioms JSP512Probe.RotationSystem.chord_exposes_sector_vertex
+
+#print axioms JSP512Probe.RotationSystem.chord_sector_data
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.exposed_disk
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.boundary_disk
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.separator
+
+#print axioms JSP512Probe.RotationSystem.chord_disk_separator
+
+#print axioms JSP512Probe.RotationSystem.splitSide_source_membership
+
+#print axioms JSP512Probe.RotationSystem.old_boundary_surviving_dart
+
+#print axioms JSP512Probe.RotationSystem.splitSideDart_residual_vertex
+
+#print axioms JSP512Probe.RotationSystem.old_boundary_side_residual
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.chord_ne_predecessor
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.predecessor_side
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.exposed_avoids_predecessor
+
+#print axioms JSP512Probe.RotationSystem.old_cut_side_residual
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.exposed_disk_boundary
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.boundary_disk_boundary
+
+#print axioms JSP512Probe.RotationSystem.chord_disk_separator_boundary
+
+#print axioms JSP512Probe.RotationSystem.boundary_side_disk_edges
+
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.incoming_component
+#print axioms JSP512Probe.RotationSystem.ChordSectorData.boundary_disk_boundary_edges
+#print axioms JSP512Probe.RotationSystem.chord_disk_separator_boundary_edges

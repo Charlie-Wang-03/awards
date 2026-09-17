@@ -1,0 +1,63 @@
+import Probe.VertexDeletionGenus
+import Probe.DiskDeletionGenus
+
+#print axioms JSP512Probe.CycleSurgery.fiberPermutation
+#print axioms JSP512Probe.CycleSurgery.fiberPermutation_cycles
+#print axioms JSP512Probe.RotationSystem.vertexLocal_source
+#print axioms JSP512Probe.RotationSystem.vertexErased_incoming_fixed
+#print axioms JSP512Probe.RotationSystem.vertex_survives_iff
+#print axioms JSP512Probe.RotationSystem.deleteVertex
+#print axioms JSP512Probe.RotationSystem.vertex_deleted_face
+#print axioms JSP512Probe.RotationSystem.vertexErased_apply
+#print axioms JSP512Probe.RotationSystem.vertex_deleted_face_formula
+#print axioms JSP512Probe.RotationSystem.sector_survives
+#print axioms JSP512Probe.RotationSystem.sector_deleted_face
+#print axioms JSP512Probe.RotationSystem.sector_predecessor_step
+#print axioms JSP512Probe.RotationSystem.deleted_face_step_of_survives
+#print axioms JSP512Probe.RotationSystem.deleted_triangle_preserved
+#print axioms JSP512Probe.RotationSystem.boundarySector_injective
+#print axioms JSP512Probe.RotationSystem.boundarySector_step
+#print axioms JSP512Probe.RotationSystem.deleted_boundary_orbit
+#print axioms JSP512Probe.RotationSystem.deleted_boundary_vertices
+#print axioms JSP512Probe.RotationSystem.deleted_boundary_source_injective
+#print axioms JSP512Probe.RotationSystem.deleted_nonboundary_step
+#print axioms JSP512Probe.RotationSystem.deleted_nonboundary_triangular
+#print axioms JSP512Probe.RotationSystem.deleted_boundary_length
+
+#print axioms JSP512Probe.CycleSurgery.orbitSize_eq_three
+#print axioms JSP512Probe.CycleSurgery.orbit_size_exact
+#print axioms JSP512Probe.RotationSystem.deleted_face_count
+#print axioms JSP512Probe.RotationSystem.triangular_face_count
+#print axioms JSP512Probe.RotationSystem.vertex_deleted_edge_count
+#print axioms JSP512Probe.RotationSystem.vertex_deleted_vertex_count
+#print axioms JSP512Probe.RotationSystem.maximal_deleteVertex_genusZero
+
+#print axioms JSP512Probe.RotationSystem.outer_face_fan
+#print axioms JSP512Probe.RotationSystem.fan_neighbor_preconnected
+#print axioms JSP512Probe.RotationSystem.vertex_deleted_preconnected_of_neighbors
+#print axioms JSP512Probe.RotationSystem.outer_vertex_deleted_connected
+#print axioms JSP512Probe.RotationSystem.inner_sector_not_outer
+#print axioms JSP512Probe.RotationSystem.outer_splice_entry
+#print axioms JSP512Probe.RotationSystem.outer_splice_exit
+
+#print axioms JSP512Probe.RotationSystem.outer_region_sector
+#print axioms JSP512Probe.RotationSystem.outer_region_step
+#print axioms JSP512Probe.RotationSystem.outer_region_sameCycle
+#print axioms JSP512Probe.RotationSystem.outside_outer_region_step
+#print axioms JSP512Probe.RotationSystem.outside_outer_region_triangular
+#print axioms JSP512Probe.RotationSystem.outer_region_source_injective
+#print axioms JSP512Probe.RotationSystem.outer_region_vertices
+
+#print axioms JSP512Probe.RotationSystem.outer_fan_single_orbit
+#print axioms JSP512Probe.RotationSystem.old_outer_reaches_fan
+#print axioms JSP512Probe.RotationSystem.outer_region_single_orbit
+#print axioms JSP512Probe.RotationSystem.outer_deleted_boundary
+#print axioms JSP512Probe.RotationSystem.disk_face_count
+
+#print axioms JSP512Probe.RotationSystem.faceLength_eq_label_card
+#print axioms JSP512Probe.RotationSystem.nonbacktracking_corner_card
+#print axioms JSP512Probe.RotationSystem.outer_deleted_length
+#print axioms JSP512Probe.RotationSystem.disk_deleteVertex_genusZero
+
+#print axioms JSP512Probe.RotationSystem.outer_deleted_dart_length
+#print axioms JSP512Probe.RotationSystem.boundary_deleteVertex_genusZero

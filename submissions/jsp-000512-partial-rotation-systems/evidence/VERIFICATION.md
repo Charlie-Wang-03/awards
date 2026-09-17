@@ -1,15 +1,14 @@
 # Verification record
 
-Date: 2026-09-17. These checks were performed by the submitting agent with
-OpenAI Codex assistance, not by independent reviewers or the prize organizers.
+Date: 2026-09-17. Checks were performed by the submitting agent with OpenAI
+Codex assistance, not by independent reviewers or the prize organizers.
 
 ## Reproduction performed
 
-The submission was copied into a separate checkout and all 31 supplied Lean
-modules, plus the root module, were built there from source. Prebuilt pinned
-Mathlib dependencies were reused from a local cache; no claim is made that
-all third-party dependencies were rebuilt. That cache is not included in Git.
-The project and package pins are recorded in `lean-toolchain`, `lakefile.toml`,
+All 124 supplied `Probe/` Lean modules, plus the root module, were built in the
+separate submission checkout. Pinned Mathlib dependencies were reused from a
+local cache; rebuilding all third-party dependencies is not claimed. The cache
+is not included in Git. Pins are recorded in `lean-toolchain`, `lakefile.toml`,
 and `lake-manifest.json`.
 
 Command, from the submission directory:
@@ -18,26 +17,44 @@ Command, from the submission directory:
 python3 scripts/verify.py
 ```
 
-Result: PASS. The full build completed successfully (1327 jobs, including
-cached dependencies). The verifier then directly reran `Probe/FoundationAudit.lean`
-and matched all 120 declared audit targets. Each reported a subset of `propext`,
-`Classical.choice`, and `Quot.sound`. The submitted source scan found no
-`sorry`, `admit`, explicit `axiom`, or `native_decide` token.
+Result: PASS. The full build completed successfully (1429 jobs, including cached
+dependencies), without warnings or errors. The verifier checked exact input-hash
+coverage and that the root target imports every supplied module transitively.
+It scanned all submitted Lean sources for proof placeholders, explicit axioms,
+and native decision calls; none were found.
 
-See [verifier output](verification.log) and [source hashes](SOURCE-SHA256SUMS).
-Hashes cover the Lean source, dependency/toolchain pins, and verifier script.
+Seven audit modules were then run directly with Lean, independently of cached
+build output. All 441 declared targets matched their printed axiom closures:
+
+| Audit module | Named targets |
+| --- | ---: |
+| FoundationAudit | 120 |
+| ColorInductionAudit | 39 |
+| VertexDeletionAudit | 54 |
+| ChordSeparationAudit | 111 |
+| ComponentRotationAudit | 22 |
+| RotationIsoAudit | 10 |
+| FanInsertionAudit | 85 |
+
+Every closure is a subset of `propext`, `Classical.choice`, and `Quot.sound`.
+The audited declarations include the recursive
+`triangulated_disk_precolored` and final `genusZero_five_list_coloring`, not only
+their supporting lemmas. See [verifier output](verification.log) and
+[source hashes](SOURCE-SHA256SUMS). Hashes cover all Lean sources, the dependency
+and toolchain pins, and the verifier script.
 
 ## Repository checks
 
-The official repository validation, local-link checks, deterministic data
-generation/check, immutable-history check against base
-`f4e7173d89dfe91022a185427d63452c8ffbf6ae`, and all 22 unit tests passed.
-Generated data did not change. These repository checks do not execute Lean
-proofs; the separate proof verification above does.
+Repository schema validation, local-link checks, deterministic data generation
+and checking, immutable-history checking against base
+`f4e7173d89dfe91022a185427d63452c8ffbf6ae`, and all 22 unit tests passed for this
+update. Generated data did not change. Those checks do not execute Lean proofs;
+the separate proof verification above does.
 
 ## Limits
 
-This demonstrates compilation and the audited axiom closures for the stated
-supporting theorems. It does not establish independent mathematical review,
-faithfulness of a future planar-coloring theorem, prize priority, or award
-eligibility. No such completed theorem is included.
+The evidence establishes compilation and the stated axiom closures for the
+finite genus-zero rotation-model upper bound. It does not establish independent
+mathematical review, the geometric-planarity correspondence, a sharpness witness,
+prize priority, or award eligibility. The complete original problem is not solved
+by this submission.
