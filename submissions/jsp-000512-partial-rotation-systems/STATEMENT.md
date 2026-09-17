@@ -69,15 +69,45 @@ and chord splitting branches. `genusZero_five_list_coloring` constructs a
 maximal supergraph, applies the disk theorem, and restricts the coloring back
 to the original graph. Small and edgeless graphs are treated explicitly.
 
+## Explicit geometric lower bound
+
+`JSP512Probe.Gutner.graph` has 86 vertices and 241 edges. Its twelve copies of
+Gutner's nine-vertex block share two roots and their common edge. The roots
+have lists `{7,8,9,10}`; each possible ordered distinct root-color pair has a
+block where one of two triangles would have to use only two colors.
+
+`Gutner.lists_card` proves every assigned list has exactly four elements;
+`Gutner.no_list_coloring` proves no proper coloring respects them. This is a
+symbolic coloring contradiction, not the output of an external SAT solver.
+
+`StraightLine.Drawing G` supplies integer coordinates interpreted in the real
+plane, injectivity, exclusion of unrelated vertices from edge lines, and
+nonintersection of the open segment of an edge with the closed segment of
+any different undirected edge. These explicit geometric conditions assume no
+rotation system or recursive plane-expression certificate.
+
+`Gutner.drawing` satisfies these conditions. `StraightLine.mix_line` and
+`separated_segments` derive real segment nonintersection from integer
+orientation tests. The concrete coordinate and edge tests are checked by the
+Lean kernel using `decide +kernel`; Python/NetworkX merely proposed data and
+are not trusted. Coverage from the finite edge table to every actual graph
+edge is proved in `Gutner.adj_edge`.
+
+`Gutner.geometric_four_list_obstruction` combines the drawing, exact list sizes,
+and absence of a respecting coloring for the same graph. This supplies a
+geometric sharpness witness, without claiming that 86 is the smallest size.
+The auxiliary rotation and Euler counts computed during coordinate generation
+are not claimed as a separate Lean theorem about this graph.
+
 ## Relationship to JSP-000512
 
-This proves the full five-list upper bound **in the explicitly defined finite
-zero-genus rotation model**. It does not yet prove the correspondence between
-that model and ordinary noncrossing geometric planar embeddings. It also does
-not supply a planar graph with a four-element list assignment that admits no
-respecting proper coloring.
+The submission proves the five-list upper bound in the explicitly defined
+finite zero-genus rotation model and supplies a fully checked geometric
+four-list counterexample. What remains unproved is the upper-bound bridge:
+an arbitrary ordinary geometric planar embedding must yield a rotation system
+satisfying `HasGenusZero`.
 
-Consequently the submission is not a complete solution of JSP-000512 / Erdős
-#631. The remaining requirements are geometric-planarity correspondence and
-sharpness; neither is assumed as an axiom or imported from an unfinished proof.
-No award eligibility, mathematical novelty, or independent review is asserted.
+Consequently this is not yet a complete solution of JSP-000512 / Erdős #631.
+The remaining correspondence is not assumed as an axiom or imported from an
+unfinished proof. No award eligibility, mathematical novelty, or independent
+review is asserted.

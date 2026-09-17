@@ -2,8 +2,9 @@
 
 **This remains a partial formalization of JSP-000512 / Erdős #631.** The
 submission now proves the five-list-coloring upper bound for every finite graph
-supplied with a genus-zero rotation system. The correspondence with ordinary
-geometric planar embeddings and a planar non-four-choosable witness remain
+supplied with a genus-zero rotation system. An explicit 86-vertex non-four-list-colorable graph now also has a verified
+noncrossing straight-line drawing in the real plane. The upper-bound bridge
+from arbitrary ordinary planar embeddings to genus-zero rotations remains
 unproved. No solved status or award eligibility is claimed.
 
 The principal theorem is `RotationSystem.genusZero_five_list_coloring`: for
@@ -19,12 +20,19 @@ chord construction preserves the actual oriented precolored edge on the new
 outer face, not just its endpoints. Coloring the second side with the first
 side's chord colors makes the two colorings agree and permits gluing.
 
+The sharpness witness follows Gutner's published 86-vertex intermediate
+construction. Twelve blocks exclude the twelve possible ordered distinct
+colors on a shared edge. Exact integer coordinates and orientation tests,
+checked by `decide +kernel`, establish nonintersection of actual real line
+segments. Python and NetworkX are not in the trusted proof base.
+
 ## Scope and correspondence
 
 See [precise statements and limitations](STATEMENT.md). These are formalizations
 of known mathematics, not a new coloring bound or a claim of first-solver credit.
-The completed combinatorial upper bound does not by itself complete the original
-problem's geometric-planarity and sharpness requirements.
+The completed combinatorial upper bound and explicit geometric lower-bound
+witness do not by themselves prove that every ordinary planar graph meets the
+upper theorem's rotation-system hypothesis.
 
 ## Reproduce
 
@@ -38,7 +46,7 @@ python3 scripts/verify.py
 
 The verifier checks exact source-manifest coverage, source hashes, absence of
 proof placeholders, root-import coverage of every supplied module, the full
-build, and 441 named axiom audits across seven audit modules. Only `propext`,
+build, and 456 named axiom audits across eight audit modules. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted. See the
 [verification record](evidence/VERIFICATION.md).
 

@@ -9,8 +9,8 @@ The motivation is JSP-000512 / Erdős #631 and Thomassen's known theorem:
 Carsten Thomassen, *Every Planar Graph Is 5-Choosable*, 1994,
 [DOI 10.1006/jctb.1994.1062](https://doi.org/10.1006/jctb.1994.1062).
 The upper bound is proved here for the explicit finite genus-zero rotation
-model. Its correspondence with geometric planarity and its sharpness remain
-unproved.
+model. The general upper-bound correspondence with geometric planarity remains
+unproved; the explicit geometric lower-bound witness described below is proved.
 
 Prior sources inspected during the broader investigation:
 
@@ -31,3 +31,18 @@ No completeness claim is made about the search for other formalizations.
 Local NetworkX experiments and finite recursive coloring certificates from
 an earlier feasibility probe are excluded from this submission. They neither
 establish the general results above nor form part of this proof's trust base.
+
+The sharpness modules implement the 86-vertex intermediate graph H in Section 2
+of Shai Gutner, *The complexity of planar graph choosability*,
+[arXiv:0802.2668](https://arxiv.org/html/0802.2668). The paper subsequently merges
+vertices to obtain 75; that minimization is not used. The previously inspected
+Erdos631 code uses the same published block construction. The present modules
+specify the graph directly and prove noncrossing real line segments from integer
+coordinates; that external code and its recursive planarity definition are not
+imported. Attribution is to the published construction, not a new counterexample.
+
+NetworkX 3.4.2 proposed a planar layout, followed by deterministic small integer
+perturbations after scaling. The supplied `GutnerCoordinates.lean` contains all
+coordinates and kernel-checked finite sign tests. Coordinate generation is not a
+trusted step or a prerequisite for reproducing the Lean proof. The Python
+rotation/Euler checks from exploration are not asserted as Lean theorems.

@@ -1,4 +1,4 @@
-ℹ [1325/1429] Replayed Probe.FoundationAudit
+ℹ [1324/1388] Replayed Probe.FoundationAudit
 info: Probe/FoundationAudit.lean:20:0: 'JSP512Probe.RotationSystem.sameCycle_iff_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/FoundationAudit.lean:21:0: 'JSP512Probe.RotationSystem.vertexOrbit_card' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/FoundationAudit.lean:22:0: 'JSP512Probe.RotationSystem.face_ne_self' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -127,35 +127,51 @@ info: Probe/FoundationAudit.lean:153:0: 'JSP512Probe.RotationSystem.maximal_face
 info: Probe/FoundationAudit.lean:154:0: 'JSP512Probe.RotationSystem.exists_triangular_augmentation' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/FoundationAudit.lean:155:0: 'JSP512Probe.RotationSystem.maximal_face_darts_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/FoundationAudit.lean:156:0: 'JSP512Probe.RotationSystem.maximal_face_three_steps' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1335/1429] Built Probe.FiberPermutation (2.0s)
-✔ [1336/1429] Built Probe.PendantFaceSteps (2.0s)
-✔ [1337/1429] Built Probe.TriangularNeighborOrder (3.1s)
-✔ [1338/1429] Built Probe.EarInsertion (3.1s)
-✔ [1339/1429] Built Probe.ListColorExtension (3.2s)
-✔ [1340/1429] Built Probe.SplitSeparation (3.6s)
-✔ [1341/1429] Built Probe.PendantFaceOrbits (2.7s)
-✔ [1342/1429] Built Probe.ColorGluing (2.8s)
-✔ [1343/1429] Built Probe.EarSeparation (2.9s)
-✔ [1344/1429] Built Probe.VertexDeletion (3.2s)
-✔ [1345/1429] Built Probe.SplitSides (2.8s)
-✔ [1346/1429] Built Probe.FanContinuation (2.7s)
-✔ [1347/1429] Built Probe.FanSplicing (2.6s)
-✔ [1348/1429] Built Probe.EarInnerFaces (2.0s)
-✔ [1349/1429] Built Probe.OuterFaceFan (3.0s)
-✔ [1350/1429] Built Probe.DeletedNeighborBoundary (3.0s)
-✔ [1351/1429] Built Probe.FiniteFan (3.2s)
-✔ [1352/1429] Built Probe.EarOuterBoundary (2.9s)
-✔ [1353/1429] Built Probe.DeletionFaceCounting (2.8s)
-✔ [1354/1429] Built Probe.OuterFaceRegion (3.2s)
-✔ [1355/1429] Built Probe.ResidualFanBoundary (2.7s)
-✔ [1356/1429] Built Probe.VertexDeletionGenus (2.0s)
-✔ [1357/1429] Built Probe.OuterFaceOrbit (2.8s)
-✔ [1358/1429] Built Probe.ResidualFanVertices (2.7s)
-✔ [1359/1429] Built Probe.DiskFaceCounting (2.5s)
-✔ [1360/1429] Built Probe.OuterBoundaryLength (3.0s)
-✔ [1361/1429] Built Probe.OuterDartCount (3.1s)
-✔ [1362/1429] Built Probe.DiskDeletionGenus (2.8s)
-ℹ [1363/1429] Built Probe.VertexDeletionAudit (2.6s)
+ℹ [1421/1445] Replayed Probe.ColorInductionAudit
+info: Probe/ColorInductionAudit.lean:9:0: 'JSP512Probe.ListColoring.reserve_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:10:0: 'JSP512Probe.ListColoring.five_to_three' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:11:0: 'JSP512Probe.ListColoring.extend_two_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:12:0: 'JSP512Probe.ListColoring.old_boundary_list_unchanged' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:13:0: 'JSP512Probe.ListColoring.reduced_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:14:0: 'JSP512Probe.ListColoring.protected_lists_unchanged' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:15:0: 'JSP512Probe.ListColoring.three_list_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:16:0: 'JSP512Probe.RotationSystem.triangular_sector_endpoints' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:17:0: 'JSP512Probe.RotationSystem.triangular_neighbors_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:18:0: 'JSP512Probe.RotationSystem.neighborRotation_sameCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:19:0: 'JSP512Probe.RotationSystem.neighborRotation_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:20:0: 'JSP512Probe.RotationSystem.neighborRotation_ne_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:22:0: 'JSP512Probe.RotationSystem.sector_endpoints_of_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:23:0: 'JSP512Probe.RotationSystem.neighborRotation_adj_except' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:25:0: 'JSP512Probe.RotationSystem.IsTriangulatedDisk.reroot' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:26:0: 'JSP512Probe.RotationSystem.disk_delete_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:27:0: 'JSP512Probe.RotationSystem.deleted_outer_edge' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:28:0: 'JSP512Probe.RotationSystem.disk_list_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:29:0: 'JSP512Probe.RotationSystem.disk_backtracking_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:30:0: 'JSP512Probe.RotationSystem.disk_backtracking_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:32:0: 'JSP512Probe.ListColoring.glue_induced' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:33:0: 'JSP512Probe.ListColoring.glue_induced_lists' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:34:0: 'JSP512Probe.ListColoring.glue_along_chord' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:35:0: 'JSP512Probe.ListColoring.chord_endpoint_colors_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:36:0: 'JSP512Probe.ListColoring.chordLists_unchanged' depends on axioms: [propext, Quot.sound]
+info: Probe/ColorInductionAudit.lean:37:0: 'JSP512Probe.ListColoring.chord_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:39:0: 'JSP512Probe.RotationSystem.induced_disk_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:41:0: 'JSP512Probe.RotationSystem.induced_chord_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:43:0: 'JSP512Probe.ListColoring.protected_edge_side' does not depend on any axioms
+info: Probe/ColorInductionAudit.lean:45:0: 'JSP512Probe.RotationSystem.ChordSectorData.predecessor_not_restored_exposed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Probe/ColorInductionAudit.lean:47:0: 'JSP512Probe.RotationSystem.ChordSectorData.protected_vertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Probe/ColorInductionAudit.lean:49:0: 'JSP512Probe.RotationSystem.facialVertices_reroot' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:50:0: 'JSP512Probe.RotationSystem.ChordSectorData.precolored_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:51:0: 'JSP512Probe.RotationSystem.disk_list_reduction_region' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:52:0: 'JSP512Probe.RotationSystem.precolored_delete_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:53:0: 'JSP512Probe.RotationSystem.triangulated_disk_precolored' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:54:0: 'JSP512Probe.RotationSystem.triangulated_disk_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:55:0: 'JSP512Probe.RotationSystem.small_graph_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ColorInductionAudit.lean:56:0: 'JSP512Probe.RotationSystem.genusZero_five_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [1422/1445] Replayed Probe.VertexDeletionAudit
 info: Probe/VertexDeletionAudit.lean:4:0: 'JSP512Probe.CycleSurgery.fiberPermutation' depends on axioms: [Quot.sound]
 info: Probe/VertexDeletionAudit.lean:5:0: 'JSP512Probe.CycleSurgery.fiberPermutation_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/VertexDeletionAudit.lean:6:0: 'JSP512Probe.RotationSystem.vertexLocal_source' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -214,188 +230,7 @@ info: Probe/VertexDeletionAudit.lean:59:0: 'JSP512Probe.RotationSystem.outer_del
 info: Probe/VertexDeletionAudit.lean:60:0: 'JSP512Probe.RotationSystem.disk_deleteVertex_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/VertexDeletionAudit.lean:62:0: 'JSP512Probe.RotationSystem.outer_deleted_dart_length' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/VertexDeletionAudit.lean:63:0: 'JSP512Probe.RotationSystem.boundary_deleteVertex_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1364/1429] Built Probe.DiskInstance (2.7s)
-✔ [1365/1429] Built Probe.ChordExposesCut (2.9s)
-✔ [1366/1429] Built Probe.InducedDiskLists (2.0s)
-✔ [1367/1429] Built Probe.DiskBaseCase (3.1s)
-✔ [1368/1429] Built Probe.ComponentRotation (3.2s)
-✔ [1369/1429] Built Probe.DiskListReduction (3.2s)
-✔ [1370/1429] Built Probe.RestoreSeparator (3.1s)
-✔ [1371/1429] Built Probe.TriangulatedFan (3.6s)
-✔ [1372/1429] Built Probe.ComponentCounts (2.7s)
-✔ [1373/1429] Built Probe.SplitSideConnectivity (2.0s)
-✔ [1374/1429] Built Probe.ComponentFaceCounts (2.8s)
-✔ [1375/1429] Built Probe.SplitSideIso (2.7s)
-✔ [1376/1429] Built Probe.ComponentGenus (3.5s)
-ℹ [1377/1429] Built Probe.ComponentRotationAudit (2.3s)
-info: Probe/ComponentRotationAudit.lean:3:0: 'JSP512Probe.RotationSystem.closedDartEquiv' depends on axioms: [propext, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:4:0: 'JSP512Probe.RotationSystem.restrictClosed' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:5:0: 'JSP512Probe.RotationSystem.restrictClosed_face' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:6:0: 'JSP512Probe.RotationSystem.restrictClosed_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:7:0: 'JSP512Probe.RotationSystem.face_cycle_in_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:8:0: 'JSP512Probe.RotationSystem.restrictClosed_faceLength' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:9:0: 'JSP512Probe.RotationSystem.restrictClosed_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:10:0: 'JSP512Probe.RotationSystem.componentRotation' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:12:0: 'JSP512Probe.RotationSystem.sum_component_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:13:0: 'JSP512Probe.RotationSystem.componentDartsEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:14:0: 'JSP512Probe.RotationSystem.sum_component_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:15:0: 'JSP512Probe.RotationSystem.componentSupportEquiv' depends on axioms: [propext, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:16:0: 'JSP512Probe.RotationSystem.sum_component_support' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:17:0: 'JSP512Probe.RotationSystem.faceComponent' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:18:0: 'JSP512Probe.RotationSystem.componentFaceMap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:19:0: 'JSP512Probe.RotationSystem.faceComponent_map' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:20:0: 'JSP512Probe.RotationSystem.componentFacesEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:21:0: 'JSP512Probe.RotationSystem.sum_component_faces' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:22:0: 'JSP512Probe.RotationSystem.componentDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:23:0: 'JSP512Probe.RotationSystem.componentDefect_nonnegative' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:24:0: 'JSP512Probe.RotationSystem.sum_componentDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ComponentRotationAudit.lean:25:0: 'JSP512Probe.RotationSystem.componentRotation_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1378/1429] Built Probe.RotationIso (2.9s)
-ℹ [1379/1429] Built Probe.RotationIsoAudit (2.5s)
-info: Probe/RotationIsoAudit.lean:3:0: 'JSP512Probe.RotationSystem.isoDarts' depends on axioms: [propext, Quot.sound]
-info: Probe/RotationIsoAudit.lean:4:0: 'JSP512Probe.RotationSystem.isoDarts_reverse' depends on axioms: [propext, Quot.sound]
-info: Probe/RotationIsoAudit.lean:5:0: 'JSP512Probe.RotationSystem.mapIso' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:6:0: 'JSP512Probe.RotationSystem.mapIso_face' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:7:0: 'JSP512Probe.RotationSystem.mapIso_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:8:0: 'JSP512Probe.RotationSystem.mapIso_faceLength' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:9:0: 'JSP512Probe.RotationSystem.mapIso_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:10:0: 'JSP512Probe.RotationSystem.mapIso_faceCount' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:11:0: 'JSP512Probe.RotationSystem.mapIso_eulerDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/RotationIsoAudit.lean:12:0: 'JSP512Probe.RotationSystem.mapIso_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1380/1429] Built Probe.DiskIso (2.7s)
-✔ [1381/1429] Built Probe.SplitSideRotation (2.8s)
-✔ [1382/1429] Built Probe.IsolateExtension (3.1s)
-✔ [1383/1429] Built Probe.FanStart (2.6s)
-✔ [1384/1429] Built Probe.SplitFaceStructure (2.9s)
-✔ [1385/1429] Built Probe.RestoredFanIso (2.4s)
-✔ [1386/1429] Built Probe.SplitFaceInterval (3.0s)
-✔ [1387/1429] Built Probe.FanStartRoute (3.2s)
-✔ [1388/1429] Built Probe.RestoredRouteIso (2.4s)
-✔ [1389/1429] Built Probe.SectorFanRoute (2.6s)
-✔ [1390/1429] Built Probe.FanStartFaces (2.5s)
-✔ [1391/1429] Built Probe.FanStartResidual (2.7s)
-✔ [1392/1429] Built Probe.SourceSectorInterval (2.8s)
-✔ [1393/1429] Built Probe.SplitSideDarts (2.0s)
-✔ [1394/1429] Built Probe.SourceNeighborPartition (2.9s)
-✔ [1395/1429] Built Probe.SplitSideDartTransport (2.8s)
-✔ [1396/1429] Built Probe.FanStartDisk (3.4s)
-✔ [1397/1429] Built Probe.SplitSideFullRoute (3.1s)
-✔ [1398/1429] Built Probe.SplitSideChosenOuter (3.0s)
-✔ [1399/1429] Built Probe.SplitSideResidualTransport (2.9s)
-ℹ [1400/1429] Built Probe.FanInsertionAudit (2.8s)
-info: Probe/FanInsertionAudit.lean:7:0: 'JSP512Probe.EdgeInsertion.added_face_old_away' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:8:0: 'JSP512Probe.EdgeInsertion.added_face_left' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:9:0: 'JSP512Probe.EdgeInsertion.added_face_right' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:10:0: 'JSP512Probe.EdgeInsertion.added_face_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:11:0: 'JSP512Probe.EdgeInsertion.added_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:12:0: 'JSP512Probe.EdgeInsertion.added_ear_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:13:0: 'JSP512Probe.EdgeInsertion.added_ear_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:14:0: 'JSP512Probe.EdgeInsertion.added_ear_preserves_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:15:0: 'JSP512Probe.EdgeInsertion.pendant_face_embed' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:16:0: 'JSP512Probe.EdgeInsertion.pendant_face_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:17:0: 'JSP512Probe.EdgeInsertion.pendant_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:18:0: 'JSP512Probe.EdgeInsertion.pendant_face_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:19:0: 'JSP512Probe.EdgeInsertion.pendant_face_old_away' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:21:0: 'JSP512Probe.RotationSystem.isolateDarts' depends on axioms: [propext, Classical.choice]
-info: Probe/FanInsertionAudit.lean:22:0: 'JSP512Probe.RotationSystem.isolateDarts_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:23:0: 'JSP512Probe.RotationSystem.withIsolate_none_support' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:24:0: 'JSP512Probe.RotationSystem.withIsolate_reachable' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:25:0: 'JSP512Probe.RotationSystem.withIsolate_none_reachable' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:26:0: 'JSP512Probe.RotationSystem.addIsolate' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:27:0: 'JSP512Probe.RotationSystem.addIsolate_face' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:28:0: 'JSP512Probe.RotationSystem.addIsolate_faceCount' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:29:0: 'JSP512Probe.RotationSystem.withIsolate_component_count' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:30:0: 'JSP512Probe.RotationSystem.addIsolate_eulerDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:31:0: 'JSP512Probe.RotationSystem.addIsolate_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:32:0: 'JSP512Probe.RotationSystem.fanStartGraph' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:33:0: 'JSP512Probe.RotationSystem.fanStartGraph_center_adj' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:34:0: 'JSP512Probe.RotationSystem.fanStartGraph_connected' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:35:0: 'JSP512Probe.RotationSystem.startFan' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:36:0: 'JSP512Probe.RotationSystem.startFan_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:37:0: 'JSP512Probe.RotationSystem.restoredVertexEquiv' depends on axioms: [Classical.choice]
-info: Probe/FanInsertionAudit.lean:39:0: 'JSP512Probe.CycleSurgery.three_step_cycle_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:40:0: 'JSP512Probe.EdgeInsertion.added_ear_cycle_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:41:0: 'JSP512Probe.EdgeInsertion.added_ear_forward_separate' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:42:0: 'JSP512Probe.EdgeInsertion.added_ear_survives_next' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:44:0: 'JSP512Probe.EdgeInsertion.added_rotate_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:45:0: 'JSP512Probe.EdgeInsertion.added_next_path' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:46:0: 'JSP512Probe.EdgeInsertion.added_next_corner' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:47:0: 'JSP512Probe.EdgeInsertion.added_next_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:48:0: 'JSP512Probe.EdgeInsertion.advanceFan' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:49:0: 'JSP512Probe.EdgeInsertion.advanceFan_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:50:0: 'JSP512Probe.EdgeInsertion.advanceFan_preserves_ear' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:52:0: 'JSP512Probe.EdgeInsertion.FaceRoute' does not depend on any axioms
-info: Probe/FanInsertionAudit.lean:53:0: 'JSP512Probe.EdgeInsertion.FaceRoute.map_steps' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:54:0: 'JSP512Probe.EdgeInsertion.FanRoute' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:55:0: 'JSP512Probe.EdgeInsertion.FanRoute.tail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:56:0: 'JSP512Probe.EdgeInsertion.finite_fan_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:57:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:59:0: 'JSP512Probe.CycleSurgery.three_step_of_sameCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:60:0: 'JSP512Probe.EdgeInsertion.added_outer_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:61:0: 'JSP512Probe.EdgeInsertion.added_inner_triangles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:62:0: 'JSP512Probe.EdgeInsertion.triangulated_fan_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:63:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_with_inner_faces' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-info: Probe/FanInsertionAudit.lean:65:0: 'JSP512Probe.EdgeInsertion.added_outer_projects' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:66:0: 'JSP512Probe.EdgeInsertion.added_outer_not_ear' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:67:0: 'JSP512Probe.EdgeInsertion.added_outer_old_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:68:0: 'JSP512Probe.EdgeInsertion.added_outer_representative' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:69:0: 'JSP512Probe.EdgeInsertion.added_outer_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:70:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:72:0: 'JSP512Probe.EdgeInsertion.ResidualBoundarySimple' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:73:0: 'JSP512Probe.EdgeInsertion.FanRoute.first_spoke_not_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:74:0: 'JSP512Probe.EdgeInsertion.FanRoute.residual_simple_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:75:0: 'JSP512Probe.EdgeInsertion.ResidualBoundaryVertex' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:76:0: 'JSP512Probe.EdgeInsertion.FanRoute.residual_vertices_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:77:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk_of_residual' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-info: Probe/FanInsertionAudit.lean:79:0: 'JSP512Probe.RotationSystem.startAnchor' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:80:0: 'JSP512Probe.RotationSystem.startOldDart' depends on axioms: [propext]
-info: Probe/FanInsertionAudit.lean:81:0: 'JSP512Probe.RotationSystem.startFan_rotate_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:82:0: 'JSP512Probe.RotationSystem.startFan_face_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:83:0: 'JSP512Probe.RotationSystem.startFan_face_old' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:84:0: 'JSP512Probe.RotationSystem.startFan_route' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:85:0: 'JSP512Probe.RotationSystem.startFan_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:86:0: 'JSP512Probe.RotationSystem.restoredFanIso' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:88:0: 'JSP512Probe.EdgeInsertion.pendant_old_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:89:0: 'JSP512Probe.EdgeInsertion.pendant_new_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:90:0: 'JSP512Probe.RotationSystem.startFan_dart_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:91:0: 'JSP512Probe.RotationSystem.startFan_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:92:0: 'JSP512Probe.RotationSystem.startFan_outer_old_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:93:0: 'JSP512Probe.RotationSystem.startFan_old_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:94:0: 'JSP512Probe.RotationSystem.startFan_inner' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:95:0: 'JSP512Probe.RotationSystem.startFan_residual_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:96:0: 'JSP512Probe.RotationSystem.startFan_residual_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:97:0: 'JSP512Probe.RotationSystem.startFan_disk' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:99:0: 'JSP512Probe.EdgeInsertion.triangulated_fan_exists_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/FanInsertionAudit.lean:101:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk_of_residual_edges' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-info: Probe/FanInsertionAudit.lean:103:0: 'JSP512Probe.RotationSystem.startFan_disk_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1401/1429] Built Probe.ComplementarySectorInterval (3.3s)
-✔ [1402/1429] Built Probe.SectorEndpointAvoidance (2.9s)
-✔ [1403/1429] Built Probe.SideBoundaryInheritance (2.6s)
-✔ [1404/1429] Built Probe.ChordSectorData (3.2s)
-✔ [1405/1429] Built Probe.ChordSectorRoute (3.2s)
-✔ [1406/1429] Built Probe.OldBoundarySideResidual (2.8s)
-✔ [1407/1429] Built Probe.ComplementarySectorSide (2.9s)
-✔ [1408/1429] Built Probe.ChordSides (2.7s)
-✔ [1409/1429] Built Probe.SectorNeighborCoverage (2.7s)
-✔ [1410/1429] Built Probe.ChordBoundaryExceptions (2.4s)
-✔ [1411/1429] Built Probe.ChordIncomingEdge (2.6s)
-✔ [1412/1429] Built Probe.ChordNeighborAssembly (2.9s)
-✔ [1413/1429] Built Probe.SectorResidualBoundary (2.7s)
-✔ [1414/1429] Built Probe.ExposedSideResidual (2.6s)
-✔ [1415/1429] Built Probe.BoundarySideResidual (2.7s)
-✔ [1416/1429] Built Probe.ExposedSideDisk (3.3s)
-✔ [1417/1429] Built Probe.BoundarySideDisk (3.4s)
-✔ [1418/1429] Built Probe.ChordExposedDisk (3.5s)
-✔ [1419/1429] Built Probe.ChordBoundaryDisk (3.9s)
-✔ [1420/1429] Built Probe.ChordDiskSeparator (2.7s)
-✔ [1421/1429] Built Probe.ChordProtectedVertices (2.4s)
-ℹ [1422/1429] Built Probe.ChordSeparationAudit (2.4s)
+ℹ [1424/1445] Replayed Probe.ChordSeparationAudit
 info: Probe/ChordSeparationAudit.lean:22:0: 'JSP512Probe.RotationSystem.split_cycles_at' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/ChordSeparationAudit.lean:23:0: 'JSP512Probe.RotationSystem.split_reaches_copies' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: Probe/ChordSeparationAudit.lean:24:0: 'JSP512Probe.RotationSystem.split_component_count_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -533,56 +368,155 @@ info: Probe/ChordSeparationAudit.lean:196:0: 'JSP512Probe.RotationSystem.ChordSe
 info: Probe/ChordSeparationAudit.lean:197:0: 'JSP512Probe.RotationSystem.chord_disk_separator_boundary_edges' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-✔ [1423/1429] Built Probe.PrecoloredDisk (2.7s)
-✔ [1424/1429] Built Probe.PrecoloredDeletion (2.6s)
-✔ [1425/1429] Built Probe.DiskColoringInduction (2.5s)
-✔ [1426/1429] Built Probe.GenusZeroListColoring (2.6s)
-ℹ [1427/1429] Built Probe.ColorInductionAudit (2.3s)
-info: Probe/ColorInductionAudit.lean:9:0: 'JSP512Probe.ListColoring.reserve_two' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:10:0: 'JSP512Probe.ListColoring.five_to_three' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:11:0: 'JSP512Probe.ListColoring.extend_two_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:12:0: 'JSP512Probe.ListColoring.old_boundary_list_unchanged' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:13:0: 'JSP512Probe.ListColoring.reduced_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:14:0: 'JSP512Probe.ListColoring.protected_lists_unchanged' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:15:0: 'JSP512Probe.ListColoring.three_list_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:16:0: 'JSP512Probe.RotationSystem.triangular_sector_endpoints' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:17:0: 'JSP512Probe.RotationSystem.triangular_neighbors_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:18:0: 'JSP512Probe.RotationSystem.neighborRotation_sameCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:19:0: 'JSP512Probe.RotationSystem.neighborRotation_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:20:0: 'JSP512Probe.RotationSystem.neighborRotation_ne_self' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:22:0: 'JSP512Probe.RotationSystem.sector_endpoints_of_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:23:0: 'JSP512Probe.RotationSystem.neighborRotation_adj_except' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:25:0: 'JSP512Probe.RotationSystem.IsTriangulatedDisk.reroot' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:26:0: 'JSP512Probe.RotationSystem.disk_delete_instance' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:27:0: 'JSP512Probe.RotationSystem.deleted_outer_edge' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:28:0: 'JSP512Probe.RotationSystem.disk_list_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:29:0: 'JSP512Probe.RotationSystem.disk_backtracking_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:30:0: 'JSP512Probe.RotationSystem.disk_backtracking_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:32:0: 'JSP512Probe.ListColoring.glue_induced' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:33:0: 'JSP512Probe.ListColoring.glue_induced_lists' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:34:0: 'JSP512Probe.ListColoring.glue_along_chord' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:35:0: 'JSP512Probe.ListColoring.chord_endpoint_colors_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:36:0: 'JSP512Probe.ListColoring.chordLists_unchanged' depends on axioms: [propext, Quot.sound]
-info: Probe/ColorInductionAudit.lean:37:0: 'JSP512Probe.ListColoring.chord_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:39:0: 'JSP512Probe.RotationSystem.induced_disk_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:41:0: 'JSP512Probe.RotationSystem.induced_chord_list_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:43:0: 'JSP512Probe.ListColoring.protected_edge_side' does not depend on any axioms
-info: Probe/ColorInductionAudit.lean:45:0: 'JSP512Probe.RotationSystem.ChordSectorData.predecessor_not_restored_exposed' depends on axioms: [propext,
+ℹ [1425/1445] Replayed Probe.ComponentRotationAudit
+info: Probe/ComponentRotationAudit.lean:3:0: 'JSP512Probe.RotationSystem.closedDartEquiv' depends on axioms: [propext, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:4:0: 'JSP512Probe.RotationSystem.restrictClosed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:5:0: 'JSP512Probe.RotationSystem.restrictClosed_face' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:6:0: 'JSP512Probe.RotationSystem.restrictClosed_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:7:0: 'JSP512Probe.RotationSystem.face_cycle_in_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:8:0: 'JSP512Probe.RotationSystem.restrictClosed_faceLength' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:9:0: 'JSP512Probe.RotationSystem.restrictClosed_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:10:0: 'JSP512Probe.RotationSystem.componentRotation' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:12:0: 'JSP512Probe.RotationSystem.sum_component_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:13:0: 'JSP512Probe.RotationSystem.componentDartsEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:14:0: 'JSP512Probe.RotationSystem.sum_component_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:15:0: 'JSP512Probe.RotationSystem.componentSupportEquiv' depends on axioms: [propext, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:16:0: 'JSP512Probe.RotationSystem.sum_component_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:17:0: 'JSP512Probe.RotationSystem.faceComponent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:18:0: 'JSP512Probe.RotationSystem.componentFaceMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:19:0: 'JSP512Probe.RotationSystem.faceComponent_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:20:0: 'JSP512Probe.RotationSystem.componentFacesEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:21:0: 'JSP512Probe.RotationSystem.sum_component_faces' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:22:0: 'JSP512Probe.RotationSystem.componentDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:23:0: 'JSP512Probe.RotationSystem.componentDefect_nonnegative' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:24:0: 'JSP512Probe.RotationSystem.sum_componentDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/ComponentRotationAudit.lean:25:0: 'JSP512Probe.RotationSystem.componentRotation_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [1426/1445] Replayed Probe.RotationIsoAudit
+info: Probe/RotationIsoAudit.lean:3:0: 'JSP512Probe.RotationSystem.isoDarts' depends on axioms: [propext, Quot.sound]
+info: Probe/RotationIsoAudit.lean:4:0: 'JSP512Probe.RotationSystem.isoDarts_reverse' depends on axioms: [propext, Quot.sound]
+info: Probe/RotationIsoAudit.lean:5:0: 'JSP512Probe.RotationSystem.mapIso' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:6:0: 'JSP512Probe.RotationSystem.mapIso_face' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:7:0: 'JSP512Probe.RotationSystem.mapIso_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:8:0: 'JSP512Probe.RotationSystem.mapIso_faceLength' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:9:0: 'JSP512Probe.RotationSystem.mapIso_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:10:0: 'JSP512Probe.RotationSystem.mapIso_faceCount' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:11:0: 'JSP512Probe.RotationSystem.mapIso_eulerDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/RotationIsoAudit.lean:12:0: 'JSP512Probe.RotationSystem.mapIso_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [1427/1445] Replayed Probe.FanInsertionAudit
+info: Probe/FanInsertionAudit.lean:7:0: 'JSP512Probe.EdgeInsertion.added_face_old_away' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:8:0: 'JSP512Probe.EdgeInsertion.added_face_left' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:9:0: 'JSP512Probe.EdgeInsertion.added_face_right' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:10:0: 'JSP512Probe.EdgeInsertion.added_face_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:11:0: 'JSP512Probe.EdgeInsertion.added_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:12:0: 'JSP512Probe.EdgeInsertion.added_ear_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:13:0: 'JSP512Probe.EdgeInsertion.added_ear_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:14:0: 'JSP512Probe.EdgeInsertion.added_ear_preserves_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:15:0: 'JSP512Probe.EdgeInsertion.pendant_face_embed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:16:0: 'JSP512Probe.EdgeInsertion.pendant_face_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:17:0: 'JSP512Probe.EdgeInsertion.pendant_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:18:0: 'JSP512Probe.EdgeInsertion.pendant_face_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:19:0: 'JSP512Probe.EdgeInsertion.pendant_face_old_away' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:21:0: 'JSP512Probe.RotationSystem.isolateDarts' depends on axioms: [propext, Classical.choice]
+info: Probe/FanInsertionAudit.lean:22:0: 'JSP512Probe.RotationSystem.isolateDarts_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:23:0: 'JSP512Probe.RotationSystem.withIsolate_none_support' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:24:0: 'JSP512Probe.RotationSystem.withIsolate_reachable' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:25:0: 'JSP512Probe.RotationSystem.withIsolate_none_reachable' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:26:0: 'JSP512Probe.RotationSystem.addIsolate' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:27:0: 'JSP512Probe.RotationSystem.addIsolate_face' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:28:0: 'JSP512Probe.RotationSystem.addIsolate_faceCount' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:29:0: 'JSP512Probe.RotationSystem.withIsolate_component_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:30:0: 'JSP512Probe.RotationSystem.addIsolate_eulerDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:31:0: 'JSP512Probe.RotationSystem.addIsolate_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:32:0: 'JSP512Probe.RotationSystem.fanStartGraph' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:33:0: 'JSP512Probe.RotationSystem.fanStartGraph_center_adj' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:34:0: 'JSP512Probe.RotationSystem.fanStartGraph_connected' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:35:0: 'JSP512Probe.RotationSystem.startFan' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:36:0: 'JSP512Probe.RotationSystem.startFan_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:37:0: 'JSP512Probe.RotationSystem.restoredVertexEquiv' depends on axioms: [Classical.choice]
+info: Probe/FanInsertionAudit.lean:39:0: 'JSP512Probe.CycleSurgery.three_step_cycle_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:40:0: 'JSP512Probe.EdgeInsertion.added_ear_cycle_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:41:0: 'JSP512Probe.EdgeInsertion.added_ear_forward_separate' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:42:0: 'JSP512Probe.EdgeInsertion.added_ear_survives_next' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:44:0: 'JSP512Probe.EdgeInsertion.added_rotate_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:45:0: 'JSP512Probe.EdgeInsertion.added_next_path' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:46:0: 'JSP512Probe.EdgeInsertion.added_next_corner' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:47:0: 'JSP512Probe.EdgeInsertion.added_next_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:48:0: 'JSP512Probe.EdgeInsertion.advanceFan' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:49:0: 'JSP512Probe.EdgeInsertion.advanceFan_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:50:0: 'JSP512Probe.EdgeInsertion.advanceFan_preserves_ear' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:52:0: 'JSP512Probe.EdgeInsertion.FaceRoute' does not depend on any axioms
+info: Probe/FanInsertionAudit.lean:53:0: 'JSP512Probe.EdgeInsertion.FaceRoute.map_steps' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:54:0: 'JSP512Probe.EdgeInsertion.FanRoute' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:55:0: 'JSP512Probe.EdgeInsertion.FanRoute.tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:56:0: 'JSP512Probe.EdgeInsertion.finite_fan_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:57:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:59:0: 'JSP512Probe.CycleSurgery.three_step_of_sameCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:60:0: 'JSP512Probe.EdgeInsertion.added_outer_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:61:0: 'JSP512Probe.EdgeInsertion.added_inner_triangles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:62:0: 'JSP512Probe.EdgeInsertion.triangulated_fan_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:63:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_with_inner_faces' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: Probe/ColorInductionAudit.lean:47:0: 'JSP512Probe.RotationSystem.ChordSectorData.protected_vertices' depends on axioms: [propext,
+info: Probe/FanInsertionAudit.lean:65:0: 'JSP512Probe.EdgeInsertion.added_outer_projects' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:66:0: 'JSP512Probe.EdgeInsertion.added_outer_not_ear' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:67:0: 'JSP512Probe.EdgeInsertion.added_outer_old_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:68:0: 'JSP512Probe.EdgeInsertion.added_outer_representative' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:69:0: 'JSP512Probe.EdgeInsertion.added_outer_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:70:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:72:0: 'JSP512Probe.EdgeInsertion.ResidualBoundarySimple' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:73:0: 'JSP512Probe.EdgeInsertion.FanRoute.first_spoke_not_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:74:0: 'JSP512Probe.EdgeInsertion.FanRoute.residual_simple_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:75:0: 'JSP512Probe.EdgeInsertion.ResidualBoundaryVertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:76:0: 'JSP512Probe.EdgeInsertion.FanRoute.residual_vertices_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:77:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk_of_residual' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: Probe/ColorInductionAudit.lean:49:0: 'JSP512Probe.RotationSystem.facialVertices_reroot' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:50:0: 'JSP512Probe.RotationSystem.ChordSectorData.precolored_step' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:51:0: 'JSP512Probe.RotationSystem.disk_list_reduction_region' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:52:0: 'JSP512Probe.RotationSystem.precolored_delete_step' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:53:0: 'JSP512Probe.RotationSystem.triangulated_disk_precolored' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:54:0: 'JSP512Probe.RotationSystem.triangulated_disk_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:55:0: 'JSP512Probe.RotationSystem.small_graph_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: Probe/ColorInductionAudit.lean:56:0: 'JSP512Probe.RotationSystem.genusZero_five_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
-✔ [1428/1429] Built Probe (2.2s)
-Build completed successfully (1429 jobs).
+info: Probe/FanInsertionAudit.lean:79:0: 'JSP512Probe.RotationSystem.startAnchor' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:80:0: 'JSP512Probe.RotationSystem.startOldDart' depends on axioms: [propext]
+info: Probe/FanInsertionAudit.lean:81:0: 'JSP512Probe.RotationSystem.startFan_rotate_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:82:0: 'JSP512Probe.RotationSystem.startFan_face_anchor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:83:0: 'JSP512Probe.RotationSystem.startFan_face_old' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:84:0: 'JSP512Probe.RotationSystem.startFan_route' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:85:0: 'JSP512Probe.RotationSystem.startFan_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:86:0: 'JSP512Probe.RotationSystem.restoredFanIso' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:88:0: 'JSP512Probe.EdgeInsertion.pendant_old_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:89:0: 'JSP512Probe.EdgeInsertion.pendant_new_face_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:90:0: 'JSP512Probe.RotationSystem.startFan_dart_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:91:0: 'JSP512Probe.RotationSystem.startFan_face_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:92:0: 'JSP512Probe.RotationSystem.startFan_outer_old_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:93:0: 'JSP512Probe.RotationSystem.startFan_old_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:94:0: 'JSP512Probe.RotationSystem.startFan_inner' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:95:0: 'JSP512Probe.RotationSystem.startFan_residual_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:96:0: 'JSP512Probe.RotationSystem.startFan_residual_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:97:0: 'JSP512Probe.RotationSystem.startFan_disk' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:99:0: 'JSP512Probe.EdgeInsertion.triangulated_fan_exists_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/FanInsertionAudit.lean:101:0: 'JSP512Probe.EdgeInsertion.FanRoute.complete_disk_of_residual_edges' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Probe/FanInsertionAudit.lean:103:0: 'JSP512Probe.RotationSystem.startFan_disk_edges' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [1438/1445] Built Probe.StraightLineCertificate (3.0s)
+✔ [1439/1445] Built Probe.GutnerGraph (4.6s)
+✔ [1440/1445] Built Probe.GutnerObstruction (6.8s)
+✔ [1441/1445] Built Probe.GutnerCoordinates (226s)
+✔ [1442/1445] Built Probe.GutnerDrawing (9.3s)
+ℹ [1443/1445] Built Probe.SharpnessAudit (2.1s)
+info: Probe/SharpnessAudit.lean:3:0: 'JSP512Probe.Gutner.vertex_injective' depends on axioms: [propext, Quot.sound]
+info: Probe/SharpnessAudit.lean:4:0: 'JSP512Probe.Gutner.colors_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:5:0: 'JSP512Probe.Gutner.lists_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:6:0: 'JSP512Probe.Gutner.block_obstruction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:7:0: 'JSP512Probe.Gutner.no_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:8:0: 'JSP512Probe.StraightLine.mix_line' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:9:0: 'JSP512Probe.StraightLine.convex_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:10:0: 'JSP512Probe.StraightLine.separated_segments' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:11:0: 'JSP512Probe.StraightLine.drawingOfChecks' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:12:0: 'JSP512Probe.Gutner.position_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:13:0: 'JSP512Probe.Gutner.vertex_checks' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:14:0: 'JSP512Probe.Gutner.pair_checks' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:15:0: 'JSP512Probe.Gutner.adj_edge' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:16:0: 'JSP512Probe.Gutner.drawing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Probe/SharpnessAudit.lean:17:0: 'JSP512Probe.Gutner.geometric_four_list_obstruction' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [1444/1445] Built Probe (2.2s)
+Build completed successfully (1445 jobs).
 'JSP512Probe.RotationSystem.split_cycles_at' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.split_reaches_copies' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.split_component_count_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1014,6 +948,21 @@ Build completed successfully (1429 jobs).
 'JSP512Probe.RotationSystem.mapIso_faceCount' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.mapIso_eulerDefect' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.mapIso_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.vertex_injective' depends on axioms: [propext, Quot.sound]
+'JSP512Probe.Gutner.colors_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.lists_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.block_obstruction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.no_list_coloring' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.StraightLine.mix_line' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.StraightLine.convex_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.StraightLine.separated_segments' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.StraightLine.drawingOfChecks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.position_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.vertex_checks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.pair_checks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.adj_edge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.drawing' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP512Probe.Gutner.geometric_four_list_obstruction' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.CycleSurgery.fiberPermutation' depends on axioms: [Quot.sound]
 'JSP512Probe.CycleSurgery.fiberPermutation_cycles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.vertexLocal_source' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1072,4 +1021,4 @@ Build completed successfully (1429 jobs).
 'JSP512Probe.RotationSystem.disk_deleteVertex_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.outer_deleted_dart_length' depends on axioms: [propext, Classical.choice, Quot.sound]
 'JSP512Probe.RotationSystem.boundary_deleteVertex_genusZero' depends on axioms: [propext, Classical.choice, Quot.sound]
-PASS: source integrity, full build of 125 modules, and 441 named axiom audits.
+PASS: source integrity, full build of 131 modules, and 456 named axiom audits.
