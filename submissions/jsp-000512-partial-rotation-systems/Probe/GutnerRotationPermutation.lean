@@ -20,7 +20,7 @@ def neighborPerm (u : Fin 86) : Equiv.Perm (graph.neighborSet u) :=
 theorem neighborPerm_moves (u : Fin 86) (x : graph.neighborSet u) :
     neighborPerm u x ≠ x := by
   exact (List.formPerm_apply_mem_ne_self_iff
-    (neighborRow_nodup u) x (neighborRow_exhaustive u x)).2
+    (neighborRow u) (neighborRow_nodup u) x (neighborRow_exhaustive u x)).2
       (neighborRow_nontrivial u)
 
 /-- Any two neighbours of one vertex lie in the same local cycle. -/
@@ -43,11 +43,13 @@ def unrotateDart (d : graph.Dart) : graph.Dart :=
 
 
 theorem unrotate_rotate (d : graph.Dart) : unrotateDart (rotateDart d) = d := by
+  rcases d with ⟨⟨u, v⟩, h⟩
   apply SimpleGraph.Dart.ext
   simp [unrotateDart, rotateDart, neighborOfDart]
 
 
 theorem rotate_unrotate (d : graph.Dart) : rotateDart (unrotateDart d) = d := by
+  rcases d with ⟨⟨u, v⟩, h⟩
   apply SimpleGraph.Dart.ext
   simp [unrotateDart, rotateDart, neighborOfDart]
 
