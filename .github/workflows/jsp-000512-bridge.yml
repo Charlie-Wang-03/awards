@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: jsp-000512-bridge-${{ github.ref }}
+  group: jsp-000512-bridge-v2-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
