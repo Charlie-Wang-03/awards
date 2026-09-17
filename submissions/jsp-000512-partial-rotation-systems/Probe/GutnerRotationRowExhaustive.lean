@@ -24,9 +24,11 @@ theorem rotationRows_mem_of_adj {u v : Fin 86} (h : graph.Adj u v) :
 theorem neighborRow_exhaustive :
     ∀ (u : Fin 86) (x : graph.neighborSet u), x ∈ neighborRow u := by
   intro u x
+  have hx : graph.Adj u (x : Fin 86) := by
+    simpa [SimpleGraph.neighborSet] using x.property
   unfold neighborRow
   rw [List.mem_filterMap]
-  refine ⟨(x : Fin 86), rotationRows_mem_of_adj x.property, ?_⟩
-  simp [x.property]
+  refine ⟨(x : Fin 86), rotationRows_mem_of_adj hx, ?_⟩
+  simp [hx]
 
 end JSP512Probe.Gutner
