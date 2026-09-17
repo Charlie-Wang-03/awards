@@ -10,7 +10,10 @@ nonnegativity, preservation of combinatorial genus zero under edge deletion,
 and existence of genus-zero rotations on spanning subgraphs. It also proves
 exact face and component counts for edge deletion, including bridges,
 pendant edges, isolated edges, disconnected graphs, and isolated vertices.
-These are formalizations of standard mathematical facts, not new mathematical
+It also constructs a rotation system after adding a missing edge between
+two nonisolated vertices at specified corners, and proves the dart reversal
+and face-successor correspondence. Genus-zero preservation for this insertion
+is not proved. These are formalizations of standard mathematical facts, not new mathematical
 discoveries or improved bounds for five-list-coloring.
 
 ## Scope and correspondence
@@ -34,7 +37,7 @@ python3 scripts/verify.py
 ```
 
 The verifier builds every supplied Lean module, checks source hashes, scans for
-proof placeholders, and reruns the 32 named axiom audits. Only `propext`,
+proof placeholders, and reruns the 43 named axiom audits. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted by that audit.
 See the [verification record](evidence/VERIFICATION.md).
 

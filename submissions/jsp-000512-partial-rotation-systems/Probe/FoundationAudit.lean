@@ -5,6 +5,8 @@ import Probe.OrbitCounting
 import Probe.SwapCycles
 import Probe.DeletionConnectivity
 import Probe.GenusZero
+import Probe.CycleInsertion
+import Probe.EdgeInsertion
 
 #print axioms JSP512Probe.RotationSystem.sameCycle_iff_source
 #print axioms JSP512Probe.RotationSystem.vertexOrbit_card
@@ -44,3 +46,17 @@ import Probe.GenusZero
 #print axioms JSP512Probe.RotationSystem.genusZero_delete
 #print axioms JSP512Probe.RotationSystem.genusZero_bridge_iff_sameFace
 #print axioms JSP512Probe.RotationSystem.genusZero_subgraph
+
+#print axioms JSP512Probe.CycleSurgery.erase_insertAfter
+#print axioms JSP512Probe.CycleSurgery.insertAfter_sameCycle
+#print axioms JSP512Probe.CycleSurgery.insertAfter_new_cycle
+#print axioms JSP512Probe.CycleSurgery.insertAfter_orbit_count
+#print axioms JSP512Probe.CycleSurgery.insertAfter_fiber_cycles
+#print axioms JSP512Probe.CycleSurgery.insertAfter_preserves_label
+
+#print axioms JSP512Probe.CycleSurgery.fresh_source_fiber_cycles
+
+#print axioms JSP512Probe.EdgeInsertion.dartEquiv
+#print axioms JSP512Probe.EdgeInsertion.addEdge
+#print axioms JSP512Probe.EdgeInsertion.added_cycles
+#print axioms JSP512Probe.EdgeInsertion.added_face_embed

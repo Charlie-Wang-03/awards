@@ -34,6 +34,24 @@ All declarations below are in `JSP512Probe.RotationSystem` unless specified.
 swapping two distinct targets in different/same cycles decreases/increases
 the number of permutation orbits by one. Fixed-point cycles are included.
 
+## Edge insertion extension
+
+`JSP512Probe.CycleSurgery.insertAfter_sameCycle` and `insertAfter_orbit_count`
+prove that inserting a new element into an existing permutation cycle preserves
+the old orbit relation and orbit count. Source-fiber preservation and a separate
+fresh-source singleton construction are also proved.
+
+`JSP512Probe.EdgeInsertion.addEdge` constructs a rotation system on the actual
+augmented `SimpleGraph` when two distinct, nonadjacent, nonisolated vertices
+have chosen outgoing darts as insertion corners. `dartEquiv` proves its darts
+are exactly the old darts plus the two orientations of the new edge.
+`added_face_embed` relates its face successor to the explicit extended carrier.
+
+This construction has no cofacial assumption and no genus-zero conclusion.
+It therefore does not yet justify inserting a diagonal in a planar face or
+triangulating a planar graph. The isolated-endpoint graph construction is also
+not supplied, despite the separate permutation-level fresh-source lemma.
+
 ## Relationship to JSP-000512
 
 These theorems support a possible future formalization of ordinary planar
