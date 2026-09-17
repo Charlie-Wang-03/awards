@@ -23,6 +23,8 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Restore Mathlib cache
         run: lake exe cache get
+      - name: Compile planarity-bridge target
+        run: lake env lean Probe/GutnerRotation.lean
       - name: Build probe library
         run: lake build
       - name: Run submission verifier
