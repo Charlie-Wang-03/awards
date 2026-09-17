@@ -27,6 +27,8 @@ jobs:
         run: lake build Probe.GutnerRotationCore
       - name: Build face-count bridge
         run: lake build Probe.GutnerRotation
+      - name: Build exact JSP-000512 theorem
+        run: lake build Probe.PlanarExactBound
       - name: Build probe library
         run: lake build
       - name: Run submission verifier
