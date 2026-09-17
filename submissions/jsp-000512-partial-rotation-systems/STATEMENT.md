@@ -75,6 +75,21 @@ rotations at both endpoints, so neither endpoint can have another incident
 edge. This excludes nontrivial bridge attachments but does not itself prove
 connectedness of maximal extensions or that their facial walks are triangles.
 
+## Joining components
+
+`EdgeInsertion.delete_added_edge` proves that deleting the inserted edge
+recovers the original graph. For insertion corners in different components,
+`separate_component_count` and `separate_face_count` each prove a decrease by
+one, while the edge count increases by one and support is unchanged.
+`separate_defect` proves equality of Euler defects, and `separate_genusZero`
+preserves genus zero for the actual augmented rotation system.
+
+`RotationSystem.maximal_dart_sources_reachable` and
+`maximal_support_reachable` consequently prove that all nonisolated vertices
+of a maximal genus-zero graph lie in one connected component. Isolated vertices
+are not covered: full connectedness and triangular facial walks remain open
+in this formalization.
+
 ## Relationship to JSP-000512
 
 These theorems support a possible future formalization of ordinary planar

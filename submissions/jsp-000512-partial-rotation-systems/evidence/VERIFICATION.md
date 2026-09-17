@@ -5,7 +5,7 @@ OpenAI Codex assistance, not by independent reviewers or the prize organizers.
 
 ## Reproduction performed
 
-The submission was copied into a separate checkout and all 19 supplied Lean
+The submission was copied into a separate checkout and all 20 supplied Lean
 modules, plus the root module, were built there from source. Prebuilt pinned
 Mathlib dependencies were reused from a local cache; no claim is made that
 all third-party dependencies were rebuilt. That cache is not included in Git.
@@ -18,9 +18,9 @@ Command, from the submission directory:
 python3 scripts/verify.py
 ```
 
-Result: PASS. The full build completed successfully (1263 jobs, including
+Result: PASS. The full build completed successfully (1264 jobs, including
 cached dependencies). The verifier then directly reran `Probe/FoundationAudit.lean`
-and matched all 58 declared audit targets. Each reported a subset of `propext`,
+and matched all 65 declared audit targets. Each reported a subset of `propext`,
 `Classical.choice`, and `Quot.sound`. The submitted source scan found no
 `sorry`, `admit`, explicit `axiom`, or `native_decide` token.
 

@@ -15,7 +15,8 @@ two nonisolated vertices at specified corners, and proves the dart reversal
 and face-successor correspondence. For corners on the same face, the construction preserves Euler defect and
 genus zero. Every finite genus-zero graph also has an edge-maximal spanning genus-zero
 extension. Its facial vertex sets are cliques, and any bridge has singleton
-endpoint rotations. General triangulation and isolated-endpoint graph insertion remain
+endpoint rotations. Joining two components at nonisolated vertices preserves
+genus zero, and all nonisolated vertices of a maximal extension are connected. General triangulation and isolated-endpoint graph insertion remain
 unproved. These are formalizations of standard mathematical facts, not new mathematical
 discoveries or improved bounds for five-list-coloring.
 
@@ -40,7 +41,7 @@ python3 scripts/verify.py
 ```
 
 The verifier builds every supplied Lean module, checks source hashes, scans for
-proof placeholders, and reruns the 58 named axiom audits. Only `propext`,
+proof placeholders, and reruns the 65 named axiom audits. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted by that audit.
 See the [verification record](evidence/VERIFICATION.md).
 

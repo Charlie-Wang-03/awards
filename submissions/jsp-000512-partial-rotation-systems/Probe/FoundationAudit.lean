@@ -1,3 +1,4 @@
+import Probe.ComponentInsertion
 import Probe.RotationSystem
 import Probe.CycleSurgery
 import Probe.EdgeDeletion
@@ -79,3 +80,11 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.RotationSystem.maximal_face_isClique
 #print axioms JSP512Probe.RotationSystem.maximal_bridge_source_fixed
 #print axioms JSP512Probe.RotationSystem.maximal_bridge_endpoints_fixed
+
+#print axioms JSP512Probe.EdgeInsertion.delete_added_edge
+#print axioms JSP512Probe.EdgeInsertion.separate_component_count
+#print axioms JSP512Probe.EdgeInsertion.separate_face_count
+#print axioms JSP512Probe.EdgeInsertion.separate_defect
+#print axioms JSP512Probe.EdgeInsertion.separate_genusZero
+#print axioms JSP512Probe.RotationSystem.maximal_dart_sources_reachable
+#print axioms JSP512Probe.RotationSystem.maximal_support_reachable
