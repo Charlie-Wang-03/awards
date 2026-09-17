@@ -1,3 +1,4 @@
+import Probe.FaceVertexSimplicity
 import Probe.MaximalLinks
 import Probe.MaximalNoBridges
 import Probe.MaximalConnectivity
@@ -119,3 +120,16 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.RotationSystem.maximal_neighbor_preconnected
 #print axioms JSP512Probe.RotationSystem.maximal_vertex_deleted_preconnected
 #print axioms JSP512Probe.RotationSystem.maximal_vertex_deleted_connected
+
+#print axioms JSP512Probe.RefinedRotation.cycle_source
+#print axioms JSP512Probe.RefinedRotation.dart_bijective
+#print axioms JSP512Probe.RefinedRotation.rotation
+#print axioms JSP512Probe.RefinedRotation.face_count
+#print axioms JSP512Probe.RefinedRotation.full_support
+#print axioms JSP512Probe.RefinedRotation.edge_count
+#print axioms JSP512Probe.RotationSystem.split_source
+#print axioms JSP512Probe.RotationSystem.split_cycles_away
+#print axioms JSP512Probe.RotationSystem.split_graph_connected
+#print axioms JSP512Probe.RotationSystem.maximal_face_vertex_injective
+#print axioms JSP512Probe.RotationSystem.maximal_face_source_injOn
+#print axioms JSP512Probe.RotationSystem.maximal_face_size_le

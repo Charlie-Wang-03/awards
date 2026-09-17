@@ -120,8 +120,8 @@ two orientations of each edge into different facial orbits, and
 edges must be equal. `maximal_face_two_steps_ne` excludes length-two facial
 orbits; length-one orbits are already excluded by `face_ne_self`.
 `maximal_rotations_nonfixed` also excludes singleton endpoint rotations.
-These results do not yet exclude repeated vertices within a face and do not
-prove that faces are triangles.
+Repeated facial vertices are excluded by the separate vertex-splitting argument
+below. Faces are not yet proved to be triangles.
 
 ## Neighbor links and deletion of a vertex
 
@@ -138,9 +138,32 @@ are replaced using connectivity of its neighbor-induced graph.
 `maximal_vertex_deleted_connected` gives connectedness when the original
 vertex type is nontrivial. No geometric embedding theorem is used.
 
-The connection from this vertex-deletion property to absence of repeated
-vertices on facial walks is not formalized here yet; triangular faces and
-the coloring theorem remain unproved.
+The vertex-deletion property is used in the vertex-splitting argument below.
+Triangular faces and the coloring theorem remain unproved.
+
+## Facial vertex simplicity via an actual vertex split
+
+`RefinedRotation.graph` realizes each cycle of a source-preserving dart
+permutation as a vertex. `dart_bijective` and `rotation` give an actual simple
+graph and rotation system, not a presumed embedding or an abstract count.
+`edge_count` preserves the original edge count, `full_support` excludes
+isolated vertices in this realization, and `face_count` identifies its facial
+orbits with those of the permutation on the original darts.
+
+If distinct cofacial darts have the same source, `splitRotation` swaps them in
+the vertex rotation. This splits both a vertex orbit and a face orbit, each
+increasing the corresponding count by one. `split_cycles_away` keeps all
+other source fibers intact. `split_graph_connected` proves the realized graph
+is connected, using preconnectedness of the old graph with the split vertex
+deleted and paths through the unchanged source fibers.
+
+`maximal_face_vertex_injective` completes the contradiction: the new graph is
+connected, has one more vertex and one more face, and has the same edges, so
+its Euler defect would be -2. The already proved nonnegativity theorem rules
+this out. Thus cofacial darts with equal sources must be equal.
+`maximal_face_source_injOn` states injectivity on each facial orbit, and
+`maximal_face_size_le` bounds that orbit's dart count by the graph's vertex
+count. These theorems do not assume triangular faces and do not yet prove them.
 
 ## Relationship to JSP-000512
 

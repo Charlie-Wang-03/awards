@@ -22,7 +22,10 @@ case is handled by a verified single-edge construction. With at least three
 vertices, maximal extensions have no bridges, each face uses each undirected
 edge at most once, and no facial walk closes in two steps. Each neighbor-induced
 graph is preconnected, and deleting any vertex preserves pairwise reachability
-among the survivors (connectedness when at least one survivor exists). General triangulation remains
+among the survivors (connectedness when at least one survivor exists).
+The facial source map is now proved injective: no facial orbit repeats a vertex.
+The proof constructs a genuine vertex-split graph and derives a contradiction
+from its connectedness and Euler nonnegativity. General triangulation remains
 unproved. These are formalizations of standard mathematical facts, not new mathematical
 discoveries or improved bounds for five-list-coloring.
 
@@ -47,7 +50,7 @@ python3 scripts/verify.py
 ```
 
 The verifier builds every supplied Lean module, checks source hashes, scans for
-proof placeholders, and reruns the 89 named axiom audits. Only `propext`,
+proof placeholders, and reruns the 101 named axiom audits. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted by that audit.
 See the [verification record](evidence/VERIFICATION.md).
 
