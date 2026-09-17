@@ -1,42 +1,45 @@
 import Probe.GutnerRotationPermutation
 import Probe.RotationSystem
 
+/-!
+The local-cycle obligation for the Gutner rotation system is proved from the
+fibre cycles in `GutnerRotationPermutation`, without invoking the generic finite
+`SameCycle` decision procedure on all darts.
+-/
 namespace JSP512Probe.Gutner
 
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-instance rotationSameCycleDecidable : DecidableRel (Equiv.Perm.SameCycle rotationPerm) :=
-  Equiv.Perm.instDecidableRelSameCycle rotationPerm
-
-/-- A canonical neighbour in each nonempty rotation row. -/
-def baseTarget (u : Fin 86) : Fin 86 :=
-  match rotationRows u with
-  | [] => u
-  | v :: _ => v
-
-/-- Every vertex of the explicit obstruction has a canonical incident dart. -/
-theorem base_adj : ∀ u : Fin 86, graph.Adj u (baseTarget u) := by
-  decide +kernel
-
-
-def baseDart (u : Fin 86) : graph.Dart :=
-  ⟨(u, baseTarget u), base_adj u⟩
-
-/-- It is enough to certify one route from every dart to the canonical dart at
-its source. This avoids a quadratic all-pairs SameCycle computation. -/
-theorem sameCycle_base : ∀ d : graph.Dart,
-    Equiv.Perm.SameCycle rotationPerm d (baseDart d.fst) := by
-  decide +kernel
+/-- Iterating the global dart rotation is the same as iterating the local
+neighbour permutation in the fixed source fibre. -/
+theorem rotationPerm_pow (n : ℕ) (d : graph.Dart) :
+    (rotationPerm ^ n) d =
+      graph.dartOfNeighborSet d.fst ((neighborPerm d.fst ^ n) (neighborOfDart d)) := by
+  induction n with
+  | zero =>
+      apply SimpleGraph.Dart.ext
+      simp [neighborOfDart]
+  | succ n ih =>
+      rw [pow_succ', Equiv.Perm.mul_apply, ih]
+      apply SimpleGraph.Dart.ext
+      simp [rotationPerm, rotateDart, neighborOfDart, pow_succ', Equiv.Perm.mul_apply]
 
 /-- Each source fibre is exactly one rotation cycle. -/
 theorem rotation_local_cycle : ∀ d e : graph.Dart, d.fst = e.fst →
     Equiv.Perm.SameCycle rotationPerm d e := by
-  intro d e h
-  have hd := sameCycle_base d
-  have he := sameCycle_base e
-  rw [← h] at he
-  exact hd.trans he.symm
+  intro d e hsrc
+  let x : graph.neighborSet d.fst := neighborOfDart d
+  let y : graph.neighborSet d.fst := ⟨e.snd, by simpa [hsrc] using e.adj⟩
+  have hxy : (neighborPerm d.fst).SameCycle x y :=
+    neighborPerm_sameCycle d.fst x y
+  obtain ⟨n, hn⟩ := hxy.exists_nat_pow_eq
+  refine ⟨(n : ℤ), ?_⟩
+  rw [zpow_natCast, rotationPerm_pow]
+  change graph.dartOfNeighborSet d.fst ((neighborPerm d.fst ^ n) x) = e
+  rw [hn]
+  apply SimpleGraph.Dart.ext
+  simp [y, hsrc]
 
 /-- A rotation system for the explicit 86-vertex Gutner graph. -/
 def rotationSystem : RotationSystem graph where
