@@ -11,6 +11,14 @@ namespace JSP512Probe.Gutner
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
+/-- Rotating a dart rebuilt from one neighbour is exactly the local neighbour
+permutation followed by the same dart reconstruction. -/
+theorem rotateDart_dartOfNeighborSet (u : Fin 86) (x : graph.neighborSet u) :
+    rotateDart (graph.dartOfNeighborSet u x) =
+      graph.dartOfNeighborSet u (neighborPerm u x) := by
+  apply SimpleGraph.Dart.ext
+  rfl
+
 /-- Iterating the global dart rotation is the same as iterating the local
 neighbour permutation in the fixed source fibre. -/
 theorem rotationPerm_pow (n : ℕ) (d : graph.Dart) :
@@ -22,8 +30,8 @@ theorem rotationPerm_pow (n : ℕ) (d : graph.Dart) :
       simp [neighborOfDart]
   | succ n ih =>
       rw [pow_succ', Equiv.Perm.mul_apply, ih]
-      apply SimpleGraph.Dart.ext
-      simp [rotationPerm, rotateDart, neighborOfDart, pow_succ', Equiv.Perm.mul_apply]
+      exact rotateDart_dartOfNeighborSet d.fst
+        ((neighborPerm d.fst ^ n) (neighborOfDart d))
 
 /-- Each source fibre is exactly one rotation cycle. -/
 theorem rotation_local_cycle : ∀ d e : graph.Dart, d.fst = e.fst →
