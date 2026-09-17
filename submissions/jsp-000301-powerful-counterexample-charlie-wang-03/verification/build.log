@@ -1,0 +1,20 @@
+JSP-000301 Lean verification
+
+Development commit containing the exact warning-clean proof/toolchain bytes:
+333570d885cf4405397c6e13546108b4d74a3ec1
+
+Workflow run: 35139863025
+Job: 104941391786
+Conclusion: success
+Runner: Ubuntu 24.04.5 LTS (ubuntu-24.04 image 20260907.300.1)
+Lean toolchain: leanprover/lean4:v4.34.0
+Mathlib commit: 5ed2965256430c3649e86755f9576b54eca72435
+
+Relevant output:
+Build completed successfully (8925 jobs).
+JSP000301.jsp_000301_counterexample type-checked.
+JSP000301.jsp_000301 type-checked.
+Axiom audit completed for both exported theorems.
+SHA-256 proof/toolchain manifest emitted.
+
+The proof build completed without Lean linter warnings in the final warning-clean probe.

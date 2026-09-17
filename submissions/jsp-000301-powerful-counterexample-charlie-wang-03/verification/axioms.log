@@ -1,0 +1,17 @@
+#check JSP000301.jsp_000301_counterexample
+JSP000301.jsp_000301_counterexample :
+  ∃ n, 0 < n ∧ JSP000301.Powerful n ∧ JSP000301.Powerful (n + 1) ∧ ¬JSP000301.IsSquare n ∧ ¬JSP000301.IsSquare (n + 1)
+
+#check JSP000301.jsp_000301
+JSP000301.jsp_000301 :
+  ¬∀ (n : ℕ),
+      0 < n → JSP000301.Powerful n → JSP000301.Powerful (n + 1) → JSP000301.IsSquare n ∨ JSP000301.IsSquare (n + 1)
+
+#print axioms JSP000301.jsp_000301_counterexample
+'JSP000301.jsp_000301_counterexample' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+#print axioms JSP000301.jsp_000301
+'JSP000301.jsp_000301' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Audit conclusion: no sorryAx.
+Source: GitHub Actions run 35139863025, job 104941391786.

@@ -1,0 +1,31 @@
+GitHub Actions proof-package verification artifact
+
+This artifact was produced from clean submission commit:
+980604b0da08fbc6f455865bcfc1a12459247093
+
+That commit already contained the final Lean proof/toolchain bytes and the prior-submission disclosure. The only later branch change is this metadata refresh; the proof/toolchain hashes below are unchanged and the rewritten final branch is re-checked separately by CI.
+
+Workflow run ID: 35172870267
+Job ID: 105048089128
+Artifact name: jsp-000301-verification
+Artifact ID: 10477048814
+Artifact size: 1034 bytes
+Artifact ZIP SHA-256: 2f9c85b5521a687325679ce03d5c5c183273b3e9ac23c66ab9430d3548305210
+Artifact URL: https://github.com/Charlie-Wang-03/awards/actions/runs/35172870267/artifacts/10477048814
+Created: 2026-09-17T02:04:54Z
+Expires: 2026-12-16T02:02:33Z
+
+Observed proof/toolchain hashes in that run:
+
+eec1c80819ded3be6eaae6d285feff859681c26dbd8aca48398b37aacb69b23c  JSP000301.lean
+e536531d4415a617133c32f2268f218709f3c5d4087320166cbfa06325e8382c  Audit.lean
+42f61a529d779317948269840e9e8fc01017505622fd4b76c3ff2898a59a6d28  lakefile.lean
+dfa47a3390b2cd2102dbbb35855b10fb1dac81a8bf82c2c4ff90b4bbb41bd0f1  lake-manifest.json
+8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632  lean-toolchain
+
+Axiom audit:
+JSP000301.jsp_000301_counterexample -> [propext, Classical.choice, Quot.sound]
+JSP000301.jsp_000301 -> [propext, Classical.choice, Quot.sound]
+No sorryAx.
+
+This GitHub Actions artifact has finite retention and is not the permanent external archive required for the final upstream evidence package.
