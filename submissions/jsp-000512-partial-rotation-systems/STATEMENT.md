@@ -55,7 +55,7 @@ face count increases by one; edge count also increases by one, while support
 and component counts remain unchanged. All of these concern the explicit
 combinatorial rotation model.
 
-General triangulation is still not proved. Pendant insertion with one isolated
+Triangular augmentation is proved below in the combinatorial model. Pendant insertion with one isolated
 endpoint is supplied below. The correspondence with geometric planar embeddings
 remains outside this submission.
 
@@ -72,7 +72,7 @@ adjacent, using the verified cofacial insertion theorem.
 `maximal_bridge_endpoints_fixed` shows that every bridge has singleton
 rotations at both endpoints, so neither endpoint can have another incident
 edge. This excludes nontrivial bridge attachments. Connectedness is proved
-separately below; triangular facial walks are not yet proved.
+separately below; triangular facial walks are established by the final counting argument.
 
 ## Joining components
 
@@ -103,7 +103,7 @@ containing an edge. `singleEdgeRotation` and `singleEdge_genusZero` supply the
 single-edge witness needed for the edgeless case. `maximal_preconnected` proves
 pairwise reachability without a nonemptiness assumption, while
 `maximal_connected` proves connectedness on every nonempty vertex type.
-This does not establish triangular faces or a coloring theorem.
+Triangular faces require the additional argument below; no coloring theorem is established.
 
 ## Bridges and facial edge uniqueness
 
@@ -121,7 +121,7 @@ edges must be equal. `maximal_face_two_steps_ne` excludes length-two facial
 orbits; length-one orbits are already excluded by `face_ne_self`.
 `maximal_rotations_nonfixed` also excludes singleton endpoint rotations.
 Repeated facial vertices are excluded by the separate vertex-splitting argument
-below. Faces are not yet proved to be triangles.
+below. The final face-length argument then proves triangularity.
 
 ## Neighbor links and deletion of a vertex
 
@@ -139,7 +139,7 @@ are replaced using connectivity of its neighbor-induced graph.
 vertex type is nontrivial. No geometric embedding theorem is used.
 
 The vertex-deletion property is used in the vertex-splitting argument below.
-Triangular faces and the coloring theorem remain unproved.
+Triangular faces are proved below; the coloring theorem remains unproved.
 
 ## Facial vertex simplicity via an actual vertex split
 
@@ -163,7 +163,41 @@ its Euler defect would be -2. The already proved nonnegativity theorem rules
 this out. Thus cofacial darts with equal sources must be equal.
 `maximal_face_source_injOn` states injectivity on each facial orbit, and
 `maximal_face_size_le` bounds that orbit's dart count by the graph's vertex
-count. These theorems do not assume triangular faces and do not yet prove them.
+count. These theorems do not assume triangular faces; their length is determined
+by the following separate argument.
+
+## Triangular faces and spanning triangular augmentation
+
+`CycleSurgery.sum_orbitSize` partitions the dart carrier into its face orbits.
+`orbitSize_three_le` excludes one- and two-element cycles, and
+`orbit_size_budget` retains the excess length of a distinguished orbit.
+`genusZero_edge_face_bound` gives `E + L <= 3 V - 3` for a connected genus-zero
+graph with full support and nonfixed vertex rotations, where `L` is the chosen
+face length. `complete_spanning_face_impossible` excludes a complete genus-zero
+graph on at least four vertices having a face that visits every vertex.
+
+`genusZero_subgraph_preserving_steps` strengthens spanning-subgraph restriction:
+it preserves any specified face-permutation steps whose edges remain in the
+subgraph. `component_support_count` and `realized_genusZero` account for isolated
+vertices when passing to the graph on the supported rotation cycles.
+
+`maximal_faceLength_le_three` restricts to the clique on the vertices of a chosen
+face, preserving its complete facial orbit. Realizing the supported vertices
+gives a complete genus-zero graph with a spanning face. The counting obstruction
+rules out four or more vertices. The earlier facial vertex injectivity identifies
+the number of face darts with the number of its vertices.
+
+`maximal_faceLength_eq_three` therefore proves exact length three for every face
+of an edge-maximal genus-zero graph with at least three vertices.
+`maximal_face_darts_iff` identifies the orbit with its first three successive
+darts, and `maximal_face_three_steps` proves the successor closes in three steps.
+
+Finally, `exists_triangular_augmentation` proves that every finite graph on at
+least three vertices, supplied with a genus-zero rotation system, has a spanning
+connected supergraph with a genus-zero rotation system and all facial orbits of
+length three. This is an existence theorem in the combinatorial model; no
+geometric-planarity equivalence, executable triangulation algorithm, or coloring
+conclusion is asserted.
 
 ## Relationship to JSP-000512
 
@@ -173,7 +207,7 @@ nor provide a planar graph that is not four-choosable. No parameter bound or
 new special case of that original coloring problem is claimed here.
 
 Outstanding steps include the correspondence with ordinary planar embeddings,
-augmentation/triangulation, the full disk/chord/fan decomposition needed by the
+the full disk/chord/fan decomposition needed by the
 coloring induction, the coloring theorem itself, and a checked sharpness
 witness. The submitted code includes no assumptions asserting these missing
 steps and does not import an unfinished proof of them.

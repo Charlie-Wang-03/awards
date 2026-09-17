@@ -5,29 +5,18 @@ completed supporting Lean theorems for consideration as a formalization or
 community contribution. It does not establish award eligibility, claim a
 completed problem, or request any solved/claim-status change.
 
-The contribution develops finite graph rotation systems and proves Euler
-nonnegativity, preservation of combinatorial genus zero under edge deletion,
-and existence of genus-zero rotations on spanning subgraphs. It also proves
-exact face and component counts for edge deletion, including bridges,
-pendant edges, isolated edges, disconnected graphs, and isolated vertices.
-It also constructs a rotation system after adding a missing edge between
-two nonisolated vertices at specified corners, and proves the dart reversal
-and face-successor correspondence. For corners on the same face, the construction preserves Euler defect and
-genus zero. Every finite genus-zero graph also has an edge-maximal spanning genus-zero
-extension. Its facial vertex sets are cliques, and any bridge has singleton
-endpoint rotations. Joining two components at nonisolated vertices preserves
-genus zero. Adding a pendant edge to an isolated vertex also preserves genus zero.
-Every maximal extension on a nonempty vertex type is connected; the edgeless
-case is handled by a verified single-edge construction. With at least three
-vertices, maximal extensions have no bridges, each face uses each undirected
-edge at most once, and no facial walk closes in two steps. Each neighbor-induced
-graph is preconnected, and deleting any vertex preserves pairwise reachability
-among the survivors (connectedness when at least one survivor exists).
-The facial source map is now proved injective: no facial orbit repeats a vertex.
-The proof constructs a genuine vertex-split graph and derives a contradiction
-from its connectedness and Euler nonnegativity. General triangulation remains
-unproved. These are formalizations of standard mathematical facts, not new mathematical
-discoveries or improved bounds for five-list-coloring.
+The main structural result is now **triangular augmentation in the finite
+combinatorial genus-zero model**: any graph on at least three vertices with a
+genus-zero rotation system has a spanning connected genus-zero supergraph in
+which every facial orbit has exactly three darts. The facial successor returns
+after three steps, and no facial orbit repeats a vertex.
+
+The proof develops actual edge insertion/deletion and vertex splitting,
+Euler nonnegativity, maximal extensions, connectivity after vertex deletion,
+and facial vertex simplicity. It then restricts to a facial clique while
+preserving the original face, handles the isolated vertices exactly, and uses
+a sharpened edge/face-length bound to exclude faces of length at least four.
+These formalize standard mathematical facts, not new coloring bounds.
 
 ## Scope and correspondence
 
@@ -50,7 +39,7 @@ python3 scripts/verify.py
 ```
 
 The verifier builds every supplied Lean module, checks source hashes, scans for
-proof placeholders, and reruns the 101 named axiom audits. Only `propext`,
+proof placeholders, and reruns the 120 named axiom audits. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted by that audit.
 See the [verification record](evidence/VERIFICATION.md).
 

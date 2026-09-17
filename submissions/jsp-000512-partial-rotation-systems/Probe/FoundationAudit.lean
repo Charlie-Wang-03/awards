@@ -1,3 +1,4 @@
+import Probe.TriangularFaces
 import Probe.FaceVertexSimplicity
 import Probe.MaximalLinks
 import Probe.MaximalNoBridges
@@ -133,3 +134,23 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.RotationSystem.maximal_face_vertex_injective
 #print axioms JSP512Probe.RotationSystem.maximal_face_source_injOn
 #print axioms JSP512Probe.RotationSystem.maximal_face_size_le
+
+#print axioms JSP512Probe.CycleSurgery.sum_orbitSize
+#print axioms JSP512Probe.CycleSurgery.orbitSize_three_le
+#print axioms JSP512Probe.CycleSurgery.orbit_size_budget
+#print axioms JSP512Probe.RotationSystem.faceLength_eq_card
+#print axioms JSP512Probe.RotationSystem.rotate_fixed_of_face_two_steps
+#print axioms JSP512Probe.RotationSystem.face_length_budget
+#print axioms JSP512Probe.RotationSystem.genusZero_edge_face_bound
+#print axioms JSP512Probe.RotationSystem.maximal_edge_face_bound
+#print axioms JSP512Probe.RotationSystem.delete_face_step_unchanged
+#print axioms JSP512Probe.RotationSystem.genusZero_subgraph_preserving_steps
+#print axioms JSP512Probe.RotationSystem.complete_rotations_nonfixed
+#print axioms JSP512Probe.RotationSystem.complete_spanning_face_impossible
+#print axioms JSP512Probe.RotationSystem.component_support_count
+#print axioms JSP512Probe.RotationSystem.realized_genusZero
+#print axioms JSP512Probe.RotationSystem.maximal_faceLength_le_three
+#print axioms JSP512Probe.RotationSystem.maximal_faceLength_eq_three
+#print axioms JSP512Probe.RotationSystem.exists_triangular_augmentation
+#print axioms JSP512Probe.RotationSystem.maximal_face_darts_iff
+#print axioms JSP512Probe.RotationSystem.maximal_face_three_steps
