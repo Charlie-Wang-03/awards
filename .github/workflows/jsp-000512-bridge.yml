@@ -6,6 +6,10 @@ on:
       - research/jsp-000512-planarity-bridge
   workflow_dispatch:
 
+concurrency:
+  group: jsp-000512-bridge-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
