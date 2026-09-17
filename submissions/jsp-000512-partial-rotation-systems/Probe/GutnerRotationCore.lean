@@ -30,6 +30,10 @@ theorem rotationPerm_pow (n : ℕ) (d : graph.Dart) :
       simp [neighborOfDart]
   | succ n ih =>
       rw [pow_succ', Equiv.Perm.mul_apply, ih]
+      change rotateDart
+          (graph.dartOfNeighborSet d.fst ((neighborPerm d.fst ^ n) (neighborOfDart d))) =
+        graph.dartOfNeighborSet d.fst ((neighborPerm d.fst ^ (n + 1)) (neighborOfDart d))
+      rw [pow_succ', Equiv.Perm.mul_apply]
       exact rotateDart_dartOfNeighborSet d.fst
         ((neighborPerm d.fst ^ n) (neighborOfDart d))
 
