@@ -7,6 +7,7 @@ import Probe.DeletionConnectivity
 import Probe.GenusZero
 import Probe.CycleInsertion
 import Probe.EdgeInsertion
+import Probe.CofacialInsertion
 
 #print axioms JSP512Probe.RotationSystem.sameCycle_iff_source
 #print axioms JSP512Probe.RotationSystem.vertexOrbit_card
@@ -60,3 +61,12 @@ import Probe.EdgeInsertion
 #print axioms JSP512Probe.EdgeInsertion.addEdge
 #print axioms JSP512Probe.EdgeInsertion.added_cycles
 #print axioms JSP512Probe.EdgeInsertion.added_face_embed
+
+#print axioms JSP512Probe.CycleSurgery.insertAfter_old
+#print axioms JSP512Probe.EdgeInsertion.face_insertion_formula
+#print axioms JSP512Probe.EdgeInsertion.added_face_count_eq_cut
+#print axioms JSP512Probe.EdgeInsertion.cofacial_added_face_count
+#print axioms JSP512Probe.EdgeInsertion.added_edge_count
+#print axioms JSP512Probe.EdgeInsertion.added_component_count
+#print axioms JSP512Probe.EdgeInsertion.cofacial_defect
+#print axioms JSP512Probe.EdgeInsertion.cofacial_genusZero

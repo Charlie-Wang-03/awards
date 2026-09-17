@@ -47,10 +47,18 @@ have chosen outgoing darts as insertion corners. `dartEquiv` proves its darts
 are exactly the old darts plus the two orientations of the new edge.
 `added_face_embed` relates its face successor to the explicit extended carrier.
 
-This construction has no cofacial assumption and no genus-zero conclusion.
-It therefore does not yet justify inserting a diagonal in a planar face or
-triangulating a planar graph. The isolated-endpoint graph construction is also
-not supplied, despite the separate permutation-level fresh-source lemma.
+The additional theorem `cofacial_genusZero` proves that, under the same
+endpoint hypotheses and `R.face.SameCycle a.symm b.symm`, this insertion
+preserves genus zero. `cofacial_defect` proves the stronger equality of Euler
+defects without assuming genus zero. `cofacial_added_face_count` proves the
+face count increases by one; edge count also increases by one, while support
+and component counts remain unchanged. All of these concern the explicit
+combinatorial rotation model.
+
+General triangulation is still not proved. The isolated-endpoint graph
+construction is also not supplied, despite the separate permutation-level
+fresh-source lemma. The correspondence with geometric planar embeddings
+remains outside this submission.
 
 ## Relationship to JSP-000512
 

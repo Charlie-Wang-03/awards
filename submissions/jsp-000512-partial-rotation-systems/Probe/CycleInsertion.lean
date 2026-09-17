@@ -19,6 +19,18 @@ omit [Finite α] in
   simp [insertAfter, Equiv.Perm.mul_apply]
 
 omit [Finite α] in
+theorem insertAfter_old (σ : Equiv.Perm α) (a x : α) :
+    insertAfter σ a (some x) = if x = a then none else some (σ x) := by
+  by_cases h : x = a
+  · subst x
+    simp
+  · have hn : some (σ x) ≠ some (σ a) := by
+      intro he
+      exact h (σ.injective (Option.some.inj he))
+    simp [insertAfter, Equiv.Perm.mul_apply,
+      Equiv.swap_apply_of_ne_of_ne (Option.some_ne_none _) hn, h]
+
+omit [Finite α] in
 /-- Deleting the new element exactly recovers the lifted original permutation. -/
 theorem erase_insertAfter (σ : Equiv.Perm α) (a : α) :
     eraseAt (insertAfter σ a) none = σ.optionCongr := by
