@@ -1,0 +1,29 @@
+name: JSP-000512 bridge
+
+on:
+  push:
+    branches:
+      - research/jsp-000512-planarity-bridge
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: submissions/jsp-000512-partial-rotation-systems
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Mathlib cache
+        run: lake exe cache get
+      - name: Build probe library
+        run: lake build
+      - name: Run submission verifier
+        run: python3 scripts/verify.py
