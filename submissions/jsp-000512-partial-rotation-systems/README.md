@@ -18,7 +18,9 @@ extension. Its facial vertex sets are cliques, and any bridge has singleton
 endpoint rotations. Joining two components at nonisolated vertices preserves
 genus zero. Adding a pendant edge to an isolated vertex also preserves genus zero.
 Every maximal extension on a nonempty vertex type is connected; the edgeless
-case is handled by a verified single-edge construction. General triangulation remains
+case is handled by a verified single-edge construction. With at least three
+vertices, maximal extensions have no bridges, each face uses each undirected
+edge at most once, and no facial walk closes in two steps. General triangulation remains
 unproved. These are formalizations of standard mathematical facts, not new mathematical
 discoveries or improved bounds for five-list-coloring.
 
@@ -43,7 +45,7 @@ python3 scripts/verify.py
 ```
 
 The verifier builds every supplied Lean module, checks source hashes, scans for
-proof placeholders, and reruns the 78 named axiom audits. Only `propext`,
+proof placeholders, and reruns the 85 named axiom audits. Only `propext`,
 `Classical.choice`, and `Quot.sound` are permitted by that audit.
 See the [verification record](evidence/VERIFICATION.md).
 

@@ -1,3 +1,4 @@
+import Probe.MaximalNoBridges
 import Probe.MaximalConnectivity
 import Probe.PendantInsertion
 import Probe.ComponentInsertion
@@ -104,3 +105,11 @@ import Probe.MaximalBridges
 #print axioms JSP512Probe.EdgeInsertion.singleEdge_genusZero
 #print axioms JSP512Probe.RotationSystem.maximal_preconnected
 #print axioms JSP512Probe.RotationSystem.maximal_connected
+
+#print axioms JSP512Probe.RotationSystem.reachable_of_endpoints_fixed
+#print axioms JSP512Probe.RotationSystem.maximal_bridge_card
+#print axioms JSP512Probe.RotationSystem.maximal_not_bridge
+#print axioms JSP512Probe.RotationSystem.maximal_edge_distinct_faces
+#print axioms JSP512Probe.RotationSystem.maximal_face_edge_injective
+#print axioms JSP512Probe.RotationSystem.maximal_face_two_steps_ne
+#print axioms JSP512Probe.RotationSystem.maximal_rotations_nonfixed

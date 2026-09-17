@@ -105,6 +105,24 @@ pairwise reachability without a nonemptiness assumption, while
 `maximal_connected` proves connectedness on every nonempty vertex type.
 This does not establish triangular faces or a coloring theorem.
 
+## Bridges and facial edge uniqueness
+
+`RotationSystem.reachable_of_endpoints_fixed` shows that when both endpoint
+rotations of an edge are singletons, its entire connected component consists
+of those endpoints. Combining this with full connectedness gives
+`maximal_bridge_card`: a bridge in a maximal genus-zero graph forces exactly
+two vertices. `maximal_not_bridge` therefore excludes bridges when there are
+at least three vertices.
+
+Under that cardinality hypothesis, `maximal_edge_distinct_faces` separates the
+two orientations of each edge into different facial orbits, and
+`maximal_face_edge_injective` proves that cofacial darts with equal undirected
+edges must be equal. `maximal_face_two_steps_ne` excludes length-two facial
+orbits; length-one orbits are already excluded by `face_ne_self`.
+`maximal_rotations_nonfixed` also excludes singleton endpoint rotations.
+These results do not yet exclude repeated vertices within a face and do not
+prove that faces are triangles.
+
 ## Relationship to JSP-000512
 
 These theorems support a possible future formalization of ordinary planar
