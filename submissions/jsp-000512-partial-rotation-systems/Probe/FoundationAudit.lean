@@ -8,6 +8,7 @@ import Probe.GenusZero
 import Probe.CycleInsertion
 import Probe.EdgeInsertion
 import Probe.CofacialInsertion
+import Probe.MaximalBridges
 
 #print axioms JSP512Probe.RotationSystem.sameCycle_iff_source
 #print axioms JSP512Probe.RotationSystem.vertexOrbit_card
@@ -70,3 +71,11 @@ import Probe.CofacialInsertion
 #print axioms JSP512Probe.EdgeInsertion.added_component_count
 #print axioms JSP512Probe.EdgeInsertion.cofacial_defect
 #print axioms JSP512Probe.EdgeInsertion.cofacial_genusZero
+
+#print axioms JSP512Probe.RotationSystem.exists_maximal_augmentation
+#print axioms JSP512Probe.RotationSystem.maximal_cofacial_adj
+#print axioms JSP512Probe.RotationSystem.maximal_face_vertices_adj
+#print axioms JSP512Probe.RotationSystem.maximal_supergraph_eq
+#print axioms JSP512Probe.RotationSystem.maximal_face_isClique
+#print axioms JSP512Probe.RotationSystem.maximal_bridge_source_fixed
+#print axioms JSP512Probe.RotationSystem.maximal_bridge_endpoints_fixed

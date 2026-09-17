@@ -60,6 +60,21 @@ construction is also not supplied, despite the separate permutation-level
 fresh-source lemma. The correspondence with geometric planar embeddings
 remains outside this submission.
 
+## Maximal extensions
+
+`RotationSystem.exists_maximal_augmentation` constructs an edge-count-maximal
+spanning genus-zero supergraph by finite maximization over actual graphs.
+`maximal_supergraph_eq` shows there is no proper genus-zero supergraph on
+that vertex type. No triangular-face property is assumed in this definition.
+
+`maximal_cofacial_adj`, `maximal_face_vertices_adj`, and
+`maximal_face_isClique` show that distinct vertices on a face are pairwise
+adjacent, using the verified cofacial insertion theorem.
+`maximal_bridge_endpoints_fixed` shows that every bridge has singleton
+rotations at both endpoints, so neither endpoint can have another incident
+edge. This excludes nontrivial bridge attachments but does not itself prove
+connectedness of maximal extensions or that their facial walks are triangles.
+
 ## Relationship to JSP-000512
 
 These theorems support a possible future formalization of ordinary planar
