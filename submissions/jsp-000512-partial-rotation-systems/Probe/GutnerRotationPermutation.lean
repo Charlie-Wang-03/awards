@@ -45,13 +45,15 @@ def unrotateDart (d : graph.Dart) : graph.Dart :=
 theorem unrotate_rotate (d : graph.Dart) : unrotateDart (rotateDart d) = d := by
   rcases d with ⟨⟨u, v⟩, h⟩
   apply SimpleGraph.Dart.ext
-  simp [unrotateDart, rotateDart, neighborOfDart]
+  change (u, ↑((neighborPerm u).symm (neighborPerm u ⟨v, h⟩))) = (u, v)
+  rw [Equiv.symm_apply_apply]
 
 
 theorem rotate_unrotate (d : graph.Dart) : rotateDart (unrotateDart d) = d := by
   rcases d with ⟨⟨u, v⟩, h⟩
   apply SimpleGraph.Dart.ext
-  simp [unrotateDart, rotateDart, neighborOfDart]
+  change (u, ↑(neighborPerm u ((neighborPerm u).symm ⟨v, h⟩))) = (u, v)
+  rw [Equiv.apply_symm_apply]
 
 /-- The fibrewise cycles assemble to a permutation of all graph darts. -/
 def rotationPerm : Equiv.Perm graph.Dart where
