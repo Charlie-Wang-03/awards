@@ -23,7 +23,9 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Restore Mathlib cache
         run: lake exe cache get
-      - name: Build rotation core
+      - name: Build rotation permutation
+        run: lake build Probe.GutnerRotationPermutation
+      - name: Build rotation local-cycle core
         run: lake build Probe.GutnerRotationCore
       - name: Build face-count bridge
         run: lake build Probe.GutnerRotation
