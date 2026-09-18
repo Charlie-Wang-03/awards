@@ -27,6 +27,49 @@ def SharpAt {V : Type*} (p : V → Plane) (delta lam : ℝ) (i : V) : Prop :=
   ∀ j k, j ≠ i → k ≠ i → j ≠ k →
     EuclideanGeometry.angle (p j) (p i) (p k) ≤ delta * lam
 
+/-- Projective closeness of two rays at a centre: either their actual
+Euclidean angle is small, or its supplement is small.  The latter alternative
+will be ruled out by the global Sendov cap when `width < lam`. -/
+def ProjectiveCloseAt {V : Type*} (p : V → Plane) (width : ℝ)
+    (i j k : V) : Prop :=
+  EuclideanGeometry.angle (p j) (p i) (p k) ≤ width ∨
+    Real.pi - EuclideanGeometry.angle (p j) (p i) (p k) ≤ width
+
+/-- A projectively small angle cannot be realized by the supplementary branch
+once the true angle is capped by `pi - lam` and `width < lam`. -/
+theorem angle_le_width_of_cap_of_projective
+    {A width lam : ℝ}
+    (hcap : A ≤ Real.pi - lam)
+    (hwidth : width < lam)
+    (hprojective : A ≤ width ∨ Real.pi - A ≤ width) :
+    A ≤ width := by
+  rcases hprojective with hsmall | hsupp
+  · exact hsmall
+  · exfalso
+    nlinarith
+
+/-- Turning a uniform projective-width statement into the genuine
+sharp-centre angle bound.  This isolates the geometric bridge from the still
+separate arithmetic task of deriving projective closeness from Sendov gaps. -/
+theorem sharpAt_of_projective_close
+    {V : Type*} {p : V → Plane} {delta lam : ℝ} {i : V}
+    (hcap : AngleCap p lam)
+    (hwidth : delta * lam < lam)
+    (hprojective : ∀ j k, j ≠ i → k ≠ i → j ≠ k →
+      ProjectiveCloseAt p (delta * lam) i j k) :
+    SharpAt p delta lam i := by
+  intro j k hji hki hjk
+  apply angle_le_width_of_cap_of_projective
+    (hcap j i k hji hjk (Ne.symm hki)) hwidth
+  exact hprojective j k hji hki hjk
+
+/-- The width inequality needed by the preceding bridge in the full range
+`delta < 1`. -/
+theorem delta_lam_lt_lam {delta lam : ℝ}
+    (hdelta : delta < 1) (hlam : 0 < lam) :
+    delta * lam < lam := by
+  nlinarith
+
 /-- In the small-delta branch, twice the sharp-centre angular width is
 strictly smaller than one cap unit. -/
 theorem two_delta_lam_lt_lam {delta lam : ℝ}
