@@ -10,6 +10,6 @@ three-step return fails. All other facial orbits are triangles. -/
 theorem mem_quadOrbits_iff_three_ne (d : graph.Dart) :
     Quotient.mk (Equiv.Perm.SameCycle.setoid rotationSystem.face) d ∈ quadOrbits ↔
       rotationSystem.face (rotationSystem.face (rotationSystem.face d)) ≠ d := by
-  decide +kernel
+  decide +kernel +revert
 
 end JSP512Probe.Gutner

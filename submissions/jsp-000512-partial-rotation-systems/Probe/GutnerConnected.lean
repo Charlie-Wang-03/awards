@@ -1,4 +1,5 @@
 import Probe.GutnerFaceSetup
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 
 namespace JSP512Probe.Gutner
 

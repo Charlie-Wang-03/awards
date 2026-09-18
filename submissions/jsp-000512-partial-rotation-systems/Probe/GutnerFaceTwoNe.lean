@@ -8,6 +8,6 @@ set_option maxHeartbeats 0
 /-- No facial orbit has length one or two. -/
 theorem face_two_ne (d : graph.Dart) :
     rotationSystem.face (rotationSystem.face d) ≠ d := by
-  decide +kernel
+  decide +kernel +revert
 
 end JSP512Probe.Gutner

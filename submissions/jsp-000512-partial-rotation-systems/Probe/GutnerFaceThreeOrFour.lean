@@ -9,6 +9,6 @@ set_option maxHeartbeats 0
 theorem face_three_or_four (d : graph.Dart) :
     rotationSystem.face (rotationSystem.face (rotationSystem.face d)) = d ∨
     rotationSystem.face (rotationSystem.face (rotationSystem.face (rotationSystem.face d))) = d := by
-  decide +kernel
+  decide +kernel +revert
 
 end JSP512Probe.Gutner
