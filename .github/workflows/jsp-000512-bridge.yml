@@ -12,7 +12,7 @@ permissions:
 jobs:
   lean:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: submissions/jsp-000512-partial-rotation-systems
@@ -28,7 +28,21 @@ jobs:
         run: lake build Probe.GutnerRotationPermutation
       - name: Build rotation local-cycle core
         run: lake build Probe.GutnerRotationCore
-      - name: Build face-count bridge
+      - name: Build face setup
+        run: lake build Probe.GutnerFaceSetup
+      - name: Build graph connected certificate
+        run: lake build Probe.GutnerConnected
+      - name: Build edge-count certificate
+        run: lake build Probe.GutnerEdgeCard
+      - name: Build quadrilateral-orbit card certificate
+        run: lake build Probe.GutnerFaceQuadCard
+      - name: Build face length >= 3 certificate
+        run: lake build Probe.GutnerFaceTwoNe
+      - name: Build face length 3-or-4 certificate
+        run: lake build Probe.GutnerFaceThreeOrFour
+      - name: Build quadrilateral classification certificate
+        run: lake build Probe.GutnerFaceThreeNe
+      - name: Build face-count bridge assembly
         run: lake build Probe.GutnerRotation
       - name: Build exact JSP-000512 theorem
         run: lake build Probe.PlanarExactBound
