@@ -85,6 +85,8 @@ import JSP000404Research.CriticalPhaseDomination
 
 import JSP000404Research.CriticalTurnBudget
 
+import JSP000404Research.CriticalBadMass
+
 import JSP000404Research.ShortArcTransition
 
 import JSP000404Research.PhaseArithmetic
