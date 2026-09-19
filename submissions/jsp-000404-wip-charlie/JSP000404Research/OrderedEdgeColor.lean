@@ -72,7 +72,8 @@ theorem separates
   have hin_w : incoming C c w := ⟨v, hvwlt, rfl⟩
   have hnotin_v : ¬ incoming C c v := by
     rintro ⟨a, hav, hac⟩
-    exact C.noMonoTwoPath hav hvwlt (hac.trans rfl)
+    apply C.noMonoTwoPath hav hvwlt
+    simpa [c] using hac
 
   refine ⟨c, hcv, hcw, ?_⟩
   simp [bit, hnotin_v, hin_w]
