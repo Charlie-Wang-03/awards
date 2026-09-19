@@ -5,6 +5,7 @@ import JSP000404Research.ZeroCarry
 import JSP000404Research.KraftBridge
 import JSP000404Research.OrderedDirections
 import JSP000404Research.OrderedCapacityBases
+import JSP000404Research.OrderedBandCode
 
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
