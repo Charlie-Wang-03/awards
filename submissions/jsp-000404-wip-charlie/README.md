@@ -18,7 +18,12 @@ already been justified mathematically:
 - its exact defect form
   `sum_v (2^(free v) - 1) <= 2^k - |V|`;
 - the consequences `|V| + 1 <= 2^k` when one vertex has a missing Boolean
-  coordinate, and `2 * |V| <= 2^k` when every vertex has one.
+  coordinate, and `2 * |V| <= 2^k` when every vertex has one;
+- the exact zero-carry identity `ell = (n - Q) + p` in abstract finite-sum form;
+- the partial-cube `KraftCertificate` interface reducing the lower sharp
+  capacity bound to a concrete Boolean-code construction;
+- ordered-direction base capacities `3 -> 3/2`, `4 -> 2`, `5 -> 5/2`, and
+  `6 -> 3`.
 
 No theorem in this branch claims the missing general sharp capacity bound.
 
@@ -40,6 +45,11 @@ The active research route is to prove the sharp capacity directly from the
 ordered-direction constraints, using Erdős--Szekeres even-partition / missing-
 colour defect accounting rather than the disputed general capacity-maximization
 step in Sendov's published argument.
+
+The finite five-/six-point orientation-elimination architecture was cross-checked
+against the already-public scoped formalization in TheJustinSunPrize/awards PR
+#300.  Those base-case techniques are treated here as prior public formalization,
+not as a priority claim.  The new research target is the general capacity bridge.
 
 ## Reproduction
 
