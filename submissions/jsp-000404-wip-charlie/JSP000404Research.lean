@@ -55,6 +55,10 @@ import JSP000404Research.DeficitTwo
 
 import JSP000404Research.ClusterCoverArithmetic
 
+import JSP000404Research.ResidualRecolor
+
+import JSP000404Research.StandardBandColor
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
