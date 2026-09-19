@@ -61,6 +61,8 @@ import JSP000404Research.BoundaryIntervalCount
 
 import JSP000404Research.HullTurnBudget
 
+import JSP000404Research.PhaseTurnClosure
+
 import JSP000404Research.AdaptiveDirectionColor
 
 import JSP000404Research.DeficitTwo
