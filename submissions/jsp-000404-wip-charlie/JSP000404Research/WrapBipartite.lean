@@ -134,6 +134,21 @@ theorem wrapVertexColor_eq_edgeParity
       D hwidth hdelta hn htri h.choose_spec hvw
   · exact False.elim (h ⟨w, hvw⟩)
 
+/-- The explicit wrap vertex colours are opposite across every wrap edge. -/
+theorem wrapVertexColor_ne_of_adj
+    {V : Type*} [LinearOrder V] {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (hn : 1 ≤ n)
+    (htri : WrapTriangleFree D n)
+    {v w : V}
+    (hvw : (wrapGraph D n).Adj v w) :
+    wrapVertexColor D n v ≠ wrapVertexColor D n w := by
+  rw [wrapVertexColor_eq_edgeParity D hwidth hdelta hn htri hvw]
+  rw [wrapVertexColor_eq_edgeParity D hwidth hdelta hn htri hvw.symm]
+  exact edgeParity_reverse_ne D hvw.ne
+
 /-- Main wrap-band graph theorem: triangle-free implies an explicit Boolean
 vertex colouring. -/
 theorem wrapGraph_colorable_of_triangleFree
@@ -166,6 +181,7 @@ theorem wrapGraph_isBipartite_of_triangleFree
 #print axioms triangleFree_edgeParity_alternates
 #print axioms edgeParity_outgoing_eq
 #print axioms wrapVertexColor_eq_edgeParity
+#print axioms wrapVertexColor_ne_of_adj
 #print axioms wrapGraph_colorable_of_triangleFree
 #print axioms wrapGraph_isBipartite_of_triangleFree
 
