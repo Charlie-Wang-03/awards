@@ -61,6 +61,8 @@ import JSP000404Research.BoundaryFailureStructure
 
 import JSP000404Research.BoundaryFailureDistribution
 
+import JSP000404Research.BoundaryExcessBalance
+
 import JSP000404Research.BudgetObstructionWidth
 
 import JSP000404Research.BoundaryIntervalCount
