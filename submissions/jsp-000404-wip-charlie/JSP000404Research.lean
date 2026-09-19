@@ -51,6 +51,8 @@ import JSP000404Research.PhaseArithmetic
 
 import JSP000404Research.AdaptiveDirectionColor
 
+import JSP000404Research.DeficitTwo
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
