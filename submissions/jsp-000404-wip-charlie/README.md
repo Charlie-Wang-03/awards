@@ -13,9 +13,14 @@ already been justified mathematically:
 - impossibility of three pairwise-distinct sharp centres once every angle at
   each sharp centre is bounded by `delta * lam`;
 - in the first branch `delta < 1/2`, two sharp centres leave no room for a
-  third top-level centre under the global cap `pi - lam`.
+  third top-level centre under the global cap `pi - lam`;
+- the weighted Hansel / Erdős--Szekeres partial-code inequality;
+- its exact defect form
+  `sum_v (2^(free v) - 1) <= 2^k - |V|`;
+- the consequences `|V| + 1 <= 2^k` when one vertex has a missing Boolean
+  coordinate, and `2 * |V| <= 2^k` when every vertex has one.
 
-No theorem in this branch claims the missing general weighted Kraft bound.
+No theorem in this branch claims the missing general sharp capacity bound.
 
 ## Deliberately open bridge
 
@@ -25,12 +30,16 @@ In particular, this branch does not yet formalize or assume:
 1. the bridge from Sendov's local gap/exponent data
    `ell_i = n - k_i = a_i + p_i` to the predicate `SharpAt` when
    `ell_i = 1`;
-2. the general Geometric Kraft inequality
-   `sum_i 2^(-ell_i) <= 1` for `delta < 1/2`;
-3. the upper-half inequality `sum_i 2^(-ell_i) <= 5/4`;
-4. the thresholded compensated-deletion / zero-carry packing theorem.
+2. the sharp ordered-direction capacity theorem in the lower branch;
+3. the upper-half sharp ordered-direction capacity theorem;
+4. the thresholded compensated-deletion / endpoint-slack recurrence that
+   should convert ordered-direction data into the weighted Hansel defect
+   accounting.
 
-These are the active proof gaps and must remain explicit.
+The active research route is to prove the sharp capacity directly from the
+ordered-direction constraints, using Erdős--Szekeres even-partition / missing-
+colour defect accounting rather than the disputed general capacity-maximization
+step in Sendov's published argument.
 
 ## Reproduction
 
@@ -46,5 +55,6 @@ lake exe cache get
 lake build
 ```
 
-The current ChatGPT execution environment does not have Lean installed, so this
-commit has not been locally kernel-checked here.  Do not treat that as a CI pass.
+The current ChatGPT execution environment does not have Lean installed, so the
+new commits have not been locally kernel-checked here. Do not treat them as a CI
+pass until an actual Lean build succeeds.
