@@ -59,6 +59,8 @@ import JSP000404Research.ResidualRecolor
 
 import JSP000404Research.StandardBandColor
 
+import JSP000404Research.StandardResidual
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
