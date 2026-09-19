@@ -19,9 +19,10 @@ unique long spacing, its length is q+delta.  Hence
 
 so necessarily r < delta.
 
-The amount of phase freedom that can realize this one-boundary loss is
-therefore delta-r, which lies in (0,delta].  This is the same short-obstruction
-scale already obtained for wrap triangles.
+The enclosing long-spacing window has slack delta-r, which lies in
+(0,delta].  This is an upper envelope for where a one-boundary loss can occur;
+the actual budget-bad phase set may be strictly smaller because boundary hits
+in other gaps can compensate the lost floor excess.
 -/
 
 namespace JSP000404Research
