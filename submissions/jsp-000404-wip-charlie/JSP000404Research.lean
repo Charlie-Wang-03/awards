@@ -49,6 +49,8 @@ import JSP000404Research.DeletionThreshold
 
 import JSP000404Research.DeletionDichotomy
 
+import JSP000404Research.DyadicCollision
+
 import JSP000404Research.RestrictedDeletion
 
 import JSP000404Research.MergeGainCases
