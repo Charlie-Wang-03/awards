@@ -1,6 +1,7 @@
 import JSP000404Research.SharpCentre
 import JSP000404Research.WeightedHansel
 import JSP000404Research.WeightedDefect
+import JSP000404Research.ZeroCarry
 
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
