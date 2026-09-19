@@ -43,6 +43,8 @@ import JSP000404Research.WrapSwitch
 
 import JSP000404Research.CycleParity
 
+import JSP000404Research.WrapBipartite
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
