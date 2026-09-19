@@ -90,6 +90,93 @@ theorem zeroGapMass_le_delta_div
   rw [le_div_iff₀ htpos]
   exact zeroGapMass_scaled_le_delta gap q n delta t ht hgap hQ hfloor
 
+/-- General remainder identity before specializing to unit deficit.
+
+If Q = sum q <= n, then the total fractional remainder is
+delta + (n-Q). -/
+theorem remainder_sum_eq_delta_add_floorDefect
+    {I : Type*} [Fintype I]
+    (gap : I → ℝ) (q : I → ℕ)
+    (n : ℕ) (delta t : ℝ)
+    (ht : t = (n : ℝ) + delta)
+    (hgap : (∑ i, gap i) = 1)
+    (hQle : (∑ i, q i) ≤ n) :
+    (∑ i, (t * gap i - (q i : ℝ))) =
+      delta + (n - ∑ i, q i : ℕ) := by
+  classical
+  have hQcast :
+      (∑ i, (q i : ℝ)) = ((∑ i, q i : ℕ) : ℝ) := by
+    norm_num
+  have hsubcast :
+      (((n - ∑ i, q i : ℕ) : ℕ) : ℝ) =
+        (n : ℝ) - ((∑ i, q i : ℕ) : ℝ) := by
+    exact_mod_cast Nat.sub_add_cancel hQle
+  rw [Finset.sum_sub_distrib, ← Finset.mul_sum, hgap, hQcast, ht]
+  push_cast
+  rw [hsubcast]
+  ring
+
+/-- General zero-gap budget: all quotient-zero gaps are paid for by the
+fractional remainder delta plus the integer floor defect n-Q. -/
+theorem zeroGapMass_scaled_le_delta_add_floorDefect
+    {I : Type*} [Fintype I]
+    (gap : I → ℝ) (q : I → ℕ)
+    (n : ℕ) (delta t : ℝ)
+    (ht : t = (n : ℝ) + delta)
+    (hgap : (∑ i, gap i) = 1)
+    (hQle : (∑ i, q i) ≤ n)
+    (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i) :
+    t * zeroGapMass gap q ≤
+      delta + (n - ∑ i, q i : ℕ) := by
+  classical
+  have hpoint :
+      ∀ i : I,
+        t * (if q i = 0 then gap i else 0) ≤
+          t * gap i - (q i : ℝ) := by
+    intro i
+    by_cases hqi : q i = 0
+    · simp [hqi]
+    · have hnonneg : 0 ≤ t * gap i - (q i : ℝ) := by
+        linarith [hfloor i]
+      simp [hqi, hnonneg]
+  have hsum :
+      ∑ i, t * (if q i = 0 then gap i else 0) ≤
+        ∑ i, (t * gap i - (q i : ℝ)) :=
+    Finset.sum_le_sum fun i _ => hpoint i
+  have hleft :
+      (∑ i, t * (if q i = 0 then gap i else 0)) =
+        t * zeroGapMass gap q := by
+    unfold zeroGapMass
+    rw [Finset.mul_sum]
+  rw [hleft,
+    remainder_sum_eq_delta_add_floorDefect gap q n delta t ht hgap hQle] at hsum
+  exact hsum
+
+/-- Express the same budget through the Sendov deficit ell=n-floorExcess.
+
+Writing p for the number of positive quotient gaps, ell=(n-Q)+p, so the
+zero-gap scaled width is at most delta+ell-p. -/
+theorem zeroGapMass_scaled_le_delta_add_deficit_sub_support
+    {I : Type*} [Fintype I]
+    (gap : I → ℝ) (q : I → ℕ)
+    (n ell : ℕ) (delta t : ℝ)
+    (ht : t = (n : ℝ) + delta)
+    (hgap : (∑ i, gap i) = 1)
+    (hQle : (∑ i, q i) ≤ n)
+    (hell : ell = n - floorExcess q)
+    (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i) :
+    t * zeroGapMass gap q ≤
+      delta + (ell - positiveSupport q : ℕ) := by
+  have hbudget :=
+    zeroGapMass_scaled_le_delta_add_floorDefect
+      gap q n delta t ht hgap hQle hfloor
+  have hdecomp := deficit_eq_floorDefect_add_support q n hQle
+  have hsub :
+      ell - positiveSupport q = n - ∑ i, q i := by
+    rw [hell, hdecomp]
+    omega
+  rwa [hsub]
+
 /-- Combined unit-deficit consequence: the quotient support count is one,
 the quotient sum is exactly `n`, and all zero-quotient gaps together have
 scaled width at most `delta`. -/
@@ -111,6 +198,9 @@ theorem unit_deficit_zero_gap_budget
   exact zeroGapMass_scaled_le_delta gap q n delta t ht hgap hs.2 hfloor
 
 #print axioms remainder_sum_eq_delta
+#print axioms remainder_sum_eq_delta_add_floorDefect
+#print axioms zeroGapMass_scaled_le_delta_add_floorDefect
+#print axioms zeroGapMass_scaled_le_delta_add_deficit_sub_support
 #print axioms zeroGapMass_scaled_le_delta
 #print axioms zeroGapMass_le_delta_div
 #print axioms unit_deficit_zero_gap_budget
