@@ -11,6 +11,12 @@ import JSP000404Research.GapRemainder
 import JSP000404Research.MergeGain
 import JSP000404Research.UniqueGap
 
+import JSP000404Research.GapArc
+
+import JSP000404Research.OrderedEdgeColor
+
+import JSP000404Research.BinaryEdgePartition
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
