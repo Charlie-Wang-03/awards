@@ -27,6 +27,8 @@ import JSP000404Research.SignedGapCap
 
 import JSP000404Research.StrictExposure
 
+import JSP000404Research.SignedRayMonodromy
+
 import JSP000404Research.LinearizedGap
 
 import JSP000404Research.CompensatedDeletion
