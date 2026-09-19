@@ -53,8 +53,11 @@ theorem boolTransitionCount_le_listPositiveCount
           have hi := ih b qs hrest
           by_cases hab : a = b
           · subst b
-            simp [boolTransitionCountFrom, listPositiveCount]
-            exact hi.trans (Nat.le_add_left _ _)
+            by_cases hq : q = 0
+            · simp [boolTransitionCountFrom, listPositiveCount, hq]
+              exact hi
+            · simp [boolTransitionCountFrom, listPositiveCount, hq]
+              omega
           · have hq : q ≠ 0 := hstep hab
             simp [boolTransitionCountFrom, listPositiveCount, hab, hq]
             omega
