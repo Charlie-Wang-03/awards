@@ -69,6 +69,8 @@ import JSP000404Research.ResidualBipartite
 
 import JSP000404Research.ResidualTwoChoice
 
+import JSP000404Research.RetainedOrientation
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
