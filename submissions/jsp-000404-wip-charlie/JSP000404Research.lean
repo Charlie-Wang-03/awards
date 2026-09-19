@@ -63,6 +63,8 @@ import JSP000404Research.StandardResidual
 
 import JSP000404Research.ResidualSafeTarget
 
+import JSP000404Research.ResidualLists
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
