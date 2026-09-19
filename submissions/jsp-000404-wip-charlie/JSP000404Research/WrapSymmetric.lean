@@ -91,9 +91,9 @@ theorem edgeWrap_opposite_at_between
       wrap_opposite_at_middle D hwidth hdelta hxvlt hvylt hxWrap' hyWrap'
   · have hyWrap' : IsLow D y v ∨ IsHigh D n y v := by
       rcases hyWrap with h | h
-      · have hs : EdgeLow D y v := (edgeLow_symm D hvy).mpr h
+      · have hs : EdgeLow D y v := (edgeLow_symm D hvy).mp h
         simpa [EdgeLow, edgeValue, hyvlt] using hs
-      · have hs : EdgeHigh D n y v := (edgeHigh_symm D hvy).mpr h
+      · have hs : EdgeHigh D n y v := (edgeHigh_symm D hvy).mp h
         simpa [EdgeHigh, edgeValue, hyvlt] using hs
     have hxWrap' : IsLow D v x ∨ IsHigh D n v x := by
       rcases hxWrap with h | h
