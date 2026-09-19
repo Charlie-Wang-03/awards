@@ -29,6 +29,10 @@ import JSP000404Research.MergeExponent
 
 import JSP000404Research.MergeCarry
 
+import JSP000404Research.DeletionAveraging
+
+import JSP000404Research.MergeGainCases
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
