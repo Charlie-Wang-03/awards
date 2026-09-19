@@ -53,6 +53,8 @@ import JSP000404Research.AdaptiveDirectionColor
 
 import JSP000404Research.DeficitTwo
 
+import JSP000404Research.ClusterCoverArithmetic
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
