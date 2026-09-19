@@ -51,6 +51,26 @@ private theorem floor_band
   · simpa using Nat.floor_le hx0
   · simpa using Nat.lt_floor_add_one x
 
+/-- If one ordered edge lies in a specified half-open unit band, the canonical
+incoming/outgoing bit on that band is opposite at its two endpoints.  Unlike
+`unitBand_separates`, this local lemma needs no global integer width bound. -/
+theorem bandBit_ne_of_edge_mem_band
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} (D : DirectionData V width) (k : ℕ)
+    {i j : V} (hij : i < j) (m : Fin k)
+    (hmlo : (m : ℝ) ≤ D.value i j)
+    (hmhi : D.value i j < (m : ℝ) + 1) :
+    bandBit D k i m ≠ bandBit D k j m := by
+  have hin_j : incomingBand D m j := ⟨i, hij, hmlo, hmhi⟩
+  have hnotin_i : ¬ incomingBand D m i := by
+    rintro ⟨a, hai, halo, hahi⟩
+    have hlarge := D.middleSeparated hai hij
+    have hsmall : |D.value a i - D.value i j| < 1 := by
+      rw [abs_lt]
+      constructor <;> linarith
+    exact (not_lt_of_ge hlarge) hsmall
+  simp [bandBit, hnotin_i, hin_j]
+
 /-- Every ordered edge supplies a coordinate specified at both endpoints and
 with opposite canonical bits. -/
 theorem unitBand_separates
@@ -121,6 +141,7 @@ theorem unitBand_one_missing
   exact weighted_hansel_one_missing (bandBit D k) (incidentBands D k)
     (unitBand_separates D k hwidth) v hmissing
 
+#print axioms bandBit_ne_of_edge_mem_band
 #print axioms unitBand_separates
 #print axioms unitBand_weighted_capacity
 #print axioms unitBand_defect
