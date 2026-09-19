@@ -111,8 +111,23 @@ theorem all_missing
   exact weighted_hansel_all_missing (bit C) (active C)
     (separates C) hmissing
 
+/-- Any admissible colouring by `k` ordered edge colours gives the
+ordinary `2^k` vertex bound. -/
+theorem card_le_two_pow
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (C : OrderedEdgeColoring V k) :
+    Fintype.card V ≤ 2 ^ k := by
+  have hcap := weighted_capacity C
+  have hone :
+      Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
+    simpa using
+      (Finset.sum_le_sum (s := (Finset.univ : Finset V))
+        (fun v _ => Nat.one_le_pow _ _))
+  exact hone.trans hcap
+
 #print axioms separates
 #print axioms weighted_capacity
+#print axioms card_le_two_pow
 #print axioms defect
 #print axioms one_missing
 #print axioms all_missing
