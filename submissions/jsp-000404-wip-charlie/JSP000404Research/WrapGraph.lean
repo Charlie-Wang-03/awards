@@ -121,7 +121,7 @@ theorem triangleFree_same_at_local_max
       (EdgeHigh D n x v ∧ EdgeHigh D n y v) := by
   apply edgeWrap_same_at_local_max D hxv hyv hxy hxvAdj.2 hyvAdj.2
   exact middle_chord_of_triangleFree D htri
-    hxvAdj.symm hyvAdj hxy
+    hxvAdj hyvAdj.symm hxy
 
 #print axioms wrapGraph_adj
 #print axioms edgeMiddle_of_not_wrap
