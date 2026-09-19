@@ -81,6 +81,8 @@ import JSP000404Research.WrapObstructionWidth
 
 import JSP000404Research.CriticalPhaseInterval
 
+import JSP000404Research.CriticalPhaseDomination
+
 import JSP000404Research.ShortArcTransition
 
 import JSP000404Research.PhaseArithmetic
