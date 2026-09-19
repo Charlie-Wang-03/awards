@@ -53,6 +53,8 @@ import JSP000404Research.PhaseObstruction
 
 import JSP000404Research.BoundaryExcess
 
+import JSP000404Research.BoundaryDominance
+
 import JSP000404Research.AdaptiveDirectionColor
 
 import JSP000404Research.DeficitTwo
