@@ -37,26 +37,6 @@ theorem residualBit_ne_of_residual
     exact no_two_residual_on_path C huv hvw hres hvwRes
   simp [residualBit, hu, hv]
 
-/-- Symmetric endpoint form for a distinct residual edge. -/
-theorem residualBit_ne_of_residual_ne
-    {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V (k + 1))
-    {u v : V} (huv : u ≠ v) (hres : IsResidual C u v) :
-    residualBit C u ≠ residualBit C v := by
-  rcases lt_or_gt_of_ne huv with huvlt | hvult
-  · exact residualBit_ne_of_residual C huvlt hres
-  · have hrev : IsResidual C v u := by
-      unfold IsResidual at *
-      intro hret
-      apply hres
-      have hval :
-          (C.color u v).val = (C.color v u).val := by
-        -- Values on reversed pairs are not constrained by OrderedEdgeColoring,
-        -- so this theorem cannot be obtained without a symmetry assumption.
-        -- Keep the useful oriented theorem above as the canonical statement.
-        omega
-      omega
-
 #print axioms residualBit_ne_of_residual
 
 end OrderedEdgeColoring
