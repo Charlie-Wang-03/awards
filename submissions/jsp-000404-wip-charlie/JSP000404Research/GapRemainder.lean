@@ -110,7 +110,7 @@ theorem remainder_sum_eq_delta_add_floorDefect
   have hsubcast :
       (((n - ∑ i, q i : ℕ) : ℕ) : ℝ) =
         (n : ℝ) - ((∑ i, q i : ℕ) : ℝ) := by
-    exact_mod_cast Nat.sub_add_cancel hQle
+    exact Nat.cast_sub hQle
   rw [Finset.sum_sub_distrib, ← Finset.mul_sum, hgap, hQcast, ht]
   push_cast
   rw [hsubcast]
