@@ -53,7 +53,9 @@ theorem deficit_two_structure
     rw [← hell, hdec]
     omega
   have hp_pos := positiveSupport_pos_of_deficit_two q n hn hQ hell
-  rcases Nat.eq_one_or_two_of_pos_of_le_two hp_pos hp_le with hp1 | hp2
+  have hp_cases : positiveSupport q = 1 ∨ positiveSupport q = 2 := by
+    omega
+  rcases hp_cases with hp1 | hp2
   · left
     constructor
     · exact hp1
