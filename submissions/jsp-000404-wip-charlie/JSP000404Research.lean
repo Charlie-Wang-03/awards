@@ -17,6 +17,10 @@ import JSP000404Research.OrderedEdgeColor
 
 import JSP000404Research.BinaryEdgePartition
 
+import JSP000404Research.ProjectiveInterval
+
+import JSP000404Research.LinearizedGap
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
