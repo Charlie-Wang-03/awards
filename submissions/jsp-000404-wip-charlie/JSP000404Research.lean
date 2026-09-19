@@ -61,6 +61,8 @@ import JSP000404Research.StandardBandColor
 
 import JSP000404Research.StandardResidual
 
+import JSP000404Research.ResidualSafeTarget
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
