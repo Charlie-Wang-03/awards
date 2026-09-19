@@ -35,16 +35,31 @@ theorem boolTransitionCountFrom_mod_two
   | nil =>
       simp [boolTransitionCountFrom, boolLastFrom]
   | cons b xs ih =>
-      cases a <;> cases b <;>
-        simp [boolTransitionCountFrom, boolLastFrom, ih, Nat.add_mod]
-      all_goals
-        generalize hlast : boolLastFrom true xs = z
-        cases z <;>
-          simp [ih, hlast, Nat.add_mod]
-      all_goals
-        generalize hlast : boolLastFrom false xs = z
-        cases z <;>
-          simp [ih, hlast, Nat.add_mod]
+      cases a <;> cases b
+      · simpa [boolTransitionCountFrom, boolLastFrom] using ih false
+      · cases hlast : boolLastFrom true xs with
+        | false =>
+            have hi := ih true
+            rw [hlast] at hi
+            simp [boolTransitionCountFrom, boolLastFrom, hlast,
+              Nat.add_mod, hi]
+        | true =>
+            have hi := ih true
+            rw [hlast] at hi
+            simp [boolTransitionCountFrom, boolLastFrom, hlast,
+              Nat.add_mod, hi]
+      · cases hlast : boolLastFrom false xs with
+        | false =>
+            have hi := ih false
+            rw [hlast] at hi
+            simp [boolTransitionCountFrom, boolLastFrom, hlast,
+              Nat.add_mod, hi]
+        | true =>
+            have hi := ih false
+            rw [hlast] at hi
+            simp [boolTransitionCountFrom, boolLastFrom, hlast,
+              Nat.add_mod, hi]
+      · simpa [boolTransitionCountFrom, boolLastFrom] using ih true
 
 /-- Antiperiodic endpoints force an odd transition count. -/
 theorem boolTransitionCountFrom_mod_two_eq_one_of_last_not
