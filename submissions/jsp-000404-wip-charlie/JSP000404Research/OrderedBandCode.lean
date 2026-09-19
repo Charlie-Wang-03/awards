@@ -1,6 +1,6 @@
 import JSP000404Research.OrderedDirections
 import JSP000404Research.WeightedDefect
-import Mathlib.Data.Nat.Floor
+import Mathlib.Data.Rat.Floor
 import Mathlib.Tactic
 
 /-!
@@ -69,7 +69,7 @@ theorem unitBand_separates
     exact ⟨m, hmv, hmw, hbit.symm⟩
   have hx0 : 0 ≤ D.value v w := D.nonnegative hvwlt
   have hxk : D.value v w < (k : ℝ) :=
-    (D.belowWidth hvwlt).trans_le (by exact_mod_cast hwidth)
+    (D.belowWidth hvwlt).trans_le hwidth
   obtain ⟨m, hmlo, hmhi⟩ := floor_band hx0 hxk
 
   have hm_v : m ∈ incidentBands D k v := by
