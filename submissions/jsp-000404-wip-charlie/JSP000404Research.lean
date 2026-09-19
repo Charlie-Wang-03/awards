@@ -7,6 +7,7 @@ import JSP000404Research.OrderedDirections
 import JSP000404Research.OrderedCapacityBases
 import JSP000404Research.OrderedBandCode
 import JSP000404Research.SharpDeficit
+import JSP000404Research.GapRemainder
 
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
