@@ -47,6 +47,8 @@ import JSP000404Research.WrapBipartite
 
 import JSP000404Research.WrapCapacity
 
+import JSP000404Research.WrapObstructionWidth
+
 import JSP000404Research.PhaseArithmetic
 
 import JSP000404Research.PhaseObstruction
