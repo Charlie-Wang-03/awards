@@ -8,6 +8,8 @@ import JSP000404Research.OrderedCapacityBases
 import JSP000404Research.OrderedBandCode
 import JSP000404Research.SharpDeficit
 import JSP000404Research.GapRemainder
+import JSP000404Research.MergeGain
+import JSP000404Research.UniqueGap
 
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
