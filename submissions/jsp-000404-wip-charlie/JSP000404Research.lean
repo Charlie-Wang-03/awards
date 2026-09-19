@@ -47,6 +47,10 @@ import JSP000404Research.WrapBipartite
 
 import JSP000404Research.WrapCapacity
 
+import JSP000404Research.PhaseArithmetic
+
+import JSP000404Research.AdaptiveDirectionColor
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
