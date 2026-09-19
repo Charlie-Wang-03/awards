@@ -37,6 +37,8 @@ import JSP000404Research.MergeGainCases
 
 import JSP000404Research.MergeZeroGain
 
+import JSP000404Research.StableMergeRemainder
+
 import JSP000404Research.WrapLocal
 
 import JSP000404Research.WrapSymmetric
