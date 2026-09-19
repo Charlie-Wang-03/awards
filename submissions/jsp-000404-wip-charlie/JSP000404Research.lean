@@ -23,6 +23,8 @@ import JSP000404Research.ProjectiveInterval
 
 import JSP000404Research.SignedGapCap
 
+import JSP000404Research.StrictExposure
+
 import JSP000404Research.LinearizedGap
 
 import JSP000404Research.CompensatedDeletion
