@@ -76,6 +76,57 @@ theorem sum_gap_le_zeroGapMass_of_avoids_unique
   exact sum_gap_le_zeroGapMass_of_zero gap q hgap0 s
     (all_zero_of_avoids_unique_positive q hepos heunique s hes)
 
+/-- General deficit arc budget: every subarc containing only quotient-zero
+gaps is paid for by delta plus the floor-defect part of ell. -/
+theorem deficit_zero_arc_budget
+    {I : Type*} [Fintype I]
+    (gap : I → ℝ) (q : I → ℕ)
+    (n ell : ℕ) (delta t : ℝ)
+    (ht : t = (n : ℝ) + delta)
+    (hgap0 : ∀ i, 0 ≤ gap i)
+    (hgap : (∑ i, gap i) = 1)
+    (hQle : (∑ i, q i) ≤ n)
+    (hell : ell = n - floorExcess q)
+    (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i)
+    (s : Finset I)
+    (hs : ∀ i ∈ s, q i = 0)
+    (ht0 : 0 ≤ t) :
+    t * (∑ i ∈ s, gap i) ≤
+      delta + (ell - positiveSupport q : ℕ) := by
+  have hsub :=
+    sum_gap_le_zeroGapMass_of_zero gap q hgap0 s hs
+  have hbudget :=
+    zeroGapMass_scaled_le_delta_add_deficit_sub_support
+      gap q n ell delta t ht hgap hQle hell hfloor
+  exact (mul_le_mul_of_nonneg_left hsub ht0).trans hbudget
+
+/-- Equivalent avoidance form when a finite set contains every positive
+quotient gap. -/
+theorem deficit_arc_budget_of_avoids_positive
+    {I : Type*} [Fintype I]
+    (gap : I → ℝ) (q : I → ℕ)
+    (n ell : ℕ) (delta t : ℝ)
+    (ht : t = (n : ℝ) + delta)
+    (hgap0 : ∀ i, 0 ≤ gap i)
+    (hgap : (∑ i, gap i) = 1)
+    (hQle : (∑ i, q i) ≤ n)
+    (hell : ell = n - floorExcess q)
+    (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i)
+    (positive : Finset I)
+    (hpositive : ∀ i, i ∈ positive ↔ q i ≠ 0)
+    (s : Finset I)
+    (hdisj : Disjoint s positive)
+    (ht0 : 0 ≤ t) :
+    t * (∑ i ∈ s, gap i) ≤
+      delta + (ell - positiveSupport q : ℕ) := by
+  apply deficit_zero_arc_budget
+    gap q n ell delta t ht hgap0 hgap hQle hell hfloor s
+  · intro i hi
+    by_contra hqi
+    have hip : i ∈ positive := (hpositive i).2 hqi
+    exact Finset.disjoint_left.mp hdisj hi hip
+  · exact ht0
+
 /-- Unit-deficit arc budget: every subarc avoiding the unique exceptional gap
 has scaled mass at most `delta`. -/
 theorem unit_deficit_arc_budget
@@ -131,6 +182,8 @@ theorem unit_deficit_exists_exceptional_arc_budget
 #print axioms sum_gap_le_zeroGapMass_of_zero
 #print axioms all_zero_of_avoids_unique_positive
 #print axioms sum_gap_le_zeroGapMass_of_avoids_unique
+#print axioms deficit_zero_arc_budget
+#print axioms deficit_arc_budget_of_avoids_positive
 #print axioms unit_deficit_arc_budget
 #print axioms unit_deficit_exists_exceptional_arc_budget
 
