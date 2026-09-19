@@ -111,6 +111,45 @@ theorem all_missing
   exact weighted_hansel_all_missing (bit C) (active C)
     (separates C) hmissing
 
+/-- If every vertex uses at most a prescribed number of colours, the free
+coordinates supply the corresponding Kraft weight. -/
+theorem expected_weight_le
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (C : OrderedEdgeColoring V k) (ell : V → ℕ)
+    (hactive : ∀ v, (active C v).card ≤ ell v) :
+    ∑ v, 2 ^ (k - ell v) ≤
+      ∑ v, 2 ^ (k - (active C v).card) := by
+  apply Finset.sum_le_sum
+  intro v _
+  apply Nat.pow_le_pow_right
+  · norm_num
+  · omega
+
+/-- Local active-colour bounds imply the weighted Kraft inequality. -/
+theorem capacity_of_active_le
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (C : OrderedEdgeColoring V k) (ell : V → ℕ)
+    (hactive : ∀ v, (active C v).card ≤ ell v) :
+    ∑ v, 2 ^ (k - ell v) ≤ 2 ^ k :=
+  (expected_weight_le C ell hactive).trans (weighted_capacity C)
+
+/-- Sendov cluster-exponent specialization. -/
+theorem cluster_capacity_of_active_le
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    (exponent ell : V → ℕ)
+    (hexponent : ∀ v, exponent v ≤ k)
+    (hell : ∀ v, ell v = k - exponent v)
+    (hactive : ∀ v, (active C v).card ≤ ell v) :
+    ∑ v, 2 ^ exponent v ≤ 2 ^ k := by
+  calc
+    ∑ v, 2 ^ exponent v =
+        ∑ v, 2 ^ (k - ell v) := by
+          apply Finset.sum_congr rfl
+          intro v _
+          rw [hell v, Nat.sub_sub_cancel (hexponent v)]
+    _ ≤ 2 ^ k := capacity_of_active_le C ell hactive
+
 /-- Any admissible colouring by `k` ordered edge colours gives the
 ordinary `2^k` vertex bound. -/
 theorem card_le_two_pow
@@ -128,6 +167,9 @@ theorem card_le_two_pow
 #print axioms separates
 #print axioms weighted_capacity
 #print axioms card_le_two_pow
+#print axioms expected_weight_le
+#print axioms capacity_of_active_le
+#print axioms cluster_capacity_of_active_le
 #print axioms defect
 #print axioms one_missing
 #print axioms all_missing
