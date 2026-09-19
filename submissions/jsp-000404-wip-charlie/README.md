@@ -92,6 +92,35 @@ The two live global routes are therefore:
 Numerical falsification is used only to kill over-strong conjectures; passing
 random tests is never treated as proof.
 
+### Exact-normalization correction
+
+A later audit identified an important distinction in the numerical
+falsification work.
+
+Sendov Lemma 4.12 chooses the parameter u, hence t = u/2 = n+delta, from the
+**actual equality**
+
+  GA(V) = (1 - 2/u) * pi.
+
+Several earlier adversarial searches instead fixed a looser external angle cap
+and only required the sampled centre set to satisfy that cap.  Such slack-cap
+counterexamples are valid against statements claimed uniformly for every
+configuration below a fixed cap, but they do **not by themselves** refute a
+statement restricted to Sendov's exact normalization.
+
+Accordingly:
+
+- exact algebraic counterexamples and exact-normalized geometric
+  counterexamples remain hard stops;
+- slack-cap numerical counterexamples are retained only as warnings against
+  over-strong cap-uniform lemmas;
+- new induction work should preserve an actual maximum-angle witness whenever
+  possible.  If at most three top-level rank-one circles contain a maximizing
+  angle triple, deleting a different top-level centre preserves the exact
+  angle parameter.
+
+This distinction is now part of the frozen research protocol.
+
 ## Current research invariant
 
 The published Sendov Lemma 4.12 correctly reduces a perfect generalized
