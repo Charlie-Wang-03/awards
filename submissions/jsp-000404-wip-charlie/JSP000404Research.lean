@@ -57,6 +57,8 @@ import JSP000404Research.BoundaryExcess
 
 import JSP000404Research.BoundaryDominance
 
+import JSP000404Research.BoundaryFailureStructure
+
 import JSP000404Research.BoundaryIntervalCount
 
 import JSP000404Research.HullTurnBudget
