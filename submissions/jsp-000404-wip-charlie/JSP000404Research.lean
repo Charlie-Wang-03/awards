@@ -63,6 +63,8 @@ import JSP000404Research.HullTurnBudget
 
 import JSP000404Research.PhaseTurnClosure
 
+import JSP000404Research.GlobalTurnSlots
+
 import JSP000404Research.AdaptiveDirectionColor
 
 import JSP000404Research.DeficitTwo
