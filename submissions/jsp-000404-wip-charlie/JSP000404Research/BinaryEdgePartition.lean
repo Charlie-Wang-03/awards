@@ -116,8 +116,23 @@ theorem cluster_capacity_of_active_le
           rw [hell v, Nat.sub_sub_cancel (hexponent v)]
     _ ≤ 2 ^ k := capacity_of_active_le C ell hactive
 
+/-- Any proper partition of all complete-graph edges into `k` binary
+colour classes gives the ordinary Hansel cardinality bound. -/
+theorem card_le_two_pow
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (C : BinaryEdgePartition V k) :
+    Fintype.card V ≤ 2 ^ k := by
+  have hcap := weighted_capacity C
+  have hone :
+      Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
+    simpa using
+      (Finset.sum_le_sum (s := (Finset.univ : Finset V))
+        (fun v _ => Nat.one_le_pow _ _))
+  exact hone.trans hcap
+
 #print axioms separates
 #print axioms weighted_capacity
+#print axioms card_le_two_pow
 #print axioms defect
 #print axioms expected_weight_le
 #print axioms capacity_of_active_le
