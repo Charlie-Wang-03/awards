@@ -54,6 +54,44 @@ In particular, this branch does not yet formalize or assume:
      colours,
    from the global ordered-direction / centre-gap geometry.
 
+## Current hard stops and sharpened outlets
+
+The following tempting strengthenings have now been adversarially tested and
+must **not** be used as hidden assumptions:
+
+- a fixed standard-band phase need not satisfy every local deficit budget;
+- residual edges cannot in general always be absorbed into one of their two
+  neighbouring retained colours;
+- per-centre phase averaging need not satisfy
+  `E_phase 2^(floorExcess b) >= 2^(floorExcess q)`;
+- the coarse support inequality `sum_i 2^(-positiveSupport q_i) <= 1` is false;
+- an arbitrary deleted centre need not create an exponent gain anywhere;
+- the gain digraph need not contain the simple gain-closed core previously
+  hoped for;
+- the strong deletion-average condition `sum bonus >= W` is false.
+
+Closed replacements now available in Lean include:
+
+- exact one-exception boundary domination and exact budget-failure structure;
+- a bad local phase loses exactly one floor-excess unit at the exceptional gap;
+- at such a bad phase the exceptional quotient is at least two, and the number
+  of boundary-hit zero quotient gaps is exactly `(n - sum q) + 1`;
+- zero-gain merges are completely characterized:
+  no-carry requires at least one zero quotient, while one-carry zero gain
+  requires both quotients zero;
+- the sharp total-bonus deletion threshold:
+  if `W < |V| + sum_r bonus r`, then some deletion is compensated.
+
+The two live global routes are therefore:
+
+1. **phase/even-partition route:** control the union of budget and wrap
+   obstructions by a global phase-count / convex-hull turning argument;
+2. **compensated-deletion route:** prove the sharp total-bonus threshold from
+   the coupled radial orders of an actual planar configuration.
+
+Numerical falsification is used only to kill over-strong conjectures; passing
+random tests is never treated as proof.
+
 ## Current research invariant
 
 The published Sendov Lemma 4.12 correctly reduces a perfect generalized
