@@ -33,6 +33,16 @@ import JSP000404Research.DeletionAveraging
 
 import JSP000404Research.MergeGainCases
 
+import JSP000404Research.WrapLocal
+
+import JSP000404Research.WrapSymmetric
+
+import JSP000404Research.WrapGraph
+
+import JSP000404Research.WrapSwitch
+
+import JSP000404Research.CycleParity
+
 /-!
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
