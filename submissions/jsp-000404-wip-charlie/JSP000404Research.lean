@@ -37,6 +37,8 @@ import JSP000404Research.DeletionAveraging
 
 import JSP000404Research.DeletionThreshold
 
+import JSP000404Research.DeletionDichotomy
+
 import JSP000404Research.MergeGainCases
 
 import JSP000404Research.MergeZeroGain
