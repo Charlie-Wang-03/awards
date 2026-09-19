@@ -99,6 +99,86 @@ noncomputable def toOrderedEdgeColoring
       · exact R.safe_touching_residual hav hvw (Or.inr hvwRet)
     · exact R.safe_touching_residual hav hvw (Or.inl havRet)
 
+/-- Target colours used by residual edges incident to a vertex. -/
+noncomputable def residualTargets
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    {C : OrderedEdgeColoring V (k + 1)}
+    (R : ResidualRecoloring C)
+    (v : V) : Finset (Fin k) := by
+  classical
+  exact Finset.univ.filter fun c =>
+    (∃ a, a < v ∧ ¬(C.color a v).val < k ∧ R.target a v = c) ∨
+    (∃ w, v < w ∧ ¬(C.color v w).val < k ∧ R.target v w = c)
+
+/-- Every active colour after recolouring is either a retained old colour or
+a target colour used by an incident residual edge. -/
+theorem active_subset_retained_union_targets
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    {C : OrderedEdgeColoring V (k + 1)}
+    (R : ResidualRecoloring C)
+    (v : V) :
+    active R.toOrderedEdgeColoring v ⊆
+      retainedActive C v ∪ R.residualTargets v := by
+  classical
+  intro c hc
+  simp only [active, Finset.mem_filter, Finset.mem_univ, true_and] at hc
+  rcases hc with ⟨a, hav, hcol⟩ | ⟨w, hvw, hcol⟩
+  · by_cases hret : (C.color a v).val < k
+    · apply Finset.mem_union_left
+      simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
+      apply Or.inl
+      refine ⟨a, hav, ?_⟩
+      apply Fin.ext
+      have hval := congrArg Fin.val hcol
+      simpa [toOrderedEdgeColoring, recoloredColor, hret, retainedColor] using hval
+    · apply Finset.mem_union_right
+      simp only [residualTargets, Finset.mem_filter, Finset.mem_univ, true_and]
+      apply Or.inl
+      refine ⟨a, hav, hret, ?_⟩
+      simpa [toOrderedEdgeColoring, recoloredColor, hret] using hcol
+  · by_cases hret : (C.color v w).val < k
+    · apply Finset.mem_union_left
+      simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
+      apply Or.inr
+      refine ⟨w, hvw, ?_⟩
+      apply Fin.ext
+      have hval := congrArg Fin.val hcol
+      simpa [toOrderedEdgeColoring, recoloredColor, hret, retainedColor] using hval
+    · apply Finset.mem_union_right
+      simp only [residualTargets, Finset.mem_filter, Finset.mem_univ, true_and]
+      apply Or.inr
+      refine ⟨w, hvw, hret, ?_⟩
+      simpa [toOrderedEdgeColoring, recoloredColor, hret] using hcol
+
+/-- Pointwise retained-plus-target colour budgets control the final active
+colour count. -/
+theorem active_card_le_of_union_budget
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    {C : OrderedEdgeColoring V (k + 1)}
+    (R : ResidualRecoloring C)
+    (ell : V → ℕ)
+    (hbudget : ∀ v,
+      (retainedActive C v ∪ R.residualTargets v).card ≤ ell v) :
+    ∀ v, (active R.toOrderedEdgeColoring v).card ≤ ell v := by
+  intro v
+  exact (Finset.card_le_card
+    (R.active_subset_retained_union_targets v)).trans (hbudget v)
+
+/-- Direct Kraft outlet under the exact pointwise recolouring budget. -/
+theorem cluster_capacity_of_recoloring_budget
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    {C : OrderedEdgeColoring V (k + 1)}
+    (R : ResidualRecoloring C)
+    (exponent ell : V → ℕ)
+    (hexponent : ∀ v, exponent v ≤ k)
+    (hell : ∀ v, ell v = k - exponent v)
+    (hbudget : ∀ v,
+      (retainedActive C v ∪ R.residualTargets v).card ≤ ell v) :
+    ∑ v, 2 ^ exponent v ≤ 2 ^ k := by
+  apply cluster_capacity_of_active_le
+    R.toOrderedEdgeColoring exponent ell hexponent hell
+  exact R.active_card_le_of_union_budget ell hbudget
+
 /-- Optional absorption condition: a residual edge is reassigned to a colour
 already represented by retained old edges at both endpoints. -/
 def IsAbsorbed
@@ -179,6 +259,9 @@ theorem cluster_capacity_of_absorbed_recoloring
 
 #print axioms retained_pair_ne
 #print axioms toOrderedEdgeColoring
+#print axioms active_subset_retained_union_targets
+#print axioms active_card_le_of_union_budget
+#print axioms cluster_capacity_of_recoloring_budget
 #print axioms active_subset_retainedActive
 #print axioms active_card_le_retainedActive
 #print axioms cluster_capacity_of_absorbed_recoloring
