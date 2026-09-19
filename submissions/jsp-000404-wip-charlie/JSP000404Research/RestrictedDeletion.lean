@@ -50,40 +50,32 @@ theorem exists_compensated_deletion_in_finset
   let W : ℕ := ∑ i : V, weight i
   by_contra hnone
   push_neg at hnone
-  have hfail : ∀ r ∈ R, post r + 1 ≤ W := by
+  have hbonus_point : ∀ r ∈ R, bonus r + 1 ≤ weight r := by
     intro r hr
-    dsimp [W]
-    omega
-  have hpoint' : ∀ r ∈ R,
-      W - weight r + bonus r ≤ post r := by
-    intro r hr
+    have hwr : weight r ≤ W := by
+      dsimp [W]
+      exact Finset.single_le_sum
+        (fun _ _ => Nat.zero_le _)
+        (Finset.mem_univ r)
     have hsplit :
         (∑ i ∈ Finset.univ.erase r, weight i) = W - weight r := by
       dsimp [W]
       rw [Finset.sum_erase (Finset.mem_univ r)]
-    simpa [hsplit] using hpoint r hr
-  have hsum :
-      ∑ r ∈ R, (W - weight r + bonus r + 1) ≤
-        ∑ r ∈ R, W := by
-    apply Finset.sum_le_sum
-    intro r hr
-    exact (Nat.add_le_add_right (hpoint' r hr) 1).trans (hfail r hr)
-  have hweight_le : ∀ r ∈ R, weight r ≤ W := by
-    intro r hr
-    dsimp [W]
-    exact Finset.single_le_sum
-      (fun _ _ => Nat.zero_le _)
-      (Finset.mem_univ r)
-  have hrewrite :
-      (∑ r ∈ R, (W - weight r + bonus r + 1)) =
-        R.card * W - (∑ r ∈ R, weight r) +
-          (∑ r ∈ R, bonus r) + R.card := by
-    -- Pure natural-number bookkeeping; all deleted weights are bounded by W.
+    have hp := hpoint r hr
+    rw [hsplit] at hp
+    have hfail : post r < W := by
+      dsimp [W]
+      exact hnone r hr
     omega
-  rw [hrewrite] at hsum
-  have hconst : (∑ _r ∈ R, W) = R.card * W := by
-    simp [Nat.mul_comm]
-  rw [hconst] at hsum
+  have hsum :
+      ∑ r ∈ R, (bonus r + 1) ≤ ∑ r ∈ R, weight r :=
+    Finset.sum_le_sum hbonus_point
+  have hleft :
+      (∑ r ∈ R, (bonus r + 1)) =
+        (∑ r ∈ R, bonus r) + R.card := by
+    rw [Finset.sum_add_distrib]
+    simp
+  rw [hleft] at hsum
   omega
 
 /-- Dyadic specialization. -/
