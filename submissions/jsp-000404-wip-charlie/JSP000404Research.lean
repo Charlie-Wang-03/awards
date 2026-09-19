@@ -13,6 +13,8 @@ import JSP000404Research.UniqueGap
 
 import JSP000404Research.SingleSupportDeficit
 
+import JSP000404Research.SingleSupportWidth
+
 import JSP000404Research.GapArc
 
 import JSP000404Research.OrderedEdgeColor
