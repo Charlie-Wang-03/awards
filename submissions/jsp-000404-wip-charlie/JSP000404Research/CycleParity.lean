@@ -39,6 +39,35 @@ theorem even_of_cycleGraph_isBipartite
   exact even_of_cycleGraph_bool_coloring hm
     (SimpleGraph.recolorOfEquiv (cycleGraph m) finTwoEquiv.symm c)
 
+
+/-- Abstract cyclic switch rule.
+
+Think of `high i` as the L/H type of cycle edge `i`, and `up i` as
+whether that edge points upward in the ambient linear order.  If along every
+adjacency of the abstract cycle, the L/H type stays the same exactly when the
+order direction flips, then the Boolean label
+`decide (high i = up i)` alternates on every cycle edge. -/
+theorem even_of_cycle_switch_rule
+    {m : ℕ} (hm : 3 ≤ m)
+    (high up : Fin m → Bool)
+    (hswitch : ∀ {i j},
+      (cycleGraph m).Adj i j →
+        (high i = high j ↔ up i ≠ up j)) :
+    Even m := by
+  let c : (cycleGraph m).Coloring Bool :=
+    SimpleGraph.Coloring.mk
+      (fun i => decide (high i = up i)) (by
+        intro i j hij
+        have hs := hswitch hij
+        cases hi : high i <;>
+          cases hj : high j <;>
+          cases ui : up i <;>
+          cases uj : up j <;>
+          simp_all)
+  exact even_of_cycleGraph_bool_coloring hm c
+
+#print axioms even_of_cycle_switch_rule
+
 #print axioms even_of_cycleGraph_bool_coloring
 #print axioms even_of_cycleGraph_isBipartite
 
