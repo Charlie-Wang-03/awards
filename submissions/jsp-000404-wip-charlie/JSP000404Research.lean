@@ -6,6 +6,8 @@ import JSP000404Research.OneMissingHansel
 import JSP000404Research.AtMostOneFullHansel
 
 import JSP000404Research.FullBoundaryCount
+
+import JSP000404Research.FullGapExponent
 import JSP000404Research.WeightedDefect
 import JSP000404Research.ZeroCarry
 import JSP000404Research.KraftBridge
