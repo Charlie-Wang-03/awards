@@ -68,7 +68,24 @@ must **not** be used as hidden assumptions:
 - an arbitrary deleted centre need not create an exponent gain anywhere;
 - the gain digraph need not contain the simple gain-closed core previously
   hoped for;
-- the strong deletion-average condition `sum bonus >= W` is false.
+- the strong deletion-average condition `sum bonus >= W` is false;
+- the exact-normalized global critical-turn conjecture
+  `sum criticalWidth <= 2*(n+delta)` is false: two concentric regular
+  heptagons (outer radius 1, inner radius 0.85, relative rotation pi/7) give
+  `t ~= 13.4330`, `delta ~= 0.4330`, but total normalized critical width
+  about `31.3191 > 2*t ~= 26.8661`;
+- the weaker total critical bad-mass bound `sum badWidth < t` is also false:
+  aligned concentric regular 13-gons near radius ratio 0.708 give
+  `t ~= 26.4987`, `delta ~= 0.49868`, and summed bad-interval lengths
+  about `37.83 > t`; the obstruction intervals overlap heavily;
+- even the strengthening `measure(union bad intervals) <= t/2` is false:
+  an aligned double regular pentagon near radius ratio 0.4525 gives union
+  coverage about `0.6123*t`;
+- "full vertex => every radial gap <= 1" is false.  The correct generic
+  conclusion is that a full interlacing puts at most one partition boundary
+  in each radial gap, while all partition-boundary spacings are <= 1; hence
+  each radial gap is strictly shorter than two units and every quotient is
+  <= 1.  Thus the Sendov floor-excess exponent is zero.
 
 Closed replacements now available in Lean include:
 
@@ -82,12 +99,21 @@ Closed replacements now available in Lean include:
 - the sharp total-bonus deletion threshold:
   if `W < |V| + sum_r bonus r`, then some deletion is compensated.
 
-The two live global routes are therefore:
+The live global routes are therefore:
 
-1. **phase/even-partition route:** control the union of budget and wrap
-   obstructions by a global phase-count / convex-hull turning argument;
-2. **compensated-deletion route:** prove the sharp total-bonus threshold from
-   the coupled radial orders of an actual planar configuration.
+1. **fixed-phase wrap route:** prove directly that the union of wrap-triangle
+   bad-phase intervals does not cover the phase circle.  Total-turn, total
+   bad-mass, and half-circle-union bounds are no longer admissible shortcuts;
+   any proof must exploit the strong overlap structure of the bad intervals;
+2. **full-band / Hansel route:** find a phase with at most one fully specified
+   standard-band vertex, or derive an equivalent defect statement.  A full
+   generic vertex has zero Sendov floor-excess, but no global phase-existence
+   theorem is proved yet;
+3. **adaptive even-partition route:** generalize the Erdős--Szekeres narrow
+   direction-interval reassignment while preserving bipartiteness/evenness;
+4. **compensated-deletion route:** prove a restricted or dichotomic deletion
+   theorem from the coupled radial orders of an actual planar configuration.
+
 
 Numerical falsification is used only to kill over-strong conjectures; passing
 random tests is never treated as proof.
