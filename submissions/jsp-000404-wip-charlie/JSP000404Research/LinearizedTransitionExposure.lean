@@ -85,6 +85,35 @@ theorem gap_pos_of_positive_quotient
   · exact hpos.2
   · exact False.elim ((not_lt_of_ge ht.le) hneg.1)
 
+/-- A positive quotient yields the quantitative normalized lower bound
+1/t <= gap. -/
+theorem one_div_t_le_gap_of_positive_quotient
+    {q : ℕ} {t gap : ℝ}
+    (ht : 0 < t)
+    (hq : q ≠ 0)
+    (hfloor : (q : ℝ) ≤ t * gap) :
+    1 / t ≤ gap := by
+  have hq1 : 1 ≤ q := by omega
+  have hqR : (1 : ℝ) ≤ q := by exact_mod_cast hq1
+  have hone : 1 ≤ t * gap := hqR.trans hfloor
+  rw [div_le_iff₀ ht]
+  simpa [one_mul] using hone
+
+/-- Physical angular form: if lam = pi/t, one positive quotient gap has
+angular width at least one cap unit lam. -/
+theorem lam_le_pi_mul_gap_of_positive_quotient
+    {q : ℕ} {t gap lam : ℝ}
+    (ht : 0 < t)
+    (hq : q ≠ 0)
+    (hfloor : (q : ℝ) ≤ t * gap)
+    (hlam : lam = Real.pi / t) :
+    lam ≤ Real.pi * gap := by
+  have hnorm :=
+    one_div_t_le_gap_of_positive_quotient ht hq hfloor
+  rw [hlam]
+  have hpi := mul_le_mul_of_nonneg_left hnorm Real.pi_pos.le
+  simpa [div_eq_mul_inv, mul_assoc, mul_comm, mul_left_comm] using hpi
+
 /-- Linearized common-sign rays obtained by cutting at a positive final gap
 lie in a strict sub-pi interval and hence expose their centre. -/
 theorem strictlyExposedAt_of_linearized_positive_last_gap
@@ -183,6 +212,8 @@ theorem strictlyExposedAt_of_linearized_positive_last_quotient
 
 #print axioms prefixGap_le_one_sub_last
 #print axioms gap_pos_of_positive_quotient
+#print axioms one_div_t_le_gap_of_positive_quotient
+#print axioms lam_le_pi_mul_gap_of_positive_quotient
 #print axioms strictlyExposedAt_of_linearized_positive_last_gap
 #print axioms strictlyExposedAt_of_linearized_positive_last_quotient
 
