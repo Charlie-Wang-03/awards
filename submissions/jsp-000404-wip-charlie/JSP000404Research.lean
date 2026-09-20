@@ -241,3 +241,10 @@ import JSP000404Research.CentreQuotientData
 
 import JSP000404Research.CentreExponent
 import JSP000404Research.SignedRayAngle
+
+
+import JSP000404Research.SignPathAppend
+
+import JSP000404Research.CanonicalSignGap
+
+import JSP000404Research.CentreSignPath
