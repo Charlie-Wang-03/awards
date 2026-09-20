@@ -85,6 +85,38 @@ theorem balancedHardStop_no_table_gain_split :
   obtain ⟨v, hv⟩ := balancedHardStop_each_split_fails r
   exact (not_lt_of_ge (hr v)) hv
 
+/-- Post-exponent vector on the four-point survivor child after isolating
+one singleton leaf.  The isolated coordinate is irrelevant and is filled with
+its old exponent. -/
+def singletonHardStopPostExp : Fin 5 → Fin 5 → ℕ
+  | 0 => ![1,0,0,0,0]
+  | 1 => ![1,0,1,0,0]
+  | 2 => ![1,1,0,0,0]
+  | 3 => ![1,0,0,0,1]
+  | 4 => ![1,0,0,1,0]
+
+/-- Every singleton+four split also has a zero-gain survivor in the four-point
+child. -/
+theorem singletonHardStop_each_split_fails
+    (removed : Fin 5) :
+    ∃ v : Fin 5,
+      v ≠ removed ∧
+      singletonHardStopPostExp removed v <
+        balancedHardStopOldExp v + 1 := by
+  fin_cases removed <;> native_decide
+
+/-- Thus no singleton leaf can be peeled off while making every vertex in the
+remaining four-point child gain one exponent unit. -/
+theorem singletonHardStop_no_gain_child :
+    ¬ ∃ removed : Fin 5,
+      ∀ v : Fin 5, v ≠ removed →
+        balancedHardStopOldExp v + 1 ≤
+          singletonHardStopPostExp removed v := by
+  rintro ⟨removed, h⟩
+  obtain ⟨v, hne, hv⟩ :=
+    singletonHardStop_each_split_fails removed
+  exact (not_lt_of_ge (h v hne)) hv
+
 /-- Coverage version: every balanced 2+3 partition is represented by a table
 entry, and its realized post-exponent vector violates pointwise +1 gain. -/
 theorem balancedHardStop_every_two_three_split_fails :
@@ -100,6 +132,8 @@ theorem balancedHardStop_every_two_three_split_fails :
   exact ⟨r, hr, balancedHardStop_each_split_fails r⟩
 
 #print axioms balancedHardStop_old_weight
+#print axioms singletonHardStop_each_split_fails
+#print axioms singletonHardStop_no_gain_child
 #print axioms balancedHardStop_covers_all_two_subsets
 #print axioms balancedHardStop_no_table_gain_split
 #print axioms balancedHardStop_every_two_three_split_fails
