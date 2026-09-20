@@ -263,3 +263,6 @@ import JSP000404Research.ConcreteHighExponentExposure
 
 
 import JSP000404Research.DyadicTurnCost
+
+
+import JSP000404Research.OneSupportTransitionCost
