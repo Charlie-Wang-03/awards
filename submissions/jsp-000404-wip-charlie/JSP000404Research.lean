@@ -177,3 +177,6 @@ import JSP000404Research.ResidualListCounterexample
 
 
 import JSP000404Research.ResidualComponentFlip
+
+
+import JSP000404Research.MissingDefectBalance
