@@ -110,27 +110,6 @@ pack into the full direction circle. -/
 theorem highTransition_gap_sum_le_two
     {V I : Type*} [LinearOrder V] [Fintype V] [Fintype I]
     {p : V → Plane}
-    (centre : I → V)
-    (hcentre : Function.Injective centre)
-    (t : ℝ)
-    (C : ∀ r : I, CentreProjectiveCycle
-      (p := p) (by
-        intro x y h
-        exact h) (centre r))
-    (cert : ∀ r : I,
-      HighExponentTransitionIntervalCertificate
-        (p := p) (by
-          intro x y h
-          exact h) t (centre r) (C r)) :
-    (∑ r : I, (cert r).ge) ≤ 2 := by
-  -- This overly generic formulation cannot reconstruct injectivity of p from
-  -- hcentre; use the concrete hp-specialized theorem below.
-  sorry
-
-/-- Concrete hp-specialized transition-gap packing theorem. -/
-theorem highTransition_gap_sum_le_two'
-    {V I : Type*} [LinearOrder V] [Fintype V] [Fintype I]
-    {p : V → Plane}
     (hp : Function.Injective p)
     (centre : I → V)
     (hcentre : Function.Injective centre)
@@ -192,12 +171,12 @@ theorem highTransition_quotient_sum_le_two_n
     (fun r => (cert r).ge)
     n delta t hn hdelta0 hdeltaHalf ht
     (fun r => (cert r).qe_le)
-    (highTransition_gap_sum_le_two'
+    (highTransition_gap_sum_le_two
       hp centre hcentre t C cert)
 
 #print axioms list_sum_eq_member_of_positiveCount_one
 #print axioms highTransition_qe_eq_exponent_add_one_of_support_one
-#print axioms highTransition_gap_sum_le_two'
+#print axioms highTransition_gap_sum_le_two
 #print axioms highTransition_quotient_sum_le_two_n
 
 end JSP000404Research
