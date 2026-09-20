@@ -222,3 +222,6 @@ import JSP000404Research.TransitionGapAlignment
 
 
 import JSP000404Research.CanonicalProjectiveRay
+
+
+import JSP000404Research.FiniteProjectiveRays
