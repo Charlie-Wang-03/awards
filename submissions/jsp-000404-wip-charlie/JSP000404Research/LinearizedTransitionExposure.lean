@@ -66,7 +66,8 @@ theorem prefixGap_le_one_sub_last
       Finset.sum_erase_add _ gap hmem
     rw [hgap] at hadd
     linarith
-  simpa [e, herase] using hsum
+  rw [herase] at hsum
+  simpa [e] using hsum
 
 /-- A positive quotient plus q <= t*gap and t>0 forces the gap itself to be
 positive. -/
@@ -80,7 +81,9 @@ theorem gap_pos_of_positive_quotient
   have hqR : (1 : ℝ) ≤ q := by exact_mod_cast hq1
   have hprod : 0 < t * gap := by
     linarith
-  exact (mul_pos_iff.mp hprod).resolve_left (not_lt_of_ge ht.le)
+  rcases mul_pos_iff.mp hprod with hpos | hneg
+  · exact hpos.2
+  · exact False.elim ((not_lt_of_ge ht.le) hneg.1)
 
 /-- Linearized common-sign rays obtained by cutting at a positive final gap
 lie in a strict sub-pi interval and hence expose their centre. -/
