@@ -86,6 +86,35 @@ theorem exactly_one_transition_of_short_opposite_arc
     boolTransitionCountFrom_mod_two_eq_one_of_last_not a signs hlast
   omega
 
+/-- Equal endpoint signs on a subarc of total normalized length below two
+force zero transitions.  The transition count is at most one, while parity is
+even. -/
+theorem zero_transition_of_short_same_arc
+    (a : Bool) (signs : List Bool) (gaps : List ℝ)
+    (h : TransitionGapLowerBound a signs gaps)
+    (hlast : boolLastFrom a signs = a)
+    (hshort : gaps.sum < 2) :
+    boolTransitionCountFrom a signs = 0 := by
+  have hle :=
+    transitionCount_le_one_of_gapSum_lt_two a signs gaps h hshort
+  have hmod := boolTransitionCountFrom_mod_two a signs
+  rw [hlast] at hmod
+  simp at hmod
+  omega
+
+/-- Lower-branch specialization for a same-sign arc of length at most
+`1+delta`. -/
+theorem zero_transition_of_lower_branch_same_arc
+    (a : Bool) (signs : List Bool) (gaps : List ℝ)
+    {delta : ℝ}
+    (hdelta : delta < (1 : ℝ) / 2)
+    (h : TransitionGapLowerBound a signs gaps)
+    (hlast : boolLastFrom a signs = a)
+    (hlen : gaps.sum ≤ 1 + delta) :
+    boolTransitionCountFrom a signs = 0 := by
+  apply zero_transition_of_short_same_arc a signs gaps h hlast
+  linarith
+
 /-- Sendov lower-branch numerical specialization: a subarc of total length at
 most `1+delta`, with `delta<1/2`, is certainly shorter than two units. -/
 theorem exactly_one_transition_of_lower_branch_arc
@@ -102,6 +131,8 @@ theorem exactly_one_transition_of_lower_branch_arc
 #print axioms transitionCount_le_gapSum
 #print axioms transitionCount_le_one_of_gapSum_lt_two
 #print axioms exactly_one_transition_of_short_opposite_arc
+#print axioms zero_transition_of_short_same_arc
+#print axioms zero_transition_of_lower_branch_same_arc
 #print axioms exactly_one_transition_of_lower_branch_arc
 
 end JSP000404Research
