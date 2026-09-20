@@ -174,3 +174,6 @@ import JSP000404Research.ResidualListCapacity
 
 
 import JSP000404Research.ResidualListCounterexample
+
+
+import JSP000404Research.ResidualComponentFlip
