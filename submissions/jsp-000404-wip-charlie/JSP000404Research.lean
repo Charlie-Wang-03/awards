@@ -158,3 +158,5 @@ stated as proved.
 import JSP000404Research.ResidualBitMerge
 
 import JSP000404Research.ResidualVerticalPairs
+
+import JSP000404Research.ResidualFreeNeighbour
