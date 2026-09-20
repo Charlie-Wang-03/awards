@@ -26,55 +26,6 @@ namespace JSP000404Research
 open Real
 open scoped BigOperators
 
-/-- In a list with exactly one positive entry, any displayed nonzero member is
-the whole list sum. -/
-theorem list_sum_eq_member_of_positiveCount_one
-    (qs : List ℕ) (q : ℕ)
-    (hsupport : listPositiveCount qs = 1)
-    (hqmem : q ∈ qs)
-    (hqne : q ≠ 0) :
-    qs.sum = q := by
-  induction qs with
-  | nil =>
-      simp at hqmem
-  | cons a as ih =>
-      rw [List.mem_cons] at hqmem
-      by_cases ha : a = 0
-      · subst a
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hsupport
-        simp only [List.sum_cons, zero_add]
-        rcases hqmem with hq | hq
-        · exact False.elim (hqne hq.symm)
-        · exact ih hsupport hq hqne
-      · simp only [listPositiveCount, if_neg ha] at hsupport
-        have htailCount : listPositiveCount as = 0 := by omega
-        have htailSum :=
-          list_sum_eq_zero_of_positiveCount_eq_zero as htailCount
-        rcases hqmem with hq | hq
-        · subst q
-          simp [htailSum]
-        · have hqzero : q = 0 := by
-            have hallzero :
-                ∀ x ∈ as, x = 0 := by
-              intro x hx
-              by_contra hx0
-              have hpos :
-                  1 ≤ listPositiveCount as := by
-                induction as with
-                | nil => simp at hx
-                | cons b bs ih2 =>
-                    by_cases hb : b = 0
-                    · subst b
-                      simp only [listPositiveCount, if_pos rfl, zero_add]
-                      rw [List.mem_cons] at hx
-                      rcases hx with rfl | hx
-                      · contradiction
-                      · exact ih2 hx
-                    · simp [listPositiveCount, hb]
-              omega
-            exact hallzero q hq
-          exact False.elim (hqne hqzero)
-
 /-- For a support-one high-exponent centre, the transition quotient is exactly
 the usual one-support turn cost exponent+1. -/
 theorem highTransition_qe_eq_exponent_add_one_of_support_one
@@ -86,23 +37,36 @@ theorem highTransition_qe_eq_exponent_add_one_of_support_one
     (hsupport :
       positiveSupport (centreQuotient C t) = 1) :
     cert.qe = centreExponent C t + 1 := by
-  have hsupportList :
-      listPositiveCount (quotientList t C.gaps) = 1 := by
-    rw [← centreQuotient_ofFn]
-    rw [listPositiveCount_ofFn_eq_positiveSupport]
-    exact hsupport
-  have hsumList :
-      (quotientList t C.gaps).sum = cert.qe :=
-    list_sum_eq_member_of_positiveCount_one
-      (quotientList t C.gaps) cert.qe
-      hsupportList cert.qe_mem cert.qe_ne
+  classical
+  have hmemFn :
+      cert.qe ∈ List.ofFn (centreQuotient C t) := by
+    rw [centreQuotient_ofFn C t]
+    exact cert.qe_mem
+  rw [List.mem_ofFn'] at hmemFn
+  obtain ⟨r, hr⟩ := hmemFn
+  have hrpos : centreQuotient C t r ≠ 0 := by
+    rw [hr]
+    exact cert.qe_ne
+  obtain ⟨e, hepos, heuniq⟩ :=
+    existsUnique_positive_of_one_support
+      (centreQuotient C t) hsupport
+  have hre : r = e := heuniq r hrpos
+  have hsumSingle :
+      (∑ x, centreQuotient C t x) =
+        centreQuotient C t r := by
+    apply Finset.sum_eq_single r
+    · intro x _ hxr
+      by_contra hxpos
+      have hxe : x = e := heuniq x hxpos
+      exact hxr (hxe.trans hre.symm)
+    · simp
   have hid :=
     floorExcess_add_positiveSupport (centreQuotient C t)
   have hid' :
       centreExponent C t + 1 =
-        ∑ r, centreQuotient C t r := by
+        ∑ x, centreQuotient C t x := by
     simpa [centreExponent, hsupport] using hid
-  rw [centreQuotient_sum_eq_list_sum C t, hsumList] at hid'
+  rw [hsumSingle, hr] at hid'
   omega
 
 /-- Strict-support arcs of any finite family of distinct high-exponent centres
@@ -174,7 +138,6 @@ theorem highTransition_quotient_sum_le_two_n
     (highTransition_gap_sum_le_two
       hp centre hcentre t C cert)
 
-#print axioms list_sum_eq_member_of_positiveCount_one
 #print axioms highTransition_qe_eq_exponent_add_one_of_support_one
 #print axioms highTransition_gap_sum_le_two
 #print axioms highTransition_quotient_sum_le_two_n
