@@ -207,3 +207,6 @@ import JSP000404Research.BoolSignShape
 
 
 import JSP000404Research.UniqueTransitionGap
+
+
+import JSP000404Research.LinearizedTransitionExposure
