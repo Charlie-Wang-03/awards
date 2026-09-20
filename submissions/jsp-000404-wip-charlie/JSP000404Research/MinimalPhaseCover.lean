@@ -164,6 +164,73 @@ theorem irredundant_interval_right_strict
   exact right_strictMono_of_left_le_of_private
     L R hij hL hxj (hxprivate i hi hij.symm)
 
+/-- Two distinct intervals in an irredundant interval cover cannot be
+comparable by containment in either direction. -/
+theorem irredundant_intervals_not_nested
+    {I : Type*} [DecidableEq I]
+    (L R : I → ℝ) (S : Finset I)
+    (hmin : IrredundantCover (InClosedInterval L R) S)
+    {i j : I}
+    (hi : i ∈ S) (hj : j ∈ S) (hij : i ≠ j) :
+    ¬ ((L i ≤ L j ∧ R j ≤ R i) ∨
+       (L j ≤ L i ∧ R i ≤ R j)) := by
+  intro hnested
+  rcases hnested with hijContain | hjiContain
+  · obtain ⟨x, hxj, hxprivate⟩ :=
+      exists_private_phase_of_irredundant
+        (InClosedInterval L R) S hmin hj
+    exact (not_interval_contained_of_private
+      L R hij hxj (hxprivate i hi hij.symm)) hijContain
+  · obtain ⟨x, hxi, hxprivate⟩ :=
+      exists_private_phase_of_irredundant
+        (InClosedInterval L R) S hmin hi
+    exact (not_interval_contained_of_private
+      L R hij.symm hxi (hxprivate j hj hij)) hjiContain
+
+/-- Abstract slot-compression principle: if every pair of intervals assigned
+to the same slot is nested, then the slot map is injective on any
+irredundant subcover. -/
+theorem slot_injective_on_irredundant_of_nested_fibres
+    {I Slot : Type*} [DecidableEq I]
+    (L R : I → ℝ) (slot : I → Slot)
+    (S : Finset I)
+    (hmin : IrredundantCover (InClosedInterval L R) S)
+    (hnested :
+      ∀ {i j : I}, slot i = slot j →
+        (L i ≤ L j ∧ R j ≤ R i) ∨
+        (L j ≤ L i ∧ R i ≤ R j)) :
+    ∀ {i j : I}, i ∈ S → j ∈ S →
+      slot i = slot j → i = j := by
+  intro i j hi hj hslot
+  by_contra hij
+  exact (irredundant_intervals_not_nested
+    L R S hmin hi hj hij) (hnested hslot)
+
+/-- Finite-slot cardinality version of the nested-fibre compression. -/
+theorem irredundant_card_le_slots_of_nested_fibres
+    {I Slot : Type*} [DecidableEq I] [Fintype Slot]
+    (L R : I → ℝ) (slot : I → Slot)
+    (S : Finset I)
+    (hmin : IrredundantCover (InClosedInterval L R) S)
+    (hnested :
+      ∀ {i j : I}, slot i = slot j →
+        (L i ≤ L j ∧ R j ≤ R i) ∨
+        (L j ≤ L i ∧ R i ≤ R j)) :
+    S.card ≤ Fintype.card Slot := by
+  classical
+  let f : {i : I // i ∈ S} → Slot := fun i => slot i.1
+  have hf : Function.Injective f := by
+    intro i j hij
+    apply Subtype.ext
+    exact slot_injective_on_irredundant_of_nested_fibres
+      L R slot S hmin hnested i.2 j.2 hij
+  have hcard := Fintype.card_le_of_injective f hf
+  simpa [f] using hcard
+
+#print axioms irredundant_intervals_not_nested
+#print axioms slot_injective_on_irredundant_of_nested_fibres
+#print axioms irredundant_card_le_slots_of_nested_fibres
+
 #print axioms exists_irredundant_subcover
 #print axioms exists_private_phase_of_irredundant
 #print axioms private_phases_ne
