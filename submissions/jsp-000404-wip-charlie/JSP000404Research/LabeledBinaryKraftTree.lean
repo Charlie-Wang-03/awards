@@ -1,23 +1,22 @@
 import JSP000404Research.BinaryKraftTree
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 
 /-!
 # Vertex-labelled binary Kraft trees
 
-BinaryKraftTree records only the multiset of leaf depths.  For the geometric
-JSP-000404 induction we need to remember which original centre occupies each
-leaf.
+BinaryKraftTree records only a multiset of leaf depths.  Geometry needs to
+remember which original centre occupies each leaf.
 
-A labelled full binary tree carries a vertex at every leaf.  Its leaf profile
-is a list of (vertex, depth) pairs.  If every vertex occurs exactly once and
-the leaf depth of v is at most its Sendov deficit ell(v), then Kraft's identity
-immediately gives
+A labelled full binary tree carries one vertex at every leaf.  Its profile is a
+list of (vertex, depth) pairs.  If every finite vertex appears exactly once and
+its tree depth is at most its Sendov deficit ell(v), then Kraft's identity gives
 
   sum_v 2^(n-ell(v)) <= 2^n.
 
-This is the exact combinatorial outlet for a recursive binary-split proof:
-every successful split consumes one unit of deficit for every centre in the
-corresponding child.
+This is the exact outlet for a recursive binary-split proof: every successful
+split consumes one unit of available deficit for every centre descending into
+that child.
 -/
 
 namespace JSP000404Research
@@ -68,13 +67,7 @@ def depths {V : Type*} (T : LabeledBinaryKraftTree V) : List ℕ :=
   | node L R ihL ihR =>
       simp [profile, labels, List.map_append, List.map_map, ihL, ihR]
 
-theorem profile_length_eq_labels_length
-    {V : Type*} (T : LabeledBinaryKraftTree V) :
-    T.profile.length = T.labels.length := by
-  have h := congrArg List.length (T.profile_labels_eq)
-  simpa using h
-
-/-- Exact Kraft identity for a labelled tree, forgetting labels. -/
+/-- Exact Kraft identity for a labelled tree, after forgetting the labels. -/
 theorem dyadic_profile_sum_eq
     {V : Type*}
     (T : LabeledBinaryKraftTree V)
@@ -92,7 +85,48 @@ theorem dyadic_profile_sum_eq
   rw [shape_depths_eq] at h
   simpa [depths, List.map_map] using h
 
-/-- A concrete labelled tree certificate for one finite vertex set. -/
+/-- Pointwise depth slack decreases the dyadic leaf mass. -/
+theorem profile_target_weight_le
+    {V : Type*}
+    (xs : List (V × ℕ))
+    (ell : V → ℕ) (n : ℕ)
+    (hdepth : ∀ vd ∈ xs, vd.2 ≤ ell vd.1) :
+    (xs.map (fun vd => 2 ^ (n - ell vd.1))).sum ≤
+      (xs.map (fun vd => 2 ^ (n - vd.2))).sum := by
+  induction xs with
+  | nil =>
+      simp
+  | cons vd xs ih =>
+      have hvd : vd.2 ≤ ell vd.1 :=
+        hdepth vd (by simp)
+      have htail :
+          ∀ x ∈ xs, x.2 ≤ ell x.1 := by
+        intro x hx
+        exact hdepth x (by simp [hx])
+      simp only [List.map_cons, List.sum_cons]
+      exact Nat.add_le_add
+        (BinaryKraftTree.dyadic_term_antitone hvd)
+        (ih htail)
+
+/-- The profile target sum is the same as the leaf-label target sum, because
+the target weight ignores tree depth. -/
+theorem profile_target_sum_eq_labels
+    {V : Type*}
+    (T : LabeledBinaryKraftTree V)
+    (ell : V → ℕ) (n : ℕ) :
+    (T.profile.map (fun vd => 2 ^ (n - ell vd.1))).sum =
+      (T.labels.map (fun v => 2 ^ (n - ell v))).sum := by
+  have hlabels := T.profile_labels_eq
+  calc
+    (T.profile.map (fun vd => 2 ^ (n - ell vd.1))).sum
+        =
+      ((T.profile.map Prod.fst).map
+        (fun v => 2 ^ (n - ell v))).sum := by
+          simp [List.map_map]
+    _ = (T.labels.map (fun v => 2 ^ (n - ell v))).sum := by
+          rw [hlabels]
+
+/-- Concrete labelled-tree certificate for a finite vertex family. -/
 structure Certificate
     (V : Type*) [Fintype V]
     (n : ℕ) (ell : V → ℕ) where
@@ -105,114 +139,64 @@ structure Certificate
 
 namespace Certificate
 
-/-- Every vertex occurs exactly once among the tree leaves. -/
-theorem label_mem
-    {V : Type*} [Fintype V]
-    {n : ℕ} {ell : V → ℕ}
-    (C : Certificate V n ell)
-    (v : V) :
-    v ∈ C.tree.labels := by
-  have hv : v ∈ C.tree.labels.toFinset := by
-    rw [C.complete]
-    simp
-  simpa using hv
-
-/-- The profile also contains each vertex exactly once. -/
-theorem profile_fst_nodup
+/-- Kraft capacity in leaf-list form. -/
+theorem list_capacity
     {V : Type*} [Fintype V]
     {n : ℕ} {ell : V → ℕ}
     (C : Certificate V n ell) :
-    (C.tree.profile.map Prod.fst).Nodup := by
-  simpa [C.tree.profile_labels_eq] using C.nodup
+    (C.tree.labels.map (fun v => 2 ^ (n - ell v))).sum ≤ 2 ^ n := by
+  have hdepthN :
+      ∀ vd ∈ C.tree.profile, vd.2 ≤ n := by
+    intro vd hvd
+    exact (C.depth_le vd hvd).trans (C.ell_le_n vd.1)
+  have hpoint :=
+    profile_target_weight_le
+      C.tree.profile ell n C.depth_le
+  have hkraft :=
+    C.tree.dyadic_profile_sum_eq n hdepthN
+  rw [C.tree.profile_target_sum_eq_labels ell n] at hpoint
+  exact hpoint.trans_eq hkraft
 
-/-- Re-index a sum over the leaf profile by the finite vertex type. -/
-theorem sum_profile_eq_sum_vertices
-    {V : Type*} [Fintype V]
-    {n : ℕ} {ell : V → ℕ}
-    (C : Certificate V n ell)
-    (f : V → ℕ → ℕ)
-    (hdepth_irrel :
-      ∀ v d e,
-        (v,d) ∈ C.tree.profile →
-        (v,e) ∈ C.tree.profile →
-        f v d = f v e) :
-    (C.tree.profile.map (fun vd => f vd.1 vd.2)).sum =
-      ∑ v : V,
-        f v
-          ((C.tree.profile.find? (fun vd => vd.1 = v)).getD (v,0)).2 := by
-  -- This general re-indexing theorem is deliberately kept weakly packaged;
-  -- the capacity theorem below uses a direct Finset sum argument instead.
-  classical
-  sorry
-
-/-- Main labelled Kraft capacity theorem. -/
+/-- Main finite-vertex Kraft capacity theorem. -/
 theorem capacity
     {V : Type*} [Fintype V]
     {n : ℕ} {ell : V → ℕ}
     (C : Certificate V n ell) :
     (∑ v : V, 2 ^ (n - ell v)) ≤ 2 ^ n := by
   classical
-  -- Assign to each vertex its unique profile depth.
-  have hexists :
-      ∀ v : V, ∃ d : ℕ, (v,d) ∈ C.tree.profile := by
-    intro v
-    have hv := C.label_mem v
-    rw [← C.tree.profile_labels_eq] at hv
-    rcases List.mem_map.mp hv with ⟨vd, hvd, hvfst⟩
-    exact ⟨vd.2, by
-      cases vd with
-      | mk w d =>
-          simp at hvfst
-          subst w
-          exact hvd⟩
-  choose depth hdepthMem using hexists
-  have hdepthUnique :
-      ∀ v d, (v,d) ∈ C.tree.profile → d = depth v := by
-    intro v d hvd
-    have hnod := C.profile_fst_nodup
-    have hchosen := hdepthMem v
-    by_contra hne
-    have hmem1 :
-        v ∈ C.tree.profile.map Prod.fst :=
-      List.mem_map_of_mem Prod.fst hvd
-    -- Nodup of first coordinates means two profile entries with the same
-    -- vertex must be the same pair.
-    have hpair : (v,d) = (v, depth v) := by
-      apply Prod.ext
-      · rfl
-      · -- derive from uniqueness of the mapped first occurrence
-        have := List.nodup_iff_count_le_one.mp hnod v
-        -- use pair membership directly through erase-free uniqueness
-        sorry
-    exact hne (congrArg Prod.snd hpair)
-  have hdepthLe :
-      ∀ v, depth v ≤ ell v := by
-    intro v
-    exact C.depth_le (v, depth v) (hdepthMem v)
-  have hdepthN :
-      ∀ vd ∈ C.tree.profile, vd.2 ≤ n := by
-    intro vd hvd
-    exact (C.depth_le vd hvd).trans (C.ell_le_n vd.1)
-  have hkraft :=
-    C.tree.dyadic_profile_sum_eq n hdepthN
-  -- Compare pointwise target depth ell(v) against its tree depth.
-  have htarget :
-      (∑ v : V, 2 ^ (n - ell v))
-        ≤
-      ∑ v : V, 2 ^ (n - depth v) := by
-    exact Finset.sum_le_sum fun v _ =>
-      BinaryKraftTree.dyadic_term_antitone (hdepthLe v)
-  -- The right-hand sum is exactly the tree profile Kraft sum.
-  have hprofile :
-      (∑ v : V, 2 ^ (n - depth v)) =
-        (C.tree.profile.map
-          (fun vd => 2 ^ (n - vd.2))).sum := by
-    -- finite bijection between vertices and labelled leaves
-    sorry
-  rw [hprofile]
-  exact htarget.trans_eq hkraft
+  have hlist := C.list_capacity
+  have hsum :=
+    List.sum_toFinset
+      (fun v : V => 2 ^ (n - ell v))
+      C.nodup
+  rw [C.complete] at hsum
+  rw [hsum]
+  exact hlist
+
+/-- Exponent form when ell(v)=n-exponent(v). -/
+theorem exponent_capacity
+    {V : Type*} [Fintype V]
+    {n : ℕ}
+    (exponent ell : V → ℕ)
+    (C : Certificate V n ell)
+    (hexp : ∀ v, exponent v ≤ n)
+    (hell : ∀ v, ell v = n - exponent v) :
+    (∑ v : V, 2 ^ exponent v) ≤ 2 ^ n := by
+  calc
+    (∑ v : V, 2 ^ exponent v)
+        =
+      ∑ v : V, 2 ^ (n - ell v) := by
+        apply Finset.sum_congr rfl
+        intro v _
+        rw [hell v, Nat.sub_sub_cancel (hexp v)]
+    _ ≤ 2 ^ n := C.capacity
 
 end Certificate
+
+#print axioms dyadic_profile_sum_eq
+#print axioms profile_target_weight_le
+#print axioms Certificate.capacity
+#print axioms Certificate.exponent_capacity
 
 end LabeledBinaryKraftTree
 end JSP000404Research
