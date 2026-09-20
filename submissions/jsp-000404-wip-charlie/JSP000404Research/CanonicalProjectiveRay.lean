@@ -54,7 +54,9 @@ noncomputable def planeToComplex : Plane ≃ₗᵢ[ℝ] ℂ :=
 theorem planeToComplex_ne_zero
     {x : Plane} (hx : x ≠ 0) :
     planeToComplex x ≠ 0 := by
-  exact map_ne_zero_of_injective planeToComplex.injective hx
+  intro hz
+  apply hx
+  exact planeToComplex.injective (by simpa using hz)
 
 /-- Polar recovery in plane coordinates at the ordinary complex argument. -/
 theorem norm_smul_rayDirection_arg
@@ -102,8 +104,8 @@ theorem exists_canonical_projective_representation
       rw [signedRayDirection]
       simp only [Bool.false_eq_true, if_false]
       rw [hpi] at hpolar
-      have hpiRay := rayDirection_add_pi 0
-      norm_num at hpiRay
+      have hpiRay : rayDirection Real.pi = -rayDirection 0 := by
+        simpa using rayDirection_add_pi 0
       rw [hpiRay] at hpolar
       simpa using hpolar
     · refine ⟨‖z‖, true, Complex.arg z,
@@ -121,7 +123,7 @@ theorem exists_canonical_projective_representation_sub
   apply exists_canonical_projective_representation
   intro hzero
   apply hab
-  exact sub_eq_zero.mp hzero.symm
+  exact hab (sub_eq_zero.mp hzero).symm
 
 #print axioms planeToComplex_rayDirection
 #print axioms norm_smul_rayDirection_arg
