@@ -260,3 +260,6 @@ import JSP000404Research.TransitionSplitExposure
 
 
 import JSP000404Research.ConcreteHighExponentExposure
+
+
+import JSP000404Research.DyadicTurnCost
