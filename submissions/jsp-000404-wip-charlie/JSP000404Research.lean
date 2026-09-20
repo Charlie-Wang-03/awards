@@ -168,3 +168,6 @@ import JSP000404Research.ResidualHoleInjection
 
 
 import JSP000404Research.BinaryMissingDefect
+
+
+import JSP000404Research.ResidualListCapacity
