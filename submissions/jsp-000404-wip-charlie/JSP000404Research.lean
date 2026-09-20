@@ -195,3 +195,6 @@ import JSP000404Research.MinimalPhaseCover
 
 
 import JSP000404Research.CriticalMinimalCover
+
+
+import JSP000404Research.StableDeletionReduction
