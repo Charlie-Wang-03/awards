@@ -58,10 +58,10 @@ theorem successiveDiffsFrom_nonneg
   | nil =>
       simp [successiveDiffsFrom]
   | cons b bs ih =>
-      have hab : a ≤ b := by
-        exact hsorted.rel_get_of_mem (by simp)
+      rw [List.pairwise_cons] at hsorted
+      have hab : a ≤ b := hsorted.1 b (by simp)
       have htail : (b :: bs).Pairwise (· ≤ ·) :=
-        hsorted.tail
+        hsorted.2
       intro d hd
       simp only [successiveDiffsFrom, List.mem_cons] at hd
       rcases hd with rfl | hd
