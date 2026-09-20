@@ -204,3 +204,6 @@ import JSP000404Research.TransitionCutExposure
 
 
 import JSP000404Research.BoolSignShape
+
+
+import JSP000404Research.UniqueTransitionGap
