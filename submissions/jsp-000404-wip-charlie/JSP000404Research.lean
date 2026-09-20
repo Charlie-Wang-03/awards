@@ -296,3 +296,6 @@ import JSP000404Research.BinaryKraftTree
 
 
 import JSP000404Research.AdaptiveDeficitCapacity
+
+
+import JSP000404Research.BoundaryCellCertificate
