@@ -156,7 +156,7 @@ theorem blocker_after_other_of_lower_inactive
   have hvfalse : retainedBit C v c = false := by
     have hufalse :=
       retainedBit_eq_false_of_not_mem_active C u c hcu
-    exact (hret c).symm ▸ hufalse
+    exact (hret c).symm.trans hufalse
   rcases lt_or_gt_of_ne hwv with hwvlt | hvw
   · have hsameWV :
         ∀ d : Fin n, d ≠ c →
