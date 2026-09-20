@@ -275,3 +275,6 @@ import JSP000404Research.StrictSupportCone
 
 
 import JSP000404Research.CompensatedDeletionHardStop
+
+
+import JSP000404Research.LinearArcPacking
