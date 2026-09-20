@@ -266,3 +266,12 @@ import JSP000404Research.DyadicTurnCost
 
 
 import JSP000404Research.OneSupportTransitionCost
+
+
+import JSP000404Research.OneSupportTurnPacking
+
+
+import JSP000404Research.StrictSupportCone
+
+
+import JSP000404Research.CompensatedDeletionHardStop
