@@ -44,6 +44,7 @@ structure HighExponentTransitionIntervalCertificate
   width : ℝ
   sigma : Bool
   qe_ne : qe ≠ 0
+  qe_mem : qe ∈ quotientList t C.gaps
   qe_le : (qe : ℝ) ≤ t * ge
   ge_pos : 0 < ge
   width_eq : width = Real.pi * (1 - ge)
@@ -188,6 +189,9 @@ theorem exists_highExponentTransitionIntervalCertificate
         width := width
         sigma := sigma0
         qe_ne := hqe
+        qe_mem := by
+          rw [hq]
+          simp [hqe]
         qe_le := hqeGap
         ge_pos := hgePos
         width_eq := hwidthEq
@@ -318,6 +322,9 @@ theorem exists_highExponentTransitionIntervalCertificate
         width := width
         sigma := !sigma0
         qe_ne := hqe
+        qe_mem := by
+          rw [hq]
+          simp [hqe]
         qe_le := hqeGap
         ge_pos := hgePos
         width_eq := hwidthEq
