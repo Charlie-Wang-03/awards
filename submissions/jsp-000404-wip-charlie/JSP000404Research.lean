@@ -228,3 +228,6 @@ import JSP000404Research.FiniteProjectiveRays
 
 
 import JSP000404Research.SortedProjectiveRays
+
+
+import JSP000404Research.CyclicProjectiveGaps
