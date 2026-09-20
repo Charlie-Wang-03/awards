@@ -299,3 +299,9 @@ import JSP000404Research.AdaptiveDeficitCapacity
 
 
 import JSP000404Research.BoundaryCellCertificate
+
+
+import JSP000404Research.TriangleSignParity
+
+
+import JSP000404Research.TriangleGapTransfer
