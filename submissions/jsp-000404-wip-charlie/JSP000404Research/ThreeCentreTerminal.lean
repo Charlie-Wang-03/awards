@@ -57,6 +57,8 @@ theorem three_dyadic_terms_le_of_at_most_one_top
       exact h02 ⟨h0, h2⟩
     have hk1' : k1 ≤ n - 2 := by omega
     have hk2' : k2 ≤ n - 2 := by omega
+    have hp1 := hpow hk1'
+    have hp2 := hpow hk2'
     rw [h0]
     calc
       2 ^ (n - 1) + 2 ^ k1 + 2 ^ k2
