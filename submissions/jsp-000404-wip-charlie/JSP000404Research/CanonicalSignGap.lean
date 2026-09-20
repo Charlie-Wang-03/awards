@@ -114,7 +114,103 @@ theorem floor_t_mul_gap_ne_zero_of_canonical_sign_ne
       exact_mod_cast hone)
   omega
 
+/-- Across the projective wrap, compare the last canonical ray with the
+first ray lifted to parameter theta_first + pi and flipped sign.  A sign change
+there again consumes at least one normalized cap unit. -/
+theorem one_le_t_mul_wrap_gap_of_canonical_sign_ne
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    {first last : OtherVertex i}
+    (hfl : first ≠ last)
+    (horder :
+      rayThetaAt hp i first ≤ rayThetaAt hp i last)
+    (hsign :
+      raySignAt hp i last ≠ !raySignAt hp i first) :
+    1 ≤
+      t * ((rayThetaAt hp i first + Real.pi -
+        rayThetaAt hp i last) / Real.pi) := by
+  have hfirsti : first.1 ≠ i := first.2
+  have hlasti : last.1 ≠ i := last.2
+  have hlfVal : last.1 ≠ first.1 :=
+    otherVertex_val_ne hfl.symm
+  have hcap' :=
+    hcap last.1 i first.1 hlasti hlfVal (Ne.symm hfirsti)
+  change
+    InnerProductGeometry.angle
+        (p last.1 - p i) (p first.1 - p i)
+      ≤ Real.pi - lam at hcap'
+  have hfirstShift :
+      p first.1 - p i =
+        rayRhoAt hp i first •
+          signedRayDirection (!raySignAt hp i first)
+            (rayThetaAt hp i first + Real.pi) := by
+    rw [rayRepAt_eq hp i first]
+    rw [signedRayDirection_not_add_pi]
+  rw [rayRepAt_eq hp i last, hfirstShift] at hcap'
+  have hphiOrder :
+      rayThetaAt hp i last ≤
+        rayThetaAt hp i first + Real.pi := by
+    have hlastPi := rayThetaAt_lt_pi hp i last
+    have hfirst0 := rayThetaAt_nonneg hp i first
+    linarith
+  have hspan :
+      (rayThetaAt hp i first + Real.pi) -
+          rayThetaAt hp i last ≤ Real.pi := by
+    linarith
+  exact one_le_t_mul_normalized_gap_of_opposite_signs
+    (rayRhoAt_pos hp i last)
+    (rayRhoAt_pos hp i first)
+    ht hlam hphiOrder hspan hsign hcap'
+
+/-- Therefore the natural quotient of the wrap gap is nonzero. -/
+theorem floor_t_mul_wrap_gap_ne_zero_of_canonical_sign_ne
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    {first last : OtherVertex i}
+    (hfl : first ≠ last)
+    (horder :
+      rayThetaAt hp i first ≤ rayThetaAt hp i last)
+    (hsign :
+      raySignAt hp i last ≠ !raySignAt hp i first) :
+    Nat.floor
+        (t * ((rayThetaAt hp i first + Real.pi -
+          rayThetaAt hp i last) / Real.pi))
+      ≠ 0 := by
+  have hone :=
+    one_le_t_mul_wrap_gap_of_canonical_sign_ne
+      hp hcap ht hlam i hfl horder hsign
+  have hfirst0 := rayThetaAt_nonneg hp i first
+  have hlastPi := rayThetaAt_lt_pi hp i last
+  have hgap0 :
+      0 ≤ rayThetaAt hp i first + Real.pi -
+        rayThetaAt hp i last := by
+    linarith
+  have hnonneg :
+      0 ≤
+        t * ((rayThetaAt hp i first + Real.pi -
+          rayThetaAt hp i last) / Real.pi) := by
+    positivity
+  have hfloor :
+      1 ≤ Nat.floor
+        (t * ((rayThetaAt hp i first + Real.pi -
+          rayThetaAt hp i last) / Real.pi)) := by
+    apply Nat.le_floor hnonneg
+    exact_mod_cast hone
+  omega
+
 #print axioms one_le_t_mul_gap_of_canonical_sign_ne
 #print axioms floor_t_mul_gap_ne_zero_of_canonical_sign_ne
+#print axioms one_le_t_mul_wrap_gap_of_canonical_sign_ne
+#print axioms floor_t_mul_wrap_gap_ne_zero_of_canonical_sign_ne
 
 end JSP000404Research
