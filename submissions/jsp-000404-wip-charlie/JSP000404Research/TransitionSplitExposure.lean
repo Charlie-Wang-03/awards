@@ -115,20 +115,19 @@ theorem strictlyExposedAt_of_common_canonical_sign
     cases h : rays with
     | nil => exact False.elim (hne h)
     | cons first rest => exact ⟨first, rest, h⟩
-  let last : OtherVertex i := rest.getLastD first
+  have hpair :
+      (first :: rest).Pairwise
+        (fun a b =>
+          rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
+    simpa [hr] using hsorted
+  let last : OtherVertex i :=
+    (first :: rest).getLast (by simp)
   have hfirst0 := rayThetaAt_nonneg hp i first
   have hlastPi := rayThetaAt_lt_pi hp i last
   have hfirstLast :
       rayThetaAt hp i first ≤ rayThetaAt hp i last := by
-    rw [hr] at hsorted
-    have hpw := List.pairwise_cons.mp hsorted
-    by_cases hrest : rest = []
-    · subst rest
-      simp [last]
-    · have hmem : last ∈ rest := by
-        dsimp [last]
-        exact List.getLastD_mem hrest
-      exact hpw.1 last hmem
+    dsimp [last]
+    exact hpair.rel_getLast (by simp)
   let width : ℝ :=
     rayThetaAt hp i last - rayThetaAt hp i first
   have hwidth0 : 0 ≤ width := by
@@ -152,44 +151,11 @@ theorem strictlyExposedAt_of_common_canonical_sign
     rcases List.mem_cons.mp hjmem with hEq | htail
     · subst jo
       rfl
-    · have hpw := List.pairwise_cons.mp (by simpa [hr] using hsorted)
-      exact hpw.1 jo htail
+    · exact (List.pairwise_cons.mp hpair).1 jo htail
   have hjLast :
       rayThetaAt hp i jo ≤ rayThetaAt hp i last := by
-    -- Finite sorted-list endpoint bound.  We keep this as a direct list
-    -- induction to avoid importing a separate order-statistics API.
-    rw [hr] at hjmem
-    induction rest generalizing first with
-    | nil =>
-        simp at hjmem
-        subst jo
-        simp [last]
-    | cons x xs ih =>
-        have hpair :
-            (first :: x :: xs).Pairwise
-              (fun a b =>
-                rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-          simpa [hr] using hsorted
-        have htail := (List.pairwise_cons.mp hpair).2
-        rcases List.mem_cons.mp hjmem with hjo | hjo
-        · subst jo
-          have hxLast :
-              rayThetaAt hp i first ≤
-                rayThetaAt hp i (xs.getLastD x) := by
-            have hfirstx :=
-              (List.pairwise_cons.mp hpair).1 x (by simp)
-            by_cases hxs : xs = []
-            · subst xs
-              simpa using hfirstx
-            · have hxm :
-                xs.getLastD x ∈ x :: xs := by
-                  exact List.getLastD_mem_cons x xs
-              exact (List.pairwise_cons.mp hpair).1 _ hxm
-          simpa [last, List.getLastD_cons] using hxLast
-        · have hjoTail : jo ∈ x :: xs := hjo
-          have hres :=
-            ih x htail hjoTail
-          simpa [last, List.getLastD_cons] using hres
+    dsimp [last]
+    exact hpair.rel_getLast hjmem
   refine ⟨rayRhoAt hp i jo,
     rayThetaAt hp i jo,
     rayRhoAt_pos hp i jo,
