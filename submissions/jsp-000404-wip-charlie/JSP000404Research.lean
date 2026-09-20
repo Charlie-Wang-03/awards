@@ -189,3 +189,6 @@ import JSP000404Research.ResidualBlocker
 
 
 import JSP000404Research.CriticalFiberBalance
+
+
+import JSP000404Research.MinimalPhaseCover
