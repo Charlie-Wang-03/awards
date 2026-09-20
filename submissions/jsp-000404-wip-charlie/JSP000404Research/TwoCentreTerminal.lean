@@ -37,7 +37,7 @@ theorem natFloor_sendov_scale
   apply (Nat.floor_eq_iff ht0).2
   constructor
   · rw [ht]
-    exact_mod_cast (Nat.le_add_right n 0)
+    linarith
   · rw [ht]
     push_cast
     linarith
