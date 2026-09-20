@@ -118,6 +118,41 @@ The live global routes are therefore:
 Numerical falsification is used only to kill over-strong conjectures; passing
 random tests is never treated as proof.
 
+### Notation / indexing warning
+
+There are two different integer scales in the full Blumenthal/Sendov story and
+they must not be conflated.
+
+Inside Sendov Lemma 4.12,
+
+[
+t=u/2=n+delta,qquad n=lfloor tfloor,qquad 0ledelta<1,
+]
+
+and the lower-branch generalized-configuration target is
+
+[
+|P|=sum_i 2^{k_i}le 2^nqquad(delta<1/2).
+]
+
+This `n` is the integer part of the normalized angular parameter `t`.
+It is **not** the outer dyadic index `m` used when the final Blumenthal
+classification is written in ranges such as `2^m < N <= 2^(m+1)`.
+
+For example, the final critical value just above `2^m` has
+`GA = pi * (1 - 1/(2m+1))`, hence `t=2m+1`; therefore the Lemma-4.12
+integer is `n=2m+1`, not `m`.
+
+Consequences for this research branch:
+
+- every theorem stated purely as an `n`-bit / `2^n` capacity theorem remains
+  mathematically meaningful;
+- `CriticalFiberBalance` is an internal critical-capacity counting lemma and
+  must not be described as the original Blumenthal `N=2^n+1` case without an
+  additional bridge;
+- all future prose must distinguish the Lemma-4.12 integer `n=floor(t)` from
+  the outer final-classification dyadic index.
+
 ### Exact-normalization correction
 
 A later audit identified an important distinction in the numerical
