@@ -48,7 +48,9 @@ theorem exists_irredundant_subcover
     ∃ T : Finset I,
       T ⊆ S ∧ PredicateCovers A T ∧ T.card = m
   have hP : ∃ m, P m := by
-    refine ⟨S.card, S, Finset.Subset.rfl, hcover, rfl⟩
+    refine ⟨S.card, S, ?_, hcover, rfl⟩
+    intro x hx
+    exact hx
   let m : ℕ := Nat.find hP
   have hm : P m := by
     simpa [m] using Nat.find_spec hP
