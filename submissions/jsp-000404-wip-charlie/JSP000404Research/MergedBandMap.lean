@@ -239,11 +239,116 @@ theorem canonicalFixedPhase_active_card_le_standard
       D hwidth hdelta hn htri v]
   exact Finset.card_image_le
 
+
+/-- Away from the top band, mergeWrapBand is injective. -/
+theorem mergeWrapBand_injOn_erase_top
+    {n : ℕ} (hn : 1 ≤ n)
+    (S : Finset (Fin (n + 1))) :
+    Set.InjOn (mergeWrapBand hn)
+      (S.erase ⟨n, by omega⟩) := by
+  intro a ha b hb hab
+  have hatop : a.val ≠ n := by
+    intro h
+    have haeq : a = (⟨n, by omega⟩ : Fin (n + 1)) := by
+      apply Fin.ext
+      exact h
+    subst a
+    exact (Finset.not_mem_erase _ _) ha
+  have hbtop : b.val ≠ n := by
+    intro h
+    have hbeq : b = (⟨n, by omega⟩ : Fin (n + 1)) := by
+      apply Fin.ext
+      exact h
+    subst b
+    exact (Finset.not_mem_erase _ _) hb
+  have halt : a.val < n := by
+    have ha_le : a.val ≤ n := by omega
+    omega
+  have hblt : b.val < n := by
+    have hb_le : b.val ≤ n := by omega
+    omega
+  have hava :
+      (mergeWrapBand hn a).val = a.val :=
+    mergeWrapBand_of_lt hn a halt
+  have havb :
+      (mergeWrapBand hn b).val = b.val :=
+    mergeWrapBand_of_lt hn b hblt
+  apply Fin.ext
+  have hv := congrArg Fin.val hab
+  simpa [hava, havb] using hv
+
+/-- If both wrap representatives 0 and n are present, deleting the top one
+does not change the merged image: it was already represented by band zero. -/
+theorem image_mergeWrapBand_erase_top_eq_of_zero_mem
+    {n : ℕ} (hn : 1 ≤ n)
+    (S : Finset (Fin (n + 1)))
+    (hzero : (0 : Fin (n + 1)) ∈ S) :
+    S.image (mergeWrapBand hn) =
+      (S.erase ⟨n, by omega⟩).image (mergeWrapBand hn) := by
+  classical
+  let top : Fin (n + 1) := ⟨n, by omega⟩
+  ext c
+  simp only [Finset.mem_image]
+  constructor
+  · rintro ⟨x, hxS, rfl⟩
+    by_cases hxtop : x = top
+    · subst x
+      refine ⟨(0 : Fin (n + 1)), ?_, ?_⟩
+      · apply Finset.mem_erase.mpr
+        constructor
+        · intro h
+          have hv := congrArg Fin.val h
+          dsimp [top] at hv
+          omega
+        · exact hzero
+      · simpa [top] using (mergeWrapBand_top hn)
+    · exact ⟨x, Finset.mem_erase.mpr ⟨hxtop, hxS⟩, rfl⟩
+  · rintro ⟨x, hx, rfl⟩
+    exact ⟨x, (Finset.mem_erase.mp hx).2, rfl⟩
+
+/-- Exact one-colour compression: if standard bands 0 and n are both active,
+merging them reduces palette cardinality by exactly one. -/
+theorem card_image_mergeWrapBand_eq_sub_one
+    {n : ℕ} (hn : 1 ≤ n)
+    (S : Finset (Fin (n + 1)))
+    (hzero : (0 : Fin (n + 1)) ∈ S)
+    (htop : (⟨n, by omega⟩ : Fin (n + 1)) ∈ S) :
+    (S.image (mergeWrapBand hn)).card = S.card - 1 := by
+  classical
+  rw [image_mergeWrapBand_erase_top_eq_of_zero_mem hn S hzero]
+  have hinj := mergeWrapBand_injOn_erase_top hn S
+  rw [Finset.card_image_iff.mpr hinj]
+  rw [Finset.card_erase_of_mem htop]
+
+/-- Specialized active-palette form of the exact one-colour compression. -/
+theorem canonicalFixedPhase_active_card_eq_standard_sub_one
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (hn : 1 ≤ n)
+    (htri : WrapTriangleFree D n)
+    (v : V)
+    (hzero : (0 : Fin (n + 1)) ∈ incidentBands D (n + 1) v)
+    (htop : (⟨n, by omega⟩ : Fin (n + 1)) ∈
+      incidentBands D (n + 1) v) :
+    (BinaryEdgePartition.active
+      (canonicalFixedPhasePartition D hwidth hdelta hn htri) v).card
+      =
+    (incidentBands D (n + 1) v).card - 1 := by
+  rw [canonicalFixedPhase_active_eq_image_incidentBands
+      D hwidth hdelta hn htri v]
+  exact card_image_mergeWrapBand_eq_sub_one
+    hn (incidentBands D (n + 1) v) hzero htop
+
 #print axioms mergeWrapBand
 #print axioms width_lt_n_add_one
 #print axioms fixedPhaseEdgeColor_eq_merge_standard
 #print axioms canonicalFixedPhase_active_eq_image_incidentBands
 #print axioms canonicalFixedPhase_active_card_le_standard
+#print axioms card_image_mergeWrapBand_eq_sub_one
+#print axioms canonicalFixedPhase_active_card_eq_standard_sub_one
 
 end DirectionData
 end JSP000404Research
