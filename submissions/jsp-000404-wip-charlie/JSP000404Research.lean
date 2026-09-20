@@ -154,3 +154,7 @@ Only closed lemmas are exported here. The general geometric construction
 linking Sendov gap data to the weighted Hansel code is intentionally not
 stated as proved.
 -/
+
+import JSP000404Research.ResidualBitMerge
+
+import JSP000404Research.ResidualVerticalPairs
