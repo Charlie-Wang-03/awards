@@ -237,3 +237,7 @@ import JSP000404Research.CentreProjectiveCycle
 
 
 import JSP000404Research.CentreQuotientData
+
+
+import JSP000404Research.CentreExponent
+import JSP000404Research.SignedRayAngle
