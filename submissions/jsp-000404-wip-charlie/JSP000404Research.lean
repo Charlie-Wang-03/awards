@@ -201,3 +201,6 @@ import JSP000404Research.StableDeletionReduction
 
 
 import JSP000404Research.TransitionCutExposure
+
+
+import JSP000404Research.BoolSignShape
