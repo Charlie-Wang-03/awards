@@ -35,6 +35,40 @@ def IrredundantCover
   PredicateCovers A S ∧
     ∀ i, i ∈ S → ¬ PredicateCovers A (S.erase i)
 
+/-- Every finite cover contains an inclusion-irredundant subcover.  We choose
+a subcover with minimal cardinality and observe that deleting any one of its
+members would contradict that minimality. -/
+theorem exists_irredundant_subcover
+    {I Phase : Type*} [DecidableEq I]
+    (A : I → Phase → Prop) (S : Finset I)
+    (hcover : PredicateCovers A S) :
+    ∃ T : Finset I, T ⊆ S ∧ IrredundantCover A T := by
+  classical
+  let P : ℕ → Prop := fun m =>
+    ∃ T : Finset I,
+      T ⊆ S ∧ PredicateCovers A T ∧ T.card = m
+  have hP : ∃ m, P m := by
+    refine ⟨S.card, S, Finset.Subset.rfl, hcover, rfl⟩
+  let m : ℕ := Nat.find hP
+  have hm : P m := by
+    simpa [m] using Nat.find_spec hP
+  obtain ⟨T, hTS, hTCover, hTcard⟩ := hm
+  refine ⟨T, hTS, hTCover, ?_⟩
+  intro i hi hEraseCover
+  have hEraseSub : T.erase i ⊆ S :=
+    (Finset.erase_subset i T).trans hTS
+  have hEraseP : P (T.erase i).card :=
+    ⟨T.erase i, hEraseSub, hEraseCover, rfl⟩
+  have hmin :
+      m ≤ (T.erase i).card := by
+    dsimp [m]
+    exact Nat.find_min' hP hEraseP
+  have hlt :
+      (T.erase i).card < m := by
+    rw [← hTcard]
+    exact Finset.card_erase_lt_of_mem hi
+  omega
+
 /-- Every member of an irredundant finite cover owns a private phase. -/
 theorem exists_private_phase_of_irredundant
     {I Phase : Type*} [DecidableEq I]
@@ -128,6 +162,7 @@ theorem irredundant_interval_right_strict
   exact right_strictMono_of_left_le_of_private
     L R hij hL hxj (hxprivate i hi hij.symm)
 
+#print axioms exists_irredundant_subcover
 #print axioms exists_private_phase_of_irredundant
 #print axioms private_phases_ne
 #print axioms not_interval_contained_of_private
