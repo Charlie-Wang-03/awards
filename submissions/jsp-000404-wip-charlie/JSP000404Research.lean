@@ -171,3 +171,6 @@ import JSP000404Research.BinaryMissingDefect
 
 
 import JSP000404Research.ResidualListCapacity
+
+
+import JSP000404Research.ResidualListCounterexample
