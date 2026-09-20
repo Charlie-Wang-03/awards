@@ -341,3 +341,6 @@ import JSP000404Research.AggregateSplitHardStopResolution
 
 
 import JSP000404Research.TwoCentreTerminal
+
+
+import JSP000404Research.AggregateSplitExistenceHardStop
