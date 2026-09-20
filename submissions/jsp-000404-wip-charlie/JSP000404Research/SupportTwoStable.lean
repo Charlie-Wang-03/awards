@@ -63,38 +63,6 @@ theorem listExponent_merge_eq_of_stable_pair
   exact listExponent_merge_eq_of_not_both_positive_no_carry
     pre post a b hnotboth
 
-/-- If a finite nonnegative remainder family has total mass < 1, then every
-two entries have sum < 1. -/
-theorem pair_sum_lt_one_of_nonneg_total_lt_one
-    {I : Type*} [Fintype I]
-    (rem : I → ℝ)
-    (hrem0 : ∀ i, 0 ≤ rem i)
-    (htotal : (∑ i, rem i) < 1)
-    (a b : I) :
-    rem a + rem b < 1 := by
-  classical
-  by_cases hab : a = b
-  · subst b
-    have ha_le :
-        rem a ≤ ∑ i, rem i := by
-      exact Finset.single_le_sum
-        (fun i _ => hrem0 i) (Finset.mem_univ a)
-    -- For the same index this only yields 2*rem a <= 2*total, which is not
-    -- enough in general.  Cyclic deletion always uses two distinct gaps, so
-    -- the useful theorem below records that hypothesis explicitly.
-    sorry
-  · have hpair_le :
-      rem a + rem b ≤ ∑ i, rem i := by
-    let S : Finset I := {a, b}
-    have hS :
-        ∑ i ∈ S, rem i = rem a + rem b := by
-      simp [S, hab, add_comm]
-    rw [← hS]
-    exact Finset.sum_le_sum_of_subset_of_nonneg
-      (Finset.subset_univ S)
-      (fun i _ _ => hrem0 i)
-  linarith
-
 /-- Distinct-pair version used for adjacent cyclic gaps. -/
 theorem distinct_pair_sum_lt_one_of_nonneg_total_lt_one
     {I : Type*} [Fintype I]
@@ -165,16 +133,10 @@ theorem support_two_displayed_merge_neutral_of_separated
     listExponent (pre ++ a :: b :: post) := by
   apply listExponent_merge_eq_of_stable_pair
   · exact hnotboth
-  · have hc :=
-      binaryCarry_eq_zero_of_remainder_sum_eq_delta
-        rem hrem0 hsum hdelta hrab
-    have hlt :
-        rem ra + rem rb < 1 :=
-      distinct_pair_sum_lt_one_of_nonneg_total_lt_one
-        rem hrem0
-        (by rw [hsum]; linarith)
-        hrab
-    exact hlt
+  · exact distinct_pair_sum_lt_one_of_nonneg_total_lt_one
+      rem hrem0
+      (by rw [hsum]; linarith)
+      hrab
 
 #print axioms listExponent_merge_eq_of_not_both_positive_no_carry
 #print axioms distinct_pair_sum_lt_one_of_nonneg_total_lt_one
