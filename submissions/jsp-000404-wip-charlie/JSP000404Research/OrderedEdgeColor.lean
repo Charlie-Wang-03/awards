@@ -48,6 +48,53 @@ noncomputable def bit {V : Type*} [LinearOrder V] {k : ℕ}
     (C : OrderedEdgeColoring V k) : V → Fin k → Bool :=
   fun v c ↦ decide (incoming C c v)
 
+/-- The canonical incoming bit of an increasing edge's own colour is false
+at its lower endpoint. -/
+theorem edgeColor_bit_lower_eq_false
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    {v w : V} (hvw : v < w) :
+    bit C v (C.color v w) = false := by
+  have hnotin_v : ¬ incoming C (C.color v w) v := by
+    rintro ⟨a, hav, hac⟩
+    apply C.noMonoTwoPath hav hvw
+    simpa using hac
+  simp [bit, hnotin_v]
+
+/-- The canonical incoming bit of an increasing edge's own colour is true
+at its upper endpoint. -/
+theorem edgeColor_bit_upper_eq_true
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    {v w : V} (hvw : v < w) :
+    bit C w (C.color v w) = true := by
+  have hin_w : incoming C (C.color v w) w := ⟨v, hvw, rfl⟩
+  simp [bit, hin_w]
+
+/-- Hence an increasing edge's own colour separates its endpoint bits. -/
+theorem edgeColor_bit_ne
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    {v w : V} (hvw : v < w) :
+    bit C v (C.color v w) ≠ bit C w (C.color v w) := by
+  rw [edgeColor_bit_lower_eq_false C hvw,
+      edgeColor_bit_upper_eq_true C hvw]
+  decide
+
+/-- If a colour is inactive at a vertex, its canonical incoming bit is false. -/
+theorem bit_eq_false_of_not_mem_active
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    (v : V) (c : Fin k)
+    (hc : c ∉ active C v) :
+    bit C v c = false := by
+  have hnotin : ¬ incoming C c v := by
+    intro hin
+    apply hc
+    simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact Or.inl hin
+  simp [bit, hnotin]
+
 /-- The colour of an edge separates its two endpoint partial words. -/
 theorem separates
     {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
@@ -164,6 +211,10 @@ theorem card_le_two_pow
         (fun v _ => Nat.one_le_pow _ _))
   exact hone.trans hcap
 
+#print axioms edgeColor_bit_lower_eq_false
+#print axioms edgeColor_bit_upper_eq_true
+#print axioms edgeColor_bit_ne
+#print axioms bit_eq_false_of_not_mem_active
 #print axioms separates
 #print axioms weighted_capacity
 #print axioms card_le_two_pow
