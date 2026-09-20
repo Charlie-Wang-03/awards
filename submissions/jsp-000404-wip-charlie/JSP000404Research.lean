@@ -248,3 +248,6 @@ import JSP000404Research.SignPathAppend
 import JSP000404Research.CanonicalSignGap
 
 import JSP000404Research.CentreSignPath
+
+
+import JSP000404Research.ConcreteHighExponentTransition
