@@ -210,3 +210,6 @@ import JSP000404Research.UniqueTransitionGap
 
 
 import JSP000404Research.LinearizedTransitionExposure
+
+
+import JSP000404Research.TransitionRotation
