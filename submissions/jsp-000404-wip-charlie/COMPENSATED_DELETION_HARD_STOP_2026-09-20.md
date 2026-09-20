@@ -26,6 +26,66 @@ P2 = ( 0.320884653864630,  1.086865290207004)
 P3 = (-0.324337662654423, -1.137372705046098)
 ```
 
+## 1A. Simplified integer-coordinate realization
+
+The same quotient/exponent/deletion pattern survives aggressive rounding.
+A particularly convenient realization is
+
+```text
+Q0 = ( 7,  -4)
+Q1 = (19,  -8)
+Q2 = ( 3,  11)
+Q3 = (-3, -11)
+```
+
+For this integer configuration:
+
+```text
+GA  ≈ 126.57303097851934 degrees
+t   ≈ 3.369085001390025
+n   = 3
+delta ≈ 0.369085001390025 < 1/2
+
+original q profiles:
+  [1,1,1], [2,0,0], [0,0,2], [0,0,2]
+
+original exponents:
+  [0,1,1,1]
+
+original dyadic weight:
+  7
+
+all four fixed-t deletion weights:
+  6
+```
+
+The maximum-angle witness is again `(Q1,Q0,Q3)`.
+
+At `Q0`, the two vectors forming the maximum angle are
+
+```text
+Q1-Q0 = (12,-4)
+Q3-Q0 = (-10,-7).
+```
+
+Hence the supplementary cap angle has cosine
+
+```text
+92 / sqrt(160*149) = 23 / sqrt(1490),
+```
+
+and may equivalently be described by
+
+```text
+lambda_* = atan(31/23)
+          ≈ 53.42696902148066 degrees.
+```
+
+This simple integer realization is preferred for any future fully formal
+geometric counterexample.  It reduces that task to finitely many explicit
+inner-product / angle comparisons rather than certification of random decimal
+coordinates.
+
 ## 2. Exact normalization from the actual maximum angle
 
 Using 80-decimal-digit arithmetic on the decimal coordinates above:
