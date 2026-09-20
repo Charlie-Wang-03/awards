@@ -216,3 +216,6 @@ import JSP000404Research.TransitionRotation
 
 
 import JSP000404Research.SupportListBridge
+
+
+import JSP000404Research.TransitionGapAlignment
