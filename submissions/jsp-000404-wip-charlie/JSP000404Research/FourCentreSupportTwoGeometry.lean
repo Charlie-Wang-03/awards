@@ -24,6 +24,42 @@ namespace JSP000404Research
 
 open Real
 
+private theorem local_ray01_ne
+    {p : Fin 4 → Plane} {hp : Function.Injective p}
+    {i : Fin 4}
+    (C : CentreProjectiveCycle hp i)
+    (r0 r1 r2 : OtherVertex i)
+    (hrays : C.rays = [r0,r1,r2]) :
+    r0 ≠ r1 := by
+  intro h
+  have hn := C.nodup
+  rw [hrays] at hn
+  simp [h] at hn
+
+private theorem local_ray12_ne
+    {p : Fin 4 → Plane} {hp : Function.Injective p}
+    {i : Fin 4}
+    (C : CentreProjectiveCycle hp i)
+    (r0 r1 r2 : OtherVertex i)
+    (hrays : C.rays = [r0,r1,r2]) :
+    r1 ≠ r2 := by
+  intro h
+  have hn := C.nodup
+  rw [hrays] at hn
+  simp [h] at hn
+
+private theorem local_ray02_ne
+    {p : Fin 4 → Plane} {hp : Function.Injective p}
+    {i : Fin 4}
+    (C : CentreProjectiveCycle hp i)
+    (r0 r1 r2 : OtherVertex i)
+    (hrays : C.rays = [r0,r1,r2]) :
+    r0 ≠ r2 := by
+  intro h
+  have hn := C.nodup
+  rw [hrays] at hn
+  simp [h] at hn
+
 /-- Four pairwise-distinct elements exhaust Fin 4.  Hence an element distinct
 from the first two is one of the remaining two. -/
 theorem fin4_eq_third_or_fourth_of_ne_first_two
@@ -108,7 +144,7 @@ theorem support_two_outer_angle_le_delta_lam
         hexp hsupport h0.1
     have h01 : r0.1 ≠ r1.1 := by
       intro h
-      apply ray01_ne C r0 r1 r2 hrays
+      apply local_ray01_ne C r0 r1 r2 hrays
       exact Subtype.ext h
     have hr0 :=
       fin4_eq_third_or_fourth_of_ne_first_two
@@ -137,7 +173,7 @@ theorem support_two_outer_angle_le_delta_lam
         hexp hsupport h1.2.1
     have h12 : r1.1 ≠ r2.1 := by
       intro h
-      apply ray12_ne C r0 r1 r2 hrays
+      apply local_ray12_ne C r0 r1 r2 hrays
       exact Subtype.ext h
     have hr1 :=
       fin4_eq_third_or_fourth_of_ne_first_two
@@ -166,7 +202,7 @@ theorem support_two_outer_angle_le_delta_lam
         hexp hsupport h2.2.2
     have h02 : r0.1 ≠ r2.1 := by
       intro h
-      apply ray02_ne C r0 r1 r2 hrays
+      apply local_ray02_ne C r0 r1 r2 hrays
       exact Subtype.ext h
     have hr0 :=
       fin4_eq_third_or_fourth_of_ne_first_two
