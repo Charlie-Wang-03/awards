@@ -116,9 +116,134 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
       simp [standardBandColor, huv, mergeWrapBand, x,
         ne_of_lt hfloorLt]
 
+
+/-- The active colours of the deterministic merged partition are exactly the
+image, under mergeWrapBand, of the standard (n+1)-band active colours. -/
+theorem canonicalFixedPhase_active_eq_image_standard
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (hn : 1 ≤ n)
+    (htri : WrapTriangleFree D n)
+    (v : V) :
+    BinaryEdgePartition.active
+        (canonicalFixedPhasePartition D hwidth hdelta hn htri) v
+      =
+    (OrderedEdgeColoring.active
+        (standardBandColoring D (n + 1)
+          (by omega)
+          (width_lt_n_add_one hwidth hdelta)) v).image
+      (mergeWrapBand hn) := by
+  classical
+  ext c
+  simp only [BinaryEdgePartition.active, OrderedEdgeColoring.active,
+    Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
+  constructor
+  · intro hc
+    rcases hc with ⟨a, hav, hcol⟩ | ⟨w, hvw, hcol⟩
+    · let d :=
+        standardBandColor D (n + 1)
+          (by omega)
+          (width_lt_n_add_one hwidth hdelta) a v
+      refine ⟨d, ?_, ?_⟩
+      · left
+        exact ⟨a, hav, rfl⟩
+      · have hmerge :=
+          fixedPhaseEdgeColor_eq_merge_standard
+            D hwidth hdelta hn hav
+        have hcanon :
+            (canonicalFixedPhasePartition
+              D hwidth hdelta hn htri).edgeColor a v =
+              fixedPhaseEdgeColor D n hn a v := rfl
+        rw [hcanon, hmerge] at hcol
+        exact hcol.symm
+    · let d :=
+        standardBandColor D (n + 1)
+          (by omega)
+          (width_lt_n_add_one hwidth hdelta) v w
+      refine ⟨d, ?_, ?_⟩
+      · right
+        exact ⟨w, hvw, rfl⟩
+      · have hmerge :=
+          fixedPhaseEdgeColor_eq_merge_standard
+            D hwidth hdelta hn hvw
+        have hcanon :
+            (canonicalFixedPhasePartition
+              D hwidth hdelta hn htri).edgeColor v w =
+              fixedPhaseEdgeColor D n hn v w := rfl
+        rw [hcanon, hmerge] at hcol
+        exact hcol.symm
+  · rintro ⟨d, hdactive, hdc⟩
+    rcases hdactive with ⟨a, hav, hstd⟩ | ⟨w, hvw, hstd⟩
+    · left
+      refine ⟨a, hav, ?_⟩
+      have hmerge :=
+        fixedPhaseEdgeColor_eq_merge_standard
+          D hwidth hdelta hn hav
+      have hstd' :
+          standardBandColor D (n + 1)
+              (by omega)
+              (width_lt_n_add_one hwidth hdelta) a v = d := by
+        exact hstd
+      change fixedPhaseEdgeColor D n hn a v = c
+      rw [hmerge, hstd', hdc]
+    · right
+      refine ⟨w, hvw, ?_⟩
+      have hmerge :=
+        fixedPhaseEdgeColor_eq_merge_standard
+          D hwidth hdelta hn hvw
+      have hstd' :
+          standardBandColor D (n + 1)
+              (by omega)
+              (width_lt_n_add_one hwidth hdelta) v w = d := by
+        exact hstd
+      change fixedPhaseEdgeColor D n hn v w = c
+      rw [hmerge, hstd', hdc]
+
+/-- Rewriting the preceding identity using the existing incidentBands
+characterization of standard active colours. -/
+theorem canonicalFixedPhase_active_eq_image_incidentBands
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (hn : 1 ≤ n)
+    (htri : WrapTriangleFree D n)
+    (v : V) :
+    BinaryEdgePartition.active
+        (canonicalFixedPhasePartition D hwidth hdelta hn htri) v
+      =
+    (incidentBands D (n + 1) v).image (mergeWrapBand hn) := by
+  rw [canonicalFixedPhase_active_eq_image_standard
+      D hwidth hdelta hn htri v,
+    standardBand_active_eq_incidentBands]
+
+/-- Merging never increases the number of active colours. -/
+theorem canonicalFixedPhase_active_card_le_standard
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (hn : 1 ≤ n)
+    (htri : WrapTriangleFree D n)
+    (v : V) :
+    (BinaryEdgePartition.active
+      (canonicalFixedPhasePartition D hwidth hdelta hn htri) v).card
+      ≤
+    (incidentBands D (n + 1) v).card := by
+  rw [canonicalFixedPhase_active_eq_image_incidentBands
+      D hwidth hdelta hn htri v]
+  exact Finset.card_image_le
+
 #print axioms mergeWrapBand
 #print axioms width_lt_n_add_one
 #print axioms fixedPhaseEdgeColor_eq_merge_standard
+#print axioms canonicalFixedPhase_active_eq_image_incidentBands
+#print axioms canonicalFixedPhase_active_card_le_standard
 
 end DirectionData
 end JSP000404Research
