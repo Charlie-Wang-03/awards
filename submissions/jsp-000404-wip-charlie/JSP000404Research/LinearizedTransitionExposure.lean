@@ -99,6 +99,25 @@ theorem one_div_t_le_gap_of_positive_quotient
   rw [div_le_iff₀ ht]
   simpa [one_mul] using hone
 
+/-- Quantitative quotient form: an aligned quotient q pays q full cap
+units of angular width. -/
+theorem quotient_mul_lam_le_pi_mul_gap
+    {q : ℕ} {t gap lam : ℝ}
+    (ht : 0 < t)
+    (hfloor : (q : ℝ) ≤ t * gap)
+    (hlam : lam = Real.pi / t) :
+    (q : ℝ) * lam ≤ Real.pi * gap := by
+  have hnorm : (q : ℝ) / t ≤ gap := by
+    rw [div_le_iff₀ ht]
+    simpa [mul_comm] using hfloor
+  have hpi :=
+    mul_le_mul_of_nonneg_left hnorm Real.pi_pos.le
+  rw [hlam]
+  calc
+    (q : ℝ) * (Real.pi / t)
+        = Real.pi * ((q : ℝ) / t) := by ring
+    _ ≤ Real.pi * gap := hpi
+
 /-- Physical angular form: if lam = pi/t, one positive quotient gap has
 angular width at least one cap unit lam. -/
 theorem lam_le_pi_mul_gap_of_positive_quotient
@@ -213,6 +232,7 @@ theorem strictlyExposedAt_of_linearized_positive_last_quotient
 #print axioms prefixGap_le_one_sub_last
 #print axioms gap_pos_of_positive_quotient
 #print axioms one_div_t_le_gap_of_positive_quotient
+#print axioms quotient_mul_lam_le_pi_mul_gap
 #print axioms lam_le_pi_mul_gap_of_positive_quotient
 #print axioms strictlyExposedAt_of_linearized_positive_last_gap
 #print axioms strictlyExposedAt_of_linearized_positive_last_quotient
