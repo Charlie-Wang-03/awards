@@ -97,6 +97,14 @@ theorem retainedBit_eq_off_of_flippedCode_eq
   have he := congrFun hflip e
   simpa [flippedRetainedCode, hec, hed] using he
 
+theorem castSucc_mem_active_iff_mem_retainedActive
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) (c : Fin n) :
+    c.castSucc ∈ active C v ↔ c ∈ retainedActive C v := by
+  classical
+  simp [active, retainedActive]
+
 /-- The projected colour of a retained increasing edge is retained-active at
 its lower endpoint. -/
 theorem retainedColor_mem_retainedActive_left
@@ -195,8 +203,12 @@ theorem no_vertex_retainedCode_eq_flipped_common_inactive
   have hfree :=
     no_vertex_realizes_flipped_common_inactive_code
       C c huv hsame
-      (by simpa [retainedActive] using hcu)
-      (by simpa [retainedActive] using hcv)
+      (by
+        intro hc
+        exact hcu ((castSucc_mem_active_iff_mem_retainedActive C u c).1 hc))
+      (by
+        intro hc
+        exact hcv ((castSucc_mem_active_iff_mem_retainedActive C v c).1 hc))
   rintro ⟨w, hw⟩
   apply hfree
   refine ⟨w, ?_, ?_⟩
@@ -505,6 +517,7 @@ theorem card_le_two_pow_of_duplicate_active_sum_lt
   exact exists_common_inactive_of_retained_card_add_lt
     C (hcard huv hsame)
 
+#print axioms castSucc_mem_active_iff_mem_retainedActive
 #print axioms isResidual_of_flippedCode_collision_lt
 #print axioms no_vertex_retainedCode_eq_flipped_common_inactive
 #print axioms flipped_common_inactive_codes_ne
