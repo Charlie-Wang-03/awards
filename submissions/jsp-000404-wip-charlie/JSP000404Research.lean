@@ -344,3 +344,18 @@ import JSP000404Research.TwoCentreTerminal
 
 
 import JSP000404Research.AggregateSplitExistenceHardStop
+
+
+import JSP000404Research.SharpOuterAngles
+
+
+import JSP000404Research.ConcreteTransitionInterval
+
+
+import JSP000404Research.HighExponentTransitionPacking
+
+
+import JSP000404Research.MergedBandMap
+
+
+import JSP000404Research.CriticalSupportArcBudget
