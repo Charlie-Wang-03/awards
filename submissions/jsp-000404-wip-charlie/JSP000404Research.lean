@@ -162,3 +162,6 @@ import JSP000404Research.ResidualVerticalPairs
 import JSP000404Research.ResidualFreeNeighbour
 
 import JSP000404Research.ResidualCommonInactive
+
+
+import JSP000404Research.ResidualHoleInjection
