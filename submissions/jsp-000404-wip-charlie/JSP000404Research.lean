@@ -251,3 +251,12 @@ import JSP000404Research.CentreSignPath
 
 
 import JSP000404Research.ConcreteHighExponentTransition
+
+
+import JSP000404Research.TransitionRaySplit
+
+
+import JSP000404Research.TransitionSplitExposure
+
+
+import JSP000404Research.ConcreteHighExponentExposure
