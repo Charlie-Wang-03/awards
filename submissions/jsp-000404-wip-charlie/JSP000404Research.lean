@@ -160,3 +160,5 @@ import JSP000404Research.ResidualBitMerge
 import JSP000404Research.ResidualVerticalPairs
 
 import JSP000404Research.ResidualFreeNeighbour
+
+import JSP000404Research.ResidualCommonInactive
