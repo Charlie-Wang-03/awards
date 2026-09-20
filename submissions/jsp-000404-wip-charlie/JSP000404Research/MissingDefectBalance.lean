@@ -113,6 +113,96 @@ theorem two_mul_card_le_weighted_sum_add_full
   dsimp [extraMissingWeight]
   omega
 
+/-- Exact decomposition of the weighted Hansel mass around the baseline
+value two per vertex.  A full vertex has weight one and contributes one unit
+through the full-count term; a non-full vertex has weight at least two and its
+surplus above two is exactly the extra-missing term. -/
+theorem weighted_sum_add_full_eq_two_card_add_extra
+    {V : Type*} [Fintype V] {k : ℕ}
+    (specified : V → Finset (Fin k)) :
+    (∑ v : V, 2 ^ (k - (specified v).card)) +
+        (fullSpecifiedVertices specified).card =
+      2 * Fintype.card V + extraMissingWeight specified := by
+  classical
+  have hpoint :
+      ∀ v : V,
+        2 ^ (k - (specified v).card) +
+            (if specified v = Finset.univ then 1 else 0) =
+          2 + (2 ^ (k - (specified v).card) - 2) := by
+    intro v
+    by_cases hfull : specified v = Finset.univ
+    · rw [hfull]
+      simp
+    · have hcard_le : (specified v).card ≤ k := by
+        simpa using Finset.card_le_univ (specified v)
+      have hcard_ne : (specified v).card ≠ k := by
+        intro h
+        apply hfull
+        exact Finset.eq_univ_of_card _ (by simpa using h)
+      have hcard_lt : (specified v).card < k := by omega
+      have hexp : 1 ≤ k - (specified v).card := by omega
+      have htwo : 2 ≤ 2 ^ (k - (specified v).card) := by
+        simpa using Nat.pow_le_pow_right (by norm_num : 0 < 2) hexp
+      simp [hfull]
+      omega
+  have hsum :
+      (∑ v : V,
+          (2 ^ (k - (specified v).card) +
+            (if specified v = Finset.univ then 1 else 0))) =
+        ∑ v : V,
+          (2 + (2 ^ (k - (specified v).card) - 2)) := by
+    apply Finset.sum_congr rfl
+    intro v _
+    exact hpoint v
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsum
+  have hfullsum :
+      (∑ v : V, if specified v = Finset.univ then 1 else 0) =
+        (fullSpecifiedVertices specified).card := by
+    simp [fullSpecifiedVertices]
+  have hconst : (∑ _v : V, 2) = 2 * Fintype.card V := by
+    simp [Nat.mul_comm]
+  rw [hfullsum, hconst] at hsum
+  simpa [extraMissingWeight] using hsum
+
+/-- A critical family with exactly one vertex more than the n-cube capacity
+must be full-heavy at every valid (n+1)-coordinate Hansel representation. -/
+theorem critical_card_forces_full_extra_imbalance
+    {V : Type*} [Fintype V] {n : ℕ}
+    (bit : V → Fin (n + 1) → Bool)
+    (specified : V → Finset (Fin (n + 1)))
+    (hsep : ∀ v w, v ≠ w → ∃ i,
+      i ∈ specified v ∧ i ∈ specified w ∧ bit v i ≠ bit w i)
+    (hcard : Fintype.card V = 2 ^ n + 1) :
+    extraMissingWeight specified + 2 ≤
+      (fullSpecifiedVertices specified).card := by
+  have hweighted :
+      (∑ v : V, 2 ^ ((n + 1) - (specified v).card)) ≤
+        2 ^ (n + 1) :=
+    weighted_hansel bit specified hsep
+  have hid :=
+    weighted_sum_add_full_eq_two_card_add_extra specified
+  rw [hcard] at hid
+  rw [pow_succ] at hweighted
+  omega
+
+/-- Direction-band specialization of the critical full-heavy condition. -/
+theorem unitBand_critical_card_forces_full_extra_imbalance
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {width : ℝ}
+    (D : DirectionData V width) (n : ℕ)
+    (hwidth : width ≤ (n + 1 : ℕ))
+    (hcard : Fintype.card V = 2 ^ n + 1) :
+    extraMissingWeight
+        (DirectionData.incidentBands D (n + 1)) + 2 ≤
+      (fullSpecifiedVertices
+        (DirectionData.incidentBands D (n + 1))).card := by
+  exact critical_card_forces_full_extra_imbalance
+    (DirectionData.bandBit D (n + 1))
+    (DirectionData.incidentBands D (n + 1))
+    (DirectionData.unitBand_separates D (n + 1) (by
+      exact_mod_cast hwidth))
+    hcard
+
 /-- Main defect-balance capacity theorem on n+1 coordinates. -/
 theorem hansel_card_le_two_pow_of_full_extra_balance
     {V : Type*} [Fintype V] {n : ℕ}
@@ -171,6 +261,9 @@ theorem unitBand_card_le_two_pow_of_full_extra_balance
     hbalance
 
 #print axioms fullSpecifiedVertices_mem_iff
+#print axioms weighted_sum_add_full_eq_two_card_add_extra
+#print axioms critical_card_forces_full_extra_imbalance
+#print axioms unitBand_critical_card_forces_full_extra_imbalance
 #print axioms two_mul_card_le_weighted_sum_add_full
 #print axioms hansel_card_le_two_pow_of_full_extra_balance
 #print axioms unitBand_card_le_two_pow_of_full_extra_balance
