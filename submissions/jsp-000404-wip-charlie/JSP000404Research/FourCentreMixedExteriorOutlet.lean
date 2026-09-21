@@ -76,11 +76,19 @@ theorem no_mixed_fourth_support_arc_of_one_cap_unit
   have hpack :=
     SupportIntervalCertificate.four_turnLength_sum_le_two_pi
       hsa hsb hsc hab hac hbc Ss Sa Sb Cc
+  have hqsumR :
+      ((Hs.qe + Ha.qe + Hb.qe : ℕ) : ℝ) =
+        ((2 * n : ℕ) : ℝ) := by
+    exact_mod_cast hqsum
   have hhigh :
       ((2 * n : ℕ) : ℝ) * lam ≤
         Ss.turnLength + Sa.turnLength + Sb.turnLength := by
     dsimp [Ss, Sa, Sb]
-    push_cast at hqsum
+    have hsTurn' := hsTurn
+    have haTurn' := haTurn
+    have hbTurn' := hbTurn
+    rw [← hqsumR]
+    push_cast
     nlinarith
   have htotal :
       (((2 * n + 1 : ℕ) : ℕ) : ℝ) * lam ≤
@@ -88,12 +96,13 @@ theorem no_mixed_fourth_support_arc_of_one_cap_unit
           Sb.turnLength + Cc.turnLength := by
     push_cast
     nlinarith
+  have hpiBase : Real.pi = t * lam := by
+    rw [hlam]
+    field_simp [ne_of_gt htpos]
   have hpi :
       2 * Real.pi =
         2 * ((n : ℝ) + delta) * lam := by
-    rw [hlam, ht]
-    field_simp
-    ring
+    rw [hpiBase, ht]
   have hstrict :
       2 * ((n : ℝ) + delta) * lam <
         ((2 * n + 1 : ℕ) : ℝ) * lam := by
