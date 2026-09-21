@@ -103,7 +103,52 @@ theorem heavy_sameRetained_lt_has_residual_hole
   · exact heavy_sameRetained_has_free_neighbour
       C exponent hexp hret (ne_of_lt huv) hsame hsum
 
+
+/-- Contrapositive form: if no retained coordinate is inactive at both
+vertices, the pair cannot be heavy. -/
+theorem exponent_sum_le_of_no_common_inactive
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (hret :
+      ∀ v,
+        (retainedActive C v).card ≤ n - exponent v)
+    {u v : V}
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    exponent u + exponent v ≤ n := by
+  by_contra hsum
+  have hgt : n < exponent u + exponent v := by omega
+  exact hno
+    (exists_common_inactive_of_exponent_sum_gt
+      C exponent hexp hret hgt)
+
+/-- Hence any duplicated retained-code fibre which cannot be repaired by the
+common-inactive one-coordinate move is necessarily light. -/
+theorem sameRetained_light_of_no_common_inactive
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (hret :
+      ∀ v,
+        (retainedActive C v).card ≤ n - exponent v)
+    {u v : V}
+    (_hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    exponent u + exponent v ≤ n :=
+  exponent_sum_le_of_no_common_inactive
+    C exponent hexp hret hno
+
 #print axioms exists_common_inactive_of_exponent_sum_gt
+#print axioms exponent_sum_le_of_no_common_inactive
+#print axioms sameRetained_light_of_no_common_inactive
 #print axioms heavy_sameRetained_has_free_neighbour
 #print axioms heavy_sameRetained_lt_has_residual_hole
 
