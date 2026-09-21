@@ -383,3 +383,6 @@ import JSP000404Research.CriticalObstructionRefinement
 
 
 import JSP000404Research.MinimumDominatingPhaseCover
+
+
+import JSP000404Research.AdjacentTransitionDominator
