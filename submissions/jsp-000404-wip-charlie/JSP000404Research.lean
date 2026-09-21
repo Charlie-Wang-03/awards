@@ -473,3 +473,24 @@ import JSP000404Research.ResidualHighExponentPairRepair
 
 
 import JSP000404Research.ResidualActiveDrop
+
+
+import JSP000404Research.PermutedDeficitCapacity
+
+
+import JSP000404Research.TailMajorizationCapacity
+
+
+import JSP000404Research.OneLayerProfileLoss
+
+
+import JSP000404Research.ResidualProjectionLoss
+
+
+import JSP000404Research.ResidualInactiveUniqueCode
+
+
+import JSP000404Research.BoundaryFreeProfile
+
+
+import JSP000404Research.MergedBandTailCapacity
