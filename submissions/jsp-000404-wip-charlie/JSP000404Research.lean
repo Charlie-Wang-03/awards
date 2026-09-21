@@ -389,3 +389,9 @@ import JSP000404Research.AdjacentTransitionDominator
 
 
 import JSP000404Research.FiniteTerminalDominator
+
+
+import JSP000404Research.FourCentreMixedInteriorArithmetic
+
+
+import JSP000404Research.IrredundantIntervalMultiplicity
