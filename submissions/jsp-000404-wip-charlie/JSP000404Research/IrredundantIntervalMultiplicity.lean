@@ -127,13 +127,12 @@ theorem irredundant_interval_point_multiplicity_le_two
     omega
   obtain ⟨T, hTsub, hTcard⟩ :=
     Finset.exists_subset_card_eq
-      (S.filter (fun i => InClosedInterval L R i x))
-      (by omega : 3 ≤
-        (S.filter (fun i => InClosedInterval L R i x)).card)
+      (s := S.filter (fun i => InClosedInterval L R i x))
+      h3
   have hcard3 : T.card = 3 := by
     simpa using hTcard
   obtain ⟨i, j, k, hij, hik, hjk, hT⟩ :=
-    Finset.card_eq_three.mp hcard3
+    T.card_eq_three.mp hcard3
   have hiT : i ∈ T := by simp [hT]
   have hjT : j ∈ T := by simp [hT]
   have hkT : k ∈ T := by simp [hT]
