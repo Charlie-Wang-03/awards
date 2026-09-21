@@ -22,19 +22,20 @@ theorem exists_fourth_fin_four
   have hb1 : b ∈ S1 := by
     simp [S1, S0, hsb.symm, hab.symm]
   have hcard0 : S0.card = 3 := by
+    change ((Finset.univ : Finset (Fin 4)).erase s).card = 3
     rw [Finset.card_erase_of_mem hs]
-    simp [S0]
+    simp
   have hcard1 : S1.card = 2 := by
+    change (S0.erase a).card = 2
     rw [Finset.card_erase_of_mem ha0, hcard0]
   have hcard2 : S2.card = 1 := by
+    change (S1.erase b).card = 1
     rw [Finset.card_erase_of_mem hb1, hcard1]
   have hne : S2.Nonempty := Finset.card_pos.mp (by omega)
   obtain ⟨c, hc⟩ := hne
-  refine ⟨c, ?_, ?_, ?_⟩ <;>
-    simp [S2, S1, S0] at hc
-  · exact hc.2.2.1
-  · exact hc.2.1
-  · exact hc.1
+  have hc' : c ≠ b ∧ c ≠ a ∧ c ≠ s := by
+    simpa [S2, S1, S0] using hc
+  exact ⟨c, hc'.2.2, hc'.2.1, hc'.1⟩
 
 theorem four_centre_dyadic_capacity
     {p : Fin 4 → Plane}
