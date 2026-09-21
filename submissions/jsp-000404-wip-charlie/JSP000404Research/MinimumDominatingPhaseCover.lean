@@ -4,27 +4,30 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
 /-!
-# Minimum-cardinality phase covers and common dominators
+# Minimum-cardinality phase covers with common dominators
 
-Inclusion-irredundancy is not quite the right notion for the refined
-obstruction route: two different ancestor intervals with the same terminal
-transition need not be nested with each other.
+Two ancestor bad intervals attached to the same terminal transition need not be
+nested with each other.  The correct compression principle is therefore not
+pairwise nesting but common domination.
 
-What is true is stronger in another direction.  Every ancestor obstruction is
-contained in the bad interval of its terminal transition obstruction.
+Assume every obstruction i is assigned to a slot, and the slot has a
+distinguished terminal obstruction top(slot i) whose bad set contains the bad
+set of i.  In a minimum-cardinality cover, two selected obstructions cannot
+share one slot:
 
-For a minimum-cardinality cover this is enough.  If two selected obstructions
-belong to the same terminal slot, replace both by the one terminal dominator.
-Coverage is preserved and the cardinality drops by one, contradiction.
+* if the terminal dominator is already selected, one ancestor is redundant;
+* otherwise replace the two selected ancestors by the one terminal dominator.
 
-Thus minimum-cardinality covers are automatically injective on any slot system
-with one common dominator per fibre.  This removes the previous pairwise
-nested-fibre requirement entirely.
+Thus the slot map is injective on a minimum-cardinality cover.
+
+Combined with the global lower-branch turn-slot budget, this yields the same
+phase-cover contradiction as the older nested-fibre route, under a strictly
+weaker geometric hypothesis.
 -/
 
 namespace JSP000404Research
 
-/-- A cover of minimum cardinality among all subcovers of S. -/
+/-- A subcover of minimum cardinality among all subcovers of S. -/
 def MinimumCardCover
     {I Phase : Type*} [DecidableEq I]
     (A : I → Phase → Prop) (S T : Finset I) : Prop :=
@@ -33,7 +36,6 @@ def MinimumCardCover
   ∀ U : Finset I, U ⊆ S → PredicateCovers A U →
     T.card ≤ U.card
 
-/-- Every finite cover admits a minimum-cardinality subcover. -/
 theorem exists_minimum_card_subcover
     {I Phase : Type*} [DecidableEq I]
     (A : I → Phase → Prop) (S : Finset I)
@@ -46,18 +48,15 @@ theorem exists_minimum_card_subcover
   have hP : ∃ m, P m :=
     ⟨S.card, S, fun _ h => h, hcover, rfl⟩
   let m := Nat.find hP
-  obtain ⟨T, hTS, hTCover, hTcard⟩ :=
-    Nat.find_spec hP
+  obtain ⟨T, hTS, hTCover, hTcard⟩ := Nat.find_spec hP
   refine ⟨T, hTS, hTCover, ?_⟩
   intro U hUS hUCover
-  have hPU : P U.card :=
-    ⟨U, hUS, hUCover, rfl⟩
-  have hmin : m ≤ U.card :=
-    Nat.find_min' hP hPU
-  simpa [m, hTcard] using hmin
+  have hPU : P U.card := ⟨U, hUS, hUCover, rfl⟩
+  have hmin : m ≤ U.card := Nat.find_min' hP hPU
+  rw [← hTcard]
+  exact hmin
 
-/-- A common-dominator slot system: every obstruction in S is dominated by
-the distinguished top obstruction of its slot. -/
+/-- One distinguished obstruction dominates every obstruction in its slot. -/
 structure CommonDominatorSlots
     {I Phase Slot : Type*}
     [DecidableEq I]
@@ -70,8 +69,7 @@ structure CommonDominatorSlots
   dominates :
     ∀ i, i ∈ S → ∀ x, A i x → A (top (slot i)) x
 
-/-- In a minimum-cardinality cover, the slot map is injective whenever each
-slot has one common dominator obstruction in S. -/
+/-- Minimum covers are injective on common-dominator slots. -/
 theorem slot_injective_on_minimum_cover_of_common_dominator
     {I Phase Slot : Type*}
     [DecidableEq I]
@@ -87,12 +85,10 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
   by_contra hij
   let k := D.top (slot i)
   have hkS : k ∈ S := D.top_mem (slot i)
-  have hdomI :
-      ∀ x, A i x → A k x := by
+  have hdomI : ∀ x, A i x → A k x := by
     intro x hx
     exact D.dominates i (hmin.1 hi) x hx
-  have hdomJ :
-      ∀ x, A j x → A k x := by
+  have hdomJ : ∀ x, A j x → A k x := by
     intro x hx
     have h := D.dominates j (hmin.1 hj) x hx
     simpa [k, hslot] using h
@@ -103,20 +99,20 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
         apply hij
         rw [← hki, h]
       let U := T.erase j
-      have hUS : U ⊆ S := by
-        exact (Finset.erase_subset j T).trans hmin.1
+      have hUS : U ⊆ S :=
+        (Finset.erase_subset j T).trans hmin.1
       have hUCover : PredicateCovers A U := by
         intro x
         obtain ⟨r, hrT, hrA⟩ := hmin.2.1 x
         by_cases hrj : r = j
         · subst r
-          refine ⟨k, ?_, hdomJ x hrA⟩
-          exact Finset.mem_erase.mpr ⟨hkj, hkT⟩
+          exact ⟨k, Finset.mem_erase.mpr ⟨hkj, hkT⟩,
+            hdomJ x hrA⟩
         · exact ⟨r, Finset.mem_erase.mpr ⟨hrj, hrT⟩, hrA⟩
-      have hcardMin := hmin.2.2 U hUS hUCover
-      have hcardErase := Finset.card_erase_of_mem hj
-      dsimp [U] at hcardMin
-      rw [hcardErase] at hcardMin
+      have hc := hmin.2.2 U hUS hUCover
+      have he := Finset.card_erase_of_mem hj
+      dsimp [U] at hc
+      rw [he] at hc
       omega
     · let U := T.erase i
       have hUS : U ⊆ S :=
@@ -126,13 +122,13 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
         obtain ⟨r, hrT, hrA⟩ := hmin.2.1 x
         by_cases hri : r = i
         · subst r
-          refine ⟨k, ?_, hdomI x hrA⟩
-          exact Finset.mem_erase.mpr ⟨hki, hkT⟩
+          exact ⟨k, Finset.mem_erase.mpr ⟨hki, hkT⟩,
+            hdomI x hrA⟩
         · exact ⟨r, Finset.mem_erase.mpr ⟨hri, hrT⟩, hrA⟩
-      have hcardMin := hmin.2.2 U hUS hUCover
-      have hcardErase := Finset.card_erase_of_mem hi
-      dsimp [U] at hcardMin
-      rw [hcardErase] at hcardMin
+      have hc := hmin.2.2 U hUS hUCover
+      have he := Finset.card_erase_of_mem hi
+      dsimp [U] at hc
+      rw [he] at hc
       omega
   · let U := insert k ((T.erase i).erase j)
     have hUS : U ⊆ S := by
@@ -146,32 +142,27 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
       obtain ⟨r, hrT, hrA⟩ := hmin.2.1 x
       by_cases hri : r = i
       · subst r
-        refine ⟨k, by simp [U], hdomI x hrA⟩
+        exact ⟨k, by simp [U], hdomI x hrA⟩
       · by_cases hrj : r = j
         · subst r
-          refine ⟨k, by simp [U], hdomJ x hrA⟩
-        · refine ⟨r, ?_, hrA⟩
-          simp [U, hri, hrj, hrT]
+          exact ⟨k, by simp [U], hdomJ x hrA⟩
+        · exact ⟨r, by simp [U, hri, hrj, hrT], hrA⟩
     have hjErase : j ∈ T.erase i :=
       Finset.mem_erase.mpr ⟨hij.symm, hj⟩
-    have hkNot :
-        k ∉ (T.erase i).erase j := by
+    have hkNot : k ∉ (T.erase i).erase j := by
       intro hk
       exact hkT (Finset.mem_of_mem_erase
         (Finset.mem_of_mem_erase hk))
-    have hcardU :
-        U.card = T.card - 1 := by
+    have hcardU : U.card = T.card - 1 := by
       dsimp [U]
       rw [Finset.card_insert_of_notMem hkNot,
           Finset.card_erase_of_mem hjErase,
           Finset.card_erase_of_mem hi]
       omega
-    have hcardMin := hmin.2.2 U hUS hUCover
-    rw [hcardU] at hcardMin
+    have hc := hmin.2.2 U hUS hUCover
+    rw [hcardU] at hc
     omega
 
-/-- Finite-slot cardinality compression for minimum covers with common
-dominators. -/
 theorem minimum_cover_card_le_slots_of_common_dominator
     {I Phase Slot : Type*}
     [DecidableEq I] [Fintype Slot]
@@ -191,8 +182,7 @@ theorem minimum_cover_card_le_slots_of_common_dominator
   have hcard := Fintype.card_le_of_injective f hf
   simpa [f] using hcard
 
-/-- Final phase contradiction using common dominators rather than nested
-fibres. -/
+/-- Final phase contradiction under a common-dominator slot certificate. -/
 theorem no_phase_cover_of_common_dominator_turn_slots
     {I Slot : Type*}
     [DecidableEq I] [Fintype Slot]
