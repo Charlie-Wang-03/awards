@@ -114,7 +114,7 @@ theorem exists_adjacent_transition_dominator
             have hR :
                 alpha + s ≤ L + (g :: gs).sum := by
               simp only [List.sum_cons]
-              exact hRtail
+              linarith
             refine ⟨alpha, s, ?_, hs1, hsTop, hL, hR, ?_⟩
             · exact Or.inr hocc
             · intro x hx
