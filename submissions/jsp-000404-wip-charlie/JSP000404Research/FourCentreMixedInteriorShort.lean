@@ -77,6 +77,54 @@ theorem mixed_four_interior_short_arithmetic_contradiction
     nlinarith
   linarith
 
+
+/-- The interior terminal only needs the hidden angle up to one remainder
+loss delta*lambda.  This is the form naturally produced if the hidden
+(n-1)-quotient belongs to the outer angle s-b-a while the complementary
+a-b-c angle is at most delta*lambda. -/
+theorem mixed_four_interior_short_arithmetic_contradiction_weakened
+    {lam t delta As Aa Ab p u v w z : ℝ}
+    {n : ℕ}
+    (hn : 1 ≤ n)
+    (hlampos : 0 < lam)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hpi : Real.pi = t * lam)
+    (houter : As + Aa + Ab = Real.pi)
+    (hp : p ≤ As)
+    (huv : u + v ≤ Aa)
+    (hwz : w + z ≤ Ab)
+    (hw :
+      (((n - 1 : ℕ) : ℝ) - delta) * lam ≤ w)
+    (hpu : lam ≤ p + u)
+    (hzv : lam ≤ z + v) :
+    False := by
+  have hnat : n - 1 + 1 = n :=
+    Nat.sub_add_cancel hn
+  have hcast :
+      ((n - 1 : ℕ) : ℝ) + 1 = (n : ℝ) := by
+    exact_mod_cast hnat
+  have hncast :
+      ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
+    linarith
+  have hlower :
+      2 * lam ≤ p + u + z + v := by
+    linarith
+  have hupper0 :
+      p + u + z + v ≤ Real.pi - w := by
+    linarith [houter]
+  have hupper1 :
+      Real.pi - w ≤ (1 + 2 * delta) * lam := by
+    rw [hpi, ht]
+    rw [hncast] at hw
+    nlinarith
+  have hstrict :
+      (1 + 2 * delta) * lam < 2 * lam := by
+    nlinarith
+  linarith
+
 #print axioms mixed_four_interior_short_arithmetic_contradiction
+#print axioms mixed_four_interior_short_arithmetic_contradiction_weakened
 
 end JSP000404Research
