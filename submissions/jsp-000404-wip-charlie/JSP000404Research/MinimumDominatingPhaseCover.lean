@@ -70,38 +70,6 @@ structure CommonDominatorSlots
   dominates :
     ∀ i, i ∈ S → ∀ x, A i x → A (top (slot i)) x
 
-namespace CommonDominatorSlots
-
-/-- Removing one selected obstruction remains a cover if its slot dominator is
-already selected. -/
-theorem erase_preserves_cover_of_top_mem
-    {I Phase Slot : Type*}
-    [DecidableEq I]
-    {A : I → Phase → Prop}
-    {S T : Finset I}
-    {slot : I → Slot}
-    (D : CommonDominatorSlots A S slot)
-    (hcover : PredicateCovers A T)
-    {i : I} (hi : i ∈ T)
-    (htopT : D.top (slot i) ∈ T)
-    (htopNe : D.top (slot i) ≠ i) :
-    PredicateCovers A (T.erase i) := by
-  intro x
-  obtain ⟨j, hjT, hjA⟩ := hcover x
-  by_cases hji : j = i
-  · subst j
-    refine ⟨D.top (slot i), ?_, ?_⟩
-    · exact Finset.mem_erase.mpr ⟨htopNe, htopT⟩
-    · exact D.dominates i (by
-        -- T is a subcover of S in all later uses; this local helper does not
-        -- know that yet, so recover membership from the selected dominator
-        -- hypothesis is impossible.  The minimum-cover theorem below proves
-        -- the cover directly where T ⊆ S is available.
-        sorry) x hjA
-  · exact ⟨j, Finset.mem_erase.mpr ⟨hji, hjT⟩, hjA⟩
-
-end CommonDominatorSlots
-
 /-- In a minimum-cardinality cover, the slot map is injective whenever each
 slot has one common dominator obstruction in S. -/
 theorem slot_injective_on_minimum_cover_of_common_dominator
