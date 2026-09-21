@@ -467,3 +467,9 @@ import JSP000404Research.OrderedBadPhaseCapacity
 
 
 import JSP000404Research.BadPhasePositiveExponent
+
+
+import JSP000404Research.ResidualHighExponentPairRepair
+
+
+import JSP000404Research.ResidualActiveDrop
