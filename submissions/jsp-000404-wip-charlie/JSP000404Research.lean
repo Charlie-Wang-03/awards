@@ -458,3 +458,12 @@ import JSP000404Research.FourCentreSharpTerminal
 
 
 import JSP000404Research.FourCentreCapacity
+
+
+import JSP000404Research.WeightedBadPhaseCapacity
+
+
+import JSP000404Research.OrderedBadPhaseCapacity
+
+
+import JSP000404Research.BadPhasePositiveExponent
