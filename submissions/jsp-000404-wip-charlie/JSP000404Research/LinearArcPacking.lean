@@ -95,6 +95,4 @@ theorem ordered_angular_intervals_sum_le_two_pi
 
 #print axioms ordered_interval_length_sum_le
 #print axioms ordered_angular_intervals_sum_le_two_pi
-#print axioms normalized_gap_sum_le_two_of_ordered_arc_packing
-
 end JSP000404Research
