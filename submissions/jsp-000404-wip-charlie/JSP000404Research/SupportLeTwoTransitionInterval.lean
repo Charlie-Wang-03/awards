@@ -122,6 +122,30 @@ theorem support_one_transitionInterval_qe_eq_exponent_add_one
   highTransition_qe_eq_exponent_add_one_of_support_one
     C H hsupport
 
+
+/-- Every concrete support<=2 centre is strictly exposed.  The conclusion is
+independent of its exponent: the unique transition cut already places all
+displacement rays in one common signed interval of width < pi. -/
+theorem strictlyExposedAt_of_positiveSupport_le_two
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t : ℝ}
+    (ht : 0 < t)
+    (htone : 1 ≤ t)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    (C : CentreProjectiveCycle hp i)
+    (hsupport :
+      positiveSupport (centreQuotient C t) ≤ 2) :
+    StrictlyExposedAt p i := by
+  obtain ⟨H, _⟩ :=
+    exists_transitionIntervalCertificate_of_support_le_two
+      hp hcap ht htone hlam i C hsupport
+  exact strictlyExposedAt_of_common_signed_interval
+    H.width_nonneg H.width_lt_pi H.sigma H.repr
+
 #print axioms exists_transition_decomposition_of_support_le_two
 #print axioms exists_transitionIntervalCertificate_of_support_le_two
 #print axioms support_one_transitionInterval_qe_eq_exponent_add_one
