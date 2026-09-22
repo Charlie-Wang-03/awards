@@ -653,4 +653,15 @@ import JSP000404Research.CriticalIrredundantOrder
 
 
 import JSP000404Research.ResidualSameCodeOrientation
-\n\nimport JSP000404Research.ResidualLightFibreDyadic\n\n\nimport JSP000404Research.ResidualBlockerDensity\n\n\nimport JSP000404Research.ResidualDuplicateBudget\n
+
+
+import JSP000404Research.ResidualLightFibreDyadic
+
+
+import JSP000404Research.ResidualBlockerDensity
+
+
+import JSP000404Research.ResidualDuplicateBudget
+
+
+import JSP000404Research.HardResidualNoAbsorption
