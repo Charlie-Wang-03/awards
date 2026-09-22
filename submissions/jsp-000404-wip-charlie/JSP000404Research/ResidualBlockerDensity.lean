@@ -126,7 +126,7 @@ theorem retainedInactive_card
         (Finset.univ : Finset (Fin n)) \ retainedActive C u := by
     ext c
     simp [retainedInactive]
-  rw [hsub, Finset.card_sdiff]
+  rw [hsub, Finset.card_sdiff_of_subset (Finset.subset_univ _)]
   simp
 
 /-- Sendov-style activity budget gives at least exponent(u) inactive retained
@@ -186,12 +186,13 @@ theorem retainedInactive_card_le_right_of_blocked
       congrArg Subtype.val hcd
     have hd' :
         RetainedNeighbourBlocker C u d.1 (chooseBlocker c) := by
-      simpa [hw] using hchoose d
+      rw [hw]
+      exact hchoose d
     exact blocker_coordinate_unique
       C (hchoose c) hd'
   have hcard :=
     Fintype.card_le_of_injective f hf
-  simpa [f] using hcard
+  simpa only [Fintype.card_coe] using hcard
 
 /-- Main density consequence: if every inactive one-coordinate repair is
 blocked, the lower endpoint's exponent is bounded by the number of vertices
