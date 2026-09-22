@@ -95,6 +95,47 @@ theorem distinguished_entry_eq_of_decompositions
   rw [hdrop₂] at hdrop₁
   exact List.cons.inj hdrop₁ |>.1
 
+
+/-- Two decompositions of the same list with equally long prefixes agree in
+the entire prefix, distinguished entry, and suffix. -/
+theorem blocks_eq_of_decompositions
+    {α : Type*}
+    {l pre₁ post₁ pre₂ post₂ : List α}
+    {x y : α}
+    (h₁ : l = pre₁ ++ x :: post₁)
+    (h₂ : l = pre₂ ++ y :: post₂)
+    (hlen : pre₁.length = pre₂.length) :
+    pre₁ = pre₂ ∧ x = y ∧ post₁ = post₂ := by
+  have hpref₁ :
+      l.take pre₁.length = pre₁ := by
+    rw [h₁]
+    simp
+  have hpref₂ :
+      l.take pre₂.length = pre₂ := by
+    rw [h₂]
+    simp
+  have hpref : pre₁ = pre₂ := by
+    rw [hlen] at hpref₁
+    rw [hpref₂] at hpref₁
+    exact hpref₁.symm
+  have hx :
+      x = y :=
+    distinguished_entry_eq_of_decompositions h₁ h₂ hlen
+  have hsuf₁ :
+      l.drop (pre₁.length + 1) = post₁ := by
+    rw [h₁]
+    simp
+  have hsuf₂ :
+      l.drop (pre₂.length + 1) = post₂ := by
+    rw [h₂]
+    simp
+  have hsuf : post₁ = post₂ := by
+    rw [hlen] at hsuf₁
+    rw [hsuf₂] at hsuf₁
+    exact hsuf₁.symm
+  exact ⟨hpref, hx, hsuf⟩
+
+
 /-- In an actual centre cycle, a decomposition at the same prefix length as an
 ordinary ray cut identifies the distinguished normalized gap with the angular
 difference across that cut. -/
