@@ -506,3 +506,18 @@ import JSP000404Research.TopExponentMultiplicity
 
 
 import JSP000404Research.OneSupportHighMultiplicity
+
+
+import JSP000404Research.HiddenSameSignQuotient
+
+
+import JSP000404Research.GeneralNontransitionPayment
+
+
+import JSP000404Research.HiddenLargeAngleTriangle
+
+
+import JSP000404Research.SupportTwoIndexedCertificate
+
+
+import JSP000404Research.ListZeroGapMass
