@@ -154,23 +154,29 @@ theorem sharp_supportTwo_unit_transition_angle_lower
     supportTwo_outerSmallAwayFrom_sharp
       hp hcap hn hdelta0 hdeltaHalf ht hlam
       hsi hs C hexp hsupport
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
   rcases hcontains with hxS | hyS
   · have hlargeS :
         (((n - 1 : ℕ) : ℝ) * lam) ≤
           EuclideanGeometry.angle (p s) (p i) (p y.1) := by
       simpa [hxS] using hlarge
+    have hyNotS : y.1 ≠ s := by
+      intro hyS
+      apply hxy
+      apply Subtype.ext
+      exact hxS.trans hyS.symm
     by_cases hay : a = y.1
-    · subst a
+    · rw [hay]
       nlinarith
     · have hsmall :
           EuclideanGeometry.angle (p a) (p i) (p y.1) ≤
             delta * lam :=
-        hcluster a y.1 hai y.2 has
-          (by
-            intro h
-            apply hay
-            exact h.symm)
-          hay
+        hcluster a y.1 hai y.2 has hyNotS hay
       have htri :
           EuclideanGeometry.angle (p s) (p i) (p y.1) ≤
             EuclideanGeometry.angle (p s) (p i) (p a) +
@@ -193,18 +199,18 @@ theorem sharp_supportTwo_unit_transition_angle_lower
         EuclideanGeometry.angle_comm _ _ _
       rw [hyS, hcomm] at hlarge
       exact hlarge
+    have hxNotS : x.1 ≠ s := by
+      intro hxS
+      apply hxy
+      apply Subtype.ext
+      exact hxS.trans hyS.symm
     by_cases hax : a = x.1
-    · subst a
+    · rw [hax]
       nlinarith
     · have hsmall :
           EuclideanGeometry.angle (p a) (p i) (p x.1) ≤
             delta * lam :=
-        hcluster a x.1 hai x.2 has
-          (by
-            intro h
-            apply hax
-            exact h.symm)
-          hax
+        hcluster a x.1 hai x.2 has hxNotS hax
       have htri :
           EuclideanGeometry.angle (p s) (p i) (p x.1) ≤
             EuclideanGeometry.angle (p s) (p i) (p a) +
