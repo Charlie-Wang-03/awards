@@ -57,7 +57,7 @@ theorem incomingRetained_eq_of_sameRetained
   ext c
   rw [mem_incomingRetained_iff_retainedBit_true,
       mem_incomingRetained_iff_retainedBit_true]
-  exact congrArg (fun b => b = true) (hsame c)
+  simpa [hsame c]
 
 /-- For a same-retained pair, an outgoing colour at u cannot be incoming at v. -/
 theorem outgoing_disjoint_incoming_of_sameRetained
