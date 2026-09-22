@@ -88,7 +88,35 @@ theorem two_middle_entries_zero_of_support_two_end_positive
     (positiveCount_eq_zero_iff_all_zero mid).1 hz
   exact ⟨hall a ha, hall b hb⟩
 
+
+/-- If the two gaps adjacent to the distinguished first ray are known not to
+be zero, support two forces the complete pinned shape: both ends are positive
+and the entire middle block is zero. -/
+theorem pinned_support_two_shape_of_end_zero_impossible
+    (qFirst qLast : ℕ) (mid : List ℕ)
+    (hFirstZero : qFirst = 0 → False)
+    (hLastZero : qLast = 0 → False)
+    (hsupport :
+      listPositiveCount (qFirst :: mid ++ [qLast]) = 2) :
+    1 ≤ qFirst ∧
+      1 ≤ qLast ∧
+      (∀ q ∈ mid, q = 0) := by
+  have hFirst : 1 ≤ qFirst := by
+    by_contra h
+    have h0 : qFirst = 0 := by omega
+    exact hFirstZero h0
+  have hLast : 1 ≤ qLast := by
+    by_contra h
+    have h0 : qLast = 0 := by omega
+    exact hLastZero h0
+  have hmid :=
+    support_two_end_positive_forces_zero_middle
+      qFirst qLast mid hFirst hLast hsupport
+  exact ⟨hFirst, hLast,
+    (positiveCount_eq_zero_iff_all_zero mid).1 hmid⟩
+
 #print axioms positiveCount_eq_zero_iff_all_zero
+#print axioms pinned_support_two_shape_of_end_zero_impossible
 #print axioms interior_zero_of_support_two_end_positive
 #print axioms support_two_end_positive_forces_zero_middle
 
