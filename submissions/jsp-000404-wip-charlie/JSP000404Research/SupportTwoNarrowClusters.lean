@@ -265,6 +265,152 @@ theorem exists_two_narrow_zero_blocks
   · rw [hfullMass, hInternalMass] at hzeroFull
     exact hzeroFull
 
+
+theorem list_sum_pos_of_positiveCount_pos
+    (qs : List ℕ)
+    (hpos : 0 < listPositiveCount qs) :
+    0 < qs.sum := by
+  induction qs with
+  | nil =>
+      simp [listPositiveCount] at hpos
+  | cons q qs ih =>
+      by_cases hq0 : q = 0
+      · subst q
+        simp only [listPositiveCount, if_pos rfl, zero_add] at hpos
+        simp only [List.sum_cons, zero_add]
+        exact ih hpos
+      · have hqpos : 0 < q := Nat.pos_of_ne_zero hq0
+        simp only [List.sum_cons]
+        omega
+
+/-- General support-two form.  The distinguished transition quotient may be
+any positive qe.  The unique other positive quotient is n-qe, and all
+remaining gaps form two zero blocks of total scaled width at most delta. -/
+theorem exists_two_narrow_zero_blocks_of_support_two
+    (qs : List ℕ) (gaps : List ℝ)
+    (pre post : List ℕ) (qe : ℕ)
+    {n : ℕ} {delta t : ℝ}
+    (ht : t = (n : ℝ) + delta)
+    (htpos : 0 < t)
+    (hqe0 : qe ≠ 0)
+    (hq :
+      qs = pre ++ qe :: post)
+    (hsupport :
+      listPositiveCount qs = 2)
+    (hqsum : qs.sum = n)
+    (hgapsum : gaps.sum = 1)
+    (halign : QuotientGapAligned t qs gaps) :
+    ∃ gpre gpost : List ℝ, ∃ ge : ℝ,
+      ∃ leftQ rightQ : List ℕ,
+      ∃ leftG rightG : List ℝ, ∃ gh : ℝ,
+        gaps = gpre ++ ge :: gpost ∧
+        pre.length = gpre.length ∧
+        post.length = gpost.length ∧
+        0 < n - qe ∧
+        post ++ pre = leftQ ++ (n - qe) :: rightQ ∧
+        gpost ++ gpre = leftG ++ gh :: rightG ∧
+        leftQ.length = leftG.length ∧
+        rightQ.length = rightG.length ∧
+        (∀ x ∈ leftQ, x = 0) ∧
+        (∀ x ∈ rightQ, x = 0) ∧
+        (((n - qe : ℕ) : ℝ) ≤ t * gh) ∧
+        t * (leftG.sum + rightG.sum) ≤ delta := by
+  have halign' :
+      QuotientGapAligned t (pre ++ qe :: post) gaps := by
+    rw [← hq]
+    exact halign
+  obtain ⟨gpre, gpost, ge, hgaps, hpreLen, hpostLen,
+      htransAlign, hpreAlign, hpostAlign⟩ :=
+    aligned_gap_decomposition halign'
+
+  have hsFull :
+      listPositiveCount (pre ++ qe :: post) = 2 := by
+    rw [← hq]
+    exact hsupport
+  have hInternalSupport :
+      listPositiveCount (post ++ pre) = 1 := by
+    rw [listPositiveCount_append] at hsFull ⊢
+    simp [listPositiveCount, hqe0] at hsFull
+    omega
+  have hInternalSum :
+      (post ++ pre).sum = n - qe := by
+    have hsumFull :
+        (pre ++ qe :: post).sum = n := by
+      rw [← hq]
+      exact hqsum
+    simp only [List.sum_append, List.sum_cons, List.sum_nil,
+      add_zero] at hsumFull ⊢
+    omega
+  have hhiddenPos :
+      0 < n - qe := by
+    have hpos :=
+      list_sum_pos_of_positiveCount_pos
+        (post ++ pre) (by omega)
+    rw [hInternalSum] at hpos
+    exact hpos
+  have hhiddenInternal :
+      n - qe ∈ post ++ pre := by
+    have hmem :=
+      list_sum_mem_of_positiveCount_one
+        (post ++ pre) hInternalSupport
+        (by rw [hInternalSum]; exact hhiddenPos)
+    rw [hInternalSum] at hmem
+    exact hmem
+
+  obtain ⟨leftQ, rightQ, hsplitQ, hleftZero, hrightZero⟩ :=
+    split_unique_positive_of_count_one
+      (post ++ pre) (n - qe)
+      (by omega) hInternalSupport hhiddenInternal
+
+  have hInternalAlign :
+      QuotientGapAligned t (post ++ pre) (gpost ++ gpre) :=
+    quotientGapAligned_append hpostAlign hpreAlign
+  have hInternalAlign' :
+      QuotientGapAligned t
+        (leftQ ++ (n - qe) :: rightQ)
+        (gpost ++ gpre) := by
+    rw [← hsplitQ]
+    exact hInternalAlign
+  obtain ⟨leftG, rightG, gh, hsplitG,
+      hleftLen, hrightLen, hhiddenAlign, _, _⟩ :=
+    aligned_gap_decomposition hInternalAlign'
+
+  have hzeroFull :
+      t * listZeroGapMass qs gaps ≤ delta :=
+    listZeroGapMass_scaled_le_delta
+      qs gaps ht hgapsum hqsum halign
+
+  have hfullMass :
+      listZeroGapMass qs gaps =
+        listZeroGapMass (post ++ pre) (gpost ++ gpre) := by
+    rw [hq, hgaps]
+    have hpreLen' : pre.length = gpre.length := hpreLen.symm
+    rw [listZeroGapMass_append pre (qe :: post)
+          gpre (ge :: gpost) hpreLen']
+    simp only [listZeroGapMass, if_neg hqe0]
+    have hpostLen' : post.length = gpost.length := hpostLen.symm
+    rw [listZeroGapMass_append post pre gpost gpre hpostLen']
+    ring
+
+  have hInternalMass :
+      listZeroGapMass (post ++ pre) (gpost ++ gpre) =
+        leftG.sum + rightG.sum := by
+    rw [hsplitQ, hsplitG]
+    exact listZeroGapMass_two_zero_blocks
+      leftQ rightQ leftG rightG (n - qe) gh
+      (by omega) hleftLen.symm hrightLen.symm
+      hleftZero hrightZero
+
+  refine ⟨gpre, gpost, ge,
+    leftQ, rightQ, leftG, rightG, gh,
+    hgaps, hpreLen.symm, hpostLen.symm,
+    hhiddenPos, hsplitQ, hsplitG,
+    hleftLen.symm, hrightLen.symm,
+    hleftZero, hrightZero,
+    hhiddenAlign, ?_⟩
+  rw [hfullMass, hInternalMass] at hzeroFull
+  exact hzeroFull
+
 #print axioms split_unique_positive_of_count_one
 #print axioms listZeroGapMass_two_zero_blocks
 #print axioms exists_two_narrow_zero_blocks
