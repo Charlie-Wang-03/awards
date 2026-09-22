@@ -220,6 +220,7 @@ theorem last_duplicate_free_flip_or_many_singleton_right
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -253,7 +254,7 @@ theorem last_duplicate_free_flip_or_many_singleton_right
     have hle :
         exponent u ≤ (strictRightVertices v).card :=
       duplicate_left_exponent_le_right_count_of_all_flips_occupied
-        C exponent honeLoss huv hsame hoccupied
+        C exponent hexp honeLoss huv hsame hoccupied
     rw [singletonRightVertices_eq_strictRight_of_last
       C hlast]
     exact hle
