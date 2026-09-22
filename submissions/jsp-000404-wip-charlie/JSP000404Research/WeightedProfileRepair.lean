@@ -246,6 +246,55 @@ theorem dyadic_capacity_of_oneLayer_weighted_repair
   (dyadic_sum_le_of_oneLayer_weighted_repair
     k nu hone hrepair).trans hcap
 
+
+namespace OrderedEdgeColoring
+
+/-- Direct ordered-colouring outlet: aggregate dyadic repair against the actual
+free-coordinate profile is sufficient for the sharp n-bit capacity. -/
+theorem exponent_capacity_of_total_weighted_repair
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {n : ℕ}
+    (C : OrderedEdgeColoring V n)
+    (exponent : V → ℕ)
+    (hrepair :
+      totalDyadicProfileLoss exponent
+          (fun v => n - (active C v).card)
+        ≤
+      totalDyadicProfileSurplus exponent
+          (fun v => n - (active C v).card)) :
+    (∑ v, 2 ^ exponent v) ≤ 2 ^ n := by
+  exact dyadic_capacity_of_total_loss_le_surplus
+    exponent
+    (fun v => n - (active C v).card)
+    (2 ^ n) hrepair C.weighted_capacity
+
+/-- One-layer ordered-colouring version. -/
+theorem exponent_capacity_of_oneLayer_weighted_repair
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {n : ℕ}
+    (C : OrderedEdgeColoring V n)
+    (exponent : V → ℕ)
+    (hone :
+      ∀ v,
+        exponent v ≤
+          (n - (active C v).card) + 1)
+    (hrepair :
+      oneLayerLossWeight exponent
+          (fun v => n - (active C v).card)
+        ≤
+      oneLayerSurplusCredit exponent
+          (fun v => n - (active C v).card)) :
+    (∑ v, 2 ^ exponent v) ≤ 2 ^ n := by
+  exact dyadic_capacity_of_oneLayer_weighted_repair
+    exponent
+    (fun v => n - (active C v).card)
+    (2 ^ n) hone hrepair C.weighted_capacity
+
+#print axioms exponent_capacity_of_total_weighted_repair
+#print axioms exponent_capacity_of_oneLayer_weighted_repair
+
+end OrderedEdgeColoring
+
 #print axioms dyadic_profile_total_balance
 #print axioms dyadic_sum_le_of_total_loss_le_surplus
 #print axioms dyadic_capacity_of_total_loss_le_surplus
