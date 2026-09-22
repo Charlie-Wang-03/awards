@@ -494,3 +494,9 @@ import JSP000404Research.BoundaryFreeProfile
 
 
 import JSP000404Research.MergedBandTailCapacity
+
+
+import JSP000404Research.AdjacentLevelChargeCapacity
+
+
+import JSP000404Research.BoundarySupportExchange
