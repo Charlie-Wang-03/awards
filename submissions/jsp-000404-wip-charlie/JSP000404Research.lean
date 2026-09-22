@@ -653,3 +653,4 @@ import JSP000404Research.CriticalIrredundantOrder
 
 
 import JSP000404Research.ResidualSameCodeOrientation
+\n\nimport JSP000404Research.ResidualLightFibreDyadic\n
