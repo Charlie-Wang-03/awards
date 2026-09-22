@@ -1,3 +1,4 @@
+import JSP000404Research.CyclicActualAngles
 import Mathlib.Geometry.Euclidean.Angle.Unoriented.TriangleInequality
 import Mathlib.Tactic
 
@@ -136,7 +137,41 @@ theorem angle_le_of_complete_path
   exact (angle_mem_mem_le_anglePathLength
     p i xs hj hk).trans hW
 
+
+/-- For an OtherVertex path, anglePathLength is exactly the sum of the
+recursive consecutive actual-angle list. -/
+theorem anglePathLength_map_val_eq_consecutiveRayAngles_sum
+    {V : Type*} {p : V → Plane}
+    (i : V)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i)) :
+    anglePathLength p i ((first :: rest).map Subtype.val) =
+      (consecutiveRayAngles (p := p) i first rest).sum := by
+  induction rest generalizing first with
+  | nil =>
+      simp [anglePathLength, consecutiveRayAngles]
+  | cons r rs ih =>
+      simp [anglePathLength, consecutiveRayAngles, ih]
+
+/-- Any two underlying vertices in an OtherVertex path have angle bounded by
+the sum of its consecutiveRayAngles. -/
+theorem angle_mem_otherVertex_path_le_consecutive_sum
+    {V : Type*} {p : V → Plane}
+    (i : V)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    {x y : V}
+    (hx : x ∈ (first :: rest).map Subtype.val)
+    (hy : y ∈ (first :: rest).map Subtype.val) :
+    EuclideanGeometry.angle (p x) (p i) (p y) ≤
+      (consecutiveRayAngles (p := p) i first rest).sum := by
+  rw [← anglePathLength_map_val_eq_consecutiveRayAngles_sum
+      (p := p) i first rest]
+  exact angle_mem_mem_le_anglePathLength
+    p i ((first :: rest).map Subtype.val) hx hy
+
 #print axioms angle_head_le_anglePathLength
+#print axioms anglePathLength_map_val_eq_consecutiveRayAngles_sum
 #print axioms angle_mem_mem_le_anglePathLength
 #print axioms angle_le_of_complete_path
 
