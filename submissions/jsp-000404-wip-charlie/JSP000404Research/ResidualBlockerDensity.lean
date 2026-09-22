@@ -135,6 +135,7 @@ theorem exponent_le_retainedInactive_card_of_local_bound
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     {k : ℕ} {u : V}
+    (hk : k ≤ n)
     (hretu :
       (retainedActive C u).card ≤ n - k) :
     k ≤ (retainedInactive C u).card := by
@@ -147,13 +148,14 @@ theorem exponent_le_retainedInactive_card
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (hret :
       ∀ x,
         (retainedActive C x).card ≤ n - exponent x)
     (u : V) :
     exponent u ≤ (retainedInactive C u).card := by
   exact exponent_le_retainedInactive_card_of_local_bound
-    C (hret u)
+    C (hexp u) (hret u)
 
 /-- If every inactive one-coordinate neighbour of the lower endpoint is
 occupied, the inactive coordinates inject into vertices strictly to the right
@@ -212,6 +214,7 @@ theorem exponent_le_right_count_of_all_inactive_blocked
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (hret :
       ∀ x,
         (retainedActive C x).card ≤ n - exponent x)
@@ -222,7 +225,7 @@ theorem exponent_le_right_count_of_all_inactive_blocked
       ∀ c, c ∈ retainedInactive C u →
         ∃ w : V, RetainedNeighbourBlocker C u c w) :
     exponent u ≤ (strictRightVertices v).card := by
-  exact (exponent_le_retainedInactive_card C exponent hret u).trans
+  exact (exponent_le_retainedInactive_card C exponent hexp hret u).trans
     (retainedInactive_card_le_right_of_blocked
       C huv hsame hblocked)
 
@@ -231,6 +234,7 @@ theorem exponent_le_right_count_of_all_flips_occupied
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (hret :
       ∀ x,
         (retainedActive C x).card ≤ n - exponent x)
@@ -244,7 +248,7 @@ theorem exponent_le_right_count_of_all_flips_occupied
             flippedRetainedCode C u c) :
     exponent u ≤ (strictRightVertices v).card := by
   apply exponent_le_right_count_of_all_inactive_blocked
-    C exponent hret huv hsame
+    C exponent hexp hret huv hsame
   intro c hc
   obtain ⟨w, hw⟩ := hoccupied c hc
   exact ⟨w, (retainedCode_eq_flipped_iff_blocker C u w c).1 hw⟩
