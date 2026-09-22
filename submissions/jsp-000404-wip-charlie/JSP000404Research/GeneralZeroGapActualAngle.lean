@@ -303,6 +303,170 @@ theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
   exact actual_angle_le_delta_lam_of_wrap_same_sign_gap
     hp htpos hlam i horder hsign hsmall
 
+
+/-- User-facing ordinary-cut wrapper: the quotient decomposition is generated
+automatically from the concrete gap decomposition. -/
+theorem ordinary_zero_gap_actual_angle_le_delta_lam
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdelta1 : delta < 1)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    (C : CentreProjectiveCycle hp i)
+    (hexp : centreExponent C t = n - 2)
+    (hsupport :
+      positiveSupport (centreQuotient C t) = 2)
+    (first right : OtherVertex i)
+    (before tail : List (OtherVertex i))
+    (hrays :
+      C.rays = first :: (before ++ right :: tail))
+    (hneq :
+      (first :: before).getLast (by simp) ≠ right)
+    (hq0 :
+      Nat.floor
+        (t * ((rayThetaAt hp i right -
+          rayThetaAt hp i
+            ((first :: before).getLast (by simp))) /
+          Real.pi)) = 0) :
+    EuclideanGeometry.angle
+        (p ((first :: before).getLast (by simp)).1)
+        (p i) (p right.1)
+      ≤ delta * lam := by
+  let theta := rayThetaAt hp i
+  let gpre :=
+    (successiveDiffsFrom (theta first)
+      (before.map theta)).map (fun d => d / Real.pi)
+  let ge :=
+    (theta right -
+      (before.map theta).getLastD (theta first)) / Real.pi
+  let gpost :=
+    (successiveDiffsFrom (theta right)
+      (tail.map theta)).map (fun d => d / Real.pi) ++
+      [((theta first + Real.pi -
+        (tail.map theta).getLastD (theta right)) / Real.pi)]
+  have hgaps :
+      C.gaps = gpre ++ ge :: gpost := by
+    rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
+    simp only [List.map_cons, List.map_append]
+    rw [normalizedProjectiveGaps_append_cons]
+    rfl
+  let qpre := gpre.map (fun g => Nat.floor (t * g))
+  let qpost := gpost.map (fun g => Nat.floor (t * g))
+  have hge :
+      ge =
+        (rayThetaAt hp i right -
+          rayThetaAt hp i
+            ((first :: before).getLast (by simp))) /
+          Real.pi := by
+    dsimp [ge, theta]
+    have hlast :
+        (before.map (rayThetaAt hp i)).getLastD
+            (rayThetaAt hp i first) =
+          rayThetaAt hp i
+            ((first :: before).getLast (by simp)) := by
+      cases before with
+      | nil =>
+          simp
+      | cons b bs =>
+          simp [List.getLast_cons]
+    rw [hlast]
+  have hqdec :
+      quotientList t C.gaps =
+        qpre ++ 0 :: qpost := by
+    rw [hgaps]
+    simp [quotientList, qpre, qpost, hge, hq0, List.map_append]
+  have hlen :
+      qpre.length = before.length := by
+    simp [qpre, gpre, successiveDiffsFrom_length]
+  exact displayed_ordinary_zero_gap_actual_angle_le_delta_lam
+    hp hcap hn hdelta0 hdelta1 ht hlam
+    i C hexp hsupport
+    first right before tail hrays
+    qpre qpost hqdec hlen hneq
+
+/-- User-facing wrap wrapper. -/
+theorem wrap_zero_gap_actual_angle_le_delta_lam
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdelta1 : delta < 1)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    (C : CentreProjectiveCycle hp i)
+    (hexp : centreExponent C t = n - 2)
+    (hsupport :
+      positiveSupport (centreQuotient C t) = 2)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest)
+    (hrest : rest ≠ [])
+    (hneq :
+      first ≠ (first :: rest).getLast (by simp))
+    (hq0 :
+      Nat.floor
+        (t * ((rayThetaAt hp i first + Real.pi -
+          rayThetaAt hp i
+            ((first :: rest).getLast (by simp))) /
+          Real.pi)) = 0) :
+    EuclideanGeometry.angle
+        (p ((first :: rest).getLast (by simp)).1)
+        (p i) (p first.1)
+      ≤ delta * lam := by
+  let theta := rayThetaAt hp i
+  let gpre :=
+    (successiveDiffsFrom (theta first)
+      (rest.map theta)).map (fun d => d / Real.pi)
+  let ge :=
+    (theta first + Real.pi -
+      (rest.map theta).getLastD (theta first)) / Real.pi
+  have hgaps :
+      C.gaps = gpre ++ [ge] := by
+    rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
+    simp [normalizedProjectiveGaps, projectiveGaps,
+      gpre, ge, theta, List.map_append]
+  let qpre := gpre.map (fun g => Nat.floor (t * g))
+  have hge :
+      ge =
+        (rayThetaAt hp i first + Real.pi -
+          rayThetaAt hp i
+            ((first :: rest).getLast (by simp))) /
+          Real.pi := by
+    dsimp [ge, theta]
+    have hlast :
+        (rest.map (rayThetaAt hp i)).getLastD
+            (rayThetaAt hp i first) =
+          rayThetaAt hp i
+            ((first :: rest).getLast (by simp)) := by
+      cases rest with
+      | nil =>
+          exact False.elim (hrest rfl)
+      | cons b bs =>
+          simp [List.getLast_cons]
+    rw [hlast]
+  have hqdec :
+      quotientList t C.gaps = qpre ++ [0] := by
+    rw [hgaps]
+    simp [quotientList, qpre, hge, hq0, List.map_append]
+  have hlen :
+      qpre.length = rest.length := by
+    simp [qpre, gpre, successiveDiffsFrom_length]
+  exact displayed_wrap_zero_gap_actual_angle_le_delta_lam
+    hp hcap hn hdelta0 hdelta1 ht hlam
+    i C hexp hsupport
+    first rest hrays qpre hqdec hlen hrest hneq
+
+
 #print axioms centre_quotientList_sum_eq_n_of_deficit_two_support_two
 #print axioms displayed_ordinary_zero_gap_actual_angle_le_delta_lam
 #print axioms displayed_wrap_zero_gap_actual_angle_le_delta_lam
