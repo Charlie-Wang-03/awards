@@ -581,7 +581,46 @@ theorem all_cyclicRayAngles_nonneg
     subst A
     exact EuclideanGeometry.angle_nonneg _ _ _
 
+
+/-- In a pinned support-two shape, if both end quotients are positive and all
+middle quotients are zero, the zero-angle mass is exactly the sum of the
+middle actual angles. -/
+theorem listZeroAngleMass_pinned_eq_middle_sum
+    (qFirst qLast : ℕ)
+    (qmid : List ℕ)
+    (AFirst ALast : ℝ)
+    (Amid : List ℝ)
+    (hFirst : qFirst ≠ 0)
+    (hLast : qLast ≠ 0)
+    (hlen : qmid.length = Amid.length)
+    (hzero : ∀ q ∈ qmid, q = 0) :
+    listZeroAngleMass
+        (qFirst :: qmid ++ [qLast])
+        (AFirst :: Amid ++ [ALast])
+      =
+    Amid.sum := by
+  simp only [listZeroAngleMass, hFirst, if_false, zero_add]
+  induction qmid generalizing Amid with
+  | nil =>
+      have hnil : Amid = [] :=
+        List.length_eq_zero.mp (by simpa using hlen.symm)
+      subst Amid
+      simp [listZeroAngleMass, hLast]
+  | cons q qs ih =>
+      cases Amid with
+      | nil =>
+          simp at hlen
+      | cons A As =>
+          simp at hlen
+          have hq0 : q = 0 := hzero q (by simp)
+          have htail : ∀ x ∈ qs, x = 0 := by
+            intro x hx
+            exact hzero x (by simp [hx])
+          subst q
+          simp [listZeroAngleMass, ih As hlen htail, hLast]
+
 #print axioms consecutive_zeroQuotientAngleAligned
+#print axioms listZeroAngleMass_pinned_eq_middle_sum
 #print axioms listPositiveCount_rotate
 #print axioms listZeroAngleMass_rotate
 #print axioms displayed_zero_angle_le_listZeroAngleMass
