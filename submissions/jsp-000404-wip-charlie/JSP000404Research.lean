@@ -674,3 +674,6 @@ import JSP000404Research.ResidualBlockerIncoming
 
 
 import JSP000404Research.CriticalUnitQuotient
+
+
+import JSP000404Research.ResidualCompletionIntersection
