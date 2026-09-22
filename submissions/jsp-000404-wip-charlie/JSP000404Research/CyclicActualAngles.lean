@@ -437,7 +437,156 @@ theorem centre_zeroAngleMass_le_delta_lam
   rw [hzeroEq]
   exact hpiMass
 
+
+theorem listPositiveCount_eq_sum_map
+    (qs : List ℕ) :
+    listPositiveCount qs =
+      (qs.map (fun q => if q = 0 then 0 else 1)).sum := by
+  induction qs with
+  | nil =>
+      rfl
+  | cons q qs ih =>
+      simp [listPositiveCount, ih]
+
+theorem listPositiveCount_rotate
+    (qs : List ℕ) (k : ℕ) :
+    listPositiveCount (qs.rotate k) =
+      listPositiveCount qs := by
+  rw [listPositiveCount_eq_sum_map,
+      List.map_rotate,
+      (List.rotate_perm
+        (qs.map (fun q => if q = 0 then 0 else 1)) k).sum_eq,
+      ← listPositiveCount_eq_sum_map]
+
+theorem listZeroAngleMass_eq_zipWith_sum
+    (qs : List ℕ) (As : List ℝ)
+    (hlen : qs.length = As.length) :
+    listZeroAngleMass qs As =
+      (List.zipWith
+        (fun q A => if q = 0 then A else 0)
+        qs As).sum := by
+  induction qs generalizing As with
+  | nil =>
+      cases As <;>
+        simp [listZeroAngleMass] at hlen ⊢
+  | cons q qs ih =>
+      cases As with
+      | nil =>
+          simp at hlen
+      | cons A As =>
+          simp at hlen
+          simp [listZeroAngleMass, ih As hlen]
+
+theorem listZeroAngleMass_rotate
+    (qs : List ℕ) (As : List ℝ)
+    (hlen : qs.length = As.length)
+    (k : ℕ) :
+    listZeroAngleMass (qs.rotate k) (As.rotate k) =
+      listZeroAngleMass qs As := by
+  have hlenRot :
+      (qs.rotate k).length = (As.rotate k).length := by
+    simpa using hlen
+  rw [listZeroAngleMass_eq_zipWith_sum
+        (qs.rotate k) (As.rotate k) hlenRot,
+      ← List.zipWith_rotate_distrib
+        (fun q A => if q = 0 then A else 0)
+        qs As k hlen,
+      (List.rotate_perm
+        (List.zipWith
+          (fun q A => if q = 0 then A else 0)
+          qs As) k).sum_eq,
+      ← listZeroAngleMass_eq_zipWith_sum qs As hlen]
+
+/-- A displayed zero-quotient angle is bounded by the total zero-angle mass
+when all actual angles are nonnegative. -/
+theorem displayed_zero_angle_le_listZeroAngleMass
+    (qpre qpost : List ℕ)
+    (Apre Apost : List ℝ)
+    (A : ℝ)
+    (hpre : qpre.length = Apre.length)
+    (hpost : qpost.length = Apost.length)
+    (hA0 : ∀ x ∈ Apre ++ A :: Apost, 0 ≤ x) :
+    A ≤
+      listZeroAngleMass
+        (qpre ++ 0 :: qpost)
+        (Apre ++ A :: Apost) := by
+  have hlen :
+      (qpre ++ 0 :: qpost).length =
+        (Apre ++ A :: Apost).length := by
+    simp [hpre, hpost]
+  rw [listZeroAngleMass_eq_zipWith_sum _ _ hlen]
+  have hzip :
+      List.zipWith
+          (fun q x => if q = 0 then x else 0)
+          (qpre ++ 0 :: qpost)
+          (Apre ++ A :: Apost)
+        =
+      List.zipWith
+          (fun q x => if q = 0 then x else 0)
+          qpre Apre ++
+        A ::
+          List.zipWith
+            (fun q x => if q = 0 then x else 0)
+            qpost Apost := by
+    rw [List.zipWith_append hpre]
+    simp
+  rw [hzip, List.sum_append]
+  simp only [List.sum_cons]
+  have hpreMass :
+      0 ≤
+        (List.zipWith
+          (fun q x => if q = 0 then x else 0)
+          qpre Apre).sum := by
+    apply List.sum_nonneg
+    intro x hx
+    rcases List.mem_zipWith.mp hx with ⟨q, Aq, hq, hAq, rfl⟩
+    by_cases hq0 : q = 0
+    · simp [hq0]
+      exact hA0 Aq (by
+        apply List.mem_append_left
+        exact hAq)
+    · simp [hq0]
+  have hpostMass :
+      0 ≤
+        (List.zipWith
+          (fun q x => if q = 0 then x else 0)
+          qpost Apost).sum := by
+    apply List.sum_nonneg
+    intro x hx
+    rcases List.mem_zipWith.mp hx with ⟨q, Aq, hq, hAq, rfl⟩
+    by_cases hq0 : q = 0
+    · simp [hq0]
+      exact hA0 Aq (by
+        apply List.mem_append_right Apre
+        simp [hAq])
+    · simp [hq0]
+  linarith
+
+theorem all_cyclicRayAngles_nonneg
+    {V : Type*} {p : V → Plane}
+    (i : V)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i)) :
+    ∀ A ∈ cyclicRayAngles (p := p) i first rest, 0 ≤ A := by
+  intro A hA
+  unfold cyclicRayAngles at hA
+  rcases List.mem_append.mp hA with hOrd | hWrap
+  · induction rest generalizing first with
+    | nil =>
+        simp [consecutiveRayAngles] at hOrd
+    | cons r rs ih =>
+        simp only [consecutiveRayAngles, List.mem_cons] at hOrd
+        rcases hOrd with rfl | hOrd
+        · exact EuclideanGeometry.angle_nonneg _ _ _
+        · exact ih r hOrd
+  · simp only [List.mem_singleton] at hWrap
+    subst A
+    exact EuclideanGeometry.angle_nonneg _ _ _
+
 #print axioms consecutive_zeroQuotientAngleAligned
+#print axioms listPositiveCount_rotate
+#print axioms listZeroAngleMass_rotate
+#print axioms displayed_zero_angle_le_listZeroAngleMass
 #print axioms listZeroAngleMass_eq_pi_mul_listZeroGapMass
 #print axioms centre_zeroAngleMass_le_delta_lam
 #print axioms wrap_zero_actual_angle_eq_pi_mul_gap
