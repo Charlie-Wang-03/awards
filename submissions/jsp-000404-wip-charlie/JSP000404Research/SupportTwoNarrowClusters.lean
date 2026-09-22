@@ -260,8 +260,8 @@ theorem exists_two_narrow_zero_blocks
     hhiddenAlign, ?_⟩
   · exact hpreLen.symm
   · exact hpostLen.symm
-  · exact hleftLen
-  · exact hrightLen
+  · exact hleftLen.symm
+  · exact hrightLen.symm
   · rw [hfullMass, hInternalMass] at hzeroFull
     exact hzeroFull
 
