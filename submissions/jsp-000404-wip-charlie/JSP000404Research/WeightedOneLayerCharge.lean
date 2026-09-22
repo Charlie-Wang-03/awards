@@ -133,8 +133,12 @@ theorem oneLayerLossWeight_le_surplusCredit_of_weighted_injection
   change
     (∑ v ∈ L, 2 ^ nu v) ≤
       ∑ w ∈ S, 2 ^ k w
-  exact hsumPoint.trans_eq hsumImage |>.trans
-    (Finset.sum_le_sum_of_subset himage)
+  calc
+    (∑ v ∈ L, 2 ^ nu v)
+        ≤ ∑ v ∈ L, 2 ^ k (charge v) := hsumPoint
+    _ = ∑ w ∈ L.image charge, 2 ^ k w := hsumImage
+    _ ≤ ∑ w ∈ S, 2 ^ k w :=
+      Finset.sum_le_sum_of_subset himage
 
 /-- Combined profile comparison: one-layer loss, plus one weighted injection,
 is enough for the full dyadic inequality. -/
