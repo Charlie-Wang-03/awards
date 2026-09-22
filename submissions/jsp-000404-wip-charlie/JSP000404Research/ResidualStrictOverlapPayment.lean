@@ -228,8 +228,10 @@ theorem strictStrictOverlap_subset_overlapCompletionWords
   have huv : u ≠ v := by
     intro huvEq
     subst v
-    have huBit := (mem_residualActiveSlice C false u).1 huBase |>.2
-    have hvBit := (mem_residualActiveSlice C true u).1 hvBase |>.2
+    have huData := (mem_residualActiveSlice C false u).1 huBase
+    have hvData := (mem_residualActiveSlice C true u).1 hvBase
+    have huBit := huData.2
+    have hvBit := hvData.2
     rw [huBit] at hvBit
     simp at hvBit
   rcases lt_or_gt_of_ne huv with huvlt | hvult
@@ -271,8 +273,6 @@ theorem saturatedOverlapWord_has_saturated_carrier
   obtain ⟨u, v, huv, hres, huWord, hvWord, _⟩ :=
     exists_ordered_residual_pair_of_overlapWord C hoverlap
   refine ⟨u, v, huv, hres, huWord, hvWord, ?_⟩
-  have hresBits :=
-    overlapWord_has_opposite_residual_bits C hoverlap
   by_contra hsat
   push_neg at hsat
   have huRes :=
