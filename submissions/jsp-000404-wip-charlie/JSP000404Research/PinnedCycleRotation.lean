@@ -69,7 +69,43 @@ theorem simultaneous_decomposition_at_index
   exact ⟨pre₁, x₁, post₁, pre₂, x₂, post₂,
     h₁, h₂, hp₁, hp₂⟩
 
+
+theorem exists_append_cons_of_mem
+    {α : Type*} {x : α} {l : List α}
+    (hx : x ∈ l) :
+    ∃ pre post, l = pre ++ x :: post := by
+  induction l with
+  | nil =>
+      simp at hx
+  | cons a l ih =>
+      simp only [List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact ⟨[], l, rfl⟩
+      · obtain ⟨pre, post, h⟩ := ih hx
+        refine ⟨a :: pre, post, ?_⟩
+        simp [h]
+
+/-- Once one list has been split at an element, any equal-length companion
+list admits a distinguished entry at the same prefix length. -/
+theorem companion_decomposition_at_prefix
+    {α β : Type*}
+    (pre : List α) (x : α) (post : List α)
+    (l₂ : List β)
+    (hlen : (pre ++ x :: post).length = l₂.length) :
+    ∃ pre₂ y post₂,
+      l₂ = pre₂ ++ y :: post₂ ∧
+      pre₂.length = pre.length := by
+  have hk :
+      pre.length < l₂.length := by
+    rw [← hlen]
+    simp
+  obtain ⟨pre₂, y, post₂, h₂, hp₂⟩ :=
+    exists_take_cons_drop_decomposition l₂ pre.length hk
+  exact ⟨pre₂, y, post₂, h₂, hp₂⟩
+
 #print axioms exists_take_cons_drop_decomposition
+#print axioms exists_append_cons_of_mem
+#print axioms companion_decomposition_at_prefix
 #print axioms rotate_displayed_element_to_front
 #print axioms simultaneous_decomposition_at_index
 
