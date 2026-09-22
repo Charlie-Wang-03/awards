@@ -199,10 +199,82 @@ theorem exponent_capacity_of_hardWords_le_holes
   exact exponent_capacity_of_completion_defect_payment
     C exponent hpay
 
+
+def strictSliceSurplusTotal
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) : ℕ :=
+  strictResidualSliceSurplus C exponent false +
+    strictResidualSliceSurplus C exponent true
+
+def remainingProfileSurplus
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) : ℕ :=
+  totalDyadicProfileSurplus exponent (projectedFree C) -
+    strictSliceSurplusTotal C exponent
+
+theorem strict_add_remainingProfileSurplus_eq_total
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    strictSliceSurplusTotal C exponent +
+        remainingProfileSurplus C exponent =
+      totalDyadicProfileSurplus exponent (projectedFree C) := by
+  unfold strictSliceSurplusTotal remainingProfileSurplus
+  have hle :=
+    strictSliceSurplus_le_totalSurplus C exponent
+  omega
+
+/-- Weaker and more natural final outlet: hard bad words may be paid jointly
+by uncovered Boolean words and all profile surplus not reserved for the
+strict--strict overlap payment. -/
+theorem exponent_capacity_of_hardWords_le_holes_add_remainingSurplus
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hhard :
+      (hardProjectionWords C exponent).card ≤
+        (2 ^ n - (coveredCompletionWords C).card) +
+          remainingProfileSurplus C exponent) :
+    (∑ v, 2 ^ exponent v) ≤ 2 ^ n := by
+  have hhard' :
+      totalDyadicProfileLoss exponent (projectedFree C) +
+          (saturatedOverlapWords C exponent).card
+        ≤
+      (2 ^ n - (coveredCompletionWords C).card) +
+        remainingProfileSurplus C exponent := by
+    rw [← hardProjectionWords_card_eq
+      C exponent hexp honeLoss]
+    exact hhard
+  have hstrict :=
+    strictStrictOverlap_card_le_slice_surplus
+      C exponent
+  have hoverlap :=
+    overlap_card_eq_strict_add_saturated
+      C exponent
+  have hsplit :=
+    strict_add_remainingProfileSurplus_eq_total
+      C exponent
+  unfold strictSliceSurplusTotal at hsplit
+  have hpay :
+      (overlapCompletionWords C).card +
+          totalDyadicProfileLoss exponent (projectedFree C)
+        ≤
+      (2 ^ n - (coveredCompletionWords C).card) +
+          totalDyadicProfileSurplus exponent (projectedFree C) := by
+    omega
+  exact exponent_capacity_of_completion_defect_payment
+    C exponent hpay
+
 #print axioms strictSliceSurplus_le_totalSurplus
 #print axioms overlap_card_eq_strict_add_saturated
 #print axioms hardProjectionWords_card_eq
 #print axioms exponent_capacity_of_hardWords_le_holes
+#print axioms exponent_capacity_of_hardWords_le_holes_add_remainingSurplus
 
 end OrderedEdgeColoring
 end JSP000404Research
