@@ -155,8 +155,10 @@ theorem residualActiveSlice_pairwiseDisjoint
         simpa [residualCoord] using residual_val_eq C hres.2
       have hne := edgeColor_bit_ne C hres.1
       simpa [hcol] using hne
-    have huBit := (mem_residualActiveSlice C b u).1 hu |>.2
-    have hvBit := (mem_residualActiveSlice C b v).1 hv |>.2
+    have huMem := (mem_residualActiveSlice C b u).1 hu
+    have hvMem := (mem_residualActiveSlice C b v).1 hv
+    have huBit := huMem.2
+    have hvBit := hvMem.2
     exact hbitNe (huBit.trans hvBit.symm)
   · have hbitNe :
         bit C v (residualCoord n) ≠
@@ -167,8 +169,10 @@ theorem residualActiveSlice_pairwiseDisjoint
         simpa [residualCoord] using residual_val_eq C hres.2
       have hne := edgeColor_bit_ne C hres.1
       simpa [hcol] using hne
-    have huBit := (mem_residualActiveSlice C b u).1 hu |>.2
-    have hvBit := (mem_residualActiveSlice C b v).1 hv |>.2
+    have huMem := (mem_residualActiveSlice C b u).1 hu
+    have hvMem := (mem_residualActiveSlice C b v).1 hv
+    have huBit := huMem.2
+    have hvBit := hvMem.2
     exact hbitNe (hvBit.trans huBit.symm)
 
 /-- Every overlap word is shared across opposite canonical residual-bit
