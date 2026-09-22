@@ -71,9 +71,9 @@ theorem overlapCompletionWords_subset_slice_inter
   obtain ⟨u, v, huv, huWord, hvWord, huFalse, hvTrue⟩ :=
     overlapWord_has_opposite_residual_bits C hword
   have hres :
-      IsResidual C u v := by
-    exact
-      (exists_ordered_residual_pair_of_overlapWord C hword).choose_spec.2.1
+      IsResidual C u v :=
+    isResidual_of_retainedCompletion_overlap_lt
+      C huv huWord hvWord
   have hactive :=
     residualCoord_mem_active_of_isResidual C huv hres
   rw [Finset.mem_inter]
