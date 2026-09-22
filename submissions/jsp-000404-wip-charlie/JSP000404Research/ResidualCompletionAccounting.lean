@@ -154,11 +154,13 @@ theorem completionFibre_card_eq_covered_indicator_add_overlap_indicator
     · have hone : (completionFibre C word).card = 1 := by
         omega
       simp [hpos, htwo, hone]
-  · have hzero :
-        (completionFibre C word).card = 0 :=
-      Finset.not_nonempty_iff_eq_empty.mp hpos |>
-        congrArg Finset.card |>
-        (by simpa using ·)
+  · have hnotpos :
+        ¬ 0 < (completionFibre C word).card := by
+      intro hcard
+      exact hpos (Finset.card_pos.mp hcard)
+    have hzero :
+        (completionFibre C word).card = 0 := by
+      omega
     simp [hpos, hzero]
 
 /-- Incidence type indexed first by vertices. -/
