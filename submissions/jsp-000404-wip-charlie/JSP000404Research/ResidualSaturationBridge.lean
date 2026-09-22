@@ -119,10 +119,10 @@ theorem residual_bad_implies_projected_saturated
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    {v : V}
     (hexp : exponent v ≤ n)
     (honeLoss :
       (active C v).card ≤ n - exponent v + 1)
-    {v : V}
     (hres : residualCoord n ∈ active C v)
     (hbad : n - exponent v < (active C v).card) :
     exponent v = projectedFree C v := by
