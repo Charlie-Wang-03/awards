@@ -144,6 +144,53 @@ theorem no_top_with_three_deficitTwo_companions
       hsa hsb hsc hab hac hbc
       hs Ca Cb hA hB hA2 hB2
 
+
+/-- Cardinal form: relative to one fixed top centre, at most two other centres
+can lie in the second exponent layer. -/
+theorem secondLayer_companion_card_le_two
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hS : centreExponent (C s) t = n - 1) :
+    ((Finset.univ : Finset V).filter
+      (fun i => i ≠ s ∧
+        centreExponent (C i) t = n - 2)).card ≤ 2 := by
+  classical
+  let S : Finset V :=
+    (Finset.univ : Finset V).filter
+      (fun i => i ≠ s ∧
+        centreExponent (C i) t = n - 2)
+  by_contra hcard
+  have hgt : 2 < S.card := by omega
+  rcases (Finset.two_lt_card.mp hgt) with
+    ⟨a, ha, b, hb, c, hc, hab, hac, hbc⟩
+  have ha' :
+      a ≠ s ∧ centreExponent (C a) t = n - 2 := by
+    simpa [S] using ha
+  have hb' :
+      b ≠ s ∧ centreExponent (C b) t = n - 2 := by
+    simpa [S] using hb
+  have hc' :
+      c ≠ s ∧ centreExponent (C c) t = n - 2 := by
+    simpa [S] using hc
+  exact no_top_with_three_deficitTwo_companions
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    ha'.1.symm hb'.1.symm hc'.1.symm
+    hab hac hbc
+    (C s) (C a) (C b) (C c)
+    hS ha'.2 hb'.2 hc'.2
+
+#print axioms secondLayer_companion_card_le_two
+
 #print axioms no_two_supportOne_deficitTwo_around_top
 #print axioms no_top_with_three_deficitTwo_companions
 
