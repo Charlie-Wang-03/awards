@@ -84,7 +84,8 @@ theorem not_mem_throughColours_of_completion_overlap
   have hwv := hvComp c hcvActive
   rw [huTrue] at hwu
   rw [hvFalse] at hwv
-  exact Bool.noConfusion (hwu.symm.trans hwv)
+  rw [hwu] at hwv
+  simp at hwv
 
 /-- Hence an overlap-carrying pair has no through colours at all. -/
 theorem residualThroughColours_eq_empty_of_completion_overlap
