@@ -129,6 +129,18 @@ theorem retainedInactive_card
   rw [hsub, Finset.card_sdiff_of_subset (Finset.subset_univ _)]
   simp
 
+/-- A local retained-activity budget already gives the inactive-coordinate
+lower bound; no global exact budget is needed. -/
+theorem exponent_le_retainedInactive_card_of_local_bound
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {k : ℕ} {u : V}
+    (hretu :
+      (retainedActive C u).card ≤ n - k) :
+    k ≤ (retainedInactive C u).card := by
+  rw [retainedInactive_card]
+  omega
+
 /-- Sendov-style activity budget gives at least exponent(u) inactive retained
 coordinates. -/
 theorem exponent_le_retainedInactive_card
@@ -140,9 +152,8 @@ theorem exponent_le_retainedInactive_card
         (retainedActive C x).card ≤ n - exponent x)
     (u : V) :
     exponent u ≤ (retainedInactive C u).card := by
-  rw [retainedInactive_card]
-  have hu := hret u
-  omega
+  exact exponent_le_retainedInactive_card_of_local_bound
+    C (hret u)
 
 /-- If every inactive one-coordinate neighbour of the lower endpoint is
 occupied, the inactive coordinates inject into vertices strictly to the right
@@ -241,6 +252,7 @@ theorem exponent_le_right_count_of_all_flips_occupied
 #print axioms retainedCode_eq_flipped_iff_blocker
 #print axioms blocker_coordinate_unique
 #print axioms retainedInactive_card
+#print axioms exponent_le_retainedInactive_card_of_local_bound
 #print axioms exponent_le_retainedInactive_card
 #print axioms retainedInactive_card_le_right_of_blocked
 #print axioms exponent_le_right_count_of_all_inactive_blocked
