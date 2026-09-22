@@ -94,24 +94,6 @@ theorem split_unique_positive_of_count_one
             listPositiveCount_eq_zero_forall as htailCount q htail
           exact False.elim (hq0 hqTailZero)
 
-theorem listZeroGapMass_append
-    (q₁ q₂ : List ℕ) (g₁ g₂ : List ℝ)
-    (hlen : q₁.length = g₁.length) :
-    listZeroGapMass (q₁ ++ q₂) (g₁ ++ g₂) =
-      listZeroGapMass q₁ g₁ + listZeroGapMass q₂ g₂ := by
-  induction q₁ generalizing g₁ with
-  | nil =>
-      have hg : g₁ = [] := List.length_eq_zero.mp (by simpa using hlen.symm)
-      subst g₁
-      simp [listZeroGapMass]
-  | cons q qs ih =>
-      cases g₁ with
-      | nil =>
-          simp at hlen
-      | cons g gs =>
-          simp at hlen
-          simp [listZeroGapMass, ih gs hlen, add_assoc]
-
 theorem listZeroGapMass_two_zero_blocks
     (left right : List ℕ)
     (leftG rightG : List ℝ)
