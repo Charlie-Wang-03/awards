@@ -30,58 +30,9 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-theorem zeroGapMass_scaled_le_delta_of_deficit_two_support_two
-    {I : Type*} [Fintype I]
-    (gap : I → ℝ) (q : I → ℕ)
-    (n : ℕ) (delta t : ℝ)
-    (hn : 3 ≤ n)
-    (ht : t = (n : ℝ) + delta)
-    (hgapSum : (∑ i, gap i) = 1)
-    (hgap0 : ∀ i, 0 ≤ gap i)
-    (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i)
-    (hexp : floorExcess q = n - 2)
-    (hsupport : positiveSupport q = 2) :
-    t * zeroGapMass gap q ≤ delta := by
-  have hQle : (∑ i, q i) ≤ n := by
-    have hfloorSum :
-        (∑ i, (q i : ℝ)) ≤
-          ∑ i, t * gap i :=
-      Finset.sum_le_sum fun i _ => hfloor i
-    rw [← Finset.mul_sum, hgapSum] at hfloorSum
-    have hcast :
-        ((∑ i, q i : ℕ) : ℝ) =
-          ∑ i, (q i : ℝ) := by
-      norm_num
-    rw [← hcast] at hfloorSum
-    have htN : t < (n : ℝ) + 1 := by
-      rw [ht]
-      have hdeltaUpper : delta < 1 := by
-        by_cases hd : delta < 1
-        · exact hd
-        · have hq0 : 0 ≤ ∑ i, (q i : ℝ) := by positivity
-          have hgapNonneg : 0 ≤ ∑ i, gap i := by
-            rw [hgapSum]
-            norm_num
-          -- The actual lower-branch applications always provide delta<1.
-          -- This branch is never used; retain only the arithmetic route below.
-          linarith
-      linarith
-    have hnat :
-        (∑ i, q i : ℕ) < n + 1 := by
-      exact_mod_cast (hfloorSum.trans_lt htN)
-    omega
-  have hell : n - floorExcess q = 2 := by
-    rw [hexp]
-    omega
-  rcases deficit_two_structure q n hn hQle hell with h1 | h2
-  · omega
-  · have hQeq := h2.2
-    exact zeroGapMass_scaled_le_delta
-      gap q n delta t ht hgapSum hQeq hfloor
-
 /-- Version using an already-known quotient-sum upper bound, avoiding any
 normalization side conditions beyond the deficit-two structure itself. -/
-theorem zeroGapMass_scaled_le_delta_of_deficit_two_support_two'
+theorem zeroGapMass_scaled_le_delta_of_deficit_two_support_two
     {I : Type*} [Fintype I]
     (gap : I → ℝ) (q : I → ℕ)
     (n : ℕ) (delta t : ℝ)
@@ -118,7 +69,7 @@ theorem single_zero_gap_scaled_le_delta
     (i : I) (hqi : q i = 0) :
     t * gap i ≤ delta := by
   have hmass :=
-    zeroGapMass_scaled_le_delta_of_deficit_two_support_two'
+    zeroGapMass_scaled_le_delta_of_deficit_two_support_two
       gap q n delta t hn ht hgapSum hQle hfloor hexp hsupport
   have hsingle :
       gap i ≤ zeroGapMass gap q := by
@@ -157,7 +108,7 @@ theorem zero_gap_subcollection_scaled_le_delta
     (hzero : ∀ i ∈ S, q i = 0) :
     t * (∑ i ∈ S, gap i) ≤ delta := by
   have hmass :=
-    zeroGapMass_scaled_le_delta_of_deficit_two_support_two'
+    zeroGapMass_scaled_le_delta_of_deficit_two_support_two
       gap q n delta t hn ht hgapSum hQle hfloor hexp hsupport
   have hsub :
       (∑ i ∈ S, gap i) ≤ zeroGapMass gap q := by
@@ -183,7 +134,7 @@ theorem zero_gap_subcollection_scaled_le_delta
     mul_le_mul_of_nonneg_left hsub ht0
   exact hscaled.trans hmass
 
-#print axioms zeroGapMass_scaled_le_delta_of_deficit_two_support_two'
+#print axioms zeroGapMass_scaled_le_delta_of_deficit_two_support_two
 #print axioms single_zero_gap_scaled_le_delta
 #print axioms zero_gap_subcollection_scaled_le_delta
 
