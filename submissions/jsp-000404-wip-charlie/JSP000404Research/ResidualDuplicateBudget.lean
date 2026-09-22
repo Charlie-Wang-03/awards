@@ -91,7 +91,7 @@ theorem sameRetained_exact_pair_budget
       (retainedActive C v).card ≤ n - exponent v := by
   exact ⟨
     retainedActive_le_complement_left_of_sameRetained
-      C exponent honeLoss huv hsame,
+      C exponent hexp honeLoss huv hsame,
     retainedActive_le_complement_right_of_sameRetained
       C exponent honeLoss huv hsame⟩
 
@@ -156,6 +156,7 @@ theorem duplicate_left_exponent_le_right_count_of_all_flips_occupied
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -172,7 +173,7 @@ theorem duplicate_left_exponent_le_right_count_of_all_flips_occupied
       C exponent honeLoss huv hsame
   have hkInactive :=
     exponent_le_retainedInactive_card_of_local_bound
-      C hretu
+      C (hexp u) hretu
   have hblocked :
       ∀ c, c ∈ retainedInactive C u →
         ∃ w : V, RetainedNeighbourBlocker C u c w := by
@@ -191,6 +192,7 @@ theorem duplicate_has_free_flip_of_right_count_lt_exponent
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -214,7 +216,7 @@ theorem duplicate_has_free_flip_of_right_count_lt_exponent
     exact hno c hc
   have hle :=
     duplicate_left_exponent_le_right_count_of_all_flips_occupied
-      C exponent honeLoss huv hsame hoccupied
+      C exponent hexp honeLoss huv hsame hoccupied
   omega
 
 /-- Extremal right-edge case: if the upper endpoint is maximal and the lower
@@ -224,6 +226,7 @@ theorem duplicate_has_free_flip_of_upper_maximal
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -238,10 +241,11 @@ theorem duplicate_has_free_flip_of_upper_maximal
           flippedRetainedCode C u c := by
   have hrightZero :
       (strictRightVertices v).card = 0 := by
-    apply Finset.card_eq_zero.mpr
-    apply Finset.eq_empty_iff_forall_not_mem.mpr
-    intro w hw
-    exact hvmax w ((mem_strictRightVertices v w).1 hw)
+    classical
+    unfold strictRightVertices
+    rw [Finset.card_filter_eq_zero_iff]
+    intro w _
+    exact hvmax w
   apply duplicate_has_free_flip_of_right_count_lt_exponent
     C exponent honeLoss huv hsame
   rw [hrightZero]
