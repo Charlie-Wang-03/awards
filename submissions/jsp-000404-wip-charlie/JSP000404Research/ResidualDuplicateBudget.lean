@@ -2,6 +2,7 @@ import JSP000404Research.ResidualActiveDrop
 import JSP000404Research.ResidualHoleInjection
 import JSP000404Research.ResidualSameCodeOrientation
 import JSP000404Research.ResidualLightFibreDyadic
+import JSP000404Research.ResidualBlockerDensity
 import Mathlib.Tactic
 
 /-!
@@ -147,12 +148,114 @@ theorem duplicate_positive_light_fibre_dyadic_capacity
   exact two_pow_add_le_two_pow_of_pos_sum_le
     huPos hvPos hsum
 
+/-- If all inactive one-coordinate flips at the lower endpoint are occupied,
+the lower exponent is bounded by the number of vertices to the right of the
+upper endpoint.  The exact budget needed here is automatic on duplicate
+fibres. -/
+theorem duplicate_left_exponent_le_right_count_of_all_flips_occupied
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hoccupied :
+      ∀ c, c ∈ retainedInactive C u →
+        ∃ w : V,
+          (fun d => retainedBit C w d) =
+            flippedRetainedCode C u c) :
+    exponent u ≤ (strictRightVertices v).card := by
+  have hretu :=
+    retainedActive_le_complement_left_of_sameRetained
+      C exponent honeLoss huv hsame
+  have hkInactive :=
+    exponent_le_retainedInactive_card_of_local_bound
+      C hretu
+  have hblocked :
+      ∀ c, c ∈ retainedInactive C u →
+        ∃ w : V, RetainedNeighbourBlocker C u c w := by
+    intro c hc
+    obtain ⟨w, hw⟩ := hoccupied c hc
+    exact ⟨w,
+      (retainedCode_eq_flipped_iff_blocker C u w c).1 hw⟩
+  exact hkInactive.trans
+    (retainedInactive_card_le_right_of_blocked
+      C huv hsame hblocked)
+
+/-- Rank-sensitive Boolean hole: if fewer than exponent(u) vertices remain to
+the right of the upper endpoint, some inactive one-coordinate neighbour of the
+lower endpoint is globally unoccupied. -/
+theorem duplicate_has_free_flip_of_right_count_lt_exponent
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hright :
+      (strictRightVertices v).card < exponent u) :
+    ∃ c : Fin n,
+      c ∈ retainedInactive C u ∧
+      ¬ ∃ w : V,
+        (fun d => retainedBit C w d) =
+          flippedRetainedCode C u c := by
+  by_contra hno
+  push_neg at hno
+  have hoccupied :
+      ∀ c, c ∈ retainedInactive C u →
+        ∃ w : V,
+          (fun d => retainedBit C w d) =
+            flippedRetainedCode C u c := by
+    intro c hc
+    exact hno c hc
+  have hle :=
+    duplicate_left_exponent_le_right_count_of_all_flips_occupied
+      C exponent honeLoss huv hsame hoccupied
+  omega
+
+/-- Extremal right-edge case: if the upper endpoint is maximal and the lower
+endpoint has positive exponent, a free one-coordinate retained-code neighbour
+exists automatically. -/
+theorem duplicate_has_free_flip_of_upper_maximal
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hvmax : ∀ w : V, ¬ v < w)
+    (hupos : 0 < exponent u) :
+    ∃ c : Fin n,
+      c ∈ retainedInactive C u ∧
+      ¬ ∃ w : V,
+        (fun d => retainedBit C w d) =
+          flippedRetainedCode C u c := by
+  have hrightZero :
+      (strictRightVertices v).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    apply Finset.eq_empty_iff_forall_not_mem.mpr
+    intro w hw
+    exact hvmax w ((mem_strictRightVertices v w).1 hw)
+  apply duplicate_has_free_flip_of_right_count_lt_exponent
+    C exponent honeLoss huv hsame
+  rw [hrightZero]
+  exact hupos
+
 #print axioms residual_mem_active_both_of_sameRetained_lt
 #print axioms retainedActive_le_complement_left_of_sameRetained
 #print axioms retainedActive_le_complement_right_of_sameRetained
 #print axioms sameRetained_exact_pair_budget
 #print axioms duplicate_exponent_sum_add_commonIncoming_le
 #print axioms duplicate_positive_light_fibre_dyadic_capacity
+#print axioms duplicate_left_exponent_le_right_count_of_all_flips_occupied
+#print axioms duplicate_has_free_flip_of_right_count_lt_exponent
+#print axioms duplicate_has_free_flip_of_upper_maximal
 
 end OrderedEdgeColoring
 end JSP000404Research
