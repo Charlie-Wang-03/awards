@@ -198,6 +198,183 @@ theorem retainedCompletionWords_union_card
     C hsame hno] at hcard
   omega
 
+
+/-- Free-coordinate completions are equivalent to the retained completion
+words of one vertex. -/
+noncomputable def retainedCompletionEquivFree
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) :
+    FreeCoordinates (retainedActive C v) ≃
+      {word : Fin n → Bool //
+        word ∈ retainedCompletionWords C v} where
+  toFun free := ⟨
+    completeWord (retainedBit C) (retainedActive C) v free,
+    by
+      apply (mem_retainedCompletionWords C v _).2
+      intro d hd
+      simp [completeWord, hd]⟩
+  invFun word :=
+    fun d => word.1 d.1
+  left_inv free := by
+    funext d
+    simp [completeWord, d.2]
+  right_inv word := by
+    apply Subtype.ext
+    funext d
+    by_cases hd : d ∈ retainedActive C v
+    · have hcomp :=
+        (mem_retainedCompletionWords C v word.1).1 word.2
+      simp [completeWord, hd, hcomp d hd]
+    · simp [completeWord, hd]
+
+/-- Exact cardinality of one retained partial-code completion cube. -/
+theorem retainedCompletionWords_card
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) :
+    (retainedCompletionWords C v).card =
+      2 ^ (n - (retainedActive C v).card) := by
+  classical
+  have hcard :=
+    Fintype.card_congr
+      (retainedCompletionEquivFree C v)
+  rw [card_freeCoordinates] at hcard
+  simpa using hcard.symm
+
+/-- Strictly fewer free dimensions cost at least one Boolean word in dyadic
+cardinality. -/
+theorem pow_two_add_one_le_of_lt
+    {a b : ℕ}
+    (h : a < b) :
+    2 ^ a + 1 ≤ 2 ^ b := by
+  have hp :
+      2 ^ a < 2 ^ b :=
+    Nat.pow_lt_pow_right
+      (by norm_num : 1 < 2) h
+  omega
+
+/-- If at least one endpoint has strict free-coordinate slack, the target
+dyadic mass of the pair fits inside the union of its two retained completion
+cubes. -/
+theorem duplicate_target_mass_le_completion_union_of_one_strict
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V}
+    (hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v)
+    (hu :
+      exponent u ≤ n - (retainedActive C u).card)
+    (hv :
+      exponent v ≤ n - (retainedActive C v).card)
+    (hstrict :
+      exponent u < n - (retainedActive C u).card ∨
+      exponent v < n - (retainedActive C v).card) :
+    2 ^ exponent u + 2 ^ exponent v ≤
+      (retainedCompletionWords C u ∪
+        retainedCompletionWords C v).card := by
+  have hU :
+      2 ^ exponent u ≤
+        2 ^ (n - (retainedActive C u).card) :=
+    Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hu
+  have hV :
+      2 ^ exponent v ≤
+        2 ^ (n - (retainedActive C v).card) :=
+    Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hv
+  have hone :
+      2 ^ exponent u + 2 ^ exponent v + 1 ≤
+        2 ^ (n - (retainedActive C u).card) +
+          2 ^ (n - (retainedActive C v).card) := by
+    rcases hstrict with hUstrict | hVstrict
+    · have hU1 :=
+        pow_two_add_one_le_of_lt hUstrict
+      omega
+    · have hV1 :=
+        pow_two_add_one_le_of_lt hVstrict
+      omega
+  have hunion :=
+    retainedCompletionWords_union_card
+      C hsame hno
+  rw [retainedCompletionWords_card,
+      retainedCompletionWords_card] at hunion
+  omega
+
+/-- If both endpoints exactly saturate their retained free dimensions, the
+pair is short of exactly one Boolean word inside its own completion union. -/
+theorem duplicate_target_mass_eq_completion_union_add_one_of_both_saturated
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V}
+    (hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v)
+    (hu :
+      exponent u = n - (retainedActive C u).card)
+    (hv :
+      exponent v = n - (retainedActive C v).card) :
+    2 ^ exponent u + 2 ^ exponent v =
+      (retainedCompletionWords C u ∪
+        retainedCompletionWords C v).card + 1 := by
+  have hunion :=
+    retainedCompletionWords_union_card
+      C hsame hno
+  rw [retainedCompletionWords_card,
+      retainedCompletionWords_card,
+      ← hu, ← hv] at hunion
+  omega
+
+/-- Exact internal dichotomy for a no-common-inactive duplicate fibre. -/
+theorem duplicate_completion_internal_dichotomy
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V}
+    (hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v)
+    (hu :
+      exponent u ≤ n - (retainedActive C u).card)
+    (hv :
+      exponent v ≤ n - (retainedActive C v).card) :
+    (2 ^ exponent u + 2 ^ exponent v ≤
+      (retainedCompletionWords C u ∪
+        retainedCompletionWords C v).card)
+    ∨
+    (exponent u = n - (retainedActive C u).card ∧
+      exponent v = n - (retainedActive C v).card ∧
+      2 ^ exponent u + 2 ^ exponent v =
+        (retainedCompletionWords C u ∪
+          retainedCompletionWords C v).card + 1) := by
+  by_cases hU :
+      exponent u = n - (retainedActive C u).card
+  · by_cases hV :
+        exponent v = n - (retainedActive C v).card
+    · right
+      exact ⟨hU, hV,
+        duplicate_target_mass_eq_completion_union_add_one_of_both_saturated
+          C exponent hsame hno hU hV⟩
+    · left
+      apply duplicate_target_mass_le_completion_union_of_one_strict
+        C exponent hsame hno hu hv
+      right
+      omega
+  · left
+    apply duplicate_target_mass_le_completion_union_of_one_strict
+      C exponent hsame hno hu hv
+    left
+    omega
+
 #print axioms retainedActive_union_eq_univ_of_no_common_inactive
 #print axioms common_retained_completion_eq_base
 #print axioms retainedCompletionWords_inter_eq_singleton
