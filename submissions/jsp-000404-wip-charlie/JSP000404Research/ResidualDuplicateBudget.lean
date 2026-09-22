@@ -114,23 +114,10 @@ theorem duplicate_exponent_sum_add_commonIncoming_le
   have hpair :=
     sameRetained_exact_pair_budget
       C exponent honeLoss huv hsame
-  apply exponent_sum_add_commonIncoming_le_of_no_common_inactive
-    C exponent
-  · intro x
-    by_cases hxu : x = u
-    · subst x
-      exact hpair.1
-    · by_cases hxv : x = v
-      · subst x
-        exact hpair.2
-      ·
-        -- The downstream lemma only uses the budgets at u and v.  Supplying a
-        -- total function here would be unnecessarily strong, so derive the
-        -- desired inequality directly below instead.
-        have := honeLoss x
-        omega
-  · exact hsame
-  · exact hno
+  have hcard :=
+    retained_card_sum_ge_n_add_commonIncoming
+      C hsame hno
+  omega
 
 /-- Direct positive-light-fibre dyadic bound from the one-layer phase budget. -/
 theorem duplicate_positive_light_fibre_dyadic_capacity
