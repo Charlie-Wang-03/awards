@@ -95,6 +95,66 @@ theorem sameRetained_exact_pair_budget
     retainedActive_le_complement_right_of_sameRetained
       C exponent honeLoss huv hsame⟩
 
+/-- Heavy duplicate fibres admit a common-inactive Boolean hole using only
+the global one-layer active bound.  Exact retained budgets are recovered
+locally from the residual edge, so no global retained-budget hypothesis is
+needed. -/
+theorem duplicate_heavy_has_common_inactive_hole
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hheavy : n < exponent u + exponent v) :
+    ∃ c : Fin n,
+      c ∉ retainedActive C u ∧
+      c ∉ retainedActive C v ∧
+      ¬ ∃ w : V,
+        (fun d => retainedBit C w d) =
+          flippedRetainedCode C u c := by
+  have hpair :=
+    sameRetained_exact_pair_budget
+      C exponent honeLoss huv hsame
+  have hdef :
+      (n - exponent u) + (n - exponent v) < n := by
+    have hu := hexp u
+    have hv := hexp v
+    omega
+  obtain ⟨c, hcu, hcv⟩ :=
+    exists_common_inactive_of_deficit_sum_lt
+      C hpair.1 hpair.2 hdef
+  refine ⟨c, hcu, hcv, ?_⟩
+  exact no_vertex_retainedCode_eq_flipped_common_inactive
+    C c (ne_of_lt huv) hsame hcu hcv
+
+/-- Heavy duplicate fibres therefore have a globally unoccupied one-coordinate
+repair code whose coordinate is inactive at both endpoints. -/
+theorem duplicate_heavy_has_free_flip
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hheavy : n < exponent u + exponent v) :
+    ∃ c : Fin n,
+      c ∈ retainedInactive C u ∧
+      c ∉ retainedActive C v ∧
+      ¬ ∃ w : V,
+        (fun d => retainedBit C w d) =
+          flippedRetainedCode C u c := by
+  obtain ⟨c, hcu, hcv, hfree⟩ :=
+    duplicate_heavy_has_common_inactive_hole
+      C exponent hexp honeLoss huv hsame hheavy
+  exact ⟨c, (mem_retainedInactive C u c).2 hcu, hcv, hfree⟩
+
 /-- Under the one-layer global bound, a duplicate fibre with no common
 inactive coordinate satisfies the strengthened lightness estimate directly. -/
 theorem duplicate_exponent_sum_add_commonIncoming_le
@@ -255,6 +315,8 @@ theorem duplicate_has_free_flip_of_upper_maximal
 #print axioms retainedActive_le_complement_left_of_sameRetained
 #print axioms retainedActive_le_complement_right_of_sameRetained
 #print axioms sameRetained_exact_pair_budget
+#print axioms duplicate_heavy_has_common_inactive_hole
+#print axioms duplicate_heavy_has_free_flip
 #print axioms duplicate_exponent_sum_add_commonIncoming_le
 #print axioms duplicate_positive_light_fibre_dyadic_capacity
 #print axioms duplicate_left_exponent_le_right_count_of_all_flips_occupied
