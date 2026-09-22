@@ -722,3 +722,6 @@ import JSP000404Research.ResidualOverlapPairDecomposition
 
 
 import JSP000404Research.ResidualSaturationBridge
+
+
+import JSP000404Research.ResidualStrictOverlapPayment
