@@ -171,47 +171,91 @@ theorem overlapCompletionWords_card_eq_sum_carrier_intersections
       Finset.card_biUnion
         (carrierOverlapWords_pairwiseDisjoint C)]
 
-/-- Power-of-two form using the exact common-inactive dimension. -/
+/-- Ordered residual carriers whose projected completion cubes actually
+overlap. -/
+noncomputable def overlapCarrierPairs
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    Finset (V × V) := by
+  classical
+  exact (residualCarrierPairs C).filter fun p =>
+    (carrierOverlapWords C p).Nonempty
+
+@[simp] theorem mem_overlapCarrierPairs
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (p : V × V) :
+    p ∈ overlapCarrierPairs C ↔
+      p ∈ residualCarrierPairs C ∧
+      (carrierOverlapWords C p).Nonempty := by
+  classical
+  simp [overlapCarrierPairs]
+
+theorem overlapCarrierWords_pairwiseDisjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    ((overlapCarrierPairs C : Finset (V × V)) : Set (V × V)).PairwiseDisjoint
+      (carrierOverlapWords C) := by
+  intro p hp q hq hpq
+  have hp' :
+      p ∈ residualCarrierPairs C :=
+    ((mem_overlapCarrierPairs C p).1 hp).1
+  have hq' :
+      q ∈ residualCarrierPairs C :=
+    ((mem_overlapCarrierPairs C q).1 hq).1
+  exact carrierOverlapWords_pairwiseDisjoint C hp' hq' hpq
+
+/-- Filtering away empty residual-edge intersections does not change the
+global overlap union. -/
+theorem overlapCompletionWords_eq_overlapCarrier_biUnion
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    overlapCompletionWords C =
+      (overlapCarrierPairs C).biUnion
+        (carrierOverlapWords C) := by
+  classical
+  rw [overlapCompletionWords_eq_carrier_biUnion C]
+  apply Finset.ext
+  intro word
+  constructor
+  · intro hword
+    obtain ⟨p, hp, hpWord⟩ := Finset.mem_biUnion.mp hword
+    apply Finset.mem_biUnion.mpr
+    refine ⟨p, ?_, hpWord⟩
+    apply (mem_overlapCarrierPairs C p).2
+    exact ⟨hp, ⟨word, hpWord⟩⟩
+  · intro hword
+    obtain ⟨p, hp, hpWord⟩ := Finset.mem_biUnion.mp hword
+    apply Finset.mem_biUnion.mpr
+    exact ⟨p, ((mem_overlapCarrierPairs C p).1 hp).1, hpWord⟩
+
+/-- Exact power-of-two decomposition over the genuinely overlapping residual
+carriers only. -/
 theorem overlapCompletionWords_card_eq_sum_pow_commonInactive
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1)) :
     (overlapCompletionWords C).card =
-      ∑ p ∈ residualCarrierPairs C,
+      ∑ p ∈ overlapCarrierPairs C,
         2 ^ (commonRetainedInactive C p.1 p.2).card := by
-  rw [overlapCompletionWords_card_eq_sum_carrier_intersections C]
+  classical
+  rw [overlapCompletionWords_eq_overlapCarrier_biUnion C,
+      Finset.card_biUnion
+        (overlapCarrierWords_pairwiseDisjoint C)]
   apply Finset.sum_congr rfl
   intro p hp
-  have hpData :=
-    (mem_residualCarrierPairs C p.1 p.2).1
-      (by simpa using hp)
-  by_cases hne :
-      (carrierOverlapWords C p).Nonempty
-  · obtain ⟨word, hword⟩ := hne
-    have hparts :=
-      (mem_carrierOverlapWords C p word).1 hword
-    exact retainedCompletionWords_inter_card
-      C hparts.1 hparts.2
-  · have hempty :
-      carrierOverlapWords C p = ∅ :=
-        Finset.not_nonempty_iff_eq_empty.mp hne
-    have hleft :
-        (carrierOverlapWords C p).card = 0 := by
-      simp [hempty]
-    -- An empty carrier intersection contributes zero, not a positive power.
-    -- Such a residual edge is irrelevant to overlap mass, so the unrestricted
-    -- power sum is not valid without filtering to nonempty carriers.
-    exfalso
-    have : (carrierOverlapWords C p).Nonempty := by
-      -- No conclusion follows from residuality alone.
-      exact False.elim (by
-        have := hpData.2
-        contradiction)
-    exact hne this
+  have hne :=
+    ((mem_overlapCarrierPairs C p).1 hp).2
+  obtain ⟨word, hword⟩ := hne
+  have hparts :=
+    (mem_carrierOverlapWords C p word).1 hword
+  exact retainedCompletionWords_inter_card
+    C hparts.1 hparts.2
 
 #print axioms mem_overlapCompletionWords_of_common_ordered_pair
 #print axioms carrierOverlapWords_pairwiseDisjoint
 #print axioms overlapCompletionWords_eq_carrier_biUnion
 #print axioms overlapCompletionWords_card_eq_sum_carrier_intersections
+#print axioms overlapCompletionWords_card_eq_sum_pow_commonInactive
 
 end OrderedEdgeColoring
 end JSP000404Research
