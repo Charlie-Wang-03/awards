@@ -1,6 +1,7 @@
 import JSP000404Research.CyclicProjectiveGaps
 import JSP000404Research.CentreQuotientData
 import JSP000404Research.FloorMergeCarry
+import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Tactic
 
 /-!
