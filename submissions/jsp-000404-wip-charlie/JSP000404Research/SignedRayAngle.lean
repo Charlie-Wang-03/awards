@@ -205,17 +205,16 @@ theorem actual_angle_eq_projective_of_projective_lt_lam
         (rayThetaAt hp i j) (rayThetaAt hp i k) := by
   rcases actual_angle_eq_projective_or_supplement hp i j k with h | h
   · exact h
-  · have hcapjk :
+  · have hjkVal : j.1 ≠ k.1 := by
+      intro hval
+      apply hjk
+      exact Subtype.ext hval
+    have hcapjk :
         EuclideanGeometry.angle (p j.1) (p i) (p k.1) ≤
           Real.pi - lam :=
-      hcap j.1 i k.1 j.2 i |> fun _ => by
-        exact hcap j.1 i k.1 j.2 k.2.symm
-          (by
-            intro hjkVal
-            apply hjk
-            exact Subtype.ext hjkVal)
-  rw [h] at hcapjk
-  linarith
+      hcap j.1 i k.1 j.2 k.2.symm hjkVal
+    rw [h] at hcapjk
+    linarith
 
 
 #print axioms angle_signedRayDirection_eq_of_sign_eq
