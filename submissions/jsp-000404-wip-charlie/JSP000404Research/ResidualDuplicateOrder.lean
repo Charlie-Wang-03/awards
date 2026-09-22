@@ -167,6 +167,97 @@ theorem last_duplicate_inactive_injects_singleton_right
     x
     (by simpa [f] using hx)
 
+
+/-- Vertices to the right of v whose retained code is globally unique. -/
+noncomputable def singletonRightVertices
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) : Finset V := by
+  classical
+  exact (strictRightVertices v).filter fun w =>
+    ∀ x : V, SameRetained C x w → x = w
+
+@[simp] theorem mem_singletonRightVertices
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v w : V) :
+    w ∈ singletonRightVertices C v ↔
+      v < w ∧
+      ∀ x : V, SameRetained C x w → x = w := by
+  classical
+  simp [singletonRightVertices]
+
+/-- To the right of the last duplicate upper endpoint, every vertex is a
+singleton retained-code fibre. -/
+theorem singletonRightVertices_eq_strictRight_of_last
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V}
+    (hlast : ∀ z : V, v < z → ¬ HasEarlierSame C z) :
+    singletonRightVertices C v = strictRightVertices v := by
+  classical
+  apply Finset.ext
+  intro w
+  constructor
+  · intro hw
+    exact (mem_strictRightVertices v w).2
+      ((mem_singletonRightVertices C v w).1 hw).1
+  · intro hw
+    have hvw : v < w :=
+      (mem_strictRightVertices v w).1 hw
+    apply (mem_singletonRightVertices C v w).2
+    refine ⟨hvw, ?_⟩
+    intro x hx
+    exact retained_code_unique_right_of_last_duplicate
+      C hlast hvw hx
+
+/-- Backward-augmentation dichotomy for the last duplicate fibre.
+
+Either one inactive one-coordinate neighbour of the lower endpoint is a free
+Boolean hole, or the exponent of the lower endpoint is paid by at least that
+many distinct singleton retained-code fibres strictly to the right. -/
+theorem last_duplicate_free_flip_or_many_singleton_right
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hsame : SameRetained C u v)
+    (hlast : ∀ z : V, v < z → ¬ HasEarlierSame C z) :
+    (∃ c : Fin n,
+      c ∈ retainedInactive C u ∧
+      ¬ ∃ w : V,
+        (fun d => retainedBit C w d) =
+          flippedRetainedCode C u c)
+    ∨
+    exponent u ≤ (singletonRightVertices C v).card := by
+  classical
+  by_cases hfree :
+      ∃ c : Fin n,
+        c ∈ retainedInactive C u ∧
+        ¬ ∃ w : V,
+          (fun d => retainedBit C w d) =
+            flippedRetainedCode C u c
+  · exact Or.inl hfree
+  · right
+    have hoccupied :
+        ∀ c, c ∈ retainedInactive C u →
+          ∃ w : V,
+            (fun d => retainedBit C w d) =
+              flippedRetainedCode C u c := by
+      intro c hc
+      by_contra hno
+      exact hfree ⟨c, hc, hno⟩
+    have hle :
+        exponent u ≤ (strictRightVertices v).card :=
+      duplicate_left_exponent_le_right_count_of_all_flips_occupied
+        C exponent honeLoss huv hsame hoccupied
+    rw [singletonRightVertices_eq_strictRight_of_last
+      C hlast]
+    exact hle
+
 #print axioms exists_last_duplicate_upper
 #print axioms retained_code_unique_right_of_last_duplicate
 #print axioms last_duplicate_blocker_code_unique
