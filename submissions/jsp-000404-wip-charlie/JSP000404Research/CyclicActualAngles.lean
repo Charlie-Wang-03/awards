@@ -202,6 +202,25 @@ theorem wrap_zero_actual_angle_eq_pi_mul_gap
   rw [hang]
   field_simp [Real.pi_ne_zero]
 
+/-- Append one aligned position to a zero-angle alignment. -/
+theorem zeroQuotientAngleAligned_append_singleton
+    {qs : List ℕ} {gs As : List ℝ}
+    {q : ℕ} {g A : ℝ}
+    (h : ZeroQuotientAngleAligned qs gs As)
+    (hlast : q = 0 → A = Real.pi * g) :
+    ZeroQuotientAngleAligned
+      (qs ++ [q]) (gs ++ [g]) (As ++ [A]) := by
+  induction qs generalizing gs As with
+  | nil =>
+      cases gs <;> cases As <;>
+        simp [ZeroQuotientAngleAligned] at h ⊢
+      simpa [ZeroQuotientAngleAligned] using hlast
+  | cons q0 qs ih =>
+      cases gs <;> cases As <;>
+        simp [ZeroQuotientAngleAligned] at h ⊢
+      exact ⟨h.1, ih h.2⟩
+
+
 /-- Full concrete centre-cycle alignment.  The singleton-centre-ray degenerate
 case is included: its wrap quotient is positive when t>=1, so the zero
 implication is vacuous. -/
@@ -304,24 +323,6 @@ theorem centre_zeroQuotientAngleAligned
         wrapRayQuotient, List.getLastD_cons] using
         zeroQuotientAngleAligned_append_singleton
           hord hwrap
-
-/-- Append one aligned position to a zero-angle alignment. -/
-theorem zeroQuotientAngleAligned_append_singleton
-    {qs : List ℕ} {gs As : List ℝ}
-    {q : ℕ} {g A : ℝ}
-    (h : ZeroQuotientAngleAligned qs gs As)
-    (hlast : q = 0 → A = Real.pi * g) :
-    ZeroQuotientAngleAligned
-      (qs ++ [q]) (gs ++ [g]) (As ++ [A]) := by
-  induction qs generalizing gs As with
-  | nil =>
-      cases gs <;> cases As <;>
-        simp [ZeroQuotientAngleAligned] at h ⊢
-      simpa [ZeroQuotientAngleAligned] using hlast
-  | cons q0 qs ih =>
-      cases gs <;> cases As <;>
-        simp [ZeroQuotientAngleAligned] at h ⊢
-      exact ⟨h.1, ih h.2⟩
 
 #print axioms consecutive_zeroQuotientAngleAligned
 #print axioms wrap_zero_actual_angle_eq_pi_mul_gap
