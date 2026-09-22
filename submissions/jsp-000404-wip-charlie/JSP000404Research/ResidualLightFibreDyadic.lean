@@ -99,10 +99,6 @@ theorem positive_light_fibre_eq_top_forces_sum_eq
     a + b = N := by
   by_contra hne
   have hlt : a + b < N := by omega
-  have hNpos : 1 ≤ N := by omega
-  have hcap :=
-    two_pow_add_le_two_pow_of_pos_sum_le
-      ha hb (Nat.le_of_lt_succ (by omega : a + b < N + 1))
   have hsmall :
       2 ^ (a + b) ≤ 2 ^ (N - 1) := by
     apply Nat.pow_le_pow_right (by norm_num : 0 < 2)
