@@ -1,75 +1,31 @@
-import JSP000404Research.ResidualHoleInjection
-import JSP000404Research.RetainedOrientation
+import JSP000404Research.ResidualSameCodeOrientation
 import Mathlib.Tactic
 
 /-!
-# Hard residual pairs cannot be safely absorbed at the upper endpoint
+# Safe targets of hard residual pairs are new at the upper endpoint
 
-Let u<v be a hard retained-code collision: u and v have the same first n
-canonical bits.
+ResidualSameCodeOrientation already proves that a locally safe target for a
+same-retained pair cannot be absorbed at both endpoints.
 
-For a retained colour c, equality of retained bits means that c is incoming at
-u iff it is incoming at v.
+The stronger one-sided statement is true.
 
-A locally safe recolouring target for the residual edge u--v must avoid
+For a same-retained pair u<v, a safe target c avoids
 
   incomingRetained(u) union outgoingRetained(v).
 
-Therefore it is not incoming at u, hence not incoming at v.  If it were already
-retained-active at v, the incoming/outgoing decomposition would force it to be
-outgoing at v, contradicting local safety.
+Equality of retained codes makes the incoming retained sets of u and v equal,
+so c is not incoming at v either.  If c were retained-active at v, the
+incoming/outgoing decomposition would force c to be outgoing at v, contradicting
+safety.
 
-So every locally safe target for a hard residual pair is necessarily a NEW
-retained-active colour at the upper endpoint.
-
-This formally closes the naive "safe and absorbed at both endpoints" branch.
-Any exact-budget treatment of a saturated upper endpoint must use a genuinely
-different mechanism such as component flips or Boolean-code displacement.
+Hence every safe recolouring target for a hard residual pair creates a new
+retained-active colour at the upper endpoint.  In particular, a saturated
+upper endpoint cannot be handled by ordinary safe residual recolouring without
+some compensating mechanism.
 -/
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-/-- Membership in the incoming retained-colour set is exactly truth of the
-canonical retained bit. -/
-theorem mem_incomingRetained_iff_retainedBit_true
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) (c : Fin n) :
-    c ∈ incomingRetained C v ↔
-      retainedBit C v c = true := by
-  rw [mem_incomingRetained_iff]
-  unfold retainedBit
-  exact (bit_eq_true_iff C v c.castSucc).symm
-
-/-- Vertices with the same retained code have identical incoming-colour
-membership for every retained coordinate. -/
-theorem incomingRetained_mem_iff_of_sameRetained
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u v : V}
-    (hsame : SameRetained C u v)
-    (c : Fin n) :
-    c ∈ incomingRetained C u ↔
-      c ∈ incomingRetained C v := by
-  rw [mem_incomingRetained_iff_retainedBit_true,
-      mem_incomingRetained_iff_retainedBit_true]
-  exact eq_iff_iff.mpr (hsame c)
-
-/-- A colour outside the exact forbidden list is absent from incoming colours
-at the lower endpoint and outgoing colours at the upper endpoint. -/
-theorem not_forbidden_gives_endpoint_absences
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u v : V} {c : Fin n}
-    (hsafe : c ∉ residualForbidden C u v) :
-    c ∉ incomingRetained C u ∧
-      c ∉ outgoingRetained C v := by
-  constructor
-  · intro h
-    exact hsafe (Finset.mem_union_left _ h)
-  · intro h
-    exact hsafe (Finset.mem_union_right _ h)
 
 /-- Main rigidity theorem: for a same-retained pair, every locally safe
 retained target is inactive at the upper endpoint. -/
@@ -81,37 +37,21 @@ theorem safe_target_not_retainedActive_upper_of_sameRetained
     {c : Fin n}
     (hsafe : c ∉ residualForbidden C u v) :
     c ∉ retainedActive C v := by
-  have habs :=
-    not_forbidden_gives_endpoint_absences C hsafe
-  have hnotInU : c ∉ incomingRetained C u := habs.1
-  have hnotOutV : c ∉ outgoingRetained C v := habs.2
+  have hnotInU : c ∉ incomingRetained C u := by
+    intro h
+    exact hsafe (Finset.mem_union_left _ h)
+  have hnotOutV : c ∉ outgoingRetained C v := by
+    intro h
+    exact hsafe (Finset.mem_union_right _ h)
   have hnotInV : c ∉ incomingRetained C v := by
-    intro hInV
+    rw [← incomingRetained_eq_of_sameRetained C hsame]
     exact hnotInU
-      ((incomingRetained_mem_iff_of_sameRetained
-        C hsame c).2 hInV)
   rw [retainedActive_eq_incoming_union_outgoing C v]
   intro hactive
   rw [Finset.mem_union] at hactive
   rcases hactive with hInV | hOutV
   · exact hnotInV hInV
   · exact hnotOutV hOutV
-
-/-- In particular there is no retained colour which is simultaneously a safe
-target for a hard pair and already active at both endpoints. -/
-theorem no_safe_common_absorbed_colour_of_sameRetained
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u v : V}
-    (hsame : SameRetained C u v) :
-    ¬ ∃ c : Fin n,
-      c ∉ residualForbidden C u v ∧
-      c ∈ retainedActive C u ∧
-      c ∈ retainedActive C v := by
-  rintro ⟨c, hsafe, _hactiveU, hactiveV⟩
-  exact
-    (safe_target_not_retainedActive_upper_of_sameRetained
-      C hsame hsafe) hactiveV
 
 /-- Ordered hard-residual specialization. -/
 theorem safe_target_not_retainedActive_upper_of_hardResidual
@@ -129,11 +69,24 @@ theorem safe_target_not_retainedActive_upper_of_hardResidual
   exact safe_target_not_retainedActive_upper_of_sameRetained
     C hsame hsafe
 
-#print axioms mem_incomingRetained_iff_retainedBit_true
-#print axioms incomingRetained_mem_iff_of_sameRetained
+/-- Rephrased as an impossibility of zero-growth repair at a saturated upper
+endpoint. -/
+theorem no_safe_target_in_retainedActive_upper_of_sameRetained
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V}
+    (hsame : SameRetained C u v) :
+    ¬ ∃ c : Fin n,
+      c ∉ residualForbidden C u v ∧
+      c ∈ retainedActive C v := by
+  rintro ⟨c, hsafe, hactive⟩
+  exact
+    (safe_target_not_retainedActive_upper_of_sameRetained
+      C hsame hsafe) hactive
+
 #print axioms safe_target_not_retainedActive_upper_of_sameRetained
-#print axioms no_safe_common_absorbed_colour_of_sameRetained
 #print axioms safe_target_not_retainedActive_upper_of_hardResidual
+#print axioms no_safe_target_in_retainedActive_upper_of_sameRetained
 
 end OrderedEdgeColoring
 end JSP000404Research
