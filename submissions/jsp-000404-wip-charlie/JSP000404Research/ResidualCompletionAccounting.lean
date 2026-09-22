@@ -1,6 +1,7 @@
 
 import JSP000404Research.ResidualCompletionMultiplicity
 import JSP000404Research.ResidualProjectionAccounting
+import Mathlib.Combinatorics.Enumerative.DoubleCounting
 import Mathlib.Tactic
 
 /-!
@@ -163,52 +164,32 @@ theorem completionFibre_card_eq_covered_indicator_add_overlap_indicator
       omega
     simp [hpos, hzero]
 
-/-- Incidence type indexed first by vertices. -/
-abbrev CompletionIncidenceByVertex
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1)) :=
-  Σ v : V, {word : Fin n → Bool //
-    word ∈ retainedCompletionWords C v}
-
-/-- The same incidences indexed first by retained words. -/
-abbrev CompletionIncidenceByWord
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1)) :=
-  Σ word : Fin n → Bool, {v : V //
-    v ∈ completionFibre C word}
-
-noncomputable def completionIncidenceSwap
+/-- The covered-word set is exactly the finite union of all retained
+completion cubes. -/
+theorem coveredCompletionWords_eq_biUnion
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1)) :
-    CompletionIncidenceByVertex C ≃
-      CompletionIncidenceByWord C where
-  toFun x := ⟨x.2.1, ⟨x.1, by
-    exact (mem_completionFibre C x.2.1 x.1).2 x.2.2⟩⟩
-  invFun x := ⟨x.2.1, ⟨x.1, by
-    exact (mem_completionFibre C x.1 x.2.1).1 x.2.2⟩⟩
-  left_inv x := by
-    cases x with
-    | mk v word =>
-        cases word
-        rfl
-  right_inv x := by
-    cases x with
-    | mk word v =>
-        cases v
-        rfl
+    coveredCompletionWords C =
+      (Finset.univ : Finset V).biUnion
+        (retainedCompletionWords C) := by
+  classical
+  ext word
+  simp [coveredCompletionWords, completionFibre]
 
-/-- Double-counting the same finite incidence relation. -/
+/-- Standard finite double counting of the incidence relation
+word ∈ retainedCompletionWords(C,v). -/
 theorem sum_retainedCompletionWords_card_eq_sum_completionFibre_card
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1)) :
     (∑ v, (retainedCompletionWords C v).card) =
       ∑ word, (completionFibre C word).card := by
   classical
-  have hcard :=
-    Fintype.card_congr (completionIncidenceSwap C)
-  simpa [CompletionIncidenceByVertex,
-    CompletionIncidenceByWord,
-    Fintype.card_sigma] using hcard
+  have h :=
+    Finset.sum_card_eq_sum_biUnion_card
+      (fun v : V => retainedCompletionWords C v)
+      (Finset.univ : Finset V)
+  rw [← coveredCompletionWords_eq_biUnion C] at h
+  simpa [completionFibre] using h
 
 /-- Multiplicity <=2 turns the incidence sum into union plus overlap count. -/
 theorem sum_completionFibre_card_eq_covered_add_overlap
