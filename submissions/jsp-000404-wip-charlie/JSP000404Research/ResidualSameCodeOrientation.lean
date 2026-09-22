@@ -119,11 +119,101 @@ theorem no_safe_absorbed_target_of_sameRetained
   exact safe_target_not_absorbed_both_of_sameRetained
     C hsame hsafe ⟨hcu, hcv⟩
 
+/-- If a same-retained pair has no common inactive coordinate, its two
+retained-active sets cover all retained coordinates.  Their common incoming
+set lies in the intersection, yielding the strengthened cardinality balance
+
+  n + card(incoming) <= card(active_u) + card(active_v).
+-/
+theorem retained_card_sum_ge_n_add_commonIncoming
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V}
+    (hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    n + (incomingRetained C u).card ≤
+      (retainedActive C u).card +
+        (retainedActive C v).card := by
+  classical
+  let A := retainedActive C u
+  let B := retainedActive C v
+  let I := incomingRetained C u
+  have hAB : A ∪ B = (Finset.univ : Finset (Fin n)) := by
+    apply Finset.eq_univ_of_forall
+    intro c
+    by_contra hc
+    have hc' : c ∉ A ∪ B := hc
+    rw [Finset.mem_union] at hc'
+    push_neg at hc'
+    exact hno ⟨c, hc'.1, hc'.2⟩
+  have hIAB : I ⊆ A ∩ B := by
+    intro c hcI
+    rw [Finset.mem_inter]
+    constructor
+    · dsimp [A, I] at hcI ⊢
+      rw [retainedActive_eq_incoming_union_outgoing C u]
+      exact Finset.mem_union_left _ hcI
+    · have hcIv : c ∈ incomingRetained C v := by
+        rw [← incomingRetained_eq_of_sameRetained C hsame]
+        simpa [I] using hcI
+      dsimp [B]
+      rw [retainedActive_eq_incoming_union_outgoing C v]
+      exact Finset.mem_union_left _ hcIv
+  have hIcard :
+      I.card ≤ (A ∩ B).card :=
+    Finset.card_le_card hIAB
+  have hcard :=
+    Finset.card_union_add_card_inter A B
+  rw [hAB] at hcard
+  have huniv : (Finset.univ : Finset (Fin n)).card = n := by
+    simp
+  rw [huniv] at hcard
+  dsimp [A, B, I] at hIcard ⊢
+  omega
+
+/-- Under Sendov-style retained activity budgets, a same-code pair with no
+common inactive coordinate is lighter by the size of its common incoming set:
+
+  exponent(u) + exponent(v) + card(incoming) <= n.
+-/
+theorem exponent_sum_add_commonIncoming_le_of_no_common_inactive
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hret :
+      ∀ x,
+        (retainedActive C x).card ≤ n - exponent x)
+    {u v : V}
+    (hsame : SameRetained C u v)
+    (hno :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    exponent u + exponent v +
+        (incomingRetained C u).card ≤ n := by
+  have hu := hret u
+  have hv := hret v
+  have hsum :=
+    retained_card_sum_ge_n_add_commonIncoming
+      C hsame hno
+  have hku :
+      exponent u ≤ n := by
+    omega
+  have hkv :
+      exponent v ≤ n := by
+    omega
+  omega
+
 #print axioms mem_incomingRetained_iff_retainedBit_true
 #print axioms incomingRetained_eq_of_sameRetained
 #print axioms outgoing_disjoint_incoming_of_sameRetained
 #print axioms safe_target_not_absorbed_both_of_sameRetained
 #print axioms no_safe_absorbed_target_of_sameRetained
+#print axioms retained_card_sum_ge_n_add_commonIncoming
+#print axioms exponent_sum_add_commonIncoming_le_of_no_common_inactive
 
 end OrderedEdgeColoring
 end JSP000404Research
