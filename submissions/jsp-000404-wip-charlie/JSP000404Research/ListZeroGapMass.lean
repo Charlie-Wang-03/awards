@@ -149,8 +149,8 @@ theorem displayed_zero_gap_scaled_le_delta
     (ge : ℝ)
     {n : ℕ} {delta t : ℝ}
     (ht : t = (n : ℝ) + delta)
-    (hpreLen : qpre.length = gpre.length)
-    (hpostLen : qpost.length = gpost.length)
+    (hpreLen : gpre.length = qpre.length)
+    (hpostLen : gpost.length = qpost.length)
     (hgap0 : ∀ g ∈ gpre ++ ge :: gpost, 0 ≤ g)
     (hgapsum : (gpre ++ ge :: gpost).sum = 1)
     (hqsum : (qpre ++ 0 :: qpost).sum = n)
@@ -170,10 +170,10 @@ theorem displayed_zero_gap_scaled_le_delta
     exact hgap0 g (by simp [hg])
   have hpreMass0 :
       0 ≤ listZeroGapMass qpre gpre :=
-    listZeroGapMass_nonneg qpre gpre hpreLen hpre0
+    listZeroGapMass_nonneg qpre gpre hpreLen.symm hpre0
   have hpostMass0 :
       0 ≤ listZeroGapMass qpost gpost :=
-    listZeroGapMass_nonneg qpost gpost hpostLen hpost0
+    listZeroGapMass_nonneg qpost gpost hpostLen.symm hpost0
   have hge0 : 0 ≤ ge :=
     hgap0 ge (by simp)
   have hgeLe :
@@ -182,7 +182,7 @@ theorem displayed_zero_gap_scaled_le_delta
           (qpre ++ 0 :: qpost)
           (gpre ++ ge :: gpost) := by
     rw [displayed_zero_gap_mass_eq
-      qpre qpost gpre gpost ge hpreLen]
+      qpre qpost gpre gpost ge hpreLen.symm]
     linarith
   have hscaled :=
     mul_le_mul_of_nonneg_left hgeLe ht0
