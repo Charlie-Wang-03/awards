@@ -24,6 +24,19 @@ def listPositiveCount : List ℕ → ℕ
   | [] => 0
   | q :: qs => (if q = 0 then 0 else 1) + listPositiveCount qs
 
+
+theorem listPositiveCount_le_length
+    (qs : List ℕ) :
+    listPositiveCount qs ≤ qs.length := by
+  induction qs with
+  | nil =>
+      simp [listPositiveCount]
+  | cons q qs ih =>
+      by_cases hq : q = 0
+      · simp [listPositiveCount, hq, ih]
+      · simp [listPositiveCount, hq]
+        omega
+
 /-- Stepwise condition that every sign change is carried by a positive
 quotient gap. Mismatched list lengths are rejected. -/
 def ChangesOnlyOnPositive : Bool → List Bool → List ℕ → Prop
