@@ -220,6 +220,98 @@ theorem displayed_zero_gap_scaled_le_delta
     mul_le_mul_of_nonneg_left hsingle ht0
   exact hscaled.trans hmass
 
+
+theorem listZeroGapMass_nonneg
+    (qs : List ℕ) (gs : List ℝ)
+    (hlen : qs.length = gs.length)
+    (hg0 : ∀ g ∈ gs, 0 ≤ g) :
+    0 ≤ listZeroGapMass qs gs := by
+  induction qs generalizing gs with
+  | nil =>
+      cases gs <;> simp [listZeroGapMass] at hlen ⊢
+  | cons q qs ih =>
+      cases gs with
+      | nil =>
+          simp at hlen
+      | cons g gs =>
+          simp at hlen
+          have hg : 0 ≤ g := hg0 g (by simp)
+          have htail : ∀ x ∈ gs, 0 ≤ x := by
+            intro x hx
+            exact hg0 x (by simp [hx])
+          have hi := ih gs hlen htail
+          by_cases hq : q = 0 <;>
+            simp [listZeroGapMass, hq, hg, hi]
+
+/-- A displayed quotient-zero entry is bounded by the global fractional
+remainder budget.  This is the list-level local lemma used by the arbitrary
+cardinality ordinary/wrap zero-gap angle bridge. -/
+theorem displayed_zero_gap_scaled_le_delta
+    (qpre qpost : List ℕ)
+    (gpre gpost : List ℝ)
+    (ge : ℝ)
+    {n : ℕ} {delta t : ℝ}
+    (ht : t = (n : ℝ) + delta)
+    (hpreLen : gpre.length = qpre.length)
+    (hpostLen : gpost.length = qpost.length)
+    (hgap0 : ∀ g ∈ gpre ++ ge :: gpost, 0 ≤ g)
+    (hgapsum : (gpre ++ ge :: gpost).sum = 1)
+    (hqsum : (qpre ++ 0 :: qpost).sum = n)
+    (halign :
+      QuotientGapAligned t
+        (qpre ++ 0 :: qpost)
+        (gpre ++ ge :: gpost))
+    (ht0 : 0 ≤ t) :
+    t * ge ≤ delta := by
+  have hfull :=
+    listZeroGapMass_scaled_le_delta
+      (qpre ++ 0 :: qpost)
+      (gpre ++ ge :: gpost)
+      ht hgapsum hqsum halign
+  have hpre0 :
+      ∀ g ∈ gpre, 0 ≤ g := by
+    intro g hg
+    exact hgap0 g (by simp [hg])
+  have hpost0 :
+      ∀ g ∈ gpost, 0 ≤ g := by
+    intro g hg
+    exact hgap0 g (by simp [hg])
+  have hpreMass0 :
+      0 ≤ listZeroGapMass qpre gpre :=
+    listZeroGapMass_nonneg qpre gpre hpreLen.symm hpre0
+  have hpostMass0 :
+      0 ≤ listZeroGapMass qpost gpost :=
+    listZeroGapMass_nonneg qpost gpost hpostLen.symm hpost0
+  have hge0 : 0 ≤ ge :=
+    hgap0 ge (by simp)
+  have hmassEq :
+      listZeroGapMass
+          (qpre ++ 0 :: qpost)
+          (gpre ++ ge :: gpost)
+        =
+      listZeroGapMass qpre gpre +
+        ge + listZeroGapMass qpost gpost := by
+    rw [listZeroGapMass_append
+      qpre (0 :: qpost) gpre (ge :: gpost) hpreLen.symm]
+    simp [listZeroGapMass]
+    ring
+  have hgeLe :
+      ge ≤
+        listZeroGapMass
+          (qpre ++ 0 :: qpost)
+          (gpre ++ ge :: gpost) := by
+    rw [hmassEq]
+    linarith
+  have hscaled :
+      t * ge ≤
+        t * listZeroGapMass
+          (qpre ++ 0 :: qpost)
+          (gpre ++ ge :: gpost) :=
+    mul_le_mul_of_nonneg_left hgeLe ht0
+  exact hscaled.trans hfull
+
+#print axioms displayed_zero_gap_scaled_le_delta
+
 #print axioms listRemainderMass_eq
 #print axioms displayed_zero_gap_scaled_le_delta
 #print axioms listZeroGapMass_scaled_le_remainder
