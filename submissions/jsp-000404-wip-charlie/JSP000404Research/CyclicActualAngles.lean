@@ -324,7 +324,121 @@ theorem centre_zeroQuotientAngleAligned
         zeroQuotientAngleAligned_append_singleton
           hord hwrap
 
+
+def listZeroAngleMass : List ℕ → List ℝ → ℝ
+  | [], [] => 0
+  | q :: qs, A :: As =>
+      (if q = 0 then A else 0) + listZeroAngleMass qs As
+  | _, _ => 0
+
+/-- Positionwise exactness sums to an exact equality between zero-angle mass
+and pi times zero-gap mass. -/
+theorem listZeroAngleMass_eq_pi_mul_listZeroGapMass
+    {qs : List ℕ} {gs As : List ℝ}
+    (h : ZeroQuotientAngleAligned qs gs As) :
+    listZeroAngleMass qs As =
+      Real.pi * listZeroGapMass qs gs := by
+  induction qs generalizing gs As with
+  | nil =>
+      cases gs <;> cases As <;>
+        simp [ZeroQuotientAngleAligned,
+          listZeroAngleMass, listZeroGapMass] at h ⊢
+  | cons q qs ih =>
+      cases gs <;> cases As <;>
+        simp [ZeroQuotientAngleAligned] at h
+      rename_i g gs A As
+      rcases h with ⟨hhead, htail⟩
+      have ihtail := ih htail
+      by_cases hq : q = 0
+      · subst q
+        have hA := hhead rfl
+        simp [listZeroAngleMass, listZeroGapMass,
+          hA, ihtail]
+        ring
+      · simp [listZeroAngleMass, listZeroGapMass,
+          hq, ihtail]
+
+theorem listZeroAngleMass_nonneg
+    (qs : List ℕ) (As : List ℝ)
+    (hA0 : ∀ A ∈ As, 0 ≤ A) :
+    0 ≤ listZeroAngleMass qs As := by
+  induction qs generalizing As with
+  | nil =>
+      cases As <;> simp [listZeroAngleMass]
+  | cons q qs ih =>
+      cases As with
+      | nil =>
+          simp [listZeroAngleMass]
+      | cons A As =>
+          have h0 : 0 ≤ A := hA0 A (by simp)
+          have htail0 : ∀ x ∈ As, 0 ≤ x := by
+            intro x hx
+            exact hA0 x (by simp [hx])
+          have ht := ih As htail0
+          by_cases hq : q = 0 <;>
+            simp [listZeroAngleMass, hq, h0, ht]
+
+/-- Concrete deficit-two/support-two centre: the total actual angle mass over
+all zero quotient positions is at most delta*lambda. -/
+theorem centre_zeroAngleMass_le_delta_lam
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdelta1 : delta < 1)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    (C : CentreProjectiveCycle hp i)
+    (hexp : centreExponent C t = n - 2)
+    (hsupport :
+      positiveSupport (centreQuotient C t) = 2)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest) :
+    listZeroAngleMass
+        (quotientList t C.gaps)
+        (cyclicRayAngles (p := p) i first rest)
+      ≤ delta * lam := by
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htone : 1 ≤ t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
+  have halignA :=
+    centre_zeroQuotientAngleAligned
+      hp hcap htpos htone hlam i C first rest hrays
+  have hzeroEq :=
+    listZeroAngleMass_eq_pi_mul_listZeroGapMass
+      halignA
+  have hqsum :=
+    centre_quotientList_sum_eq_n_of_deficit_two_support_two
+      C hn hdelta0 hdelta1 ht hexp hsupport
+  have halignQ :=
+    centreQuotient_aligned C htpos.le
+  have hmass :
+      t * listZeroGapMass
+          (quotientList t C.gaps) C.gaps ≤ delta :=
+    listZeroGapMass_scaled_le_delta
+      (quotientList t C.gaps) C.gaps
+      ht C.gaps_sum hqsum halignQ
+  have hpiMass :
+      Real.pi * listZeroGapMass
+          (quotientList t C.gaps) C.gaps
+        ≤ delta * lam :=
+    pi_mul_width_le_delta_lam_of_scaled_width
+      htpos hlam hmass
+  rw [hzeroEq]
+  exact hpiMass
+
 #print axioms consecutive_zeroQuotientAngleAligned
+#print axioms listZeroAngleMass_eq_pi_mul_listZeroGapMass
+#print axioms centre_zeroAngleMass_le_delta_lam
 #print axioms wrap_zero_actual_angle_eq_pi_mul_gap
 #print axioms zeroQuotientAngleAligned_append_singleton
 
