@@ -635,3 +635,21 @@ import JSP000404Research.SupportThreeTransitionDichotomy
 
 
 import JSP000404Research.AlternativeKraftExtremizer
+
+
+import JSP000404Research.WeightedProfileRepair
+
+
+import JSP000404Research.WeightedOneLayerCharge
+
+
+import JSP000404Research.BinaryWeightedProfileRepair
+
+
+import JSP000404Research.CriticalTransitionActualAngle
+
+
+import JSP000404Research.CriticalIrredundantOrder
+
+
+import JSP000404Research.ResidualSameCodeOrientation
