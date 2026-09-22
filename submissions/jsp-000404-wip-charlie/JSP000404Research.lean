@@ -614,3 +614,24 @@ import JSP000404Research.SupportThreeZeroAngleBlocks
 
 
 import JSP000404Research.SharpSupportThreeTwoClusters
+
+
+import JSP000404Research.SupportLeTwoTransitionInterval
+
+
+import JSP000404Research.DeficitThreeSupportTwoHidden
+
+
+import JSP000404Research.ThirdLayerTransitionPacking
+
+
+import JSP000404Research.PinnedCyclicDeletionGain
+
+
+import JSP000404Research.GeneralProjectiveGapDeletion
+
+
+import JSP000404Research.SupportThreeTransitionDichotomy
+
+
+import JSP000404Research.AlternativeKraftExtremizer
