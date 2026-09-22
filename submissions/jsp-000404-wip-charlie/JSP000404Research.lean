@@ -692,3 +692,6 @@ import JSP000404Research.ResidualCompletionAccounting
 
 
 import JSP000404Research.ResidualOverlapWitness
+
+
+import JSP000404Research.ResidualLossWords
