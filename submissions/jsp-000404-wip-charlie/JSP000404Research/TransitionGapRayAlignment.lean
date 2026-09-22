@@ -136,6 +136,105 @@ theorem blocks_eq_of_decompositions
   exact ⟨hpref, hx, hsuf⟩
 
 
+
+/-- Full block identification at an ordinary ray cut.  The abstract aligned
+gap blocks are exactly the concrete successive-difference blocks on the two
+sides of the cut. -/
+theorem centre_gap_blocks_eq_ordinary_cut
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (first right : OtherVertex i)
+    (before tail : List (OtherVertex i))
+    (hrays :
+      C.rays = first :: (before ++ right :: tail))
+    {gpre gpost : List ℝ} {ge : ℝ}
+    (hgaps : C.gaps = gpre ++ ge :: gpost)
+    (hlen : gpre.length = before.length) :
+    let theta := rayThetaAt hp i
+    gpre =
+        (successiveDiffsFrom (theta first)
+          (before.map theta)).map (fun d => d / Real.pi) ∧
+      ge =
+        (theta right -
+          (before.map theta).getLastD (theta first)) / Real.pi ∧
+      gpost =
+        (successiveDiffsFrom (theta right)
+          (tail.map theta)).map (fun d => d / Real.pi) ++
+          [((theta first + Real.pi -
+            (tail.map theta).getLastD (theta right)) / Real.pi)] := by
+  let theta := rayThetaAt hp i
+  let stdPre :=
+    (successiveDiffsFrom (theta first)
+      (before.map theta)).map (fun d => d / Real.pi)
+  let stdGap :=
+    (theta right -
+      (before.map theta).getLastD (theta first)) / Real.pi
+  let stdPost :=
+    (successiveDiffsFrom (theta right)
+      (tail.map theta)).map (fun d => d / Real.pi) ++
+      [((theta first + Real.pi -
+        (tail.map theta).getLastD (theta right)) / Real.pi)]
+  have hstd :
+      C.gaps = stdPre ++ stdGap :: stdPost := by
+    rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
+    simp only [List.map_cons, List.map_append]
+    rw [normalizedProjectiveGaps_append_cons]
+    rfl
+  have hstdLen : stdPre.length = before.length := by
+    simp [stdPre, successiveDiffsFrom_length]
+  have hlen' : gpre.length = stdPre.length := by
+    rw [hlen, hstdLen]
+  have hblocks :=
+    blocks_eq_of_decompositions hgaps hstd hlen'
+  dsimp [theta, stdPre, stdGap, stdPost] at hblocks ⊢
+  exact hblocks
+
+/-- Full block identification when the distinguished cut is the final wrap
+gap. -/
+theorem centre_gap_blocks_eq_wrap_cut
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest)
+    {gpre gpost : List ℝ} {ge : ℝ}
+    (hgaps : C.gaps = gpre ++ ge :: gpost)
+    (hlen : gpre.length = rest.length)
+    (hpost : gpost = []) :
+    let theta := rayThetaAt hp i
+    gpre =
+        (successiveDiffsFrom (theta first)
+          (rest.map theta)).map (fun d => d / Real.pi) ∧
+      ge =
+        (theta first + Real.pi -
+          (rest.map theta).getLastD (theta first)) / Real.pi := by
+  let theta := rayThetaAt hp i
+  let stdPre :=
+    (successiveDiffsFrom (theta first)
+      (rest.map theta)).map (fun d => d / Real.pi)
+  let stdGap :=
+    (theta first + Real.pi -
+      (rest.map theta).getLastD (theta first)) / Real.pi
+  have hstd :
+      C.gaps = stdPre ++ stdGap :: [] := by
+    rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
+    simp only [List.map_cons]
+    rw [normalizedProjectiveGaps]
+    simp [projectiveGaps, stdPre, stdGap]
+  have hstdLen : stdPre.length = rest.length := by
+    simp [stdPre, successiveDiffsFrom_length]
+  have hlen' : gpre.length = stdPre.length := by
+    rw [hlen, hstdLen]
+  have hgaps' : C.gaps = gpre ++ ge :: [] := by
+    rw [hgaps, hpost]
+  have hblocks :=
+    blocks_eq_of_decompositions hgaps' hstd hlen'
+  dsimp [theta, stdPre, stdGap] at hblocks ⊢
+  exact ⟨hblocks.1, hblocks.2.1⟩
+
+
 /-- In an actual centre cycle, a decomposition at the same prefix length as an
 ordinary ray cut identifies the distinguished normalized gap with the angular
 difference across that cut. -/
