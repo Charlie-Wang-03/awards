@@ -44,7 +44,7 @@ theorem pi_mul_width_le_delta_lam_of_scaled_width
 
 /-- Pairwise version of the common-signed interval angle bound. -/
 theorem angle_le_width_of_two_common_signed_reprs
-    {p : V → Plane} {V : Type*}
+    {V : Type*} {p : V → Plane}
     {i j k : V}
     {a width : ℝ} {sigma : Bool}
     (hwidth0 : 0 ≤ width)
@@ -79,7 +79,7 @@ theorem angle_le_width_of_two_common_signed_reprs
 
 /-- Convenient interval-data form. -/
 theorem angle_le_width_of_two_common_signed_interval
-    {p : V → Plane} {V : Type*}
+    {V : Type*} {p : V → Plane}
     {i j k : V}
     {a width : ℝ} {sigma : Bool}
     (hwidth0 : 0 ≤ width)
@@ -107,7 +107,7 @@ theorem angle_le_width_of_two_common_signed_interval
 
 /-- Delta-width specialization used by support-two zero clusters. -/
 theorem angle_le_delta_lam_of_zero_cluster_interval
-    {p : V → Plane} {V : Type*}
+    {V : Type*} {p : V → Plane}
     {i j k : V}
     {a G t delta lam : ℝ} {sigma : Bool}
     (ht : 0 < t)
