@@ -91,7 +91,7 @@ theorem sameRetained_exact_pair_budget
       (retainedActive C v).card ≤ n - exponent v := by
   exact ⟨
     retainedActive_le_complement_left_of_sameRetained
-      C exponent hexp honeLoss huv hsame,
+      C exponent honeLoss huv hsame,
     retainedActive_le_complement_right_of_sameRetained
       C exponent honeLoss huv hsame⟩
 
@@ -247,7 +247,7 @@ theorem duplicate_has_free_flip_of_upper_maximal
     intro w _
     exact hvmax w
   apply duplicate_has_free_flip_of_right_count_lt_exponent
-    C exponent honeLoss huv hsame
+    C exponent hexp honeLoss huv hsame
   rw [hrightZero]
   exact hupos
 
