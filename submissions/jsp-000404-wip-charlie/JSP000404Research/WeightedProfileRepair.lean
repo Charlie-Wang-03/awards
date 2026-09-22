@@ -165,6 +165,87 @@ theorem target_weight_le_dyadicProfileSurplus_of_one_surplus
   rw [pow_succ] at hp
   omega
 
+
+def oneLayerLossWeight
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ) : ℕ :=
+  ∑ v, if k v = nu v + 1 then 2 ^ nu v else 0
+
+def oneLayerSurplusCredit
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ) : ℕ :=
+  ∑ v, if k v + 1 ≤ nu v then 2 ^ k v else 0
+
+/-- Under a one-layer-loss bound, the aggregate dyadic loss is exactly the
+sum of 2^nu over the exact-loss vertices. -/
+theorem totalDyadicProfileLoss_eq_oneLayerLossWeight
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ)
+    (hone : ∀ v, k v ≤ nu v + 1) :
+    totalDyadicProfileLoss k nu =
+      oneLayerLossWeight k nu := by
+  unfold totalDyadicProfileLoss oneLayerLossWeight
+  apply Finset.sum_congr rfl
+  intro v _
+  by_cases hloss : k v = nu v + 1
+  · simp [dyadicProfileLoss, hloss, pow_succ]
+  · have hle : k v ≤ nu v := by
+      have h := hone v
+      omega
+    have hp :
+        2 ^ k v ≤ 2 ^ nu v :=
+      Nat.pow_le_pow_right (by norm_num : 0 < 2) hle
+    simp [dyadicProfileLoss, hloss,
+      Nat.sub_eq_zero_of_le hp]
+
+/-- The total dyadic surplus dominates the credit from vertices with at least
+one full surplus layer. -/
+theorem oneLayerSurplusCredit_le_totalDyadicProfileSurplus
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ) :
+    oneLayerSurplusCredit k nu ≤
+      totalDyadicProfileSurplus k nu := by
+  unfold oneLayerSurplusCredit totalDyadicProfileSurplus
+  apply Finset.sum_le_sum
+  intro v _
+  by_cases hsur : k v + 1 ≤ nu v
+  · simp only [if_pos hsur]
+    exact target_weight_le_dyadicProfileSurplus_of_one_surplus
+      k nu v hsur
+  · simp [hsur, dyadicProfileSurplus]
+
+/-- Aggregate one-layer repair criterion.  Losses may be paid by surplus
+vertices at completely different exponent levels; no levelwise injection is
+required. -/
+theorem dyadic_sum_le_of_oneLayer_weighted_repair
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ)
+    (hone : ∀ v, k v ≤ nu v + 1)
+    (hrepair :
+      oneLayerLossWeight k nu ≤
+        oneLayerSurplusCredit k nu) :
+    (∑ v, 2 ^ k v) ≤ ∑ v, 2 ^ nu v := by
+  apply dyadic_sum_le_of_total_loss_le_surplus
+  rw [totalDyadicProfileLoss_eq_oneLayerLossWeight
+      k nu hone]
+  exact hrepair.trans
+    (oneLayerSurplusCredit_le_totalDyadicProfileSurplus
+      k nu)
+
+/-- Capacity form of the same criterion. -/
+theorem dyadic_capacity_of_oneLayer_weighted_repair
+    {V : Type*} [Fintype V]
+    (k nu : V → ℕ)
+    (bound : ℕ)
+    (hone : ∀ v, k v ≤ nu v + 1)
+    (hrepair :
+      oneLayerLossWeight k nu ≤
+        oneLayerSurplusCredit k nu)
+    (hcap : (∑ v, 2 ^ nu v) ≤ bound) :
+    (∑ v, 2 ^ k v) ≤ bound :=
+  (dyadic_sum_le_of_oneLayer_weighted_repair
+    k nu hone hrepair).trans hcap
+
 #print axioms dyadic_profile_total_balance
 #print axioms dyadic_sum_le_of_total_loss_le_surplus
 #print axioms dyadic_capacity_of_total_loss_le_surplus
