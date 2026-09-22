@@ -48,6 +48,24 @@ noncomputable def bit {V : Type*} [LinearOrder V] {k : ℕ}
     (C : OrderedEdgeColoring V k) : V → Fin k → Bool :=
   fun v c ↦ decide (incoming C c v)
 
+/-- Exact characterization of the canonical incoming bit. -/
+theorem bit_eq_true_iff
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    (v : V) (c : Fin k) :
+    bit C v c = true ↔
+      ∃ a, a < v ∧ C.color a v = c := by
+  simp [bit, incoming]
+
+/-- Dually, false means that no incoming edge of that colour exists. -/
+theorem bit_eq_false_iff
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V k)
+    (v : V) (c : Fin k) :
+    bit C v c = false ↔
+      ¬ ∃ a, a < v ∧ C.color a v = c := by
+  simp [bit, incoming]
+
 /-- The canonical incoming bit of an increasing edge's own colour is false
 at its lower endpoint. -/
 theorem edgeColor_bit_lower_eq_false
@@ -211,6 +229,8 @@ theorem card_le_two_pow
         (fun v _ => Nat.one_le_pow _ _))
   exact hone.trans hcap
 
+#print axioms bit_eq_true_iff
+#print axioms bit_eq_false_iff
 #print axioms edgeColor_bit_lower_eq_false
 #print axioms edgeColor_bit_upper_eq_true
 #print axioms edgeColor_bit_ne
