@@ -497,6 +497,38 @@ theorem listZeroAngleMass_rotate
           qs As) k).sum_eq,
       ← listZeroAngleMass_eq_zipWith_sum qs As hlen]
 
+/-- Exact decomposition of zero-angle mass at a displayed zero quotient. -/
+theorem listZeroAngleMass_decompose_at_zero
+    (qpre qpost : List ℕ)
+    (Apre Apost : List ℝ)
+    (A : ℝ)
+    (hpre : qpre.length = Apre.length)
+    (hpost : qpost.length = Apost.length) :
+    listZeroAngleMass
+        (qpre ++ 0 :: qpost)
+        (Apre ++ A :: Apost)
+      =
+    listZeroAngleMass qpre Apre +
+      A +
+      listZeroAngleMass qpost Apost := by
+  induction qpre generalizing Apre with
+  | nil =>
+      have hnil : Apre = [] :=
+        List.length_eq_zero.mp (by simpa using hpre.symm)
+      subst Apre
+      simp [listZeroAngleMass]
+  | cons q qs ih =>
+      cases Apre with
+      | nil =>
+          simp at hpre
+      | cons B Bs =>
+          simp at hpre
+          simp only [List.cons_append, listZeroAngleMass]
+          by_cases hq : q = 0
+          · simp [hq, ih Bs hpre]
+            ring
+          · simp [hq, ih Bs hpre]
+
 /-- A displayed zero-quotient angle is bounded by the total zero-angle mass
 when all actual angles are nonnegative. -/
 theorem displayed_zero_angle_le_listZeroAngleMass
@@ -510,56 +542,22 @@ theorem displayed_zero_angle_le_listZeroAngleMass
       listZeroAngleMass
         (qpre ++ 0 :: qpost)
         (Apre ++ A :: Apost) := by
-  have hlen :
-      (qpre ++ 0 :: qpost).length =
-        (Apre ++ A :: Apost).length := by
-    simp [hpre, hpost]
-  rw [listZeroAngleMass_eq_zipWith_sum _ _ hlen]
-  have hzip :
-      List.zipWith
-          (fun q x => if q = 0 then x else 0)
-          (qpre ++ 0 :: qpost)
-          (Apre ++ A :: Apost)
-        =
-      List.zipWith
-          (fun q x => if q = 0 then x else 0)
-          qpre Apre ++
-        A ::
-          List.zipWith
-            (fun q x => if q = 0 then x else 0)
-            qpost Apost := by
-    rw [List.zipWith_append hpre]
-    simp
-  rw [hzip, List.sum_append]
-  simp only [List.sum_cons]
-  have hpreMass :
-      0 ≤
-        (List.zipWith
-          (fun q x => if q = 0 then x else 0)
-          qpre Apre).sum := by
-    apply List.sum_nonneg
+  rw [listZeroAngleMass_decompose_at_zero
+      qpre qpost Apre Apost A hpre hpost]
+  have hpre0 : ∀ x ∈ Apre, 0 ≤ x := by
     intro x hx
-    rcases List.mem_zipWith.mp hx with ⟨q, Aq, hq, hAq, rfl⟩
-    by_cases hq0 : q = 0
-    · simp [hq0]
-      exact hA0 Aq (by
-        apply List.mem_append_left
-        exact hAq)
-    · simp [hq0]
-  have hpostMass :
-      0 ≤
-        (List.zipWith
-          (fun q x => if q = 0 then x else 0)
-          qpost Apost).sum := by
-    apply List.sum_nonneg
+    exact hA0 x (by
+      apply List.mem_append_left
+      exact hx)
+  have hpost0 : ∀ x ∈ Apost, 0 ≤ x := by
     intro x hx
-    rcases List.mem_zipWith.mp hx with ⟨q, Aq, hq, hAq, rfl⟩
-    by_cases hq0 : q = 0
-    · simp [hq0]
-      exact hA0 Aq (by
-        apply List.mem_append_right Apre
-        simp [hAq])
-    · simp [hq0]
+    exact hA0 x (by
+      apply List.mem_append_right Apre
+      simp [hx])
+  have hp :=
+    listZeroAngleMass_nonneg qpre Apre hpre0
+  have hs :=
+    listZeroAngleMass_nonneg qpost Apost hpost0
   linarith
 
 theorem all_cyclicRayAngles_nonneg
