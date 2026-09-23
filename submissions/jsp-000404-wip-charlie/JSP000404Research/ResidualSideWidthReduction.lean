@@ -177,6 +177,103 @@ theorem middle_of_high_edge_has_adjacent_high
   · exact Or.inr ⟨u, huv, huvHigh⟩
   · exact Or.inl ⟨w, hvw, hvwHigh⟩
 
+
+/-- A vertex cannot simultaneously receive and emit high edges when the high
+band has width < 1. -/
+theorem not_highSource_and_highSink
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (v : V) :
+    ¬ (HighSource D n v ∧ HighSink D n v) := by
+  rintro ⟨⟨w, hvw, hvwHigh⟩, ⟨u, huv, huvHigh⟩⟩
+  have huvUpper : D.value u v < (n : ℝ) + delta := by
+    simpa [hwidth] using D.belowWidth huv
+  have hvwUpper : D.value v w < (n : ℝ) + delta := by
+    simpa [hwidth] using D.belowWidth hvw
+  have hsmall :
+      |D.value u v - D.value v w| < 1 := by
+    rw [abs_lt]
+    constructor <;> linarith
+  exact (not_lt_of_ge (D.middleSeparated huv hvw)) hsmall
+
+/-- Every high edge points from a high source to a high sink. -/
+theorem highEdge_gives_source_sink
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v : V}
+    (huv : u < v)
+    (hhigh : (n : ℝ) ≤ D.value u v) :
+    HighSource D n u ∧ HighSink D n v :=
+  ⟨⟨v, huv, hhigh⟩, ⟨u, huv, hhigh⟩⟩
+
+/-- An interior vertex of a high edge belongs to exactly one of the two high
+sides. -/
+theorem middle_of_high_edge_exclusive_side
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    {u v w : V}
+    (huv : u < v) (hvw : v < w)
+    (houter : (n : ℝ) ≤ D.value u w) :
+    (HighSource D n v ∨ HighSink D n v) ∧
+      ¬ (HighSource D n v ∧ HighSink D n v) := by
+  exact ⟨middle_of_high_edge_has_adjacent_high D huv hvw houter,
+    not_highSource_and_highSink D hwidth hdelta v⟩
+
+/-- Interleaving high edges are joined by a cross high edge. -/
+theorem interleaving_high_edges_cross
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    {u x v y : V}
+    (hux : u < x) (hxv : x < v) (hvy : v < y)
+    (huvHigh : (n : ℝ) ≤ D.value u v)
+    (hxyHigh : (n : ℝ) ≤ D.value x y) :
+    (n : ℝ) ≤ D.value x v := by
+  have hxy : x < y := hxv.trans hvy
+  have hxSource : HighSource D n x :=
+    ⟨y, hxy, hxyHigh⟩
+  rcases first_high_or_second_high_of_outer_high
+      D hux hxv huvHigh with huxHigh | hxvHigh
+  · have hxSink : HighSink D n x :=
+      ⟨u, hux, huxHigh⟩
+    exact False.elim
+      ((not_highSource_and_highSink
+        D hwidth hdelta x) ⟨hxSource, hxSink⟩)
+  · exact hxvHigh
+
+/-- Nested high edges are also connected by a cross high edge. -/
+theorem nested_high_edges_cross
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    {u x y v : V}
+    (hux : u < x) (hxy : x < y) (hyv : y < v)
+    (huvHigh : (n : ℝ) ≤ D.value u v)
+    (hxyHigh : (n : ℝ) ≤ D.value x y) :
+    (n : ℝ) ≤ D.value x v := by
+  have hxv : x < v := hxy.trans hyv
+  have hxSource : HighSource D n x :=
+    ⟨y, hxy, hxyHigh⟩
+  rcases first_high_or_second_high_of_outer_high
+      D hux hxv huvHigh with huxHigh | hxvHigh
+  · have hxSink : HighSink D n x :=
+      ⟨u, hux, huxHigh⟩
+    exact False.elim
+      ((not_highSource_and_highSink
+        D hwidth hdelta x) ⟨hxSource, hxSink⟩)
+  · exact hxvHigh
+
 #print axioms value_lt_pred_width_of_second_high
 #print axioms value_lt_pred_width_of_first_high
 #print axioms first_high_or_second_high_of_outer_high
