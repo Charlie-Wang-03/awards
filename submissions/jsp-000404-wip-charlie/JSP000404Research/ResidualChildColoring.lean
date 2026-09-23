@@ -2,6 +2,8 @@
 import JSP000404Research.ResidualBinaryRecursion
 import JSP000404Research.StandardResidual
 import JSP000404Research.ResidualActiveDrop
+import JSP000404Research.RetainedOrientation
+import JSP000404Research.ResidualProjectionLoss
 import Mathlib.Tactic
 
 /-!
