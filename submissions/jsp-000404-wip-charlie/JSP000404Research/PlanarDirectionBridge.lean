@@ -261,7 +261,7 @@ noncomputable def toDirectionData
       hcap j i k
         (ne_of_gt hij)
         (ne_of_lt hjk)
-        (ne_of_gt hik)
+        (ne_of_lt hik)
     rw [F.angle_first_eq_abs hij hjk] at hcapFirst
     rw [F.abs_value_sub_value hlam]
     apply (div_le_iff₀ hlam).2
