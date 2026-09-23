@@ -74,7 +74,7 @@ theorem exactProjectedBudget_iff_not_loss_not_surplus
         Nat.pow_le_pow_right (by norm_num : 0 < 2) hle
       have heqPow : 2 ^ exponent v = 2 ^ projectedFree C v := by
         omega
-      exact Nat.pow_right_injective (by norm_num : 1 < 2) heqPow
+      exact Nat.pow_right_injective (by norm_num : 2 ≤ 2) heqPow
     · have hgt : projectedFree C v < exponent v := by omega
       have hp :
           2 ^ projectedFree C v < 2 ^ exponent v :=
