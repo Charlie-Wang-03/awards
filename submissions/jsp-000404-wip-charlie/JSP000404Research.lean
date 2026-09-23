@@ -737,3 +737,9 @@ import JSP000404Research.ResidualChildColoring
 
 
 import JSP000404Research.ResidualChildMass
+
+
+import JSP000404Research.RankOneBlockCapacity
+
+
+import JSP000404Research.ResidualExactBudget
