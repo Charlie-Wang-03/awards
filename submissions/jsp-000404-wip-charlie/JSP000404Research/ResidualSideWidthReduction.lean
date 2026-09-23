@@ -274,6 +274,96 @@ theorem nested_high_edges_cross
         D hwidth hdelta x) ⟨hxSource, hxSink⟩)
   · exact hxvHigh
 
+
+def HighInactive
+    {V : Type*} [LinearOrder V] {width : ℝ}
+    (D : DirectionData V width)
+    (n : ℕ) (v : V) : Prop :=
+  ¬ HighSource D n v ∧ ¬ HighSink D n v
+
+/-- A high-inactive point can never lie strictly inside a high edge. -/
+theorem highInactive_not_inside_high_edge
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v w : V}
+    (hinactive : HighInactive D n v)
+    (huv : u < v) (hvw : v < w) :
+    D.value u w < (n : ℝ) := by
+  by_contra hnot
+  have hhigh : (n : ℝ) ≤ D.value u w := le_of_not_gt hnot
+  rcases middle_of_high_edge_has_adjacent_high
+      D huv hvw hhigh with hsrc | hsnk
+  · exact hinactive.1 hsrc
+  · exact hinactive.2 hsnk
+
+/-- The two duplicated residual-bit children cover every vertex once the high
+band has width < 1: every vertex is either not a sink or not a source. -/
+theorem not_sink_or_not_source
+    {V : Type*} [LinearOrder V]
+    {width delta : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    (hwidth : width = (n : ℝ) + delta)
+    (hdelta : delta < 1)
+    (v : V) :
+    ¬ HighSink D n v ∨ ¬ HighSource D n v := by
+  by_cases hsink : HighSink D n v
+  · right
+    intro hsrc
+    exact (not_highSource_and_highSink
+      D hwidth hdelta v) ⟨hsrc, hsink⟩
+  · exact Or.inl hsink
+
+/-- Any edge whose upper endpoint is not a high sink is below the high
+threshold. -/
+theorem value_lt_high_threshold_of_not_sink
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v : V}
+    (huv : u < v)
+    (hnot : ¬ HighSink D n v) :
+    D.value u v < (n : ℝ) := by
+  by_contra h
+  exact hnot ⟨u, huv, le_of_not_gt h⟩
+
+/-- Any edge whose lower endpoint is not a high source is below the high
+threshold. -/
+theorem value_lt_high_threshold_of_not_source
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v : V}
+    (huv : u < v)
+    (hnot : ¬ HighSource D n u) :
+    D.value u v < (n : ℝ) := by
+  by_contra h
+  exact hnot ⟨v, huv, le_of_not_gt h⟩
+
+/-- In particular, any two vertices in the not-sink child have no high edge. -/
+theorem notSink_child_pair_below
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v : V}
+    (huv : u < v)
+    (_hu : ¬ HighSink D n u)
+    (hv : ¬ HighSink D n v) :
+    D.value u v < (n : ℝ) :=
+  value_lt_high_threshold_of_not_sink D huv hv
+
+/-- Likewise for the not-source child. -/
+theorem notSource_child_pair_below
+    {V : Type*} [LinearOrder V]
+    {width : ℝ} {n : ℕ}
+    (D : DirectionData V width)
+    {u v : V}
+    (huv : u < v)
+    (hu : ¬ HighSource D n u)
+    (_hv : ¬ HighSource D n v) :
+    D.value u v < (n : ℝ) :=
+  value_lt_high_threshold_of_not_source D huv hu
+
 #print axioms value_lt_pred_width_of_second_high
 #print axioms value_lt_pred_width_of_first_high
 #print axioms first_high_or_second_high_of_outer_high
