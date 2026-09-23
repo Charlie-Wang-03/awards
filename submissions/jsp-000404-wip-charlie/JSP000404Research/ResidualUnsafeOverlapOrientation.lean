@@ -394,9 +394,10 @@ theorem lower_retainedCode_mem_upper_completion_of_unsafe_overlap
       exact hcNotInU
         ((mem_incomingRetained_iff C u c).2 hex)
     have hcNotInV : c ∉ incomingRetained C v := by
+      intro hcInV
       exact Finset.disjoint_left.mp
         (incomingRetained_disjoint_outgoingRetained C v)
-        |>.flip hcOutV
+        hcInV hcOutV
     have hvFalse :
         retainedBit C v c = false := by
       unfold retainedBit
