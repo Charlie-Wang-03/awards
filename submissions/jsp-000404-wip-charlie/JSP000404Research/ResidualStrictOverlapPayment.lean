@@ -247,7 +247,7 @@ noncomputable def saturatedOverlapWords
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) :
     Finset (Fin n → Bool) :=
-  overlapCompletionWords C  strictStrictOverlapWords C exponent
+  overlapCompletionWords C \\ strictStrictOverlapWords C exponent
 
 /-- Under the one-layer residual budget, every remaining overlap word has a
 carrier with at least one saturated endpoint. -/
