@@ -195,6 +195,58 @@ theorem linear_cyclic_saturation_wrap_eq_firstFloor_of_top_occupied
       (head_le_getLastD_of_pairwise a xs hsorted)).trans_eq hlast
   omega
 
+
+/-- If the zero band is occupied, sortedness and nonnegativity force the first
+occupied floor to be exactly zero. -/
+theorem floor_head_eq_zero_of_zero_band_occupied
+    (a : ℝ) (xs : List ℝ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hzero : 0 ∈ occupiedNatBands (a :: xs)) :
+    Nat.floor a = 0 := by
+  rw [occupiedNatBands, List.mem_toFinset,
+      List.mem_map] at hzero
+  obtain ⟨x, hx, hfloorx⟩ := hzero
+  have hhead :
+      Nat.floor a ≤ Nat.floor x :=
+    head_floor_le_of_mem_sorted
+      hsorted hx
+  rw [hfloorx] at hhead
+  omega
+
+/-- Saturation together with occupancy of both wrap bands 0 and n forces the
+cyclic wrap-gap exponent contribution to vanish. -/
+theorem linear_cyclic_saturation_wrap_excess_zero_of_zero_top_occupied
+    {t : ℝ} {n : ℕ}
+    (a : ℝ) (xs : List ℝ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall : ∀ x ∈ a :: xs, x < t)
+    (ht : t < (n : ℝ) + 1)
+    (hzero : 0 ∈ occupiedNatBands (a :: xs))
+    (hnOcc : n ∈ occupiedNatBands (a :: xs))
+    (hsat :
+      listExponent (linearCyclicGapQuotients t (a :: xs)) +
+          (occupiedNatBands (a :: xs)).card
+        =
+      n + 1) :
+    excess
+      (Nat.floor
+        (a + t - xs.getLastD a))
+      =
+    0 := by
+  have hfirst :
+      Nat.floor a = 0 :=
+    floor_head_eq_zero_of_zero_band_occupied
+      a xs ha0 hsorted hzero
+  have hwrap :=
+    linear_cyclic_saturation_wrap_eq_firstFloor_of_top_occupied
+      a xs ha0 hsorted hall ht hnOcc hsat
+  rw [hfirst] at hwrap
+  exact hwrap
+
+#print axioms floor_head_eq_zero_of_zero_band_occupied
+#print axioms linear_cyclic_saturation_wrap_excess_zero_of_zero_top_occupied
 #print axioms mem_le_getLastD_of_pairwise
 #print axioms floor_getLastD_eq_n_of_sorted_occupied_n
 #print axioms linear_cyclic_saturation_component_equalities
