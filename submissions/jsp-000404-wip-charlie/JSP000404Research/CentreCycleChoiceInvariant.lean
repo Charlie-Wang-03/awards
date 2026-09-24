@@ -73,7 +73,7 @@ theorem centreQuotient_ext
     HEq (centreQuotient C t)
       (centreQuotient D t) := by
   have hgap : C.gaps = D.gaps := C.gaps_eq D
-  subst hgap
+  cases hgap
   rfl
 
 theorem centreExponent_eq
