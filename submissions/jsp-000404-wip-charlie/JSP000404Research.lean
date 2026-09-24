@@ -788,3 +788,9 @@ import JSP000404Research.ProjectionCanonicalRayBridge
 
 
 import JSP000404Research.CyclicQuotientRotation
+
+
+import JSP000404Research.StandardResidualThroughPromotion
+
+
+import JSP000404Research.StandardResidualOuterSplit
