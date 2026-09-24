@@ -866,3 +866,6 @@ import JSP000404Research.LinearBandGapStepTight
 
 
 import JSP000404Research.ResidualSaturatedDimensionIdentity
+
+
+import JSP000404Research.ProjectionSaturatedOverlapRigidity
