@@ -64,7 +64,7 @@ theorem safeFlip_blocker_residualBit_ne_upper
   have hwv : w ≠ v := by
     intro hwv
     subst w
-    exact hblock.1 (hsame c)
+    exact hblock.1 (hsame c).symm
   have hsameVW :
       ∀ d : Fin n, d ≠ c →
         retainedBit C v d = retainedBit C w d := by
@@ -237,7 +237,7 @@ theorem safeFlip_blocker_resolves_or_after_upper
     exact ⟨huw, hwv, hresolved.1, hresolved.2⟩
   · subst w
     exact False.elim
-      (hblock.1 (hsame c))
+      (hblock.1 (hsame c).symm)
   · exact Or.inr hvw
 
 /-- Every safe-oriented coordinate has one of three outcomes: its one-bit
