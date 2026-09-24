@@ -1,5 +1,6 @@
 import JSP000404Research.CentreQuotientData
 import JSP000404Research.SupportListBridge
+import JSP000404Research.SupportTwoDeletion
 import Mathlib.Data.List.OfFn
 import Mathlib.Tactic
 
