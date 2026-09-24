@@ -63,15 +63,12 @@ noncomputable def projectiveBandBit
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
-    (i : V) (c : Fin (n + 1)) : Bool := by
-  classical
-  by_cases h :
-      ∃ j : OtherVertex i,
-        RayInProjectiveBand hp t i j c
-  · exact raySignAt hp i (Classical.choose h)
-  · exact false
+    (i : V) (c : Fin (n + 1)) : Bool :=
+  decide (∃ j : OtherVertex i,
+    RayInProjectiveBand hp t i j c ∧
+      raySignAt hp i j = true)
 
-/-- The chosen band bit equals the sign of every ray in that band. -/
+/-- The band bit equals the sign of every ray in that band. -/
 theorem projectiveBandBit_eq_raySignAt
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
@@ -86,23 +83,31 @@ theorem projectiveBandBit_eq_raySignAt
     projectiveBandBit hp hcap ht hlam n i c =
       raySignAt hp i j := by
   classical
-  unfold projectiveBandBit
-  simp only [dif_pos ⟨j, hj⟩]
-  let j0 : OtherVertex i :=
-    Classical.choose
-      (show ∃ j : OtherVertex i,
-        RayInProjectiveBand hp t i j c from ⟨j, hj⟩)
-  have hj0 :
-      RayInProjectiveBand hp t i j0 c :=
-    Classical.choose_spec
-      (show ∃ j : OtherVertex i,
-        RayInProjectiveBand hp t i j c from ⟨j, hj⟩)
-  by_cases hEq : j0 = j
-  · subst j0
-    rfl
-  · exact raySignAt_eq_of_same_projective_band
-      hp hcap ht hlam i j0 j hEq
-      hj0.1 hj0.2 hj.1 hj.2
+  by_cases hs : raySignAt hp i j = true
+  · have hex :
+        ∃ k : OtherVertex i,
+          RayInProjectiveBand hp t i k c ∧
+            raySignAt hp i k = true :=
+      ⟨j, hj, hs⟩
+    simp [projectiveBandBit, hex, hs]
+  · have hsj : raySignAt hp i j = false := by
+      cases h : raySignAt hp i j <;> simp_all
+    have hnot :
+        ¬ ∃ k : OtherVertex i,
+          RayInProjectiveBand hp t i k c ∧
+            raySignAt hp i k = true := by
+      rintro ⟨k, hk, hkTrue⟩
+      by_cases hkj : k = j
+      · subst k
+        rw [hsj] at hkTrue
+        simp at hkTrue
+      · have hsame :=
+          raySignAt_eq_of_same_projective_band
+            hp hcap ht hlam i k j hkj
+            hk.1 hk.2 hj.1 hj.2
+        rw [hkTrue, hsj] at hsame
+        simp at hsame
+    simp [projectiveBandBit, hnot, hsj]
 
 noncomputable def projectiveBandColor
     {V : Type*} {p : V → Plane}
@@ -174,7 +179,7 @@ theorem projectiveBandColor_mem_upper
   have htheta :
       rayThetaAt hp v ⟨u, huv⟩ =
         rayThetaAt hp u ⟨v, huv.symm⟩ :=
-    (rayThetaAt_reverse_eq hp huv)
+    (rayThetaAt_reverse_eq hp huv).symm
   unfold RayInProjectiveBand at hlower ⊢
   unfold normalizedRayTheta at hlower ⊢
   rw [htheta]
