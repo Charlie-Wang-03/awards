@@ -99,8 +99,7 @@ theorem genericProjection_lowerBranch_oneLayerBudget
         n
         (by
           rw [htEq]
-          exact_mod_cast (show (n : ℝ) + delta < (n : ℝ) + 1 by
-            linarith)))
+          linarith))
       i).card
       ≤
     n - centreExponent C t + 1 := by
