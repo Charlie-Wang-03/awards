@@ -851,3 +851,12 @@ import JSP000404Research.ProjectionStandardBandBudget
 
 
 import JSP000404Research.ProjectionResidualHardRemainder
+
+
+import JSP000404Research.ResidualSaturatedOverlapDecomposition
+
+
+import JSP000404Research.LinearBandGapEquality
+
+
+import JSP000404Research.ProjectionSaturatedBandEquality
