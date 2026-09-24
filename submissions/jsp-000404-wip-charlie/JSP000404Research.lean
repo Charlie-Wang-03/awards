@@ -848,3 +848,6 @@ import JSP000404Research.ResidualLocalSaturation
 
 
 import JSP000404Research.ProjectionStandardBandBudget
+
+
+import JSP000404Research.ProjectionResidualHardRemainder
