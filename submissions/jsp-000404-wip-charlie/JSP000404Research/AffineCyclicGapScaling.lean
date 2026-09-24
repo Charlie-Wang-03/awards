@@ -48,7 +48,7 @@ theorem successiveDiffsFrom_affineAngleValue
       simp [successiveDiffsFrom]
   | cons b bs ih =>
       simp only [List.map_cons, successiveDiffsFrom, List.map_cons]
-      constructor
+      congr 1
       · unfold affineAngleValue
         ring
       · exact ih b
