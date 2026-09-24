@@ -64,17 +64,9 @@ finite-function floor excess. -/
 theorem listExponent_ofFn_eq_floorExcess
     {m : ℕ} (q : Fin m → ℕ) :
     listExponent (List.ofFn q) = floorExcess q := by
-  induction m with
-  | zero =>
-      simp [listExponent, floorExcess]
-  | succ m ih =>
-      rw [List.ofFn_succ]
-      unfold listExponent floorExcess
-      rw [List.map_cons, List.sum_cons, Fin.sum_univ_succ]
-      have htail :=
-        ih (fun i : Fin m => q i.succ)
-      unfold listExponent floorExcess at htail
-      simpa [excess] using congrArg id htail
+  unfold listExponent floorExcess
+  rw [List.map_ofFn, List.sum_ofFn]
+  simp [Function.comp_def, excess]
 
 /-- Concrete quotient-list exponent equals the centre floor-excess exponent. -/
 theorem listExponent_quotientList_eq_centreExponent
