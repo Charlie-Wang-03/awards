@@ -247,20 +247,17 @@ theorem sameRetained_noCommonInactive_card_identity
       (outgoingRetained C u).card =
         (outgoingRetained C u \ outgoingRetained C v).card +
           (outgoingRetained C u ∩ outgoingRetained C v).card := by
-    exact Finset.card_sdiff_add_card_inter_of_subset
-      (Finset.inter_subset_left :
-        outgoingRetained C u ∩ outgoingRetained C v ⊆
-          outgoingRetained C u)
+    symm
+    exact Finset.card_sdiff_add_card_inter
+      (outgoingRetained C u) (outgoingRetained C v)
   have hOvDecomp :
       (outgoingRetained C v).card =
         (outgoingRetained C v \ outgoingRetained C u).card +
           (outgoingRetained C u ∩ outgoingRetained C v).card := by
     have h :=
-      Finset.card_sdiff_add_card_inter_of_subset
-        (Finset.inter_subset_left :
-          outgoingRetained C v ∩ outgoingRetained C u ⊆
-            outgoingRetained C v)
-    simpa [Finset.inter_comm, Nat.add_comm] using h
+      Finset.card_sdiff_add_card_inter
+        (outgoingRetained C v) (outgoingRetained C u)
+    simpa [Finset.inter_comm, Nat.add_comm] using h.symm
   omega
 
 /-- Saturated same-code endpoints satisfy the exact exponent identity. -/
