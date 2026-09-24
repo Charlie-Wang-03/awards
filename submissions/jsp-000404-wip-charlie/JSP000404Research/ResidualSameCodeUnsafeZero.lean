@@ -45,7 +45,7 @@ theorem no_safeTarget_iff_retainedInactive_upper_empty_of_sameRetained
     apply Finset.eq_empty_iff_forall_not_mem.mpr
     intro c hc
     have hcSafeSet :
-        c ∈ Finset.univ  residualForbidden C u v := by
+        c ∈ Finset.univ \ residualForbidden C u v := by
       rw [hset]
       exact hc
     have hcSafe :
@@ -55,7 +55,7 @@ theorem no_safeTarget_iff_retainedInactive_upper_empty_of_sameRetained
   · intro hempty
     rintro ⟨c, hcSafe⟩
     have hcSet :
-        c ∈ Finset.univ  residualForbidden C u v := by
+        c ∈ Finset.univ \ residualForbidden C u v := by
       simp [hcSafe]
     rw [hset, hempty] at hcSet
     simp at hcSet
@@ -127,8 +127,8 @@ theorem safeTargetSet_eq_outgoingLower_sdiff_outgoingUpper
       ¬ ∃ c : Fin n,
         c ∉ retainedActive C u ∧
         c ∉ retainedActive C v) :
-    (Finset.univ  residualForbidden C u v) =
-      outgoingRetained C u  outgoingRetained C v := by
+    (Finset.univ \ residualForbidden C u v) =
+      outgoingRetained C u \ outgoingRetained C v := by
   rw [safeTargetSet_eq_retainedInactive_upper_of_sameRetained
       C hsame,
       retainedInactive_right_eq_outgoingLeft_sdiff_outgoingRight
