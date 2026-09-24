@@ -255,6 +255,46 @@ theorem listExponent_after_projective_cut
   exact normalizedProjectiveGaps_after_cut_eq_rotate
     c a b as bs
 
+
+/-- Exponent invariance under a cut change, with either block allowed to be
+empty.  This is the convenient total API for later canonicalization at zero. -/
+theorem listExponent_after_projective_cut_any
+    (t c : ℝ)
+    (pre post : List ℝ) :
+    listExponent
+      (quotientList t
+        (normalizedProjectiveGaps
+          (anglesAfterProjectiveCut c pre post)))
+      =
+    listExponent
+      (quotientList t
+        (normalizedProjectiveGaps (pre ++ post))) := by
+  cases pre with
+  | nil =>
+      cases post with
+      | nil =>
+          simp [anglesAfterProjectiveCut,
+            normalizedProjectiveGaps, projectiveGaps,
+            quotientList, listExponent]
+      | cons b bs =>
+          simp only [anglesAfterProjectiveCut, List.map_nil,
+            List.nil_append, List.nil_append]
+          simpa [sub_eq_add_neg] using
+            listExponent_quotientList_map_add
+              t b (-c) bs
+  | cons a as =>
+      cases post with
+      | nil =>
+          simp only [anglesAfterProjectiveCut, List.map_nil,
+            List.nil_append, List.append_nil]
+          have h :=
+            listExponent_quotientList_map_add
+              t a (Real.pi - c) as
+          simpa [sub_eq_add_neg, add_assoc] using h
+      | cons b bs =>
+          exact listExponent_after_projective_cut
+            t c a b as bs
+
 #print axioms projectiveGaps_map_add
 #print axioms normalizedProjectiveGaps_map_add
 #print axioms listExponent_quotientList_map_add
