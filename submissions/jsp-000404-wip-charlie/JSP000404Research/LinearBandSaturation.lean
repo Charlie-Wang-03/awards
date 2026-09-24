@@ -34,6 +34,31 @@ namespace JSP000404Research
 
 open Real
 
+/-- Every member of a sorted nonempty list is at most its final entry. -/
+theorem mem_le_getLastD_of_pairwise
+    (a : ℝ) (xs : List ℝ)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    {x : ℝ}
+    (hx : x ∈ a :: xs) :
+    x ≤ xs.getLastD a := by
+  induction xs generalizing a x with
+  | nil =>
+      simp at hx
+      subst x
+      simp
+  | cons b bs ih =>
+      have hpair := List.pairwise_cons.mp hsorted
+      simp only [List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact head_le_getLastD_of_pairwise
+          a (b :: bs) hsorted
+      · have htail :
+            (b :: bs).Pairwise (· ≤ ·) :=
+          hpair.2
+        have hrec :=
+          ih b htail (by simpa using hx)
+        simpa [List.getLastD_cons] using hrec
+
 theorem floor_getLastD_eq_n_of_sorted_occupied_n
     {t : ℝ} {n : ℕ}
     (a : ℝ) (xs : List ℝ)
@@ -62,35 +87,9 @@ theorem floor_getLastD_eq_n_of_sorted_occupied_n
       List.mem_map] at hnOcc
   obtain ⟨x, hx, hfloorx⟩ := hnOcc
   have hheadLast :
-      x ≤ xs.getLastD a := by
-    simp only [List.mem_cons] at hx
-    rcases hx with rfl | hx
-    · exact head_le_getLastD_of_pairwise a xs hsorted
-    · cases xs with
-      | nil => simp at hx
-      | cons b bs =>
-          have htail :
-              (b :: bs).Pairwise (· ≤ ·) :=
-            (List.pairwise_cons.mp hsorted).2
-          have hxTail : x ∈ b :: bs := by
-            simpa using hx
-          have hxle :
-              x ≤ (bs.getLastD b) := by
-            rcases List.mem_cons.mp hxTail with rfl | hxRest
-            · exact head_le_getLastD_of_pairwise
-                b bs htail
-            · have hpairLast :
-                  x ≤ bs.getLastD b := by
-                have hlastMem :
-                    bs.getLastD b ∈ b :: bs :=
-                  List.getLastD_mem_cons b bs
-                have hforall :=
-                  htail.forall_of_forall
-                    (fun _ _ h => h)
-                exact hforall x hxTail
-                  (bs.getLastD b) hlastMem
-            exact hpairLast
-          simpa [List.getLastD_cons] using hxle
+      x ≤ xs.getLastD a :=
+    mem_le_getLastD_of_pairwise
+      a xs hsorted hx
   have hfloorLe :
       n ≤ Nat.floor (xs.getLastD a) := by
     rw [← hfloorx]
@@ -196,6 +195,7 @@ theorem linear_cyclic_saturation_wrap_eq_firstFloor_of_top_occupied
       (head_le_getLastD_of_pairwise a xs hsorted)).trans_eq hlast
   omega
 
+#print axioms mem_le_getLastD_of_pairwise
 #print axioms floor_getLastD_eq_n_of_sorted_occupied_n
 #print axioms linear_cyclic_saturation_component_equalities
 #print axioms linear_cyclic_saturation_wrap_eq_firstFloor_of_top_occupied
