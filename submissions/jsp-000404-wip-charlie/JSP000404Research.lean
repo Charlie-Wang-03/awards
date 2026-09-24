@@ -758,3 +758,21 @@ import JSP000404Research.ResidualUnsafeOverlapOrientation
 
 
 import JSP000404Research.PlanarDirectionBridge
+
+
+import JSP000404Research.ProjectionOrderedVertices
+
+
+import JSP000404Research.ProjectionHalfPlaneAngle
+
+
+import JSP000404Research.RightHalfPlaneArg
+
+
+import JSP000404Research.ProjectionAngleBetweenness
+
+
+import JSP000404Research.ProjectionPolarReconstruction
+
+
+import JSP000404Research.GenericForwardAngleLift
