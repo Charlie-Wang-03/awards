@@ -62,7 +62,7 @@ theorem projectionCoord_injective
   apply toOriginal_injective
   exact genericProjectionValue_injective hp h
 
-noncomputable instance instLinearOrder
+noncomputable def projectionLinearOrder
     {V : Type*} [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p) :
@@ -78,7 +78,7 @@ theorem lt_iff_projectionCoord_lt
     {p : V → Plane}
     (hp : Function.Injective p)
     (u v : ProjectionOrdered V) :
-    @LT.lt (ProjectionOrdered V) (instLinearOrder hp) u v
+    @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v
       ↔
     projectionCoord p u < projectionCoord p v := by
   rfl
@@ -91,7 +91,7 @@ theorem projection_increment_pos
     (hp : Function.Injective p)
     {u v : ProjectionOrdered V}
     (huv :
-      @LT.lt (ProjectionOrdered V) (instLinearOrder hp) u v) :
+      @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v) :
     0 <
       (p v.toOriginal 0 - p u.toOriginal 0) +
         genericProjectionSlope p *
@@ -116,7 +116,7 @@ theorem reindexedPoint_injective
   exact hp h
 
 #print axioms projectionCoord_injective
-#print axioms instLinearOrder
+#print axioms projectionLinearOrder
 #print axioms projection_increment_pos
 #print axioms reindexedPoint_injective
 
