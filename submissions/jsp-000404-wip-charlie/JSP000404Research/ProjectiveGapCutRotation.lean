@@ -180,7 +180,8 @@ theorem projectiveGaps_cut_rotate
       | nil =>
           simp only [List.map_nil, List.nil_append,
             List.append_nil]
-          simpa using
+          rw [← projectiveGaps_length (a :: as)]
+          exact
             (List.rotate_length
               (projectiveGaps (a :: as))).symm
       | cons b bs =>
