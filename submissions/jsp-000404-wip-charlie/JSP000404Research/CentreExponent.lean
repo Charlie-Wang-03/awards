@@ -97,6 +97,17 @@ def centreExponent
     (t : ℝ) : ℕ :=
   floorExcess (centreQuotient C t)
 
+
+@[simp] theorem listExponent_quotientList_eq_centreExponent'
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ) :
+    listExponent (quotientList t C.gaps) =
+      centreExponent C t := by
+  unfold centreExponent
+  exact listExponent_quotientList_eq_centreExponent C t
+
 /-- Concrete Sendov deficit at integer level n. -/
 def centreDeficit
     {V : Type*} [LinearOrder V] [Fintype V]
