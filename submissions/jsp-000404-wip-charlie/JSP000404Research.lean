@@ -809,3 +809,12 @@ import JSP000404Research.ResidualMixedOverlapPayment
 
 
 import JSP000404Research.ResidualMixedOverlapForest
+
+
+import JSP000404Research.ResidualMixedOverlapGlobal
+
+
+import JSP000404Research.ResidualHardPairSafe
+
+
+import JSP000404Research.ResidualSameCodeExactOrientation
