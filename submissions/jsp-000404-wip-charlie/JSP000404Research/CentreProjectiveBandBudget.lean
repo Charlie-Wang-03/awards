@@ -136,7 +136,7 @@ theorem centreFloorBandList_eq_bandValList
     centreFloorBandList C t =
       (centreProjectiveBandList C ht n htop).map Fin.val := by
   unfold centreFloorBandList scaledCentreAngles
-  rw [CentreProjectiveCycle.angles]
+  unfold CentreProjectiveCycle.angles
   simp only [floorBandList, List.map_map,
     centreProjectiveBandList]
   apply List.map_congr_left
@@ -283,14 +283,14 @@ theorem centreExponent_le_cyclicBandMissing
   rw [hquot] at hcyc
   have hgap :
       normalizedProjectiveGaps (a :: xs) = C.gaps := by
-    rw [← hangles]
-    rfl
+    simpa [CentreProjectiveCycle.gaps, hangles]
   rw [hgap,
       listExponent_quotientList_eq_centreExponent'] at hcyc
   have hfloor :
       floorBandList (A :: XS) =
         centreFloorBandList C t := by
-    rw [← hscaled, centreFloorBandList]
+    simpa [centreFloorBandList] using
+      congrArg floorBandList hscaled.symm
   rwa [hfloor] at hcyc
 
 /-- Main local budget: centre exponent is at most the number of missing
@@ -310,8 +310,8 @@ theorem centreExponent_le_missing_projectiveBands
         (occupiedProjectiveBands hp t n i).card := by
   have htop : t < (n + 1 : ℕ) := by
     rw [ht]
-    exact_mod_cast (show (n : ℝ) + delta < n + 1 by
-      linarith)
+    push_cast
+    linarith
   have hexp :=
     centreExponent_le_cyclicBandMissing
       C htpos ht hdelta0 hdelta1
@@ -386,15 +386,15 @@ theorem projectiveBandPartition_active_card_le_deficit
       (projectiveBandPartition hp hcap htpos hlam n
         (by
           rw [ht]
-          exact_mod_cast
-            (show (n : ℝ) + delta < n + 1 by linarith)))
+          push_cast
+          linarith))
       i).card
       ≤
     (n + 1) - centreExponent (C i) t := by
   let htop : t < (n + 1 : ℕ) := by
     rw [ht]
-    exact_mod_cast
-      (show (n : ℝ) + delta < n + 1 by linarith)
+    push_cast
+    linarith
   rw [projectiveBandPartition_active_card
       hp hcap htpos hlam n htop i]
   have hmissing :=
