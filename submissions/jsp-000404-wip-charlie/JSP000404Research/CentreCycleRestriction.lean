@@ -165,15 +165,15 @@ theorem restrictedRayList_theta_sorted
   unfold restrictedRayList
   refine C.theta_sorted.filterMap
     (parentRayToChildOption r i hir) ?_
-  intro a a' b b' haa' hba hba'
+  intro a a' haa' b hba b' hba'
   have hpa :
       childOtherToParent r i hir b = a :=
     parent_of_parentRayToChildOption_eq_some
-      r i hir (by simpa using hba)
+      r i hir hba
   have hpa' :
       childOtherToParent r i hir b' = a' :=
     parent_of_parentRayToChildOption_eq_some
-      r i hir (by simpa using hba')
+      r i hir hba'
   rw [rayThetaAt_restrict_delete hp r i hir b,
       rayThetaAt_restrict_delete hp r i hir b',
       hpa, hpa']
