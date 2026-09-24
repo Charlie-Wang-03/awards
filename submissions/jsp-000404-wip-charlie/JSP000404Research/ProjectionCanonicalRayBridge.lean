@@ -294,6 +294,190 @@ theorem rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
     rw [hrev, hthetaForward]
     simp [centreForwardLiftedAngle, hij]
 
+
+noncomputable def projectionProjectiveCut
+    {V : Type*} [Fintype V]
+    (p : V → Plane) : ℝ :=
+  projectionAngleBase (genericProjectionSlope p) +
+    Real.pi
+
+theorem projectionProjectiveCut_pos
+    {V : Type*} [Fintype V]
+    (p : V → Plane) :
+    0 < projectionProjectiveCut p := by
+  unfold projectionProjectiveCut
+  have h :=
+    projectionAngleBase_gt_neg_pi
+      (genericProjectionSlope p)
+  linarith
+
+theorem projectionProjectiveCut_lt_pi
+    {V : Type*} [Fintype V]
+    (p : V → Plane) :
+    projectionProjectiveCut p < Real.pi := by
+  unfold projectionProjectiveCut
+  have h :=
+    projectionAngleBase_lt_zero
+      (genericProjectionSlope p)
+  linarith
+
+namespace ProjectionOrdered
+
+/-- Every centre-forward lifted angle lies on the original common generic
+projection branch, not merely in the coarser (-pi,pi) window. -/
+theorem centreForwardLiftedAngle_mem_branch
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : ProjectionOrdered V)
+    (j : OtherVertex i) :
+    projectionAngleBase (genericProjectionSlope p) <
+      centreForwardLiftedAngle hp i j
+    ∧
+    centreForwardLiftedAngle hp i j <
+      projectionProjectiveCut p := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
+  unfold centreForwardLiftedAngle
+  unfold projectionProjectiveCut
+  split_ifs with hij
+  · exact generic_edge_liftedAngle_mem hp hij
+  · have hji : j.1 < i := by
+      exact lt_of_le_of_ne
+        (not_lt.mp hij) j.2
+    exact generic_edge_liftedAngle_mem hp hji
+
+/-- Canonical rays below the projective cut are exactly the nonnegative
+forward lifted angles. -/
+theorem rayTheta_lt_projectionCut_iff_forward_nonneg
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : ProjectionOrdered V)
+    (j : OtherVertex i) :
+    rayThetaAt (reindexedPoint_injective hp) i j <
+        projectionProjectiveCut p
+      ↔
+    0 ≤ centreForwardLiftedAngle hp i j := by
+  let theta :=
+    centreForwardLiftedAngle hp i j
+  have hrepr :=
+    rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
+      hp i j
+  have hbranch :=
+    centreForwardLiftedAngle_mem_branch hp i j
+  constructor
+  · intro hcanon
+    by_contra hnot
+    have hneg : theta < 0 := lt_of_not_ge hnot
+    have hcan :
+        rayThetaAt (reindexedPoint_injective hp) i j =
+          theta + Real.pi := by
+      simpa [theta, canonicalizeProjectiveAngle, hneg]
+        using hrepr
+    unfold projectionProjectiveCut at hcanon
+    dsimp [theta] at hneg hcan
+    linarith
+  · intro hnonneg
+    have hnotneg : ¬ theta < 0 :=
+      not_lt_of_ge hnonneg
+    have hcan :
+        rayThetaAt (reindexedPoint_injective hp) i j =
+          theta := by
+      simpa [theta, canonicalizeProjectiveAngle, hnotneg]
+        using hrepr
+    unfold projectionProjectiveCut
+    dsimp [theta] at hcan
+    linarith
+
+/-- Complementary upper-block characterization. -/
+theorem projectionCut_le_rayTheta_iff_forward_neg
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : ProjectionOrdered V)
+    (j : OtherVertex i) :
+    projectionProjectiveCut p ≤
+        rayThetaAt (reindexedPoint_injective hp) i j
+      ↔
+    centreForwardLiftedAngle hp i j < 0 := by
+  constructor
+  · intro hcut
+    by_contra hnot
+    have hnonneg :
+        0 ≤ centreForwardLiftedAngle hp i j :=
+      le_of_not_gt hnot
+    have hbelow :=
+      (rayTheta_lt_projectionCut_iff_forward_nonneg
+        hp i j).2 hnonneg
+    linarith
+  · intro hneg
+    by_contra hnot
+    have hbelow :
+        rayThetaAt (reindexedPoint_injective hp) i j <
+          projectionProjectiveCut p :=
+      lt_of_not_ge hnot
+    have hnonneg :=
+      (rayTheta_lt_projectionCut_iff_forward_nonneg
+        hp i j).1 hbelow
+    linarith
+
+theorem centreForwardLiftedAngle_eq_rayTheta_of_below_cut
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : ProjectionOrdered V)
+    (j : OtherVertex i)
+    (hbelow :
+      rayThetaAt (reindexedPoint_injective hp) i j <
+        projectionProjectiveCut p) :
+    centreForwardLiftedAngle hp i j =
+      rayThetaAt (reindexedPoint_injective hp) i j := by
+  have hnonneg :=
+    (rayTheta_lt_projectionCut_iff_forward_nonneg
+      hp i j).1 hbelow
+  have hrepr :=
+    rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
+      hp i j
+  have hnotneg :
+      ¬ centreForwardLiftedAngle hp i j < 0 :=
+    not_lt_of_ge hnonneg
+  simpa [canonicalizeProjectiveAngle, hnotneg]
+    using hrepr.symm
+
+theorem centreForwardLiftedAngle_eq_rayTheta_sub_pi_of_above_cut
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : ProjectionOrdered V)
+    (j : OtherVertex i)
+    (habove :
+      projectionProjectiveCut p ≤
+        rayThetaAt (reindexedPoint_injective hp) i j) :
+    centreForwardLiftedAngle hp i j =
+      rayThetaAt (reindexedPoint_injective hp) i j -
+        Real.pi := by
+  have hneg :=
+    (projectionCut_le_rayTheta_iff_forward_neg
+      hp i j).1 habove
+  have hrepr :=
+    rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
+      hp i j
+  have hcan :
+      rayThetaAt (reindexedPoint_injective hp) i j =
+        centreForwardLiftedAngle hp i j + Real.pi := by
+    simpa [canonicalizeProjectiveAngle, hneg]
+      using hrepr
+  linarith
+
+#print axioms centreForwardLiftedAngle_mem_branch
+#print axioms rayTheta_lt_projectionCut_iff_forward_nonneg
+#print axioms projectionCut_le_rayTheta_iff_forward_neg
+#print axioms centreForwardLiftedAngle_eq_rayTheta_of_below_cut
+#print axioms centreForwardLiftedAngle_eq_rayTheta_sub_pi_of_above_cut
+
+end ProjectionOrdered
+
 #print axioms projectionAngleBase_gt_neg_pi
 #print axioms projectionAngleBase_lt_zero
 #print axioms generic_edge_liftedAngle_window
