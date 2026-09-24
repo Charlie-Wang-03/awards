@@ -58,6 +58,36 @@ theorem centreQuotient_sum_eq_list_sum
       (quotientList t C.gaps).sum := by
   rw [← List.sum_ofFn, centreQuotient_ofFn]
 
+/-- List exponent of the canonical List.ofFn representation is exactly the
+finite-function floor excess. -/
+theorem listExponent_ofFn_eq_floorExcess
+    {m : ℕ} (q : Fin m → ℕ) :
+    listExponent (List.ofFn q) = floorExcess q := by
+  induction m with
+  | zero =>
+      simp [listExponent, floorExcess]
+  | succ m ih =>
+      rw [List.ofFn_succ]
+      unfold listExponent floorExcess
+      rw [List.map_cons, List.sum_cons, Fin.sum_univ_succ]
+      have htail :=
+        ih (fun i : Fin m => q i.succ)
+      unfold listExponent floorExcess at htail
+      simpa [excess] using congrArg id htail
+
+/-- Concrete quotient-list exponent equals the centre floor-excess exponent. -/
+theorem listExponent_quotientList_eq_centreExponent
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ) :
+    listExponent (quotientList t C.gaps) =
+      floorExcess (centreQuotient C t) := by
+  rw [← centreQuotient_ofFn]
+  exact listExponent_ofFn_eq_floorExcess
+    (centreQuotient C t)
+
+
 /-- Concrete Sendov exponent of one centre. -/
 def centreExponent
     {V : Type*} [LinearOrder V] [Fintype V]
