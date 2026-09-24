@@ -78,7 +78,7 @@ theorem exact_safe_hard_resolves_or_upper_exponent_le_right_count
   · exact Or.inl hresolve
   · right
     have hset :
-        (Finset.univ  residualForbidden C u v) =
+        (Finset.univ \ residualForbidden C u v) =
           retainedInactive C v :=
       safeTargetSet_eq_retainedInactive_upper_of_sameRetained
         C hsame
@@ -89,7 +89,7 @@ theorem exact_safe_hard_resolves_or_upper_exponent_le_right_count
           ((mem_outgoingRetained_iff C u c.1).1
             (by
               have hcSafeSet :
-                  c.1 ∈ Finset.univ  residualForbidden C u v := by
+                  c.1 ∈ Finset.univ \ residualForbidden C u v := by
                 rw [hset]
                 exact c.2
               have hcSafe :
@@ -107,7 +107,7 @@ theorem exact_safe_hard_resolves_or_upper_exponent_le_right_count
         ((mem_outgoingRetained_iff C u c.1).1
           (by
             have hcSafeSet :
-                c.1 ∈ Finset.univ  residualForbidden C u v := by
+                c.1 ∈ Finset.univ \ residualForbidden C u v := by
               rw [hset]
               exact c.2
             have hcSafe :
