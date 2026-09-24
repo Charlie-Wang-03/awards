@@ -167,6 +167,108 @@ theorem exists_saturated_linear_value_decomposition
   rw [hvalues] at hfull htop
   exact ⟨a, xs, hvalues, ha0, hsorted, hall, htop, hfull⟩
 
+
+/-- Any active standard band is represented among the occupied natural floors
+of a complete local direction cycle. -/
+theorem band_val_mem_occupied_of_standardActive
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (L : LocalDirectionCycle D v)
+    (hwidth : t < (n + 1 : ℕ))
+    (c : Fin (n + 1))
+    (hc :
+      c ∈ active (standardResidualColoring D n hwidth) v) :
+    c.val ∈ occupiedNatBands L.values := by
+  have hstd :
+      active (standardResidualColoring D n hwidth) v =
+        incidentBands D (n + 1) v :=
+    standardResidual_active_eq_incidentBands_succ
+      D n hwidth v
+  have hcIncident :
+      c ∈ incidentBands D (n + 1) v := by
+    rw [← hstd]
+    exact hc
+  have htLe :
+      t ≤ ((n + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (le_of_lt hwidth)
+  have hbands :=
+    L.occupiedNatBands_values_eq_incident_val_map
+      (n + 1) htLe
+  rw [hbands]
+  exact Finset.mem_map.mpr
+    ⟨c, hcIncident, rfl⟩
+
+/-- In particular, activity of standard band zero puts floor zero in the local
+occupied-band set. -/
+theorem zero_band_mem_occupied_of_standardActive
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (L : LocalDirectionCycle D v)
+    (hwidth : t < (n + 1 : ℕ))
+    (hn : 1 ≤ n)
+    (hzero :
+      (0 : Fin (n + 1)) ∈
+        active (standardResidualColoring D n hwidth) v) :
+    0 ∈ occupiedNatBands L.values := by
+  exact band_val_mem_occupied_of_standardActive
+    D L hwidth (0 : Fin (n + 1)) hzero
+
+/-- A projected-saturated residual endpoint which also sees band zero has
+zero cyclic wrap excess in its sorted local direction cycle. -/
+theorem exists_saturated_zero_wrap_value_decomposition
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (L : LocalDirectionCycle D v)
+    (hwidth : t < (n + 1 : ℕ))
+    (hn : 1 ≤ n)
+    (hsat :
+      L.exponent =
+        projectedFree (standardResidualColoring D n hwidth) v)
+    (hres :
+      residualCoord n ∈
+        active (standardResidualColoring D n hwidth) v)
+    (hzero :
+      (0 : Fin (n + 1)) ∈
+        active (standardResidualColoring D n hwidth) v) :
+    ∃ a xs,
+      L.values = a :: xs ∧
+      0 ≤ a ∧
+      (a :: xs).Pairwise (· ≤ ·) ∧
+      (∀ x ∈ a :: xs, x < t) ∧
+      0 ∈ occupiedNatBands (a :: xs) ∧
+      n ∈ occupiedNatBands (a :: xs) ∧
+      listExponent
+          (linearCyclicGapQuotients t (a :: xs)) +
+          (occupiedNatBands (a :: xs)).card
+        =
+      n + 1 ∧
+      excess
+        (Nat.floor
+          (a + t - xs.getLastD a))
+        =
+      0 := by
+  obtain ⟨a, xs, hvalues, ha0, hsorted, hall,
+      htop, hfull⟩ :=
+    exists_saturated_linear_value_decomposition
+      D L hwidth hsat hres
+  have hzeroOcc :=
+    zero_band_mem_occupied_of_standardActive
+      D L hwidth hn hzero
+  rw [hvalues] at hzeroOcc
+  have hwrap :=
+    linear_cyclic_saturation_wrap_excess_zero_of_zero_top_occupied
+      a xs ha0 hsorted hall
+      (by exact_mod_cast hwidth)
+      hzeroOcc htop hfull
+  exact ⟨a, xs, hvalues, ha0, hsorted, hall,
+    hzeroOcc, htop, hfull, hwrap⟩
+
+#print axioms band_val_mem_occupied_of_standardActive
+#print axioms zero_band_mem_occupied_of_standardActive
+#print axioms exists_saturated_zero_wrap_value_decomposition
 #print axioms fullBand_saturated_of_projected_saturated
 #print axioms top_band_mem_occupied_of_residual_mem
 #print axioms exists_saturated_linear_value_decomposition
