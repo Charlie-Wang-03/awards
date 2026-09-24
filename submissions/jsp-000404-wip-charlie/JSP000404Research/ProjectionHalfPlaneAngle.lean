@@ -76,7 +76,7 @@ theorem rotatedPlane_re (a : ℝ) (x : Plane) :
 theorem rotatedPlane_im (a : ℝ) (x : Plane) :
     (rotatedPlane a x).im =
       x 1 - a * x 0 := by
-  simp [rotatedPlane, projectionRotator, planeToComplex]
+  simp [rotatedPlane, projectionRotator, planeToComplex_apply]
   ring
 
 theorem rotatedPlane_ne_zero_of_re_pos
