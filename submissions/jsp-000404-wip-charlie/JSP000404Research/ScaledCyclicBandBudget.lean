@@ -116,42 +116,6 @@ theorem floorBandList_pairwise
         exact Nat.floor_mono hax
       · simpa [floorBandList] using ih b hb0 htail
 
-/-- Every floor band index is below n+1. -/
-theorem floorBandList_all_lt_succ
-    {t delta : ℝ} {n : ℕ}
-    (a : ℝ) (xs : List ℝ)
-    (ht : t = (n : ℝ) + delta)
-    (hdelta : delta < 1)
-    (hall : ∀ x ∈ a :: xs, x < t) :
-    ∀ m ∈ floorBandList (a :: xs), m < n + 1 := by
-  intro m hm
-  obtain ⟨x, hx, rfl⟩ : ∃ x ∈ a :: xs, Nat.floor x = m := by
-    simpa [floorBandList] using hm
-  have hxT := hall x hx
-  have hxN : x < ((n + 1 : ℕ) : ℝ) := by
-    rw [ht] at hxT
-    exact_mod_cast (show (n : ℝ) + delta < n + 1 by linarith) |> fun h => hxT.trans h
-  have hx0 : 0 ≤ x := by
-    have hfirst :
-        a ≤ x := by
-      by_cases hxa : x = a
-      · subst x
-        exact le_rfl
-      · have hpair :=
-          List.pairwise_cons.mp
-            (show (a :: xs).Pairwise (· ≤ ·) from by
-              -- This theorem only uses the range bound for floor; callers
-              -- already have sorted nonnegative data.  Nonnegativity can be
-              -- recovered from the floor itself only if needed, so use the
-              -- lower endpoint in the dedicated caller instead.
-              sorry)
-        exact hpair.1 x (by
-          have : x ∈ xs := by
-            simpa [List.mem_cons, hxa] using hx
-          exact this)
-    exact le_trans (by linarith) hfirst
-  exact (Nat.floor_lt hx0).2 (by simpa using hxN)
-
 /-- Main cyclic exponent versus empty-band inequality. -/
 theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
     {t delta : ℝ} {n : ℕ}
