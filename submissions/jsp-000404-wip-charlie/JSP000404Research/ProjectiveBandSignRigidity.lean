@@ -159,7 +159,7 @@ theorem raySignAt_eq_of_same_projective_band
   have hcapJK :
       EuclideanGeometry.angle (p j.1) (p i) (p k.1)
         ≤ Real.pi - lam :=
-    hcap j.1 i k.1 hji hki.symm hjkVal
+    hcap j.1 i k.1 hji hjkVal hki.symm
   change
     InnerProductGeometry.angle
         (p j.1 - p i) (p k.1 - p i)
@@ -185,6 +185,10 @@ theorem raySignAt_eq_of_same_projective_band
   · have hsign' :
         raySignAt hp i k ≠ raySignAt hp i j := by
       exact Ne.symm hsign
+    have hcapKJ0 :
+        EuclideanGeometry.angle (p k.1) (p i) (p j.1)
+          ≤ Real.pi - lam :=
+      hcap k.1 i j.1 hki hjkVal.symm hji.symm
     have hcapKJ :
         InnerProductGeometry.angle
             (rayRhoAt hp i k •
@@ -196,7 +200,11 @@ theorem raySignAt_eq_of_same_projective_band
                 (raySignAt hp i j)
                 (rayThetaAt hp i j))
           ≤ Real.pi - lam := by
-      simpa [InnerProductGeometry.angle_comm] using hcapJK
+      change
+        InnerProductGeometry.angle
+            (p k.1 - p i) (p j.1 - p i)
+          ≤ Real.pi - lam at hcapKJ0
+      simpa [rayRepAt_eq hp i k, rayRepAt_eq hp i j] using hcapKJ0
     have hgap :=
       lam_le_parameter_gap_of_opposite_signs
         (rayRhoAt_pos hp i k)
