@@ -1,6 +1,7 @@
 
 import JSP000404Research.ResidualMixedOverlapPayment
 import JSP000404Research.ResidualCompletionMultiplicity
+import JSP000404Research.CompensatedDeletion
 import Mathlib.Tactic
 
 /-!
