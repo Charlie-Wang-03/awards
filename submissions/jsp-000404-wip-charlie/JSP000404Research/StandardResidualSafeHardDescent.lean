@@ -61,7 +61,7 @@ theorem safe_hard_colour_outgoing_lower_inactive_upper
         (standardResidualColoring D n hwidth) v := by
   let C := standardResidualColoring D n hwidth
   have hcSet :
-      c ∈ (Finset.univ  residualForbidden C u v) := by
+      c ∈ (Finset.univ \ residualForbidden C u v) := by
     simp [hsafe]
   have hset :=
     safeTargetSet_eq_outgoingLower_sdiff_outgoingUpper
