@@ -1,5 +1,6 @@
 
 import JSP000404Research.ProjectionOrderedVertices
+import JSP000404Research.CanonicalProjectiveRay
 import JSP000404Research.PlanarDirectionBridge
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.SpecialFunctions.Complex.Trigonometric
@@ -37,28 +38,14 @@ namespace JSP000404Research
 
 open Real Complex
 
-noncomputable def planeToComplex (x : Plane) : ℂ :=
-  ⟨x 0, x 1⟩
-
-@[simp] theorem planeToComplex_re (x : Plane) :
-    (planeToComplex x).re = x 0 := rfl
-
-@[simp] theorem planeToComplex_im (x : Plane) :
-    (planeToComplex x).im = x 1 := rfl
-
 theorem planeToComplex_injective :
-    Function.Injective planeToComplex := by
-  intro x y h
-  apply EuclideanSpace.ext
-  intro i
-  fin_cases i
-  · exact congrArg Complex.re h
-  · exact congrArg Complex.im h
+    Function.Injective (planeToComplex : Plane → ℂ) :=
+  planeToComplex.injective
 
 @[simp] theorem planeToComplex_sub (x y : Plane) :
     planeToComplex (x - y) =
       planeToComplex x - planeToComplex y := by
-  apply Complex.ext <;> rfl
+  exact map_sub planeToComplex x y
 
 noncomputable def projectionRotator (a : ℝ) : ℂ :=
   1 - a * Complex.I
@@ -83,7 +70,7 @@ noncomputable def rotatedPlane (a : ℝ) (x : Plane) : ℂ :=
 theorem rotatedPlane_re (a : ℝ) (x : Plane) :
     (rotatedPlane a x).re =
       x 0 + a * x 1 := by
-  simp [rotatedPlane, projectionRotator, planeToComplex]
+  simp [rotatedPlane, projectionRotator, planeToComplex_apply]
   ring
 
 theorem rotatedPlane_im (a : ℝ) (x : Plane) :
