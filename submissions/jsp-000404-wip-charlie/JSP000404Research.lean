@@ -776,3 +776,9 @@ import JSP000404Research.ProjectionPolarReconstruction
 
 
 import JSP000404Research.GenericForwardAngleLift
+
+
+import JSP000404Research.LinearBandGapCapacity
+
+
+import JSP000404Research.LocalDirectionCycle
