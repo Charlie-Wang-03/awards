@@ -818,3 +818,30 @@ import JSP000404Research.ResidualHardPairSafe
 
 
 import JSP000404Research.ResidualSameCodeExactOrientation
+
+
+import JSP000404Research.ProjectionLocalDirectionValue
+
+
+import JSP000404Research.CentreStandardBandBudget
+
+
+import JSP000404Research.AffineCyclicGapScaling
+
+
+import JSP000404Research.ProjectiveGapCutRotation
+
+
+import JSP000404Research.ProjectionCutLocalCycle
+
+
+import JSP000404Research.PlanarStandardResidualBudget
+
+
+import JSP000404Research.PlanarResidualHardRemainder
+
+
+import JSP000404Research.LinearBandSaturation
+
+
+import JSP000404Research.ResidualLocalSaturation
