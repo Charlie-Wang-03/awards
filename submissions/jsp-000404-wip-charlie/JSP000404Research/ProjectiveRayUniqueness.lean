@@ -119,7 +119,12 @@ theorem rayThetaAt_eq_of_positive_signed_repr
     (rayThetaAt_nonneg hp i j)
     (rayThetaAt_lt_pi hp i j)
     htheta0 hthetaPi
-  rw [← rayRepAt_eq hp i j, ← hrepr]
+  calc
+    rayRhoAt hp i j •
+        signedRayDirection (raySignAt hp i j)
+          (rayThetaAt hp i j)
+        = p j.1 - p i := (rayRepAt_eq hp i j).symm
+    _ = rho • signedRayDirection sigma theta := hrepr
 
 #print axioms norm_signedRayDirection
 #print axioms projective_theta_unique_of_positive_signed_repr
