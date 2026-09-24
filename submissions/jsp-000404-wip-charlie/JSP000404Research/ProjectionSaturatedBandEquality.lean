@@ -1,5 +1,5 @@
 
-import JSP000404Research.ProjectionStandardBandBudget
+import JSP000404Research.ProjectionResidualHardRemainder
 import JSP000404Research.LinearBandGapEquality
 import JSP000404Research.ResidualSaturationBridge
 import Mathlib.Tactic
@@ -120,7 +120,8 @@ open OrderedEdgeColoring
 open DirectionData
 
 /-- A saturated residual-active concrete centre attains equality in the full
-(n+1)-band local capacity. -/
+(n+1)-band local capacity.  The ambient exponent function is only used at the
+chosen centre, where it is identified with the genuine centre exponent. -/
 theorem genericProjection_saturated_local_band_equality
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -130,19 +131,14 @@ theorem genericProjection_saturated_local_band_equality
     (htPos : 0 < t)
     (hlam : lam = Real.pi / t)
     (hwidth : t < (n : ℝ) + 1)
+    (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
     (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (hexpI : exponent i = centreExponent C t)
     (hsat :
       ExactProjectedBudget
         (genericResidualColoring hp hcap htPos hlam n hwidth)
-        (fun x : ProjectionOrdered V =>
-          centreExponent
-            (if h : x = i then h ▸ C else
-              Classical.choice
-                (exists_centreProjectiveCycle
-                  (reindexedPoint_injective hp) x)))
-          t)
-        i)
+        exponent i)
     (hres :
       residualCoord n ∈
         active
@@ -155,48 +151,39 @@ theorem genericProjection_saturated_local_band_equality
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   let D := genericDirectionData_sendov hp hcap htPos hlam
-  let B := genericResidualColoring hp hcap htPos hlam n hwidth
+  let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
+    genericResidualColoring hp hcap htPos hlam n hwidth
   let L := projectionCutLocalCycle hp hcap htPos hlam i C
-  let exponent : ProjectionOrdered V → ℕ :=
-    fun x =>
-      centreExponent
-        (if h : x = i then h ▸ C else
-          Classical.choice
-            (exists_centreProjectiveCycle
-              (reindexedPoint_injective hp) x))
-        t
-  have hexpI : exponent i = centreExponent C t := by
-    simp [exponent]
   have hsat' : ExactProjectedBudget B exponent i := by
-    simpa [B, exponent] using hsat
+    simpa [B] using hsat
+  have hres' : residualCoord n ∈ active B i := by
+    simpa [B] using hres
   have hactiveEq :=
     active_card_eq_exact_one_loss_of_residual_saturated
-      B exponent hsat' (by simpa [B] using hres)
+      B exponent hsat' hres'
   have hactiveBands :
       (active B i).card =
         (D.incidentBands (n + 1) i).card := by
+    have h :=
+      standardResidual_active_eq_incidentBands_succ
+        D n hwidth i
     simpa [B, D, genericResidualColoring] using
-      congrArg Finset.card
-        (standardResidual_active_eq_incidentBands_succ
-          D n hwidth i)
+      congrArg Finset.card h
   have hagree :
       L.exponent = centreExponent C t :=
     projectionCutLocalCycle_exponent_eq_centreExponent
       hp hcap htPos hlam i C
-  rw [hagree, ← hactiveBands, ← hexpI]
   have hretN :
       (retainedActive B i).card ≤ n := by
     simpa using Finset.card_le_univ (retainedActive B i)
-  unfold ExactProjectedBudget projectedFree at hsat'
+  have hexpLe : exponent i ≤ n := by
+    unfold ExactProjectedBudget projectedFree at hsat'
+    omega
+  rw [hagree, ← hactiveBands, ← hexpI]
   omega
 
-/-! The theorem above deliberately exposes the equality mechanism but its
-family-valued exponent argument is cumbersome.  The next theorem packages the
-actual rigidity directly from the local equality data. -/
-
-/-- Local equality + active top band gives the exact wrap rigidity needed
-later, independent of how the exponent family is packaged. -/
-theorem projectionCutLocalCycle_wrap_rigidity_of_equality
+/-- Concrete wrap rigidity at a saturated residual-active centre. -/
+theorem genericProjection_saturated_wrap_rigidity
     {V : Type*} [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
@@ -205,19 +192,18 @@ theorem projectionCutLocalCycle_wrap_rigidity_of_equality
     (htPos : 0 < t)
     (hlam : lam = Real.pi / t)
     (hwidth : t < (n : ℝ) + 1)
+    (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
     (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (heq :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      let D := genericDirectionData_sendov hp hcap htPos hlam
-      let L := projectionCutLocalCycle hp hcap htPos hlam i C
-      L.exponent + (D.incidentBands (n + 1) i).card = n + 1)
-    (htop :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      let D := genericDirectionData_sendov hp hcap htPos hlam
-      residualCoord n ∈ D.incidentBands (n + 1) i) :
+    (hexpI : exponent i = centreExponent C t)
+    (hsat :
+      ExactProjectedBudget
+        (genericResidualColoring hp hcap htPos hlam n hwidth)
+        exponent i)
+    (hres :
+      residualCoord n ∈
+        active
+          (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let D := genericDirectionData_sendov hp hcap htPos hlam
@@ -230,7 +216,26 @@ theorem projectionCutLocalCycle_wrap_rigidity_of_equality
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   let D := genericDirectionData_sendov hp hcap htPos hlam
+  let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
+    genericResidualColoring hp hcap htPos hlam n hwidth
   let L := projectionCutLocalCycle hp hcap htPos hlam i C
+  have heq :
+      L.exponent + (D.incidentBands (n + 1) i).card = n + 1 :=
+    genericProjection_saturated_local_band_equality
+      hp hcap htPos hlam hwidth exponent i C
+      hexpI hsat hres
+  have htop :
+      residualCoord n ∈ D.incidentBands (n + 1) i := by
+    have hactiveEq :=
+      standardResidual_active_eq_incidentBands_succ
+        D n hwidth i
+    have hres' : residualCoord n ∈ active B i := by
+      simpa [B] using hres
+    have hactiveEq' :
+        active B i = D.incidentBands (n + 1) i := by
+      simpa [B, D, genericResidualColoring] using hactiveEq
+    rw [← hactiveEq']
+    exact hres'
   obtain ⟨a, xs, hvalues⟩ :
       ∃ a xs, L.values = a :: xs := by
     cases h : L.values with
@@ -253,28 +258,25 @@ theorem projectionCutLocalCycle_wrap_rigidity_of_equality
   have hlast :
       Nat.floor (xs.getLastD a) = n :=
     localDirection_last_floor_eq_top_of_topBand_mem
-      D L hwidth (by simpa [D] using htop) hvalues
-  have heq' :
-      listExponent (linearCyclicGapQuotients t (a :: xs)) +
-          (occupiedNatBands (a :: xs)).card
-        =
-      n + 1 := by
-    have hbands :=
-      L.occupiedNatBands_values_card_eq_incidentBands_card
-        (n + 1) (by
-          push_cast
-          exact le_of_lt hwidth)
-    unfold LocalDirectionCycle.exponent LocalDirectionCycle.gapQuotients at heq
-    rw [hvalues] at heq
-    rw [hvalues] at hbands
-    rw [← hbands]
-    exact heq
+      D L hwidth htop hvalues
+  have hbands :=
+    L.occupiedNatBands_values_card_eq_incidentBands_card
+      (n + 1) (by
+        push_cast
+        exact le_of_lt hwidth)
+  have heq' := heq
+  rw [← hbands] at heq'
+  unfold LocalDirectionCycle.exponent
+    LocalDirectionCycle.gapQuotients at heq'
+  rw [hvalues] at heq'
   refine ⟨a, xs, hvalues, hlast, ?_⟩
   exact wrap_gap_excess_eq_floor_head_of_global_equality_top_last
     a xs ha0 hsorted hall hwidth heq' hlast
 
+#print axioms mem_le_getLastD_of_pairwise
 #print axioms localDirection_last_floor_eq_top_of_topBand_mem
-#print axioms projectionCutLocalCycle_wrap_rigidity_of_equality
+#print axioms genericProjection_saturated_local_band_equality
+#print axioms genericProjection_saturated_wrap_rigidity
 
 end ProjectionOrdered
 end JSP000404Research
