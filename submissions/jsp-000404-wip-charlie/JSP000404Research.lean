@@ -794,3 +794,9 @@ import JSP000404Research.StandardResidualThroughPromotion
 
 
 import JSP000404Research.StandardResidualOuterSplit
+
+
+import JSP000404Research.StandardResidualHardPairSplit
+
+
+import JSP000404Research.OverweightDeletionInduction
