@@ -28,7 +28,7 @@ open Real Complex
     (x y : Plane) :
     planeToComplex (x + y) =
       planeToComplex x + planeToComplex y := by
-  apply Complex.ext <;> rfl
+  exact map_add planeToComplex x y
 
 theorem rotatedPlane_add
     (a : ℝ) (x y : Plane) :
