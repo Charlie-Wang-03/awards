@@ -132,6 +132,25 @@ theorem outgoingRetained_card_le_right
     Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
 
+
+/-- Through colours separately inject into the strict-left and strict-right
+outside vertex sets. -/
+theorem residualThroughColours_card_le_outer_sides
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (u v : V) :
+    (residualThroughColours C u v).card ≤
+        (strictLeftVertices u).card ∧
+      (residualThroughColours C u v).card ≤
+        (strictRightVertices v).card := by
+  constructor
+  · exact
+      (Finset.card_le_card Finset.inter_subset_left).trans
+        (incomingRetained_card_le_left C u)
+  · exact
+      (Finset.card_le_card Finset.inter_subset_right).trans
+        (outgoingRetained_card_le_right C v)
+
 /-- Main ordered witness-count inequality for a completely unsafe edge. -/
 theorem unsafe_residual_outer_witness_count
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -148,6 +167,46 @@ theorem unsafe_residual_outer_witness_count
     incomingRetained_card_le_left C u
   have hright :=
     outgoingRetained_card_le_right C v
+  omega
+
+
+/-- Combining the local exponent credit with the ordered outer-witness credit
+shows that each through colour is paid twice in the outside population. -/
+theorem unsafe_residual_exponent_plus_twice_through_le_outer
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huv : u < v)
+    (hres : IsResidual C u v)
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v) :
+    exponent u + exponent v +
+        2 * (residualThroughColours C u v).card ≤
+      (strictLeftVertices u).card +
+        (strictRightVertices v).card := by
+  have hexpBudget :=
+    unsafe_residual_exponent_sum_add_through_le
+      C exponent hexp honeLoss huv hres hunsafe
+  have houter :=
+    unsafe_residual_outer_witness_count C hunsafe
+  omega
+
+/-- A completely unsafe residual edge has at least n outside witness vertices
+in total. -/
+theorem unsafe_residual_n_le_outer_count
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v) :
+    n ≤
+      (strictLeftVertices u).card +
+        (strictRightVertices v).card := by
+  have h := unsafe_residual_outer_witness_count C hunsafe
   omega
 
 /-- If there are too few outer vertices, a safe retained target must exist. -/
@@ -171,7 +230,10 @@ theorem exists_safe_colour_of_outer_count_lt
 
 #print axioms incomingRetained_card_le_left
 #print axioms outgoingRetained_card_le_right
+#print axioms residualThroughColours_card_le_outer_sides
 #print axioms unsafe_residual_outer_witness_count
+#print axioms unsafe_residual_exponent_plus_twice_through_le_outer
+#print axioms unsafe_residual_n_le_outer_count
 #print axioms exists_safe_colour_of_outer_count_lt
 
 end OrderedEdgeColoring
