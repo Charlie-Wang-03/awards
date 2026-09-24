@@ -104,8 +104,9 @@ theorem planeToComplex_smul_rayDirection
     planeToComplex (rho • rayDirection theta) =
       (rho : ℂ) *
         Complex.exp (theta * Complex.I) := by
-  apply Complex.ext <;>
-    simp [planeToComplex, rayDirection, Complex.exp_mul_I]
+  rw [map_smul, planeToComplex_rayDirection,
+      Complex.exp_mul_I]
+  simp [smul_eq_mul]
 
 /-- Exact planar reconstruction from the lifted polar data. -/
 theorem projection_polar_repr
