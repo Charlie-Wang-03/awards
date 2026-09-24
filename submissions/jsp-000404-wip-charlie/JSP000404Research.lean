@@ -800,3 +800,12 @@ import JSP000404Research.StandardResidualHardPairSplit
 
 
 import JSP000404Research.OverweightDeletionInduction
+
+
+import JSP000404Research.ResidualMixedOverlapRigidity
+
+
+import JSP000404Research.ResidualMixedOverlapPayment
+
+
+import JSP000404Research.ResidualMixedOverlapForest
