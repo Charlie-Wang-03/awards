@@ -119,7 +119,7 @@ theorem outgoing_left_disjoint_incoming_right_of_completion_overlap
   have h :=
     incoming_left_disjoint_outgoing_right_of_overlap
       C hvWord huWord
-  simpa [Finset.disjoint_comm] using h
+  exact h.symm
 
 /-- Exact same-orientation decomposition of the common active set. -/
 theorem commonRetainedActive_eq_sameOrientation_union_of_overlap
