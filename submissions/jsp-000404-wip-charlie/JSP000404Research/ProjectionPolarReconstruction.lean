@@ -37,7 +37,8 @@ theorem complex_div_eq_norm_div_mul_exp_arg_sub
         Complex.exp ((w.arg - q.arg) * Complex.I) := by
   have hnormq : ‖q‖ ≠ 0 :=
     norm_ne_zero_iff.mpr hq
-  apply (eq_div_iff hq).1
+  symm
+  apply (eq_div_iff hq).2
   calc
     (((‖w‖ / ‖q‖ : ℝ) : ℂ) *
           Complex.exp ((w.arg - q.arg) * Complex.I)) * q
