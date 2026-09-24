@@ -321,8 +321,6 @@ theorem projectionProjectiveCut_lt_pi
       (genericProjectionSlope p)
   linarith
 
-namespace ProjectionOrdered
-
 /-- Every centre-forward lifted angle lies on the original common generic
 projection branch, not merely in the coarser (-pi,pi) window. -/
 theorem centreForwardLiftedAngle_mem_branch
@@ -475,8 +473,6 @@ theorem centreForwardLiftedAngle_eq_rayTheta_sub_pi_of_above_cut
 #print axioms projectionCut_le_rayTheta_iff_forward_neg
 #print axioms centreForwardLiftedAngle_eq_rayTheta_of_below_cut
 #print axioms centreForwardLiftedAngle_eq_rayTheta_sub_pi_of_above_cut
-
-end ProjectionOrdered
 
 #print axioms projectionAngleBase_gt_neg_pi
 #print axioms projectionAngleBase_lt_zero
