@@ -173,7 +173,7 @@ theorem natFloor_sub_le_floor_sub_floor
       y - x < ((b - a : ℕ) : ℝ) + 1 := by
     have hcast :
         ((b - a : ℕ) : ℝ) = (b : ℝ) - (a : ℝ) := by
-      exact_mod_cast Nat.sub_eq_iff_eq_add hab |>.mp rfl
+      exact Nat.cast_sub hab
     rw [hcast]
     linarith
   exact natFloor_le_of_lt_count_succ hgap0 hgap
@@ -215,8 +215,9 @@ theorem natFloor_wrap_le
       linarith
     have hyN : y < (n : ℝ) + 1 :=
       hyT.trans htTop
-    exact (Nat.floor_lt hy0).1 (by
-      simpa using hyN) |>.le
+    have hfloorLt : Nat.floor y < n + 1 := by
+      exact (Nat.floor_lt hy0).2 (by simpa using hyN)
+    omega
   have hgap0 :
       0 ≤ t + x - y := by
     have ht0 : 0 ≤ t := by
@@ -231,8 +232,7 @@ theorem natFloor_wrap_le
     have hsubCast :
         (((n + 1) - b : ℕ) : ℝ) =
           ((n + 1 : ℕ) : ℝ) - (b : ℝ) := by
-      exact_mod_cast Nat.sub_eq_iff_eq_add
-        (by omega : b ≤ n + 1) |>.mp rfl
+      exact Nat.cast_sub (by omega : b ≤ n + 1)
     push_cast
     rw [hsubCast]
     rw [ht]
