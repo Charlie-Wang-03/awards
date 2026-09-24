@@ -206,7 +206,7 @@ theorem centreForwardLiftedAngle_window
   · have hji : j.1 < i := by
       exact lt_of_le_of_ne
         (not_lt.mp hij)
-        (Ne.symm j.2)
+        j.2
     exact generic_edge_liftedAngle_window hp hji
 
 /-- Main individual-ray bridge: canonical projective theta is exactly the
@@ -258,7 +258,7 @@ theorem rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
   · have hji : j.1 < i := by
       exact lt_of_le_of_ne
         (not_lt.mp hij)
-        (Ne.symm j.2)
+        j.2
     let ji : OtherVertex j.1 := ⟨i, j.2⟩
     have hwindow :=
       generic_edge_liftedAngle_window hp hji
