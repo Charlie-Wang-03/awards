@@ -94,9 +94,10 @@ theorem complexSlope_add_between
   rcases le_total (complexSlope z) (complexSlope w) with hzw | hwz
   · exact Or.inl
       (complexSlope_add_between_of_le hz hw hzw)
-  · have h :=
+  · right
+    have h :=
       complexSlope_add_between_of_le hw hz hwz
-    simpa [add_comm] using Or.inr h
+    simpa [add_comm] using h
 
 /-- Argument of a sum of two right-half-plane vectors lies between their
 arguments. -/
