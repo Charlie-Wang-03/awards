@@ -67,6 +67,43 @@ theorem successiveDiffsFrom_map_add
       have hhead : x + c - (a + c) = x - a := by ring
       rw [hhead, ih]
 
+/-- Translating every angle by one common real constant leaves all cyclic
+projective gaps unchanged. -/
+theorem projectiveGaps_map_add
+    (a c : ℝ) (xs : List ℝ) :
+    projectiveGaps
+        ((a :: xs).map (fun x => x + c))
+      =
+    projectiveGaps (a :: xs) := by
+  simp only [List.map_cons, projectiveGaps]
+  rw [successiveDiffsFrom_map_add,
+      getLastD_map_add]
+  congr 1
+  ring
+
+/-- The normalized cyclic projective gaps are translation invariant. -/
+theorem normalizedProjectiveGaps_map_add
+    (a c : ℝ) (xs : List ℝ) :
+    normalizedProjectiveGaps
+        ((a :: xs).map (fun x => x + c))
+      =
+    normalizedProjectiveGaps (a :: xs) := by
+  unfold normalizedProjectiveGaps
+  rw [projectiveGaps_map_add]
+
+/-- Consequently the scaled quotient-list exponent is translation invariant. -/
+theorem listExponent_quotientList_map_add
+    (t a c : ℝ) (xs : List ℝ) :
+    listExponent
+        (quotientList t
+          (normalizedProjectiveGaps
+            ((a :: xs).map (fun x => x + c))))
+      =
+    listExponent
+        (quotientList t
+          (normalizedProjectiveGaps (a :: xs))) := by
+  rw [normalizedProjectiveGaps_map_add]
+
 /-- Split successive differences at a nonempty second block. -/
 theorem successiveDiffsFrom_append_cons
     (a : ℝ) (xs : List ℝ)
@@ -218,6 +255,9 @@ theorem listExponent_after_projective_cut
   exact normalizedProjectiveGaps_after_cut_eq_rotate
     c a b as bs
 
+#print axioms projectiveGaps_map_add
+#print axioms normalizedProjectiveGaps_map_add
+#print axioms listExponent_quotientList_map_add
 #print axioms successiveDiffsFrom_append_cons
 #print axioms projectiveGaps_two_block_decomp
 #print axioms projectiveGaps_after_cut_eq_rotate
