@@ -186,9 +186,7 @@ theorem natFloor_mono_of_nonneg
 /-- The floor-band list of a nonnegative sorted real list is nondecreasing. -/
 theorem floor_list_pairwise
     (a : ℝ) (xs : List ℝ)
-    (ha0 : 0 ≤ a)
-    (hsorted : (a :: xs).Pairwise (· ≤ ·))
-    (hall0 : ∀ x ∈ a :: xs, 0 ≤ x) :
+    (hsorted : (a :: xs).Pairwise (· ≤ ·)) :
     (Nat.floor a ::
       xs.map Nat.floor).Pairwise (· ≤ ·) := by
   rw [List.pairwise_cons]
@@ -199,12 +197,11 @@ theorem floor_list_pairwise
     have hax :
         a ≤ x :=
       (List.pairwise_cons.mp hsorted).1 x hx
-    exact natFloor_mono_of_nonneg ha0 hax
-  · rw [← List.pairwise_map]
-    exact (List.pairwise_cons.mp hsorted).2.imp
-      (fun {x y} hxy =>
-        natFloor_mono_of_nonneg
-          (hall0 x (by simp [x, *])) hxy)
+    exact Nat.floor_mono hax
+  · rw [List.pairwise_map]
+    exact
+      (List.pairwise_cons.mp hsorted).2.imp
+        (fun hxy => Nat.floor_mono hxy)
 
 /-- One ordinary real gap can pay only for bands skipped between its endpoint
 floor bands. -/
@@ -230,14 +227,14 @@ theorem excess_floor_sub_le_skipped
         Nat.floor x ≤ Nat.floor y :=
       Nat.le_of_lt hfloor
     have hcastSub :
-        (((Nat.floor y - Nat.floor x : ℕ) : ℕ) : ℝ)
+        ((Nat.floor y - Nat.floor x : ℕ) : ℝ)
           =
         ((Nat.floor y : ℕ) : ℝ) -
-          ((Nat.floor x : ℕ) : ℝ) := by
-      exact_mod_cast Nat.cast_sub hle
+          ((Nat.floor x : ℕ) : ℝ) :=
+      Nat.cast_sub hle
     have hgapLt :
         y - x <
-          (((Nat.floor y - Nat.floor x + 1 : ℕ) : ℕ) : ℝ) := by
+          ((Nat.floor y - Nat.floor x + 1 : ℕ) : ℝ) := by
       push_cast
       rw [hcastSub]
       linarith
@@ -272,6 +269,7 @@ occupied band around the top boundary back to the first occupied band. -/
 theorem excess_floor_wrap_le_skipped
     {x y t delta : ℝ} {n : ℕ}
     (hx0 : 0 ≤ x)
+    (hy0 : 0 ≤ y)
     (hyt : y < t)
     (ht : t = (n : ℝ) + delta)
     (hdelta : delta < 1) :
@@ -282,12 +280,6 @@ theorem excess_floor_wrap_le_skipped
     rw [ht]
     push_cast
     linarith
-  have hy0 : 0 ≤ y := by
-    by_contra hy
-    have : y < 0 := lt_of_not_ge hy
-    have hgap : x < 0 := by
-      linarith
-    exact (not_lt_of_ge hx0) hgap
   have hgap0 :
       0 ≤ t + x - y := by
     linarith
@@ -308,8 +300,8 @@ theorem excess_floor_wrap_le_skipped
     exact_mod_cast Nat.cast_sub hyFloorLe
   have hgapLt :
       t + x - y <
-        (((n - Nat.floor y +
-            Nat.floor x + 2 : ℕ) : ℕ) : ℝ) := by
+        ((n - Nat.floor y +
+            Nat.floor x + 2 : ℕ) : ℝ) := by
     push_cast
     rw [hcastSub]
     linarith
@@ -398,7 +390,7 @@ theorem cyclicBand_exponent_add_occupied_le
     hall0 last hlastMem
   have hfloorSorted :
       (Nat.floor a :: xs.map Nat.floor).Pairwise (· ≤ ·) :=
-    floor_list_pairwise a xs ha0 hsorted hall0
+    floor_list_pairwise a xs hsorted
   have hbandBound :
       ∀ m ∈ Nat.floor a :: xs.map Nat.floor, m ≤ n := by
     intro m hm
@@ -438,7 +430,7 @@ theorem cyclicBand_exponent_add_occupied_le
       a xs ha0 hsorted hall0
   have hwrap :=
     excess_floor_wrap_le_skipped
-      ha0 hlastT ht hdelta
+      ha0 hlast0 hlastT ht hdelta
   have hexpSplit :
       listExponent
           (cyclicBandQuotients t (a :: xs))
