@@ -128,12 +128,14 @@ theorem residualInterior_union_eq_openInterval
   · intro hx
     rw [Finset.mem_union] at hx
     rcases hx with hxL | hxR
-    · exact (mem_openIntervalVertices u v x).2
-        ⟨(mem_leftResidualInterior D n hwidth u v x).1 hxL |>.1,
-         (mem_leftResidualInterior D n hwidth u v x).1 hxL |>.2.1⟩
-    · exact (mem_openIntervalVertices u v x).2
-        ⟨(mem_rightResidualInterior D n hwidth u v x).1 hxR |>.1,
-         (mem_rightResidualInterior D n hwidth u v x).1 hxR |>.2.1⟩
+    · have hxData :=
+        (mem_leftResidualInterior D n hwidth u v x).1 hxL
+      exact (mem_openIntervalVertices u v x).2
+        ⟨hxData.1, hxData.2.1⟩
+    · have hxData :=
+        (mem_rightResidualInterior D n hwidth u v x).1 hxR
+      exact (mem_openIntervalVertices u v x).2
+        ⟨hxData.1, hxData.2.1⟩
   · intro hx
     have hmid := (mem_openIntervalVertices u v x).1 hx
     rcases standardResidual_inner_at_least_one
