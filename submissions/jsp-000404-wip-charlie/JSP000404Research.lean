@@ -860,3 +860,9 @@ import JSP000404Research.LinearBandGapEquality
 
 
 import JSP000404Research.ProjectionSaturatedBandEquality
+
+
+import JSP000404Research.LinearBandGapStepTight
+
+
+import JSP000404Research.ResidualSaturatedDimensionIdentity
