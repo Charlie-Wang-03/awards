@@ -82,9 +82,10 @@ theorem residualThroughColours_eq_empty_of_completion_overlap
     have hEq : C.color a v = C.color v w := by
       simpa using hcol.trans hvwCol.symm
     exact C.noMonoTwoPath hav hvw hEq
-  rw [hTrue] at huBit
-  rw [hFalse] at hvBit
-  exact Bool.noConfusion (huBit.symm.trans hvBit)
+  have hwordTrue : word c = true := huBit.trans hTrue
+  have hwordFalse : word c = false := hvBit.trans hFalse
+  have htf : true = false := hwordTrue.symm.trans hwordFalse
+  cases htf
 
 /-- Incoming retained colours inject into strict-left vertices. -/
 theorem incomingRetained_card_le_strictLeft
@@ -257,27 +258,26 @@ theorem overlap_edge_has_safe_colour_of_card_le_n_add_one
     linarith
   have hsubset :
       strictLeftVertices u ∪ strictRightVertices v ⊆
-        (Finset.univ : Finset V)  {u,v} := by
+        (Finset.univ : Finset V) \\ {u,v} := by
     intro x hx
-    rw [Finset.mem_sdiff, Finset.mem_univ, true_and]
-    rw [Finset.mem_union] at hx
-    constructor
-    · intro hxu
-      rcases hx with hxL | hxR
-      · have := (mem_strictLeftVertices u x).1 hxL
-        subst x
-        exact (lt_irrefl u) this
-      · have hvx := (mem_strictRightVertices v x).1 hxR
-        subst x
-        exact (not_lt_of_ge huv.le) hvx
-    · intro hxv
-      rcases hx with hxL | hxR
-      · have hxu := (mem_strictLeftVertices u x).1 hxL
-        subst x
-        exact (not_lt_of_ge huv.le) hxu
-      · have := (mem_strictRightVertices v x).1 hxR
-        subst x
-        exact (lt_irrefl v) this
+    have hx' := Finset.mem_union.mp hx
+    have hxu : x ≠ u := by
+      intro hxu
+      subst x
+      rcases hx' with hxL | hxR
+      · exact (lt_irrefl u)
+          ((mem_strictLeftVertices u u).1 hxL)
+      · exact (not_lt_of_ge huv.le)
+          ((mem_strictRightVertices v u).1 hxR)
+    have hxv : x ≠ v := by
+      intro hxv
+      subst x
+      rcases hx' with hxL | hxR
+      · exact (not_lt_of_ge huv.le)
+          ((mem_strictLeftVertices u v).1 hxL)
+      · exact (lt_irrefl v)
+          ((mem_strictRightVertices v v).1 hxR)
+    simp [hxu, hxv]
   have hUnionCard :
       (strictLeftVertices u).card +
           (strictRightVertices v).card
