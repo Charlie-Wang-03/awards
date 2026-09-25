@@ -174,6 +174,71 @@ theorem minimumExponentVertices_card_ne_two_of_child_bound
   rw [htwo] at hOdd
   norm_num at hOdd
 
+
+/-- An odd finite subset is either of size one, of size three, or it contains
+a point outside any prescribed triple. -/
+theorem odd_finset_one_or_three_or_exists_outside_triple
+    {V : Type*} [DecidableEq V]
+    (S : Finset V)
+    (hodd : Odd S.card)
+    (a b c : V) :
+    S.card = 1 ∨ S.card = 3 ∨
+      ∃ r : V, r ∈ S ∧ r ≠ a ∧ r ≠ b ∧ r ≠ c := by
+  by_cases hout :
+      ∃ r : V, r ∈ S ∧ r ≠ a ∧ r ≠ b ∧ r ≠ c
+  · exact Or.inr (Or.inr hout)
+  · have hsub : S ⊆ {a, b, c} := by
+      intro x hx
+      have hcases : x = a ∨ x = b ∨ x = c := by
+        by_contra hnot
+        push_neg at hnot
+        exact hout ⟨x, hx, hnot.1, hnot.2.1, hnot.2.2⟩
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      exact hcases
+    have hcardLe : S.card ≤ 3 := by
+      have h :=
+        Finset.card_le_card hsub
+      have htriple :
+          ({a, b, c} : Finset V).card ≤ 3 := by
+        simp
+        omega
+      exact h.trans htriple
+    have hmod : S.card % 2 = 1 :=
+      Nat.odd_iff.mp hodd
+    omega
+
+/-- Minimum-layer trichotomy relative to any prescribed triple. -/
+theorem minimum_layer_one_or_three_or_avoids_triple_of_child_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (exponent : V → ℕ)
+    (after : V → V → ℕ)
+    (n : ℕ)
+    (r₀ : V)
+    (hexp : ∀ i : V, exponent i ≤ n)
+    (hminStrict : exponent r₀ < n)
+    (hmonoR :
+      ∀ i, i ≠ r₀ → exponent i ≤ after r₀ i)
+    (hover :
+      2 ^ n < ∑ i : V, 2 ^ exponent i)
+    (hchildR :
+      deletionPostWeight after r₀ ≤ 2 ^ n)
+    (hmin : ∀ i : V, exponent r₀ ≤ exponent i)
+    (a b c : V) :
+    (minimumExponentVertices exponent r₀).card = 1
+      ∨
+    (minimumExponentVertices exponent r₀).card = 3
+      ∨
+    ∃ r : V,
+      r ∈ minimumExponentVertices exponent r₀ ∧
+      r ≠ a ∧ r ≠ b ∧ r ≠ c := by
+  have hodd :=
+    minimumExponentVertices_card_odd_of_child_bound
+      exponent after n r₀ hexp hminStrict
+      hmonoR hover hchildR hmin
+  exact odd_finset_one_or_three_or_exists_outside_triple
+    (minimumExponentVertices exponent r₀)
+    hodd a b c
+
 #print axioms odd_two_pow_normalizedExponent_iff_minimum
 #print axioms normalizedTotalDyadicWeight_odd_of_child_bound
 #print axioms minimumExponentVertices_card_odd_of_child_bound
