@@ -28,6 +28,174 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
+
+/-- One-child concrete form: only the selected minimum deletion needs a child
+capacity bound. -/
+theorem concrete_minimum_deletion_survivor_exponent_eq_of_child_bound
+    {V : Type*} [LinearOrder V] [Fintype V] [Nonempty V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 3 ≤ Fintype.card V)
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (n : ℕ)
+    (r i : V)
+    (hexp :
+      ∀ j : V, centreExponent (C j) t ≤ n)
+    (hover :
+      2 ^ n < ∑ j : V, 2 ^ centreExponent (C j) t)
+    (hchildR :
+      deletionPostWeight
+        (concreteDeletionAfter C hcard t) r ≤ 2 ^ n)
+    (hmin :
+      ∀ j : V,
+        centreExponent (C r) t ≤
+          centreExponent (C j) t)
+    (hir : i ≠ r) :
+    centreExponent
+        ((C i).restrictDelete r hir
+          (child_other_nonempty_of_card_ge_three hcard hir)) t
+      =
+    centreExponent (C i) t := by
+  have hmonoR :
+      ∀ j, j ≠ r →
+        centreExponent (C j) t ≤
+          concreteDeletionAfter C hcard t r j := by
+    intro j hj
+    exact concreteDeletionAfter_mono C hcard ht hj
+  have heq :
+      concreteDeletionAfter C hcard t r i =
+        centreExponent (C i) t :=
+    survivor_exponent_eq_of_minimum_child_bound
+      (fun j => centreExponent (C j) t)
+      (concreteDeletionAfter C hcard t)
+      n r i hexp hmonoR hover hchildR hmin hir
+  rw [concreteDeletionAfter_eq C hcard t hir] at heq
+  exact heq
+
+/-- One-child concrete rigidity package. -/
+theorem concrete_minimum_deletion_rigidity_of_child_bound
+    {V : Type*} [LinearOrder V] [Fintype V] [Nonempty V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 3 ≤ Fintype.card V)
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (n : ℕ)
+    (r : V)
+    (hexp :
+      ∀ j : V, centreExponent (C j) t ≤ n)
+    (hover :
+      2 ^ n < ∑ j : V, 2 ^ centreExponent (C j) t)
+    (hchildR :
+      deletionPostWeight
+        (concreteDeletionAfter C hcard t) r ≤ 2 ^ n)
+    (hmin :
+      ∀ j : V,
+        centreExponent (C r) t ≤
+          centreExponent (C j) t) :
+    (∑ j : V, 2 ^ centreExponent (C j) t) - 2 ^ n =
+        2 ^ centreExponent (C r) t
+      ∧
+    deletionPostWeight
+        (concreteDeletionAfter C hcard t) r = 2 ^ n
+      ∧
+    ∀ i : V, i ≠ r →
+      concreteDeletionAfter C hcard t r i =
+        centreExponent (C i) t := by
+  have hmonoR :
+      ∀ j, j ≠ r →
+        centreExponent (C j) t ≤
+          concreteDeletionAfter C hcard t r j := by
+    intro j hj
+    exact concreteDeletionAfter_mono C hcard ht hj
+  have hrig :=
+    minimum_deletion_rigidity_of_child_bound
+      (fun j => centreExponent (C j) t)
+      (concreteDeletionAfter C hcard t)
+      n r hexp hmonoR hover hchildR hmin
+  exact ⟨hrig.1, hrig.2.2.1, hrig.2.2.2⟩
+
+/-- One-child geometric consequence: the ray to the chosen minimum deleted
+centre has a zero quotient on at least one cyclic side at every survivor. -/
+theorem minimum_deleted_ray_adjacent_zero_at_survivor_of_child_bound
+    {V : Type*} [LinearOrder V] [Fintype V] [Nonempty V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 3 ≤ Fintype.card V)
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (n : ℕ)
+    (r i : V)
+    (hexp :
+      ∀ j : V, centreExponent (C j) t ≤ n)
+    (hover :
+      2 ^ n < ∑ j : V, 2 ^ centreExponent (C j) t)
+    (hchildR :
+      deletionPostWeight
+        (concreteDeletionAfter C hcard t) r ≤ 2 ^ n)
+    (hmin :
+      ∀ j : V,
+        centreExponent (C r) t ≤
+          centreExponent (C j) t)
+    (hir : i ≠ r) :
+    ∃ pre post : List (OtherVertex i),
+      (C i).rays =
+        pre ++ deletedParentRay r i hir :: post
+      ∧
+      match pre, post with
+      | [], [] => True
+      | [], b :: bs =>
+          Nat.floor
+            (t * ((rayThetaAt hp i b -
+              rayThetaAt hp i (deletedParentRay r i hir)) /
+                Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt hp i (deletedParentRay r i hir) +
+              Real.pi -
+              (bs.map (rayThetaAt hp i)).getLastD
+                (rayThetaAt hp i b)) / Real.pi)) = 0
+      | first :: mid, [] =>
+          Nat.floor
+            (t * ((rayThetaAt hp i (deletedParentRay r i hir) -
+              (mid.map (rayThetaAt hp i)).getLastD
+                (rayThetaAt hp i first)) / Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt hp i first + Real.pi -
+              rayThetaAt hp i (deletedParentRay r i hir)) /
+                Real.pi)) = 0
+      | first :: mid, next :: tail =>
+          Nat.floor
+            (t * ((rayThetaAt hp i (deletedParentRay r i hir) -
+              (mid.map (rayThetaAt hp i)).getLastD
+                (rayThetaAt hp i first)) / Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt hp i next -
+              rayThetaAt hp i (deletedParentRay r i hir)) /
+                Real.pi)) = 0 := by
+  obtain ⟨pre, post, hsplit⟩ :=
+    exists_parent_cycle_split_at_deleted (C i) r hir
+  refine ⟨pre, post, hsplit, ?_⟩
+  let hother :=
+    child_other_nonempty_of_card_ge_three hcard hir
+  have heq :
+      centreExponent
+          ((C i).restrictDelete r hir hother) t =
+        centreExponent (C i) t :=
+    concrete_minimum_deletion_survivor_exponent_eq_of_child_bound
+      C hcard ht n r i hexp hover hchildR hmin hir
+  have hno :
+      ¬ centreExponent (C i) t + 1 ≤
+        centreExponent
+          ((C i).restrictDelete r hir hother) t := by
+    rw [heq]
+    omega
+  exact adjacent_zero_of_no_unit_gain
+    (C i) hir hother pre post hsplit ht hno
+
 /-- Concrete fixed-t deletion of a minimum-exponent centre leaves every
 survivor exponent unchanged. -/
 theorem concrete_minimum_deletion_survivor_exponent_eq
