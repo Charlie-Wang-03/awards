@@ -116,6 +116,7 @@ theorem minimal_overweight_excess_eq_min_weight_of_child_bound
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (n : ℕ)
+    (r : V)
     (hexp : ∀ i : V, exponent i ≤ n)
     (hmonoR :
       ∀ i, i ≠ r → exponent i ≤ after r i)
@@ -123,7 +124,6 @@ theorem minimal_overweight_excess_eq_min_weight_of_child_bound
       2 ^ n < ∑ i : V, 2 ^ exponent i)
     (hchildR :
       deletionPostWeight after r ≤ 2 ^ n)
-    (r : V)
     (hmin : ∀ i : V, exponent r ≤ exponent i) :
     (∑ i : V, 2 ^ exponent i) - 2 ^ n =
       2 ^ exponent r := by
@@ -175,6 +175,7 @@ theorem oldDeletionWeight_eq_bound_of_minimum_child_bound
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (n : ℕ)
+    (r : V)
     (hexp : ∀ i : V, exponent i ≤ n)
     (hmonoR :
       ∀ i, i ≠ r → exponent i ≤ after r i)
@@ -182,7 +183,6 @@ theorem oldDeletionWeight_eq_bound_of_minimum_child_bound
       2 ^ n < ∑ i : V, 2 ^ exponent i)
     (hchildR :
       deletionPostWeight after r ≤ 2 ^ n)
-    (r : V)
     (hmin : ∀ i : V, exponent r ≤ exponent i) :
     oldDeletionWeight exponent r = 2 ^ n := by
   have hsplit :=
@@ -190,7 +190,7 @@ theorem oldDeletionWeight_eq_bound_of_minimum_child_bound
       exponent r
   have hexcess :=
     minimal_overweight_excess_eq_min_weight_of_child_bound
-      exponent after n hexp hmonoR hover hchildR r hmin
+      exponent after n r hexp hmonoR hover hchildR hmin
   have hle :
       2 ^ n ≤ ∑ i : V, 2 ^ exponent i :=
     le_of_lt hover
@@ -202,6 +202,7 @@ theorem deletionPostWeight_eq_bound_of_minimum_child_bound
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (n : ℕ)
+    (r : V)
     (hexp : ∀ i : V, exponent i ≤ n)
     (hmonoR :
       ∀ i, i ≠ r → exponent i ≤ after r i)
@@ -209,12 +210,11 @@ theorem deletionPostWeight_eq_bound_of_minimum_child_bound
       2 ^ n < ∑ i : V, 2 ^ exponent i)
     (hchildR :
       deletionPostWeight after r ≤ 2 ^ n)
-    (r : V)
     (hmin : ∀ i : V, exponent r ≤ exponent i) :
     deletionPostWeight after r = 2 ^ n := by
   have hold :=
     oldDeletionWeight_eq_bound_of_minimum_child_bound
-      exponent after n hexp hmonoR hover hchildR r hmin
+      exponent after n r hexp hmonoR hover hchildR hmin
   have hmonoSum :
       oldDeletionWeight exponent r ≤
         deletionPostWeight after r := by
@@ -264,10 +264,10 @@ theorem survivor_exponent_eq_of_minimum_child_bound
       (∑ j ∈ S, f j) = ∑ j ∈ S, g j := by
     have hold :=
       oldDeletionWeight_eq_bound_of_minimum_child_bound
-        exponent after n hexp hmonoR hover hchildR r hmin
+        exponent after n r hexp hmonoR hover hchildR hmin
     have hpost :=
       deletionPostWeight_eq_bound_of_minimum_child_bound
-        exponent after n hexp hmonoR hover hchildR r hmin
+        exponent after n r hexp hmonoR hover hchildR hmin
     simpa [S, f, g, oldDeletionWeight,
       deletionPostWeight] using hold.trans hpost.symm
   have hfiLe : f i ≤ g i := hfg i hiS
@@ -307,6 +307,7 @@ theorem minimum_deletion_rigidity_of_child_bound
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (n : ℕ)
+    (r : V)
     (hexp : ∀ i : V, exponent i ≤ n)
     (hmonoR :
       ∀ i, i ≠ r → exponent i ≤ after r i)
@@ -314,7 +315,6 @@ theorem minimum_deletion_rigidity_of_child_bound
       2 ^ n < ∑ i : V, 2 ^ exponent i)
     (hchildR :
       deletionPostWeight after r ≤ 2 ^ n)
-    (r : V)
     (hmin : ∀ i : V, exponent r ≤ exponent i) :
     (∑ i : V, 2 ^ exponent i) - 2 ^ n =
         2 ^ exponent r
@@ -326,11 +326,11 @@ theorem minimum_deletion_rigidity_of_child_bound
     ∀ i : V, i ≠ r → after r i = exponent i := by
   refine ⟨
     minimal_overweight_excess_eq_min_weight_of_child_bound
-      exponent after n hexp hmonoR hover hchildR r hmin,
+      exponent after n r hexp hmonoR hover hchildR hmin,
     oldDeletionWeight_eq_bound_of_minimum_child_bound
-      exponent after n hexp hmonoR hover hchildR r hmin,
+      exponent after n r hexp hmonoR hover hchildR hmin,
     deletionPostWeight_eq_bound_of_minimum_child_bound
-      exponent after n hexp hmonoR hover hchildR r hmin,
+      exponent after n r hexp hmonoR hover hchildR hmin,
     ?_⟩
   intro i hir
   exact survivor_exponent_eq_of_minimum_child_bound
