@@ -950,3 +950,6 @@ import JSP000404Research.StableDeletionExcess
 
 
 import JSP000404Research.ConcreteOverweightStableReduction
+
+
+import JSP000404Research.MinimalOverweightDyadicRigidity
