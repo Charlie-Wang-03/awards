@@ -80,7 +80,7 @@ theorem genericProjection_saturated_zeroFirst_or_unitStep
       excess (Nat.floor (a + t - xs.getLastD a)) =
         Nat.floor a ∧
       (Nat.floor a = 0 ∨
-        ¬ NoUnitBandStep a xs) := by
+        HasZeroQuotientUnitStep a xs) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have htPos :
@@ -118,7 +118,7 @@ theorem genericProjection_saturated_zeroFirst_or_unitStep
   · exact Or.inl hzero
   · right
     have hpos : 1 ≤ Nat.floor a := by omega
-    exact saturated_wrap_positive_first_forces_unit_step
+    exact saturated_wrap_positive_first_has_zeroUnitStep
       xs ha0 hsorted hall htEq hlast hwrap
       hpos hdeltaHalf htight
 
