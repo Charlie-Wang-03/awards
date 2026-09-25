@@ -1,5 +1,5 @@
 
-import JSP000404Research.ResidualUnsafeEdgeBudget
+import JSP000404Research.ResidualUnsafeWitnessCount
 import Mathlib.Tactic
 
 /-!
@@ -32,19 +32,6 @@ statement holds at a rightmost endpoint.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-noncomputable def strictLeftVertices
-    {V : Type*} [LinearOrder V] [Fintype V]
-    (u : V) : Finset V := by
-  classical
-  exact Finset.univ.filter fun a => a < u
-
-@[simp] theorem mem_strictLeftVertices
-    {V : Type*} [LinearOrder V] [Fintype V]
-    (u a : V) :
-    a ∈ strictLeftVertices u ↔ a < u := by
-  classical
-  simp [strictLeftVertices]
 
 /-- Through colours inject into actual vertices strictly left of u. -/
 theorem throughColours_card_le_strictLeft
