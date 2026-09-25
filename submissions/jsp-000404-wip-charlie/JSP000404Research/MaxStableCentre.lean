@@ -25,9 +25,8 @@ theorem exists_maximal_exponent
   classical
   let S : Finset V := Finset.univ
   have hS : S.Nonempty := Finset.univ_nonempty
-  let i : V := S.max' hS
-  -- max' is with respect to the ambient order, not exponent, so use the
-  -- finite image of exponent instead.
+  -- Use the finite image of the exponent profile rather than the ambient
+  -- vertex order.
   let E : Finset ℕ := S.image exponent
   have hE : E.Nonempty := hS.image exponent
   let M : ℕ := E.max' hE
