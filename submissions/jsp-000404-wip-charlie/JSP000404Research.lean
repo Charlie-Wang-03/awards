@@ -869,3 +869,15 @@ import JSP000404Research.ResidualSaturatedDimensionIdentity
 
 
 import JSP000404Research.ProjectionSaturatedOverlapRigidity
+
+
+import JSP000404Research.ProjectionSaturatedStepRigidity
+
+
+import JSP000404Research.SaturatedWrapDescent
+
+
+import JSP000404Research.ProjectionSaturatedEndpointDichotomy
+
+
+import JSP000404Research.LocalZeroUnitStep
