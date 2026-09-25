@@ -258,7 +258,7 @@ theorem overlap_edge_has_safe_colour_of_card_le_n_add_one
     linarith
   have hsubset :
       strictLeftVertices u ∪ strictRightVertices v ⊆
-        (Finset.univ : Finset V) \\ {u,v} := by
+        (Finset.univ : Finset V) \ {u,v} := by
     intro x hx
     have hx' := Finset.mem_union.mp hx
     have hxu : x ≠ u := by
