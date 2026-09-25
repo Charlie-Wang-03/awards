@@ -380,6 +380,62 @@ theorem centreExponent_mono_delete_last_ray
   exact listExponent_delete_last_mono
     ht hgLeft hgWrap
 
+
+/-- Unified concrete monotonicity for deletion of an arbitrary other vertex. -/
+theorem centreExponent_mono_restrictDelete
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i r : V}
+    (C : CentreProjectiveCycle hp i)
+    (hir : i ≠ r)
+    (hother :
+      Nonempty (OtherVertex (survivingCentre r i hir)))
+    {t : ℝ}
+    (ht : 0 ≤ t) :
+    centreExponent C t ≤
+      centreExponent
+        (C.restrictDelete r hir hother) t := by
+  obtain ⟨pre, post, hsplit⟩ :=
+    exists_parent_cycle_split_at_deleted C r hir
+  cases pre with
+  | nil =>
+      cases post with
+      | nil =>
+          let child := C.restrictDelete r hir hother
+          have hchildAngles :
+              child.angles = [] := by
+            dsimp [child]
+            simpa using
+              (restrictDelete_angles_of_parent_split
+                C r hir hother [] [] hsplit)
+          exact False.elim
+            (child.angles_nonempty hchildAngles)
+      | cons b bs =>
+          have hsplit' :
+              C.rays =
+                deletedParentRay r i hir :: b :: bs := by
+            simpa using hsplit
+          exact centreExponent_mono_delete_first_ray
+            C hir hother b bs hsplit' ht
+  | cons first mid =>
+      cases post with
+      | nil =>
+          have hsplit' :
+              C.rays =
+                first :: (mid ++
+                  [deletedParentRay r i hir]) := by
+            simpa [List.append_assoc] using hsplit
+          exact centreExponent_mono_delete_last_ray
+            C hir hother first mid hsplit' ht
+      | cons next tail =>
+          have hsplit' :
+              C.rays =
+                first :: (mid ++
+                  deletedParentRay r i hir :: next :: tail) := by
+            simpa [List.append_assoc] using hsplit
+          exact centreExponent_mono_delete_interior_ray
+            C hir hother first mid next tail hsplit' ht
+
 #print axioms listExponent_merge_mono
 #print axioms listExponent_delete_first_general_mono
 #print axioms listExponent_delete_interior_mono
@@ -387,5 +443,6 @@ theorem centreExponent_mono_delete_last_ray
 #print axioms centreExponent_mono_delete_first_ray
 #print axioms centreExponent_mono_delete_interior_ray
 #print axioms centreExponent_mono_delete_last_ray
+#print axioms centreExponent_mono_restrictDelete
 
 end JSP000404Research
