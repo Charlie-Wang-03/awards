@@ -22,24 +22,7 @@ theorem exists_maximal_exponent
     {V : Type*} [Fintype V] [Nonempty V]
     (exponent : V → ℕ) :
     ∃ i : V, ∀ j : V, exponent j ≤ exponent i := by
-  classical
-  let S : Finset V := Finset.univ
-  have hS : S.Nonempty := Finset.univ_nonempty
-  -- Use the finite image of the exponent profile rather than the ambient
-  -- vertex order.
-  let E : Finset ℕ := S.image exponent
-  have hE : E.Nonempty := hS.image exponent
-  let M : ℕ := E.max' hE
-  have hMmem : M ∈ E := Finset.max'_mem E hE
-  obtain ⟨i, _hiS, hiM⟩ := Finset.mem_image.mp hMmem
-  refine ⟨i, ?_⟩
-  intro j
-  have hjE : exponent j ∈ E := by
-    apply Finset.mem_image.mpr
-    exact ⟨j, Finset.mem_univ j, rfl⟩
-  have hjLe : exponent j ≤ M :=
-    Finset.le_max' E (exponent j) hjE
-  simpa [hiM] using hjLe
+  exact Finite.exists_max exponent
 
 /-- There exists a maximal exponent centre with no one-unit survivor gain in
 any deletion, provided no deletion is compensated. -/
