@@ -85,8 +85,63 @@ theorem listPositiveCount_centreQuotientList
   rw [centreQuotient_ofFn C t,
       listPositiveCount_ofFn_eq_positiveSupport]
 
+
+/-- A linear adjacent-separation condition plus the wrap pair is exactly enough
+to produce the Fin-indexed cyclic separation predicate. -/
+theorem cyclicSeparated_get_of_linear_and_wrap
+    (q0 : ℕ) (rest : List ℕ)
+    (hlinear :
+      ∀ j : Fin rest.length,
+        (q0 :: rest).get j.castSucc ≠ 0 →
+          (q0 :: rest).get j.succ = 0)
+    (hwrap :
+      (q0 :: rest).get (Fin.last rest.length) ≠ 0 →
+        q0 = 0) :
+    CyclicSeparatedPositive (q0 :: rest).get := by
+  intro i hi
+  by_cases hilast : i = Fin.last rest.length
+  · subst i
+    rw [finRotate_last]
+    simpa using hwrap hi
+  · have hval :
+        i.val < rest.length :=
+      Fin.val_lt_last hilast
+    let j : Fin rest.length := ⟨i.val, hval⟩
+    have hcast : j.castSucc = i := by
+      apply Fin.ext
+      rfl
+    have hrot :
+        finRotate (rest.length + 1) i = j.succ := by
+      apply Fin.ext
+      rw [coe_finRotate_of_ne_last hilast]
+      rfl
+    have hjPos :
+        (q0 :: rest).get j.castSucc ≠ 0 := by
+      simpa [hcast] using hi
+    have hjZero := hlinear j hjPos
+    simpa [hrot] using hjZero
+
+/-- Immediate list-count form. -/
+theorem listPositiveCount_mul_two_le_of_linear_and_wrap
+    (q0 : ℕ) (rest : List ℕ)
+    (hlinear :
+      ∀ j : Fin rest.length,
+        (q0 :: rest).get j.castSucc ≠ 0 →
+          (q0 :: rest).get j.succ = 0)
+    (hwrap :
+      (q0 :: rest).get (Fin.last rest.length) ≠ 0 →
+        q0 = 0) :
+    2 * listPositiveCount (q0 :: rest) ≤
+      (q0 :: rest).length := by
+  exact listPositiveCount_mul_two_le_length_of_cyclicSeparated
+    (q0 :: rest)
+    (cyclicSeparated_get_of_linear_and_wrap
+      q0 rest hlinear hwrap)
+
 #print axioms positiveSupport_get_eq_listPositiveCount
 #print axioms listPositiveCount_mul_two_le_length_of_cyclicSeparated
+#print axioms cyclicSeparated_get_of_linear_and_wrap
+#print axioms listPositiveCount_mul_two_le_of_linear_and_wrap
 #print axioms centreQuotient_eq_quotientList_get
 #print axioms listPositiveCount_centreQuotientList
 
