@@ -29,12 +29,12 @@ we obtain
   card(Q_u inter Q_v)
     <= 2^n - card(Q_u union Q_v).
 
-Thus the overlap cube of one saturated--saturated carrier can always be
-injected into Boolean words outside the union of its two endpoint cubes.
+Thus the overlap cube of one saturated--saturated carrier is no larger than
+the Boolean complement of the union of its two endpoint cubes.
 
 Likewise, an exact projected-loss vertex has exponent = projectedFree+1 <= n,
-so its loss cube Q_v has size at most 2^(n-1); therefore it also admits a
-pair-local copy inside the complement of Q_v.
+so its loss cube Q_v has size at most 2^(n-1); therefore its cardinality is
+no larger than the complement of Q_v.
 
 The remaining difficulty is purely global: these local complement targets may
 be occupied by other completion cubes, so they must be coordinated by an
@@ -144,31 +144,6 @@ theorem saturated_pair_overlap_card_le_pairLocalHoles
   rw [pairLocalHoles_card]
   omega
 
-/-- Cardinal Hall form: the saturated overlap cube injects into pair-local
-holes. -/
-theorem exists_saturated_pair_overlap_injection_to_local_holes
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {u v : V}
-    (huSat : ExactProjectedBudget C exponent u)
-    (hvSat : ExactProjectedBudget C exponent v)
-    (huLt : exponent u < n)
-    (hvLt : exponent v < n) :
-    ∃ f :
-      {word : Fin n → Bool //
-        word ∈ retainedCompletionWords C u ∩
-          retainedCompletionWords C v} →
-      {word : Fin n → Bool //
-        word ∈ pairLocalHoles C u v},
-      Function.Injective f := by
-  classical
-  exact Fintype.card_le_iff.mp
-    (by
-      simpa using
-        saturated_pair_overlap_card_le_pairLocalHoles
-          C exponent huSat hvSat huLt hvLt)
-
 /-- Exact projected loss has a local complement at least as large as the loss
 cube itself. -/
 theorem projectedLoss_completion_card_le_vertexLocalHoles
@@ -194,32 +169,8 @@ theorem projectedLoss_completion_card_le_vertexLocalHoles
       retainedCompletionWords_card]
   omega
 
-/-- Cardinal Hall form for one exact projected-loss cube. -/
-theorem exists_projectedLoss_injection_to_local_holes
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hexp : exponent v ≤ n)
-    (hloss :
-      exponent v = projectedFree C v + 1) :
-    ∃ f :
-      {word : Fin n → Bool //
-        word ∈ retainedCompletionWords C v} →
-      {word : Fin n → Bool //
-        word ∈ vertexLocalHoles C v},
-      Function.Injective f := by
-  classical
-  exact Fintype.card_le_iff.mp
-    (by
-      simpa using
-        projectedLoss_completion_card_le_vertexLocalHoles
-          C exponent hexp hloss)
-
 #print axioms saturated_pair_overlap_card_le_pairLocalHoles
-#print axioms exists_saturated_pair_overlap_injection_to_local_holes
 #print axioms projectedLoss_completion_card_le_vertexLocalHoles
-#print axioms exists_projectedLoss_injection_to_local_holes
 
 end OrderedEdgeColoring
 end JSP000404Research
