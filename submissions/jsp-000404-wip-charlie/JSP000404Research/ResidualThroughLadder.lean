@@ -118,17 +118,24 @@ theorem left_cross_value_ge_succ_of_through
     linarith
   have hhigh :
       D.value v w + 1 ≤ D.value a v := by
-    rw [abs_of_nonneg] at hsep
-    · linarith
-    · by_contra hneg
-      have : D.value a v < D.value v w := by linarith
+    by_cases horder : D.value v w ≤ D.value a v
+    · have habs :
+          |D.value a v - D.value v w| =
+            D.value a v - D.value v w := by
+        rw [abs_of_nonneg]
+        linarith
+      rw [habs] at hsep
+      linarith
+    · have hlt : D.value a v < D.value v w := lt_of_not_ge horder
       have habs :
           |D.value a v - D.value v w| =
             D.value v w - D.value a v := by
         rw [abs_of_nonpos]
         linarith
       rw [habs] at hsep
-      linarith
+      have hlow : D.value a v ≤ D.value v w - 1 := by
+        linarith
+      exact False.elim (hNotLow hlow)
   linarith
 
 /-- Right cross diagonal moves at least one full band upward. -/
@@ -186,16 +193,32 @@ theorem right_cross_value_ge_succ_of_through
       rw [hAU, hVW]
     exact value_sub_abs_lt_one_of_same_standardBand
       D (n + 1) (Nat.succ_pos n) hwidth hau hvw heq
+  have hNotLow :
+      ¬ D.value u w ≤ D.value a u - 1 := by
+    intro hlow
+    have hVWleUW := hUWbetween.1
+    rw [abs_lt] at hsmallOuter
+    linarith
   have hhigh :
       D.value a u + 1 ≤ D.value u w := by
-    have hnonneg :
-        0 ≤ D.value u w - D.value a u := by
-      have hVWleUW := hUWbetween.1
-      rw [abs_lt] at hsmallOuter
+    by_cases horder : D.value a u ≤ D.value u w
+    · have habs :
+          |D.value a u - D.value u w| =
+            D.value u w - D.value a u := by
+        rw [abs_of_nonpos]
+        linarith
+      rw [habs] at hsep
       linarith
-    rw [abs_of_nonpos] at hsep
-    · linarith
-    · linarith
+    · have hlt : D.value u w < D.value a u := lt_of_not_ge horder
+      have habs :
+          |D.value a u - D.value u w| =
+            D.value a u - D.value u w := by
+        rw [abs_of_nonneg]
+        linarith
+      rw [habs] at hsep
+      have hlow : D.value u w ≤ D.value a u - 1 := by
+        linarith
+      exact False.elim (hNotLow hlow)
   linarith
 
 /-- Package both cross-diagonal ladder bounds. -/
