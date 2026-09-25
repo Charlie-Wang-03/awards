@@ -905,3 +905,9 @@ import JSP000404Research.MaxStableCentre
 
 
 import JSP000404Research.ConcreteCentreDeletionMonotone
+
+
+import JSP000404Research.ConcreteStableCentre
+
+
+import JSP000404Research.ConcreteMaxStableCentre
