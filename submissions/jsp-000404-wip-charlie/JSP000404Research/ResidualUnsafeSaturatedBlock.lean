@@ -73,13 +73,13 @@ theorem unsafe_saturated_overlap_orientation_identity
       outgoingRetained C u ⊆ outgoingRetained C v :=
     outgoingRetained_subset_right_of_unsafe C hunsafe
   have hInCard :
-      (incomingRetained C u  incomingRetained C v).card +
+      (incomingRetained C u \ incomingRetained C v).card +
           (incomingRetained C v).card
         =
       (incomingRetained C u).card :=
     Finset.card_sdiff_add_card_eq_card hInSub
   have hOutCard :
-      (outgoingRetained C v  outgoingRetained C u).card +
+      (outgoingRetained C v \ outgoingRetained C u).card +
           (outgoingRetained C u).card
         =
       (outgoingRetained C v).card :=
@@ -94,12 +94,12 @@ theorem unsafe_saturated_overlap_orientation_identity
   simp at hPartition
   have huExp :
       exponent u =
-        (outgoingRetained C v  outgoingRetained C u).card :=
+        (outgoingRetained C v \ outgoingRetained C u).card :=
     exponent_eq_outgoing_difference_card_of_unsafe_overlap_saturated
       C exponent huWord hvWord hunsafe huSat
   have hvExp :
       exponent v =
-        (incomingRetained C u  incomingRetained C v).card :=
+        (incomingRetained C u \ incomingRetained C v).card :=
     exponent_eq_incoming_difference_card_of_unsafe_overlap_saturated
       C exponent huWord hvWord hunsafe hvSat
   omega
