@@ -88,8 +88,8 @@ theorem floor_edge_value_eq_top_of_standardResidual
   have hx0 : 0 ≤ D.value u v := D.nonnegative huv
   have hxn :
       (n : ℝ) ≤ D.value u v :=
-    standardResidual_value_ge_n
-      D n hwidth huv hres
+    (standardResidual_iff_high
+      D n hwidth huv).1 hres
   have hxTop :
       D.value u v < (n : ℝ) + 1 :=
     (D.belowWidth huv).trans hwidth
