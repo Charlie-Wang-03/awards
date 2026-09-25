@@ -105,11 +105,8 @@ theorem concrete_minimum_deletion_column_rigidity
         (concreteDeletionAfter C hcard t) r = 2 ^ n
       ∧
     ∀ i : V, i ≠ r →
-      centreExponent
-          ((C i).restrictDelete r ‹i ≠ r›
-            (child_other_nonempty_of_card_ge_three hcard ‹i ≠ r›)) t
-        =
-      centreExponent (C i) t := by
+      concreteDeletionAfter C hcard t r i =
+        centreExponent (C i) t := by
   have hmono :
       ∀ r i, i ≠ r →
         centreExponent (C i) t ≤
@@ -123,8 +120,10 @@ theorem concrete_minimum_deletion_column_rigidity
       n hexp hmono hover hchild r hmin
   refine ⟨hrig.1, hrig.2.2.1, ?_⟩
   intro i hir
-  exact concrete_minimum_deletion_survivor_exponent_eq
-    C hcard ht n hexp hover hchild r i hmin hir
+  exact survivor_exponent_eq_of_minimum_deletion
+    (fun j => centreExponent (C j) t)
+    (concreteDeletionAfter C hcard t)
+    n hexp hmono hover hchild r i hmin hir
 
 /-- At every survivor, the ray pointing to the minimum deleted centre has at
 least one zero adjacent parent quotient. -/
