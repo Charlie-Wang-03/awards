@@ -256,6 +256,155 @@ theorem two_flip_blocker_bit_at_second
   rw [flipBoolWordAt_at, hinner, hvAt] at hwAt
   exact hwAt.symm
 
+
+/-- If two vertices constrain one retained coordinate to opposite canonical
+bits, their entire completion cubes are disjoint. -/
+theorem completion_disjoint_of_active_bit_ne
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a b : V} {c : Fin n}
+    (hca : c ∈ retainedActive C a)
+    (hcb : c ∈ retainedActive C b)
+    (hbit : retainedBit C a c ≠ retainedBit C b c) :
+    Disjoint
+      (retainedCompletionWords C a)
+      (retainedCompletionWords C b) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro word ha hb
+  have haComp :=
+    (mem_retainedCompletionWords C a word).1 ha
+  have hbComp :=
+    (mem_retainedCompletionWords C b word).1 hb
+  exact hbit ((haComp c hca).symm.trans (hbComp c hcb))
+
+/-- A one-bit blocker cube is globally disjoint from the first endpoint cube. -/
+theorem one_flip_blocker_disjoint_left
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (huv : u ≠ v)
+    {word : Fin n → Bool} {c : Fin n}
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hcu : c ∈ retainedActive C u)
+    (hcv : c ∈ retainedActive C v)
+    (hwFlip :
+      flipBoolWordAt word c ∈
+        retainedCompletionWords C w) :
+    Disjoint
+      (retainedCompletionWords C u)
+      (retainedCompletionWords C w) := by
+  have hcap :=
+    one_flip_blocker_capture
+      C huv huWord hvWord hcu hcv hwFlip
+  apply completion_disjoint_of_active_bit_ne
+    C hcu hcap.1
+  rw [hcap.2]
+  cases h : retainedBit C u c <;> simp [h]
+
+/-- The same one-bit blocker is also disjoint from the second endpoint cube. -/
+theorem one_flip_blocker_disjoint_right
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (huv : u ≠ v)
+    {word : Fin n → Bool} {c : Fin n}
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hcu : c ∈ retainedActive C u)
+    (hcv : c ∈ retainedActive C v)
+    (hwFlip :
+      flipBoolWordAt word c ∈
+        retainedCompletionWords C w) :
+    Disjoint
+      (retainedCompletionWords C v)
+      (retainedCompletionWords C w) := by
+  have hcap :=
+    one_flip_blocker_capture
+      C huv huWord hvWord hcu hcv hwFlip
+  have huComp :=
+    (mem_retainedCompletionWords C u word).1 huWord
+  have hvComp :=
+    (mem_retainedCompletionWords C v word).1 hvWord
+  have huvBit :
+      retainedBit C u c = retainedBit C v c := by
+    exact (huComp c hcu).symm.trans (hvComp c hcv)
+  apply completion_disjoint_of_active_bit_ne
+    C hcv hcap.1
+  rw [← huvBit, hcap.2]
+  cases h : retainedBit C u c <;> simp [h]
+
+/-- Therefore a one-bit blocker jumps to a cube disjoint from both original
+endpoint cubes. -/
+theorem one_flip_blocker_disjoint_both
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (huv : u ≠ v)
+    {word : Fin n → Bool} {c : Fin n}
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hcu : c ∈ retainedActive C u)
+    (hcv : c ∈ retainedActive C v)
+    (hwFlip :
+      flipBoolWordAt word c ∈
+        retainedCompletionWords C w) :
+    Disjoint
+        (retainedCompletionWords C u)
+        (retainedCompletionWords C w)
+      ∧
+    Disjoint
+        (retainedCompletionWords C v)
+        (retainedCompletionWords C w) := by
+  exact ⟨
+    one_flip_blocker_disjoint_left
+      C huv huWord hvWord hcu hcv hwFlip,
+    one_flip_blocker_disjoint_right
+      C huv huWord hvWord hcu hcv hwFlip⟩
+
+/-- A two-bit blocker is disjoint from at least one original endpoint cube,
+according to which flipped coordinate it captures. -/
+theorem two_flip_blocker_disjoint_one_endpoint
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (huv : u ≠ v)
+    {word : Fin n → Bool} {c d : Fin n}
+    (hcd : c ≠ d)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hcu : c ∈ retainedActive C u)
+    (hdv : d ∈ retainedActive C v)
+    (hwFlip :
+      flipBoolWordAt (flipBoolWordAt word c) d ∈
+        retainedCompletionWords C w) :
+    Disjoint
+        (retainedCompletionWords C u)
+        (retainedCompletionWords C w)
+      ∨
+    Disjoint
+        (retainedCompletionWords C v)
+        (retainedCompletionWords C w) := by
+  rcases two_flip_blocker_active_one
+      C huv hcd huWord hvWord hcu hdv hwFlip with hcW | hdW
+  · left
+    have hbit :=
+      two_flip_blocker_bit_at_first
+        C hcd huWord hcu hcW hwFlip
+    apply completion_disjoint_of_active_bit_ne
+      C hcu hcW
+    rw [hbit]
+    cases h : retainedBit C u c <;> simp [h]
+  · right
+    have hbit :=
+      two_flip_blocker_bit_at_second
+        C hcd hvWord hdv hdW hwFlip
+    apply completion_disjoint_of_active_bit_ne
+      C hdv hdW
+    rw [hbit]
+    cases h : retainedBit C v d <;> simp [h]
+
 #print axioms mem_completion_iff_flip_of_inactive
 #print axioms one_flip_blocker_capture
 #print axioms mem_completion_iff_two_flip_of_both_inactive
