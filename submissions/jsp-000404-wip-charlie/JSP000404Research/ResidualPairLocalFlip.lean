@@ -5,11 +5,9 @@ import Mathlib.Tactic
 /-!
 # Explicit one- or two-bit displacement for saturated overlap cubes
 
-The pair-local Hall theorem only asserts the existence of an injection from a
-saturated overlap cube into the complement of the two endpoint cubes.
-
-For later augmenting-path arguments we need more structure.  In fact the
-injection can be chosen at Hamming distance at most two.
+The pair-local Hall balance proves the required local cardinal inequality.
+For later augmenting-path arguments we need more structure.  In fact an
+explicit injection can be chosen at Hamming distance at most two.
 
 * If the two retained-active sets have a common coordinate c, flip c.
   Every overlap word satisfies both endpoint constraints at c, so the flip
@@ -61,9 +59,12 @@ theorem flipBoolWordAt_injective
       (fun word : Fin n → Bool =>
         flipBoolWordAt word c) := by
   intro x y hxy
-  have h :=
-    congrArg (fun z => flipBoolWordAt z c) hxy
-  simpa [flipBoolWordAt_involutive] using h
+  calc
+    x = flipBoolWordAt (flipBoolWordAt x c) c :=
+      (flipBoolWordAt_involutive c x).symm
+    _ = flipBoolWordAt (flipBoolWordAt y c) c := by
+      rw [hxy]
+    _ = y := flipBoolWordAt_involutive c y
 
 /-- Flipping an active coordinate exits that vertex's completion cube. -/
 theorem flip_active_not_mem_completion
@@ -137,7 +138,8 @@ theorem two_flip_second_active_not_mem_completion
     {v : V} {word : Fin n → Bool}
     {c d : Fin n}
     (hword : word ∈ retainedCompletionWords C v)
-    (hd : d ∈ retainedActive C v) :
+    (hd : d ∈ retainedActive C v)
+    (hcd : c ≠ d) :
     flipBoolWordAt (flipBoolWordAt word c) d ∉
       retainedCompletionWords C v := by
   intro hflip
@@ -148,7 +150,10 @@ theorem two_flip_second_active_not_mem_completion
     (mem_retainedCompletionWords C v word).1 hword
   have hfix := hcomp d hd
   have hfixOrig := horig d hd
-  rw [flipBoolWordAt_at, hfixOrig] at hfix
+  have hinner :
+      flipBoolWordAt word c d = word d :=
+    flipBoolWordAt_off word hcd.symm
+  rw [flipBoolWordAt_at, hinner, hfixOrig] at hfix
   cases h : retainedBit C v d <;> simp [h] at hfix
 
 /-- Saturated pair overlap has an explicit displacement into pair-local holes,
@@ -257,7 +262,7 @@ theorem exists_saturated_pair_explicit_flip_to_local_holes
           · exact two_flip_first_active_not_mem_completion
               C hparts.1 hcu hcd
           · exact two_flip_second_active_not_mem_completion
-              C hparts.2 hdv⟩
+              C hparts.2 hdv hcd⟩
     refine ⟨f, ?_, Or.inr ?_⟩
     · intro x y hxy
       apply Subtype.ext
