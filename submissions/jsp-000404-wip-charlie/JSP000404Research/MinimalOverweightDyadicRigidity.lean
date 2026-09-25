@@ -235,14 +235,14 @@ theorem survivor_exponent_eq_of_minimum_child_bound
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (n : ℕ)
-    (hexp : ∀ i : V, exponent i ≤ n)
+    (r i : V)
+    (hexp : ∀ j : V, exponent j ≤ n)
     (hmonoR :
-      ∀ i, i ≠ r → exponent i ≤ after r i)
+      ∀ j, j ≠ r → exponent j ≤ after r j)
     (hover :
-      2 ^ n < ∑ i : V, 2 ^ exponent i)
+      2 ^ n < ∑ j : V, 2 ^ exponent j)
     (hchildR :
       deletionPostWeight after r ≤ 2 ^ n)
-    (r i : V)
     (hmin : ∀ j : V, exponent r ≤ exponent j)
     (hir : i ≠ r) :
     after r i = exponent i := by
@@ -334,8 +334,8 @@ theorem minimum_deletion_rigidity_of_child_bound
     ?_⟩
   intro i hir
   exact survivor_exponent_eq_of_minimum_child_bound
-    exponent after n hexp hmonoR hover hchildR
-    r i hmin hir
+    exponent after n r i hexp hmonoR hover hchildR
+    hmin hir
 
 /-- Main arithmetic rigidity: the overweight excess is exactly one minimum
 old dyadic weight. -/
