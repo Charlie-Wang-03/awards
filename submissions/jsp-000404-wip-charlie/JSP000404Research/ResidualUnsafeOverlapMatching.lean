@@ -132,7 +132,7 @@ theorem unsafe_overlap_word_eq_not_outgoing
     · intro hnotOut
       have hc :
           c ∈ incomingRetained C u ∪ outgoingRetained C v := by
-        rw [hununiv]
+        rw [huniv]
         simp
       rw [Finset.mem_union] at hc
       rcases hc with hinc | hout
@@ -229,21 +229,27 @@ theorem unsafe_overlap_edges_matching
         hu₁ hv₁ ha₂ hb₂
     exact ⟨rfl, hvEq⟩
   · subst b
-    have : a < u := hab
-    have huEq :=
-      unsafe_overlap_lower_unique
-        C this huv hunsafe₂ hunsafe₁
-        ha₂ hb₂ hu₁ hv₁
-    subst a
-    exact False.elim ((lt_irrefl u) huv)
+    have hresAU :
+        IsResidual C a u :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C hab ha₂ hb₂
+    have hresUV :
+        IsResidual C u v :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C huv hu₁ hv₁
+    exact False.elim
+      (no_two_residual_on_path C hab huv hresAU hresUV)
   · subst a
-    have : v < b := hab
-    have hvEq :=
-      unsafe_overlap_upper_unique
-        C huv this hunsafe₁ hunsafe₂
-        hu₁ hv₁ ha₂ hb₂
-    subst b
-    exact False.elim ((lt_irrefl v) huv)
+    have hresUV :
+        IsResidual C u v :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C huv hu₁ hv₁
+    have hresVB :
+        IsResidual C v b :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C hab ha₂ hb₂
+    exact False.elim
+      (no_two_residual_on_path C huv hab hresUV hresVB)
   · subst b
     have huEq :=
       unsafe_overlap_lower_unique
