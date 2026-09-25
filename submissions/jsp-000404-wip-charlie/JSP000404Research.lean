@@ -911,3 +911,12 @@ import JSP000404Research.ConcreteStableCentre
 
 
 import JSP000404Research.ConcreteMaxStableCentre
+
+
+import JSP000404Research.ResidualPairLocalHall
+
+
+import JSP000404Research.ResidualPairLocalFlip
+
+
+import JSP000404Research.ResidualPairFlipBlocker
