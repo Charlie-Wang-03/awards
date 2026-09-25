@@ -190,7 +190,7 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
           excess (Nat.floor (a + t - xs.getLastD a)) =
             Nat.floor a ∧
           (Nat.floor a = 0 ∨
-            ¬ NoUnitBandStep a xs)
+            HasZeroQuotientUnitStep a xs)
       )
       ∧
       (
@@ -203,7 +203,7 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
           excess (Nat.floor (a + t - xs.getLastD a)) =
             Nat.floor a ∧
           (Nat.floor a = 0 ∨
-            ¬ NoUnitBandStep a xs)
+            HasZeroQuotientUnitStep a xs)
       ) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
