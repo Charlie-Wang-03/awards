@@ -956,3 +956,12 @@ import JSP000404Research.MinimalOverweightDyadicRigidity
 
 
 import JSP000404Research.ConcreteMinimumOverweightRigidity
+
+
+import JSP000404Research.MinimalOverweightKraftProfile
+
+
+import JSP000404Research.ExactAngleWitnessRestriction
+
+
+import JSP000404Research.GeneralZeroGapSmallAngle
