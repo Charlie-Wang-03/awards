@@ -103,8 +103,9 @@ theorem top_band_last_remainder_lt_delta
     (hzFloor : Nat.floor z = n) :
     floorRemainder z < delta := by
   unfold floorRemainder
-  rw [hzFloor, ht] at hzlt
-  exact sub_lt_iff_lt_add.mpr hzlt
+  rw [hzFloor]
+  rw [ht] at hzlt
+  linarith
 
 /-- A tight adjacent step which is not a unit-band step cannot decrease the
 fractional remainder. -/
@@ -243,8 +244,7 @@ theorem saturated_wrap_positive_first_forces_unit_step
     have hfirstRem :
         (1 : ℝ) / 2 < floorRemainder a := by
       unfold floorRemainder
-      exact sub_lt_iff_lt_add.mpr (by
-        simpa [add_comm] using hfirstHigh)
+      linarith [hfirstHigh]
     linarith
   exact not_noUnitBandStep_of_fractional_drop
     a xs ha0 hsorted htight hdrop
