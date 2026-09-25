@@ -234,14 +234,12 @@ theorem unsafe_residual_from_leftmost_forces_upper_exponent_zero
     omega
   have hresActive :=
     residualCoord_mem_active_of_isResidual C huv hres
-  have hactiveCard :
-      (active C v).card =
-        (retainedActive C v).card + 1 :=
-    active_card_eq_retained_add_one_of_residual_mem
+  have hactiveLower :=
+    retainedActive_card_add_one_le_active_of_residual_mem
       C v hresActive.2
   have hbound := honeLoss v
   have hvN := hexp v
-  rw [hretCard] at hactiveCard
+  rw [hretCard] at hactiveLower
   omega
 
 /-- Symmetric rightmost form. -/
@@ -305,14 +303,12 @@ theorem unsafe_residual_to_rightmost_forces_lower_exponent_zero
     omega
   have hresActive :=
     residualCoord_mem_active_of_isResidual C huv hres
-  have hactiveCard :
-      (active C u).card =
-        (retainedActive C u).card + 1 :=
-    active_card_eq_retained_add_one_of_residual_mem
+  have hactiveLower :=
+    retainedActive_card_add_one_le_active_of_residual_mem
       C u hresActive.1
   have hbound := honeLoss u
   have huN := hexp u
-  rw [hretCard] at hactiveCard
+  rw [hretCard] at hactiveLower
   omega
 
 #print axioms throughColours_card_le_strictLeft
