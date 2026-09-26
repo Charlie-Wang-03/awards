@@ -1022,3 +1022,6 @@ import JSP000404Research.ZeroWrapFirstBand
 
 
 import JSP000404Research.StandardResidualCrossingRepair
+
+
+import JSP000404Research.ResidualOrientationBlock
