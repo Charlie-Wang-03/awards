@@ -1073,3 +1073,6 @@ import JSP000404Research.ExactWitnessSupportTwoTransition
 
 
 import JSP000404Research.ExactWitnessSupportThreeTransition
+
+
+import JSP000404Research.TransitionPositiveExactAlignment
