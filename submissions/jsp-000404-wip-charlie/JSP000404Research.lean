@@ -1076,3 +1076,12 @@ import JSP000404Research.ExactWitnessSupportThreeTransition
 
 
 import JSP000404Research.TransitionPositiveExactAlignment
+
+
+import JSP000404Research.CentreAdjacentTransitionOccurrence
+
+
+import JSP000404Research.ExactWitnessTransitionQuotient
+
+
+import JSP000404Research.ExactWitnessUniqueTransition
