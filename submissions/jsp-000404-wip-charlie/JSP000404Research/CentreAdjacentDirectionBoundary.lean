@@ -154,52 +154,43 @@ theorem exists_adjacent_angles_of_no_strict_between
       simp [CentreProjectiveCycle.angles, qsucc]
     rw [hget, hthetaSucc]
 
-/-- If the boundary angle difference is exactly lambda, the corresponding
-normalized gap is an actual member of the centre gap list. -/
-theorem exists_exact_normalized_gap_of_no_strict_between
+/-- If the boundary angle difference is exactly lambda and lambda has scaled
+width one, then quotient 1 occurs in the centre quotient list. -/
+theorem one_mem_quotientList_of_empty_exact_interval
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
+    (t : ℝ)
     {j k : OtherVertex i}
     {lam : ℝ}
     (hjk :
       rayThetaAt hp i j < rayThetaAt hp i k)
     (hgap :
       rayThetaAt hp i k - rayThetaAt hp i j = lam)
+    (hscale :
+      t * (lam / Real.pi) = 1)
     (hno :
       ∀ x : OtherVertex i,
         ¬ (rayThetaAt hp i j < rayThetaAt hp i x ∧
            rayThetaAt hp i x < rayThetaAt hp i k)) :
-    lam / Real.pi ∈ C.gaps := by
+    1 ∈ quotientList t C.gaps := by
   obtain ⟨m, hm, hmLow, hmHigh⟩ :=
     C.exists_adjacent_angles_of_no_strict_between
       hjk hno
-  unfold CentreProjectiveCycle.gaps
   have hmem :=
-    adjacent_normalized_diff_mem_normalizedProjectiveGaps
-      C.angles.head!
-      C.angles.tail
-      m
-      (by
-        cases hA : C.angles with
-        | nil =>
-            exact False.elim (C.angles_nonempty hA)
-        | cons a xs =>
-            simp [hA] at hm ⊢
-            exact hm)
-  have hcons :
-      C.angles.head! :: C.angles.tail = C.angles := by
-    exact List.cons_head_tail C.angles_nonempty
-  rw [hcons] at hmem
-  have heq :
-      (C.angles[m + 1] - C.angles[m]) / Real.pi =
-        lam / Real.pi := by
-    rw [hmLow, hmHigh, hgap]
-  rw [← heq]
+    centre_adjacent_angle_quotient_mem
+      C t m hm
+  have hfloor :
+      Nat.floor
+          (t * ((C.angles[m + 1] - C.angles[m]) / Real.pi))
+        = 1 := by
+    rw [hmLow, hmHigh, hgap, hscale]
+    norm_num
+  rw [hfloor] at hmem
   exact hmem
 
 #print axioms exists_adjacent_angles_of_no_strict_between
-#print axioms exists_exact_normalized_gap_of_no_strict_between
+#print axioms one_mem_quotientList_of_empty_exact_interval
 
 end CentreProjectiveCycle
 end JSP000404Research
