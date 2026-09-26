@@ -413,6 +413,94 @@ theorem exists_two_exact_minima_avoiding_witness
     hra', hrb', hrc', hsa', hsb', hsc',
     hexactR, hexactS⟩
 
+
+/-- Strong large-layer package: the two witness-avoiding minimum deletions are
+both exact-normalization preserving and both root deletion columns are rigid. -/
+theorem exists_two_exact_minima_with_root_rigidity
+    {V : Type*} [LinearOrder V] [Fintype V] [Nonempty V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {lam t : ℝ}
+    (hcap : AngleCap p lam)
+    (W : ExactAngleWitness p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hV : 3 ≤ Fintype.card V)
+    (ht0 : 0 ≤ t)
+    (n : ℕ)
+    (r0 : V)
+    (hexp :
+      ∀ i : V, centreExponent (C i) t ≤ n)
+    (hminStrict :
+      centreExponent (C r0) t < n)
+    (hover :
+      2 ^ n < ∑ i : V, 2 ^ centreExponent (C i) t)
+    (hmin :
+      ∀ i : V,
+        centreExponent (C r0) t ≤
+          centreExponent (C i) t)
+    (hminCard :
+      3 <
+        (minimumExponentVertices
+          (fun i => centreExponent (C i) t) r0).card)
+    (hchild :
+      ∀ r : V,
+        r ≠ W.a → r ≠ W.b → r ≠ W.c →
+        deletionPostWeight
+            (concreteDeletionAfter C hV t) r
+          ≤ 2 ^ n) :
+    ∃ r s : V,
+      r ≠ s ∧
+      centreExponent (C r) t =
+        centreExponent (C r0) t ∧
+      centreExponent (C s) t =
+        centreExponent (C r0) t ∧
+      r ≠ W.a ∧ r ≠ W.b ∧ r ≠ W.c ∧
+      s ≠ W.a ∧ s ≠ W.b ∧ s ≠ W.c ∧
+      ExactAngleCap (deletePoint p r) lam ∧
+      ExactAngleCap (deletePoint p s) lam ∧
+      deletionPostWeight
+          (concreteDeletionAfter C hV t) r = 2 ^ n ∧
+      deletionPostWeight
+          (concreteDeletionAfter C hV t) s = 2 ^ n ∧
+      (∀ i : V, i ≠ r →
+        concreteDeletionAfter C hV t r i =
+          centreExponent (C i) t) ∧
+      (∀ i : V, i ≠ s →
+        concreteDeletionAfter C hV t s i =
+          centreExponent (C i) t) := by
+  obtain ⟨r, s, hrs, hrMin, hsMin,
+      hra, hrb, hrc, hsa, hsb, hsc,
+      hexactR, hexactS⟩ :=
+    exists_two_exact_minima_avoiding_witness
+      hcap W C hV ht0 n r0 hexp hminStrict
+      hover hmin hminCard hchild
+  have hminR :
+      ∀ i : V,
+        centreExponent (C r) t ≤
+          centreExponent (C i) t := by
+    intro i
+    rw [hrMin]
+    exact hmin i
+  have hminS :
+      ∀ i : V,
+        centreExponent (C s) t ≤
+          centreExponent (C i) t := by
+    intro i
+    rw [hsMin]
+    exact hmin i
+  have hrigR :=
+    concrete_minimum_deletion_rigidity_of_child_bound
+      C hV ht0 n r hexp hover
+      (hchild r hra hrb hrc) hminR
+  have hrigS :=
+    concrete_minimum_deletion_rigidity_of_child_bound
+      C hV ht0 n s hexp hover
+      (hchild s hsa hsb hsc) hminS
+  exact ⟨r, s, hrs, hrMin, hsMin,
+    hra, hrb, hrc, hsa, hsb, hsc,
+    hexactR, hexactS,
+    hrigR.2.1, hrigS.2.1,
+    hrigR.2.2, hrigS.2.2⟩
+
 #print axioms exists_minimum_outside_triple_of_three_lt_card
 #print axioms exists_minimum_avoiding_exactWitness
 #print axioms exists_exact_minimum_deletion_rigidity
