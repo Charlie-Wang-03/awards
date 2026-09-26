@@ -1058,3 +1058,6 @@ import JSP000404Research.SixPointExactWitnessTerminal
 
 
 import JSP000404Research.SixPointExactWitnessSupportThree
+
+
+import JSP000404Research.TransitionQuotientOccurrence
