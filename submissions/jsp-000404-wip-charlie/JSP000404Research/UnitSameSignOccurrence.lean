@@ -169,6 +169,53 @@ theorem sameSign_unit_occurs_of_two_units_one_transition
   · exact sameSignQuotientOccurs_of_mem_post
       1 a pre post 1 hpost
 
+theorem listUnitCount_pos_iff_one_mem
+    (qs : List ℕ) :
+    0 < listUnitCount qs ↔ 1 ∈ qs := by
+  induction qs with
+  | nil =>
+      simp [listUnitCount]
+  | cons q qs ih =>
+      by_cases hq : q = 1
+      · subst q
+        simp [listUnitCount]
+      · simp [listUnitCount, hq, ih]
+
+/-- General form: if a one-transition decomposition contains exactly two unit
+quotients, at least one unit lies in a constant-sign side block, irrespective
+of the distinguished transition quotient value. -/
+theorem sameSign_unit_occurs_of_two_units_two_blocks
+    (a : Bool)
+    (pre post : List ℕ)
+    (qe : ℕ)
+    (hcount :
+      listUnitCount (pre ++ qe :: post) = 2) :
+    SameSignQuotientOccurs 1 a
+      (List.replicate pre.length a ++
+        List.replicate (post.length + 1) (!a))
+      (pre ++ qe :: post) := by
+  by_cases hqe : qe = 1
+  · subst qe
+    exact sameSign_unit_occurs_of_two_units_one_transition
+      a pre post hcount
+  · rw [listUnitCount_append] at hcount
+    simp [listUnitCount, hqe] at hcount
+    have hside :
+        0 < listUnitCount pre ∨
+          0 < listUnitCount post := by
+      omega
+    rcases hside with hpre | hpost
+    · have hmem :
+          1 ∈ pre :=
+        (listUnitCount_pos_iff_one_mem pre).1 hpre
+      exact sameSignQuotientOccurs_of_mem_pre
+        1 a pre post qe hmem
+    · have hmem :
+          1 ∈ post :=
+        (listUnitCount_pos_iff_one_mem post).1 hpost
+      exact sameSignQuotientOccurs_of_mem_post
+        1 a pre post qe hmem
+
 #print axioms listUnitCount_ofFn_eq_unitSupport
 #print axioms centre_listUnitCount_eq_unitSupport
 #print axioms extra_unit_mem_side_of_two_units
