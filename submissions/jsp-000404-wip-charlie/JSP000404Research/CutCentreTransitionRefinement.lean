@@ -54,6 +54,38 @@ theorem rayIndex_k_mem_firstChangedCutSignIndices
     R.rayIndex_lt_of_cutTheta_lt htheta]
   simpa [R.get_rayIndex] using hsign.symm
 
+/-- Consecutive cut-cycle indices leave no third ray with adjusted theta
+strictly between their endpoint values. -/
+theorem no_cutTheta_strict_between_adjacent
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i : V} {c : ℝ}
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
+    {q r : Fin R.rays.length}
+    (hsucc : r.val = q.val + 1) :
+    ∀ x : OtherVertex i,
+      ¬ (cutRayTheta hp c i (R.rays.get q) <
+            cutRayTheta hp c i x ∧
+         cutRayTheta hp c i x <
+            cutRayTheta hp c i (R.rays.get r)) := by
+  intro x hx
+  have hqx :
+      q < R.rayIndex x := by
+    have h :=
+      R.rayIndex_lt_of_cutTheta_lt hx.1
+    simpa using h
+  have hxr :
+      R.rayIndex x < r := by
+    have h :=
+      R.rayIndex_lt_of_cutTheta_lt hx.2
+    simpa using h
+  have hqv : q.val < (R.rayIndex x).val :=
+    hqx
+  have hrv : (R.rayIndex x).val < r.val :=
+    hxr
+  omega
+
 /-- Main adjacent refinement in the cut-sorted cycle. -/
 theorem exists_adjacent_cut_transition_inside_ordered_seed
     {V : Type*} [LinearOrder V] [Fintype V]
