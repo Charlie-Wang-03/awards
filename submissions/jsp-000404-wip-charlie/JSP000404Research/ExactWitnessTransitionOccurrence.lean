@@ -114,7 +114,7 @@ theorem transitionQuotientOccurs_append_final
 
 /-- The positional exact-witness transition certificate yields a recursive
 transition occurrence of quotient one in some displayed centre sign path. -/
-theorem exactWitness_unit_transition_occurs
+theorem exists_exactWitness_unit_transition_occurs
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
@@ -212,6 +212,6 @@ theorem exactWitness_unit_transition_occurs
 
 #print axioms transitionQuotientOccurs_of_ordinary_ray_index
 #print axioms transitionQuotientOccurs_append_final
-#print axioms exactWitness_unit_transition_occurs
+#print axioms exists_exactWitness_unit_transition_occurs
 
 end JSP000404Research
