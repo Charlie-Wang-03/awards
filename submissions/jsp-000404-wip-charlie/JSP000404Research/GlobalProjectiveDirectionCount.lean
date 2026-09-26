@@ -189,6 +189,114 @@ theorem directionOrientationPair_injective
       simpa [directionOrientationPair] using this)
   · rfl
 
+noncomputable def diagonalOrderedPairs
+    (V : Type*) [Fintype V] :
+    Finset (V × V) := by
+  classical
+  exact Finset.univ.image (fun v : V => (v,v))
+
+noncomputable def nonloopOrderedPairs
+    (V : Type*) [Fintype V] :
+    Finset (V × V) := by
+  classical
+  exact Finset.univ \ diagonalOrderedPairs V
+
+theorem mem_nonloopOrderedPairs_iff
+    {V : Type*} [Fintype V]
+    (e : V × V) :
+    e ∈ nonloopOrderedPairs V ↔ e.1 ≠ e.2 := by
+  classical
+  simp [nonloopOrderedPairs, diagonalOrderedPairs]
+  constructor
+  · intro h
+    exact h
+  · intro h
+    exact h
+
+theorem diagonalOrderedPairs_card
+    (V : Type*) [Fintype V] :
+    (diagonalOrderedPairs V).card = Fintype.card V := by
+  classical
+  unfold diagonalOrderedPairs
+  rw [Finset.card_image_of_injective]
+  · simp
+  · intro a b h
+    exact congrArg Prod.fst h
+
+theorem nonloopOrderedPairs_card
+    (V : Type*) [Fintype V] :
+    (nonloopOrderedPairs V).card =
+      Fintype.card V * Fintype.card V -
+        Fintype.card V := by
+  classical
+  unfold nonloopOrderedPairs
+  rw [Finset.card_sdiff_of_subset (Finset.subset_univ _)]
+  rw [diagonalOrderedPairs_card]
+  simp [Fintype.card_prod]
+
+theorem directionOrientationPair_mem_nonloop
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (x :
+      {x : ℝ // x ∈ projectiveEdgeDirections hp} × Bool) :
+    directionOrientationPair hp x ∈ nonloopOrderedPairs V := by
+  rcases x with ⟨theta, b⟩
+  apply (mem_nonloopOrderedPairs_iff _).2
+  cases b
+  · simpa [directionOrientationPair] using
+      (projectiveDirectionRepresentative hp theta).2
+  · simpa [directionOrientationPair, reverseDirectedNonloopEdge] using
+      (projectiveDirectionRepresentative hp theta).2.symm
+
+/-- Sharp count via the 30 non-loop ordered pairs: each projective direction
+uses two opposite orientations. -/
+theorem two_mul_projectiveEdgeDirections_card_le_nonloop
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p) :
+    2 * (projectiveEdgeDirections hp).card ≤
+      Fintype.card V * Fintype.card V -
+        Fintype.card V := by
+  classical
+  let A :=
+    (Finset.univ :
+      Finset
+        ({x : ℝ // x ∈ projectiveEdgeDirections hp} × Bool))
+  let imagePairs : Finset (V × V) :=
+    A.image (directionOrientationPair hp)
+  have hcardImage :
+      imagePairs.card =
+        2 * (projectiveEdgeDirections hp).card := by
+    dsimp [imagePairs, A]
+    rw [Finset.card_image_of_injective
+      _ (directionOrientationPair_injective hp)]
+    simp [Fintype.card_prod, Fintype.card_coe,
+      Nat.mul_comm]
+  have hsub :
+      imagePairs ⊆ nonloopOrderedPairs V := by
+    intro e he
+    dsimp [imagePairs, A] at he
+    obtain ⟨x, _hx, rfl⟩ := Finset.mem_image.mp he
+    exact directionOrientationPair_mem_nonloop hp x
+  have hle :
+      imagePairs.card ≤ (nonloopOrderedPairs V).card :=
+    Finset.card_le_card hsub
+  rw [hcardImage, nonloopOrderedPairs_card] at hle
+  exact hle
+
+theorem projectiveEdgeDirections_card_le_fifteen_of_card_six
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcard : Fintype.card V = 6) :
+    (projectiveEdgeDirections hp).card ≤ 15 := by
+  have h :=
+    two_mul_projectiveEdgeDirections_card_le_nonloop hp
+  rw [hcard] at h
+  norm_num at h ⊢
+  omega
+
 /-- Coarse but very robust global direction-count bound. -/
 theorem two_mul_projectiveEdgeDirections_card_le_square
     {V : Type*} [Fintype V]
@@ -238,6 +346,8 @@ theorem projectiveEdgeDirections_nonempty_of_two_le_card
 
 #print axioms directedNonloopEdgeTheta_reverse
 #print axioms directionOrientationPair_injective
+#print axioms two_mul_projectiveEdgeDirections_card_le_nonloop
+#print axioms projectiveEdgeDirections_card_le_fifteen_of_card_six
 #print axioms two_mul_projectiveEdgeDirections_card_le_square
 #print axioms projectiveEdgeDirections_card_le_eighteen_of_card_six
 
