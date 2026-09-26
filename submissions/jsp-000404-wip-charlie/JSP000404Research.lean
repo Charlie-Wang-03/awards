@@ -1037,3 +1037,6 @@ import JSP000404Research.ConcreteDoubleDeletionRestriction
 
 
 import JSP000404Research.ConcreteAdjacentDoubleDeletionRigidity
+
+
+import JSP000404Research.MinimumAdjacentDoubleDeletion
