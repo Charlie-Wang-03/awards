@@ -17,6 +17,53 @@ cut-adjacent-to-canonical-slot proof substantially cleaner.
 
 namespace JSP000404Research
 
+/-- Canonical normalized start coordinate of one cyclic q=1 slot. -/
+def centreUnitGapStart
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ)
+    (u : CentreUnitGap C t) : ℝ :=
+  normalizedRayTheta hp t i
+    (C.rays.get (gapToRayIndex C u.1))
+
+def globalUnitGapStart
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (t : ℝ)
+    (u : GlobalUnitGapSlot C t) : ℝ :=
+  centreUnitGapStart (C u.1) t u.2
+
+/-- For every ray, its cut-local normalized parameter lifts back to the
+canonical normalized parameter after adding either zero or one full period. -/
+theorem exists_period_shift_eq_cut_lift
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    (t c : ℝ)
+    (i : V)
+    (j : OtherVertex i) :
+    ∃ k : ℤ,
+      normalizedRayTheta hp t i j + (k : ℝ) * t =
+        t * c / Real.pi +
+          cutNormalizedRayTheta hp t c i j := by
+  by_cases h : rayThetaAt hp i j < c
+  · refine ⟨1, ?_⟩
+    rw [cutRayTheta_eq_add_pi_sub_of_lt hp h]
+    unfold normalizedRayTheta cutNormalizedRayTheta
+    norm_num
+    field_simp [Real.pi_ne_zero]
+    ring
+  · refine ⟨0, ?_⟩
+    have hc : c ≤ rayThetaAt hp i j := le_of_not_gt h
+    rw [cutRayTheta_eq_sub_of_ge hp hc]
+    unfold normalizedRayTheta cutNormalizedRayTheta
+    norm_num
+    field_simp [Real.pi_ne_zero]
+    ring
+
+
 /-- A floor-one cyclic wrap quotient gives the final CentreUnitGap coordinate. -/
 theorem exists_centreUnitGap_of_wrap_floor_one
     {V : Type*} [LinearOrder V] [Fintype V]
