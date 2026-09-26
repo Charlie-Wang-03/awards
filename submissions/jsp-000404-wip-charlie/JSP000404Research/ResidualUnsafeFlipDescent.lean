@@ -330,7 +330,7 @@ theorem lower_inactive_flip_blocker_is_safe_to_right
       isResidual_of_retainedCompletion_overlap_lt
         C huv huBase hvBase
     exact False.elim
-      (C.noTwoResidualPath hleft.1 huv hleft.2 hresUV)
+      (no_two_residual_on_path C hleft.1 huv hleft.2 hresUV)
 
 /-- Strong one-step outlet: a positive exact unsafe overlap can always be
 displaced either to a word covered only by its lower endpoint, or to a new
