@@ -1193,3 +1193,6 @@ import JSP000404Research.CyclicTransitionUnitGapBridge
 
 
 import JSP000404Research.CutAdjacentUnitGapBridge
+
+
+import JSP000404Research.CyclicCriticalUnitPhase
