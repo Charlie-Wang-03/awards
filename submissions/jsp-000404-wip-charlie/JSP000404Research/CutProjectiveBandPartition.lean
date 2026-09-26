@@ -370,6 +370,24 @@ theorem cutProjectiveBandColor_mem_lower
         ⟨v, huv.symm⟩),
     Nat.lt_floor_add_one _⟩
 
+theorem cutProjectiveBandColor_symm
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {t c : ℝ} (ht : 0 < t)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    (n : ℕ)
+    (htop : t < (n + 1 : ℕ))
+    {u v : V} (huv : u ≠ v) :
+    cutProjectiveBandColor hp ht hc0 hcpi n htop u v =
+      cutProjectiveBandColor hp ht hc0 hcpi n htop v u := by
+  apply Fin.ext
+  rw [cutProjectiveBandColor_val
+      hp ht hc0 hcpi n htop huv,
+      cutProjectiveBandColor_val
+      hp ht hc0 hcpi n htop huv.symm]
+  unfold cutNormalizedRayTheta
+  rw [cutRayTheta_reverse_eq hp c huv]
+
 /-- The same cut band contains the reversed ray at the other endpoint. -/
 theorem cutProjectiveBandColor_mem_upper
     {V : Type*} {p : V → Plane}
