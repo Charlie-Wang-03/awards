@@ -238,7 +238,7 @@ theorem centre_transitionQuotientOccurs_at_wrap
         qPre.length := by
     dsimp [qPre]
     rw [List.length_map,
-      centre_consecutiveRayQuotients_length hp i t first rest]
+      centre_centreAdjacent_consecutiveRayQuotients_length hp i t first rest]
   have hlast :
       boolLastFrom
           (raySignAt hp i first)
