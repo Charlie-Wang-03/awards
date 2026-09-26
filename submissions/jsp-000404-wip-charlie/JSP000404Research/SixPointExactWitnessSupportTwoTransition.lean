@@ -60,7 +60,8 @@ theorem exactWitness_deficitThree_support_two_hidden_n_sub_two_mem
       (quotientList t C.gaps) (n - 1)
       (by omega)
       hsupportList hsumList hone
-  simpa only [Nat.sub_sub] using hhidden
+  have hsub : (n - 1) - 1 = n - 2 := by omega
+  rwa [hsub] at hhidden
 
 /-- Full sign-sensitive support-two classification.
 
@@ -101,7 +102,7 @@ theorem exactWitness_deficitThree_support_two_transition_and_hidden_sameSign
     exactWitness_unique_transition_decomposition_unit
       hp hcap (by omega : 3 ≤ n)
       hdelta0 ht hlam W C first rest hrays
-      (by omega [hsupport])
+      (by omega)
   have hhidden :
       n - 2 ∈ quotientList t C.gaps :=
     exactWitness_deficitThree_support_two_hidden_n_sub_two_mem
