@@ -269,6 +269,244 @@ theorem no_ray_strictly_inside_exactWitness_ordinary_short_arc
       scaled_gap_lt_one_of_lt_lam htpos hlam hsub
     linarith
 
+
+/-- In the wrap-short-arc case the lifted endpoint signs are opposite. -/
+theorem exactWitness_wrap_short_endpoint_lifted_sign_ne
+    {V : Type*}
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (W : ExactAngleWitness p lam)
+    (horder :
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b)
+        ≤
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b))
+    (hwrap :
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b)
+        + Real.pi -
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b) = lam) :
+    raySignAt hp W.b
+        (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)
+      ≠
+    !raySignAt hp W.b
+        (⟨W.a, W.hab⟩ : OtherVertex W.b) := by
+  intro hsign
+  let ja : OtherVertex W.b := ⟨W.a, W.hab⟩
+  let kc : OtherVertex W.b := ⟨W.c, W.hbc.symm⟩
+  have hangle :=
+    actual_angle_eq_wrap_projective_gap_of_lifted_sign_eq
+      hp W.b (first := ja) (last := kc) horder hsign
+  have hangle' :
+      EuclideanGeometry.angle (p W.a) (p W.b) (p W.c) = lam := by
+    rw [EuclideanGeometry.angle_comm]
+    simpa [ja, kc, hwrap] using hangle
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
+  have hlamHalf : lam < Real.pi / 2 := by
+    rw [hlam]
+    apply (div_lt_iff₀ htpos).2
+    have htTwo : 2 < t := by
+      rw [ht]
+      have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+      linarith
+    nlinarith [Real.pi_pos]
+  rw [W.exact] at hangle'
+  linarith
+
+/-- No third canonical parameter lies strictly inside a cyclic-wrap exact
+witness short arc.  Such an interior parameter is either above the high
+endpoint before pi, or below the low endpoint after the cut. -/
+theorem no_ray_strictly_inside_exactWitness_wrap_short_arc
+    {V : Type*}
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (W : ExactAngleWitness p lam)
+    (x : OtherVertex W.b)
+    (horder :
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b)
+        ≤
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b))
+    (hinside :
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)
+        <
+      rayThetaAt hp W.b x
+      ∨
+      rayThetaAt hp W.b x
+        <
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b))
+    (hwrap :
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b)
+        + Real.pi -
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b) = lam) :
+    False := by
+  let ja : OtherVertex W.b := ⟨W.a, W.hab⟩
+  let kc : OtherVertex W.b := ⟨W.c, W.hbc.symm⟩
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
+  have hendNe :
+      raySignAt hp W.b kc ≠ !raySignAt hp W.b ja :=
+    exactWitness_wrap_short_endpoint_lifted_sign_ne
+      hp hn hdelta0 ht hlam W horder
+      (by simpa [ja, kc] using hwrap)
+  rcases hinside with hhigh | hlow
+  · by_cases hkx :
+        raySignAt hp W.b kc ≠ raySignAt hp W.b x
+    · have hkxRay : kc ≠ x := by
+        intro h
+        subst x
+        linarith
+      have hone :=
+        one_le_t_mul_gap_of_canonical_sign_ne
+          hp hcap htpos hlam W.b
+          hkxRay (by linarith) hkx
+      have hxPi := rayThetaAt_lt_pi hp W.b x
+      have hja0 := rayThetaAt_nonneg hp W.b ja
+      have hsub :
+          rayThetaAt hp W.b x -
+              rayThetaAt hp W.b kc < lam := by
+        dsimp [ja, kc] at hhigh hwrap hja0 ⊢
+        linarith
+      have hlt :=
+        scaled_gap_lt_one_of_lt_lam htpos hlam hsub
+      linarith
+    · have hkxEq :
+          raySignAt hp W.b kc = raySignAt hp W.b x :=
+        Classical.not_not.mp hkx
+      have hxLiftNe :
+          raySignAt hp W.b x ≠ !raySignAt hp W.b ja := by
+        intro hx
+        apply hendNe
+        exact hkxEq.trans hx
+      have hjxRay : ja ≠ x := by
+        intro h
+        subst x
+        have := horder
+        linarith
+      have hone :=
+        one_le_t_mul_wrap_gap_of_canonical_sign_ne
+          hp hcap htpos hlam W.b
+          hjxRay (by linarith) hxLiftNe
+      have hsub :
+          rayThetaAt hp W.b ja + Real.pi -
+              rayThetaAt hp W.b x < lam := by
+        dsimp [ja, kc] at hhigh hwrap ⊢
+        linarith
+      have hlt :=
+        scaled_gap_lt_one_of_lt_lam htpos hlam hsub
+      linarith
+  · by_cases hkLiftX :
+        raySignAt hp W.b kc ≠ !raySignAt hp W.b x
+    · have hxkRay : x ≠ kc := by
+        intro h
+        subst x
+        have := horder
+        linarith
+      have hone :=
+        one_le_t_mul_wrap_gap_of_canonical_sign_ne
+          hp hcap htpos hlam W.b
+          hxkRay (by linarith) hkLiftX
+      have hsub :
+          rayThetaAt hp W.b x + Real.pi -
+              rayThetaAt hp W.b kc < lam := by
+        dsimp [ja, kc] at hlow hwrap ⊢
+        linarith
+      have hlt :=
+        scaled_gap_lt_one_of_lt_lam htpos hlam hsub
+      linarith
+    · have hkLiftEq :
+          raySignAt hp W.b kc = !raySignAt hp W.b x :=
+        Classical.not_not.mp hkLiftX
+      have hxjNe :
+          raySignAt hp W.b x ≠ raySignAt hp W.b ja := by
+        intro hxj
+        apply hendNe
+        rw [← hxj]
+        exact hkLiftEq
+      have hxjRay : x ≠ ja := by
+        intro h
+        subst x
+        linarith
+      have hone :=
+        one_le_t_mul_gap_of_canonical_sign_ne
+          hp hcap htpos hlam W.b
+          hxjRay (by linarith) hxjNe
+      have hkcPi := rayThetaAt_lt_pi hp W.b kc
+      have hsub :
+          rayThetaAt hp W.b ja -
+              rayThetaAt hp W.b x < lam := by
+        dsimp [ja, kc] at hlow hwrap hkcPi ⊢
+        linarith
+      have hlt :=
+        scaled_gap_lt_one_of_lt_lam htpos hlam hsub
+      linarith
+
+/-- Unified ordered exact-witness short-arc emptiness. -/
+theorem exactWitness_ordered_short_arc_empty
+    {V : Type*}
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (W : ExactAngleWitness p lam)
+    (x : OtherVertex W.b)
+    (horder :
+      rayThetaAt hp W.b
+          (⟨W.a, W.hab⟩ : OtherVertex W.b)
+        ≤
+      rayThetaAt hp W.b
+          (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)) :
+    let thetaA :=
+      rayThetaAt hp W.b
+        (⟨W.a, W.hab⟩ : OtherVertex W.b)
+    let thetaC :=
+      rayThetaAt hp W.b
+        (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)
+    ((thetaC - thetaA = lam) →
+      ¬ (thetaA < rayThetaAt hp W.b x ∧
+         rayThetaAt hp W.b x < thetaC))
+    ∧
+    ((thetaA + Real.pi - thetaC = lam) →
+      ¬ (thetaC < rayThetaAt hp W.b x ∨
+         rayThetaAt hp W.b x < thetaA)) := by
+  dsimp
+  constructor
+  · intro hgap hins
+    exact no_ray_strictly_inside_exactWitness_ordinary_short_arc
+      hp hcap hn hdelta0 ht hlam W x
+      hins.1 hins.2 hgap
+  · intro hwrap hins
+    exact no_ray_strictly_inside_exactWitness_wrap_short_arc
+      hp hcap hn hdelta0 ht hlam W x
+      horder hins hwrap
+
 #print axioms scaled_gap_lt_one_of_lt_lam
 #print axioms exactWitness_ordered_short_gap_or_wrap_eq_lam
 #print axioms no_ray_strictly_inside_exactWitness_ordinary_short_arc
