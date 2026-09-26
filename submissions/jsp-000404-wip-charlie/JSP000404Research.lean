@@ -1028,3 +1028,6 @@ import JSP000404Research.ResidualOrientationBlock
 
 
 import JSP000404Research.TwoMinimumZeroIncidence
+
+
+import JSP000404Research.InteriorDoubleDeletionRigidity
