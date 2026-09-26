@@ -1085,3 +1085,6 @@ import JSP000404Research.ExactWitnessTransitionQuotient
 
 
 import JSP000404Research.ExactWitnessUniqueTransition
+
+
+import JSP000404Research.ThirdLayerSaturatedResidual
