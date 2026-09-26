@@ -142,13 +142,16 @@ theorem positiveIndexSet_card_eq_positiveSupport
     (positiveIndexSet q).card = positiveSupport q := by
   classical
   unfold positiveIndexSet positiveSupport
-  rw [Finset.card_filter]
-  induction (Finset.univ : Finset I) using Finset.induction_on with
-  | empty =>
-      simp
-  | @insert a s ha ih =>
-      simp [ha, ih]
-      by_cases hqa : q a = 0 <;> simp [hqa]
+  have hbool :
+      (∑ i : I, if q i ≠ 0 then 1 else 0) =
+        ((Finset.univ.filter fun i => q i ≠ 0).card) := by
+    simpa using
+      (Finset.sum_boole (R := ℕ)
+        (fun i : I => q i ≠ 0) (Finset.univ : Finset I))
+  rw [← hbool]
+  apply Finset.sum_congr rfl
+  intro i _
+  by_cases hqi : q i = 0 <;> simp [hqi]
 
 /-- A support-two quotient vector containing a unit entry and having total n
 has one unique other positive coordinate of value n-1. -/
@@ -216,11 +219,12 @@ theorem support_two_with_one_exact_shape
                 q i) = 0 := by
             apply Finset.sum_eq_zero
             intro i hi
-            have hie' : i ≠ e := by
-              exact (Finset.mem_erase.mp
-                (Finset.mem_of_mem_erase hi)).1
-            have hif' : i ≠ f :=
-              (Finset.mem_erase.mp hi).1
+            have hiOuter :=
+              Finset.mem_erase.mp hi
+            have hiInner :=
+              Finset.mem_erase.mp hiOuter.2
+            have hie' : i ≠ e := hiInner.1
+            have hif' : i ≠ f := hiOuter.1
             exact hzero i hie' hif'
           rw [hrest]
           omega
@@ -265,11 +269,12 @@ theorem support_two_with_one_exact_shape
                 q i) = 0 := by
             apply Finset.sum_eq_zero
             intro i hi
-            have hie' : i ≠ e := by
-              exact (Finset.mem_erase.mp
-                (Finset.mem_of_mem_erase hi)).1
-            have hif' : i ≠ f :=
-              (Finset.mem_erase.mp hi).1
+            have hiOuter :=
+              Finset.mem_erase.mp hi
+            have hiInner :=
+              Finset.mem_erase.mp hiOuter.2
+            have hie' : i ≠ e := hiInner.1
+            have hif' : i ≠ f := hiOuter.1
             exact hzero i hie' hif'
           rw [hrest]
           omega
