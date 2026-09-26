@@ -105,10 +105,17 @@ theorem exactWitness_projectiveDistance_eq_lam_of_lam_lt_half_pi
     linarith
   rcases actual_angle_eq_projective_or_supplement
       hp W.b ja kc with hproj | hsupp
-  · have :
+  · have hsmallAngle :
         EuclideanGeometry.angle (p W.a) (p W.b) (p W.c)
           ≤ Real.pi / 2 := by
-      simpa [ja, kc] using hproj.trans_le hprojLe
+      calc
+        EuclideanGeometry.angle (p W.a) (p W.b) (p W.c)
+            =
+          projectiveRayDistance
+            (rayThetaAt hp W.b ja)
+            (rayThetaAt hp W.b kc) := by
+              simpa [ja, kc] using hproj
+        _ ≤ Real.pi / 2 := hprojLe
     linarith
   · have hsupp' :
       EuclideanGeometry.angle (p W.a) (p W.b) (p W.c)
