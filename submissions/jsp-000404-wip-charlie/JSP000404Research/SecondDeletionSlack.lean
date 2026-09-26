@@ -29,44 +29,6 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-/-- Exact-capacity profile plus deletion of an exponent-a vertex leaves at
-most one old a-weight of total unit-gain bonus. -/
-theorem secondDeletion_unitGainBonus_le_deleted_weight
-    {V : Type*} [Fintype V]
-    (exponent : V → ℕ)
-    (after : V → V → ℕ)
-    (n a : ℕ)
-    (s : V)
-    (htotal :
-      (∑ i : V, 2 ^ exponent i) = 2 ^ n)
-    (hs : exponent s = a)
-    (hmono :
-      ∀ i, i ≠ s → exponent i ≤ after s i)
-    (hpost :
-      deletionPostWeight after s ≤ 2 ^ n) :
-    (∑ i : V,
-      unitGainDeletionBonus exponent after i s)
-      ≤
-    2 ^ a := by
-  have hsplit :=
-    totalDyadicWeight_eq_deleted_add_oldDeletionWeight
-      exponent s
-  have hcol :=
-    unitGainDeletionBonus_column_bound
-      exponent after
-      (by
-        intro r i hir
-        by_cases hrs : r = s
-        · subst r
-          exact hmono i hir
-        · -- Only the s-column is used below; arbitrary other columns are
-          -- irrelevant.  Supply the identity lower bound by specializing
-          -- through a column wrapper below instead.
-          omega)
-      s
-  rw [htotal, hs] at hsplit
-  omega
-
 /-- Column-local version of the canonical bonus bound, avoiding assumptions
 about deletion columns other than the selected s-column. -/
 theorem unitGainDeletionBonus_selected_column_bound
@@ -102,15 +64,20 @@ theorem unitGainDeletionBonus_selected_column_bound
   intro i hi
   have his : i ≠ s :=
     (Finset.mem_erase.mp hi).1
-  exact old_add_unitGainBonus_le_after_weight
-    exponent after
-    (by
-      intro _r j _hjr
-      exact hmono j (by
-        intro hjs
-        subst j
-        exact his rfl))
-    his
+  by_cases hgain : exponent i + 1 ≤ after s i
+  · rw [unitGainDeletionBonus_eq_weight_of_gain
+      exponent after his hgain]
+    exact two_mul_pow_le_pow_of_succ_le hgain
+  · have hbonus :
+        unitGainDeletionBonus exponent after i s = 0 := by
+      apply unitGainDeletionBonus_eq_zero_of_no_gain
+      push_neg
+      intro _
+      exact hgain
+    rw [hbonus, add_zero]
+    exact Nat.pow_le_pow_right
+      (by norm_num : 0 < 2)
+      (hmono i his)
 
 /-- Clean selected-column form of the second-deletion slack theorem. -/
 theorem secondDeletion_bonus_le_min_weight
