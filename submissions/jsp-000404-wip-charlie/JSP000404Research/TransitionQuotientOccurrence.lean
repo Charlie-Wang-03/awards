@@ -106,7 +106,8 @@ theorem transitionQuotientOccurs_two_blocks_iff
           exact False.elim (hsame htail)
       · intro heq
         left
-        exact ⟨heq, Bool.ne_not_self a⟩
+        refine ⟨heq, ?_⟩
+        cases a <;> decide
   | cons r rs ih =>
       simp only [List.length_cons, List.replicate_succ,
         List.cons_append, TransitionQuotientOccurs]
