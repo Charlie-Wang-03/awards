@@ -157,10 +157,17 @@ theorem orientation_inner_disjoint_of_overlap
     Disjoint
       (incomingRetained C v)
       (outgoingRetained C u) := by
-  exact
-    (outgoing_inter_incoming_eq_empty_of_completion_overlap
-      C huWord hvWord |>
-      Finset.disjoint_iff_inter_eq_empty.mpr).symm
+  classical
+  rw [Finset.disjoint_left]
+  intro c hcInV hcOutU
+  have hcross :=
+    outgoing_inter_incoming_eq_empty_of_completion_overlap
+      C huWord hvWord
+  have hc :
+      c ∈ outgoingRetained C u ∩ incomingRetained C v :=
+    Finset.mem_inter.mpr ⟨hcOutU, hcInV⟩
+  rw [hcross] at hc
+  simp at hc
 
 /-- The lower endpoint completion cube lies in its unsafe-overlap orientation
 block. -/
@@ -206,12 +213,13 @@ theorem retainedCompletionWords_subset_orientationBlock_left
         exact Finset.disjoint_left.mp
           (incomingRetained_disjoint_outgoingRetained C u)
           hcin hcOutU
-      exact
-        (mem_incomingRetained_iff_retainedBit_true
-          C u c).not.mp hnotIn |>
-        (by
-          intro hne
-          cases h : retainedBit C u c <;> simp_all)
+      have hnotTrue :
+          retainedBit C u c ≠ true := by
+        intro htrue
+        exact hnotIn
+          ((mem_incomingRetained_iff_retainedBit_true
+            C u c).2 htrue)
+      cases hbit : retainedBit C u c <;> simp_all
     have hcNotInV :
         c ∉ incomingRetained C v := by
       intro hInV
