@@ -1034,3 +1034,6 @@ import JSP000404Research.InteriorDoubleDeletionRigidity
 
 
 import JSP000404Research.ConcreteDoubleDeletionRestriction
+
+
+import JSP000404Research.ConcreteAdjacentDoubleDeletionRigidity
