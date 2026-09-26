@@ -108,7 +108,8 @@ theorem exactWitness_ordered_unit_transition_position
       C.exists_adjacent_angles_of_no_strict_between
         hjk hno
     have hmR : m + 1 < C.rays.length := by
-      simpa [CentreProjectiveCycle.angles_length C] using hmA
+      rw [← C.angles_length]
+      exact hmA
     let u : OtherVertex W.b :=
       C.rays.get ⟨m, by omega⟩
     let v : OtherVertex W.b :=
