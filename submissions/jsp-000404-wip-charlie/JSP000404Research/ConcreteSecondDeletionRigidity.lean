@@ -280,6 +280,90 @@ theorem no_two_concrete_secondDeletion_min_unit_gains
     hchild3, hparent3] using hno
 
 
+
+/-- Above the minimum layer, a bounded second deletion is not merely
+sub-unit-gain: monotonicity upgrades the no-unit-gain statement to exact
+exponent equality. -/
+theorem concrete_secondDeletion_exponent_eq_above_min
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 4 ≤ Fintype.card V)
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (n a : ℕ)
+    (r s i : V)
+    (hsr : s ≠ r)
+    (hir : i ≠ r)
+    (his : i ≠ s)
+    (hsExp : centreExponent (C s) t = a)
+    (hiHigh : a < centreExponent (C i) t)
+    (hpostR :
+      deletionPostWeight
+          (concreteDeletionAfter C (by omega) t) r
+        = 2 ^ n)
+    (hrigidR :
+      ∀ j : V, j ≠ r →
+        concreteDeletionAfter C (by omega) t r j =
+          centreExponent (C j) t)
+    (hgrand :
+      deletionPostWeight
+        (concreteDeletionAfter
+          (deletedCycleFamily C (by omega) r)
+          (three_le_card_deletedVertexType r hcard)
+          t)
+        (childVertex r s hsr)
+        ≤ 2 ^ n) :
+    let childC :=
+      deletedCycleFamily C (by omega : 3 ≤ Fintype.card V) r
+    let sChild := childVertex r s hsr
+    let iChild := childVertex r i hir
+    let hisChild : iChild ≠ sChild := by
+      intro h
+      apply his
+      exact congrArg Subtype.val h
+    let hchild3 : 3 ≤ Fintype.card (DeletedVertexType r) :=
+      three_le_card_deletedVertexType r hcard
+    let hother :=
+      child_other_nonempty_of_card_ge_three hchild3 hisChild
+    centreExponent
+        ((childC iChild).restrictDelete
+          sChild hisChild hother) t
+      =
+    centreExponent (childC iChild) t := by
+  dsimp
+  let hparent3 : 3 ≤ Fintype.card V := by omega
+  let childC := deletedCycleFamily C hparent3 r
+  let sChild : DeletedVertexType r := childVertex r s hsr
+  let iChild : DeletedVertexType r := childVertex r i hir
+  let hchild3 : 3 ≤ Fintype.card (DeletedVertexType r) :=
+    three_le_card_deletedVertexType r hcard
+  have hisChild : iChild ≠ sChild := by
+    intro h
+    apply his
+    exact congrArg Subtype.val h
+  let hother :=
+    child_other_nonempty_of_card_ge_three hchild3 hisChild
+  have hmono :
+      centreExponent (childC iChild) t ≤
+        concreteDeletionAfter childC hchild3 t sChild iChild :=
+    concreteDeletionAfter_mono
+      childC hchild3 ht hisChild
+  have hno :
+      ¬ centreExponent (childC iChild) t + 1 ≤
+        concreteDeletionAfter childC hchild3 t sChild iChild :=
+    no_concrete_secondDeletion_unit_gain_above_min
+      C hcard ht n a r s i hsr hir his
+      hsExp hiHigh hpostR hrigidR hgrand
+  have heq :
+      concreteDeletionAfter childC hchild3 t sChild iChild =
+        centreExponent (childC iChild) t := by
+    omega
+  rw [concreteDeletionAfter_eq
+      childC hchild3 t hisChild] at heq
+  exact heq
+
+
 /-- Geometric form of the high-survivor second-deletion rigidity: in the first
 child, the ray to the second deleted minimum centre has a zero quotient on at
 least one cyclic side. -/
