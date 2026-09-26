@@ -174,24 +174,32 @@ theorem fin11_val_abs_sub_bounds
     exact hrs (Fin.ext h)
   rcases lt_or_gt_of_ne hv with hlt | hgt
   · have h1Nat : r.val + 1 ≤ s.val := by omega
-    have h10Nat : s.val - r.val ≤ 10 := by
-      have hslt := s.isLt
-      omega
-    have h1 : (1 : ℝ) ≤ (s.val : ℝ) - (r.val : ℝ) := by
+    have h1Cast :
+        (r.val : ℝ) + 1 ≤ (s.val : ℝ) := by
       exact_mod_cast h1Nat
+    have hs10Nat : s.val ≤ 10 := by omega
+    have hs10 : (s.val : ℝ) ≤ 10 := by
+      exact_mod_cast hs10Nat
+    have hr0 : (0 : ℝ) ≤ r.val := by positivity
+    have h1 : (1 : ℝ) ≤ (s.val : ℝ) - (r.val : ℝ) := by
+      linarith
     have h10 : (s.val : ℝ) - (r.val : ℝ) ≤ 10 := by
-      exact_mod_cast h10Nat
+      linarith
     rw [abs_of_nonpos]
     · constructor <;> linarith
     · exact_mod_cast hlt.le
   · have h1Nat : s.val + 1 ≤ r.val := by omega
-    have h10Nat : r.val - s.val ≤ 10 := by
-      have hrlt := r.isLt
-      omega
-    have h1 : (1 : ℝ) ≤ (r.val : ℝ) - (s.val : ℝ) := by
+    have h1Cast :
+        (s.val : ℝ) + 1 ≤ (r.val : ℝ) := by
       exact_mod_cast h1Nat
+    have hr10Nat : r.val ≤ 10 := by omega
+    have hr10 : (r.val : ℝ) ≤ 10 := by
+      exact_mod_cast hr10Nat
+    have hs0 : (0 : ℝ) ≤ s.val := by positivity
+    have h1 : (1 : ℝ) ≤ (r.val : ℝ) - (s.val : ℝ) := by
+      linarith
     have h10 : (r.val : ℝ) - (s.val : ℝ) ≤ 10 := by
-      exact_mod_cast h10Nat
+      linarith
     rw [abs_of_nonneg]
     · exact ⟨h1, h10⟩
     · exact_mod_cast hgt.le
@@ -452,8 +460,7 @@ theorem exists_uncovered_elevenPhase_of_six_point_terminal
       11 ≤ Fintype.card (GlobalUnitGapSlot C t) := by
     have h :=
       Fintype.card_le_of_injective slot hinj
-    norm_num at h ⊢
-    exact h
+    simpa using h
   have hslot10 :
       Fintype.card (GlobalUnitGapSlot C t) ≤ 10 :=
     six_point_globalUnitGapSlot_card_le_ten
