@@ -161,6 +161,160 @@ theorem cluster_capacity_of_last_merge_weighted_repair
   exact M.exponent_capacity_of_oneLayer_weighted_repair
     exponent hone (by simpa [M] using hrepair)
 
+
+/-- An exact one-layer loss after the merge forces the old n+1-band local
+bound to be saturated. -/
+theorem old_active_saturated_of_exact_merge_loss
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (hn : 1 ≤ n)
+    (P : BinaryEdgePartition V (n + 1))
+    (exponent : V → ℕ)
+    (hold :
+      ∀ v, (active P v).card ≤
+        (n + 1) - exponent v)
+    (wrapBit : V → Bool)
+    (hwrap :
+      ∀ {u v : V}, u < v →
+        ((P.edgeColor u v).val = 0 ∨
+          (P.edgeColor u v).val = n) →
+        wrapBit u ≠ wrapBit v)
+    {v : V}
+    (hloss :
+      exponent v =
+        (n -
+          (active
+            (mergeLastPartition hn P wrapBit hwrap)
+            v).card) + 1) :
+    (active P v).card =
+      (n + 1) - exponent v := by
+  have hmono :=
+    mergeLastPartition_active_card_le
+      hn P wrapBit hwrap v
+  have holdv := hold v
+  omega
+
+/-- Exact one-layer loss also forces failure of simultaneous occupation of the
+two merged boundary colours. -/
+theorem not_both_boundary_active_of_exact_merge_loss
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (hn : 1 ≤ n)
+    (P : BinaryEdgePartition V (n + 1))
+    (exponent : V → ℕ)
+    (hold :
+      ∀ v, (active P v).card ≤
+        (n + 1) - exponent v)
+    (wrapBit : V → Bool)
+    (hwrap :
+      ∀ {u v : V}, u < v →
+        ((P.edgeColor u v).val = 0 ∨
+          (P.edgeColor u v).val = n) →
+        wrapBit u ≠ wrapBit v)
+    {v : V}
+    (hloss :
+      exponent v =
+        (n -
+          (active
+            (mergeLastPartition hn P wrapBit hwrap)
+            v).card) + 1) :
+    ¬ ((0 : Fin (n + 1)) ∈ active P v ∧
+       Fin.last n ∈ active P v) := by
+  intro hboth
+  have hsat :=
+    old_active_saturated_of_exact_merge_loss
+      hn P exponent hold wrapBit hwrap hloss
+  have hdrop :=
+    mergeLastPartition_active_card_add_one_le
+      hn P wrapBit hwrap v hboth.1 hboth.2
+  omega
+
+/-- Combined structural localization of every merged-profile loss centre. -/
+theorem exact_merge_loss_implies_saturated_boundary_failure
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (hn : 1 ≤ n)
+    (P : BinaryEdgePartition V (n + 1))
+    (exponent : V → ℕ)
+    (hold :
+      ∀ v, (active P v).card ≤
+        (n + 1) - exponent v)
+    (wrapBit : V → Bool)
+    (hwrap :
+      ∀ {u v : V}, u < v →
+        ((P.edgeColor u v).val = 0 ∨
+          (P.edgeColor u v).val = n) →
+        wrapBit u ≠ wrapBit v)
+    {v : V}
+    (hloss :
+      exponent v =
+        (n -
+          (active
+            (mergeLastPartition hn P wrapBit hwrap)
+            v).card) + 1) :
+    (active P v).card =
+        (n + 1) - exponent v ∧
+      ¬ ((0 : Fin (n + 1)) ∈ active P v ∧
+         Fin.last n ∈ active P v) := by
+  exact ⟨
+    old_active_saturated_of_exact_merge_loss
+      hn P exponent hold wrapBit hwrap hloss,
+    not_both_boundary_active_of_exact_merge_loss
+      hn P exponent hold wrapBit hwrap hloss⟩
+
+/-- A full extra unit of old local slack already creates one surplus layer
+after merging, even without using the boundary collision. -/
+theorem one_surplus_of_two_old_slack
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (hn : 1 ≤ n)
+    (P : BinaryEdgePartition V (n + 1))
+    (exponent : V → ℕ)
+    (wrapBit : V → Bool)
+    (hwrap :
+      ∀ {u v : V}, u < v →
+        ((P.edgeColor u v).val = 0 ∨
+          (P.edgeColor u v).val = n) →
+        wrapBit u ≠ wrapBit v)
+    {v : V}
+    (hslack :
+      (active P v).card + 2 ≤
+        (n + 1) - exponent v) :
+    exponent v + 1 ≤
+      n -
+        (active
+          (mergeLastPartition hn P wrapBit hwrap)
+          v).card := by
+  have hmono :=
+    mergeLastPartition_active_card_le
+      hn P wrapBit hwrap v
+  omega
+
+/-- One unit of old slack plus occupation of both boundary bands creates a
+full surplus layer after the merge. -/
+theorem one_surplus_of_one_old_slack_and_both_boundary
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (hn : 1 ≤ n)
+    (P : BinaryEdgePartition V (n + 1))
+    (exponent : V → ℕ)
+    (wrapBit : V → Bool)
+    (hwrap :
+      ∀ {u v : V}, u < v →
+        ((P.edgeColor u v).val = 0 ∨
+          (P.edgeColor u v).val = n) →
+        wrapBit u ≠ wrapBit v)
+    {v : V}
+    (hslack :
+      (active P v).card + 1 ≤
+        (n + 1) - exponent v)
+    (hzero : (0 : Fin (n + 1)) ∈ active P v)
+    (hlast : Fin.last n ∈ active P v) :
+    exponent v + 1 ≤
+      n -
+        (active
+          (mergeLastPartition hn P wrapBit hwrap)
+          v).card := by
+  have hdrop :=
+    mergeLastPartition_active_card_add_one_le
+      hn P wrapBit hwrap v hzero hlast
+  omega
+
 #print axioms mergeLastPartition_active_eq_image
 #print axioms exponent_le_mergedFree_add_one
 #print axioms cluster_capacity_of_last_merge_weighted_repair
