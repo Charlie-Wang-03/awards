@@ -72,6 +72,28 @@ noncomputable def deletedCycleFamily
     (C j.1).restrictDelete r j.2 hother
   simpa [survivingCentre] using hcycle
 
+
+/-- At the canonical surviving-centre subtype, deletedCycleFamily is exactly
+the direct restrictDelete cycle, up to proof irrelevance in the nonempty
+witness. -/
+theorem deletedCycleFamily_at_survivingCentre_eq_restrictDelete
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 3 ≤ Fintype.card V)
+    (r i : V)
+    (hir : i ≠ r) :
+    deletedCycleFamily C hcard r
+        (survivingCentre r i hir)
+      =
+    (C i).restrictDelete r hir
+      (child_other_nonempty_of_card_ge_three
+        hcard hir) := by
+  unfold deletedCycleFamily
+  simp only [survivingCentre]
+  congr 1
+
+
 /-- Child exponent equals the corresponding genuine parent deletion-table
 entry. -/
 theorem deletedCycleFamily_exponent_eq_concreteDeletionAfter
