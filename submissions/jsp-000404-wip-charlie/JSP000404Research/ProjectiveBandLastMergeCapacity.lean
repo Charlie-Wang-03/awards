@@ -1,5 +1,6 @@
 
 import JSP000404Research.ProjectiveBandOneLayerCapacity
+import JSP000404Research.CentreExponentBounds
 import Mathlib.Tactic
 
 /-!
@@ -338,8 +339,10 @@ theorem projectiveBand_capacity_of_last_merge
   have hexp :
       ∀ i, centreExponent (C i) t ≤ n := by
     intro i
-    exact centreExponent_le_n
-      (C i) n delta t hn hdelta0 hdelta1 ht
+    have hlt :=
+      centreExponent_lt_n
+        (C i) n delta t hn hdelta0 hdelta1 ht
+    omega
   apply BinaryEdgePartition.cluster_capacity_of_last_merge
     hn P (fun i => centreExponent (C i) t)
     hexp hold wrapBit
