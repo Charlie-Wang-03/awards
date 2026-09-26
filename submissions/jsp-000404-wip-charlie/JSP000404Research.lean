@@ -1091,3 +1091,6 @@ import JSP000404Research.ThirdLayerSaturatedResidual
 
 
 import JSP000404Research.SixPointExactWitnessSupportTwoTransition
+
+
+import JSP000404Research.ResidualUnsafeCarrierMatchingCard
