@@ -1031,3 +1031,6 @@ import JSP000404Research.TwoMinimumZeroIncidence
 
 
 import JSP000404Research.InteriorDoubleDeletionRigidity
+
+
+import JSP000404Research.ConcreteDoubleDeletionRestriction
