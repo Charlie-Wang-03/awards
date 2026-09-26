@@ -1,4 +1,6 @@
 import JSP000404Research.MinimalOverweightKraftProfile
+import JSP000404Research.MinimalOverweightParity
+import JSP000404Research.ConcreteMinimumOverweightRigidity
 import JSP000404Research.SharpSecondLayerFourPlus
 import Mathlib.Tactic
 
@@ -107,11 +109,16 @@ theorem normalized_three_layer_profile_eq_six
 
   have hcard :
       Fintype.card V = 1 + M.card + S2.card := by
-    rw [← Finset.card_univ]
-    rw [huniv, Finset.card_insert_of_notMem]
-    · rw [Finset.card_union_of_disjoint hdisjMS2]
-      omega
-    · simp [hsNotM, hsNotS2]
+    calc
+      Fintype.card V =
+          (Finset.univ : Finset V).card := by simp
+      _ = (insert s (M ∪ S2)).card := by rw [huniv]
+      _ = (M ∪ S2).card + 1 := by
+          rw [Finset.card_insert_of_notMem]
+          simp [hsNotM, hsNotS2]
+      _ = M.card + S2.card + 1 := by
+          rw [Finset.card_union_of_disjoint hdisjMS2]
+      _ = 1 + M.card + S2.card := by omega
 
   have hpowN :
       2 ^ n = 8 * 2 ^ (n - 3) := by
@@ -120,91 +127,65 @@ theorem normalized_three_layer_profile_eq_six
     norm_num
     ring
 
-  have hweight :
-      ∀ i : V,
-        2 ^ k i =
-          if i = s then 4 * 2 ^ (n - 3)
-          else if i ∈ S2 then 2 * 2 ^ (n - 3)
-          else 2 ^ (n - 3) := by
-    intro i
-    by_cases his : i = s
-    · subst i
-      simp [hTop, hpowN]
-      have hsub : n - 1 = (n - 3) + 2 := by omega
-      rw [hsub, pow_add]
-      norm_num
-      ring
-    · have htopNe : k i ≠ n - 1 := by
-        intro h
-        exact his (hTopUnique i h)
-      rcases hclass i with hminI | hsecondI | htopI
-      · simp [his, S2, hminI]
-      · have hiS2 : i ∈ S2 := by simp [S2, his, hsecondI]
-        simp [his, hiS2, hsecondI]
-        have hsub : n - 2 = (n - 3) + 1 := by omega
+  have hsumClass :
+      (∑ i : V, 2 ^ k i) =
+        (M.card + 2 * S2.card + 4) *
+          2 ^ (n - 3) := by
+    rw [show (Finset.univ : Finset V) =
+        insert s (M ∪ S2) from huniv]
+    rw [Finset.sum_insert]
+    · rw [Finset.sum_union hdisjMS2]
+      have hMsum :
+          ∑ i ∈ M, 2 ^ k i =
+            M.card * 2 ^ (n - 3) := by
+        calc
+          ∑ i ∈ M, 2 ^ k i
+              = ∑ _i ∈ M, 2 ^ (n - 3) := by
+                  apply Finset.sum_congr rfl
+                  intro i hi
+                  have hiK : k i = n - 3 := by
+                    simpa [M] using hi
+                  rw [hiK]
+          _ = M.card * 2 ^ (n - 3) := by simp
+      have hS2sum :
+          ∑ i ∈ S2, 2 ^ k i =
+            S2.card * (2 * 2 ^ (n - 3)) := by
+        calc
+          ∑ i ∈ S2, 2 ^ k i
+              = ∑ _i ∈ S2, 2 * 2 ^ (n - 3) := by
+                  apply Finset.sum_congr rfl
+                  intro i hi
+                  have hiK : k i = n - 2 := by
+                    exact (by simpa [S2] using hi).2
+                  have hsub : n - 2 = (n - 3) + 1 := by omega
+                  rw [hiK, hsub, pow_add]
+                  norm_num
+          _ = S2.card * (2 * 2 ^ (n - 3)) := by simp
+      have hsPow :
+          2 ^ k s = 4 * 2 ^ (n - 3) := by
+        rw [hTop]
+        have hsub : n - 1 = (n - 3) + 2 := by omega
         rw [hsub, pow_add]
         norm_num
-      · exact False.elim (htopNe htopI)
+        ring
+      rw [hMsum, hS2sum, hsPow]
+      ring
+    · simp [hsNotM, hsNotS2]
 
   have hMass' :
       (M.card + 2 * S2.card + 4) * 2 ^ (n - 3)
         =
       9 * 2 ^ (n - 3) := by
-    have hsumClass :
-        (∑ i : V, 2 ^ k i) =
-          (M.card + 2 * S2.card + 4) *
-            2 ^ (n - 3) := by
-      rw [← Finset.sum_univ]
-      rw [huniv]
-      rw [Finset.sum_insert]
-      · rw [Finset.sum_union hdisjMS2]
-        simp only [Finset.sum_filter]
-        have hMsum :
-            ∑ i ∈ M, 2 ^ k i =
-              M.card * 2 ^ (n - 3) := by
-          apply Finset.sum_const_nat
-          intro i hi
-          have hiK : k i = n - 3 := by simpa [M] using hi
-          rw [hiK]
-        have hS2sum :
-            ∑ i ∈ S2, 2 ^ k i =
-              S2.card * (2 * 2 ^ (n - 3)) := by
-          calc
-            ∑ i ∈ S2, 2 ^ k i
-                = ∑ _i ∈ S2, 2 * 2 ^ (n - 3) := by
-                    apply Finset.sum_congr rfl
-                    intro i hi
-                    have hiK : k i = n - 2 := by
-                      exact (by simpa [S2] using hi).2
-                    have hsub : n - 2 = (n - 3) + 1 := by omega
-                    rw [hiK, hsub, pow_add]
-                    norm_num
-            _ = S2.card * (2 * 2 ^ (n - 3)) := by
-                    simp
-        rw [hMsum, hS2sum]
-        have hsPow :
-            2 ^ k s = 4 * 2 ^ (n - 3) := by
-          rw [hTop]
-          have hsub : n - 1 = (n - 3) + 2 := by omega
-          rw [hsub, pow_add]
-          norm_num
-          ring
-        rw [hsPow]
-        ring
-      · simp [hsNotM, hsNotS2]
-    rw [hsumClass] at hMass
-    have hright :
-        2 ^ n + 2 ^ (n - 3) =
-          9 * 2 ^ (n - 3) := by
-      rw [hpowN]
-      ring
-    rw [hright] at hMass
-    exact hMass
+    rw [← hsumClass]
+    rw [hMass, hpowN]
+    ring
 
-  have hpos : 0 < 2 ^ (n - 3) := pow_pos (by norm_num) _
+  have hfactorPos : 0 < 2 ^ (n - 3) := by positivity
   have hEqNat :
       M.card + 2 * S2.card + 4 = 9 := by
-    nlinarith
+    exact Nat.eq_of_mul_eq_mul_right
+      hfactorPos hMass'
+
 
   have hM5 : M.card = 5 := by
     have hS2le : S2.card ≤ 1 := hSecond
@@ -270,17 +251,21 @@ theorem large_n_sub_three_minimum_with_top_forces_six_points
         (C i) n delta t (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht
     omega
-  have hrig :=
-    concrete_minimum_deletion_rigidity_of_child_bound
-      C h3 (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht).le
-      n r0 hexpLe hover hchildR0 hmin
-  have hMass :
-      (∑ i : V, 2 ^ centreExponent (C i) t)
-        =
-      2 ^ n + 2 ^ (n - 3) := by
-    have hexcess := hrig.1
-    rw [hminExp] at hexcess
-    omega
+  have hmonoR :
+      ∀ i : V, i ≠ r0 →
+        centreExponent (C i) t ≤
+          concreteDeletionAfter C h3 t r0 i := by
+    intro i hir
+    exact concreteDeletionAfter_mono C h3
+      (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht).le
+      hir
+  have hMass :=
+    total_weight_eq_bound_add_min_weight_of_child_bound
+      (fun i => centreExponent (C i) t)
+      (concreteDeletionAfter C h3 t)
+      n r0 hexpLe hmonoR hover hchildR0 hmin
+  rw [hminExp] at hMass
+
   have hdelta1 : delta < 1 := by linarith
   have hexpLt :
       ∀ i : V, centreExponent (C i) t < n := by
