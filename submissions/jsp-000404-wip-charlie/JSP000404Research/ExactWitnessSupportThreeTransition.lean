@@ -67,7 +67,7 @@ theorem exactWitness_support_three_exposed_unit_transition_or_three
             (liftedCentreSignPath hp W.b first rest) = 3
     ) := by
   obtain ⟨first, rest, hrays, hocc⟩ :=
-    exactWitness_unit_transition_occurs
+    exists_exactWitness_unit_transition_occurs
       hp hcap hn hdelta0 ht hlam W C
   have htpos :
       0 < t :=
