@@ -231,6 +231,110 @@ theorem overlapWord_unique_for_unsafe_carrier
     C (retainedActive_union_eq_univ_of_unsafe C hunsafe)
     huWord hvWord huOther hvOther
 
+
+/-- For an unsafe overlap pair, the lower incoming set and upper outgoing set
+form an exact disjoint partition of the retained palette. -/
+theorem unsafe_overlap_incoming_outgoing_partition
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    incomingRetained C u ∪ outgoingRetained C v =
+        (Finset.univ : Finset (Fin n)) ∧
+      Disjoint (incomingRetained C u)
+        (outgoingRetained C v) := by
+  constructor
+  · exact unsafe_residual_union_eq_univ C hunsafe
+  · have hthrough :=
+      residualThroughColours_eq_empty_of_completion_overlap
+        C huWord hvWord
+    rw [Finset.disjoint_left]
+    intro c hinc hout
+    have hc :
+        c ∈ residualThroughColours C u v :=
+      (mem_residualThroughColours C u v c).2
+        ⟨hinc, hout⟩
+    rw [hthrough] at hc
+    simp at hc
+
+/-- Unsafe overlap makes incoming retained colours monotone decreasing along
+the residual edge. -/
+theorem incomingRetained_subset_of_unsafe_overlap
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    incomingRetained C v ⊆ incomingRetained C u := by
+  intro c hincV
+  have hpart :=
+    unsafe_overlap_incoming_outgoing_partition
+      C hunsafe huWord hvWord
+  have hcUnion :
+      c ∈ incomingRetained C u ∪
+        outgoingRetained C v := by
+    rw [hpart.1]
+    simp
+  rcases Finset.mem_union.mp hcUnion with hincU | houtV
+  · exact hincU
+  · exact False.elim
+      (Finset.disjoint_left.mp
+        (incomingRetained_disjoint_outgoingRetained C v)
+        hincV houtV)
+
+/-- Dually, outgoing retained colours are monotone increasing along an unsafe
+overlap edge. -/
+theorem outgoingRetained_subset_of_unsafe_overlap
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    outgoingRetained C u ⊆ outgoingRetained C v := by
+  intro c houtU
+  have hpart :=
+    unsafe_overlap_incoming_outgoing_partition
+      C hunsafe huWord hvWord
+  have hcUnion :
+      c ∈ incomingRetained C u ∪
+        outgoingRetained C v := by
+    rw [hpart.1]
+    simp
+  rcases Finset.mem_union.mp hcUnion with hincU | houtV
+  · exact False.elim
+      (Finset.disjoint_left.mp
+        (incomingRetained_disjoint_outgoingRetained C u)
+        hincU houtU)
+  · exact houtV
+
+/-- Cardinal monotonicity consequences. -/
+theorem unsafe_overlap_orientation_card_mono
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    (incomingRetained C v).card ≤
+        (incomingRetained C u).card ∧
+      (outgoingRetained C u).card ≤
+        (outgoingRetained C v).card := by
+  exact ⟨
+    Finset.card_le_card
+      (incomingRetained_subset_of_unsafe_overlap
+        C hunsafe huWord hvWord),
+    Finset.card_le_card
+      (outgoingRetained_subset_of_unsafe_overlap
+        C hunsafe huWord hvWord)⟩
+
 #print axioms residualThroughColours_eq_empty_of_completion_overlap
 #print axioms retainedActive_union_eq_univ_of_unsafe
 #print axioms retainedCompletionWords_inter_eq_singleton_of_unsafe_overlap
