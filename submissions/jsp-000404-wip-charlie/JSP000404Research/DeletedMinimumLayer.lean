@@ -112,10 +112,10 @@ five vertices, then two distinct child minima survive s with no unit gain.
 theorem exists_two_deleted_minima_without_second_gain
     {V : Type*} [Fintype V] [DecidableEq V]
     (exponent : V → ℕ)
+    (r s : V)
     (afterChild :
       DeletedVertex r → DeletedVertex r → ℕ)
     (n a : ℕ)
-    (r s : V)
     (hr : exponent r = a)
     (hs : exponent s = a)
     (hrs : r ≠ s)
