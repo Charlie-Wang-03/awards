@@ -1067,3 +1067,6 @@ import JSP000404Research.ExactWitnessTransitionPosition
 
 
 import JSP000404Research.ExactWitnessTransitionOccurrence
+
+
+import JSP000404Research.ExactWitnessSupportTwoTransition
