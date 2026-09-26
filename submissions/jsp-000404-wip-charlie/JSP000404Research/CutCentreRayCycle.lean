@@ -322,6 +322,33 @@ theorem rayIndex_injective
     congrArg (fun q => R.rays.get q) h
   simpa using hget
 
+theorem rayIndex_lt_of_cutTheta_lt
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i : V} {c : ℝ}
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
+    {j k : OtherVertex i}
+    (htheta :
+      cutRayTheta hp c i j <
+        cutRayTheta hp c i k) :
+    R.rayIndex j < R.rayIndex k := by
+  have hne :
+      R.rayIndex j ≠ R.rayIndex k := by
+    intro hidx
+    have hget :=
+      congrArg (fun q => R.rays.get q) hidx
+    have hjk : j = k := by simpa using hget
+    subst k
+    exact (lt_irrefl _) htheta
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · exact hlt
+  · have hrel :=
+      R.cutTheta_sorted.rel_get_of_lt hgt
+    rw [R.get_rayIndex, R.get_rayIndex] at hrel
+    exact False.elim ((not_lt_of_ge hrel) htheta)
+
+/-- Weak cut-index order gives weak adjusted-theta order. -/
 theorem cutTheta_le_of_rayIndex_le
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
