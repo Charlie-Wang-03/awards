@@ -40,41 +40,6 @@ namespace JSP000404Research
 
 open Real
 
-def centreUnitGapStart
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} {hp : Function.Injective p}
-    {i : V}
-    (C : CentreProjectiveCycle hp i)
-    (t : ℝ)
-    (u : CentreUnitGap C t) : ℝ :=
-  normalizedRayTheta hp t i
-    (C.rays.get (gapToRayIndex C u.1))
-
-def centreUnitGapScaledWidth
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} {hp : Function.Injective p}
-    {i : V}
-    (C : CentreProjectiveCycle hp i)
-    (t : ℝ)
-    (u : CentreUnitGap C t) : ℝ :=
-  t * C.gaps.get u.1
-
-def globalUnitGapStart
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} {hp : Function.Injective p}
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    (t : ℝ)
-    (u : GlobalUnitGapSlot C t) : ℝ :=
-  centreUnitGapStart (C u.1) t u.2
-
-def globalUnitGapScaledWidth
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} {hp : Function.Injective p}
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    (t : ℝ)
-    (u : GlobalUnitGapSlot C t) : ℝ :=
-  centreUnitGapScaledWidth (C u.1) t u.2
-
 /-- Periodic critical badness for one canonical global q=1 slot. -/
 def GlobalCyclicCriticalUnitBadAt
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -83,9 +48,8 @@ def GlobalCyclicCriticalUnitBadAt
     (t delta : ℝ)
     (u : GlobalUnitGapSlot C t)
     (x : ℝ) : Prop :=
-  ∃ k : ℤ,
+  ∃ k : ℤ, ∃ s : ℝ,
     let alpha := globalUnitGapStart C t u + (k : ℝ) * t
-    let s := globalUnitGapScaledWidth C t u
     1 ≤ s ∧
     s ≤ 1 + delta ∧
     criticalBadLeft alpha s ≤ x ∧
@@ -135,7 +99,7 @@ theorem cyclicCriticalUnitBadAt_implies_deltaArc
     (hbad : GlobalCyclicCriticalUnitBadAt C t delta u x) :
     CyclicDeltaArcAt t delta
       (globalUnitGapStart C t u) x := by
-  rcases hbad with ⟨k, hs1, _hsTop, hxL, hxR⟩
+  rcases hbad with ⟨k, s, hs1, _hsTop, hxL, hxR⟩
   refine ⟨k, ?_, ?_⟩
   · unfold criticalBadLeft at hxL
     linarith
