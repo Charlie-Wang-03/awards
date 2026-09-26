@@ -59,6 +59,38 @@ theorem raySignAt_eq_of_rayThetaAt_eq
     rw [← htheta] at hone
     norm_num at hone
 
+/-- A displayed sign change after equal-length prefixes yields a transition
+occurrence at the displayed quotient. -/
+theorem transitionQuotientOccurs_of_split
+    (q : ℕ) (a b : Bool)
+    (signPre signPost : List Bool)
+    (qPre qPost : List ℕ)
+    (r : ℕ)
+    (hlen : signPre.length = qPre.length)
+    (hchange : boolLastFrom a signPre ≠ b)
+    (hr : r = q) :
+    TransitionQuotientOccurs q a
+      (signPre ++ b :: signPost)
+      (qPre ++ r :: qPost) := by
+  induction signPre generalizing a qPre with
+  | nil =>
+      have hqnil : qPre = [] := by
+        apply List.length_eq_zero.mp
+        simpa using hlen.symm
+      subst qPre
+      simp [TransitionQuotientOccurs, boolLastFrom, hchange, hr]
+  | cons c cs ih =>
+      cases qPre with
+      | nil =>
+          simp at hlen
+      | cons r0 rs =>
+          simp only [List.length_cons, Nat.succ.injEq] at hlen
+          simp only [List.cons_append, TransitionQuotientOccurs]
+          right
+          apply ih c rs hlen
+          · simpa [boolLastFrom] using hchange
+          · exact hr
+
 /-- A transition occurrence survives prepending a same-sign aligned step. -/
 theorem transitionQuotientOccurs_cons_same
     (q r : ℕ) (a : Bool)
