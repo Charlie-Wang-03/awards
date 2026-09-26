@@ -1,4 +1,5 @@
 import JSP000404Research.SixPointCriticalPhaseCover
+import JSP000404Research.SixPointUnitGapSlots
 import JSP000404Research.SixPointUnitGapBudget
 import Mathlib.Tactic
 
@@ -121,6 +122,55 @@ theorem no_phase_cover_of_irredundant_slot_injection_ten
   have hcoverReal :=
     hcoverLower T hTS hmin.1
   have hneed :=
+    phase_cover_count_lower
+      (by omega : 1 ≤ n)
+      hdelta0 hdeltaHalf hcoverReal
+  omega
+
+/-- Concrete six-point unit-gap-slot cover terminal.
+
+Any obstruction family indexed directly by actual q=1 centre-gap slots has at
+most ten available indices in the top + five n-3 terminal.  Hence for n>=5 it
+cannot cover the lower-branch phase circle once the usual delta-width cover
+lower bound is available. -/
+theorem no_six_point_globalUnitGapSlot_cover
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {t delta : ℝ} {n : ℕ}
+    (hn4 : 4 ≤ n)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hcard : Fintype.card V = 6)
+    (top : V)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hMin :
+      ∀ i : V, i ≠ top →
+        centreExponent (C i) t = n - 3)
+    (A : GlobalUnitGapSlot C t → ℝ → Prop)
+    (S : Finset (GlobalUnitGapSlot C t))
+    (hcoverLower :
+      ∀ T : Finset (GlobalUnitGapSlot C t), T ⊆ S →
+        PredicateCovers A T →
+        (n : ℝ) + delta ≤ (T.card : ℝ) * delta) :
+    ¬ PredicateCovers A S := by
+  intro hcover
+  have hslot10 :
+      Fintype.card (GlobalUnitGapSlot C t) ≤ 10 :=
+    six_point_globalUnitGapSlot_card_le_ten
+      C hn4 hdelta0 (by linarith) ht
+      hcard top hTop hMin
+  have hScard :
+      S.card ≤ 10 := by
+    have hle : S.card ≤ Fintype.card (GlobalUnitGapSlot C t) := by
+      simpa using Finset.card_le_univ S
+    exact hle.trans hslot10
+  have hcoverReal :=
+    hcoverLower S (by intro x hx; exact hx) hcover
+  have hneed :
+      2 * n + 2 ≤ S.card :=
     phase_cover_count_lower
       (by omega : 1 ≤ n)
       hdelta0 hdeltaHalf hcoverReal
