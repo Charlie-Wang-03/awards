@@ -185,6 +185,20 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     exact hchange
   · rfl
 
+theorem consecutiveRayQuotients_length
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : V) (t : ℝ)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i)) :
+    (consecutiveRayQuotients hp i t first rest).length =
+      rest.length := by
+  induction rest generalizing first with
+  | nil =>
+      rfl
+  | cons r rs ih =>
+      simp [consecutiveRayQuotients, ih]
+
 /-- A sign change on the cyclic wrap step produces a transition occurrence
 at the wrap quotient. -/
 theorem centre_transitionQuotientOccurs_at_wrap
@@ -223,16 +237,8 @@ theorem centre_transitionQuotientOccurs_at_wrap
       (rest.map (raySignAt hp i)).length =
         qPre.length := by
     dsimp [qPre]
-    rw [List.length_map]
-    exact (consecutiveRayQuotients_eq_quotientList
-      hp i t first rest) ▸
-      (quotientList_length t
-        ((successiveDiffsFrom
-          (rayThetaAt hp i first)
-          (rest.map (rayThetaAt hp i))).map
-          (fun d => d / Real.pi))).symm.trans
-        (by
-          simp [successiveDiffsFrom_length])
+    rw [List.length_map,
+      consecutiveRayQuotients_length hp i t first rest]
   have hlast :
       boolLastFrom
           (raySignAt hp i first)
