@@ -299,6 +299,96 @@ theorem exists_lower_inactive_flip_hole_or_safe_or_upper_descends
     by_contra huw
     exact hblock ⟨w, huw, hw⟩
 
+
+/-- The apparent left-descent branch cannot actually occur: it would place a
+new residual edge w--u immediately before the original residual edge u--v,
+creating a forbidden monochromatic residual two-path. -/
+theorem lower_inactive_flip_blocker_is_safe_to_right
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {base : Fin n → Bool}
+    (huv : u < v)
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huBase : base ∈ retainedCompletionWords C u)
+    (hvBase : base ∈ retainedCompletionWords C v)
+    {c : Fin n}
+    (hc : c ∈ retainedInactive C u)
+    (huwNe : u ≠ w)
+    (hwFlip :
+      flipBoolWordAt base c ∈ retainedCompletionWords C w) :
+    u < w ∧
+      IsResidual C u w ∧
+      c ∉ residualForbidden C u w := by
+  have hcases :=
+    lower_inactive_flip_blocker_safe_or_upper_descends
+      C huv hunsafe huBase hvBase hc huwNe hwFlip
+  rcases hcases with hsafe | hleft
+  · exact hsafe
+  · have hresUV :
+        IsResidual C u v :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C huv huBase hvBase
+    exact False.elim
+      (C.noTwoResidualPath hleft.1 huv hleft.2 hresUV)
+
+/-- Strong one-step outlet: a positive exact unsafe overlap can always be
+displaced either to a word covered only by its lower endpoint, or to a new
+residual overlap carrying an explicit safe recolouring coordinate. -/
+theorem exists_lower_inactive_flip_single_or_safe_overlap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V} {base : Fin n → Bool}
+    (huv : u < v)
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huBase : base ∈ retainedCompletionWords C u)
+    (hvBase : base ∈ retainedCompletionWords C v)
+    (huExact : ExactProjectedBudget C exponent u)
+    (huPos : 1 ≤ exponent u) :
+    ∃ c : Fin n,
+      c ∈ retainedInactive C u ∧
+      flipBoolWordAt base c ∈ retainedCompletionWords C u ∧
+      flipBoolWordAt base c ∉ retainedCompletionWords C v ∧
+      (
+        (∀ w : V,
+          flipBoolWordAt base c ∈ retainedCompletionWords C w →
+          w = u)
+        ∨
+        ∃ w : V,
+          w ≠ u ∧
+          flipBoolWordAt base c ∈ retainedCompletionWords C w ∧
+          u < w ∧
+          IsResidual C u w ∧
+          c ∉ residualForbidden C u w
+      ) := by
+  classical
+  obtain ⟨c, hc⟩ :=
+    retainedInactive_nonempty_of_exactProjectedBudget_pos
+      C exponent huExact huPos
+  have hflip :=
+    lower_inactive_flip_stays_lower_leaves_upper
+      C hunsafe huBase hvBase hc
+  refine ⟨c, hc, hflip.1, hflip.2, ?_⟩
+  by_cases hblock :
+      ∃ w : V,
+        w ≠ u ∧
+        flipBoolWordAt base c ∈ retainedCompletionWords C w
+  · right
+    obtain ⟨w, huw, hw⟩ := hblock
+    have hsafe :=
+      lower_inactive_flip_blocker_is_safe_to_right
+        C huv hunsafe huBase hvBase hc huw hw
+    exact ⟨w, huw, hw, hsafe.1, hsafe.2.1, hsafe.2.2⟩
+  · left
+    intro w hw
+    by_contra huw
+    exact hblock ⟨w, huw, hw⟩
+
+#print axioms lower_inactive_flip_blocker_is_safe_to_right
+#print axioms exists_lower_inactive_flip_single_or_safe_overlap
+
 #print axioms retainedInactive_nonempty_of_exactProjectedBudget_pos
 #print axioms lower_inactive_mem_upper_outgoing_of_unsafe_overlap
 #print axioms lower_inactive_flip_stays_lower_leaves_upper
