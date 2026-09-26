@@ -279,6 +279,188 @@ theorem no_two_concrete_secondDeletion_min_unit_gains
   simpa [childC, hsChild, hjChild, hkChild,
     hchild3, hparent3] using hno
 
+
+/-- Geometric form of the high-survivor second-deletion rigidity: in the first
+child, the ray to the second deleted minimum centre has a zero quotient on at
+least one cyclic side. -/
+theorem second_minimum_deleted_ray_adjacent_zero_at_high_survivor
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : 4 ≤ Fintype.card V)
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (n a : ℕ)
+    (r s i : V)
+    (hsr : s ≠ r)
+    (hir : i ≠ r)
+    (his : i ≠ s)
+    (hsExp : centreExponent (C s) t = a)
+    (hiHigh : a < centreExponent (C i) t)
+    (hpostR :
+      deletionPostWeight
+          (concreteDeletionAfter C (by omega) t) r
+        = 2 ^ n)
+    (hrigidR :
+      ∀ j : V, j ≠ r →
+        concreteDeletionAfter C (by omega) t r j =
+          centreExponent (C j) t)
+    (hgrand :
+      deletionPostWeight
+        (concreteDeletionAfter
+          (deletedCycleFamily C (by omega) r)
+          (three_le_card_deletedVertexType r hcard)
+          t)
+        (childVertex r s hsr)
+        ≤ 2 ^ n) :
+    let childC :=
+      deletedCycleFamily C (by omega : 3 ≤ Fintype.card V) r
+    let sChild := childVertex r s hsr
+    let iChild := childVertex r i hir
+    ∃ pre post : List (OtherVertex iChild),
+      (childC iChild).rays =
+        pre ++
+          deletedParentRay sChild iChild
+            (by
+              intro h
+              apply his
+              exact congrArg Subtype.val h) ::
+          post
+      ∧
+      match pre, post with
+      | [], [] => True
+      | [], b :: bs =>
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild b -
+              rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h))) /
+                Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h)) +
+              Real.pi -
+              (bs.map
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild)).getLastD
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild b)) / Real.pi)) = 0
+      | first :: mid, [] =>
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h)) -
+              (mid.map
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild)).getLastD
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild first)) / Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild first +
+              Real.pi -
+              rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h))) /
+                Real.pi)) = 0
+      | first :: mid, next :: tail =>
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h)) -
+              (mid.map
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild)).getLastD
+                (rayThetaAt
+                  (restrictedPoint_injective hp r)
+                  iChild first)) / Real.pi)) = 0
+          ∨
+          Nat.floor
+            (t * ((rayThetaAt
+                (restrictedPoint_injective hp r) iChild next -
+              rayThetaAt
+                (restrictedPoint_injective hp r) iChild
+                (deletedParentRay sChild iChild
+                  (by
+                    intro h
+                    apply his
+                    exact congrArg Subtype.val h))) /
+                Real.pi)) = 0 := by
+  let hparent3 : 3 ≤ Fintype.card V := by omega
+  let childC :=
+    deletedCycleFamily C hparent3 r
+  let sChild : DeletedVertexType r :=
+    childVertex r s hsr
+  let iChild : DeletedVertexType r :=
+    childVertex r i hir
+  let hchild3 :
+      3 ≤ Fintype.card (DeletedVertexType r) :=
+    three_le_card_deletedVertexType r hcard
+  have hisChild : iChild ≠ sChild := by
+    intro h
+    apply his
+    exact congrArg Subtype.val h
+  let hother :=
+    child_other_nonempty_of_card_ge_three
+      hchild3 hisChild
+  obtain ⟨pre, post, hsplit⟩ :=
+    exists_parent_cycle_split_at_deleted
+      (childC iChild) sChild hisChild
+  refine ⟨pre, post, hsplit, ?_⟩
+  have hnoTable :
+      ¬
+        centreExponent (childC iChild) t + 1
+          ≤
+        concreteDeletionAfter
+          childC hchild3 t sChild iChild := by
+    exact no_concrete_secondDeletion_unit_gain_above_min
+      C hcard ht n a r s i hsr hir his
+      hsExp hiHigh hpostR hrigidR hgrand
+  have hno :
+      ¬
+        centreExponent (childC iChild) t + 1
+          ≤
+        centreExponent
+          ((childC iChild).restrictDelete
+            sChild hisChild hother) t := by
+    rw [← concreteDeletionAfter_eq
+      childC hchild3 t hisChild]
+    exact hnoTable
+  exact adjacent_zero_of_no_unit_gain
+    (childC iChild) hisChild hother
+    pre post hsplit ht hno
+
+#print axioms second_minimum_deleted_ray_adjacent_zero_at_high_survivor
+
 #print axioms no_concrete_secondDeletion_unit_gain_above_min
 #print axioms no_two_concrete_secondDeletion_min_unit_gains
 
