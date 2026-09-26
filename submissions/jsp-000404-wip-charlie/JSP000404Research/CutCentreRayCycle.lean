@@ -31,9 +31,11 @@ structure CentreCutRayCycle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (i : V)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
     (c : ℝ) where
   rays : List (OtherVertex i)
+  rotation : ∃ k : ℕ, rays = C.rays.rotate k
   complete : rays.toFinset = Finset.univ
   nodup : rays.Nodup
   nonempty : rays ≠ []
@@ -163,7 +165,7 @@ theorem exists_centreCutRayCycle
     {i : V}
     (C : CentreProjectiveCycle hp i)
     (c : ℝ) :
-    Nonempty (CentreCutRayCycle hp i c) := by
+    Nonempty (CentreCutRayCycle hp C c) := by
   obtain ⟨low, high, hdecomp, hlow, hhigh⟩ :=
     exists_ray_split_at_cut hp C.rays C.theta_sorted c
   let rays := high ++ low
@@ -246,8 +248,15 @@ theorem exists_centreCutRayCycle
     exact List.pairwise_append.mpr
       ⟨hhighPair, hlowPair, hcross⟩
 
+  have hrotation :
+      ∃ k : ℕ, rays = C.rays.rotate k := by
+    refine ⟨low.length, ?_⟩
+    dsimp [rays]
+    rw [hdecomp, List.rotate_append_length_eq]
+
   exact ⟨{
     rays := rays
+    rotation := hrotation
     complete := hcomplete
     nodup := hnodup
     nonempty := hnonempty
@@ -260,7 +269,8 @@ theorem mem_rays
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c)
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
     (j : OtherVertex i) :
     j ∈ R.rays := by
   have : j ∈ R.rays.toFinset := by
@@ -272,7 +282,8 @@ noncomputable def rayEquiv
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c) :
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c) :
     Fin R.rays.length ≃ OtherVertex i := by
   classical
   exact R.nodup.getEquivOfForallMemList
@@ -282,7 +293,8 @@ noncomputable def rayIndex
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c)
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
     (j : OtherVertex i) :
     Fin R.rays.length :=
   (R.rayEquiv).symm j
@@ -291,7 +303,8 @@ noncomputable def rayIndex
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c)
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
     (j : OtherVertex i) :
     R.rays.get (R.rayIndex j) = j := by
   change R.rayEquiv (R.rayIndex j) = j
@@ -301,7 +314,8 @@ theorem rayIndex_injective
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c) :
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c) :
     Function.Injective R.rayIndex := by
   intro j k h
   have hget :=
@@ -312,7 +326,8 @@ theorem cutTheta_le_of_rayIndex_le
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
-    (R : CentreCutRayCycle hp i c)
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
     {j k : OtherVertex i}
     (hidx : R.rayIndex j ≤ R.rayIndex k) :
     cutRayTheta hp c i j ≤
