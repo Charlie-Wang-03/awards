@@ -98,6 +98,62 @@ theorem exists_ray_split_at_cut
         · exact hca
         · exact hca.trans (hpair.1 j hj)
 
+/-- A canonically theta-sorted block lying entirely above the cut remains
+sorted after subtracting the cut. -/
+theorem pairwise_cutRayTheta_of_all_ge_cut
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {i : V} (c : ℝ)
+    (xs : List (OtherVertex i))
+    (hsorted :
+      xs.Pairwise
+        (fun a b => rayThetaAt hp i a ≤ rayThetaAt hp i b))
+    (hall : ∀ j ∈ xs, c ≤ rayThetaAt hp i j) :
+    xs.Pairwise
+      (fun a b =>
+        cutRayTheta hp c i a ≤ cutRayTheta hp c i b) := by
+  induction xs with
+  | nil => simp
+  | cons a xs ih =>
+      have hp0 := List.pairwise_cons.mp hsorted
+      apply List.pairwise_cons.mpr
+      constructor
+      · intro b hb
+        rw [cutRayTheta_eq_sub_of_ge hp (hall a (by simp)),
+            cutRayTheta_eq_sub_of_ge hp (hall b (by simp [hb]))]
+        exact hp0.1 b hb
+      · apply ih hp0.2
+        intro b hb
+        exact hall b (by simp [hb])
+
+/-- A canonically theta-sorted block lying entirely below the cut remains
+sorted after the common +pi-c lift. -/
+theorem pairwise_cutRayTheta_of_all_lt_cut
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {i : V} (c : ℝ)
+    (xs : List (OtherVertex i))
+    (hsorted :
+      xs.Pairwise
+        (fun a b => rayThetaAt hp i a ≤ rayThetaAt hp i b))
+    (hall : ∀ j ∈ xs, rayThetaAt hp i j < c) :
+    xs.Pairwise
+      (fun a b =>
+        cutRayTheta hp c i a ≤ cutRayTheta hp c i b) := by
+  induction xs with
+  | nil => simp
+  | cons a xs ih =>
+      have hp0 := List.pairwise_cons.mp hsorted
+      apply List.pairwise_cons.mpr
+      constructor
+      · intro b hb
+        rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hall a (by simp)),
+            cutRayTheta_eq_add_pi_sub_of_lt hp (hall b (by simp [hb]))]
+        exact hp0.1 b hb
+      · apply ih hp0.2
+        intro b hb
+        exact hall b (by simp [hb])
+
 /-- Rotating the canonical ray list at the cut produces a complete
 cutTheta-sorted centre cycle. -/
 theorem exists_centreCutRayCycle
@@ -158,23 +214,17 @@ theorem exists_centreCutRayCycle
       high.Pairwise
         (fun a b =>
           cutRayTheta hp c i a ≤
-            cutRayTheta hp c i b) := by
-    exact hcanonPair.2.imp (by
-      intro a b hab
-      rw [cutRayTheta_eq_sub_of_ge hp (hhigh a (by assumption)),
-          cutRayTheta_eq_sub_of_ge hp (hhigh b (by assumption))]
-      linarith)
+            cutRayTheta hp c i b) :=
+    pairwise_cutRayTheta_of_all_ge_cut
+      hp c high hcanonPair.2 hhigh
 
   have hlowPair :
       low.Pairwise
         (fun a b =>
           cutRayTheta hp c i a ≤
-            cutRayTheta hp c i b) := by
-    exact hcanonPair.1.imp (by
-      intro a b hab
-      rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hlow a (by assumption)),
-          cutRayTheta_eq_add_pi_sub_of_lt hp (hlow b (by assumption))]
-      linarith)
+            cutRayTheta hp c i b) :=
+    pairwise_cutRayTheta_of_all_lt_cut
+      hp c low hcanonPair.1 hlow
 
   have hcross :
       ∀ a ∈ high, ∀ b ∈ low,
