@@ -64,6 +64,23 @@ theorem cutProjectiveBandColor_eq_of_ray_mem
     simpa using hj.2
   omega
 
+theorem cutProjectiveBandColor_eq_of_upper_ray_mem
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {t c : ℝ} (ht : 0 < t)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    (n : ℕ)
+    (htop : t < (n + 1 : ℕ))
+    {u v : V} (huv : u ≠ v)
+    (b : Fin (n + 1))
+    (hv :
+      RayInCutProjectiveBand hp t c v ⟨u, huv⟩ b) :
+    cutProjectiveBandColor hp ht hc0 hcpi n htop u v = b := by
+  rw [cutProjectiveBandColor_symm
+      hp ht hc0 hcpi n htop huv]
+  exact cutProjectiveBandColor_eq_of_ray_mem
+    hp ht hc0 hcpi n htop ⟨u, huv⟩ b hv
+
 /-- Active colours equal occupied cut bands. -/
 theorem cutProjectiveBandPartition_active_eq_occupied
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -84,38 +101,65 @@ theorem cutProjectiveBandPartition_active_eq_occupied
       =
     occupiedCutProjectiveBands hp t c n i := by
   classical
+  let P :=
+    cutProjectiveBandPartition
+      hp hcap ht hlam hc0 hcpi n htop
   ext b
   constructor
   · intro hb
-    rw [mem_active_iff] at hb
-    obtain ⟨j, hji, hcol⟩ := hb
-    let r : OtherVertex i := ⟨j, hji.symm⟩
-    have hrBand :
-        RayInCutProjectiveBand hp t c i r
+    have hb' :
+        (∃ a, a < i ∧ P.edgeColor a i = b) ∨
+        (∃ w, i < w ∧ P.edgeColor i w = b) := by
+      simpa [BinaryEdgePartition.active, P] using hb
+    apply (mem_occupiedCutProjectiveBands hp t c n i b).2
+    rcases hb' with ⟨a, hai, hcol⟩ | ⟨w, hiw, hcol⟩
+    · let a' : OtherVertex i := ⟨a, ne_of_lt hai⟩
+      refine ⟨a', ?_⟩
+      have hmem :=
+        cutProjectiveBandColor_mem_upper
+          hp ht hc0 hcpi n htop (ne_of_lt hai)
+      change
+        RayInCutProjectiveBand hp t c i a'
           (cutProjectiveBandColor
-            hp ht hc0 hcpi n htop i j) :=
-      cutProjectiveBandColor_mem_lower
-        hp ht hc0 hcpi n htop hji.symm
-    apply (mem_occupiedCutProjectiveBands
-      hp t c n i b).2
-    refine ⟨r, ?_⟩
-    simpa [cutProjectiveBandPartition] using
-      (show
-        RayInCutProjectiveBand hp t c i r
+            hp ht hc0 hcpi n htop a i)
+      simpa [P, a', hcol] using hmem
+    · let w' : OtherVertex i := ⟨w, ne_of_gt hiw⟩
+      refine ⟨w', ?_⟩
+      have hmem :=
+        cutProjectiveBandColor_mem_lower
+          hp ht hc0 hcpi n htop (ne_of_lt hiw)
+      change
+        RayInCutProjectiveBand hp t c i w'
           (cutProjectiveBandColor
-            hp ht hc0 hcpi n htop i j) from hrBand)
-        |>.trans ?_
-    · exact hrBand
+            hp ht hc0 hcpi n htop i w)
+      simpa [P, w', hcol] using hmem
   · intro hb
     obtain ⟨j, hjBand⟩ :=
-      (mem_occupiedCutProjectiveBands
-        hp t c n i b).1 hb
-    rw [mem_active_iff]
-    refine ⟨j.1, j.2, ?_⟩
-    have hcol :=
-      cutProjectiveBandColor_eq_of_ray_mem
-        hp ht hc0 hcpi n htop j b hjBand
-    simpa [cutProjectiveBandPartition] using hcol
+      (mem_occupiedCutProjectiveBands hp t c n i b).1 hb
+    have hij : i ≠ j.1 := j.2.symm
+    rcases lt_or_gt_of_ne hij with hijlt | hjilt
+    · have hcol :
+          cutProjectiveBandColor
+              hp ht hc0 hcpi n htop i j.1 = b :=
+        cutProjectiveBandColor_eq_of_ray_mem
+          hp ht hc0 hcpi n htop j b hjBand
+      have :
+          (∃ a, a < i ∧ P.edgeColor a i = b) ∨
+          (∃ w, i < w ∧ P.edgeColor i w = b) :=
+        Or.inr ⟨j.1, hijlt, by simpa [P] using hcol⟩
+      simpa [BinaryEdgePartition.active, P] using this
+    · have hcol :
+          cutProjectiveBandColor
+              hp ht hc0 hcpi n htop j.1 i = b :=
+        cutProjectiveBandColor_eq_of_upper_ray_mem
+          hp ht hc0 hcpi n htop j.2 b
+          (by simpa using hjBand)
+      have :
+          (∃ a, a < i ∧ P.edgeColor a i = b) ∨
+          (∃ w, i < w ∧ P.edgeColor i w = b) :=
+        Or.inl ⟨j.1, hjilt, by simpa [P] using hcol⟩
+      simpa [BinaryEdgePartition.active, P] using this
+
 
 noncomputable def cutRayProjectiveBand
     {V : Type*} {p : V → Plane}
