@@ -1043,3 +1043,6 @@ import JSP000404Research.MinimumAdjacentDoubleDeletion
 
 
 import JSP000404Research.ResidualUnsafeFlipDescent
+
+
+import JSP000404Research.AdjacentMinimumRayRigidity
