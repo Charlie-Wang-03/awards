@@ -195,9 +195,9 @@ theorem exists_two_exact_minima_with_common_survivor_zero_adjacency
       (∀ j : V, j ≠ s →
         concreteDeletionAfter C hV t s j =
           centreExponent (C j) t) ∧
-      ∀ i : V, i ≠ r → i ≠ s →
-        DeletedRayAdjacentZero C t r i (by assumption) ∧
-          DeletedRayAdjacentZero C t s i (by assumption) := by
+      ∀ (i : V) (hir : i ≠ r) (his : i ≠ s),
+        DeletedRayAdjacentZero C t r i hir ∧
+          DeletedRayAdjacentZero C t s i his := by
   obtain ⟨r, s, hrs, hrMin, hsMin,
       hra, hrb, hrc, hsa, hsb, hsc,
       hexactR, hexactS,
@@ -214,8 +214,8 @@ theorem exists_two_exact_minima_with_common_survivor_zero_adjacency
     two_minimum_child_bounds_force_two_deletedRayAdjacentZero
       C hV ht0 n r0 r s i
       hexp hover hmin hrMin hsMin
-      (by simpa [hpostR])
-      (by simpa [hpostS])
+      (le_of_eq hpostR)
+      (le_of_eq hpostS)
       hir his
 
 #print axioms two_minimum_child_bounds_force_two_deletedRayAdjacentZero
