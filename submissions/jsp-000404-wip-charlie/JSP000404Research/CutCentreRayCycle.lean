@@ -310,6 +310,17 @@ noncomputable def rayIndex
   change R.rayEquiv (R.rayIndex j) = j
   exact Equiv.apply_symm_apply R.rayEquiv j
 
+@[simp] theorem rayIndex_get
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i : V} {c : ℝ}
+    {C : CentreProjectiveCycle hp i}
+    (R : CentreCutRayCycle hp C c)
+    (q : Fin R.rays.length) :
+    R.rayIndex (R.rays.get q) = q := by
+  change (R.rayEquiv).symm (R.rayEquiv q) = q
+  exact Equiv.symm_apply_apply R.rayEquiv q
+
 theorem rayIndex_injective
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
