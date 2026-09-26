@@ -992,3 +992,9 @@ import JSP000404Research.AdjacentDoubleMergeList
 
 
 import JSP000404Research.ExactMinimumLayerReduction
+
+
+import JSP000404Research.ExactWitnessProjectiveDistance
+
+
+import JSP000404Research.ExactWitnessShortArc
