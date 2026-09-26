@@ -26,27 +26,6 @@ namespace JSP000404Research
 
 open Real
 
-def ExactAngleWitness.swapEnds
-    {V : Type*}
-    {p : V → Plane} {lam : ℝ}
-    (W : ExactAngleWitness p lam) :
-    ExactAngleWitness p lam where
-  a := W.c
-  b := W.b
-  c := W.a
-  hab := W.hbc.symm
-  hac := W.hac.symm
-  hbc := W.hab.symm
-  exact := by
-    rw [EuclideanGeometry.angle_comm]
-    exact W.exact
-
-@[simp] theorem ExactAngleWitness.swapEnds_b
-    {V : Type*}
-    {p : V → Plane} {lam : ℝ}
-    (W : ExactAngleWitness p lam) :
-    W.swapEnds.b = W.b := rfl
-
 theorem map_getLastD_eq_getLast_map
     {α β : Type*}
     (f : α → β)
