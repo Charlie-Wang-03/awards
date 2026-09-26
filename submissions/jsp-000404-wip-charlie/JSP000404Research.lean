@@ -980,3 +980,15 @@ import JSP000404Research.TwoStepMergeRigidity
 
 
 import JSP000404Research.ExactMinimumDeletionCandidate
+
+
+import JSP000404Research.SecondDeletionTwoStableMinima
+
+
+import JSP000404Research.DeletedMinimumLayer
+
+
+import JSP000404Research.AdjacentDoubleMergeList
+
+
+import JSP000404Research.ExactMinimumLayerReduction
