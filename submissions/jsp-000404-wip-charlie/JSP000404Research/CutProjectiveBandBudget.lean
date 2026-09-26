@@ -366,8 +366,9 @@ theorem centreExponent_le_missing_cutProjectiveBands
   have hbound :
       ∀ m ∈ floorBandList (aa :: xxs), m < n + 1 := by
     intro m hm
-    obtain ⟨x, hx, rfl⟩ := by
-      simpa [floorBandList] using (List.mem_map.mp hm)
+    change m ∈ (aa :: xxs).map Nat.floor at hm
+    obtain ⟨x, hx, hxm⟩ := List.mem_map.mp hm
+    subst m
     have hx0 : 0 ≤ x := by
       exact hSA0 x (by rw [hSAcons]; exact hx)
     have hxt : x < t :=
