@@ -361,16 +361,14 @@ theorem cutProjectiveBandColor_mem_lower
     {u v : V} (huv : u ≠ v) :
     RayInCutProjectiveBand hp t c u ⟨v, huv.symm⟩
       (cutProjectiveBandColor hp ht hc0 hcpi n htop u v) := by
-  have hband :=
-    rayInProjectiveBand_floor
-      hp ht.le u ⟨v, huv.symm⟩
-  unfold RayInProjectiveBand at hband
-  rw [← cutProjectiveBandColor_val
+  unfold RayInCutProjectiveBand
+  rw [cutProjectiveBandColor_val
       hp ht hc0 hcpi n htop huv]
-  exact Nat.floor_le
+  exact ⟨
+    Nat.floor_le
       (cutNormalizedRayTheta_nonneg hp ht.le hc0 hcpi u
         ⟨v, huv.symm⟩),
-    Nat.lt_floor_add_one _
+    Nat.lt_floor_add_one _⟩
 
 /-- Rotated projective-band binary edge partition. -/
 noncomputable def cutProjectiveBandPartition
