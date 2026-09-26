@@ -1061,3 +1061,9 @@ import JSP000404Research.SixPointExactWitnessSupportThree
 
 
 import JSP000404Research.TransitionQuotientOccurrence
+
+
+import JSP000404Research.ExactWitnessTransitionPosition
+
+
+import JSP000404Research.ExactWitnessTransitionOccurrence
