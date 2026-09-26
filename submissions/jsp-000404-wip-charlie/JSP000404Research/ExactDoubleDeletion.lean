@@ -1,6 +1,6 @@
 
 import JSP000404Research.ExactAngleWitnessRestriction
-import JSP000404Research.ConcreteSecondDeletionBridge
+import JSP000404Research.ConcreteSecondDeletionRigidity
 import Mathlib.Tactic
 
 /-!
