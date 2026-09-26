@@ -370,6 +370,29 @@ theorem cutProjectiveBandColor_mem_lower
         ⟨v, huv.symm⟩),
     Nat.lt_floor_add_one _⟩
 
+/-- The same cut band contains the reversed ray at the other endpoint. -/
+theorem cutProjectiveBandColor_mem_upper
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {t c : ℝ} (ht : 0 < t)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    (n : ℕ)
+    (htop : t < (n + 1 : ℕ))
+    {u v : V} (huv : u ≠ v) :
+    RayInCutProjectiveBand hp t c v ⟨u, huv⟩
+      (cutProjectiveBandColor hp ht hc0 hcpi n htop u v) := by
+  have hlower :=
+    cutProjectiveBandColor_mem_lower
+      hp ht hc0 hcpi n htop huv
+  have htheta :
+      cutNormalizedRayTheta hp t c v ⟨u, huv⟩ =
+        cutNormalizedRayTheta hp t c u ⟨v, huv.symm⟩ := by
+    unfold cutNormalizedRayTheta
+    rw [cutRayTheta_reverse_eq hp c huv]
+  unfold RayInCutProjectiveBand at hlower ⊢
+  rw [htheta]
+  exact hlower
+
 /-- Rotated projective-band binary edge partition. -/
 noncomputable def cutProjectiveBandPartition
     {V : Type*} [LinearOrder V]
