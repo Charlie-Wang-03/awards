@@ -185,6 +185,74 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     exact hchange
   · rfl
 
+/-- A sign change on the cyclic wrap step produces a transition occurrence
+at the wrap quotient. -/
+theorem centre_transitionQuotientOccurs_at_wrap
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest)
+    (hchange :
+      raySignAt hp i (rest.getLastD first) ≠
+        !raySignAt hp i first) :
+    TransitionQuotientOccurs
+      (wrapRayQuotient hp i t first (rest.getLastD first))
+      (raySignAt hp i first)
+      (liftedCentreSignPath hp i first rest)
+      (quotientList t C.gaps) := by
+  let qPre :=
+    consecutiveRayQuotients hp i t first rest
+  have hq :
+      quotientList t C.gaps =
+        qPre ++
+          [wrapRayQuotient hp i t first
+            (rest.getLastD first)] := by
+    dsimp [qPre]
+    exact centreQuotientList_decompose
+      C t first rest hrays
+  have hsign :
+      liftedCentreSignPath hp i first rest =
+        rest.map (raySignAt hp i) ++
+          [!raySignAt hp i first] := rfl
+  have hlen :
+      (rest.map (raySignAt hp i)).length =
+        qPre.length := by
+    dsimp [qPre]
+    rw [List.length_map]
+    exact (consecutiveRayQuotients_eq_quotientList
+      hp i t first rest) ▸
+      (quotientList_length t
+        ((successiveDiffsFrom
+          (rayThetaAt hp i first)
+          (rest.map (rayThetaAt hp i))).map
+          (fun d => d / Real.pi))).symm.trans
+        (by
+          simp [successiveDiffsFrom_length])
+  have hlast :
+      boolLastFrom
+          (raySignAt hp i first)
+          (rest.map (raySignAt hp i))
+        =
+      raySignAt hp i (rest.getLastD first) := by
+    rw [boolLastFrom_eq_getLastD, map_getLastD]
+  rw [hq, hsign]
+  apply transitionQuotientOccurs_of_split
+      (wrapRayQuotient hp i t first (rest.getLastD first))
+      (raySignAt hp i first)
+      (!raySignAt hp i first)
+      (rest.map (raySignAt hp i)) []
+      qPre []
+      (wrapRayQuotient hp i t first (rest.getLastD first))
+      hlen
+  · rw [hlast]
+    exact hchange
+  · rfl
+
 #print axioms centre_adjacent_quotient_getElem_eq
 #print axioms centre_transitionQuotientOccurs_at_adjacent_index
 
