@@ -121,8 +121,36 @@ theorem centre_adjacent_angle_quotient_mem
     adjacent_quotient_mem_quotientList
       t a xs m hm'
 
+
+/-- The cyclic wrap quotient of a nonempty angle list is an actual quotient-list
+member. -/
+theorem wrap_quotient_mem_quotientList
+    (t a : ℝ) (xs : List ℝ) :
+    Nat.floor
+        (t * ((a + Real.pi - xs.getLastD a) / Real.pi))
+      ∈
+    quotientList t (normalizedProjectiveGaps (a :: xs)) := by
+  unfold quotientList normalizedProjectiveGaps projectiveGaps
+  simp
+
+/-- Centre-cycle wrap specialization after displaying its angle list. -/
+theorem centre_wrap_quotient_mem
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t a : ℝ) (xs : List ℝ)
+    (hangles : C.angles = a :: xs) :
+    Nat.floor
+        (t * ((a + Real.pi - xs.getLastD a) / Real.pi))
+      ∈
+    quotientList t C.gaps := by
+  rw [CentreProjectiveCycle.gaps, hangles]
+  exact wrap_quotient_mem_quotientList t a xs
+
 #print axioms successiveDiffsFrom_getElem_eq_adjacent_diff
 #print axioms adjacent_diff_mem_projectiveGaps
 #print axioms centre_adjacent_angle_quotient_mem
+#print axioms wrap_quotient_mem_quotientList
+#print axioms centre_wrap_quotient_mem
 
 end JSP000404Research
