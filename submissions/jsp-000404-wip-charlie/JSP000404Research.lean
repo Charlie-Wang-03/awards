@@ -1046,3 +1046,6 @@ import JSP000404Research.ResidualUnsafeFlipDescent
 
 
 import JSP000404Research.AdjacentMinimumRayRigidity
+
+
+import JSP000404Research.SixPointThirdLayerTerminal
