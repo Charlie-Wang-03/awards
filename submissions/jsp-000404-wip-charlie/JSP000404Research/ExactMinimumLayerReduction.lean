@@ -185,7 +185,6 @@ theorem minimum_layer_eq_witness_of_card_three
       (minimumExponentVertices exponent r0).card = 3) :
     minimumExponentVertices exponent r0 =
       exactWitnessTriple W := by
-  apply Finset.Subset.antisymm hsub
   apply Finset.eq_of_subset_of_card_le hsub
   rw [hcard, exactWitnessTriple_card_eq_three W]
 
