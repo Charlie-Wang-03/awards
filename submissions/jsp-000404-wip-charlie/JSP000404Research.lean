@@ -1112,3 +1112,6 @@ import JSP000404Research.SixPointUnitPhaseCover
 
 
 import JSP000404Research.SixPointUnitGapSlots
+
+
+import JSP000404Research.SixPointNFourEquality
