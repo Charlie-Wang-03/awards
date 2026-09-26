@@ -1157,3 +1157,6 @@ import JSP000404Research.TransitionSameSignDisjoint
 
 
 import JSP000404Research.OrdinaryCriticalUnitObstruction
+
+
+import JSP000404Research.TriangleCriticalUnitDomination
