@@ -185,7 +185,7 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     exact hchange
   · rfl
 
-theorem consecutiveRayQuotients_length
+theorem centre_consecutiveRayQuotients_length
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t : ℝ)
@@ -238,7 +238,7 @@ theorem centre_transitionQuotientOccurs_at_wrap
         qPre.length := by
     dsimp [qPre]
     rw [List.length_map,
-      consecutiveRayQuotients_length hp i t first rest]
+      centre_consecutiveRayQuotients_length hp i t first rest]
   have hlast :
       boolLastFrom
           (raySignAt hp i first)
