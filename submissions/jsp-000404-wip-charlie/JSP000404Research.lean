@@ -1049,3 +1049,6 @@ import JSP000404Research.AdjacentMinimumRayRigidity
 
 
 import JSP000404Research.SixPointThirdLayerTerminal
+
+
+import JSP000404Research.SixPointSupportThreeShape
