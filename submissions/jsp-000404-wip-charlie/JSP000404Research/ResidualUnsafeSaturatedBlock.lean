@@ -50,6 +50,139 @@ namespace OrderedEdgeColoring
 
 open scoped BigOperators
 
+
+/-- On an unsafe overlap, the lower endpoint's inactive retained coordinates
+are exactly the outgoing colours gained at the upper endpoint. -/
+theorem retainedInactive_left_eq_outgoing_difference_of_unsafe_overlap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    retainedInactive C u =
+      outgoingRetained C v \ outgoingRetained C u := by
+  classical
+  have hunion :=
+    unsafe_residual_union_eq_univ C hunsafe
+  have hOutSub :=
+    outgoingRetained_subset_outgoingRetained_of_unsafe_overlap
+      C hunsafe huWord hvWord
+  ext c
+  rw [mem_retainedInactive, Finset.mem_sdiff]
+  constructor
+  · intro hInactive
+    have hcAll :
+        c ∈ incomingRetained C u ∪ outgoingRetained C v := by
+      rw [hunion]
+      simp
+    rw [Finset.mem_union] at hcAll
+    rcases hcAll with hInU | hOutV
+    · exfalso
+      apply hInactive
+      rw [retainedActive_eq_incoming_union_outgoing C u]
+      exact Finset.mem_union_left _ hInU
+    · refine ⟨hOutV, ?_⟩
+      intro hOutU
+      apply hInactive
+      rw [retainedActive_eq_incoming_union_outgoing C u]
+      exact Finset.mem_union_right _ hOutU
+  · rintro ⟨hOutV, hNotOutU⟩ hActive
+    rw [retainedActive_eq_incoming_union_outgoing C u] at hActive
+    rw [Finset.mem_union] at hActive
+    rcases hActive with hInU | hOutU
+    · exact Finset.disjoint_left.mp
+        (incoming_left_disjoint_outgoing_right_of_overlap
+          C huWord hvWord)
+        hInU hOutV
+    · exact hNotOutU hOutU
+
+/-- Symmetrically, the upper endpoint's inactive coordinates are exactly the
+incoming colours lost from lower to upper. -/
+theorem retainedInactive_right_eq_incoming_difference_of_unsafe_overlap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v) :
+    retainedInactive C v =
+      incomingRetained C u \ incomingRetained C v := by
+  classical
+  have hunion :=
+    unsafe_residual_union_eq_univ C hunsafe
+  have hInSub :=
+    incomingRetained_subset_incomingRetained_of_unsafe_overlap
+      C hunsafe huWord hvWord
+  ext c
+  rw [mem_retainedInactive, Finset.mem_sdiff]
+  constructor
+  · intro hInactive
+    have hcAll :
+        c ∈ incomingRetained C u ∪ outgoingRetained C v := by
+      rw [hunion]
+      simp
+    rw [Finset.mem_union] at hcAll
+    rcases hcAll with hInU | hOutV
+    · refine ⟨hInU, ?_⟩
+      intro hInV
+      apply hInactive
+      rw [retainedActive_eq_incoming_union_outgoing C v]
+      exact Finset.mem_union_left _ hInV
+    · exfalso
+      apply hInactive
+      rw [retainedActive_eq_incoming_union_outgoing C v]
+      exact Finset.mem_union_right _ hOutV
+  · rintro ⟨hInU, hNotInV⟩ hActive
+    rw [retainedActive_eq_incoming_union_outgoing C v] at hActive
+    rw [Finset.mem_union] at hActive
+    rcases hActive with hInV | hOutV
+    · exact hNotInV hInV
+    · exact Finset.disjoint_left.mp
+        (incoming_left_disjoint_outgoing_right_of_overlap
+          C huWord hvWord)
+        hInU hOutV
+
+/-- Exact lower-endpoint exponent as an outgoing-orientation difference. -/
+theorem exponent_eq_outgoing_difference_card_of_unsafe_overlap_saturated
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V} {word : Fin n → Bool}
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (huSat : ExactProjectedBudget C exponent u) :
+    exponent u =
+      (outgoingRetained C v \ outgoingRetained C u).card := by
+  rw [huSat]
+  unfold projectedFree
+  rw [← retainedInactive_card C u,
+      retainedInactive_left_eq_outgoing_difference_of_unsafe_overlap
+        C hunsafe huWord hvWord]
+
+/-- Exact upper-endpoint exponent as an incoming-orientation difference. -/
+theorem exponent_eq_incoming_difference_card_of_unsafe_overlap_saturated
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v : V} {word : Fin n → Bool}
+    (huWord : word ∈ retainedCompletionWords C u)
+    (hvWord : word ∈ retainedCompletionWords C v)
+    (hunsafe :
+      ¬ ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (hvSat : ExactProjectedBudget C exponent v) :
+    exponent v =
+      (incomingRetained C u \ incomingRetained C v).card := by
+  rw [hvSat]
+  unfold projectedFree
+  rw [← retainedInactive_card C v,
+      retainedInactive_right_eq_incoming_difference_of_unsafe_overlap
+        C hunsafe huWord hvWord]
+
 theorem unsafe_saturated_overlap_orientation_identity
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
