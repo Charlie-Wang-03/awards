@@ -124,6 +124,39 @@ def ExactAngleWitness.delete
   exact := by
     simpa [deletePoint] using W.exact
 
+/-- Swap the two endpoints of an exact angle witness.  The angle centre is
+unchanged and Euclidean angle is symmetric in its endpoint arguments. -/
+def ExactAngleWitness.swapEnds
+    {V : Type*}
+    {p : V → Plane}
+    {lam : ℝ}
+    (W : ExactAngleWitness p lam) :
+    ExactAngleWitness p lam where
+  a := W.c
+  b := W.b
+  c := W.a
+  hab := W.hbc.symm
+  hac := W.hac.symm
+  hbc := W.hab.symm
+  exact := by
+    rw [EuclideanGeometry.angle_comm]
+    exact W.exact
+
+@[simp] theorem ExactAngleWitness.swapEnds_a
+    {V : Type*} {p : V → Plane} {lam : ℝ}
+    (W : ExactAngleWitness p lam) :
+    W.swapEnds.a = W.c := rfl
+
+@[simp] theorem ExactAngleWitness.swapEnds_b
+    {V : Type*} {p : V → Plane} {lam : ℝ}
+    (W : ExactAngleWitness p lam) :
+    W.swapEnds.b = W.b := rfl
+
+@[simp] theorem ExactAngleWitness.swapEnds_c
+    {V : Type*} {p : V → Plane} {lam : ℝ}
+    (W : ExactAngleWitness p lam) :
+    W.swapEnds.c = W.a := rfl
+
 /-- Exact normalization is inherited by deleting any vertex outside one fixed
 attaining triple. -/
 theorem exactAngleCap_deletePoint_of_avoids_witness
