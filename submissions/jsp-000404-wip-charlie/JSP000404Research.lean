@@ -1055,3 +1055,6 @@ import JSP000404Research.SixPointSupportThreeShape
 
 
 import JSP000404Research.SixPointExactWitnessTerminal
+
+
+import JSP000404Research.SixPointExactWitnessSupportThree
