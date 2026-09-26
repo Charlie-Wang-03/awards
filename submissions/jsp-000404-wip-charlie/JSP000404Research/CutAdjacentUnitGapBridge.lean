@@ -48,7 +48,10 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       t * ((cutRayTheta hp c i (R.rays.get r) -
           cutRayTheta hp c i (R.rays.get q)) / Real.pi)
         ≤ 1 + delta) :
-    ∃ u : CentreUnitGap C t, True := by
+    ∃ u : CentreUnitGap C t, ∃ k : ℤ,
+      centreUnitGapStart C t u + (k : ℝ) * t =
+        t * c / Real.pi +
+          cutNormalizedRayTheta hp t c i (R.rays.get q) := by
   let a : OtherVertex i := R.rays.get q
   let b : OtherVertex i := R.rays.get r
   have hfloorCut :
@@ -185,10 +188,30 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
         simpa [CentreProjectiveCycle.angles] using hmHigh
       rw [hangleLow, hangleHigh, ← hgapEq]
       exact hfloorCut
-    obtain ⟨u, _hu⟩ :=
+    obtain ⟨u, hu⟩ :=
       exists_centreUnitGap_of_adjacent_floor_one
         C t m hmRays hfloor
-    exact ⟨u, trivial⟩
+    have hstartTheta :
+        rayThetaAt hp i
+            (C.rays.get (gapToRayIndex C u.1)) =
+          rayThetaAt hp i a := by
+      have hidx :
+          gapToRayIndex C u.1 =
+            (⟨m, by omega⟩ : Fin C.rays.length) := by
+        apply Fin.ext
+        simpa using hu
+      rw [hidx]
+      simpa [CentreProjectiveCycle.angles] using hmLow
+    have hstart :
+        centreUnitGapStart C t u =
+          normalizedRayTheta hp t i a := by
+      unfold centreUnitGapStart
+      rw [hstartTheta]
+    obtain ⟨k, hk⟩ :=
+      exists_period_shift_eq_cut_lift hp t c i a
+    refine ⟨u, k, ?_⟩
+    rw [hstart]
+    simpa [a] using hk
 
   · -- Canonical wrap branch: b is the minimal direction class and a the
     -- maximal direction class.
@@ -329,10 +352,47 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       rw [hfirstEq, hlastD, hlastEq, ← hgapEq]
       exact hfloorCut
 
-    obtain ⟨u, _hu⟩ :=
+    obtain ⟨u, hu⟩ :=
       exists_centreUnitGap_of_wrap_floor_one
         C t first rest hrays hfloorWrap
-    exact ⟨u, trivial⟩
+    let g : OtherVertex i :=
+      C.rays.get (gapToRayIndex C u.1)
+    have hgapVal :
+        (gapToRayIndex C u.1).val = rest.length := by
+      simpa using hu
+    have haIdxLe :
+        C.rayIndex a ≤ gapToRayIndex C u.1 := by
+      apply Fin.mk_le_mk.mpr
+      have hai := (C.rayIndex a).isLt
+      rw [hrays] at hai
+      simp only [List.length_cons] at hai
+      omega
+    have haIdxLeG :
+        C.rayIndex a ≤ C.rayIndex g := by
+      dsimp [g]
+      simpa using haIdxLe
+    have haLeG :
+        rayThetaAt hp i a ≤ rayThetaAt hp i g :=
+      C.theta_le_of_rayIndex_le haIdxLeG
+    have hgLeA :
+        rayThetaAt hp i g ≤ rayThetaAt hp i a := by
+      exact le_of_not_gt (hnoAbove g)
+    have hgTheta :
+        rayThetaAt hp i g = rayThetaAt hp i a :=
+      le_antisymm hgLeA haLeG
+    have hstart :
+        centreUnitGapStart C t u =
+          normalizedRayTheta hp t i a := by
+      unfold centreUnitGapStart
+      change
+        normalizedRayTheta hp t i g =
+          normalizedRayTheta hp t i a
+      rw [hgTheta]
+    obtain ⟨k, hk⟩ :=
+      exists_period_shift_eq_cut_lift hp t c i a
+    refine ⟨u, k, ?_⟩
+    rw [hstart]
+    simpa [a] using hk
 
 #print axioms exists_centreUnitGap_of_adjacent_cut_critical
 
