@@ -1343,3 +1343,9 @@ import JSP000404Research.CutEqualPaletteSpanTransfer
 
 
 import JSP000404Research.CutMixedSupportEqualPalette
+
+
+import JSP000404Research.CutQuotientRotation
+
+
+import JSP000404Research.CutMixedSupportOneTwoEqualPalette
