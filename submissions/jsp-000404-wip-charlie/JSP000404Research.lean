@@ -1280,3 +1280,6 @@ import JSP000404Research.MergeLastPalettePullback
 
 
 import JSP000404Research.CutMergedTwoBadOldPaletteRigidity
+
+
+import JSP000404Research.CutSupportInvariant
