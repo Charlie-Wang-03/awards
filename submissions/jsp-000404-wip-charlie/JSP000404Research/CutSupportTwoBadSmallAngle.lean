@@ -141,8 +141,23 @@ theorem exists_adjacent_source_pair_of_diff_mem_successiveDiffsFrom
       · obtain ⟨u,v,huv,hu,hv,hgEq⟩ := ih r hnd.2 hg
         exact ⟨u,v,huv, by simp [hu], by simp [hv], hgEq⟩
 
+theorem successiveDiffsFrom_length_real
+    (a : ℝ) (xs : List ℝ) :
+    (successiveDiffsFrom a xs).length = xs.length := by
+  induction xs generalizing a with
+  | nil => rfl
+  | cons b bs =>
+      simp [successiveDiffsFrom, successiveDiffsFrom_length_real b bs]
+
+theorem cyclicRealGapsAt_length_cons
+    (width a : ℝ) (xs : List ℝ) :
+    (cyclicRealGapsAt width (a :: xs)).length =
+      (a :: xs).length := by
+  simp [cyclicRealGapsAt, successiveDiffsFrom_length_real]
+
 theorem support_two_zero_gap_mass_le_one_add_delta
     {gs : List ℝ} {n : ℕ} {delta : ℝ}
+    (hn1 : 1 ≤ n)
     (hg0 : ∀ g ∈ gs, 0 ≤ g)
     (hgsum : gs.sum = (n : ℝ) + delta)
     (hqsum : (gs.map Nat.floor).sum = n - 1) :
@@ -158,13 +173,10 @@ theorem support_two_zero_gap_mass_le_one_add_delta
       hgsum, hqsum] at hmass
   norm_num at hmass
   have hncast :
-      (((n - 1 : ℕ) : ℝ)) ≥ (n : ℝ) - 1 := by
-    by_cases hn0 : n = 0
-    · subst n
-      norm_num
-    · have hn1 : 1 ≤ n := by omega
-      rw [Nat.cast_sub hn1]
-      norm_num
+      (((n - 1 : ℕ) : ℝ)) = (n : ℝ) - 1 := by
+    rw [Nat.cast_sub hn1]
+    norm_num
+  rw [hncast] at hmass
   linarith
 
 /-- Main support-two bad-centre small-pair theorem. -/
@@ -289,15 +301,15 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
     rw [hqExp, hqPos] at hid
     omega
 
+  have hvalsLen :
+      (a :: xs).length = 5 := by
+    rw [← hvalues]
+    simp [CentreCutRayCycle.normalizedValues,
+      centreRayList_length_eq_five_of_card_six
+        (C i) hcardV]
   have hgsLen : gs.length = 5 := by
     dsimp [gs]
-    have hvalsLen :
-        (a :: xs).length = 5 := by
-      rw [← hvalues]
-      simp [CentreCutRayCycle.normalizedValues,
-        centreRayList_length_eq_five_of_card_six
-          (C i) hcardV]
-    simp [cyclicRealGapsAt, hvalsLen]
+    rw [cyclicRealGapsAt_length_cons, hvalsLen]
   have hzeroLen :
       (zeroGapValues (gs.map Nat.floor) gs).length = 3 := by
     rw [zeroGapValues_length _ _ (by simp)]
@@ -311,7 +323,7 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
       (zeroGapValues (gs.map Nat.floor) gs).sum ≤ 1 + delta := by
     rw [zeroGapValues_sum _ _ (by simp)]
     exact support_two_zero_gap_mass_le_one_add_delta
-      hgs0 hgsum hqsum
+      (by omega : 1 ≤ n) hgs0 hgsum hqsum
 
   obtain ⟨g,hgZero,hgSmall⟩ :=
     exists_le_third_of_nonneg_length_three
