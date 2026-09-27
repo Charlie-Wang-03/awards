@@ -184,13 +184,11 @@ theorem exists_gapQuotients_rotation
     | nil =>
         cases hhighList : highAngles with
         | nil =>
-            have hcanonNil : C.angles = [] := by
-              rw [← hangleDecomp, hlowList, hhighList]
+            have hcutNil : cutAngles = [] := by
+              dsimp [cutAngles]
+              rw [hlowList, hhighList]
               rfl
-            have hraysNil : C.rays = [] := by
-              unfold CentreProjectiveCycle.angles at hcanonNil
-              exact List.eq_nil_of_map_eq_nil hcanonNil
-            exact False.elim (C.nonempty hraysNil)
+            exact False.elim (hcutNe hcutNil)
         | cons b bs =>
             refine ⟨0, ?_⟩
             unfold CentreProjectiveCycle.gaps
