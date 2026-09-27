@@ -185,7 +185,10 @@ theorem equal_merge_image_old_palettes_differ_only_boundary
           (0 : Fin (n + 1)) ∈ T ∨ Fin.last n ∈ T :=
         hboundary.mp (Or.inl h0S)
       rcases hTsome with h0T | hnT
-      · left
+      · have hnTnot : Fin.last n ∉ T := by
+          intro h
+          exact hTboundary ⟨h0T, h⟩
+        left
         ext a
         by_cases ha0 : a.val = 0
         · have haZero : a = (0 : Fin (n + 1)) := Fin.ext ha0
@@ -196,13 +199,12 @@ theorem equal_merge_image_old_palettes_differ_only_boundary
               apply Fin.ext
               simpa using haN
             subst a
-            simp [hnS]
-            exact not_congr (not_congr? )
+            simp [hnS, hnTnot]
           · have hapos : 0 < a.val := by omega
             have halt : a.val < n := by
               have hale : a.val ≤ n := by omega
               omega
-            exact propext (hinterior a hapos halt)
+            exact hinterior a hapos halt
       · right
         left
         have h0T : (0 : Fin (n + 1)) ∉ T := by
@@ -240,7 +242,7 @@ theorem equal_merge_image_old_palettes_differ_only_boundary
             have halt : a.val < n := by
               have hale : a.val ≤ n := by omega
               omega
-            exact propext (hinterior a hapos halt)
+            exact hinterior a hapos halt
     · have hTnone :
           (0 : Fin (n + 1)) ∉ T ∧ Fin.last n ∉ T := by
         have hnot :
@@ -266,7 +268,7 @@ theorem equal_merge_image_old_palettes_differ_only_boundary
           have halt : a.val < n := by
             have hale : a.val ≤ n := by omega
             omega
-          exact propext (hinterior a hapos halt)
+          exact hinterior a hapos halt
 
 #print axioms mergeLastColor_eq_implies_eq_of_positive_lt_last
 #print axioms interior_mem_iff_of_equal_merge_image
