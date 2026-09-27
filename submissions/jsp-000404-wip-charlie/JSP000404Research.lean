@@ -1313,3 +1313,6 @@ import JSP000404Research.CutSupportOneBadPalette
 
 
 import JSP000404Research.CutSupportOneBadConsecutivePalette
+
+
+import JSP000404Research.CutBadOrdinaryMismatchShape
