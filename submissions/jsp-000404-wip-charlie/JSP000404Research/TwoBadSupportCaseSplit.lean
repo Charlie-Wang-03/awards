@@ -1,5 +1,5 @@
 import JSP000404Research.ConcreteDeficitThree
-import JSP000404Research.TwoSupportOneImpossible
+import JSP000404Research.SixPointNoTwoSupportOneMinima
 import Mathlib.Tactic
 
 /-!
