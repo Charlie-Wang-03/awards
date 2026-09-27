@@ -1331,3 +1331,15 @@ import JSP000404Research.TwoBadSupportCaseSplit
 
 
 import JSP000404Research.TwoBadSmallPairIncidence
+
+
+import JSP000404Research.CutActiveFloorEquiv
+
+
+import JSP000404Research.CutBadFourConsecutiveStepShape
+
+
+import JSP000404Research.CutEqualPaletteSpanTransfer
+
+
+import JSP000404Research.CutMixedSupportEqualPalette
