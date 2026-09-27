@@ -1271,3 +1271,12 @@ import JSP000404Research.WeightedHanselSlice
 
 
 import JSP000404Research.SixPointMergedTwoBadActiveSet
+
+
+import JSP000404Research.CutMergedTwoBadActiveRigidity
+
+
+import JSP000404Research.MergeLastPalettePullback
+
+
+import JSP000404Research.CutMergedTwoBadOldPaletteRigidity
