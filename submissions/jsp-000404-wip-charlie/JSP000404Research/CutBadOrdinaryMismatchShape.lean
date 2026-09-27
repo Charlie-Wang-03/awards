@@ -1,4 +1,5 @@
 import JSP000404Research.CutSaturatedSupportMismatch
+import JSP000404Research.ConcreteDeficitThree
 import JSP000404Research.CutSaturationTurnSlotBridge
 import Mathlib.Tactic
 
@@ -410,15 +411,29 @@ theorem cutSaturationBadAt_ordinary_step_counts
       at hmismatch
     simpa using hmismatch
 
+  have hsRange : s = 1 ∨ s = 2 ∨ s = 3 := by
+    rcases concrete_deficit_three_structure
+        (C i) (by omega : 4 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hexp
+      with h1 | h2 | h3
+    · left
+      rw [← hsupport]
+      exact h1.1
+    · right
+      left
+      rw [← hsupport]
+      exact h2.1
+    · right
+      right
+      rw [← hsupport]
+      exact h3.1
+
   have hbOrdSupport :
       listPositiveCount bOrd = 3 := by
     have hcount :=
       positiveCount_eq_add_mismatch_of_forall₂_le hdomOrd
     rw [hqOrdSupport, hmismatchOrd] at hcount
-    have hsLe4 : s ≤ 4 := by
-      have hmis0 : 0 ≤ zeroPositiveMismatchCount qOrd bOrd := Nat.zero_le _
-      omega
-    omega
+    rcases hsRange with rfl | rfl | rfl <;> norm_num at hcount ⊢ <;> omega
 
   have hunitOrd :
       List.Forall₂
