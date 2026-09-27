@@ -1295,3 +1295,6 @@ import JSP000404Research.CutSupportThreeBadSmallAngle
 
 
 import JSP000404Research.CutTwoBadSupportThreeSharedColour
+
+
+import JSP000404Research.CutSupportThreeBadSameBand
