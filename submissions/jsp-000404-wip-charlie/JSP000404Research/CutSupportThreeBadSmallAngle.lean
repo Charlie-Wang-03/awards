@@ -260,7 +260,7 @@ theorem cutRayTheta_le_of_cutNormalized_le
     div_pos ht Real.pi_pos
   have h' :
       (t / Real.pi) * cutRayTheta hp c i u ≤
-        (t / Real.pi) * cutRayTheta hp c i i v := by
+        (t / Real.pi) * cutRayTheta hp c i v := by
     simpa [div_eq_mul_inv, mul_assoc, mul_left_comm,
       mul_comm] using h
   exact (mul_le_mul_left hcoef).mp h'
