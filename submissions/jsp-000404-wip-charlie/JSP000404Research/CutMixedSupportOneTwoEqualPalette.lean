@@ -29,6 +29,8 @@ Euclidean angle of at least (n-2)*lambda.
 
 namespace JSP000404Research
 
+open BinaryEdgePartition
+
 theorem cut_equal_palette_support_two_transition_qe_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
