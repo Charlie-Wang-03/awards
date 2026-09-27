@@ -215,7 +215,8 @@ theorem uncovered_cut_two_bad_minima_rigidity
 
   have huNe : u₁ ≠ u₂ := by
     intro hEq
-    have hfirst := congrArg Sigma.fst hEq
+    have hfirst :=
+      congrArg (fun u : GlobalTurnUnitSlot C t => u.1) hEq
     rw [hu₁Centre, hu₂Centre] at hfirst
     exact hb₁₂ hfirst
 
