@@ -1298,3 +1298,15 @@ import JSP000404Research.CutTwoBadSupportThreeSharedColour
 
 
 import JSP000404Research.CutSupportThreeBadSameBand
+
+
+import JSP000404Research.CutSupportTwoBadSmallAngle
+
+
+import JSP000404Research.TwoScaledSmallAngleContradiction
+
+
+import JSP000404Research.CutSupportThreeBadSameBandAngle
+
+
+import JSP000404Research.CutSupportOneBadPalette
