@@ -232,7 +232,7 @@ theorem cut_equal_palette_support_two_exact_cut_shape
 
   have hvalsEq :
       x0 :: xs = x02 :: xs2 := by
-    rw [← hvalues, hvalues2]
+    rw [← hvalues, ← hvalues2]
     -- Both cut cycles are sorted complete enumerations, hence their normalized
     -- value lists coincide.
     exact List.Perm.eq_of_pairwise
