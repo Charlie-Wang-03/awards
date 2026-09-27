@@ -80,7 +80,7 @@ theorem two_bad_minima_support_five_cases
   rcases hsa with hsa1 | hsa2 | hsa3 <;>
     rcases hsb with hsb1 | hsb2 | hsb3
   · exfalso
-    exact no_top_two_deficit_three_support_one
+    exact no_sharp_with_two_deficit_three_support_one
       hp hcap hn5 hdelta0 hdeltaHalf ht hlam
       hta htb hab Ctop Ca Cb hTop hA hB hsa1 hsb1
   · exact Or.inl ⟨hsa1, hsb2⟩
