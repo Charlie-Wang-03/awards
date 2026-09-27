@@ -1310,3 +1310,6 @@ import JSP000404Research.CutSupportThreeBadSameBandAngle
 
 
 import JSP000404Research.CutSupportOneBadPalette
+
+
+import JSP000404Research.CutSupportOneBadConsecutivePalette
