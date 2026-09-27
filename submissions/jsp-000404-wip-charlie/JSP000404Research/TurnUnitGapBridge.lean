@@ -120,6 +120,93 @@ theorem exists_centreTurnUnitSlot_of_wrap_floor
   refine ⟨u, rfl, rfl, ?_⟩
   simpa [centreTurnUnitGapQuotient, u, rGap] using hqGap
 
+/-- Reading an ordinary slot by its gap index recovers the actual scaled
+adjacent canonical gap. -/
+theorem centreTurnUnitGapScaledLength_eq_adjacent
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ)
+    (u : CentreTurnUnitSlot C t)
+    (m : ℕ)
+    (hm : m + 1 < C.rays.length)
+    (hu : u.1.val = m) :
+    centreTurnUnitGapScaledLength C t u =
+      t * ((rayThetaAt hp i
+          (C.rays.get ⟨m + 1, hm⟩) -
+        rayThetaAt hp i
+          (C.rays.get ⟨m, by omega⟩)) / Real.pi) := by
+  unfold centreTurnUnitGapScaledLength
+  have hr :
+      u.1 = ⟨m, by
+        rw [C.gaps_length]
+        omega⟩ := by
+    apply Fin.ext
+    exact hu
+  rw [hr]
+  obtain ⟨first, rest, hrays⟩ :
+      ∃ first rest, C.rays = first :: rest := by
+    cases h : C.rays with
+    | nil => exact False.elim (C.nonempty h)
+    | cons first rest => exact ⟨first, rest, h⟩
+  have hmA : m + 1 < C.angles.length := by
+    simpa [C.angles_length] using hm
+  have hq :=
+    centre_adjacent_quotient_getElem_eq C t m hmA
+  unfold centreQuotient quotientList at hq
+  simp only [List.getElem_map] at hq
+  have hgap :
+      C.gaps[m] =
+        (C.angles[m + 1] - C.angles[m]) / Real.pi := by
+    have hfloorDummy :
+        Nat.floor (t * C.gaps[m]) =
+          Nat.floor
+            (t * ((C.angles[m + 1] - C.angles[m]) / Real.pi)) := hq
+    -- identify the gap itself from the concrete cyclic-gap definition,
+    -- independently of flooring.
+    rw [CentreProjectiveCycle.gaps]
+    obtain ⟨a, xs, hangles⟩ :
+        ∃ a xs, C.angles = a :: xs := by
+      cases ha : C.angles with
+      | nil => exact False.elim (C.angles_nonempty ha)
+      | cons a xs => exact ⟨a, xs, ha⟩
+    rw [hangles]
+    have hmTail : m < xs.length := by
+      rw [hangles] at hmA
+      simpa using hmA
+    simp [normalizedProjectiveGaps, projectiveGaps,
+      hmTail, successiveDiffsFrom_getElem_eq_adjacent_diff
+        a xs m hmTail]
+  rw [hgap]
+  simp [CentreProjectiveCycle.angles]
+
+/-- Reading the final slot recovers the actual scaled canonical wrap gap. -/
+theorem centreTurnUnitGapScaledLength_eq_wrap
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (t : ℝ)
+    (u : CentreTurnUnitSlot C t)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest)
+    (hu : u.1.val = rest.length) :
+    centreTurnUnitGapScaledLength C t u =
+      t * ((rayThetaAt hp i first + Real.pi -
+        rayThetaAt hp i (rest.getLastD first)) / Real.pi) := by
+  unfold centreTurnUnitGapScaledLength
+  have hr :
+      u.1 = ⟨rest.length, by
+        rw [C.gaps_length, hrays]
+        simp⟩ := by
+    apply Fin.ext
+    exact hu
+  rw [hr]
+  rw [CentreProjectiveCycle.gaps,
+      CentreProjectiveCycle.angles, hrays]
+  simp [normalizedProjectiveGaps, projectiveGaps,
+    successiveDiffsFrom_length, map_getLastD]
+
 /-- Start of an ordinary constructed slot is the normalized direction at the
 left endpoint of the corresponding adjacent canonical gap. -/
 theorem centreTurnUnitStart_eq_adjacent_left
