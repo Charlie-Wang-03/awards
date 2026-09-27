@@ -153,6 +153,137 @@ theorem cut_equal_palette_support_two_transition_qe_eq_one
     rw [hEqWrap] at hHle
     omega
 
+/-- Exact cut quotient shape in the support-(1,2) equal-palette branch:
+the ordinary quotient list has sum one and exactly one positive entry, while
+the cut-wrap quotient is n-2. -/
+theorem cut_equal_palette_support_two_exact_cut_shape
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hcardV : Fintype.card V = 6)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hc0 : 0 ≤ c)
+    (hcpi : c < Real.pi)
+    {a b : V}
+    (hA : centreExponent (C a) t = n - 3)
+    (hB : centreExponent (C b) t = n - 3)
+    (hsupA :
+      positiveSupport (centreQuotient (C a) t) = 1)
+    (hsupB :
+      positiveSupport (centreQuotient (C b) t) = 2)
+    (hBadA :
+      CutSaturationBadAt
+        hp hcap C
+        (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht)
+        hlam ht hdelta0 (by linarith : delta < 1)
+        hc0 hcpi a)
+    (hBadB :
+      CutSaturationBadAt
+        hp hcap C
+        (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht)
+        hlam ht hdelta0 (by linarith : delta < 1)
+        hc0 hcpi b)
+    (hactiveEq :
+      active
+          (cutProjectiveBandPartition
+            hp hcap
+            (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht)
+            hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith)) a
+        =
+      active
+          (cutProjectiveBandPartition
+            hp hcap
+            (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht)
+            hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith)) b) :
+    ∃ R : CentreCutRayCycle hp (C b) c,
+      ∃ x0 : ℝ, ∃ xs : List ℝ,
+        R.normalizedValues t = x0 :: xs ∧
+        let qOrd := (successiveDiffsFrom x0 xs).map Nat.floor
+        let qWrap := Nat.floor (x0 + t - xs.getLastD x0)
+        qOrd.sum = 1 ∧
+        listPositiveCount qOrd = 1 ∧
+        qWrap = n - 2 ∧
+        R.gapQuotients t = qOrd ++ [qWrap] := by
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+
+  obtain ⟨R,x0,xs,hvalues,_hspan,
+      _hqLen,_hbLen,_hdom,hqPos,_hbPos,hqLe⟩ :=
+    support_one_equal_palette_forces_other_ordinary_quotients_le_one
+      hp hcap C hcardV hn5 htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi
+      hA hB hsupA hsupB hBadA hBadB hactiveEq
+
+  obtain ⟨R2,x02,xs2,hvalues2,hwrap2⟩ :=
+    support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
+      hp hcap C hcardV hn5 htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi
+      hA hB hsupA hsupB hBadA hBadB hactiveEq
+
+  have hvalsEq :
+      x0 :: xs = x02 :: xs2 := by
+    rw [← hvalues, hvalues2]
+    -- Both cut cycles are sorted complete enumerations, hence their normalized
+    -- value lists coincide.
+    exact List.Perm.eq_of_pairwise
+      (fun x y _ _ hxy hyx => le_antisymm hxy hyx)
+      (by simpa [hvalues] using R.normalizedValues_pairwise htpos.le)
+      (by simpa [hvalues2] using R2.normalizedValues_pairwise htpos.le)
+      (by
+        have hpR := R.rays_perm_canonical
+        have hpR2 := R2.rays_perm_canonical
+        have hperm := hpR.trans hpR2.symm
+        simpa [CentreCutRayCycle.normalizedValues] using
+          hperm.map (cutNormalizedRayTheta hp t c b))
+
+  have hx0 : x0 = x02 := (List.cons.inj hvalsEq).1
+  have hxs : xs = xs2 := (List.cons.inj hvalsEq).2
+  subst x02
+  subst xs2
+
+  let qOrd := (successiveDiffsFrom x0 xs).map Nat.floor
+  let qWrap := Nat.floor (x0 + t - xs.getLastD x0)
+
+  have hqOrdSum :
+      qOrd.sum = 1 := by
+    have hsumCount :=
+      list_sum_eq_positiveCount_of_all_le_one qOrd
+        (by
+          intro q hq
+          exact hqLe q hq)
+    dsimp [qOrd] at hsumCount
+    rw [hqPos] at hsumCount
+    simpa using hsumCount
+
+  have hqPos1 :
+      listPositiveCount qOrd = 1 := by
+    dsimp [qOrd]
+    simpa using hqPos
+
+  have hwrap :
+      qWrap = n - 2 := by
+    dsimp [qWrap]
+    exact hwrap2
+
+  have hdecomp :
+      R.gapQuotients t = qOrd ++ [qWrap] := by
+    unfold CentreCutRayCycle.gapQuotients
+    rw [hvalues]
+    simpa [qOrd,qWrap] using
+      linearCyclicGapQuotients_cons_decompose t x0 xs
+
+  exact ⟨R,x0,xs,hvalues,hqOrdSum,hqPos1,hwrap,hdecomp⟩
+
 /-- Equal old palettes in the support-(1,2) branch force a hidden genuine
 same-sign angle of at least (n-2)*lambda at the support-two bad minimum. -/
 theorem cut_equal_palette_support_one_two_hidden_large_angle
