@@ -154,10 +154,10 @@ noncomputable def cutBoundaryWrapBit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
     {t delta c : ℝ}
+    (n : ℕ)
     (htpos : 0 < t)
     (htop : t < (n + 1 : ℕ))
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
-    (n : ℕ)
     (i : V) : Bool :=
   if h :
       ∃ j : OtherVertex i,
@@ -187,9 +187,9 @@ theorem cutBoundaryWrapBit_eq_shortSign
     (hj :
       CutBoundaryRay hp htpos hc0 hcpi n
         (by rw [ht]; push_cast; linarith) i j) :
-    cutBoundaryWrapBit hp htpos
+    cutBoundaryWrapBit hp n htpos
         (by rw [ht]; push_cast; linarith)
-        hc0 hcpi n i
+        hc0 hcpi i
       =
     cutRaySign hp (boundaryShortCut t delta c) i j := by
   unfold cutBoundaryWrapBit
@@ -224,7 +224,7 @@ theorem cutBoundaryWrapBit_separates
       cutProjectiveBandPartition
         hp hcap htpos hlam hc0 hcpi n htop
     let wrapBit :=
-      cutBoundaryWrapBit hp htpos htop hc0 hcpi n
+      cutBoundaryWrapBit hp n htpos htop hc0 hcpi
     ∀ {u v : V}, u < v →
       ((P.edgeColor u v).val = 0 ∨
         (P.edgeColor u v).val = n) →
