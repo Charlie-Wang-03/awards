@@ -295,10 +295,10 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
         (4 * B) * Q + (2 * B) * U.card := by
     rw [finset_sum_split_predicate O
       (fun w => c ∈ active P w) F]
-    simpa [A, U, hFA, hFU] using congrArg id (show
+    change
       (∑ w ∈ A, F w) + (∑ w ∈ U, F w) =
-        (4 * B) * Q + (2 * B) * U.card by
-          rw [hFA, hFU])
+        (4 * B) * Q + (2 * B) * U.card
+    rw [hFA, hFU]
 
   have hslice :=
     false_slice_card_sum_eq
@@ -514,6 +514,31 @@ theorem exists_ordinary_reduced_active_subset_bad
   have huD : u ∈ D := by
     simp [D, huO, hdU]
 
+  have huv : u ≠ v := by
+    intro h
+    subst u
+    exact huA hvA
+  have huw : u ≠ w := by
+    intro h
+    subst u
+    exact huA hwA
+
+  have hthreeCard :
+      ({v,w,u} : Finset V).card = 3 := by
+    simp [hwne, huv, huw]
+  have hthreeSub :
+      ({v,w,u} : Finset V) ⊆ O := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact hvO
+    · exact hwO
+    · exact huO
+  have hthreeEq :
+      ({v,w,u} : Finset V) = O := by
+    apply Finset.eq_of_subset_of_card_le hthreeSub
+    rw [hthreeCard, hOcard]
+
   -- At least one of v,w also uses d.
   have hotherD :
       v ∈ D ∨ w ∈ D := by
@@ -522,39 +547,9 @@ theorem exists_ordinary_reduced_active_subset_bad
     have hsubset : D ⊆ {u} := by
       intro x hxD
       have hxO := (Finset.mem_filter.mp hxD).1
-      have hxCases : x = v ∨ x = w ∨ x = u := by
-        have hOeq : O = {v,w,u} := by
-          apply Finset.eq_of_subset_of_card_le
-          · intro x hx
-            by_contra hxCases
-            have hxv : x ≠ v := by tauto
-            have hxw : x ≠ w := by tauto
-            have hxu : x ≠ u := by tauto
-            have hfour :
-                4 ≤ O.card := by
-              have hset :
-                  {v,w,u,x} ⊆ O := by
-                intro y hy
-                simp only [Finset.mem_insert, Finset.mem_singleton] at hy
-                rcases hy with rfl | rfl | rfl | rfl
-                · exact hvO
-                · exact hwO
-                · exact huO
-                · exact hxO
-              have hcard4 :
-                  ({v,w,u,x} : Finset V).card = 4 := by
-                simp [hwne, hxv, hxw, hxu,
-                  show u ≠ v by
-                    intro h; subst u; exact huA hvA,
-                  show u ≠ w by
-                    intro h; subst u; exact huA hwA]
-              rw [← hcard4]
-              exact Finset.card_le_card hset
-            omega
-          · simp [hOcard]
-        rw [hOeq] at hxO
-        simpa using hxO
-      rcases hxCases with rfl | rfl | rfl
+      rw [← hthreeEq] at hxO
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hxO
+      rcases hxO with rfl | rfl | rfl
       · exact False.elim (hnoneVW.1 hxD)
       · exact False.elim (hnoneVW.2 hxD)
       · simp
@@ -617,7 +612,7 @@ theorem exists_ordinary_reduced_active_subset_bad
           exact Finset.card_le_card hs
         rw [hredCard] at h3
         omega
-      · simp [hredCard]
+      · simp [hredCard, hcd]
     -- But edge v--bad₁ needs a non-root colour in both active sets.
     rcases lt_or_gt_of_ne hvne.2.1 with hvb | hbv
     · let e := P.edgeColor v bad₁
