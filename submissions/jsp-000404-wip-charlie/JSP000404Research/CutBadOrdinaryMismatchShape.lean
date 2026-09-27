@@ -59,6 +59,31 @@ theorem zeroPositiveMismatchCount_singleton_of_q_ne_zero
     zeroPositiveMismatchCount [q] [b] = 0 := by
   simp [zeroPositiveMismatchCount, hq]
 
+theorem forall₂_left_of_append_of_length
+    {α β : Type*} {R : α → β → Prop}
+    (xs ys : List α) (as bs : List β)
+    (hlen : xs.length = as.length)
+    (h :
+      List.Forall₂ R (xs ++ ys) (as ++ bs)) :
+    List.Forall₂ R xs as := by
+  induction xs generalizing as with
+  | nil =>
+      have has : as = [] :=
+        List.length_eq_zero.mp (by simpa using hlen.symm)
+      subst as
+      exact List.Forall₂.nil
+  | cons x xs ih =>
+      cases as with
+      | nil =>
+          simp at hlen
+      | cons a as =>
+          simp only [List.length_cons, Nat.succ.injEq] at hlen
+          simp only [List.cons_append] at h
+          cases h with
+          | cons hxa htail =>
+              exact List.Forall₂.cons hxa
+                (ih as hlen htail)
+
 /-- Exact cyclic decomposition of the linear quotient list. -/
 theorem linearCyclicGapQuotients_cons_decompose
     (t a : ℝ) (xs : List ℝ) :
@@ -202,7 +227,8 @@ theorem cutSaturationBadAt_ordinary_mismatch_shape
         (fun q b => q = 0 ∧ b ≠ 0 → b = 1)
         qOrd bOrd := by
     rw [hqDecomp, hbDecomp] at hunit
-    exact (List.forall₂_append_left_iff.mp hunit).1
+    exact forall₂_left_of_append_of_length
+      qOrd [qWrap] bOrd [bWrap] hlenOrd hunit
 
   exact ⟨R, a, xs, hvalues,
     hmismatchOrd, hunitOrd⟩
