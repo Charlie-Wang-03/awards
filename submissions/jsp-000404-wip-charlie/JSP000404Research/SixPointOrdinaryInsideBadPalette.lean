@@ -456,11 +456,16 @@ theorem exists_ordinary_reduced_active_subset_bad
     simpa [A, O] using hused2
   obtain ⟨w, hwA, hwne⟩ :
       ∃ w ∈ A, w ≠ v := by
-    have htwo : 1 < A.card := by rw [hAcard]
-    have hex :=
-      Finset.exists_ne_of_one_lt_card htwo v
-    obtain ⟨w, hw, hwv⟩ := hex
-    exact ⟨w, hw, hwv⟩
+    have hEraseCard : (A.erase v).card = 1 := by
+      rw [Finset.card_erase_of_mem hvA, hAcard]
+    have hEraseNonempty : (A.erase v).Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]
+      intro hnil
+      rw [hnil] at hEraseCard
+      simp at hEraseCard
+    obtain ⟨w, hwErase⟩ := hEraseNonempty
+    have hw := Finset.mem_erase.mp hwErase
+    exact ⟨w, hw.2, hw.1⟩
 
   have hwO : w ∈ O := (Finset.mem_filter.mp hwA).1
   have hcW : c ∈ active P w := (Finset.mem_filter.mp hwA).2
@@ -475,7 +480,7 @@ theorem exists_ordinary_reduced_active_subset_bad
     have hlt : A.card < O.card := by
       rw [hAcard, hOcard]
     obtain ⟨u, huO, huA⟩ :=
-      Finset.exists_mem_not_mem_of_card_lt_card hlt
+      Finset.exists_mem_notMem_of_card_lt_card hlt
     exact ⟨u, huO, huA⟩
 
   have huNe : u ≠ top ∧ u ≠ bad₁ ∧ u ≠ bad₂ := by
