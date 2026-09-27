@@ -1262,3 +1262,6 @@ import JSP000404Research.CyclicFiniteSampling
 
 
 import JSP000404Research.SixPointTopSafeLargeN
+
+
+import JSP000404Research.SixPointNoTwoSupportOneMinima
