@@ -96,7 +96,7 @@ theorem normalizedValues_head_last_of_rays_cons
 end CentreCutRayCycle
 
 /-- Main canonicalization theorem. -/
-theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
+theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
     (hcap : AngleCap p lam)
@@ -136,6 +136,7 @@ theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
             i
       )) :
     ∃ u : CentreTurnUnitSlot C t,
+      2 ≤ centreTurnUnitGapQuotient C t u ∧
       CentreCyclicTurnUnitBadAt
         C t delta u (t * c / Real.pi) := by
   obtain ⟨low, high, R, hdecomp, hlow, hhigh, hRays⟩ :=
@@ -234,8 +235,10 @@ theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
               cutNormalizedRayTheta_eq_normalized_sub_phase_of_ge
                 hp t (rest.getLastD first) hlastHigh]
             ring
-          refine ⟨u, ?_⟩
-          unfold CentreCyclicTurnUnitBadAt
+          refine ⟨u, ?_, ?_⟩
+          · rw [huQ]
+            exact hseam'.1
+          · unfold CentreCyclicTurnUnitBadAt
           refine ⟨(-1 : ℤ), ?_, ?_⟩
           dsimp
           rw [hstart, hlen, huQ]
@@ -324,8 +327,10 @@ theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
               cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
                 hp t (lowRest.getLastD lowFirst) hlastLow]
             ring
-          refine ⟨u, ?_⟩
-          unfold CentreCyclicTurnUnitBadAt
+          refine ⟨u, ?_, ?_⟩
+          · rw [huQ]
+            exact hseam'.1
+          · unfold CentreCyclicTurnUnitBadAt
           refine ⟨(0 : ℤ), ?_, ?_⟩
           dsimp
           rw [hstart, hlen, huQ]
@@ -443,8 +448,10 @@ theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
               cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
                 hp t (lowRest.getLastD lowFirst) hlastLow]
             ring
-          refine ⟨u, ?_⟩
-          unfold CentreCyclicTurnUnitBadAt
+          refine ⟨u, ?_, ?_⟩
+          · rw [huQ]
+            exact hseam'.1
+          · unfold CentreCyclicTurnUnitBadAt
           refine ⟨(0 : ℤ), ?_, ?_⟩
           dsimp
           rw [hstart, hlen, huQ]
@@ -458,6 +465,56 @@ theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
             rw [hbeta] at hhi
             linarith
 
+/-- Backward-compatible form retaining only the periodic badness witness. -/
+theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (hsat :
+      centreExponent C t +
+        (BinaryEdgePartition.active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i).card
+        =
+      n + 1)
+    (hfail :
+      ¬ (
+        (0 : Fin (n + 1)) ∈
+          BinaryEdgePartition.active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+        ∧
+        Fin.last n ∈
+          BinaryEdgePartition.active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+      )) :
+    ∃ u : CentreTurnUnitSlot C t,
+      CentreCyclicTurnUnitBadAt
+        C t delta u (t * c / Real.pi) := by
+  obtain ⟨u, _huLarge, hubad⟩ :=
+    exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
+      hp hcap hn htpos hlam ht hdelta0 hdeltaHalf
+      hc0 hcpi C hsat hfail
+  exact ⟨u, hubad⟩
+
+#print axioms exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
 #print axioms exists_canonical_turnUnit_bad_of_cut_saturated_failure
 
 end JSP000404Research
