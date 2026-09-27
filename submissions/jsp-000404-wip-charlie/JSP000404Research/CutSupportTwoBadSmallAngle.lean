@@ -116,9 +116,11 @@ theorem exists_adjacent_source_pair_of_diff_mem_successiveDiffsFrom
     (f : α → ℝ)
     (first : α)
     (rest : List α)
+    (hnodup : (first :: rest).Nodup)
     {g : ℝ}
     (hg : g ∈ successiveDiffsFrom (f first) (rest.map f)) :
     ∃ u v : α,
+      u ≠ v ∧
       u ∈ first :: rest ∧
       v ∈ first :: rest ∧
       g = f v - f u := by
@@ -126,12 +128,18 @@ theorem exists_adjacent_source_pair_of_diff_mem_successiveDiffsFrom
   | nil =>
       simp [successiveDiffsFrom] at hg
   | cons r rs ih =>
+      have hnd := List.nodup_cons.mp hnodup
+      have htail := List.nodup_cons.mp hnd.2
       simp only [List.map_cons, successiveDiffsFrom,
         List.mem_cons] at hg
       rcases hg with rfl | hg
-      · exact ⟨first, r, by simp, by simp, rfl⟩
-      · obtain ⟨u,v,hu,hv,hgEq⟩ := ih r hg
-        exact ⟨u,v, by simp [hu], by simp [hv], hgEq⟩
+      · have hfr : first ≠ r := by
+          intro h
+          apply hnd.1
+          simp [h]
+        exact ⟨first, r, hfr, by simp, by simp, rfl⟩
+      · obtain ⟨u,v,huv,hu,hv,hgEq⟩ := ih r hnd.2 hg
+        exact ⟨u,v,huv, by simp [hu], by simp [hv], hgEq⟩
 
 theorem support_two_zero_gap_mass_le_one_add_delta
     {gs : List ℝ} {n : ℕ} {delta : ℝ}
@@ -341,24 +349,14 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
           xs =
             rest.map (cutNormalizedRayTheta hp t c i) :=
         (List.cons.inj hvalues').2
-      obtain ⟨u,v,huMem,hvMem,hgEq⟩ :=
+      have hnod :
+          (first :: rest).Nodup := by
+        simpa [hrays] using R.nodup
+      obtain ⟨u,v,huv,huMem,hvMem,hgEq⟩ :=
         exists_adjacent_source_pair_of_diff_mem_successiveDiffsFrom
           (cutNormalizedRayTheta hp t c i)
-          first rest
+          first rest hnod
           (by simpa [ha,hxs] using hgSucc)
-      have huv : u ≠ v := by
-        intro huvEq
-        subst v
-        rw [sub_self] at hgEq
-        have hg0 : 0 ≤ g := hgs0 g hgMem
-        have hsmallPos :
-            g < 1 := Nat.floor_eq_zero.mp hgFloor
-        have hbandImpossible :
-            False := by
-          have hzero : g = 0 := by linarith
-          rw [hzero] at hgFloor
-          norm_num at hgFloor
-        exact hbandImpossible.elim
       have hcoordOrder :
           cutNormalizedRayTheta hp t c i u ≤
             cutNormalizedRayTheta hp t c i v := by
