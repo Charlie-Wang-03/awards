@@ -159,6 +159,53 @@ theorem actual_angle_lt_lam_of_equal_local_cut_color
     hp hcap ht hlam hc0 hcpi i xo yo hxoYo
     hxBand.1 hxBand.2 hyBand.1 hyBand.2
 
+theorem localIncidentColor_uncoveredCutMerged_eq_merge
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    (huncovered :
+      ∀ u : GlobalUnitGapSlot C t,
+        ¬ GlobalCyclicCriticalUnitBadAt
+          C t delta u (t * c / Real.pi))
+    (i j : V) :
+    let htop : t < (n + 1 : ℕ) := by
+      rw [ht]; push_cast; linarith
+    let P :=
+      cutProjectiveBandPartition
+        hp hcap htpos hlam hc0 hcpi n htop
+    localIncidentColor
+        (uncoveredCutMergedPartition
+          hp hcap C hn htpos hlam ht hdelta0
+          hdeltaHalf hc0 hcpi huncovered)
+        i j
+      =
+    mergeLastColor hn (localIncidentColor P i j) := by
+  dsimp only
+  unfold uncoveredCutMergedPartition
+  dsimp only
+  exact localIncidentColor_mergeLastPartition
+    hn
+    (cutProjectiveBandPartition hp hcap htpos hlam
+      hc0 hcpi n
+      (by rw [ht]; push_cast; linarith))
+    (cutBoundaryWrapBit hp n htpos
+      (by rw [ht]; push_cast; linarith) hc0 hcpi)
+    (by
+      simpa using
+        cutBoundaryWrapBit_separates
+          hp hcap C hn htpos hlam ht hdelta0
+          hdeltaHalf hc0 hcpi huncovered)
+    i j
+
 #print axioms localIncidentColor_mergeLastPartition
 #print axioms old_localIncidentColor_eq_of_merged_eq_of_boundary_failure
 #print axioms localIncidentColor_cutProjective_eq
