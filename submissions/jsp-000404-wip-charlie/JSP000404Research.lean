@@ -1196,3 +1196,9 @@ import JSP000404Research.CutAdjacentUnitGapBridge
 
 
 import JSP000404Research.CyclicCriticalUnitPhase
+
+
+import JSP000404Research.CutTransitionSeedCriticalSlot
+
+
+import JSP000404Research.CutTriangleCriticalSlot
