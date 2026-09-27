@@ -1316,3 +1316,12 @@ import JSP000404Research.CutSupportOneBadConsecutivePalette
 
 
 import JSP000404Research.CutBadOrdinaryMismatchShape
+
+
+import JSP000404Research.CutSupportTwoBandLocal
+
+
+import JSP000404Research.CutMergedCrossCentreFibre
+
+
+import JSP000404Research.CrossCentreCutBandCloseness
