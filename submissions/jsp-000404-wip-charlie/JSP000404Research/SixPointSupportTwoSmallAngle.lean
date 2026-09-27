@@ -47,27 +47,30 @@ theorem mem_zeroAngleEntries_angle
               List.nil_append] at h
             exact List.mem_cons_of_mem B (ih h)
 
-theorem mem_consecutiveRayAngles_exists_pair
+theorem mem_consecutiveRayAngles_exists_distinct_pair
     {V : Type*} {p : V → Plane}
     (i : V)
     (prev : OtherVertex i)
     (rs : List (OtherVertex i))
+    (hnodup : (prev :: rs).Nodup)
     {A : ℝ}
     (hA : A ∈ consecutiveRayAngles (p := p) i prev rs) :
     ∃ x y : OtherVertex i,
-      x ∈ prev :: rs ∧
-      y ∈ prev :: rs ∧
+      x ≠ y ∧
       A = EuclideanGeometry.angle (p x.1) (p i) (p y.1) := by
   induction rs generalizing prev with
   | nil =>
       simp [consecutiveRayAngles] at hA
   | cons r rs ih =>
+      have hnd := List.nodup_cons.mp hnodup
       simp only [consecutiveRayAngles, List.mem_cons] at hA
       rcases hA with hhead | htail
-      · exact ⟨prev, r, by simp, by simp, hhead⟩
-      · obtain ⟨x,y,hx,hy,hxy⟩ := ih r htail
-        exact ⟨x,y,by simp at hx ⊢; exact hx,
-          by simp at hy ⊢; exact hy,hxy⟩
+      · have hpr : prev ≠ r := by
+          intro h
+          subst r
+          exact hnd.1 (by simp)
+        exact ⟨prev,r,hpr,hhead⟩
+      · exact ih r hnd.2 htail
 
 /-- Every member of the cyclic actual-angle list comes from a pair of rays in
 the displayed cycle.  Under nodup and at least two rays the endpoints are
@@ -87,30 +90,8 @@ theorem mem_cyclicRayAngles_exists_distinct_pair
   unfold cyclicRayAngles at hA
   simp only [List.mem_append, List.mem_singleton] at hA
   rcases hA with hord | hwrap
-  · obtain ⟨x,y,hx,hy,hxy⟩ :=
-      mem_consecutiveRayAngles_exists_pair
-        (p := p) i first rest hord
-    have hxyNe : x ≠ y := by
-      -- Consecutive entries in a nodup ray list are distinct.  It is enough
-      -- here to rule out equality using positivity of the displayed angle:
-      -- instead use membership plus nodup after recovering the recursive
-      -- adjacent pair through a second induction.
-      induction rest generalizing first with
-      | nil =>
-          simp [consecutiveRayAngles] at hord
-      | cons r rs ih =>
-          have hnd := List.nodup_cons.mp hnodup
-          simp only [consecutiveRayAngles, List.mem_cons] at hord
-          rcases hord with hhead | htail
-          · have hfr : first ≠ r := by
-              intro h
-              subst r
-              exact hnd.1 (by simp)
-            -- hxy identifies the same head angle; choose the actual head pair.
-            exact hfr
-          · have htailNodup : (r :: rs).Nodup := hnd.2
-            exact ih r htailNodup htail
-    exact ⟨x,y,hxyNe,hxy⟩
+  · exact mem_consecutiveRayAngles_exists_distinct_pair
+      (p := p) i first rest hnodup hord
   · let last := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
