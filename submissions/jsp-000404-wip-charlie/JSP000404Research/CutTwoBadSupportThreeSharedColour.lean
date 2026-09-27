@@ -117,6 +117,10 @@ theorem uncovered_cut_two_bad_support_three_share_small_pair_colour
         u₂ ≠ v₂ ∧
         u₁.1 ≠ top ∧ v₁.1 ≠ top ∧
         u₂.1 ≠ top ∧ v₂.1 ≠ top ∧
+        Nat.floor (cutNormalizedRayTheta hp t c bad₁ v₁) =
+          Nat.floor (cutNormalizedRayTheta hp t c bad₁ u₁) + 1 ∧
+        Nat.floor (cutNormalizedRayTheta hp t c bad₂ v₂) =
+          Nat.floor (cutNormalizedRayTheta hp t c bad₂ u₂) + 1 ∧
         EuclideanGeometry.angle
             (p u₁.1) (p bad₁) (p v₁.1)
           ≤ delta * lam ∧
@@ -355,7 +359,7 @@ theorem uncovered_cut_two_bad_support_three_share_small_pair_colour
 
   refine ⟨u₁, v₁, u₂, v₂,
     huv₁, huv₂, hu₁Top, hv₁Top, hu₂Top, hv₂Top,
-    hsmall₁, hsmall₂, ?_⟩
+    hband₁, hband₂, hsmall₁, hsmall₂, ?_⟩
   simpa [a₁, b₁, a₂, b₂] using hintersect
 
 #print axioms two_pairs_in_card_three_intersect
