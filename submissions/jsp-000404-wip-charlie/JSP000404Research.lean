@@ -1202,3 +1202,9 @@ import JSP000404Research.CutTransitionSeedCriticalSlot
 
 
 import JSP000404Research.CutTriangleCriticalSlot
+
+
+import JSP000404Research.BoundaryCutShift
+
+
+import JSP000404Research.UncoveredBoundaryColoring
