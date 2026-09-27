@@ -282,16 +282,18 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     simpa [coord, CentreCutRayCycle.normalizedValues] using
       R.normalizedValues_pairwise htpos.le
 
+  have hfloorValueSorted :
+      ((R.normalizedValues t).map Nat.floor).Pairwise (· ≤ ·) := by
+    rw [List.pairwise_map]
+    exact
+      (R.normalizedValues_pairwise htpos.le).imp
+        (fun _ _ hxy => Nat.floor_mono hxy)
+
   have hlabelSorted :
       (R.rays.map band).Pairwise (· ≤ ·) := by
-    unfold band
-    rw [List.pairwise_map]
-    have hs :
-        (R.rays.map coord).Pairwise
-          (fun x y => Nat.floor x ≤ Nat.floor y) := by
-      exact hvalueSorted.imp
-        (fun _ _ hxy => Nat.floor_mono hxy)
-    simpa [List.pairwise_map] using hs
+    simpa [band, coord,
+      CentreCutRayCycle.normalizedValues,
+      List.map_map, Function.comp_def] using hfloorValueSorted
 
   obtain ⟨pre, u, v, post, hdec, hbandEq⟩ :=
     exists_adjacent_map_eq_of_pairwise_of_not_nodup
