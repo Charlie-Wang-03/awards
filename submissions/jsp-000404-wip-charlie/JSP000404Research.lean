@@ -1358,3 +1358,9 @@ import JSP000404Research.CutTwoBadOrdinaryPaletteWitness
 
 
 import JSP000404Research.CutMergedSameColourSmallAngle
+
+
+import JSP000404Research.SupportTwoZeroAngleAverage
+
+
+import JSP000404Research.SixPointSupportTwoSmallAngle
