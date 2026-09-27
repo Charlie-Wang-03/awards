@@ -91,6 +91,7 @@ theorem exists_cutRay_pair_of_zeroUnitStep
     {i : V} {c t : ℝ}
     {C : CentreProjectiveCycle hp i}
     (R : CentreCutRayCycle hp C c)
+    (ht0 : 0 ≤ t)
     {a : ℝ} {xs : List ℝ}
     (hvalues : R.normalizedValues t = a :: xs)
     (hstep : HasZeroQuotientUnitStep a xs) :
@@ -135,26 +136,9 @@ theorem exists_cutRay_pair_of_zeroUnitStep
             (fun x y =>
               cutNormalizedRayTheta hp t c i x ≤
                 cutNormalizedRayTheta hp t c i y) := by
-        have htheta :
-            (j :: js).Pairwise
-              (fun x y =>
-                cutRayTheta hp c i x ≤
-                  cutRayTheta hp c i y) := by
-          simpa [hrays] using R.cutTheta_sorted
-        apply htheta.imp
-        intro x y hxy
-        unfold cutNormalizedRayTheta
-        by_cases ht0 : 0 ≤ t
-        · have hdiv :=
-            div_le_div_of_nonneg_right hxy Real.pi_pos.le
-          exact mul_le_mul_of_nonneg_left hdiv ht0
-        · have htneg : t < 0 := lt_of_not_ge ht0
-          have hdiv :=
-            div_le_div_of_nonneg_right hxy Real.pi_pos.le
-          exact le_of_eq (by
-            exfalso
-            have := mul_le_mul_of_nonpos_left hdiv htneg.le
-            linarith)
+        have h :=
+          R.normalizedValues_pairwise ht0
+        simpa [CentreCutRayCycle.normalizedValues, hrays] using h
       induction js generalizing j with
       | nil =>
           simp [HasZeroQuotientUnitCutRayStepFrom] at hrayStep
@@ -206,7 +190,7 @@ theorem exists_sameSign_cutRay_pair_of_zeroUnitStep
   obtain ⟨j, k, _hj, _hk, hjkLe,
       hfloor, hzero⟩ :=
     R.exists_cutRay_pair_of_zeroUnitStep
-      hvalues hstep
+      ht.le hvalues hstep
   have hjk : j ≠ k := by
     intro heq
     subst k
