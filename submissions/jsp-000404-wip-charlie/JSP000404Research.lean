@@ -1235,3 +1235,12 @@ import JSP000404Research.CutSaturationGlobalTurnSlot
 
 
 import JSP000404Research.SixPointResidualUnsafeSaturated
+
+
+import JSP000404Research.WeightedHanselEquality
+
+
+import JSP000404Research.SixPointMergedTwoExceptionEquality
+
+
+import JSP000404Research.SixPointMergedEqualityRoot
