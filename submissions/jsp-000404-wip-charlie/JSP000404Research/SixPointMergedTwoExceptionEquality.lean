@@ -148,6 +148,193 @@ theorem six_point_two_min_exceptions_weight_eq
   have hupper := BinaryEdgePartition.weighted_capacity P
   omega
 
+def sixPointTwoExceptionTarget
+    {V : Type*} [DecidableEq V]
+    (top bad₁ bad₂ : V) (v : V) : ℕ :=
+  if v = top then 1
+  else if v = bad₁ then 4
+  else if v = bad₂ then 4
+  else 3
+
+theorem six_point_two_exception_target_weight_eq
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {n : ℕ}
+    (hn : 4 ≤ n)
+    (top bad₁ bad₂ : V)
+    (htb₁ : top ≠ bad₁)
+    (htb₂ : top ≠ bad₂)
+    (hb₁₂ : bad₁ ≠ bad₂)
+    (hcard : Fintype.card V = 6) :
+    (∑ v : V,
+      2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+      =
+    2 ^ n := by
+  classical
+  let S : Finset V :=
+    ((Finset.univ.erase top).erase bad₁).erase bad₂
+  have hb₁Mem :
+      bad₁ ∈ (Finset.univ.erase top : Finset V) := by
+    simp [htb₁]
+  have hb₂Mem :
+      bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
+    simp [htb₂, hb₁₂]
+  have hScard : S.card = 3 := by
+    dsimp [S]
+    rw [Finset.card_erase_of_mem hb₂Mem,
+        Finset.card_erase_of_mem hb₁Mem,
+        Finset.card_erase_of_mem (Finset.mem_univ top)]
+    simp [hcard]
+  have hOther :
+      ∀ v ∈ S,
+        sixPointTwoExceptionTarget top bad₁ bad₂ v = 3 := by
+    intro v hv
+    have hv₂ := Finset.mem_erase.mp hv
+    have hv₁ := Finset.mem_erase.mp hv₂.2
+    have hvt := (Finset.mem_erase.mp hv₁.2).1
+    have hvb₁ := hv₁.1
+    have hvb₂ := hv₂.1
+    simp [sixPointTwoExceptionTarget,
+      hvt, hvb₁, hvb₂]
+  have hsumS :
+      (∑ v ∈ S,
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+        =
+      3 * 2 ^ (n - 3) := by
+    calc
+      (∑ v ∈ S,
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+          =
+        ∑ _v ∈ S, 2 ^ (n - 3) := by
+          apply Finset.sum_congr rfl
+          intro v hv
+          rw [hOther v hv]
+      _ = S.card * 2 ^ (n - 3) := by
+          simp [Nat.mul_comm]
+      _ = 3 * 2 ^ (n - 3) := by rw [hScard]
+  have hdecomp :
+      (∑ v : V,
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+        =
+      2 ^ (n - 1) +
+        2 ^ (n - 4) +
+        2 ^ (n - 4) +
+        ∑ v ∈ S,
+          2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v) := by
+    rw [← Finset.sum_erase_add
+      (fun v =>
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+      (Finset.mem_univ top)]
+    rw [← Finset.sum_erase_add
+      (fun v =>
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+      hb₁Mem]
+    rw [← Finset.sum_erase_add
+      (fun v =>
+        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
+      hb₂Mem]
+    dsimp [S]
+    simp [sixPointTwoExceptionTarget,
+      htb₁, htb₂, hb₁₂]
+    omega
+  rw [hdecomp, hsumS]
+  have hn1 : n - 1 = (n - 4) + 3 := by omega
+  have hn3 : n - 3 = (n - 4) + 1 := by omega
+  have hn4 : n = (n - 4) + 4 := by omega
+  rw [hn1, hn3, hn4, pow_add, pow_add, pow_add]
+  norm_num
+  ring
+
+theorem six_point_two_min_exceptions_active_card_eq_target
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {n : ℕ}
+    (hn : 4 ≤ n)
+    (P : BinaryEdgePartition V n)
+    (top bad₁ bad₂ : V)
+    (htb₁ : top ≠ bad₁)
+    (htb₂ : top ≠ bad₂)
+    (hb₁₂ : bad₁ ≠ bad₂)
+    (hcard : Fintype.card V = 6)
+    (hTop : (active P top).card ≤ 1)
+    (hBad₁ : (active P bad₁).card ≤ 4)
+    (hBad₂ : (active P bad₂).card ≤ 4)
+    (hOther :
+      ∀ v : V,
+        v ≠ top → v ≠ bad₁ → v ≠ bad₂ →
+        (active P v).card ≤ 3) :
+    ∀ v : V,
+      (active P v).card =
+        sixPointTwoExceptionTarget top bad₁ bad₂ v := by
+  classical
+  let ell : V → ℕ :=
+    sixPointTwoExceptionTarget top bad₁ bad₂
+  have hell : ∀ v, ell v ≤ n := by
+    intro v
+    dsimp [ell]
+    unfold sixPointTwoExceptionTarget
+    split_ifs <;> omega
+  have hactive : ∀ v, (active P v).card ≤ ell v := by
+    intro v
+    dsimp [ell]
+    by_cases hvt : v = top
+    · subst v
+      simp [sixPointTwoExceptionTarget, hTop]
+    · by_cases hvb₁ : v = bad₁
+      · subst v
+        simp [sixPointTwoExceptionTarget, htb₁, hBad₁]
+      · by_cases hvb₂ : v = bad₂
+        · subst v
+          simp [sixPointTwoExceptionTarget,
+            htb₂, hb₁₂, hBad₂]
+        · have h := hOther v hvt hvb₁ hvb₂
+          simpa [sixPointTwoExceptionTarget,
+            hvt, hvb₁, hvb₂] using h
+  have hexpected :
+      (∑ v : V, 2 ^ (n - ell v)) = 2 ^ n := by
+    simpa [ell] using
+      six_point_two_exception_target_weight_eq
+        hn top bad₁ bad₂ htb₁ htb₂ hb₁₂ hcard
+  exact specified_card_eq_target_of_expected_capacity_eq
+    P.bit (active P) ell
+    (BinaryEdgePartition.separates P)
+    hell hactive hexpected
+
+theorem six_point_two_min_exceptions_active_exact
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {n : ℕ}
+    (hn : 4 ≤ n)
+    (P : BinaryEdgePartition V n)
+    (top bad₁ bad₂ : V)
+    (htb₁ : top ≠ bad₁)
+    (htb₂ : top ≠ bad₂)
+    (hb₁₂ : bad₁ ≠ bad₂)
+    (hcard : Fintype.card V = 6)
+    (hTop : (active P top).card ≤ 1)
+    (hBad₁ : (active P bad₁).card ≤ 4)
+    (hBad₂ : (active P bad₂).card ≤ 4)
+    (hOther :
+      ∀ v : V,
+        v ≠ top → v ≠ bad₁ → v ≠ bad₂ →
+        (active P v).card ≤ 3) :
+    (active P top).card = 1 ∧
+    (active P bad₁).card = 4 ∧
+    (active P bad₂).card = 4 ∧
+    (∀ v : V,
+      v ≠ top → v ≠ bad₁ → v ≠ bad₂ →
+      (active P v).card = 3) := by
+  have h :=
+    six_point_two_min_exceptions_active_card_eq_target
+      hn P top bad₁ bad₂ htb₁ htb₂ hb₁₂ hcard
+      hTop hBad₁ hBad₂ hOther
+  constructor
+  · simpa [sixPointTwoExceptionTarget] using h top
+  constructor
+  · simpa [sixPointTwoExceptionTarget, htb₁] using h bad₁
+  constructor
+  · simpa [sixPointTwoExceptionTarget, htb₂, hb₁₂] using h bad₂
+  · intro v hvt hvb₁ hvb₂
+    simpa [sixPointTwoExceptionTarget,
+      hvt, hvb₁, hvb₂] using h v
+
 theorem six_point_two_min_exceptions_completeWord_bijective
     {V : Type*} [LinearOrder V] [Fintype V]
     {n : ℕ}
