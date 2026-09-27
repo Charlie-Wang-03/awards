@@ -17,6 +17,62 @@ of the merged boundary colour.
 namespace JSP000404Research
 namespace BinaryEdgePartition
 
+/-- Complete fibre classification of the last 0/n quotient map. -/
+theorem mergeLastColor_eq_iff_eq_or_boundary_swap
+    {n : ℕ}
+    (hn : 1 ≤ n)
+    (a b : Fin (n + 1)) :
+    mergeLastColor hn a = mergeLastColor hn b
+      ↔
+    a = b
+      ∨
+    (a = (0 : Fin (n + 1)) ∧ b = Fin.last n)
+      ∨
+    (a = Fin.last n ∧ b = (0 : Fin (n + 1))) := by
+  constructor
+  · intro h
+    by_cases ha : a.val < n
+    · by_cases hb : b.val < n
+      · left
+        apply Fin.ext
+        have hv := congrArg Fin.val h
+        simpa [mergeLastColor, ha, hb] using hv
+      · have hbLast : b = Fin.last n := by
+          apply Fin.ext
+          simp
+          have hble : b.val ≤ n := by omega
+          omega
+        have haZero : a = (0 : Fin (n + 1)) := by
+          apply Fin.ext
+          have hv := congrArg Fin.val h
+          simp [mergeLastColor, ha, hb] at hv
+          exact hv
+        exact Or.inr (Or.inl ⟨haZero, hbLast⟩)
+    · by_cases hb : b.val < n
+      · have haLast : a = Fin.last n := by
+          apply Fin.ext
+          simp
+          have hale : a.val ≤ n := by omega
+          omega
+        have hbZero : b = (0 : Fin (n + 1)) := by
+          apply Fin.ext
+          have hv := congrArg Fin.val h
+          simp [mergeLastColor, ha, hb] at hv
+          exact hv.symm
+        exact Or.inr (Or.inr ⟨haLast, hbZero⟩)
+      · left
+        apply Fin.ext
+        have hale : a.val ≤ n := by omega
+        have hble : b.val ≤ n := by omega
+        omega
+  · intro h
+    rcases h with rfl | hswap | hswap
+    · rfl
+    · rcases hswap with ⟨rfl, rfl⟩
+      simp
+    · rcases hswap with ⟨rfl, rfl⟩
+      simp
+
 theorem mergeLastColor_eq_implies_eq_of_positive_lt_last
     {n : ℕ}
     (hn : 1 ≤ n)
@@ -270,6 +326,7 @@ theorem equal_merge_image_old_palettes_differ_only_boundary
             omega
           exact hinterior a hapos halt
 
+#print axioms mergeLastColor_eq_iff_eq_or_boundary_swap
 #print axioms mergeLastColor_eq_implies_eq_of_positive_lt_last
 #print axioms interior_mem_iff_of_equal_merge_image
 #print axioms merged_zero_mem_image_iff_boundary
