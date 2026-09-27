@@ -1265,3 +1265,9 @@ import JSP000404Research.SixPointTopSafeLargeN
 
 
 import JSP000404Research.SixPointNoTwoSupportOneMinima
+
+
+import JSP000404Research.WeightedHanselSlice
+
+
+import JSP000404Research.SixPointMergedTwoBadActiveSet
