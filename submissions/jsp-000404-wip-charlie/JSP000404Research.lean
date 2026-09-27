@@ -1352,3 +1352,6 @@ import JSP000404Research.CutMixedSupportOneTwoEqualPalette
 
 
 import JSP000404Research.SixPointOrdinaryInsideBadPalette
+
+
+import JSP000404Research.CutTwoBadOrdinaryPaletteWitness
