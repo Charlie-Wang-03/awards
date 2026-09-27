@@ -46,6 +46,61 @@ theorem successiveNatDiffsFrom_sum_eq_last_sub_first
             head_le_getLastD_of_pairwise b (c :: cs) hp.2
           omega
 
+theorem listPositiveCount_le_sum_self
+    (xs : List ℕ) :
+    listPositiveCount xs ≤ xs.sum := by
+  induction xs with
+  | nil => simp [listPositiveCount]
+  | cons x xs ih =>
+      by_cases hx : x = 0
+      · subst x
+        simpa [listPositiveCount] using ih
+      · simp [listPositiveCount, hx]
+        omega
+
+theorem listPositiveCount_erase_add_one_of_mem_pos
+    (xs : List ℕ) {b : ℕ}
+    (hb : b ∈ xs)
+    (hb0 : b ≠ 0) :
+    listPositiveCount xs =
+      listPositiveCount (xs.erase b) + 1 := by
+  induction xs with
+  | nil => simp at hb
+  | cons x xs ih =>
+      simp only [List.mem_cons] at hb
+      rcases hb with hxb | hb
+      · subst x
+        simp [listPositiveCount, hb0]
+      · by_cases hxb : x = b
+        · subst x
+          simp [listPositiveCount, hb0]
+        · by_cases hx0 : x = 0
+          · subst x
+            simp [listPositiveCount, hxb]
+            exact ih hb
+          · simp [List.erase_cons, hxb,
+              listPositiveCount, hx0]
+            have hi := ih hb
+            omega
+
+theorem list_sum_erase_add_of_mem
+    (xs : List ℕ) {b : ℕ}
+    (hb : b ∈ xs) :
+    (xs.erase b).sum + b = xs.sum := by
+  induction xs with
+  | nil => simp at hb
+  | cons x xs ih =>
+      simp only [List.mem_cons] at hb
+      rcases hb with hxb | hb
+      · subst x
+        simp
+      · by_cases hxb : x = b
+        · subst x
+          simp
+        · simp [List.erase_cons, hxb]
+          rw [ih hb]
+          omega
+
 theorem positiveCount_three_sum_three_entries_le_one
     (bs : List ℕ)
     (hpos : listPositiveCount bs = 3)
@@ -54,40 +109,22 @@ theorem positiveCount_three_sum_three_entries_le_one
   intro b hb
   by_contra hnot
   have hb2 : 2 ≤ b := by omega
-  have hposOther :
-      2 ≤ listPositiveCount (bs.erase b) := by
-    have hbpos : b ≠ 0 := by omega
-    have hcountErase :
-        listPositiveCount bs =
-          listPositiveCount (bs.erase b) + 1 := by
-      induction bs with
-      | nil => simp at hb
-      | cons x xs ih =>
-          simp only [List.mem_cons] at hb
-          rcases hb with rfl | hb
-          · simp [listPositiveCount, hbpos]
-          · by_cases hxb : x = b
-            · subst x
-              simp [listPositiveCount, hbpos]
-            · by_cases hx0 : x = 0
-              · subst x
-                simp [listPositiveCount, hxb]
-                exact ih hb
-              · simp [List.erase_cons, hxb,
-                  listPositiveCount, hx0]
-                have hi := ih hb
-                omega
+  have hb0 : b ≠ 0 := by omega
+  have hcountErase :=
+    listPositiveCount_erase_add_one_of_mem_pos bs hb hb0
+  have hposErase :
+      listPositiveCount (bs.erase b) = 2 := by
     rw [hpos] at hcountErase
     omega
-  have hsumErase :
-      b + (bs.erase b).sum = bs.sum := by
-    have := List.sum_erase_add _ hb
-    omega
-  have hsumOther :
+  have hsumEraseLower :
       2 ≤ (bs.erase b).sum := by
     have h :=
-      listPositiveCount_le_sum (bs.erase b)
-    omega
+      listPositiveCount_le_sum_self (bs.erase b)
+    rw [hposErase] at h
+    exact h
+  have hsumErase :=
+    list_sum_erase_add_of_mem bs hb
+  rw [hsum] at hsumErase
   omega
 
 theorem forall₂_q_le_b_and_band_le_one_implies_q_le_one
