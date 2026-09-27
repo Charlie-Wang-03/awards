@@ -1349,3 +1349,6 @@ import JSP000404Research.CutQuotientRotation
 
 
 import JSP000404Research.CutMixedSupportOneTwoEqualPalette
+
+
+import JSP000404Research.SixPointOrdinaryInsideBadPalette
