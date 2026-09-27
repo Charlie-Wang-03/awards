@@ -1,4 +1,4 @@
-import JSP000404Research.TwoSmallAngleMixed
+import JSP000404Research.TwoScaledSmallAngleContradiction
 import Mathlib.Tactic
 
 /-!
