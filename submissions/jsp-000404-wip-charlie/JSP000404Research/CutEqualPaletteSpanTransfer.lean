@@ -187,7 +187,8 @@ theorem normalized_floor_span_three_of_equal_active
     have hle :=
       floor_head_le_floor_of_mem_sorted hsi
         (by simpa [hvi] using hxHeadJMem)
-    simpa [bjHead] using hxHeadJFloor ▸ hle
+    rw [hxHeadJFloor] at hle
+    simpa [bjHead] using hle
 
   have hHeadIinJ :
       biHead ∈ active
@@ -203,7 +204,8 @@ theorem normalized_floor_span_three_of_equal_active
     have hle :=
       floor_head_le_floor_of_mem_sorted hsj
         (by simpa [hvj] using hxHeadIMem)
-    simpa [biHead] using hxHeadIFloor ▸ hle
+    rw [hxHeadIFloor] at hle
+    simpa [biHead] using hle
   have hheadEq :
       Nat.floor aj = Nat.floor ai :=
     le_antisymm hHeadJLeM hmLeHeadJ
@@ -223,7 +225,8 @@ theorem normalized_floor_span_three_of_equal_active
     have hle :=
       floor_of_mem_le_floor_last_sorted hsi
         (by simpa [hvi] using hxLastJMem)
-    simpa [bjLast] using hxLastJFloor ▸ hle
+    rw [hxLastJFloor] at hle
+    simpa [bjLast] using hle
 
   have hLastIinJ :
       biLast ∈ active
@@ -240,7 +243,8 @@ theorem normalized_floor_span_three_of_equal_active
     have hle :=
       floor_of_mem_le_floor_last_sorted hsj
         (by simpa [hvj] using hxLastIMem)
-    simpa [biLast] using hxLastIFloor ▸ hle
+    rw [hxLastIFloor] at hle
+    simpa [biLast] using hle
   have hlastEq :
       Nat.floor (xsj.getLastD aj) =
         Nat.floor (xsi.getLastD ai) :=
