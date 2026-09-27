@@ -343,7 +343,7 @@ theorem actual_angle_le_delta_lam_of_cut_same_sign_gap
   field_simp [ne_of_gt ht, Real.pi_ne_zero] at hdiv ⊢
   nlinarith
 
-theorem cutSaturationBadAt_support_three_has_delta_small_angle
+theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
     (hcap : AngleCap p lam)
@@ -369,6 +369,8 @@ theorem cutSaturationBadAt_support_three_has_delta_small_angle
         hc0 hcpi i) :
     ∃ u v : OtherVertex i,
       u ≠ v ∧
+      Nat.floor (cutNormalizedRayTheta hp t c i v) =
+        Nat.floor (cutNormalizedRayTheta hp t c i u) + 1 ∧
       EuclideanGeometry.angle (p u.1) (p i) (p v.1)
         ≤ delta * lam := by
   let R : CentreCutRayCycle hp (C i) c :=
@@ -545,14 +547,50 @@ theorem cutSaturationBadAt_support_three_has_delta_small_angle
     rw [hgapEq]
     exact hgLe
 
-  exact ⟨u, v, huv,
+  exact ⟨u, v, huv, hband,
     actual_angle_le_delta_lam_of_cut_same_sign_gap
       hp htpos hlam hc0 hcpi i htheta hsign hsmallScaled⟩
+
+/-- Backward-compatible projection of the stronger adjacent-band witness. -/
+theorem cutSaturationBadAt_support_three_has_delta_small_angle
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn5 : 5 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c)
+    (hcpi : c < Real.pi)
+    (i : V)
+    (hexp :
+      centreExponent (C i) t = n - 3)
+    (hsupport :
+      positiveSupport (centreQuotient (C i) t) = 3)
+    (hbad :
+      CutSaturationBadAt
+        hp hcap C htpos hlam ht hdelta0
+        (by linarith : delta < 1)
+        hc0 hcpi i) :
+    ∃ u v : OtherVertex i,
+      u ≠ v ∧
+      EuclideanGeometry.angle (p u.1) (p i) (p v.1)
+        ≤ delta * lam := by
+  obtain ⟨u, v, huv, _hband, hsmall⟩ :=
+    cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
+      hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
+      hc0 hcpi i hexp hsupport hbad
+  exact ⟨u, v, huv, hsmall⟩
 
 #print axioms cyclicRealGapsAt_sum_eq_width
 #print axioms floor_zero_member_le_delta_of_sum
 #print axioms CentreCutRayCycle.exists_cutRay_pair_mem_successive_of_zeroUnitStep
 #print axioms actual_angle_le_delta_lam_of_cut_same_sign_gap
+#print axioms cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
 #print axioms cutSaturationBadAt_support_three_has_delta_small_angle
 
 end JSP000404Research
