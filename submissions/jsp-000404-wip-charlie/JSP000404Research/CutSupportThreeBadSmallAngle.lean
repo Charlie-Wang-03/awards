@@ -638,7 +638,7 @@ theorem cutSaturationBadAt_support_three_small_pair_avoids_sharp
       apply Subtype.ext
       calc
         u.1 = top := hu
-        _ = v.1 := hv.symm
+        _ = v.1 := hv
     have hlow :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
