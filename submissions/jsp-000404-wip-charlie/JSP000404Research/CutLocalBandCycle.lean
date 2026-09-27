@@ -272,9 +272,9 @@ theorem exponent_eq_centreExponent
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
-    exact hpermValues.eq_of_pairwise
+    exact List.Perm.eq_of_pairwise
       (fun a b _ha _hb hab hba => le_antisymm hab hba)
-      hRSorted hESorted
+      hRSorted hESorted hpermValues
 
   let lowAngles := low.map (rayThetaAt hp i)
   let highAngles := high.map (rayThetaAt hp i)
@@ -296,7 +296,7 @@ theorem exponent_eq_centreExponent
       rw [hexplicit, hnil]
       rfl
     have hlenR :
-        R.normalizedValues t |>.length = 0 := by
+        (R.normalizedValues t).length = 0 := by
       rw [hvaluesEq, hlen0]
     exact R.normalizedValues_nonempty t
       (List.length_eq_zero.mp hlenR)
