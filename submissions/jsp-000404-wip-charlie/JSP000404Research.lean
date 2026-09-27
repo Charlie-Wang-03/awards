@@ -1355,3 +1355,6 @@ import JSP000404Research.SixPointOrdinaryInsideBadPalette
 
 
 import JSP000404Research.CutTwoBadOrdinaryPaletteWitness
+
+
+import JSP000404Research.CutMergedSameColourSmallAngle
