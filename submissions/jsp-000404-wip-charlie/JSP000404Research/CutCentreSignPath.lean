@@ -101,6 +101,7 @@ theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
     (hcap : AngleCap p lam)
     {lam t c : ℝ}
     (ht : 0 < t)
+    (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (i : V)
@@ -258,6 +259,7 @@ theorem cutCentre_changesOnlyOnPositive
     (hcap : AngleCap p lam)
     {lam t c : ℝ}
     (ht : 0 < t)
+    (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {i : V}
@@ -305,30 +307,19 @@ theorem cutCentre_changesOnlyOnPositive
   rw [hlastSign] at hsign
   by_cases hrest : rest = []
   · subst rest
-    simp [cutWrapRayQuotient]
+    unfold cutWrapRayQuotient
+    simp only [List.getLastD_nil]
     have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
     have harg :
         t * ((cutRayTheta hp c i first + Real.pi -
           cutRayTheta hp c i first) / Real.pi) = t := by
       field_simp [hpi]
     rw [harg]
-    have htone : 1 ≤ t := by
-      have hlamPos : 0 < lam := by
-        rw [hlam]
-        exact div_pos Real.pi_pos ht
-      have hcapImpossible :
-          lam ≤ Real.pi := by
-        -- Any cap angle is nonnegative, hence pi-lambda cannot be negative.
-        have h := hcap first.1 i first.1
-        -- Distinctness hypotheses are unavailable on the same vertex; use
-        -- the exact scale instead.
-        rw [hlam]
-        have hpi : 0 < Real.pi := Real.pi_pos
-        have htOneOr : 1 ≤ t ∨ t < 1 := le_or_gt 1 t
-        exact Or.elim htOneOr id (fun hlt => by
-          exfalso
-          linarith)
-      omega
+    have ht0 : 0 ≤ t := ht.le
+    have hfloor : 1 ≤ Nat.floor t := by
+      apply Nat.le_floor ht0
+      exact_mod_cast htone
+    omega
   · let last := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
@@ -382,7 +373,7 @@ theorem cutCentre_support_two_transitionCount_eq_one
       = 1 := by
   have hchanges :=
     cutCentre_changesOnlyOnPositive
-      hp hcap ht hlam hc0 hcpi R first rest hrays
+      hp hcap ht htone hlam hc0 hcpi R first rest hrays
   have hle :=
     transitionCount_le_positiveCount_of_changesOnlyOnPositive
       (cutRaySign hp c i first)
