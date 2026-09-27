@@ -82,6 +82,60 @@ theorem exists_normalizedValue_floor_eq_top_of_top_active
     exact ⟨hlo, hhi⟩
   exact ⟨x, hxMem, hfloor⟩
 
+/-- Any cut-sorted local value whose floor is b.val makes b an active
+partition colour at the centre. -/
+theorem active_of_normalizedValue_floor
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t c : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    (n : ℕ)
+    (htop : t < (n + 1 : ℕ))
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (R : CentreCutRayCycle hp C c)
+    (b : Fin (n + 1))
+    (hmem :
+      ∃ x ∈ R.normalizedValues t,
+        Nat.floor x = b.val) :
+    b ∈
+      active
+        (cutProjectiveBandPartition
+          hp hcap ht hlam hc0 hcpi n htop)
+        i := by
+  obtain ⟨x, hx, hfloor⟩ := hmem
+  unfold CentreCutRayCycle.normalizedValues at hx
+  obtain ⟨j, hjR, hjx⟩ := List.mem_map.mp hx
+  have hx0 :
+      0 ≤ cutNormalizedRayTheta hp t c i j :=
+    cutNormalizedRayTheta_nonneg
+      hp ht.le hc0 hcpi i j
+  have hlo :
+      (b.val : ℝ) ≤
+        cutNormalizedRayTheta hp t c i j := by
+    have h := Nat.floor_le hx0
+    rw [hfloor] at h
+    exact h
+  have hhi :
+      cutNormalizedRayTheta hp t c i j <
+        (b.val : ℝ) + 1 := by
+    have h :=
+      Nat.lt_floor_add_one
+        (cutNormalizedRayTheta hp t c i j)
+    rw [hfloor] at h
+    exact h
+  have hocc :
+      b ∈ occupiedCutProjectiveBands hp t c n i := by
+    apply (mem_occupiedCutProjectiveBands
+      hp t c n i b).2
+    exact ⟨j, ⟨by simpa using hlo, by simpa using hhi⟩⟩
+  rw [cutProjectiveBandPartition_active_eq_occupied
+    hp hcap ht hlam hc0 hcpi n htop i]
+  exact hocc
+
 /-- Exact active-card saturation is the exact one-dimensional local equality
 for the cut-sorted values. -/
 theorem local_band_equality_of_active_saturated
@@ -203,6 +257,174 @@ theorem saturated_topBand_zeroFirst_or_zeroUnitStep
       a xs ha0 hsorted hall ht hdeltaHalf heq htopMem
   exact ⟨a, xs, hvalues, hdich⟩
 
+/-- Strong arbitrary-cut form: every saturated centre either really occupies
+both colours merged by 0/n, or its cut-sorted profile contains a zero-quotient
+unit-band crossing. -/
+theorem saturated_boundaryActive_or_zeroUnitStep
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (R : CentreCutRayCycle hp C c)
+    (hsat :
+      centreExponent C t +
+        (active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i).card
+        =
+      n + 1) :
+    (
+      (0 : Fin (n + 1)) ∈
+        active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i
+      ∧
+      Fin.last n ∈
+        active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i
+    )
+    ∨
+    (
+      ∃ a xs,
+        R.normalizedValues t = a :: xs ∧
+        HasZeroQuotientUnitStep a xs
+    ) := by
+  obtain ⟨a, xs, hvalues⟩ :
+      ∃ a xs, R.normalizedValues t = a :: xs := by
+    cases h : R.normalizedValues t with
+    | nil =>
+        exact False.elim (R.normalizedValues_nonempty t h)
+    | cons a xs =>
+        exact ⟨a, xs, h⟩
+  have haMem : a ∈ R.normalizedValues t := by
+    rw [hvalues]
+    simp
+  have ha0 :
+      0 ≤ a :=
+    (R.normalizedValues_mem_bounds
+      htpos hc0 hcpi haMem).1
+  have hsorted :
+      (a :: xs).Pairwise (· ≤ ·) := by
+    simpa [hvalues] using
+      R.normalizedValues_pairwise htpos.le
+  have hall :
+      ∀ x ∈ a :: xs, x < t := by
+    intro x hx
+    exact
+      (R.normalizedValues_mem_bounds
+        htpos hc0 hcpi
+        (by simpa [hvalues] using hx)).2
+  have heqR :=
+    R.local_band_equality_of_active_saturated
+      hp hcap htpos hlam hc0 hcpi n
+      (by rw [ht]; push_cast; linarith)
+      hsat
+  have heq :
+      listExponent
+          (linearCyclicGapQuotients t (a :: xs)) +
+        (occupiedNatBands (a :: xs)).card
+        =
+      n + 1 := by
+    simpa [CentreCutRayCycle.exponent,
+      CentreCutRayCycle.gapQuotients, hvalues] using heqR
+  rcases JSP000404Research.saturated_boundaryBands_or_zeroUnitStep
+      a xs ha0 hsorted hall ht hdeltaHalf heq
+    with hboundary | hstep
+  · left
+    let htop : t < (n + 1 : ℕ) := by
+      rw [ht]
+      push_cast
+      linarith
+    have hzeroMem :
+        ∃ x ∈ R.normalizedValues t,
+          Nat.floor x = (0 : Fin (n + 1)).val := by
+      refine ⟨a, ?_, ?_⟩
+      · rw [hvalues]
+        simp
+      · simpa using hboundary.1
+    have hlastMem :
+        ∃ x ∈ R.normalizedValues t,
+          Nat.floor x = (Fin.last n).val := by
+      let z := xs.getLastD a
+      refine ⟨z, ?_, ?_⟩
+      · rw [hvalues]
+        exact List.getLastD_mem_cons a xs
+      · simpa using hboundary.2
+    exact ⟨
+      R.active_of_normalizedValue_floor
+        hp hcap htpos hlam hc0 hcpi n htop
+        (0 : Fin (n + 1)) hzeroMem,
+      R.active_of_normalizedValue_floor
+        hp hcap htpos hlam hc0 hcpi n htop
+        (Fin.last n) hlastMem⟩
+  · right
+    exact ⟨a, xs, hvalues, hstep⟩
+
+/-- Contrapositive form used by the last merge: a saturated centre at which
+the 0/n merge does not collide must carry a zero-quotient unit step. -/
+theorem zeroUnitStep_of_saturated_boundary_collision_failure
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (R : CentreCutRayCycle hp C c)
+    (hsat :
+      centreExponent C t +
+        (active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i).card
+        =
+      n + 1)
+    (hfail :
+      ¬ (
+        (0 : Fin (n + 1)) ∈
+          active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+        ∧
+        Fin.last n ∈
+          active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+      )) :
+    ∃ a xs,
+      R.normalizedValues t = a :: xs ∧
+      HasZeroQuotientUnitStep a xs := by
+  rcases R.saturated_boundaryActive_or_zeroUnitStep
+      hp hcap hn htpos hlam ht hdeltaHalf
+      hc0 hcpi hsat with hboundary | hstep
+  · exact False.elim (hfail hboundary)
+  · exact hstep
+
 /-- If top is active but zero is not, an exact saturated cut centre necessarily
 carries a zero-quotient unit-band crossing. -/
 theorem saturated_top_without_zero_forces_zeroUnitStep
@@ -270,10 +492,13 @@ theorem saturated_top_without_zero_forces_zeroUnitStep
       have hhi :=
         Nat.lt_floor_add_one
           (cutNormalizedRayTheta hp t c i j)
-      have hlo :=
-        Nat.floor_le hx0
-      rw [hjVal, haFloor] at hlo hhi
-      constructor <;> norm_num at hlo hhi ⊢ <;> assumption
+      have hfloorJ :
+          Nat.floor (cutNormalizedRayTheta hp t c i j) = 0 := by
+        rw [hjVal, haFloor]
+      rw [hfloorJ] at hhi
+      constructor
+      · simpa [b0] using hx0
+      · simpa [b0] using hhi
     have hocc :
         b0 ∈ occupiedCutProjectiveBands hp t c n i :=
       (mem_occupiedCutProjectiveBands
