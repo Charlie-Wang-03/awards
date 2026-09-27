@@ -586,11 +586,99 @@ theorem cutSaturationBadAt_support_three_has_delta_small_angle
       hc0 hcpi i hexp hsupport hbad
   exact ⟨u, v, huv, hsmall⟩
 
+
+/-- In the presence of a sharp top, the delta-small support-three bad pair
+cannot use the top ray at either endpoint. -/
+theorem cutSaturationBadAt_support_three_small_pair_avoids_sharp
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn5 : 5 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c)
+    (hcpi : c < Real.pi)
+    {top i : V}
+    (hti : top ≠ i)
+    (hSharp : SharpAt p delta lam top)
+    (hexp :
+      centreExponent (C i) t = n - 3)
+    (hsupport :
+      positiveSupport (centreQuotient (C i) t) = 3)
+    (hbad :
+      CutSaturationBadAt
+        hp hcap C htpos hlam ht hdelta0
+        (by linarith : delta < 1)
+        hc0 hcpi i) :
+    ∃ u v : OtherVertex i,
+      u ≠ v ∧
+      u.1 ≠ top ∧
+      v.1 ≠ top ∧
+      Nat.floor (cutNormalizedRayTheta hp t c i v) =
+        Nat.floor (cutNormalizedRayTheta hp t c i u) + 1 ∧
+      EuclideanGeometry.angle (p u.1) (p i) (p v.1)
+        ≤ delta * lam := by
+  obtain ⟨u, v, huv, hband, hsmall⟩ :=
+    cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
+      hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
+      hc0 hcpi i hexp hsupport hbad
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  have huTop : u.1 ≠ top := by
+    intro hu
+    have htv : top ≠ v.1 := by
+      intro hv
+      apply huv
+      apply Subtype.ext
+      calc
+        u.1 = top := hu
+        _ = v.1 := hv.symm
+    have hlow :=
+      delta_mul_lam_lt_outer_angle_of_sharp
+        hp hcap hdeltaHalf hlampos
+        hti htv v.2.symm hSharp
+    have hsmall' :
+        EuclideanGeometry.angle (p top) (p i) (p v.1)
+          ≤ delta * lam := by
+      simpa [hu] using hsmall
+    linarith
+  have hvTop : v.1 ≠ top := by
+    intro hv
+    have htu : top ≠ u.1 := by
+      intro hu
+      apply huv
+      apply Subtype.ext
+      calc
+        u.1 = top := hu.symm
+        _ = v.1 := hv
+    have hlow :=
+      delta_mul_lam_lt_outer_angle_of_sharp
+        hp hcap hdeltaHalf hlampos
+        hti htu u.2.symm hSharp
+    have hsmall' :
+        EuclideanGeometry.angle (p top) (p i) (p u.1)
+          ≤ delta * lam := by
+      have hcomm :
+          EuclideanGeometry.angle (p u.1) (p i) (p top) =
+            EuclideanGeometry.angle (p top) (p i) (p u.1) :=
+        EuclideanGeometry.angle_comm _ _ _
+      rw [← hcomm]
+      simpa [hv] using hsmall
+    linarith
+  exact ⟨u, v, huv, huTop, hvTop, hband, hsmall⟩
+
 #print axioms cyclicRealGapsAt_sum_eq_width
 #print axioms floor_zero_member_le_delta_of_sum
 #print axioms CentreCutRayCycle.exists_cutRay_pair_mem_successive_of_zeroUnitStep
 #print axioms actual_angle_le_delta_lam_of_cut_same_sign_gap
 #print axioms cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
 #print axioms cutSaturationBadAt_support_three_has_delta_small_angle
+#print axioms cutSaturationBadAt_support_three_small_pair_avoids_sharp
 
 end JSP000404Research
