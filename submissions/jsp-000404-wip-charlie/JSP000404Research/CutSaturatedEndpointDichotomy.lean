@@ -1,3 +1,4 @@
+import JSP000404Research.SaturatedSeamPhaseArithmetic
 import JSP000404Research.CutLocalBandCycle
 import JSP000404Research.CutProjectiveBandBudget
 import JSP000404Research.LinearSaturatedEndpointDichotomy
@@ -424,6 +425,145 @@ theorem zeroUnitStep_of_saturated_boundary_collision_failure
       hc0 hcpi hsat with hboundary | hstep
   · exact False.elim (hfail hboundary)
   · exact hstep
+
+/-- Exact seam data extracted from a saturated centre at which the 0/n
+boundary collision fails.  The wrap gap contains a canonical whole-unit
+subslot indexed by j, and the cut position lies in its delta-width bad
+window. -/
+theorem saturated_failure_has_wrap_unit_subslot_data
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
+    {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (R : CentreCutRayCycle hp C c)
+    (hsat :
+      centreExponent C t +
+        (active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith))
+          i).card
+        =
+      n + 1)
+    (hfail :
+      ¬ (
+        (0 : Fin (n + 1)) ∈
+          active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+        ∧
+        Fin.last n ∈
+          active
+            (cutProjectiveBandPartition
+              hp hcap htpos hlam hc0 hcpi n
+                (by rw [ht]; push_cast; linarith))
+            i
+      )) :
+    ∃ a xs,
+      R.normalizedValues t = a :: xs ∧
+      let z := xs.getLastD a
+      let s := a + t - z
+      let q := Nat.floor s
+      let j := saturatedSeamIndex n z
+      2 ≤ q ∧
+        j < q ∧
+        ((j : ℝ) + s - (q : ℝ) < t - z) ∧
+        (t - z ≤ (j : ℝ) + delta) := by
+  obtain ⟨a, xs, hvalues⟩ :
+      ∃ a xs, R.normalizedValues t = a :: xs := by
+    cases h : R.normalizedValues t with
+    | nil =>
+        exact False.elim (R.normalizedValues_nonempty t h)
+    | cons a xs =>
+        exact ⟨a, xs, h⟩
+  have haMem : a ∈ R.normalizedValues t := by
+    rw [hvalues]
+    simp
+  have ha0 :
+      0 ≤ a :=
+    (R.normalizedValues_mem_bounds
+      htpos hc0 hcpi haMem).1
+  have hsorted :
+      (a :: xs).Pairwise (· ≤ ·) := by
+    simpa [hvalues] using
+      R.normalizedValues_pairwise htpos.le
+  have hall :
+      ∀ x ∈ a :: xs, x < t := by
+    intro x hx
+    exact
+      (R.normalizedValues_mem_bounds
+        htpos hc0 hcpi
+        (by simpa [hvalues] using hx)).2
+  let z := xs.getLastD a
+  have haz : a ≤ z :=
+    head_le_getLastD_of_pairwise a xs hsorted
+  have hzt : z < t :=
+    hall z (List.getLastD_mem_cons a xs)
+  have heqR :=
+    R.local_band_equality_of_active_saturated
+      hp hcap htpos hlam hc0 hcpi n
+      (by rw [ht]; push_cast; linarith)
+      hsat
+  have heq :
+      listExponent
+          (linearCyclicGapQuotients t (a :: xs)) +
+        (occupiedNatBands (a :: xs)).card
+        =
+      n + 1 := by
+    simpa [CentreCutRayCycle.exponent,
+      CentreCutRayCycle.gapQuotients, hvalues] using heqR
+  have hwrap :
+      excess (Nat.floor (a + t - z)) =
+        n - Nat.floor z + Nat.floor a := by
+    have htTop : t < (n : ℝ) + 1 := by
+      rw [ht]
+      linarith
+    simpa [z] using
+      wrap_gap_excess_eq_outer_empty_of_global_equality
+        a xs ha0 hsorted hall htTop heq
+  have hfloorFail :
+      ¬ (Nat.floor a = 0 ∧ Nat.floor z = n) := by
+    intro hb
+    have htop : t < (n + 1 : ℕ) := by
+      rw [ht]
+      push_cast
+      linarith
+    have hzeroMem :
+        ∃ x ∈ R.normalizedValues t,
+          Nat.floor x = (0 : Fin (n + 1)).val := by
+      exact ⟨a, by rw [hvalues]; simp, by simpa using hb.1⟩
+    have hlastMem :
+        ∃ x ∈ R.normalizedValues t,
+          Nat.floor x = (Fin.last n).val := by
+      exact ⟨z,
+        by rw [hvalues]; exact List.getLastD_mem_cons a xs,
+        by simpa [z] using hb.2⟩
+    apply hfail
+    exact ⟨
+      R.active_of_normalizedValue_floor
+        hp hcap htpos hlam hc0 hcpi n htop
+        (0 : Fin (n + 1)) hzeroMem,
+      R.active_of_normalizedValue_floor
+        hp hcap htpos hlam hc0 hcpi n htop
+        (Fin.last n) hlastMem⟩
+  have hseam :=
+    saturated_wrap_failure_unit_subslot
+      ha0 haz hzt ht hdelta0
+      (by linarith : delta < 1)
+      rfl hwrap hfloorFail
+  refine ⟨a, xs, hvalues, ?_⟩
+  simpa [z] using hseam
 
 /-- If top is active but zero is not, an exact saturated cut centre necessarily
 carries a zero-quotient unit-band crossing. -/
