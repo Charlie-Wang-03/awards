@@ -124,6 +124,119 @@ theorem saturated_topBand_zeroFirst_or_zeroUnitStep
       xs ha0 hsorted hall ht hlast hwrap
       hpos hdeltaHalf htight
 
+/-- Strong boundary-free form: any saturated equality case either occupies
+both cyclic boundary bands 0 and n, or contains a zero-quotient unit-band
+crossing.  No prior assumption that either boundary band is occupied is
+needed. -/
+theorem saturated_boundaryBands_or_zeroUnitStep
+    {t delta : ℝ} {n : ℕ}
+    (a : ℝ) (xs : List ℝ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall : ∀ x ∈ a :: xs, x < t)
+    (ht : t = (n : ℝ) + delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (heq :
+      listExponent
+          (linearCyclicGapQuotients t (a :: xs)) +
+        (occupiedNatBands (a :: xs)).card
+        =
+      n + 1) :
+    (Nat.floor a = 0 ∧
+      Nat.floor (xs.getLastD a) = n)
+      ∨
+    HasZeroQuotientUnitStep a xs := by
+  have htTop :
+      t < (n : ℝ) + 1 := by
+    rw [ht]
+    linarith
+  have haz :
+      a ≤ xs.getLastD a :=
+    head_le_getLastD_of_pairwise a xs hsorted
+  have hz0 :
+      0 ≤ xs.getLastD a := ha0.trans haz
+  have hzlt :
+      xs.getLastD a < t :=
+    hall _ (List.getLastD_mem_cons a xs)
+  have hfloorAZ :
+      Nat.floor a ≤ Nat.floor (xs.getLastD a) :=
+    Nat.floor_mono haz
+  have hlastN :
+      Nat.floor (xs.getLastD a) ≤ n := by
+    have hlt :
+        xs.getLastD a < ((n + 1 : ℕ) : ℝ) := by
+      push_cast
+      exact hzlt.trans htTop
+    have hf :
+        Nat.floor (xs.getLastD a) < n + 1 :=
+      (Nat.floor_lt hz0).2 hlt
+    omega
+  have htight :
+      InteriorBandGapTight a xs :=
+    linear_cyclic_gapEquality_implies_stepwise_tight
+      a xs ha0 hsorted hall htTop heq
+  have hwrap :
+      excess (Nat.floor (a + t - xs.getLastD a))
+        =
+      n - Nat.floor (xs.getLastD a) + Nat.floor a :=
+    wrap_gap_excess_eq_outer_empty_of_global_equality
+      a xs ha0 hsorted hall htTop heq
+  by_cases hboundary :
+      Nat.floor a = 0 ∧
+        Nat.floor (xs.getLastD a) = n
+  · exact Or.inl hboundary
+  · right
+    let E : ℕ :=
+      n - Nat.floor (xs.getLastD a) + Nat.floor a
+    have hEpos : 1 ≤ E := by
+      dsimp [E]
+      by_cases haFloor : Nat.floor a = 0
+      · have hlastNe :
+            Nat.floor (xs.getLastD a) ≠ n := by
+          intro hlast
+          exact hboundary ⟨haFloor, hlast⟩
+        have hlastLt :
+            Nat.floor (xs.getLastD a) < n := by
+          omega
+        omega
+      · have haPos : 1 ≤ Nat.floor a := by omega
+        omega
+    have hq :
+        Nat.floor (a + t - xs.getLastD a) = E + 1 := by
+      apply floor_wrap_eq_first_add_one_of_positive_excess
+        hEpos
+      simpa [E] using hwrap
+    have hgap0 :
+        0 ≤ a + t - xs.getLastD a := by
+      linarith
+    have hfloorGap :
+        ((Nat.floor (a + t - xs.getLastD a) : ℕ) : ℝ)
+          ≤
+        a + t - xs.getLastD a :=
+      Nat.floor_le hgap0
+    have hEcast :
+        (E : ℝ) =
+          (n : ℝ) -
+            (Nat.floor (xs.getLastD a) : ℝ) +
+            (Nat.floor a : ℝ) := by
+      dsimp [E]
+      rw [Nat.cast_add, Nat.cast_sub hlastN]
+      push_cast
+      ring
+    have hqcast :
+        ((Nat.floor (a + t - xs.getLastD a) : ℕ) : ℝ)
+          =
+        (E : ℝ) + 1 := by
+      exact_mod_cast hq
+    rw [hqcast, hEcast, ht] at hfloorGap
+    have hdrop :
+        floorRemainder (xs.getLastD a) <
+          floorRemainder a := by
+      unfold floorRemainder
+      linarith
+    exact hasZeroQuotientUnitStep_of_fractional_drop
+      a xs ha0 hsorted htight hdrop
+
 /-- Symmetric corollary: if saturation sees the top band but not band zero,
 a zero-quotient unit-band crossing is forced. -/
 theorem saturated_topBand_forces_zeroUnitStep_of_first_positive
