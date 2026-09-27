@@ -1283,3 +1283,9 @@ import JSP000404Research.CutMergedTwoBadOldPaletteRigidity
 
 
 import JSP000404Research.CutSupportInvariant
+
+
+import JSP000404Research.SaturatedBandJumpMismatch
+
+
+import JSP000404Research.CutSaturatedSupportMismatch
