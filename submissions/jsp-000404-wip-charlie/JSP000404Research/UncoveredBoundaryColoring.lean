@@ -244,7 +244,7 @@ theorem cutBoundaryWrapBit_separates
         hp htpos hc0 hcpi n htop u v).val = 0 ∨
       (cutProjectiveBandColor
         hp htpos hc0 hcpi n htop u v).val = n
-    simpa [P] using hboundary
+    simpa [cutProjectiveBandPartition] using hboundary
   have hvuRay :
       CutBoundaryRay hp htpos hc0 hcpi n htop v vu := by
     change
@@ -254,7 +254,7 @@ theorem cutBoundaryWrapBit_separates
         hp htpos hc0 hcpi n htop v u).val = n
     rw [← cutProjectiveBandColor_symm
       hp htpos hc0 hcpi n htop (ne_of_lt huv)]
-    simpa [P] using hboundary
+    simpa [cutProjectiveBandPartition] using hboundary
   have huBit :=
     cutBoundaryWrapBit_eq_shortSign
       hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
