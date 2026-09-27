@@ -91,8 +91,7 @@ theorem normalizedValues_head_last_of_rays_cons
   have htail := (List.cons.inj hvalues).2
   constructor
   · exact hhead.symm
-  · rw [hhead.symm, htail]
-    rw [map_getLastD]
+  · rw [hhead.symm, ← htail, map_getLastD]
 
 end CentreCutRayCycle
 
