@@ -33,7 +33,7 @@ namespace JSP000404Research
 
 open Real
 
-theorem exists_sharp_pinned_support_three_shape
+theorem exists_sharp_pinned_support_three_shape_with_split
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
@@ -54,11 +54,15 @@ theorem exists_sharp_pinned_support_three_shape
     ∃ first0 : OtherVertex i,
       ∃ rest0 : List (OtherVertex i),
       ∃ k : ℕ,
+      ∃ pre post : List (OtherVertex i),
       ∃ r : OtherVertex i,
       ∃ rest : List (OtherVertex i),
       ∃ qFirst qLast : ℕ,
       ∃ qmid : List ℕ,
         C.rays = first0 :: rest0 ∧
+        C.rays =
+          pre ++ (⟨s, hsi⟩ : OtherVertex i) :: post ∧
+        k = pre.length ∧
         C.rays.rotate k =
           (⟨s, hsi⟩ : OtherVertex i) :: r :: rest ∧
         (quotientList t C.gaps).rotate k =
@@ -372,9 +376,9 @@ theorem exists_sharp_pinned_support_three_shape
         support_three_middle_count_one_of_end_ne_zero
           qFirst qLast qmid hFirstNe hLastNe hsupportShape
 
-      refine ⟨first0, rest0, k, r, rest,
+      refine ⟨first0, rest0, k, pre, post, r, rest,
         qFirst, qLast, qmid,
-        hrays0, ?_, ?_,
+        hrays0, hsplit, rfl, ?_, ?_,
         Nat.one_le_iff_ne_zero.mpr hFirstNe,
         Nat.one_le_iff_ne_zero.mpr hLastNe,
         hmidCount, ?_, ?_, ?_⟩
@@ -388,6 +392,63 @@ theorem exists_sharp_pinned_support_three_shape
       · dsimp [AR, As] at hARpin
         rw [hARpin, htail]
 
+/-- Backward-compatible interface, dropping the canonical split that is now
+also retained by the stronger theorem. -/
+theorem exists_sharp_pinned_support_three_shape
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 4 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {s i : V}
+    (hsi : s ≠ i)
+    (hs : SharpAt p delta lam s)
+    (C : CentreProjectiveCycle hp i)
+    (hexp : centreExponent C t = n - 3)
+    (hsupport :
+      positiveSupport (centreQuotient C t) = 3) :
+    ∃ first0 : OtherVertex i,
+      ∃ rest0 : List (OtherVertex i),
+      ∃ k : ℕ,
+      ∃ r : OtherVertex i,
+      ∃ rest : List (OtherVertex i),
+      ∃ qFirst qLast : ℕ,
+      ∃ qmid : List ℕ,
+        C.rays = first0 :: rest0 ∧
+        C.rays.rotate k =
+          (⟨s, hsi⟩ : OtherVertex i) :: r :: rest ∧
+        (quotientList t C.gaps).rotate k =
+          qFirst :: qmid ++ [qLast] ∧
+        1 ≤ qFirst ∧
+        1 ≤ qLast ∧
+        listPositiveCount qmid = 1 ∧
+        qmid.length =
+          (consecutiveRayAngles (p := p) i r rest).length ∧
+        listZeroAngleMass
+            ((quotientList t C.gaps).rotate k)
+            ((cyclicRayAngles (p := p) i first0 rest0).rotate k)
+          ≤ delta * lam ∧
+        (cyclicRayAngles (p := p) i first0 rest0).rotate k =
+          cyclicRayAngles (p := p) i
+            (⟨s, hsi⟩ : OtherVertex i) (r :: rest) := by
+  obtain ⟨first0, rest0, k, _pre, _post, r, rest,
+      qFirst, qLast, qmid,
+      hrays0, _hsplit, _hk, hrot, hq,
+      hFirst, hLast, hmid, hmidLen, hmass, hangles⟩ :=
+    exists_sharp_pinned_support_three_shape_with_split
+      hp hcap hn hdelta0 hdeltaHalf ht hlam
+      hsi hs C hexp hsupport
+  exact ⟨first0, rest0, k, r, rest,
+    qFirst, qLast, qmid,
+    hrays0, hrot, hq, hFirst, hLast,
+    hmid, hmidLen, hmass, hangles⟩
+
+#print axioms exists_sharp_pinned_support_three_shape_with_split
 #print axioms exists_sharp_pinned_support_three_shape
 
 end JSP000404Research
