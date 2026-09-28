@@ -127,6 +127,39 @@ theorem capacity_lt_of_alpha_gt
     (h N a).1 hleN
   linarith
 
+
+/-- A jump characterization recovers an exact minimax value without using the
+false blanket identity `alpha (Ncap a) = a`.
+
+If N is admitted at threshold a, but is not admitted at any strictly smaller
+threshold, then alpha(N)=a. -/
+theorem alpha_eq_of_exact_threshold_jump
+    {alpha : ℕ → ℝ} {Ncap : ℝ → ℕ}
+    (h : ThresholdCharacterization alpha Ncap)
+    {N : ℕ} {a : ℝ}
+    (hat : N ≤ Ncap a)
+    (hbelow : ∀ b, b < a → Ncap b < N) :
+    alpha N = a := by
+  apply le_antisymm
+  · exact (h N a).1 hat
+  · by_contra hnot
+    have hlt : alpha N < a := lt_of_not_ge hnot
+    have hself : N ≤ Ncap (alpha N) :=
+      (h N (alpha N)).2 le_rfl
+    have hfail : Ncap (alpha N) < N :=
+      hbelow (alpha N) hlt
+    omega
+
+/-- Interval form of threshold inversion. -/
+theorem alpha_mem_threshold_bracket
+    {alpha : ℕ → ℝ} {Ncap : ℝ → ℕ}
+    (h : ThresholdCharacterization alpha Ncap)
+    {N : ℕ} {a b : ℝ}
+    (ha : Ncap a < N)
+    (hb : N ≤ Ncap b) :
+    a < alpha N ∧ alpha N ≤ b := by
+  exact ⟨alpha_gt_of_capacity_lt h ha, (h N b).1 hb⟩
+
 #print axioms capacity_transfer_of_nonshrinking_reduction
 #print axioms capacity_transfer_of_nonshrinking_same_value
 #print axioms alpha_monotone_of_thresholdCharacterization
@@ -134,5 +167,7 @@ theorem capacity_lt_of_alpha_gt
 #print axioms alpha_at_capacity_le
 #print axioms alpha_gt_of_capacity_lt
 #print axioms capacity_lt_of_alpha_gt
+#print axioms alpha_eq_of_exact_threshold_jump
+#print axioms alpha_mem_threshold_bracket
 
 end JSP000404Research
