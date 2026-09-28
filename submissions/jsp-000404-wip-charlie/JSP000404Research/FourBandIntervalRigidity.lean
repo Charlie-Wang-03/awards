@@ -34,7 +34,14 @@ theorem finset_card_four_interval_three_inner_mem
       omega
     have hc := Finset.card_le_card hsub
     have htCard : ({m, m + 2, m + 3} : Finset ℕ).card ≤ 3 := by
-      exact Finset.card_le_three
+      calc
+        ({m, m + 2, m + 3} : Finset ℕ).card
+            ≤ ({m + 2, m + 3} : Finset ℕ).card + 1 :=
+          Finset.card_insert_le _ _
+        _ ≤ ({m + 3} : Finset ℕ).card + 1 + 1 := by
+          exact Nat.add_le_add_right
+            (Finset.card_insert_le _ _) 1
+        _ = 3 := by simp
     rw [hcard] at hc
     omega
   · by_contra hnot
@@ -51,7 +58,14 @@ theorem finset_card_four_interval_three_inner_mem
       omega
     have hc := Finset.card_le_card hsub
     have htCard : ({m, m + 1, m + 3} : Finset ℕ).card ≤ 3 := by
-      exact Finset.card_le_three
+      calc
+        ({m, m + 1, m + 3} : Finset ℕ).card
+            ≤ ({m + 1, m + 3} : Finset ℕ).card + 1 :=
+          Finset.card_insert_le _ _
+        _ ≤ ({m + 3} : Finset ℕ).card + 1 + 1 := by
+          exact Nat.add_le_add_right
+            (Finset.card_insert_le _ _) 1
+        _ = 3 := by simp
     rw [hcard] at hc
     omega
 
