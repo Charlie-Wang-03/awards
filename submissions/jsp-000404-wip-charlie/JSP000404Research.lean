@@ -1400,3 +1400,6 @@ import JSP000404Research.DeficitThreeSupportThreeRemainder
 
 
 import JSP000404Research.ExactWitnessCanonicalUnitGap
+
+
+import JSP000404Research.SixPointExactWitnessPinnedExactGap
