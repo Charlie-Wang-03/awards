@@ -134,7 +134,8 @@ theorem six_point_top_deletion_compensated_of_four_support_three
   apply five_survivor_weight_ge_six_point_profile_of_four_gains
       (by omega : 3 ≤ n)
       top hcard
-      (exponentAfterDeleteTopAt C top t)
+      (exponentAfterDeleteTopAt C
+        (by omega : 3 ≤ Fintype.card V) top t)
       good hgoodSub hgoodCard
   · intro v hvt
     rw [← hMin v hvt]
@@ -144,15 +145,17 @@ theorem six_point_top_deletion_compensated_of_four_support_three
     have hvt : v ≠ top := by
       have hvS := hgoodSub hv
       simpa using (Finset.mem_erase.mp hvS).1
-    rw [← hMin v hvt]
-    exact exponent_add_one_le_after_delete_top_of_support_three
-      hp hcap C
-      (by omega : 3 ≤ Fintype.card V)
-      (by omega : 4 ≤ n)
-      hdelta0 hdeltaHalf ht hlam
-      top hTop hvt
-      (hMin v hvt)
-      (hgoodSupport v hv)
+    have hg :=
+      exponent_add_one_le_after_delete_top_of_support_three
+        hp hcap C
+        (by omega : 3 ≤ Fintype.card V)
+        (by omega : 4 ≤ n)
+        hdelta0 hdeltaHalf ht hlam
+        top hTop hvt
+        (hMin v hvt)
+        (hgoodSupport v hv)
+    rw [hMin v hvt] at hg
+    omega
 
 #print axioms exponentAfterDeleteTopAt
 #print axioms exponent_le_after_delete_top
