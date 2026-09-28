@@ -59,3 +59,7 @@ jobs:
       - name: Check Hamiltonian residual base triangle
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualBaseTriangle
+
+      - name: Check Hamiltonian four-angle budget
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.HamiltonianResidualBudget
