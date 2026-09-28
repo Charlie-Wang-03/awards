@@ -90,6 +90,79 @@ theorem forall₂_excess_eq_of_forall₂_le_of_listExponent_eq
       exact List.Forall₂.cons hheadEq
         (ih htailEq)
 
+/-- Exact exponent equality under pointwise domination also identifies the
+total band-jump mass as quotient mass plus the zero-positive mismatch count. -/
+theorem sum_eq_add_mismatch_of_exact_exponent
+    {qs bs : List ℕ}
+    (hle : List.Forall₂ (· ≤ ·) qs bs)
+    (hexp : listExponent qs = listExponent bs) :
+    bs.sum =
+      qs.sum + zeroPositiveMismatchCount qs bs := by
+  induction hle with
+  | nil =>
+      simp [zeroPositiveMismatchCount]
+  | @cons q b qs bs hqb hrest ih =>
+      have hheadEq :
+          excess q = excess b := by
+        have h :=
+          forall₂_excess_eq_of_forall₂_le_of_listExponent_eq
+            (List.Forall₂.cons hqb hrest) hexp
+        exact (List.forall₂_cons.mp h).1
+      have htailEq :
+          listExponent qs = listExponent bs := by
+        simp only [listExponent, List.map_cons,
+          List.sum_cons] at hexp
+        have hqeb : excess q ≤ excess b :=
+          excess_mono_nat hqb
+        have htailLe :
+            listExponent qs ≤ listExponent bs :=
+          listExponent_le_of_forall₂_le hrest
+        omega
+      have ih' := ih htailEq
+      by_cases hq0 : q = 0
+      · subst q
+        by_cases hb0 : b = 0
+        · subst b
+          simp [zeroPositiveMismatchCount, ih']
+        · have hb1 : b = 1 := by
+            unfold excess at hheadEq
+            omega
+          subst b
+          simp [zeroPositiveMismatchCount, ih']
+      · have hb0 : b ≠ 0 := by
+          intro hb
+          subst b
+          omega
+        have hqbEq : q = b := by
+          unfold excess at hheadEq
+          omega
+        subst b
+        simp [zeroPositiveMismatchCount, hq0, ih']
+
+/-- On a positive coordinate, exact exponent equality forces full equality of
+the dominated natural labels. -/
+theorem eq_of_pos_of_exact_exponent_coordinate
+    {qs bs : List ℕ}
+    (hle : List.Forall₂ (· ≤ ·) qs bs)
+    (hexp : listExponent qs = listExponent bs)
+    {rq : Fin qs.length} {rb : Fin bs.length}
+    (hr : rq.val = rb.val)
+    (hqpos : 1 ≤ qs.get rq) :
+    qs.get rq = bs.get rb := by
+  have heq :=
+    forall₂_excess_eq_of_forall₂_le_of_listExponent_eq
+      hle hexp
+  have hlen := List.Forall₂.length_eq hle
+  have hrel :
+      excess (qs.get rq) = excess (bs.get rb) :=
+    List.Forall₂.get heq rq rb hr
+  have hleGet :
+      qs.get rq ≤ bs.get rb :=
+    List.Forall₂.get hle rq rb hr
+  have hbpos : 1 ≤ bs.get rb := hqpos.trans hleGet
+  unfold excess at hrel
+  omega
+
 /-- At an extra positive band-jump position, exact exponent equality forces
 that jump to be exactly one unit. -/
 theorem forall₂_mismatch_is_unit_of_exact_exponent
