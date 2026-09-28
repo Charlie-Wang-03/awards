@@ -235,6 +235,60 @@ theorem reorient_around
     · intro h; exact M.a_ne_b (Subtype.ext h)
     · simpa [hvD, add_comm] using M.small_sum
 
+theorem three_remaining_vertices_exhaust
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (hcard : Fintype.card V = 6)
+    {top b c x y z : V}
+    (hTopB : top ≠ b)
+    (hTopC : top ≠ c)
+    (hbc : b ≠ c)
+    (hxTop : x ≠ top) (hyTop : y ≠ top) (hzTop : z ≠ top)
+    (hxB : x ≠ b) (hyB : y ≠ b) (hzB : z ≠ b)
+    (hxC : x ≠ c) (hyC : y ≠ c) (hzC : z ≠ c)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {v : V}
+    (hvTop : v ≠ top) (hvB : v ≠ b) (hvC : v ≠ c) :
+    v = x ∨ v = y ∨ v = z := by
+  classical
+  let S : Finset V := {x,y,z}
+  let U : Finset V := (((Finset.univ.erase top).erase b).erase c)
+  have hScard : S.card = 3 := by
+    dsimp [S]
+    simp [hxy,hxz,hyz]
+  have hUcard : U.card = 3 := by
+    dsimp [U]
+    have hbMem :
+        b ∈ (Finset.univ.erase top : Finset V) := by
+      simp [hTopB.symm]
+    have hcMem :
+        c ∈ ((Finset.univ.erase top).erase b : Finset V) := by
+      simp [hTopC.symm, hbc.symm]
+    rw [Finset.card_erase_of_mem hcMem,
+        Finset.card_erase_of_mem hbMem,
+        Finset.card_erase_of_mem (Finset.mem_univ top),
+        Finset.card_univ, hcard]
+    norm_num
+  have hSsub : S ⊆ U := by
+    intro w hw
+    dsimp [S] at hw
+    dsimp [U]
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl
+    · simp [hxTop, hxB, hxC]
+    · simp [hyTop, hyB, hyC]
+    · simp [hzTop, hzB, hzC]
+  have hSU : S = U := by
+    apply Finset.eq_of_subset_of_card_le hSsub
+    rw [hScard,hUcard]
+  have hvU : v ∈ U := by
+    dsimp [U]
+    simp [hvTop,hvB,hvC]
+  have hvS : v ∈ S := by
+    rw [hSU]
+    exact hvU
+  dsimp [S] at hvS
+  simpa [Finset.mem_insert, Finset.mem_singleton] using hvS
+
 /-- Two small perfect matchings at distinct centres can be reoriented
 around each other with distinct partners.  Equal partners would give a
 triangle with two delta-small angles. -/
@@ -314,6 +368,173 @@ theorem two_smallPerfectMatchings_have_distinct_partners
     hxcB,hycB,hzcB,
     hxcYc,hxcZc,hycZc,
     hpartner,hsmallB,hsmallC⟩
+
+/-- Complete finite classification of the no-direct-triangle branch.  Two
+small perfect matchings at b and c force a Hamiltonian-path pattern through
+the three remaining minima. -/
+theorem two_smallPerfectMatchings_hamiltonian_residual
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {top b c : V} {delta lam : ℝ}
+    (hcard : Fintype.card V = 6)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlam : 0 < lam)
+    (hbTop : b ≠ top)
+    (hcTop : c ≠ top)
+    (hbc : b ≠ c)
+    (Mb : SmallPerfectMatchingAwayFromTop
+      (p := p) top b delta lam)
+    (Mc : SmallPerfectMatchingAwayFromTop
+      (p := p) top c delta lam) :
+    ∃ x y z : V,
+      x ≠ top ∧ y ≠ top ∧ z ≠ top ∧
+      x ≠ b ∧ y ≠ b ∧ z ≠ b ∧
+      x ≠ c ∧ y ≠ c ∧ z ≠ c ∧
+      x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      EuclideanGeometry.angle (p c) (p b) (p x) +
+          EuclideanGeometry.angle (p y) (p b) (p z)
+        ≤ delta * lam ∧
+      EuclideanGeometry.angle (p b) (p c) (p y) +
+          EuclideanGeometry.angle (p x) (p c) (p z)
+        ≤ delta * lam := by
+  obtain ⟨xb,yb,zb,xc,yc,zc,
+      hxbTop,hybTop,hzbTop,
+      hxbB,hybB,hzbB,
+      hxbC,hybC,hzbC,
+      hxbYb,hxbZb,hybZb,
+      hxcTop,hycTop,hzcTop,
+      hxcC,hycC,hzcC,
+      hxcB,hycB,hzcB,
+      hxcYc,hxcZc,hycZc,
+      hpartner,hsmallB,hsmallC⟩ :=
+    two_smallPerfectMatchings_have_distinct_partners
+      hp hcap hcard hdelta0 hdeltaHalf hlam
+      hbTop hcTop hbc Mb Mc
+
+  have hxcCase :
+      xc = yb ∨ xc = zb := by
+    rcases three_remaining_vertices_exhaust
+        hcard hbTop.symm hcTop.symm hbc
+        hxbTop hybTop hzbTop
+        hxbB hybB hzbB
+        hxbC hybC hzbC
+        hxbYb hxbZb hybZb
+        hxcTop hxcB hxcC
+      with hxb | hyb | hzb
+    · exact False.elim (hpartner hxb.symm)
+    · exact Or.inl hyb
+    · exact Or.inr hzb
+
+  rcases hxcCase with hxcY | hxcZ
+  · subst xc
+    have hycCase :
+        yc = xb ∨ yc = zb := by
+      rcases three_remaining_vertices_exhaust
+          hcard hbTop.symm hcTop.symm hbc
+          hxbTop hybTop hzbTop
+          hxbB hybB hzbB
+          hxbC hybC hzbC
+          hxbYb hxbZb hybZb
+          hycTop hycB hycC
+        with hxb | hyb | hzb
+      · exact Or.inl hxb
+      · exact False.elim (hxcYc hxb.symm)
+      · exact Or.inr hzb
+    have hzcCase :
+        zc = xb ∨ zc = zb := by
+      rcases three_remaining_vertices_exhaust
+          hcard hbTop.symm hcTop.symm hbc
+          hxbTop hybTop hzbTop
+          hxbB hybB hzbB
+          hxbC hybC hzbC
+          hxbYb hxbZb hybZb
+          hzcTop hzcB hzcC
+        with hxb | hyb | hzb
+      · exact Or.inl hxb
+      · exact False.elim (hxcZc hxb.symm)
+      · exact Or.inr hzb
+    have hpairC :
+        EuclideanGeometry.angle (p xb) (p c) (p zb)
+          ≤
+        EuclideanGeometry.angle (p yc) (p c) (p zc) := by
+      rcases hycCase with rfl | rfl <;>
+        rcases hzcCase with rfl | rfl
+      · exact False.elim (hycZc rfl)
+      · exact le_rfl
+      · simpa [EuclideanGeometry.angle_comm] using
+          (show EuclideanGeometry.angle (p zb) (p c) (p xb)
+              ≤ EuclideanGeometry.angle (p zb) (p c) (p xb) from le_rfl)
+      · exact False.elim (hycZc rfl)
+    have hsmallC' :
+        EuclideanGeometry.angle (p b) (p c) (p yb) +
+            EuclideanGeometry.angle (p xb) (p c) (p zb)
+          ≤ delta * lam := by
+      exact add_le_add_left hpairC _ |>.trans hsmallC
+    exact ⟨xb,yb,zb,
+      hxbTop,hybTop,hzbTop,
+      hxbB,hybB,hzbB,
+      hxbC,hybC,hzbC,
+      hxbYb,hxbZb,hybZb,
+      hsmallB,hsmallC'⟩
+
+  · subst xc
+    have hycCase :
+        yc = xb ∨ yc = yb := by
+      rcases three_remaining_vertices_exhaust
+          hcard hbTop.symm hcTop.symm hbc
+          hxbTop hybTop hzbTop
+          hxbB hybB hzbB
+          hxbC hybC hzbC
+          hxbYb hxbZb hybZb
+          hycTop hycB hycC
+        with hxb | hyb | hzb
+      · exact Or.inl hxb
+      · exact Or.inr hyb
+      · exact False.elim (hxcYc hzb.symm)
+    have hzcCase :
+        zc = xb ∨ zc = yb := by
+      rcases three_remaining_vertices_exhaust
+          hcard hbTop.symm hcTop.symm hbc
+          hxbTop hybTop hzbTop
+          hxbB hybB hzbB
+          hxbC hybC hzbC
+          hxbYb hxbZb hybZb
+          hzcTop hzcB hzcC
+        with hxb | hyb | hzb
+      · exact Or.inl hxb
+      · exact Or.inr hyb
+      · exact False.elim (hxcZc hzb.symm)
+    have hpairC :
+        EuclideanGeometry.angle (p xb) (p c) (p yb)
+          ≤
+        EuclideanGeometry.angle (p yc) (p c) (p zc) := by
+      rcases hycCase with rfl | rfl <;>
+        rcases hzcCase with rfl | rfl
+      · exact False.elim (hycZc rfl)
+      · exact le_rfl
+      · simpa [EuclideanGeometry.angle_comm] using
+          (show EuclideanGeometry.angle (p yb) (p c) (p xb)
+              ≤ EuclideanGeometry.angle (p yb) (p c) (p xb) from le_rfl)
+      · exact False.elim (hycZc rfl)
+    have hsmallC' :
+        EuclideanGeometry.angle (p b) (p c) (p zb) +
+            EuclideanGeometry.angle (p xb) (p c) (p yb)
+          ≤ delta * lam := by
+      exact add_le_add_left hpairC _ |>.trans hsmallC
+    have hsmallB' :
+        EuclideanGeometry.angle (p c) (p b) (p xb) +
+            EuclideanGeometry.angle (p zb) (p b) (p yb)
+          ≤ delta * lam := by
+      simpa [EuclideanGeometry.angle_comm] using hsmallB
+    exact ⟨xb,zb,yb,
+      hxbTop,hzbTop,hybTop,
+      hxbB,hzbB,hybB,
+      hxbC,hzbC,hybC,
+      hxbZb,hxbYb,hybZb.symm,
+      hsmallB',hsmallC'⟩
 
 end SmallPerfectMatchingAwayFromTop
 
