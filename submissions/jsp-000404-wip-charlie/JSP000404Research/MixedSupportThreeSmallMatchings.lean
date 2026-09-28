@@ -46,6 +46,199 @@ structure SmallPerfectMatchingAwayFromTop
       EuclideanGeometry.angle (p c.1) (p i) (p d.1)
       ≤ delta * lam
 
+namespace SmallPerfectMatchingAwayFromTop
+
+theorem covers_every_other_nonTop
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {p : V → Plane}
+    {top i : V} {delta lam : ℝ}
+    (M : SmallPerfectMatchingAwayFromTop
+      (p := p) top i delta lam)
+    (hcard : Fintype.card V = 6)
+    (hit : i ≠ top)
+    {v : V}
+    (hvt : v ≠ top)
+    (hvi : v ≠ i) :
+    v = M.a.1 ∨ v = M.b.1 ∨
+      v = M.c.1 ∨ v = M.d.1 := by
+  classical
+  let S : Finset V := {M.a.1, M.b.1, M.c.1, M.d.1}
+  let U : Finset V := (Finset.univ.erase top).erase i
+
+  have habv : M.a.1 ≠ M.b.1 := by
+    intro h
+    exact M.a_ne_b (Subtype.ext h)
+  have hacv : M.a.1 ≠ M.c.1 := by
+    intro h
+    exact M.a_ne_c (Subtype.ext h)
+  have hadv : M.a.1 ≠ M.d.1 := by
+    intro h
+    exact M.a_ne_d (Subtype.ext h)
+  have hbcv : M.b.1 ≠ M.c.1 := by
+    intro h
+    exact M.b_ne_c (Subtype.ext h)
+  have hbdv : M.b.1 ≠ M.d.1 := by
+    intro h
+    exact M.b_ne_d (Subtype.ext h)
+  have hcdv : M.c.1 ≠ M.d.1 := by
+    intro h
+    exact M.c_ne_d (Subtype.ext h)
+
+  have hScard : S.card = 4 := by
+    dsimp [S]
+    simp [habv, hacv, hadv, hbcv, hbdv, hcdv]
+
+  have hUcard : U.card = 4 := by
+    dsimp [U]
+    have hiMem :
+        i ∈ (Finset.univ.erase top : Finset V) := by
+      simp [hit]
+    rw [Finset.card_erase_of_mem hiMem,
+        Finset.card_erase_of_mem (Finset.mem_univ top),
+        Finset.card_univ, hcard]
+    norm_num
+
+  have hSsub : S ⊆ U := by
+    intro x hx
+    dsimp [S] at hx
+    dsimp [U]
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl
+    · simp [M.a_ne_top, M.a.2]
+    · simp [M.b_ne_top, M.b.2]
+    · simp [M.c_ne_top, M.c.2]
+    · simp [M.d_ne_top, M.d.2]
+
+  have hSU : S = U :=
+    Finset.Subset.antisymm hSsub
+      (by
+        apply Finset.eq_of_subset_of_card_le hSsub
+        rw [hScard, hUcard])
+
+  have hvU : v ∈ U := by
+    dsimp [U]
+    simp [hvt, hvi]
+  have hvS : v ∈ S := by
+    rw [hSU]
+    exact hvU
+  dsimp [S] at hvS
+  simpa [Finset.mem_insert, Finset.mem_singleton] using hvS
+
+/-- Reorient the perfect matching so that a prescribed other minimum v is the
+first endpoint.  The partner x and the remaining pair y-z are all distinct,
+non-top, and different from the centre. -/
+theorem reorient_around
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {p : V → Plane}
+    {top i : V} {delta lam : ℝ}
+    (M : SmallPerfectMatchingAwayFromTop
+      (p := p) top i delta lam)
+    (hcard : Fintype.card V = 6)
+    (hit : i ≠ top)
+    {v : V}
+    (hvt : v ≠ top)
+    (hvi : v ≠ i) :
+    ∃ x y z : V,
+      x ≠ top ∧ y ≠ top ∧ z ≠ top ∧
+      x ≠ i ∧ y ≠ i ∧ z ≠ i ∧
+      x ≠ v ∧ y ≠ v ∧ z ≠ v ∧
+      x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      EuclideanGeometry.angle (p v) (p i) (p x) +
+        EuclideanGeometry.angle (p y) (p i) (p z)
+        ≤ delta * lam := by
+  rcases M.covers_every_other_nonTop hcard hit hvt hvi with
+    hvA | hvB | hvC | hvD
+  · refine ⟨M.b.1, M.c.1, M.d.1,
+      M.b_ne_top, M.c_ne_top, M.d_ne_top,
+      M.b.2, M.c.2, M.d.2, ?_, ?_, ?_,
+      ?_, ?_, ?_, ?_⟩
+    · intro h
+      apply M.a_ne_b
+      apply Subtype.ext
+      simpa [hvA] using h.symm
+    · intro h
+      apply M.a_ne_c
+      apply Subtype.ext
+      simpa [hvA] using h.symm
+    · intro h
+      apply M.a_ne_d
+      apply Subtype.ext
+      simpa [hvA] using h.symm
+    · intro h; exact M.b_ne_c (Subtype.ext h)
+    · intro h; exact M.b_ne_d (Subtype.ext h)
+    · intro h; exact M.c_ne_d (Subtype.ext h)
+    · simpa [hvA] using M.small_sum
+  · refine ⟨M.a.1, M.c.1, M.d.1,
+      M.a_ne_top, M.c_ne_top, M.d_ne_top,
+      M.a.2, M.c.2, M.d.2, ?_, ?_, ?_,
+      ?_, ?_, ?_, ?_⟩
+    · intro h
+      apply M.a_ne_b
+      apply Subtype.ext
+      simpa [hvB] using h
+    · intro h
+      apply M.b_ne_c
+      apply Subtype.ext
+      simpa [hvB] using h.symm
+    · intro h
+      apply M.b_ne_d
+      apply Subtype.ext
+      simpa [hvB] using h.symm
+    · intro h; exact M.a_ne_c (Subtype.ext h)
+    · intro h; exact M.a_ne_d (Subtype.ext h)
+    · intro h; exact M.c_ne_d (Subtype.ext h)
+    · have hcomm :
+          EuclideanGeometry.angle (p M.a.1) (p i) (p M.b.1) =
+            EuclideanGeometry.angle (p M.b.1) (p i) (p M.a.1) :=
+        EuclideanGeometry.angle_comm _ _ _
+      simpa [hvB, hcomm] using M.small_sum
+  · refine ⟨M.d.1, M.a.1, M.b.1,
+      M.d_ne_top, M.a_ne_top, M.b_ne_top,
+      M.d.2, M.a.2, M.b.2, ?_, ?_, ?_,
+      ?_, ?_, ?_, ?_⟩
+    · intro h
+      apply M.c_ne_d
+      apply Subtype.ext
+      simpa [hvC] using h.symm
+    · intro h
+      apply M.a_ne_c
+      apply Subtype.ext
+      simpa [hvC] using h
+    · intro h
+      apply M.b_ne_c
+      apply Subtype.ext
+      simpa [hvC] using h
+    · intro h; exact M.a_ne_d (Subtype.ext h.symm)
+    · intro h; exact M.b_ne_d (Subtype.ext h.symm)
+    · intro h; exact M.a_ne_b (Subtype.ext h)
+    · have hcomm :
+          EuclideanGeometry.angle (p M.c.1) (p i) (p M.d.1) =
+            EuclideanGeometry.angle (p M.d.1) (p i) (p M.c.1) :=
+        EuclideanGeometry.angle_comm _ _ _
+      simpa [hvC, hcomm, add_comm] using M.small_sum
+  · refine ⟨M.c.1, M.a.1, M.b.1,
+      M.c_ne_top, M.a_ne_top, M.b_ne_top,
+      M.c.2, M.a.2, M.b.2, ?_, ?_, ?_,
+      ?_, ?_, ?_, ?_⟩
+    · intro h
+      apply M.c_ne_d
+      apply Subtype.ext
+      simpa [hvD] using h
+    · intro h
+      apply M.a_ne_d
+      apply Subtype.ext
+      simpa [hvD] using h
+    · intro h
+      apply M.b_ne_d
+      apply Subtype.ext
+      simpa [hvD] using h
+    · intro h; exact M.a_ne_c (Subtype.ext h.symm)
+    · intro h; exact M.b_ne_c (Subtype.ext h.symm)
+    · intro h; exact M.a_ne_b (Subtype.ext h)
+    · simpa [hvD, add_comm] using M.small_sum
+
+end SmallPerfectMatchingAwayFromTop
+
 theorem support_three_middle_smallPerfectMatching
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
