@@ -151,18 +151,18 @@ theorem exactWitness_forced_support_three_three_transitions_of_one_two_span
           (liftedCentreSignPath hp W.b first rest) = 3 := by
   have hWt : W.b ≠ top := by
     intro h
-    subst W.b
-    rw [hTop] at hWexp
+    have hWexp' := hWexp
+    rw [h, hTop] at hWexp'
     omega
   have hWa : W.b ≠ a := by
     intro h
-    subst W.b
     have hnot :=
       exactWitness_deficitThree_not_support_one
         hp hcap (by omega : 4 ≤ n)
         hdelta0 hdeltaHalf ht hlam
-        W (C a) hWexp
-    exact hnot hsupA
+        W (C W.b) hWexp
+    apply hnot
+    simpa [h] using hsupA
   have hWb :
       W.b ≠ b :=
     exactWitness_centre_ne_support_two_bad_of_one_two_span
@@ -175,7 +175,7 @@ theorem exactWitness_forced_support_three_three_transitions_of_one_two_span
     fourth_minimum_support_three_three_transitions_of_support_one_two_span
       hp hcap C hn5 hdelta0 hdeltaHalf ht hlam
       hc0 hcpi
-      hta htb hWt hab hWa hWb
+      hta htb hWt.symm hab hWa.symm hWb.symm
       hTop hA hsupA hB hsupB hWexp
       hBadB R hvalues hspan
 
