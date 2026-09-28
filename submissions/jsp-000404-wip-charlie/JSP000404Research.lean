@@ -1415,3 +1415,6 @@ import JSP000404Research.ExactWitnessSupportThreeRemainder
 
 
 import JSP000404Research.SixPointBadActiveC4
+
+
+import JSP000404Research.FiveMinimaPendantRepeatedSmallAngle
