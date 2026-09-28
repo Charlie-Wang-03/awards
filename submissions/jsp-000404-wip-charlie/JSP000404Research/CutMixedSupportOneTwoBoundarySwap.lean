@@ -186,62 +186,6 @@ theorem cut_span_n_sub_one_support_two_hidden_angle_ge_n_sub_three
       hdelta0 hdeltaHalf ht hlam
       b (C b) hB hsupB
 
-  obtain ⟨H2, hH2⟩ :=
-    cut_span_n_sub_one_support_two_transition_qe_eq_two
-      hp hcap C hn5 hdelta0 hdeltaHalf ht hlam
-      hc0 hcpi hta htb hab hTop hA hsupA
-      hB hsupB hBadB R hvalues hspan
-
-  have hcertEq : H = H2 := by
-    -- It is enough to compare the transition quotient numerically below;
-    -- no structural certificate uniqueness is required.
-    by_cases h : H = H2
-    · exact h
-    · exfalso
-      have hle :=
-        transition_qe_le_two_beside_top_and_support_one
-          hp hcap hn5 hdelta0 hdeltaHalf ht hlam
-          hta htb hab
-          (C top) (C a) (C b)
-          hTop hA hsupA H
-      have hqeH : H.qe = 2 := by
-        have hHmemCanonical :
-            H.qe ∈ quotientList t (C b).gaps := H.qe_mem
-        have hHmemCut :
-            H.qe ∈ R.gapQuotients t :=
-          R.canonical_quotient_mem_cut hp htpos hHmemCanonical
-        obtain ⟨hwrap, hsum, hpos, hdecomp0⟩ :=
-          cutSaturationBadAt_span_n_sub_one_quotient_shape
-            hp hcap C hn5 htpos hlam ht
-            hdelta0 hdeltaHalf hc0 hcpi
-            b hB hsupB hBadB R hvalues hspan
-        let qOrd :=
-          (successiveDiffsFrom x0 xs).map Nat.floor
-        let qWrap :=
-          Nat.floor (x0 + t - xs.getLastD x0)
-        have hdecomp :
-            R.gapQuotients t = qOrd ++ [qWrap] := by
-          simpa [qOrd,qWrap] using hdecomp0
-        have hwrap' : qWrap = 2 := by simpa [qWrap] using hwrap
-        have hsum' : qOrd.sum = n - 3 := by
-          dsimp [qOrd]
-          omega
-        have hpos' : listPositiveCount qOrd = 1 := by
-          simpa [qOrd] using hpos
-        rw [hdecomp, List.mem_append] at hHmemCut
-        rcases hHmemCut with hOrd | hW
-        · have hs :=
-            list_sum_eq_member_of_positiveCount_one
-              qOrd hpos' hOrd H.qe_ne
-          rw [hsum'] at hs
-          omega
-        · simp only [List.mem_singleton] at hW
-          rw [hwrap'] at hW
-          exact hW
-      have hqeH2 : H2.qe = 2 := hH2
-      -- Distinct certificates with the same quotient are harmless; keep H.
-      contradiction
-
   have hqe : qe = 2 := by
     rw [← hHqe]
     have hle :=
