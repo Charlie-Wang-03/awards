@@ -1439,3 +1439,9 @@ import JSP000404Research.SupportThreeNonTopGainPosition
 
 
 import JSP000404Research.LinearCyclicDeletionGain
+
+
+import JSP000404Research.CutValueDeletionGain
+
+
+import JSP000404Research.CutRestrictionValueList
