@@ -53,10 +53,8 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
     (hLast : 1 ≤ qLast)
     (hHidden : 1 ≤ qHidden)
     (ht0 : 0 ≤ t) :
-    ∃ deleted : V,
+    ∃ deleted : V, ∃ hir : i ≠ deleted,
       deleted ≠ s ∧
-      deleted ≠ i ∧
-      let hir : i ≠ deleted := by simpa using (show deleted ≠ i from ‹deleted ≠ i›)
       let hother :
           Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
         child_other_nonempty_of_card_ge_three
@@ -68,6 +66,24 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       (quotientList t C.gaps).rotate preTop.length =
         qFirst :: [0,0,qHidden] ++ [qLast] := by
     simpa [hk] using hqrot
+
+  have hrotTop :
+      C.rays.rotate preTop.length =
+        topRay :: r :: rest := by
+    simpa [hk, topRay] using hrotRays
+  have htailTop :
+      postTop ++ preTop = r :: rest := by
+    have hcanonical :
+        C.rays.rotate preTop.length =
+          topRay :: (postTop ++ preTop) := by
+      rw [hsplitTop, List.rotate_append_length_eq]
+      simp [topRay, List.append_assoc]
+    rw [hrotTop] at hcanonical
+    exact (List.cons.inj hcanonical).2
+  have hrotNodup :
+      (topRay :: r :: rest).Nodup := by
+    rw [← hrotTop]
+    simpa using C.nodup
 
   have hqLen :
       (quotientList t C.gaps).length = 5 := by
@@ -134,18 +150,14 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       have hEq : delRay = topRay := by
         apply Subtype.ext
         exact hds
-      have htopMem : topRay ∈ C.rays := by
-        rw [hsplitTop]
-        simp
-      have hdelMem : delRay ∈ C.rays := by
-        rw [hsplitTop, hpostDecomp]
-        simp
-      have hnod := C.nodup
-      rw [hsplitTop, hpostDecomp] at hnod
       have htopNotTail :
-          topRay ∉ postTop.dropLast ++ [delRay] :=
-        (List.nodup_append.mp hnod).2.2 topRay (by simp) 
-      exact htopNotTail (by simp [hEq])
+          topRay ∉ r :: rest :=
+        (List.nodup_cons.mp hrotNodup).1
+      have hdelTail :
+          delRay ∈ r :: rest := by
+        rw [← htailTop, hpostDecomp]
+        simp
+      exact htopNotTail (by simpa [hEq] using hdelTail)
 
     let hother :
         Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
@@ -157,7 +169,7 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
         C hir hother preR [] hsplitR ht0
         qLast qHidden [qFirst,0,0]
         hqTarget hLast hHidden
-    exact ⟨deleted, hdelTop, hir.symm, by
+    exact ⟨deleted, hir, hdelTop, by
       simpa [hir, hother] using hgain⟩
 
   · let delRay : OtherVertex i :=
@@ -225,18 +237,14 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       have hEq : delRay = topRay := by
         apply Subtype.ext
         exact hds
-      have hnod := C.nodup
-      rw [hsplitTop, hpreDecomp] at hnod
-      have hpreNo :=
-        (List.nodup_append.mp hnod).1
-      have hlastMem :
-          delRay ∈ preR ++ [delRay] := by simp
-      have htopNotPre :
-          topRay ∉ preR ++ [delRay] := by
-        have hparts := List.nodup_append.mp hnod
-        intro hmem
-        exact hparts.2.2 topRay hmem (by simp)
-      exact htopNotPre (by simpa [hEq] using hlastMem)
+      have htopNotTail :
+          topRay ∉ r :: rest :=
+        (List.nodup_cons.mp hrotNodup).1
+      have hdelTail :
+          delRay ∈ r :: rest := by
+        rw [← htailTop, hpreDecomp]
+        simp
+      exact htopNotTail (by simpa [hEq] using hdelTail)
 
     let hother :
         Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
