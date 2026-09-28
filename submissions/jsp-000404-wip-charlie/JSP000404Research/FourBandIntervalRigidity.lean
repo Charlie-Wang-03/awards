@@ -26,24 +26,34 @@ theorem finset_card_four_interval_three_inner_mem
       intro q hq
       have hb := hbounds q hq
       have hne : q ≠ m + 1 := by
-        simpa using hnot
+        intro hqeq
+        apply hnot
+        rw [← hqeq]
+        exact hq
       simp only [Finset.mem_insert, Finset.mem_singleton]
       omega
     have hc := Finset.card_le_card hsub
+    have htCard : ({m, m + 2, m + 3} : Finset ℕ).card ≤ 3 := by
+      exact Finset.card_le_three
     rw [hcard] at hc
-    norm_num at hc
+    omega
   · by_contra hnot
     have hsub :
         S ⊆ {m, m + 1, m + 3} := by
       intro q hq
       have hb := hbounds q hq
       have hne : q ≠ m + 2 := by
-        simpa using hnot
+        intro hqeq
+        apply hnot
+        rw [← hqeq]
+        exact hq
       simp only [Finset.mem_insert, Finset.mem_singleton]
       omega
     have hc := Finset.card_le_card hsub
+    have htCard : ({m, m + 1, m + 3} : Finset ℕ).card ≤ 3 := by
+      exact Finset.card_le_three
     rw [hcard] at hc
-    norm_num at hc
+    omega
 
 #print axioms finset_card_four_interval_three_inner_mem
 
