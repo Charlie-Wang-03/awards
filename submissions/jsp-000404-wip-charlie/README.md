@@ -3,6 +3,22 @@
 This directory is a research-only Lean workspace for the still-incomplete
 JSP-000404 / Erdős 504 / Sendov minimax-angle proof.
 
+## Current gate — Source Closure
+
+Status: **SOURCE_CLOSURE_GATE = OPEN**.
+
+Before promoting this project as a reconstruction/formalization of established
+mathematics, the source chain for the arbitrary-cardinality Sendov classification
+must be closed.  The Russian 1995 long paper has been re-audited and its displayed
+general-`s` induction still does not derive the asserted maximizing exponent
+profiles.  The corresponding 1995 *Acta Mathematica Hungarica* paper has now been
+bibliographically located in the Hungarian Academy of Sciences REAL-J archive but
+its pp. 27–46 must still be inspected directly.
+
+See `SOURCE_CLOSURE_GATE_2026-09-28.md` for the gate criteria, evidence, and
+required Acta audit.  Until that gate closes, all Lean in this directory remains
+research-only and no complete-proof claim is made.
+
 ## Scope frozen in this branch
 
 The Lean library currently contains only **closed consequences** that have
