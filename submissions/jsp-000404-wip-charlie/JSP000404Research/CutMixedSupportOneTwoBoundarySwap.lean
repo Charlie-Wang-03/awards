@@ -209,11 +209,15 @@ theorem cut_span_n_sub_one_support_two_hidden_angle_ge_n_sub_three
         R.gapQuotients t = qOrd ++ [qWrap] := by
       simpa [qOrd,qWrap] using hdecomp0
     have hwrap' : qWrap = 2 := by simpa [qWrap] using hwrap
+    have hsum0 :
+        qOrd.sum = n - 5 + 2 := by
+      simpa [qOrd] using hsum
     have hsum' : qOrd.sum = n - 3 := by
-      dsimp [qOrd]
       omega
     have hpos' : listPositiveCount qOrd = 1 := by
-      simpa [qOrd] using hpos
+      have hp0 : listPositiveCount qOrd = 2 - 1 := by
+        simpa [qOrd] using hpos
+      omega
     rw [hdecomp, List.mem_append] at hmemCut
     rcases hmemCut with hOrd | hW
     · have hs :=
