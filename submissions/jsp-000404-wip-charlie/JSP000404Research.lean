@@ -1412,3 +1412,6 @@ import JSP000404Research.TwoBadMonochromaticC4Incidence
 
 
 import JSP000404Research.ExactWitnessSupportThreeRemainder
+
+
+import JSP000404Research.SixPointBadActiveC4
