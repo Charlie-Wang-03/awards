@@ -70,7 +70,7 @@ theorem hamiltonian_residual_cross_separation
         EuclideanGeometry.angle (p c) (p b) (p y) := by
     exact outer_angle_ge_one_sub_mul_of_small_under_AngleCap
       hp hcap
-      hbc.symm hcy hby.symm
+      hbc.symm hcy hby
       hD
 
   have hOuterAtC :
