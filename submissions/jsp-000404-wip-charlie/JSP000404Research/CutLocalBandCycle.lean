@@ -113,6 +113,33 @@ theorem rays_perm_canonical
   rw [hk]
   exact List.rotate_perm C.rays k
 
+/-- Any two cut-ray cycles for the same centre and cut have identical
+normalized value lists: they are sorted permutations of the same finite ray
+set. -/
+theorem normalizedValues_eq
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    {i : V} {c t : ℝ}
+    {C : CentreProjectiveCycle hp i}
+    (R₁ R₂ : CentreCutRayCycle hp C c)
+    (ht0 : 0 ≤ t) :
+    R₁.normalizedValues t = R₂.normalizedValues t := by
+  have hpermRays :
+      R₁.rays.Perm R₂.rays :=
+    R₁.rays_perm_canonical.trans
+      R₂.rays_perm_canonical.symm
+  have hpermValues :
+      (R₁.normalizedValues t).Perm
+        (R₂.normalizedValues t) := by
+    unfold normalizedValues
+    exact hpermRays.map
+      (cutNormalizedRayTheta hp t c i)
+  exact List.Perm.eq_of_pairwise
+    (fun x y _ _ hxy hyx => le_antisymm hxy hyx)
+    (R₁.normalizedValues_pairwise ht0)
+    (R₂.normalizedValues_pairwise ht0)
+    hpermValues
+
 /-- The natural floor set of the cut-sorted values is the same occupied cut
 band set used by cutProjectiveBandPartition. -/
 theorem occupiedNatBands_normalizedValues_card_eq_occupiedCut
