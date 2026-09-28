@@ -16,6 +16,57 @@ namespace JSP000404Research
 
 open Real
 
+theorem third_angle_gt_pi_sub_lam_of_two_weighted_small
+    {V : Type*} {p : V → Plane}
+    {alpha beta lam : ℝ}
+    (hp : Function.Injective p)
+    (habSum : alpha + beta < 1)
+    (hlam : 0 < lam)
+    {a b c : V}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha :
+      EuclideanGeometry.angle (p b) (p a) (p c) ≤ alpha * lam)
+    (hb :
+      EuclideanGeometry.angle (p a) (p b) (p c) ≤ beta * lam) :
+    Real.pi - lam <
+      EuclideanGeometry.angle (p a) (p c) (p b) := by
+  have hsum :=
+    EuclideanGeometry.angle_add_angle_add_angle_eq_pi
+      (p₁ := p b) (p₂ := p a) (p c)
+      (hp.ne hab.symm)
+  have hcommA :
+      EuclideanGeometry.angle (p c) (p a) (p b) =
+        EuclideanGeometry.angle (p b) (p a) (p c) :=
+    EuclideanGeometry.angle_comm _ _ _
+  rw [hcommA] at hsum
+  have hthirdComm :
+      EuclideanGeometry.angle (p a) (p c) (p b) =
+        EuclideanGeometry.angle (p b) (p c) (p a) :=
+    EuclideanGeometry.angle_comm _ _ _
+  rw [hthirdComm]
+  nlinarith
+
+theorem impossible_two_weighted_small_angles_under_cap
+    {V : Type*} {p : V → Plane}
+    {alpha beta lam : ℝ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (habSum : alpha + beta < 1)
+    (hlam : 0 < lam)
+    {a b c : V}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha :
+      EuclideanGeometry.angle (p b) (p a) (p c) ≤ alpha * lam)
+    (hb :
+      EuclideanGeometry.angle (p a) (p b) (p c) ≤ beta * lam) :
+    False := by
+  have hgt :=
+    third_angle_gt_pi_sub_lam_of_two_weighted_small
+      hp habSum hlam hab hac hbc ha hb
+  have hle :=
+    hcap a c b hac hbc hab.symm
+  linarith
+
 theorem third_angle_gt_pi_sub_lam_of_two_delta_small
     {V : Type*} {p : V → Plane}
     {delta lam : ℝ}
@@ -71,6 +122,8 @@ theorem impossible_two_delta_small_angles_under_cap
     hcap a c b hac hbc hab.symm
   linarith
 
+#print axioms third_angle_gt_pi_sub_lam_of_two_weighted_small
+#print axioms impossible_two_weighted_small_angles_under_cap
 #print axioms third_angle_gt_pi_sub_lam_of_two_delta_small
 #print axioms impossible_two_delta_small_angles_under_cap
 
