@@ -26,8 +26,8 @@ open Real
 theorem hamiltonian_residual_base_triangle_bounds
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {delta lam : ℝ}
+    (hcap : AngleCap p lam)
     {b c x y z : V}
     (hbc : b ≠ c)
     (hby : b ≠ y)
