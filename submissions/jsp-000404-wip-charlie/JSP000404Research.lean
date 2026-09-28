@@ -1397,3 +1397,6 @@ import JSP000404Research.ExactWitnessUnitGapMass
 
 
 import JSP000404Research.DeficitThreeSupportThreeRemainder
+
+
+import JSP000404Research.ExactWitnessCanonicalUnitGap
