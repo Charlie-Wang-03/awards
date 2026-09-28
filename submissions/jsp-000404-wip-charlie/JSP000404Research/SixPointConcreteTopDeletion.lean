@@ -27,13 +27,14 @@ noncomputable def exponentAfterDeleteTopAt
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard3 : 3 ≤ Fintype.card V)
     (top : V)
     (t : ℝ)
     (v : V) : ℕ :=
   if h : v ≠ top then
     let hother :=
       child_other_nonempty_of_card_ge_three
-        (by omega : 3 ≤ Fintype.card V) h
+        hcard3 h
     centreExponent
       ((C v).restrictDelete top h hother) t
   else 0
@@ -49,7 +50,7 @@ theorem exponent_le_after_delete_top
     {v : V}
     (hvt : v ≠ top) :
     centreExponent (C v) t ≤
-      exponentAfterDeleteTopAt C top t v := by
+      exponentAfterDeleteTopAt C hcard3 top t v := by
   unfold exponentAfterDeleteTopAt
   rw [dif_pos hvt]
   dsimp only
@@ -79,7 +80,7 @@ theorem exponent_add_one_le_after_delete_top_of_support_three
     (hsupV :
       positiveSupport (centreQuotient (C v) t) = 3) :
     centreExponent (C v) t + 1 ≤
-      exponentAfterDeleteTopAt C top t v := by
+      exponentAfterDeleteTopAt C hcard3 top t v := by
   have hdelta1 : delta < 1 := by linarith
   have hsharp :
       SharpAt p delta lam top :=
@@ -126,7 +127,7 @@ theorem six_point_top_deletion_compensated_of_four_support_three
     2 ^ (n - 1) + 5 * 2 ^ (n - 3)
       ≤
     ∑ v ∈ (Finset.univ.erase top : Finset V),
-      2 ^ exponentAfterDeleteTopAt C top t v := by
+      2 ^ exponentAfterDeleteTopAt C (by omega : 3 ≤ Fintype.card V) top t v := by
   have htpos :
       0 < t :=
     sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
