@@ -1466,3 +1466,12 @@ import JSP000404Research.SixPointSupportThreeMinimumDeletion
 
 
 import JSP000404Research.SixPointHardSupportReduction
+
+
+import JSP000404Research.SixPointTwoNonGainers
+
+
+import JSP000404Research.SixPointHardLowSupportGeometry
+
+
+import JSP000404Research.MixedSupportTwoHiddenLargeAngle
