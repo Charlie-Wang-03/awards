@@ -12,6 +12,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: jsp000404-lean-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Check active JSP-000404 proof chain
