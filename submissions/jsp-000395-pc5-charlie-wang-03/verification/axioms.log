@@ -1,0 +1,15 @@
+GitHub Actions run: 35127171862
+Job: 104898948449
+Tested commit: 6c45d37755a40c469eaf80f1848ae6731f168c62
+Command: lake env lean Audit.lean
+
+PC5488.pc5_488 {q₁ q₂ q₃ q₄ q₅ m n : ℕ} (hm : 0 < m) (h2 : 2 ≤ q₁)
+  (h12 : q₁ < q₂) (h23 : q₂ < q₃) (h34 : q₃ < q₄) (h45 : q₄ < q₅)
+  (h5n : q₅ ≤ n) (hc12 : q₁.Coprime q₂) (hc13 : q₁.Coprime q₃)
+  (hc14 : q₁.Coprime q₄) (hc15 : q₁.Coprime q₅) (hc23 : q₂.Coprime q₃)
+  (hc24 : q₂.Coprime q₄) (hc25 : q₂.Coprime q₅) (hc34 : q₃.Coprime q₄)
+  (hc35 : q₃.Coprime q₅) (hc45 : q₄.Coprime q₅) :
+  n * PC5488.countMultiples5 q₁ q₂ q₃ q₄ q₅ m <
+    2 * m * PC5488.countMultiples5 q₁ q₂ q₃ q₄ q₅ n
+
+'PC5488.pc5_488' depends on axioms: [propext, Classical.choice, Quot.sound]
