@@ -76,6 +76,20 @@ noncomputable def localColourGraph
   · rintro ⟨huv, h⟩
     exact ⟨huv, Or.inl h⟩
 
+theorem localColourGraph_neighborFinset
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (P : BinaryEdgePartition V k)
+    (top : V)
+    (c : Fin k)
+    (u : OtherVertex top) :
+    (localColourGraph P top c).neighborFinset u =
+      (Finset.univ.erase u).filter
+        (fun v => localIncidentColor P u.1 v.1 = c) := by
+  classical
+  ext v
+  simp [SimpleGraph.mem_neighborFinset,
+    localColourGraph_adj, ne_comm]
+
 def localColourLeft
     {V : Type*} [LinearOrder V] {k : ℕ}
     (P : BinaryEdgePartition V k)
@@ -210,6 +224,7 @@ theorem localColourGraph_support_iff_active_of_not_top
   · exact active_mem_localColourGraph_support_of_not_top
       P top c hcTop u
 
+#print axioms localColourGraph_neighborFinset
 #print axioms localIncidentColor_comm
 #print axioms bit_ne_of_localIncidentColor
 #print axioms localColourGraph_isBipartiteWith
