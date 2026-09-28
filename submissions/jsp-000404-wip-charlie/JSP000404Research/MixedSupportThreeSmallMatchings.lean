@@ -235,6 +235,86 @@ theorem reorient_around
     · intro h; exact M.a_ne_b (Subtype.ext h)
     · simpa [hvD, add_comm] using M.small_sum
 
+/-- Two small perfect matchings at distinct centres can be reoriented
+around each other with distinct partners.  Equal partners would give a
+triangle with two delta-small angles. -/
+theorem two_smallPerfectMatchings_have_distinct_partners
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {top b c : V} {delta lam : ℝ}
+    (hcard : Fintype.card V = 6)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlam : 0 < lam)
+    (hbTop : b ≠ top)
+    (hcTop : c ≠ top)
+    (hbc : b ≠ c)
+    (Mb : SmallPerfectMatchingAwayFromTop
+      (p := p) top b delta lam)
+    (Mc : SmallPerfectMatchingAwayFromTop
+      (p := p) top c delta lam) :
+    ∃ xb yb zb xc yc zc : V,
+      xb ≠ top ∧ yb ≠ top ∧ zb ≠ top ∧
+      xb ≠ b ∧ yb ≠ b ∧ zb ≠ b ∧
+      xb ≠ c ∧ yb ≠ c ∧ zb ≠ c ∧
+      xb ≠ yb ∧ xb ≠ zb ∧ yb ≠ zb ∧
+      xc ≠ top ∧ yc ≠ top ∧ zc ≠ top ∧
+      xc ≠ c ∧ yc ≠ c ∧ zc ≠ c ∧
+      xc ≠ b ∧ yc ≠ b ∧ zc ≠ b ∧
+      xc ≠ yc ∧ xc ≠ zc ∧ yc ≠ zc ∧
+      xb ≠ xc ∧
+      EuclideanGeometry.angle (p c) (p b) (p xb) +
+          EuclideanGeometry.angle (p yb) (p b) (p zb)
+        ≤ delta * lam ∧
+      EuclideanGeometry.angle (p b) (p c) (p xc) +
+          EuclideanGeometry.angle (p yc) (p c) (p zc)
+        ≤ delta * lam := by
+  obtain ⟨xb,yb,zb,
+      hxbTop,hybTop,hzbTop,
+      hxbB,hybB,hzbB,
+      hxbC,hybC,hzbC,
+      hxbYb,hxbZb,hybZb,hsmallB⟩ :=
+    Mb.reorient_around hcard hbTop hcTop hbc.symm
+  obtain ⟨xc,yc,zc,
+      hxcTop,hycTop,hzcTop,
+      hxcC,hycC,hzcC,
+      hxcB,hycB,hzcB,
+      hxcYc,hxcZc,hycZc,hsmallC⟩ :=
+    Mc.reorient_around hcard hcTop hbTop hbc
+  have hpartner : xb ≠ xc := by
+    intro hEq
+    subst xc
+    have hzeroB :
+        0 ≤ EuclideanGeometry.angle (p yb) (p b) (p zb) :=
+      EuclideanGeometry.angle_nonneg _ _ _
+    have hzeroC :
+        0 ≤ EuclideanGeometry.angle (p yc) (p c) (p zc) :=
+      EuclideanGeometry.angle_nonneg _ _ _
+    have hsmallB0 :
+        EuclideanGeometry.angle (p c) (p b) (p xb)
+          ≤ delta * lam := by
+      linarith
+    have hsmallC0 :
+        EuclideanGeometry.angle (p b) (p c) (p xb)
+          ≤ delta * lam := by
+      linarith
+    exact impossible_two_delta_small_angles_under_cap
+      hp hcap hdeltaHalf hlam
+      hbc hxbB hxbC
+      hsmallB0 hsmallC0
+  exact ⟨xb,yb,zb,xc,yc,zc,
+    hxbTop,hybTop,hzbTop,
+    hxbB,hybB,hzbB,
+    hxbC,hybC,hzbC,
+    hxbYb,hxbZb,hybZb,
+    hxcTop,hycTop,hzcTop,
+    hxcC,hycC,hzcC,
+    hxcB,hycB,hzcB,
+    hxcYc,hxcZc,hycZc,
+    hpartner,hsmallB,hsmallC⟩
+
 end SmallPerfectMatchingAwayFromTop
 
 theorem support_three_middle_smallPerfectMatching
