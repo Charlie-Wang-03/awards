@@ -1,0 +1,30 @@
+name: JSP-000404 Lean
+
+on:
+  push:
+    branches:
+      - research/jsp-000404-sharp-centre
+    paths:
+      - "submissions/jsp-000404-wip-charlie/**"
+      - ".github/workflows/jsp000404-lean.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build JSP-000404 research library
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
+        with:
+          lake-package-directory: submissions/jsp-000404-wip-charlie
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
