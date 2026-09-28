@@ -38,16 +38,20 @@ jobs:
 
       - name: Check source-assembly repairs
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake env lean JSP000404Research/SourceAssemblyRepairs.lean
+        run: lake build JSP000404Research.SourceAssemblyRepairs
 
       - name: Check small-angle outer bounds
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake env lean JSP000404Research/SmallAngleOuterBounds.lean
+        run: lake build JSP000404Research.SmallAngleOuterBounds
 
       - name: Check Hamiltonian residual separation
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake env lean JSP000404Research/HamiltonianResidualSeparation.lean
+        run: lake build JSP000404Research.HamiltonianResidualSeparation
 
       - name: Check Hamiltonian residual consequences
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake env lean JSP000404Research/HamiltonianResidualConsequences.lean
+        run: lake build JSP000404Research.HamiltonianResidualConsequences
+
+      - name: Check Hamiltonian residual base triangle
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.HamiltonianResidualBaseTriangle
