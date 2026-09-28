@@ -1488,3 +1488,5 @@ import JSP000404Research.SourceAssemblyRepairs
 import JSP000404Research.SmallAngleOuterBounds
 
 import JSP000404Research.HamiltonianResidualSeparation
+
+import JSP000404Research.HamiltonianResidualConsequences
