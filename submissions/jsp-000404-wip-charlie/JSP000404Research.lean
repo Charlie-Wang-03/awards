@@ -1364,3 +1364,12 @@ import JSP000404Research.SupportTwoZeroAngleAverage
 
 
 import JSP000404Research.SixPointSupportTwoSmallAngle
+
+
+import JSP000404Research.FiveMinimaColourGraph
+
+
+import JSP000404Research.FiveMinimaC4Extremal
+
+
+import JSP000404Research.SixPointMergedMonochromaticC4
