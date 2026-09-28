@@ -1475,3 +1475,6 @@ import JSP000404Research.SixPointHardLowSupportGeometry
 
 
 import JSP000404Research.MixedSupportTwoHiddenLargeAngle
+
+
+import JSP000404Research.MixedSupportThreeSmallMatchings
