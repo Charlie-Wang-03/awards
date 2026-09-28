@@ -1418,3 +1418,6 @@ import JSP000404Research.SixPointBadActiveC4
 
 
 import JSP000404Research.FiveMinimaPendantRepeatedSmallAngle
+
+
+import JSP000404Research.TwoBadEachSmallAngle
