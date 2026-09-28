@@ -109,11 +109,9 @@ theorem covers_every_other_nonTop
     · simp [M.c_ne_top, M.c.2]
     · simp [M.d_ne_top, M.d.2]
 
-  have hSU : S = U :=
-    Finset.Subset.antisymm hSsub
-      (by
-        apply Finset.eq_of_subset_of_card_le hSsub
-        rw [hScard, hUcard])
+  have hSU : S = U := by
+    apply Finset.eq_of_subset_of_card_le hSsub
+    rw [hScard, hUcard]
 
   have hvU : v ∈ U := by
     dsimp [U]
