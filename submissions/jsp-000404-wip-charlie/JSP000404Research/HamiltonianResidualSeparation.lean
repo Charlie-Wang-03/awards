@@ -28,8 +28,8 @@ open Real
 theorem hamiltonian_residual_cross_separation
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {delta lam : ℝ}
+    (hcap : AngleCap p lam)
     {b c x y z : V}
     (hbc : b ≠ c)
     (hbx : b ≠ x)
