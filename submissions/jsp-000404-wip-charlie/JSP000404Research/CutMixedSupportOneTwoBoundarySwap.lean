@@ -28,6 +28,95 @@ hence pays a genuine Euclidean angle at least (n-3)*lambda.
 
 namespace JSP000404Research
 
+theorem cut_span_n_sub_one_support_two_any_transition_qe_eq_two
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {lam t delta c : ℝ} {n : ℕ}
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hc0 : 0 ≤ c)
+    (hcpi : c < Real.pi)
+    {top a b : V}
+    (hta : top ≠ a)
+    (htb : top ≠ b)
+    (hab : a ≠ b)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hA : centreExponent (C a) t = n - 3)
+    (hsupA :
+      positiveSupport (centreQuotient (C a) t) = 1)
+    (hB : centreExponent (C b) t = n - 3)
+    (hsupB :
+      positiveSupport (centreQuotient (C b) t) = 2)
+    (hBadB :
+      CutSaturationBadAt
+        hp hcap C
+        (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht)
+        hlam ht hdelta0 (by linarith : delta < 1)
+        hc0 hcpi b)
+    (R : CentreCutRayCycle hp (C b) c)
+    {x0 : ℝ} {xs : List ℝ}
+    (hvalues : R.normalizedValues t = x0 :: xs)
+    (hspan :
+      Nat.floor (xs.getLastD x0) - Nat.floor x0 = n - 1)
+    (H : HighExponentTransitionIntervalCertificate hp t b (C b)) :
+    H.qe = 2 := by
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hHle :
+      H.qe ≤ 2 :=
+    transition_qe_le_two_beside_top_and_support_one
+      hp hcap hn5 hdelta0 hdeltaHalf ht hlam
+      hta htb hab
+      (C top) (C a) (C b)
+      hTop hA hsupA H
+
+  obtain ⟨hwrap, hqOrdSum, hqOrdPos⟩ :=
+    cutSaturationBadAt_span_n_sub_one_support_two_shape
+      hp hcap C hn5 htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi
+      b hB hsupB hBadB R hvalues hspan
+  let qOrd :=
+    (successiveDiffsFrom x0 xs).map Nat.floor
+  let qWrap :=
+    Nat.floor (x0 + t - xs.getLastD x0)
+  obtain ⟨_hwrap0, _hsum0, _hpos0, hdecomp0⟩ :=
+    cutSaturationBadAt_span_n_sub_one_quotient_shape
+      hp hcap C hn5 htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi
+      b hB hsupB hBadB R hvalues hspan
+  have hdecomp :
+      R.gapQuotients t = qOrd ++ [qWrap] := by
+    simpa [qOrd, qWrap] using hdecomp0
+  have hqWrap : qWrap = 2 := by
+    simpa [qWrap] using hwrap
+  have hqOrdSum' : qOrd.sum = n - 3 := by
+    simpa [qOrd] using hqOrdSum
+  have hqOrdPos' : listPositiveCount qOrd = 1 := by
+    simpa [qOrd] using hqOrdPos
+
+  have hmemCut :
+      H.qe ∈ R.gapQuotients t :=
+    R.canonical_quotient_mem_cut
+      hp htpos H.qe_mem
+  rw [hdecomp, List.mem_append] at hmemCut
+  rcases hmemCut with hOrd | hWrap
+  · have hs :
+        qOrd.sum = H.qe :=
+      list_sum_eq_member_of_positiveCount_one
+        qOrd hqOrdPos' hOrd H.qe_ne
+    rw [hqOrdSum'] at hs
+    omega
+  · simp only [List.mem_singleton] at hWrap
+    rw [hqWrap] at hWrap
+    exact hWrap
+
 theorem cut_span_n_sub_one_support_two_transition_qe_eq_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
