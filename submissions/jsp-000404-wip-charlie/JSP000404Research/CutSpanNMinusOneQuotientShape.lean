@@ -243,11 +243,11 @@ theorem cutSaturationBadAt_span_n_sub_one_support_two_shape
     let qWrap := Nat.floor (a + t - xs.getLastD a)
     qWrap = 2 ∧ qOrd.sum = n - 3 ∧
     listPositiveCount qOrd = 1 := by
-  have h :=
+  obtain ⟨hwrap, hsum, hpos, _hdecomp⟩ :=
     cutSaturationBadAt_span_n_sub_one_quotient_shape
       hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi i hexp hsupport hbad R hvalues hspan
-  simpa using h.1, h.2.1, h.2.2.1
+  exact ⟨hwrap, by simpa using hsum, by simpa using hpos⟩
 
 theorem cutSaturationBadAt_span_n_sub_one_support_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -277,11 +277,11 @@ theorem cutSaturationBadAt_span_n_sub_one_support_three_shape
     let qWrap := Nat.floor (a + t - xs.getLastD a)
     qWrap = 2 ∧ qOrd.sum = n - 2 ∧
     listPositiveCount qOrd = 2 := by
-  have h :=
+  obtain ⟨hwrap, hsum, hpos, _hdecomp⟩ :=
     cutSaturationBadAt_span_n_sub_one_quotient_shape
       hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi i hexp hsupport hbad R hvalues hspan
-  simpa using h.1, h.2.1, h.2.2.1
+  exact ⟨hwrap, by simpa using hsum, by simpa using hpos⟩
 
 #print axioms cutSaturationBadAt_span_n_sub_one_quotient_shape
 #print axioms cutSaturationBadAt_span_n_sub_one_support_two_shape
