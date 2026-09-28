@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build:
-    name: Build JSP-000404 research library
+    name: Check active JSP-000404 proof chain
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -36,6 +36,18 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
-      - name: Build research library
+      - name: Check source-assembly repairs
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build
+        run: lake env lean JSP000404Research/SourceAssemblyRepairs.lean
+
+      - name: Check small-angle outer bounds
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake env lean JSP000404Research/SmallAngleOuterBounds.lean
+
+      - name: Check Hamiltonian residual separation
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake env lean JSP000404Research/HamiltonianResidualSeparation.lean
+
+      - name: Check Hamiltonian residual consequences
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake env lean JSP000404Research/HamiltonianResidualConsequences.lean
