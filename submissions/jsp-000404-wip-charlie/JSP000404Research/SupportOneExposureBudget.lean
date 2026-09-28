@@ -180,6 +180,51 @@ theorem no_three_additional_exposed_after_top_support_one
   rw [hncast, hpi, ht] at hpack hlower
   nlinarith
 
+/-- Direct support-class corollary: after one support-one third-layer
+minimum, three further support-at-most-two centres are impossible. -/
+theorem no_three_support_le_two_after_top_support_one
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn : 4 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {top a b c d : V}
+    (hta : top ≠ a) (htb : top ≠ b)
+    (htc : top ≠ c) (htd : top ≠ d)
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (Ctop : CentreProjectiveCycle hp top)
+    (Ca : CentreProjectiveCycle hp a)
+    (Cb : CentreProjectiveCycle hp b)
+    (Cc : CentreProjectiveCycle hp c)
+    (Cd : CentreProjectiveCycle hp d)
+    (hTop : centreExponent Ctop t = n - 1)
+    (hA : centreExponent Ca t = n - 3)
+    (hsupA : positiveSupport (centreQuotient Ca t) = 1)
+    (hsupB : positiveSupport (centreQuotient Cb t) ≤ 2)
+    (hsupC : positiveSupport (centreQuotient Cc t) ≤ 2)
+    (hsupD : positiveSupport (centreQuotient Cd t) ≤ 2) :
+    False := by
+  have htpos :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htone :=
+    sendov_scale_one_le (by omega : 1 ≤ n) hdelta0 ht
+  apply no_three_additional_exposed_after_top_support_one
+      hp hcap hn hdelta0 hdeltaHalf ht hlam
+      hta htb htc htd hab hac had hbc hbd hcd
+      Ctop Ca Cb Cc Cd hTop hA hsupA
+  · exact strictlyExposedAt_of_positiveSupport_le_two
+      hp hcap htpos htone hlam b Cb hsupB
+  · exact strictlyExposedAt_of_positiveSupport_le_two
+      hp hcap htpos htone hlam c Cc hsupC
+  · exact strictlyExposedAt_of_positiveSupport_le_two
+      hp hcap htpos htone hlam d Cd hsupD
+
 #print axioms no_three_additional_exposed_after_top_support_one
 
 end JSP000404Research
