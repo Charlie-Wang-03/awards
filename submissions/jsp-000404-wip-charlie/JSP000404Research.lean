@@ -1403,3 +1403,12 @@ import JSP000404Research.ExactWitnessCanonicalUnitGap
 
 
 import JSP000404Research.SixPointExactWitnessPinnedExactGap
+
+
+import JSP000404Research.CutMonochromaticC4Angles
+
+
+import JSP000404Research.TwoBadMonochromaticC4Incidence
+
+
+import JSP000404Research.ExactWitnessSupportThreeRemainder
