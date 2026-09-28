@@ -1421,3 +1421,9 @@ import JSP000404Research.FiveMinimaPendantRepeatedSmallAngle
 
 
 import JSP000404Research.TwoBadEachSmallAngle
+
+
+import JSP000404Research.SixPointTopDeletionWeight
+
+
+import JSP000404Research.ThirdLayerSupportOneMultiplicity
