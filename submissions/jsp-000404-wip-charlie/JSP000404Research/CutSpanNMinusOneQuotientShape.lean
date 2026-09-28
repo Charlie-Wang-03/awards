@@ -247,7 +247,10 @@ theorem cutSaturationBadAt_span_n_sub_one_support_two_shape
     cutSaturationBadAt_span_n_sub_one_quotient_shape
       hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi i hexp hsupport hbad R hvalues hspan
-  exact ⟨hwrap, by simpa using hsum, by simpa using hpos⟩
+  refine ⟨hwrap, ?_, ?_⟩
+  · omega
+  · norm_num at hpos ⊢
+    exact hpos
 
 theorem cutSaturationBadAt_span_n_sub_one_support_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -281,7 +284,10 @@ theorem cutSaturationBadAt_span_n_sub_one_support_three_shape
     cutSaturationBadAt_span_n_sub_one_quotient_shape
       hp hcap C hn5 htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi i hexp hsupport hbad R hvalues hspan
-  exact ⟨hwrap, by simpa using hsum, by simpa using hpos⟩
+  refine ⟨hwrap, ?_, ?_⟩
+  · omega
+  · norm_num at hpos ⊢
+    exact hpos
 
 #print axioms cutSaturationBadAt_span_n_sub_one_quotient_shape
 #print axioms cutSaturationBadAt_span_n_sub_one_support_two_shape
