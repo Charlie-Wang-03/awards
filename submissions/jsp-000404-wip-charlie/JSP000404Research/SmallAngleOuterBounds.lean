@@ -5,14 +5,12 @@ import Mathlib.Tactic
 /-!
 # Outer-angle bounds from one small angle under the global cap
 
-This is the local triangle lemma used repeatedly in the six-point hard branch.
-
 If one angle of a nondegenerate triangle is at most alpha*lambda and every
 angle is globally at most pi-lambda, then each of the other two angles is at
 least (1-alpha)*lambda.
 
-Unlike SharpOuterAngles, this theorem does not require the small-angle vertex
-to be globally SharpAt; one explicit small-angle hypothesis is enough.
+Unlike SharpOuterAngles, this theorem needs only one explicit small-angle
+hypothesis; the small-angle vertex need not be globally SharpAt.
 -/
 
 namespace JSP000404Research
@@ -36,23 +34,19 @@ theorem outer_angle_ge_one_sub_mul_of_small_and_cap
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p b) (p₂ := p a) (p c)
-      (hp.ne hab.symm)
-  have hcommA :
-      EuclideanGeometry.angle (p c) (p a) (p b) =
-        EuclideanGeometry.angle (p b) (p a) (p c) :=
+      (hp.ne hab)
+  have hcomm :
+      EuclideanGeometry.angle (p c) (p b) (p a) =
+        EuclideanGeometry.angle (p a) (p b) (p c) :=
     EuclideanGeometry.angle_comm _ _ _
-  have hcommC :
-      EuclideanGeometry.angle (p b) (p c) (p a) =
-        EuclideanGeometry.angle (p a) (p c) (p b) :=
-    EuclideanGeometry.angle_comm _ _ _
-  rw [hcommA, hcommC] at hsum
+  rw [hcomm] at hsum
   nlinarith
 
 theorem outer_angle_ge_one_sub_mul_of_small_under_AngleCap
     {V : Type*} {p : V → Plane}
+    {alpha lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {alpha lam : ℝ}
     {a b c : V}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
     (hsmall :
@@ -67,9 +61,9 @@ theorem outer_angle_ge_one_sub_mul_of_small_under_AngleCap
 /-- Both non-small vertices receive the same lower bound. -/
 theorem both_outer_angles_ge_one_sub_mul_of_small_under_AngleCap
     {V : Type*} {p : V → Plane}
+    {alpha lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {alpha lam : ℝ}
     {a b c : V}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
     (hsmall :
@@ -86,7 +80,8 @@ theorem both_outer_angles_ge_one_sub_mul_of_small_under_AngleCap
   · have hsmall' :
         EuclideanGeometry.angle (p c) (p a) (p b) ≤
           alpha * lam := by
-      simpa [EuclideanGeometry.angle_comm] using hsmall
+      rw [EuclideanGeometry.angle_comm]
+      exact hsmall
     exact outer_angle_ge_one_sub_mul_of_small_under_AngleCap
       hp hcap hac hab hbc.symm hsmall'
 
