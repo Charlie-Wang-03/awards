@@ -1445,3 +1445,24 @@ import JSP000404Research.CutValueDeletionGain
 
 
 import JSP000404Research.CutRestrictionValueList
+
+
+import JSP000404Research.SixPointMinimumDeletionWeight
+
+
+import JSP000404Research.CyclicPositiveRayDeletionGain
+
+
+import JSP000404Research.SupportThreeLeftHiddenDeletionGain
+
+
+import JSP000404Research.SupportThreeRightHiddenDeletionGain
+
+
+import JSP000404Research.SupportThreeMiddleOrDeletionGain
+
+
+import JSP000404Research.SixPointSupportThreeMinimumDeletion
+
+
+import JSP000404Research.SixPointHardSupportReduction
