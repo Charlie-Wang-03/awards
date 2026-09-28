@@ -25,6 +25,7 @@ theorem support_three_left_hidden_nonTop_deletion_gain
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    (hcard : Fintype.card V = 6)
     {t : ℝ}
     {s i : V}
     (hsi : s ≠ i)
@@ -36,7 +37,7 @@ theorem support_three_left_hidden_nonTop_deletion_gain
     (r : OtherVertex i)
     (rest : List (OtherVertex i))
     (qFirst qLast qHidden : ℕ)
-    (hrays0 : C.rays = first0 :: rest0)
+    (_hrays0 : C.rays = first0 :: rest0)
     (hsplitTop :
       C.rays =
         preTop ++ (⟨s,hsi⟩ : OtherVertex i) :: postTop)
@@ -53,25 +54,9 @@ theorem support_three_left_hidden_nonTop_deletion_gain
     let deleted := r.1
     let hir : i ≠ deleted := r.2
     let hother :
-        Nonempty (OtherVertex (survivingCentre deleted i hir)) := by
-      have hcardR :
-          C.rays.length = Fintype.card V - 1 :=
-        centreRayList_length_eq_card_sub_one C
-      have hcardV : 2 ≤ Fintype.card V := by
-        by_contra h
-        have hc : Fintype.card V ≤ 1 := by omega
-        rw [hcardR] at hrays0
-        have hlen : C.rays.length = 0 := by omega
-        exact C.nonempty (List.length_eq_zero.mp hlen)
-      exact child_other_nonempty_of_card_ge_three
-        (by
-          have hlenRot :
-              C.rays.length = 5 := by
-            rw [← List.length_rotate C.rays k, hrotRays]
-            simp at *
-          rw [centreRayList_length_eq_card_sub_one C] at hlenRot
-          omega)
-        hir
+        Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
+      child_other_nonempty_of_card_ge_three
+        (by rw [hcard]; omega) hir
     centreExponent C t + 1 ≤
       centreExponent (C.restrictDelete deleted hir hother) t := by
   let topRay : OtherVertex i := ⟨s,hsi⟩
@@ -111,20 +96,11 @@ theorem support_three_left_hidden_nonTop_deletion_gain
             simp
 
   have hcardRays : C.rays.length = 5 := by
-    rw [← List.length_rotate C.rays preTop.length, hrotTop]
-    simp at *
-    have hqLen :
-        (quotientList t C.gaps).length = C.rays.length := by
-      rw [quotientList_length, C.gaps_length]
-    have hqLenRot :
-        ((quotientList t C.gaps).rotate preTop.length).length =
-          (qFirst :: [qHidden,0,0] ++ [qLast]).length := by
-      rw [hqTop]
-    rw [List.length_rotate, hqLen] at hqLenRot
-    simpa using hqLenRot
+    rw [centreRayList_length_eq_card_sub_one C, hcard]
+    norm_num
 
   let hcardV3 : 3 ≤ Fintype.card V := by
-    rw [centreRayList_length_eq_card_sub_one C] at hcardRays
+    rw [hcard]
     omega
   let hother :
       Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
