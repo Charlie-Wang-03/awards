@@ -127,28 +127,28 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
     rw [hsplit, List.rotate_append_length_eq]
     simp [List.append_assoc]
 
+  let qR : List ℕ := qs.rotate k
+  let AR : List ℝ := As.rotate k
+
+  have hqRLen0 :
+      qR.length = (topRay :: tailRays).length := by
+    dsimp [qR]
+    rw [List.length_rotate, hqLen]
+    rw [← List.length_rotate C.rays k, hrotRays]
+
+  have hsupportR :
+      listPositiveCount qR = 2 := by
+    dsimp [qR]
+    rw [listPositiveCount_rotate]
+    exact hsupportList
+
   have htailNonempty : tailRays ≠ [] := by
     intro hnil
-    have hlen : C.rays.length = 1 := by
-      have h := congrArg List.length hrotRays
-      rw [List.length_rotate, hnil] at h
-      simpa using h
-    have hcardLower : 2 ≤ C.rays.length := by
-      rw [centreRayList_length_eq_card_sub_one C]
-      have hcardV : 3 ≤ Fintype.card V := by
-        by_contra h
-        have hsmall : Fintype.card V ≤ 2 := by omega
-        have hotherCard :
-            Fintype.card (OtherVertex i) =
-              Fintype.card V - 1 :=
-          Fintype.card_subtype_compl (a := i)
-        have hlenCard :
-            C.rays.length =
-              Fintype.card (OtherVertex i) := by
-          simpa [C.complete, C.nodup] using
-            List.toFinset_card_of_nodup C.nodup
-        omega
-      omega
+    have hlen1 : qR.length = 1 := by
+      rw [hqRLen0, hnil]
+      rfl
+    have hcountLe := listPositiveCount_le_length qR
+    rw [hsupportR, hlen1] at hcountLe
     omega
 
   obtain ⟨r, rest, htail⟩ :
@@ -157,24 +157,13 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
     | nil => exact False.elim (htailNonempty hT)
     | cons r rest => exact ⟨r,rest,hT⟩
 
-  let qR : List ℕ := qs.rotate k
-  let AR : List ℝ := As.rotate k
-
   have hqRLen :
       qR.length = (topRay :: r :: rest).length := by
-    dsimp [qR]
-    rw [List.length_rotate, hqLen]
-    rw [← List.length_rotate C.rays k, hrotRays, htail]
+    rw [hqRLen0, htail]
 
   have hqAR : qR.length = AR.length := by
     dsimp [qR, AR]
     simpa using hqA
-
-  have hsupportR :
-      listPositiveCount qR = 2 := by
-    dsimp [qR]
-    rw [listPositiveCount_rotate]
-    exact hsupportList
 
   have hmassR :
       listZeroAngleMass qR AR ≤ (1 + delta) * lam := by
@@ -217,7 +206,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
           qrest.length =
             (consecutiveRayAngles (p := p) i r rest ++
               [EuclideanGeometry.angle
-                (p (r :: rest).getLastD r |>.1)
+                (p ((r :: rest).getLastD r).1)
                 (p i) (p top)]).length := by
         have h := hqAR
         rw [hqCase, hARpin] at h
@@ -315,7 +304,7 @@ theorem separated_support_two_residual_zero_budget
         (qLast = 0 ∧
           (1 - delta) * lam ≤
             EuclideanGeometry.angle
-              (p (r :: rest).getLastD r |>.1) (p i) (p top))
+              (p ((r :: rest).getLastD r).1) (p i) (p top))
       ) ∧
       (
         qFirst = 0 →
@@ -323,7 +312,7 @@ theorem separated_support_two_residual_zero_budget
               (qmid ++ [qLast])
               (consecutiveRayAngles (p := p) i r rest ++
                 [EuclideanGeometry.angle
-                  (p (r :: rest).getLastD r |>.1)
+                  (p ((r :: rest).getLastD r).1)
                   (p i) (p top)])
             ≤ 2 * delta * lam
       ) ∧
