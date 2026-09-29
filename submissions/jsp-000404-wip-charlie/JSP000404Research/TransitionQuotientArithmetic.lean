@@ -38,14 +38,20 @@ theorem normalized_gap_lt_n_sub_one_mul_lam_of_floor_le
     exact_mod_cast hq
   have hn2cast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast Nat.sub_add_cancel hn2
+    rw [Nat.cast_sub hn2]
+    norm_num
   have hn1cast :
       ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
-    exact_mod_cast Nat.sub_add_cancel (by omega : 1 ≤ n)
+    rw [Nat.cast_sub (by omega : 1 ≤ n)]
+    norm_num
   have hxbound :
       x < ((n - 1 : ℕ) : ℝ) := by
-    rw [hn2cast, hn1cast] at *
-    nlinarith
+    calc
+      x < (Nat.floor x : ℝ) + 1 := hxlt
+      _ ≤ ((n - 2 : ℕ) : ℝ) + 1 := by linarith
+      _ = ((n - 1 : ℕ) : ℝ) := by
+        rw [hn2cast, hn1cast]
+        ring
   have hpi : 0 < Real.pi := Real.pi_pos
   have hcoef : 0 < t / Real.pi := div_pos htpos hpi
   have hxrewrite :
@@ -66,7 +72,6 @@ theorem normalized_gap_lt_n_sub_one_mul_lam_of_floor_le
     g < ((n - 1 : ℕ) : ℝ) / (t / Real.pi) := hdiv
     _ = ((n - 1 : ℕ) : ℝ) * (Real.pi / t) := by
       field_simp [htne, hpine]
-      ring
 
 /-- Version specialized to t=n+delta.  The equality is retained because later
 geometric code uses that normalization explicitly. -/
