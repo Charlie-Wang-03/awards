@@ -76,3 +76,7 @@ jobs:
       - name: Check saturated transition support
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SaturatedTransitionSupport
+
+      - name: Check nonexposed exact transitions
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.NonExposedSupportThreeExactTransitions
