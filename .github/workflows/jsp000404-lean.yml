@@ -75,3 +75,7 @@ jobs:
       - name: Check middle-hidden local sign shape
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenSigns
+
+      - name: Check Hamiltonian transversal ordering
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.HamiltonianResidualTransversal
