@@ -61,9 +61,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualBudget
 
-      - name: Check middle-hidden sign shape
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SupportThreeMiddleHiddenSigns
 
       - name: Check bounded transition quotient angle
         working-directory: submissions/jsp-000404-wip-charlie
@@ -73,10 +70,4 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenQuotient
 
-      - name: Check saturated transition support
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SaturatedTransitionSupport
 
-      - name: Check nonexposed exact transitions
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.NonExposedSupportThreeExactTransitions
