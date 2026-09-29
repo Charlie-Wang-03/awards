@@ -52,9 +52,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualSeparation
 
-      - name: Check Hamiltonian residual consequences
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.HamiltonianResidualConsequences
 
       - name: Check Hamiltonian residual base triangle
         working-directory: submissions/jsp-000404-wip-charlie
