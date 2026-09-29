@@ -43,12 +43,15 @@ theorem middle_hidden_quotients_sum_eq_n
       qs.rotate k =
         qFirst :: 0 :: qHidden :: 0 :: qLast :: []) :
     qFirst + qHidden + qLast = n := by
+  have hrotEq :
+      (qs.rotate k).sum = qs.sum :=
+    (List.rotate_perm qs k).sum_eq
   have hrotSum :
       (qs.rotate k).sum = n := by
-    rw [List.sum_rotate]
+    rw [hrotEq]
     exact hsum
   rw [hqrot] at hrotSum
-  simpa using hrotSum
+  omega
 
 theorem middle_hidden_each_positive_quotient_le_n_sub_two
     (qs : List ℕ)
