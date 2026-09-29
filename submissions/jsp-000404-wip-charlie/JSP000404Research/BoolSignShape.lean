@@ -1,4 +1,4 @@
-import JSP000404Research.BoolSignPath
+import JSP000404Research.SignTransitionBudget
 import Mathlib.Tactic
 
 /-!
@@ -36,8 +36,10 @@ theorem boolTransitionCountFrom_eq_zero_iff
         simp only [boolTransitionCountFrom] at h
         by_cases hab : a = b
         · subst b
-          simp only [if_pos rfl, zero_add] at h
-          have hrest := (ih a).1 h
+          have h0 :
+              boolTransitionCountFrom a bs = 0 := by
+            simpa [boolTransitionCountFrom] using h
+          have hrest := (ih a).1 h0
           intro x hx
           simp only [List.mem_cons] at hx
           rcases hx with rfl | hx
@@ -85,10 +87,12 @@ theorem one_transition_antiperiodic_shape
   | cons b bs ih =>
       by_cases hab : a = b
       · subst b
-        simp only [boolTransitionCountFrom, if_pos rfl, zero_add] at htrans
+        have htrans' :
+            boolTransitionCountFrom a bs = 1 := by
+          simpa [boolTransitionCountFrom] using htrans
         have hlast' : boolLastFrom a bs = !a := by
           simpa [boolLastFrom] using hlast
-        obtain ⟨m, n, hshape⟩ := ih a htrans hlast'
+        obtain ⟨m, n, hshape⟩ := ih a htrans' hlast'
         refine ⟨m + 1, n, ?_⟩
         simp [hshape, List.replicate_succ, List.cons_append,
           Nat.add_comm, Nat.add_left_comm, Nat.add_assoc]
