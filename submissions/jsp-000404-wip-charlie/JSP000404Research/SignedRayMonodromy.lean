@@ -31,8 +31,9 @@ theorem rayDirection_add_pi (theta : ℝ) :
 /-- Equivalent subtraction form. -/
 theorem rayDirection_sub_pi (theta : ℝ) :
     rayDirection (theta - Real.pi) = - rayDirection theta := by
-  have h := rayDirection_add_pi (theta - Real.pi)
-  convert h using 1 <;> ring
+  ext i
+  fin_cases i <;>
+    simp [rayDirection]
 
 /-- The signed representation is antiperiodic in its Boolean sign. -/
 theorem signedRayDirection_not_add_pi
