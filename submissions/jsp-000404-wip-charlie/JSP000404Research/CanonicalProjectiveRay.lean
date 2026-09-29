@@ -47,8 +47,19 @@ noncomputable def planeToComplex : Plane ≃ₗᵢ[ℝ] ℂ :=
         Real.cos theta + Real.sin theta * Complex.I
       else
         -(Real.cos theta + Real.sin theta * Complex.I) := by
-  cases sigma <;>
-    simp [signedRayDirection, planeToComplex_rayDirection]
+  cases sigma
+  · simp only [signedRayDirection, Bool.false_eq_true, ite_false]
+    rw [map_neg, planeToComplex_rayDirection]
+  · simp only [signedRayDirection, ite_true]
+    exact planeToComplex_rayDirection theta
+
+/-- Basic half-turn identity, kept here to avoid a dependency cycle with the
+later monodromy module. -/
+theorem rayDirection_add_pi_base (theta : ℝ) :
+    rayDirection (theta + Real.pi) = -rayDirection theta := by
+  ext i
+  fin_cases i <;>
+    simp [rayDirection, Real.cos_add, Real.sin_add]
 
 /-- The plane-to-complex isometry preserves nonzeroness. -/
 theorem planeToComplex_ne_zero
@@ -65,10 +76,15 @@ theorem norm_smul_rayDirection_arg
       ‖planeToComplex x‖ •
         rayDirection (Complex.arg (planeToComplex x)) := by
   apply planeToComplex.injective
-  simp only [map_smul, planeToComplex_rayDirection]
+  rw [map_smul, planeToComplex_rayDirection]
   have hpolar :=
     Complex.norm_mul_cos_add_sin_mul_I (planeToComplex x)
-  simpa [smul_eq_mul] using hpolar.symm
+  change
+    planeToComplex x =
+      (‖planeToComplex x‖ : ℂ) *
+        (Real.cos (Complex.arg (planeToComplex x)) +
+          Real.sin (Complex.arg (planeToComplex x)) * Complex.I)
+  exact hpolar.symm
 
 /-- Main canonical projective-ray representation. -/
 theorem exists_canonical_projective_representation
@@ -94,7 +110,7 @@ theorem exists_canonical_projective_representation
     · rw [signedRayDirection]
       simp only [Bool.false_eq_true, if_false]
       have hshift :=
-        rayDirection_add_pi (Complex.arg z)
+        rayDirection_add_pi_base (Complex.arg z)
       rw [hshift]
       simpa using hpolar
   · have harg0 : 0 ≤ Complex.arg z := le_of_not_gt hneg
@@ -105,7 +121,7 @@ theorem exists_canonical_projective_representation
       simp only [Bool.false_eq_true, if_false]
       rw [hpi] at hpolar
       have hpiRay : rayDirection Real.pi = -rayDirection 0 := by
-        simpa using rayDirection_add_pi 0
+        simpa using rayDirection_add_pi_base 0
       rw [hpiRay] at hpolar
       simpa using hpolar
     · refine ⟨‖z‖, true, Complex.arg z,
@@ -123,7 +139,7 @@ theorem exists_canonical_projective_representation_sub
   apply exists_canonical_projective_representation
   intro hzero
   apply hab
-  exact hab (sub_eq_zero.mp hzero).symm
+  exact (sub_eq_zero.mp hzero).symm
 
 #print axioms planeToComplex_rayDirection
 #print axioms norm_smul_rayDirection_arg
