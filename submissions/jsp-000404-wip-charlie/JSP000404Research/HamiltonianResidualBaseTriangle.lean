@@ -55,8 +55,14 @@ theorem hamiltonian_residual_base_triangle_bounds
   have hA0 :
       0 ≤ EuclideanGeometry.angle (p c) (p b) (p x) :=
     EuclideanGeometry.angle_nonneg _ _ _
+  have hB0 :
+      0 ≤ EuclideanGeometry.angle (p y) (p b) (p z) :=
+    EuclideanGeometry.angle_nonneg _ _ _
   have hC0 :
       0 ≤ EuclideanGeometry.angle (p b) (p c) (p y) :=
+    EuclideanGeometry.angle_nonneg _ _ _
+  have hD0 :
+      0 ≤ EuclideanGeometry.angle (p x) (p c) (p z) :=
     EuclideanGeometry.angle_nonneg _ _ _
   have hBsmall :
       EuclideanGeometry.angle (p y) (p b) (p z)
@@ -116,7 +122,7 @@ theorem hamiltonian_residual_base_triangle_bounds
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p c) (p₂ := p b) (p z)
-      (hp.ne hbc.symm)
+      (hp.ne hbc)
   have hcommC :
       EuclideanGeometry.angle (p z) (p c) (p b) =
         EuclideanGeometry.angle (p b) (p c) (p z) :=
