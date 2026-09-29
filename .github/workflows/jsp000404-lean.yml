@@ -68,3 +68,7 @@ jobs:
       - name: Check bounded transition quotient angle
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.TransitionQuotientLargeAngle
+
+      - name: Check middle-hidden quotient bound
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenQuotient
