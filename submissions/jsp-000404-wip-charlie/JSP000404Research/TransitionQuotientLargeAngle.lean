@@ -141,8 +141,71 @@ theorem actual_angle_gt_one_add_delta_mul_lam_of_transition_quotient_le
         (rayRhoAt_pos hp i j) (rayRhoAt_pos hp i k)]
   exact h
 
+
+/-- Wrap-gap analogue.  A lifted sign transition at the wrap means that the
+last and first canonical signs are equal.  Thus the genuine angle is the
+supplement of the wrap projective gap, and the same quotient bound gives the
+same strict lower bound. -/
+theorem actual_angle_gt_one_add_delta_mul_lam_of_wrap_transition_quotient_le
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {n : ℕ} {delta t lam : ℝ}
+    (hn2 : 2 ≤ n)
+    (htpos : 0 < t)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    {first last : OtherVertex i}
+    (horder : rayThetaAt hp i first ≤ rayThetaAt hp i last)
+    (htransition :
+      raySignAt hp i last ≠ !raySignAt hp i first)
+    (hq :
+      Nat.floor
+          (t * ((rayThetaAt hp i first + Real.pi -
+            rayThetaAt hp i last) / Real.pi))
+        ≤ n - 2) :
+    (1 + delta) * lam <
+      EuclideanGeometry.angle (p last.1) (p i) (p first.1) := by
+  have hsame :
+      raySignAt hp i last = raySignAt hp i first := by
+    cases hfirst : raySignAt hp i first <;>
+      cases hlast : raySignAt hp i last <;>
+      simp_all
+  have hfirst0 := rayThetaAt_nonneg hp i first
+  have hlastPi := rayThetaAt_lt_pi hp i last
+  have hwrapOrder :
+      rayThetaAt hp i last ≤
+        rayThetaAt hp i first + Real.pi := by
+    linarith
+  have hgap :=
+    parameter_gap_lt_n_sub_one_mul_lam_of_floor_le_n_sub_two
+      hn2 htpos ht hlam hwrapOrder hq
+  have hang :
+      EuclideanGeometry.angle (p first.1) (p i) (p last.1) =
+        rayThetaAt hp i last - rayThetaAt hp i first :=
+    actual_angle_eq_ordinary_projective_gap_of_sign_eq
+      hp i horder hsame
+  have hcomm :
+      EuclideanGeometry.angle (p last.1) (p i) (p first.1) =
+        EuclideanGeometry.angle (p first.1) (p i) (p last.1) :=
+    EuclideanGeometry.angle_comm _ _ _
+  rw [hcomm, hang]
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  have hpiEq : Real.pi = t * lam := by
+    rw [hlam]
+    field_simp [ne_of_gt htpos]
+  rw [hpiEq, ht] at hgap
+  have hnCast :
+      ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
+    exact_mod_cast Nat.sub_add_cancel (by omega : 1 ≤ n)
+  rw [hnCast] at hgap
+  nlinarith
+
 #print axioms parameter_gap_lt_n_sub_one_mul_lam_of_floor_le_n_sub_two
 #print axioms signed_transition_angle_gt_one_add_delta_mul_lam_of_floor_le
 #print axioms actual_angle_gt_one_add_delta_mul_lam_of_transition_quotient_le
+#print axioms actual_angle_gt_one_add_delta_mul_lam_of_wrap_transition_quotient_le
 
 end JSP000404Research
