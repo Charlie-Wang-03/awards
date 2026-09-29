@@ -71,3 +71,7 @@ jobs:
         run: lake build JSP000404Research.SupportThreeMiddleHiddenQuotient
 
 
+
+      - name: Check middle-hidden local sign shape
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenSigns
