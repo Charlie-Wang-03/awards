@@ -79,3 +79,19 @@ jobs:
       - name: Check Hamiltonian transversal ordering
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualTransversal
+
+      - name: Check canonical ray foundations
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.CanonicalProjectiveRay
+
+      - name: Check sign-transition budget
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SignTransitionBudget
+
+      - name: Check Boolean sign shape
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.BoolSignShape
+
+      - name: Check canonical sign acyclicity
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.CanonicalSignAcyclicity
