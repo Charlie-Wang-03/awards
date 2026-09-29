@@ -32,9 +32,11 @@ theorem listPositiveCount_le_length
   | nil =>
       simp [listPositiveCount]
   | cons q qs ih =>
+      simp only [listPositiveCount, List.length_cons]
       by_cases hq : q = 0
-      · simp [listPositiveCount, hq, ih]
-      · simp [listPositiveCount, hq]
+      · simp [hq]
+        omega
+      · simp [hq]
         omega
 
 /-- Stepwise condition that every sign change is carried by a positive
