@@ -60,3 +60,7 @@ jobs:
       - name: Check Hamiltonian four-angle budget
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualBudget
+
+      - name: Check middle-hidden sign shape
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenSigns
