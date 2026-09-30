@@ -120,48 +120,29 @@ theorem oneFlip_two_fullBlockers_residual_successor
   have hle :=
     completionFibre_card_le_two
       C (flipBoolWordAt word c)
-  apply Finset.eq_of_subset_of_card_le
-  · intro x hx
-    have hcardLower :
-        2 ≤ (completionFibre C (flipBoolWordAt word c)).card := by
-      have hnontrivial :
-          (completionFibre C (flipBoolWordAt word c)).Nontrivial :=
-        ⟨w,hwF,z,hzF,hwz⟩
-      exact hnontrivial.two_le_card
-    have hcardEq :
-        (completionFibre C (flipBoolWordAt word c)).card = 2 := by
-      omega
-    have hpairCard : ({w,z} : Finset V).card = 2 := by
-      simp [hwz]
-    have hxPair : x = w ∨ x = z := by
-      by_contra hxne
-      push_neg at hxne
-      have hthree :
-          ({w,z,x} : Finset V).card = 3 := by
-        simp [hwz,hxne.1,hxne.2]
-      have hsub :
-          ({w,z,x} : Finset V) ⊆
-            completionFibre C (flipBoolWordAt word c) := by
-        intro q hq
-        simp only [Finset.mem_insert, Finset.mem_singleton] at hq
-        rcases hq with rfl | rfl | rfl
-        · exact hwF
-        · exact hzF
-        · exact hx
-      have := Finset.card_le_card hsub
-      rw [hthree,hcardEq] at this
-      omega
-    simpa [hxPair]
-  · have hcardLower :
-        2 ≤ (completionFibre C (flipBoolWordAt word c)).card := by
-      have hnontrivial :
-          (completionFibre C (flipBoolWordAt word c)).Nontrivial :=
-        ⟨w,hwF,z,hzF,hwz⟩
-      exact hnontrivial.two_le_card
-    have hcardEq :
-        (completionFibre C (flipBoolWordAt word c)).card = 2 := by
-      omega
-    simp [hwz,hcardEq]
+  have hnontrivial :
+      (completionFibre C (flipBoolWordAt word c)).Nontrivial :=
+    ⟨w,hwF,z,hzF,hwz⟩
+  have hge :
+      2 ≤ (completionFibre C (flipBoolWordAt word c)).card :=
+    hnontrivial.two_le_card
+  have hcardEq :
+      (completionFibre C (flipBoolWordAt word c)).card = 2 := by
+    omega
+  have hpairSub :
+      ({w,z} : Finset V) ⊆
+        completionFibre C (flipBoolWordAt word c) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hwF
+    · exact hzF
+  have hpairEq :
+      ({w,z} : Finset V) =
+        completionFibre C (flipBoolWordAt word c) := by
+    apply Finset.eq_of_subset_of_card_le hpairSub
+    simpa [hwz, hcardEq]
+  exact hpairEq.symm
 
 #print axioms oneFlip_fullBlocker_inherits_all_commonInactive
 #print axioms oneFlip_two_fullBlockers_residual_successor
