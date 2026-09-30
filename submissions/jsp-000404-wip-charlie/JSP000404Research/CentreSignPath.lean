@@ -85,9 +85,9 @@ theorem consecutiveRayQuotients_eq_quotientList
 quotient. -/
 theorem consecutive_changesOnlyOnPositive
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -164,9 +164,9 @@ quotients. -/
 theorem centre_changesOnlyOnPositive
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
