@@ -33,12 +33,27 @@ open Real
 theorem map_getLastD
     {α β : Type*} (f : α → β) (d : α) (xs : List α) :
     (xs.map f).getLastD (f d) = f (xs.getLastD d) := by
-  cases xs with
+  induction xs with
   | nil => rfl
-  | cons x xs =>
+  | cons x xs ih =>
       cases xs with
       | nil => simp
-      | cons y ys => simp
+      | cons y ys =>
+          exact ih
+
+/-- getLastD of a nonempty list is a member of that list. -/
+theorem getLastD_mem_of_ne_nil
+    {α : Type*} (d : α) (xs : List α)
+    (hne : xs ≠ []) :
+    xs.getLastD d ∈ xs := by
+  induction xs with
+  | nil => exact False.elim (hne rfl)
+  | cons x xs ih =>
+      cases xs with
+      | nil => simp
+      | cons y ys =>
+          right
+          exact ih (by simp)
 
 /-- boolLastFrom is just getLastD with the initial sign as default. -/
 theorem boolLastFrom_eq_getLastD
@@ -51,7 +66,7 @@ theorem boolLastFrom_eq_getLastD
       | nil => simp [boolLastFrom]
       | cons c cs =>
           simp only [boolLastFrom]
-          simpa using ih b
+          simpa [boolLastFrom] using ih a
 
 /-- Quotients of the ordinary non-wrap gaps along a ray list. -/
 noncomputable def consecutiveRayQuotients
@@ -148,9 +163,23 @@ theorem centreQuotientList_decompose
       consecutiveRayQuotients hp i t first rest ++
         [wrapRayQuotient hp i t first (rest.getLastD first)] := by
   rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
-  simp [normalizedProjectiveGaps, projectiveGaps,
-    quotientList, consecutiveRayQuotients,
-    wrapRayQuotient, map_getLastD]
+  change
+    quotientList t
+        ((successiveDiffsFrom
+            (rayThetaAt hp i first)
+            (rest.map (rayThetaAt hp i))).map
+          (fun d => d / Real.pi))
+      ++
+      [Nat.floor
+        (t * ((rayThetaAt hp i first + Real.pi -
+          (rest.map (rayThetaAt hp i)).getLastD
+            (rayThetaAt hp i first)) / Real.pi))]
+      =
+    consecutiveRayQuotients hp i t first rest ++
+      [wrapRayQuotient hp i t first (rest.getLastD first)]
+  rw [← consecutiveRayQuotients_eq_quotientList]
+  congr 1
+  simp [wrapRayQuotient, map_getLastD]
 
 /-- The concrete lifted cyclic sign path. -/
 noncomputable def liftedCentreSignPath
@@ -222,18 +251,12 @@ theorem centre_changesOnlyOnPositive
     simp only [List.getLastD_nil]
     rw [harg]
     have hfloor : 1 ≤ Nat.floor t := by
-      exact (Nat.le_floor ht.le).2 (by exact_mod_cast htone)
+      exact Nat.le_floor (by exact_mod_cast htone)
     omega
   · let last : OtherVertex i := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
-      cases hR : rest with
-      | nil =>
-          exact False.elim (hrest hR)
-      | cons x xs =>
-          cases xs with
-          | nil => simp
-          | cons y ys => simp
+      exact getLastD_mem_of_ne_nil first rest hrest
     have hfirstLast : first ≠ last := by
       intro h
       subst last
