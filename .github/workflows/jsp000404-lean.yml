@@ -111,3 +111,7 @@ jobs:
       - name: Check positive member quotient bound
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ListPositiveMemberBound
+
+      - name: Check positive transition angle alignment
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.PositiveTransitionAngleAlignment
