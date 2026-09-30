@@ -35,7 +35,6 @@ theorem listPositiveCount_ofFn_eq_positiveSupport
         ih (fun i : Fin m => q i.succ)
       unfold positiveSupport at htail
       rw [htail]
-      rfl
 
 /-- Deficit at most two gives list support at most two. -/
 theorem listPositiveCount_ofFn_le_two_of_deficit_le_two
