@@ -88,7 +88,8 @@ theorem zeroGapMass_le_delta_div
     (hfloor : ∀ i, (q i : ℝ) ≤ t * gap i) :
     zeroGapMass gap q ≤ delta / t := by
   rw [le_div_iff₀ htpos]
-  exact zeroGapMass_scaled_le_delta gap q n delta t ht hgap hQ hfloor
+  simpa [mul_comm] using
+    zeroGapMass_scaled_le_delta gap q n delta t ht hgap hQ hfloor
 
 /-- General remainder identity before specializing to unit deficit.
 
@@ -106,15 +107,21 @@ theorem remainder_sum_eq_delta_add_floorDefect
   classical
   have hQcast :
       (∑ i, (q i : ℝ)) = ((∑ i, q i : ℕ) : ℝ) := by
-    norm_num
+    exact_mod_cast rfl
   have hsubcast :
       (((n - ∑ i, q i : ℕ) : ℕ) : ℝ) =
         (n : ℝ) - ((∑ i, q i : ℕ) : ℝ) := by
     exact Nat.cast_sub hQle
-  rw [Finset.sum_sub_distrib, ← Finset.mul_sum, hgap, hQcast, ht]
-  push_cast
-  rw [hsubcast]
-  ring
+  calc
+    (∑ i, (t * gap i - (q i : ℝ))) =
+        t * (∑ i, gap i) - ∑ i, (q i : ℝ) := by
+          rw [Finset.sum_sub_distrib, Finset.mul_sum]
+    _ = ((n : ℝ) + delta) -
+        ((∑ i, q i : ℕ) : ℝ) := by
+          rw [hgap, hQcast, ht]
+    _ = delta + (n - ∑ i, q i : ℕ) := by
+          rw [hsubcast]
+          ring
 
 /-- General zero-gap budget: all quotient-zero gaps are paid for by the
 fractional remainder delta plus the integer floor defect n-Q. -/
