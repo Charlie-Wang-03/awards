@@ -84,22 +84,10 @@ theorem actual_angle_le_delta_lam_of_ordinary_same_sign_gap
   rw [actual_angle_eq_ordinary_projective_gap_of_sign_eq
       hp i horder hsign, hlam]
   have hpi : 0 < Real.pi := Real.pi_pos
-  have hnorm :
-      rayThetaAt hp i k - rayThetaAt hp i j
-        ≤ delta * (Real.pi / t) := by
-    have htpi : 0 < t / Real.pi := div_pos ht hpi
-    have hrewrite :
-        t * ((rayThetaAt hp i k - rayThetaAt hp i j) / Real.pi)
-          =
-        (t / Real.pi) *
-          (rayThetaAt hp i k - rayThetaAt hp i j) := by ring
-    rw [hrewrite] at hsmall
-    have :=
-      (le_div_iff₀ htpi).mpr (by
-        simpa [mul_comm] using hsmall)
-    field_simp [ne_of_gt ht, ne_of_gt hpi] at this ⊢
-    nlinarith
-  exact hnorm
+  have htne : t ≠ 0 := ne_of_gt ht
+  have hpine : Real.pi ≠ 0 := ne_of_gt hpi
+  field_simp [htne, hpine] at hsmall ⊢
+  nlinarith
 
 /-- Exact genuine angle formula for a no-transition wrap gap. -/
 theorem actual_angle_eq_wrap_projective_gap_of_lifted_sign_eq
@@ -177,19 +165,9 @@ theorem actual_angle_le_delta_lam_of_wrap_same_sign_gap
   rw [actual_angle_eq_wrap_projective_gap_of_lifted_sign_eq
       hp i horder hsign, hlam]
   have hpi : 0 < Real.pi := Real.pi_pos
-  let d :=
-    rayThetaAt hp i first + Real.pi -
-      rayThetaAt hp i last
-  have hrewrite :
-      t * (d / Real.pi) = (t / Real.pi) * d := by ring
-  change t * (d / Real.pi) ≤ delta at hsmall
-  rw [hrewrite] at hsmall
-  have htpi : 0 < t / Real.pi := div_pos ht hpi
-  have hnorm : d ≤ delta / (t / Real.pi) :=
-    (le_div_iff₀ htpi).mpr (by
-      simpa [mul_comm] using hsmall)
-  dsimp [d] at hnorm ⊢
-  field_simp [ne_of_gt ht, ne_of_gt hpi] at hnorm ⊢
+  have htne : t ≠ 0 := ne_of_gt ht
+  have hpine : Real.pi ≠ 0 := ne_of_gt hpi
+  field_simp [htne, hpine] at hsmall ⊢
   nlinarith
 
 #print axioms actual_angle_eq_ordinary_projective_gap_of_sign_eq
