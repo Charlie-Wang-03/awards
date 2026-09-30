@@ -34,8 +34,8 @@ theorem replicate_succ_eq_append_singleton
   induction n with
   | zero => simp
   | succ n ih =>
-      rw [List.replicate_succ, ih]
-      simp [List.replicate_succ, List.cons_append]
+      have h := congrArg (List.cons x) ih
+      simpa [List.replicate_succ, List.cons_append] using h
 
 /-- Remove the final antiperiodic sign from the lifted sign-path block
 decomposition. -/
@@ -140,9 +140,10 @@ theorem sign_eq_of_mem_map_replicate
     {x : α} (hx : x ∈ xs) :
     sign x = a := by
   have hmem : sign x ∈ xs.map sign := by
-    exact List.mem_map_of_mem sign hx
+    exact List.mem_map.mpr ⟨x, hx, rfl⟩
   rw [hmap] at hmem
-  simpa using hmem
+  simp at hmem
+  exact hmem.2
 
 #print axioms strip_final_antiperiodic_sign
 #print axioms exists_source_split_of_mapped_two_blocks
