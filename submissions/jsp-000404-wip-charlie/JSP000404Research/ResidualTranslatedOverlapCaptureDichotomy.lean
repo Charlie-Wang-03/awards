@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualTranslatedOverlapHalfCapture
 import JSP000404Research.ResidualTranslatedOverlapHalfCaptureTwo
+import JSP000404Research.ResidualTranslatedOverlapLargeCapture
 import Mathlib.Tactic
 
 /-!
@@ -81,9 +82,71 @@ theorem commonInactive_card_le_blocker_free_of_fullFree
   rw [retainedInactive_card] at hcard
   exact hcard
 
+
+theorem overlap_card_le_blockerCompletion_of_fullFree
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (hsub :
+      commonInactiveRetained C u v ⊆ retainedInactive C w) :
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card ≤
+      (retainedCompletionWords C w).card := by
+  have hcard :=
+    Finset.card_le_card hsub
+  have hpow :=
+    Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hcard
+  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
+      retainedCompletionWords_card]
+  rw [retainedInactive_card] at hpow
+  exact hpow
+
+theorem oneFlip_blocker_halfCapture_or_fullCapacity
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {c : Fin n}
+    (hc : c ∈ retainedActive C u) :
+    2 * (oneFlipCapturedSourceWords C u v w c).card ≤
+        (retainedCompletionWords C u ∩
+          retainedCompletionWords C v).card
+    ∨
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card ≤
+        (retainedCompletionWords C w).card := by
+  rcases oneFlip_blocker_fullFree_or_halfCapture
+      C hc with hfree | hhalf
+  · exact Or.inr
+      (overlap_card_le_blockerCompletion_of_fullFree
+        C hfree)
+  · exact Or.inl hhalf
+
+theorem twoFlip_blocker_halfCapture_or_fullCapacity
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {c d : Fin n}
+    (hc : c ∈ retainedActive C u)
+    (hd : d ∈ retainedActive C v) :
+    2 * (twoFlipCapturedSourceWords C u v w c d).card ≤
+        (retainedCompletionWords C u ∩
+          retainedCompletionWords C v).card
+    ∨
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card ≤
+        (retainedCompletionWords C w).card := by
+  rcases twoFlip_blocker_fullFree_or_halfCapture
+      C hc hd with hfree | hhalf
+  · exact Or.inr
+      (overlap_card_le_blockerCompletion_of_fullFree
+        C hfree)
+  · exact Or.inl hhalf
+
 #print axioms oneFlip_blocker_fullFree_or_halfCapture
 #print axioms twoFlip_blocker_fullFree_or_halfCapture
 #print axioms commonInactive_card_le_blocker_free_of_fullFree
+#print axioms overlap_card_le_blockerCompletion_of_fullFree
+#print axioms oneFlip_blocker_halfCapture_or_fullCapacity
+#print axioms twoFlip_blocker_halfCapture_or_fullCapacity
 
 end OrderedEdgeColoring
 end JSP000404Research
