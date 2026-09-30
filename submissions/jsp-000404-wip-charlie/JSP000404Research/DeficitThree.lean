@@ -86,10 +86,15 @@ theorem deficit_three_structure
     right
     constructor
     · exact hp3
-    · have heq :
-          3 = (n - ∑ i, q i) + 3 := by
-        rw [← hell]
+    · have hdec3 :
+          n - floorExcess q =
+            (n - ∑ i, q i) + 3 := by
         simpa [hp3] using hdec
+      have hdef0 : n - ∑ i, q i = 0 := by
+        rw [hell] at hdec3
+        omega
+      have hge : n ≤ ∑ i, q i :=
+        Nat.sub_eq_zero_iff_le.mp hdef0
       omega
 
 theorem deficit_three_zero_gap_budget
