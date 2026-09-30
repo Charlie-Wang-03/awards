@@ -1619,3 +1619,7 @@ import JSP000404Research.ResidualLossExtremeInward
 import JSP000404Research.ResidualLossExtremeTerminal
 
 import JSP000404Research.ResidualLossExtremeStructural
+
+import JSP000404Research.ResidualSaturatedGlobalTransition
+
+import JSP000404Research.ResidualSafeSaturatedTransition
