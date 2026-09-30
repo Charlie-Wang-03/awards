@@ -1524,3 +1524,6 @@ import JSP000404Research.ResidualUnsafeSaturatedWordClassification
 
 
 import JSP000404Research.ResidualUnsafeZeroZeroRigidity
+
+
+import JSP000404Research.ResidualUnsafeZeroZeroBlockerStar
