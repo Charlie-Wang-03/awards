@@ -226,3 +226,7 @@ jobs:
       - name: Check paired outer quotient bounds
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.MixedSupportOneTwoOuterQuotients
+
+      - name: Check translated-overlap incidence chain
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualTranslatedOverlapIncidence
