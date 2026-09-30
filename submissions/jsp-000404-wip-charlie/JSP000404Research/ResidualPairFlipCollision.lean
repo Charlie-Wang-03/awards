@@ -62,7 +62,8 @@ theorem eq_of_one_flip_eq_one_flip_distinct
         flipBoolWordAt_off y hcd.symm] at hc
     rw [flipBoolWordAt_off _ hcd,
         flipBoolWordAt_at]
-    exact Bool.not_inj.mp hc
+    cases hx : x c <;> cases hy : y c <;>
+      simp [hx, hy] at hc ⊢
   · by_cases hed : e = d
     · subst e
       have hd := congrFun h d
@@ -70,7 +71,8 @@ theorem eq_of_one_flip_eq_one_flip_distinct
           flipBoolWordAt_at] at hd
       rw [flipBoolWordAt_at,
           flipBoolWordAt_off _ hcd.symm]
-      exact Bool.not_inj.mp hd.symm
+      cases hx : x d <;> cases hy : y d <;>
+        simp [hx, hy] at hd ⊢
     · have heq := congrFun h e
       rw [flipBoolWordAt_off x hec,
           flipBoolWordAt_off y hed] at heq
