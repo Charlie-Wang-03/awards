@@ -1617,3 +1617,5 @@ import JSP000404Research.ResidualLossTwoExitAvoidance
 import JSP000404Research.ResidualLossExtremeInward
 
 import JSP000404Research.ResidualLossExtremeTerminal
+
+import JSP000404Research.ResidualLossExtremeStructural
