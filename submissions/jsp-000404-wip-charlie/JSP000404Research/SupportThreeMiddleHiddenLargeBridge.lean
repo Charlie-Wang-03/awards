@@ -64,8 +64,15 @@ theorem support_three_middle_hidden_large_bridge
       c.1 ≠ top ∧ d.1 ≠ top ∧
       r ≠ b ∧ r ≠ c ∧ r ≠ d ∧
       b ≠ c ∧ b ≠ d ∧ c ≠ d ∧
+      EuclideanGeometry.angle (p r.1) (p i) (p b.1) +
+          EuclideanGeometry.angle (p c.1) (p i) (p d.1)
+        ≤ delta * lam ∧
       (1 + delta) * lam <
-        EuclideanGeometry.angle (p b.1) (p i) (p c.1) := by
+        EuclideanGeometry.angle (p top) (p i) (p r.1) ∧
+      (1 + delta) * lam <
+        EuclideanGeometry.angle (p b.1) (p i) (p c.1) ∧
+      (1 + delta) * lam <
+        EuclideanGeometry.angle (p d.1) (p i) (p top) := by
   classical
   obtain ⟨first0, rest0, k, preTop, postTop,
       r, rest, qFirst, qLast, qHidden,
@@ -203,6 +210,32 @@ theorem support_three_middle_hidden_large_bridge
         (AsT.rotate k) :=
     positiveQuotientAngleGt_rotate hlarge k
 
+  have hzeroAlign :=
+    centre_zeroQuotientAngleAligned
+      hp hcap htpos htone hlam i C
+      firstT restT hraysT
+  have hqALen :
+      (quotientList t C.gaps).length = AsT.length := by
+    dsimp [AsT]
+    exact zeroQuotientAngleAligned_length_q_angle hzeroAlign
+  have hmass :
+      listZeroAngleMass
+          (quotientList t C.gaps) AsT
+        ≤ delta * lam := by
+    dsimp [AsT]
+    exact
+      centre_zeroAngleMass_le_delta_lam_of_deficit_three_support_three
+        hp hcap hn hdelta0 hdeltaHalf ht hlam
+        i C hexp hsupport firstT restT hraysT
+  have hmassRot :
+      listZeroAngleMass
+          ((quotientList t C.gaps).rotate k)
+          (AsT.rotate k)
+        ≤ delta * lam := by
+    rw [listZeroAngleMass_rotate
+      (quotientList t C.gaps) AsT hqALen k]
+    exact hmass
+
   let w :=
     fun x y : OtherVertex i =>
       EuclideanGeometry.angle (p x.1) (p i) (p y.1)
@@ -246,6 +279,17 @@ theorem support_three_middle_hidden_large_bridge
     rw [hAsRot]
     simp [cyclicRayAngles, consecutiveRayAngles, topRay]
 
+  have hqFirstNe : qFirst ≠ 0 := by omega
+  have hqLastNe : qLast ≠ 0 := by omega
+
+  have hsmall :
+      EuclideanGeometry.angle (p r.1) (p i) (p b.1) +
+          EuclideanGeometry.angle (p c.1) (p i) (p d.1)
+        ≤ delta * lam := by
+    rw [hqShape, hAShape] at hmassRot
+    simpa [listZeroAngleMass, hqFirstNe, hHidden, hqLastNe]
+      using hmassRot
+
   rw [hqShape, hAShape] at hlargeRot
   unfold PositiveQuotientAngleGt at hlargeRot
   cases hlargeRot with
@@ -254,10 +298,17 @@ theorem support_three_middle_hidden_large_bridge
     | cons h1 htail1 =>
       cases htail1 with
       | cons h2 htail2 =>
-        have hbridge := h2 hHidden
-        exact ⟨r,b,c,d,
-          hrTop,hbTop,hcTop,hdTop,
-          hrb,hrc,hrd,hbc,hbd,hcd,hbridge⟩
+        cases htail2 with
+        | cons h3 htail3 =>
+          cases htail3 with
+          | cons h4 htail4 =>
+            have hTopR := h0 hqFirstNe
+            have hBridge := h2 hHidden
+            have hDTop := h4 hqLastNe
+            exact ⟨r,b,c,d,
+              hrTop,hbTop,hcTop,hdTop,
+              hrb,hrc,hrd,hbc,hbd,hcd,
+              hsmall,hTopR,hBridge,hDTop⟩
 
 #print axioms support_three_middle_hidden_large_bridge
 
