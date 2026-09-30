@@ -43,7 +43,7 @@ theorem quotientGapAligned_length
     (h : QuotientGapAligned t qs gaps) :
     qs.length = gaps.length := by
   unfold QuotientGapAligned at h
-  exact List.Forall₂.length_eq h
+  simpa using List.Forall₂.length_eq h
 
 /-- Split aligned quotient/gap lists at a distinguished quotient entry. -/
 theorem aligned_gap_decomposition
