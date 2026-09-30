@@ -95,3 +95,11 @@ jobs:
       - name: Check canonical sign acyclicity
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.CanonicalSignAcyclicity
+
+      - name: Check triangle sign uniqueness
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.TriangleSignUniqueness
+
+      - name: Check crossed sign contradiction
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.TriangleTwoSplitContradiction
