@@ -38,7 +38,7 @@ theorem commonSignedIntervalRepr_of_two_sign_blocks
       ∀ j ∈ after, thetaRight ≤ rayThetaAt hp i j)
     (hthetaLeft0 : 0 ≤ thetaLeft)
     (hthetaRightPi : thetaRight < Real.pi) :
-    ∀ j, j ≠ i →
+    ∀ j : V, j ≠ i →
       ∃ rho : ℝ, ∃ theta : ℝ,
         0 < rho ∧
         thetaRight ≤ theta ∧
@@ -57,7 +57,9 @@ theorem commonSignedIntervalRepr_of_two_sign_blocks
       linarith
     · have hsign := hbeforeSign jo hjBefore
       rw [rayRepAt_eq hp i jo, hsign]
-      exact same_ray_after_pi_shift_to_common_sign sigma _ 
+      exact congrArg
+        (fun v => rayRhoAt hp i jo • v)
+        (same_ray_after_pi_shift_to_common_sign sigma _)
   · refine ⟨rayRhoAt hp i jo,
       rayThetaAt hp i jo,
       rayRhoAt_pos hp i jo, ?_, ?_, ?_⟩
@@ -98,8 +100,7 @@ theorem commonSignedIntervalRepr_of_common_sign_cons
   have hfirstLe :
       rayThetaAt hp i first ≤ rayThetaAt hp i jo := by
     rcases List.mem_cons.mp hjmem with hEq | htail
-    · subst jo
-      rfl
+    · simpa [hEq]
     · exact (List.pairwise_cons.mp hsorted).1 jo htail
   have hjLast :
       rayThetaAt hp i jo ≤ rayThetaAt hp i last := by
