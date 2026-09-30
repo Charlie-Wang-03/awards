@@ -1527,3 +1527,6 @@ import JSP000404Research.ResidualUnsafeZeroZeroRigidity
 
 
 import JSP000404Research.ResidualUnsafeZeroZeroBlockerStar
+
+
+import JSP000404Research.ZeroExponentMinimalDeletionRigidity
