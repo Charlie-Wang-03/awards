@@ -82,7 +82,7 @@ theorem hall_of_uniform_degree_bounded_load
             ({x | x ∈ s ∧ y ∈ candidates x} : Finset L).card := hdc
       _ ≤ d * (s.biUnion candidates).card := hupper
 
-  exact Nat.le_of_mul_le_mul_left hmul hd
+  exact Nat.le_of_mul_le_mul_left hmul (by omega : 0 < d)
 
 theorem exists_injective_of_uniform_degree_bounded_load
     {L R : Type*} [Fintype L] [DecidableEq L] [DecidableEq R]
