@@ -1494,3 +1494,6 @@ import JSP000404Research.HamiltonianResidualConsequences
 import JSP000404Research.HamiltonianResidualBaseTriangle
 
 import JSP000404Research.HamiltonianResidualBudget
+
+
+import JSP000404Research.MixedSupportOneMiddleHiddenRankBand
