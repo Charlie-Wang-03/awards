@@ -51,7 +51,7 @@ theorem middle_hidden_quotients_sum_eq_n
     rw [hrotEq]
     exact hsum
   rw [hqrot] at hrotSum
-  omega
+  simpa [Nat.add_assoc] using hrotSum
 
 theorem middle_hidden_each_positive_quotient_le_n_sub_two
     (qs : List ℕ)
