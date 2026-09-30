@@ -56,8 +56,8 @@ normalized cap unit of projective separation. -/
 theorem one_le_t_mul_gap_of_canonical_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -110,7 +110,7 @@ theorem floor_t_mul_gap_ne_zero_of_canonical_sign_ne
   have hfloor :
       1 ≤ Nat.floor
         (t * ((rayThetaAt hp i k - rayThetaAt hp i j) / Real.pi)) := by
-    exact (Nat.le_floor hnonneg).2 (by
+    exact Nat.le_floor (by
       exact_mod_cast hone)
   omega
 
@@ -204,8 +204,8 @@ theorem floor_t_mul_wrap_gap_ne_zero_of_canonical_sign_ne
       1 ≤ Nat.floor
         (t * ((rayThetaAt hp i first + Real.pi -
           rayThetaAt hp i last) / Real.pi)) := by
-    apply Nat.le_floor hnonneg
-    exact_mod_cast hone
+    exact Nat.le_floor (by
+      exact_mod_cast hone)
   omega
 
 #print axioms one_le_t_mul_gap_of_canonical_sign_ne
