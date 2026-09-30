@@ -1521,3 +1521,6 @@ import JSP000404Research.ResidualUnsafeSymmetricFlipDescent
 
 
 import JSP000404Research.ResidualUnsafeSaturatedWordClassification
+
+
+import JSP000404Research.ResidualUnsafeZeroZeroRigidity
