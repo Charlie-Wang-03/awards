@@ -84,7 +84,7 @@ theorem norm_smul_rayDirection_arg
       (‖planeToComplex x‖ : ℂ) *
         (Real.cos (Complex.arg (planeToComplex x)) +
           Real.sin (Complex.arg (planeToComplex x)) * Complex.I)
-  exact hpolar.symm
+  simpa only [← Complex.ofReal_cos, ← Complex.ofReal_sin] using hpolar.symm
 
 /-- Main canonical projective-ray representation. -/
 theorem exists_canonical_projective_representation
