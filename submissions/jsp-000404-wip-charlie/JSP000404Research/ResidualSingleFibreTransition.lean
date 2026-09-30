@@ -1,4 +1,4 @@
-import JSP000404Research.ResidualCompletionMultiplicity
+import JSP000404Research.ResidualCompletionAccounting
 import JSP000404Research.ResidualPairLocalFlip
 import Mathlib.Tactic
 
@@ -113,31 +113,6 @@ theorem single_flip_blocker_bit_opposite
   rw [flipBoolWordAt_at, hvAt] at hwAt
   exact hwAt.symm
 
-theorem completionFibre_card_le_two
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (word : Fin n → Bool) :
-    (completionFibre C word).card ≤ 2 := by
-  by_contra h
-  have hthree : 3 ≤ (completionFibre C word).card := by omega
-  obtain ⟨s, hsSub, hsCard⟩ :=
-    Finset.exists_subset_card_eq hthree
-  have hs3 : s.card = 3 := hsCard
-  obtain ⟨a,b,d,hab,had,hbd,hs⟩ := Finset.card_eq_three.mp hs3
-  have haS : a ∈ s := by rw [hs]; simp
-  have hbS : b ∈ s := by rw [hs]; simp
-  have hdS : d ∈ s := by rw [hs]; simp
-  have haF := hsSub haS
-  have hbF := hsSub hbS
-  have hdF := hsSub hdS
-  have ha :=
-    (mem_completionFibre C word a).1 haF
-  have hb :=
-    (mem_completionFibre C word b).1 hbF
-  have hd :=
-    (mem_completionFibre C word d).1 hdF
-  exact no_three_distinct_share_retained_completion
-    C hab had hbd ha hb hd
 
 theorem single_flip_fibre_trichotomy
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -191,7 +166,6 @@ theorem single_flip_hole_or_controlled_blocker
 #print axioms singleCompletion_fibre_card_eq_one
 #print axioms single_flip_blocker_active
 #print axioms single_flip_blocker_bit_opposite
-#print axioms completionFibre_card_le_two
 #print axioms single_flip_hole_or_controlled_blocker
 
 end OrderedEdgeColoring
