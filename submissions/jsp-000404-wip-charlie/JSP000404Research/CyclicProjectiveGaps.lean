@@ -69,7 +69,7 @@ theorem successiveDiffsFrom_nonneg
       · exact ih b htail d hd
 
 /-- Physical projective cyclic gaps of a nonempty angle list. -/
-def projectiveGaps : List ℝ → List ℝ
+noncomputable def projectiveGaps : List ℝ → List ℝ
   | [] => []
   | a :: xs =>
       successiveDiffsFrom a xs ++
@@ -88,14 +88,14 @@ theorem projectiveGaps_sum
     {a : ℝ} {xs : List ℝ} :
     (projectiveGaps (a :: xs)).sum = Real.pi := by
   simp [projectiveGaps, successiveDiffsFrom_sum]
-  ring
 
 /-- The last angle of a nonempty sorted ray list still lies below pi. -/
 theorem getLastD_lt_pi_of_all_lt
     (a : ℝ) (xs : List ℝ)
     (hall : ∀ theta ∈ a :: xs, theta < Real.pi) :
     xs.getLastD a < Real.pi := by
-  exact hall _ (List.getLastD_mem_cons a xs)
+  exact hall _ (by
+    cases xs <;> simp)
 
 /-- Sorted canonical angles in [0,pi) give nonnegative cyclic gaps. -/
 theorem projectiveGaps_nonneg
@@ -121,7 +121,7 @@ theorem list_sum_map_div
       simp [ih, add_div]
 
 /-- Normalized projective gaps; a nonempty cycle has total mass one. -/
-def normalizedProjectiveGaps (angles : List ℝ) : List ℝ :=
+noncomputable def normalizedProjectiveGaps (angles : List ℝ) : List ℝ :=
   (projectiveGaps angles).map (fun g => g / Real.pi)
 
 theorem normalizedProjectiveGaps_length
