@@ -103,6 +103,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenWrapCases
 
+      - name: Check middle-hidden raw sign cases
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenRawSignCases
+
       - name: Check Hamiltonian transversal ordering
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualTransversal
