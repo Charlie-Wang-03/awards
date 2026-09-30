@@ -227,6 +227,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.MixedSupportOneTwoOuterQuotients
 
-      - name: Check translated-overlap incidence chain
+      - name: Check translated-overlap collision chain
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ResidualTranslatedOverlapIncidence
+        run: lake build JSP000404Research.ResidualTranslatedOverlapCrossDisjoint
