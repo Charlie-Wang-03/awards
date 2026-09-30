@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualSingleFibreBranching
+import JSP000404Research.ProjectionLossAugmentingTransition
 import JSP000404Research.ResidualLossWords
 import Mathlib.Tactic
 
