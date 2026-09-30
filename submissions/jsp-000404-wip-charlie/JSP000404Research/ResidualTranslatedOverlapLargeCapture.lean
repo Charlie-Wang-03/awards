@@ -156,7 +156,7 @@ theorem overlap_card_le_blockerCompletion_of_large_oneFlip_capture
   have hpow :=
     Nat.pow_le_pow_right
       (by norm_num : 0 < 2) hfree
-  rw [retainedInactive_card] at hfree
+  rw [retainedInactive_card] at hpow
   exact hpow
 
 theorem overlap_card_le_blockerCompletion_of_large_twoFlip_capture
