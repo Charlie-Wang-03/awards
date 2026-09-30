@@ -23,13 +23,13 @@ true entry or all three true. -/
 theorem triangle_split_bools_one_or_three
     (sab sac sbc : Bool) :
     (
-      (sab ≠ sac ∧ ¬ (!sab ≠ sbc) ∧ ¬ (!sac ≠ !sbc))
+      (sab ≠ sac ∧ ¬ ((Bool.not sab) ≠ sbc) ∧ ¬ ((Bool.not sac) ≠ (Bool.not sbc)))
       ∨
-      (¬ (sab ≠ sac) ∧ (!sab ≠ sbc) ∧ ¬ (!sac ≠ !sbc))
+      (¬ (sab ≠ sac) ∧ ((Bool.not sab) ≠ sbc) ∧ ¬ ((Bool.not sac) ≠ (Bool.not sbc)))
       ∨
-      (¬ (sab ≠ sac) ∧ ¬ (!sab ≠ sbc) ∧ (!sac ≠ !sbc))
+      (¬ (sab ≠ sac) ∧ ¬ ((Bool.not sab) ≠ sbc) ∧ ((Bool.not sac) ≠ (Bool.not sbc)))
       ∨
-      ((sab ≠ sac) ∧ (!sab ≠ sbc) ∧ (!sac ≠ !sbc))
+      ((sab ≠ sac) ∧ ((Bool.not sab) ≠ sbc) ∧ ((Bool.not sac) ≠ (Bool.not sbc)))
     ) := by
   cases sab <;> cases sac <;> cases sbc <;> simp
 
@@ -82,13 +82,13 @@ theorem triangle_exactly_one_canonical_sign_split
     raySignAt hp b (⟨c, hbc.symm⟩ : OtherVertex b)
 
   have hba :
-      raySignAt hp b (⟨a, hab⟩ : OtherVertex b) = !sab := by
+      raySignAt hp b (⟨a, hab⟩ : OtherVertex b) = Bool.not sab := by
     simpa [sab] using raySignAt_reverse_eq_not hp hab
   have hca :
-      raySignAt hp c (⟨a, hac⟩ : OtherVertex c) = !sac := by
+      raySignAt hp c (⟨a, hac⟩ : OtherVertex c) = Bool.not sac := by
     simpa [sac] using raySignAt_reverse_eq_not hp hac
   have hcb :
-      raySignAt hp c (⟨b, hbc⟩ : OtherVertex c) = !sbc := by
+      raySignAt hp c (⟨b, hbc⟩ : OtherVertex c) = Bool.not sbc := by
     simpa [sbc] using raySignAt_reverse_eq_not hp hbc
 
   have hpure := triangle_split_bools_one_or_three sab sac sbc
