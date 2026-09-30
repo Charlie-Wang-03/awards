@@ -1536,3 +1536,6 @@ import JSP000404Research.MinimalOverweightResidualDefect
 
 
 import JSP000404Research.RefinedResidualHardRemainder
+
+
+import JSP000404Research.RefinedHardWordHallOutlet
