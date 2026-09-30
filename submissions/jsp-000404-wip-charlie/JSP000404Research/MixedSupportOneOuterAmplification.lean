@@ -34,9 +34,9 @@ open Real
 theorem middle_hidden_outer_strengthened_by_support_one
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
