@@ -134,10 +134,62 @@ theorem blockerActive_card_le_of_large_twoFlip_capture
     simpa using Finset.card_le_univ (retainedActive C w)
   omega
 
+
+theorem overlap_card_le_blockerCompletion_of_large_oneFlip_capture
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {c : Fin n}
+    (hc : c ∈ retainedActive C u)
+    (hlarge :
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card
+        <
+      2 * (oneFlipCapturedSourceWords C u v w c).card) :
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card ≤
+      (retainedCompletionWords C w).card := by
+  have hfree :=
+    commonInactive_card_le_blockerInactive_of_large_oneFlip_capture
+      C hc hlarge
+  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
+      retainedCompletionWords_card]
+  have hpow :=
+    Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hfree
+  rw [retainedInactive_card] at hfree
+  exact hpow
+
+theorem overlap_card_le_blockerCompletion_of_large_twoFlip_capture
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {c d : Fin n}
+    (hc : c ∈ retainedActive C u)
+    (hd : d ∈ retainedActive C v)
+    (hlarge :
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card
+        <
+      2 * (twoFlipCapturedSourceWords C u v w c d).card) :
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card ≤
+      (retainedCompletionWords C w).card := by
+  have hfree :=
+    commonInactive_card_le_blockerInactive_of_large_twoFlip_capture
+      C hc hd hlarge
+  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
+      retainedCompletionWords_card]
+  have hpow :=
+    Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hfree
+  rw [retainedInactive_card] at hfree
+  exact hpow
+
 #print axioms commonInactive_subset_blockerInactive_of_large_oneFlip_capture
 #print axioms commonInactive_subset_blockerInactive_of_large_twoFlip_capture
 #print axioms blockerActive_card_le_of_large_oneFlip_capture
 #print axioms blockerActive_card_le_of_large_twoFlip_capture
+#print axioms overlap_card_le_blockerCompletion_of_large_oneFlip_capture
+#print axioms overlap_card_le_blockerCompletion_of_large_twoFlip_capture
 
 end OrderedEdgeColoring
 end JSP000404Research
