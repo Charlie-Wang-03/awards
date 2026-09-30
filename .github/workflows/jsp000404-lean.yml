@@ -99,6 +99,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenCycleCertificate
 
+      - name: Check middle-hidden canonical wrap cases
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenWrapCases
+
       - name: Check Hamiltonian transversal ordering
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualTransversal
