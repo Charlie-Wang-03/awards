@@ -63,6 +63,58 @@ theorem append_eq_four_cases
                   right; right; right; right
                   exact ⟨rfl, rfl⟩
 
+theorem eq_rotate_one_of_rotate_four_eq
+    {α : Type*}
+    (xs ys : List α)
+    (hlen : xs.length = 5)
+    (h : xs.rotate 4 = ys) :
+    xs = ys.rotate 1 := by
+  have hback : (xs.rotate 4).rotate 1 = xs := by
+    rw [List.rotate_rotate]
+    simpa [hlen]
+  calc
+    xs = (xs.rotate 4).rotate 1 := hback.symm
+    _ = ys.rotate 1 := by rw [h]
+
+theorem eq_rotate_two_of_rotate_three_eq
+    {α : Type*}
+    (xs ys : List α)
+    (hlen : xs.length = 5)
+    (h : xs.rotate 3 = ys) :
+    xs = ys.rotate 2 := by
+  have hback : (xs.rotate 3).rotate 2 = xs := by
+    rw [List.rotate_rotate]
+    simpa [hlen]
+  calc
+    xs = (xs.rotate 3).rotate 2 := hback.symm
+    _ = ys.rotate 2 := by rw [h]
+
+theorem eq_rotate_three_of_rotate_two_eq
+    {α : Type*}
+    (xs ys : List α)
+    (hlen : xs.length = 5)
+    (h : xs.rotate 2 = ys) :
+    xs = ys.rotate 3 := by
+  have hback : (xs.rotate 2).rotate 3 = xs := by
+    rw [List.rotate_rotate]
+    simpa [hlen]
+  calc
+    xs = (xs.rotate 2).rotate 3 := hback.symm
+    _ = ys.rotate 3 := by rw [h]
+
+theorem eq_rotate_four_of_rotate_one_eq
+    {α : Type*}
+    (xs ys : List α)
+    (hlen : xs.length = 5)
+    (h : xs.rotate 1 = ys) :
+    xs = ys.rotate 4 := by
+  have hback : (xs.rotate 1).rotate 4 = xs := by
+    rw [List.rotate_rotate]
+    simpa [hlen]
+  calc
+    xs = (xs.rotate 1).rotate 4 := hback.symm
+    _ = ys.rotate 4 := by rw [h]
+
 namespace MiddleHiddenPinnedCycleCertificate
 
 theorem canonical_wrap_cases
@@ -110,6 +162,10 @@ theorem canonical_wrap_index_cases
     simp [h4.1]
 
 #print axioms append_eq_four_cases
+#print axioms eq_rotate_one_of_rotate_four_eq
+#print axioms eq_rotate_two_of_rotate_three_eq
+#print axioms eq_rotate_three_of_rotate_two_eq
+#print axioms eq_rotate_four_of_rotate_one_eq
 #print axioms MiddleHiddenPinnedCycleCertificate.canonical_wrap_cases
 #print axioms MiddleHiddenPinnedCycleCertificate.canonical_wrap_index_cases
 
