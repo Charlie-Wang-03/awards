@@ -1575,3 +1575,11 @@ import JSP000404Research.ResidualAugmentingState
 import JSP000404Research.ResidualSingleFibreBranching
 
 import JSP000404Research.ProjectionLossAugmentingTransition
+
+import JSP000404Research.PlanarLowerBranchHallOutlet
+
+import JSP000404Research.WeightedHallOutlet
+
+import JSP000404Research.ResidualLocalCandidateCapacity
+
+import JSP000404Research.ProjectionLocalCandidateCapacity
