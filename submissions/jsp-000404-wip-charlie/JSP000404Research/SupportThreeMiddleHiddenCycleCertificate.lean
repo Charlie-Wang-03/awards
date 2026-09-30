@@ -1,4 +1,5 @@
 import JSP000404Research.SupportThreePinnedMiddleShape
+import JSP000404Research.ConcreteDeficitThree
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic
 
@@ -104,7 +105,7 @@ theorem covers_every_other_nonTop
   have hvRot : vr ∈ C.rays.rotate H.k := by
     simpa using hvMem
   rw [H.rays_rotate] at hvRot
-  simp only [List.mem_cons, List.mem_singleton] at hvRot
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hvRot
   rcases hvRot with htop | hr | hb | hc | hd
   · exfalso
     apply hvt
@@ -159,7 +160,7 @@ theorem exists_middle_hidden_pinned_cycle_certificate
     (htopi : top ≠ i)
     (C : CentreProjectiveCycle hp i)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp htopi C) :
+      SupportThreePinnedMiddleShape (t := t) hp htopi C) :
     Nonempty
       (MiddleHiddenPinnedCycleCertificate
         hp top i htopi C t) := by
@@ -225,7 +226,7 @@ theorem exists_middle_hidden_pinned_cycle_certificate
   have htail :
       postTop ++ preTop = r :: b :: c :: d :: [] := by
     rw [hrotDisplayed] at hrotCanonical
-    exact (List.cons.inj hrotCanonical).2
+    exact (List.cons.inj hrotCanonical).2.symm
 
   exact ⟨{
     k := k
