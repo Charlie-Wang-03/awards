@@ -1,4 +1,5 @@
 import JSP000404Research.MergeGain
+import JSP000404Research.SignTransitionBudget
 import Mathlib.Tactic
 
 /-!
@@ -120,7 +121,7 @@ theorem no_adjacent_positive_of_all_merges_neutral
       pre post (carry := 0) ha hb
   have hzero :=
     hneutral pre post a b hq 0
-  rw [hzero] at hgain
+  rw [hzero, hq] at hgain
   omega
 
 #print axioms listExponent_merge_gain_of_adjacent_positive
