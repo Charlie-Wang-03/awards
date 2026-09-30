@@ -96,9 +96,9 @@ theorem consecutive_large_positive_transition_quotients_le_three
 theorem centre_three_transition_large_positive_quotients_le_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {n : ℕ} {delta t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {n : ℕ} {delta t lam : ℝ}
     (hn2 : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
