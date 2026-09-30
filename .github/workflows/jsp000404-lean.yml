@@ -234,3 +234,11 @@ jobs:
       - name: Check safe common-inactive tensor reduction
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeCommonInactiveTensor
+
+      - name: Check safe common-inactive positive capacity
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualSafeCommonInactiveCapacity
+
+      - name: Check safe common-inactive reduced-zero rigidity
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualSafeCommonInactiveReducedZero
