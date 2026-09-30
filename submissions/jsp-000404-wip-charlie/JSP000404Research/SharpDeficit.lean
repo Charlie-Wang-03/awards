@@ -37,6 +37,7 @@ theorem positiveSupport_eq_zero_imp
       1 = (if q i = 0 then 0 else 1) := by simp [hqi]
       _ ≤ ∑ x : I, (if q x = 0 then 0 else 1) := by
         exact Finset.single_le_sum
+          (f := fun x : I => if q x = 0 then 0 else 1)
           (fun _ _ => Nat.zero_le _)
           (Finset.mem_univ i)
   unfold positiveSupport at hzero
