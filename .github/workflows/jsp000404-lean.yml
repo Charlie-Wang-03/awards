@@ -139,3 +139,11 @@ jobs:
       - name: Check canonical-rank middle terminal
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.CanonicalRankMiddleTerminal
+
+      - name: Check middle-hidden rank bridge
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MiddleHiddenRankBridge
+
+      - name: Check support-one Hamiltonian amplification
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportOneHamiltonianResidual
