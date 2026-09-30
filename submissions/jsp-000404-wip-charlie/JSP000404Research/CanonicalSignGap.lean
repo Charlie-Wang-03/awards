@@ -87,9 +87,9 @@ theorem one_le_t_mul_gap_of_canonical_sign_ne
 /-- Therefore the natural Sendov quotient of that normalized gap is positive. -/
 theorem floor_t_mul_gap_ne_zero_of_canonical_sign_ne
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -119,9 +119,9 @@ first ray lifted to parameter theta_first + pi and flipped sign.  A sign change
 there again consumes at least one normalized cap unit. -/
 theorem one_le_t_mul_wrap_gap_of_canonical_sign_ne
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -170,9 +170,9 @@ theorem one_le_t_mul_wrap_gap_of_canonical_sign_ne
 /-- Therefore the natural quotient of the wrap gap is nonzero. -/
 theorem floor_t_mul_wrap_gap_ne_zero_of_canonical_sign_ne
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
