@@ -32,9 +32,23 @@ jobs:
           sh /tmp/elan-init.sh -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
+      - name: Restore Lake package cache
+        id: lake-package-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/packages
+          key: jsp000404-lake-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain') }}
+
       - name: Resolve Lake dependencies
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake update
+
+      - name: Save Lake package cache
+        if: steps.lake-package-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/packages
+          key: ${{ steps.lake-package-cache.outputs.cache-primary-key }}
 
       - name: Restore mathlib cache
         working-directory: submissions/jsp-000404-wip-charlie
@@ -155,3 +169,15 @@ jobs:
       - name: Check large transition quotient bound
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.LargeTransitionAngleQuotientBound
+
+      - name: Check middle-hidden outer amplification
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MiddleHiddenOuterAmplification
+
+      - name: Check mixed support-one outer amplification
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MixedSupportOneOuterAmplification
+
+      - name: Check positive transition large-angle converse
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.PositiveTransitionLargeAngleBound
