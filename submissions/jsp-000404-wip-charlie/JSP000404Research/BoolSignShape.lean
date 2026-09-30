@@ -68,9 +68,14 @@ theorem list_eq_replicate_length_of_forall_eq
       have hbs : ∀ x ∈ bs, x = a := by
         intro x hx
         exact h x (by simp [hx])
-      rw [ih hbs]
-      rw [show bs.length + 1 = Nat.succ bs.length by omega,
-          List.replicate_succ]
+      have htail := ih hbs
+      calc
+        a :: bs =
+            a :: List.replicate bs.length a :=
+          congrArg (List.cons a) htail
+        _ = List.replicate (bs.length + 1) a :=
+          (List.replicate_succ a bs.length).symm
+        _ = List.replicate (a :: bs).length a := by rfl
 
 /-- Exactly one transition, together with antiperiodic endpoint, gives the
 canonical two-block form.  The opposite-sign block is nonempty. -/
@@ -95,9 +100,8 @@ theorem one_transition_antiperiodic_shape
           simpa [boolLastFrom] using hlast
         obtain ⟨m, n, hshape⟩ := ih a htrans' hlast'
         refine ⟨m + 1, n, ?_⟩
-        rw [hshape]
-        rw [show m + 1 = Nat.succ m by omega,
-            List.replicate_succ, List.cons_append]
+        have hcons := congrArg (List.cons a) hshape
+        simpa only [List.replicate_succ, List.cons_append] using hcons
       · have hb : b = !a := bool_eq_not_of_ne hab
         subst b
         have hrestZero :
@@ -111,10 +115,9 @@ theorem one_transition_antiperiodic_shape
             bs = List.replicate bs.length (!a) :=
           list_eq_replicate_length_of_forall_eq (!a) bs hall
         refine ⟨0, bs.length, ?_⟩
-        rw [hrep]
-        simp only [List.replicate_zero, List.nil_append]
-        rw [show bs.length + 1 = Nat.succ bs.length by omega,
-            List.replicate_succ]
+        have hcons := congrArg (List.cons (!a)) hrep
+        simpa only [List.replicate_zero, List.nil_append,
+          List.replicate_succ] using hcons
 
 /-- Support at most two plus antiperiodicity therefore gives the same rigid
 two-block sign shape. -/
