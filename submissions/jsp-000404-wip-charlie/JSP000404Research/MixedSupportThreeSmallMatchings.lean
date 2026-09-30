@@ -540,17 +540,18 @@ end SmallPerfectMatchingAwayFromTop
 
 theorem support_three_middle_smallPerfectMatching
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    {top i : V}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
-    {top i : V}
     (hit : i ≠ top)
     (hexp : centreExponent C t = n - 3)
     (hsupport :
@@ -590,10 +591,11 @@ theorem support_three_middle_smallPerfectMatching
 a delta-small perfect matching on the other four minima. -/
 theorem mixed_support_one_has_two_smallPerfectMatchings
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
