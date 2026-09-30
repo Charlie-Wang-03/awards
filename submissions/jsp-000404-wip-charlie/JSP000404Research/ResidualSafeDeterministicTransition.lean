@@ -118,8 +118,146 @@ theorem safe_noCommonInactive_deterministic_transition
     exact safe_right_active_flip_single_or_unique_blocker
       C huv hu hv hcSafe hright.2
 
+
+theorem safe_noCommonInactive_single_or_consumed_blocker
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (hnoCommon :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    ∃ c : Fin n,
+      c ∉ residualForbidden C u v ∧
+      (
+        (c ∈ retainedActive C u ∧
+          (
+            (∀ z : V,
+              flipRetainedWord word c ∈ retainedCompletionWords C z →
+              z = v)
+            ∨
+            ∃ w : V,
+              w ≠ v ∧
+              flipRetainedWord word c ∈ retainedCompletionWords C w ∧
+              w < v ∧
+              IsResidual C w v ∧
+              c ∈ residualForbidden C w v ∧
+              ∀ z : V,
+                z ≠ v →
+                flipRetainedWord word c ∈ retainedCompletionWords C z →
+                z = w
+          ))
+        ∨
+        (c ∈ retainedActive C v ∧
+          (
+            (∀ z : V,
+              flipRetainedWord word c ∈ retainedCompletionWords C z →
+              z = u)
+            ∨
+            ∃ w : V,
+              w ≠ u ∧
+              flipRetainedWord word c ∈ retainedCompletionWords C w ∧
+              u < w ∧
+              IsResidual C u w ∧
+              c ∈ residualForbidden C u w ∧
+              ∀ z : V,
+                z ≠ u →
+                flipRetainedWord word c ∈ retainedCompletionWords C z →
+                z = w
+          ))
+      ) := by
+  obtain ⟨c, hcSafe, hactive⟩ :=
+    safe_noCommonInactive_has_active_only_coordinate
+      C hu hv hsafe hnoCommon
+  refine ⟨c, hcSafe, ?_⟩
+  rcases hactive with hleft | hright
+  · left
+    refine ⟨hleft.1, ?_⟩
+    have hflip :=
+      flip_overlap_to_right_single C hu hv hcSafe hleft.1
+    rcases single_or_unique_additional_blocker C hflip.1
+      with hsingle | hblock
+    · exact Or.inl hsingle
+    · right
+      obtain ⟨w, hwv, hw, huniq⟩ := hblock
+      have hconsume :=
+        safe_left_active_flip_blocker_consumes_coordinate
+          C huv hu hv hcSafe hleft.1 hw hwv
+      exact ⟨w,hwv,hw,
+        hconsume.1,hconsume.2.1,hconsume.2.2,huniq⟩
+  · right
+    refine ⟨hright.2, ?_⟩
+    have hflip :=
+      flip_overlap_to_left_single C hu hv hcSafe hright.2
+    rcases single_or_unique_additional_blocker C hflip.1
+      with hsingle | hblock
+    · exact Or.inl hsingle
+    · right
+      obtain ⟨w, hwu, hw, huniq⟩ := hblock
+      have hconsume :=
+        safe_right_active_flip_blocker_consumes_coordinate
+          C huv hu hv hcSafe hright.2 hw hwu
+      exact ⟨w,hwu,hw,
+        hconsume.1,hconsume.2.1,hconsume.2.2,huniq⟩
+
+theorem safe_noCommonInactive_blocker_forbids_reuse
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} {word : Fin n → Bool}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : ∃ c : Fin n, c ∉ residualForbidden C u v)
+    (hnoCommon :
+      ¬ ∃ c : Fin n,
+        c ∉ retainedActive C u ∧
+        c ∉ retainedActive C v) :
+    ∃ c : Fin n,
+      c ∉ residualForbidden C u v ∧
+      (
+        (∀ z : V,
+          flipRetainedWord word c ∈ retainedCompletionWords C z →
+          z = u ∨ z = v)
+        ∨
+        ∃ a b : V,
+          a < b ∧
+          IsResidual C a b ∧
+          c ∈ residualForbidden C a b ∧
+          flipRetainedWord word c ∈ retainedCompletionWords C a ∧
+          flipRetainedWord word c ∈ retainedCompletionWords C b
+      ) := by
+  obtain ⟨c,hcSafe,hcases⟩ :=
+    safe_noCommonInactive_single_or_consumed_blocker
+      C huv hu hv hsafe hnoCommon
+  refine ⟨c,hcSafe,?_⟩
+  rcases hcases with hleft | hright
+  · rcases hleft.2 with hsingle | hblock
+    · left
+      intro z hz
+      exact Or.inr (hsingle z hz)
+    · right
+      obtain ⟨w,_hwv,hw,hwlt,hres,hforbid,_huniq⟩ := hblock
+      have hflip :=
+        flip_overlap_to_right_single C hu hv hcSafe hleft.1
+      exact ⟨w,v,hwlt,hres,hforbid,hw,hflip.1⟩
+  · rcases hright.2 with hsingle | hblock
+    · left
+      intro z hz
+      exact Or.inl (hsingle z hz)
+    · right
+      obtain ⟨w,_hwu,hw,hult,hres,hforbid,_huniq⟩ := hblock
+      have hflip :=
+        flip_overlap_to_left_single C hu hv hcSafe hright.1
+      exact ⟨u,w,hult,hres,hforbid,hflip.1,hw⟩
+
 #print axioms safe_noCommonInactive_has_active_only_coordinate
 #print axioms safe_noCommonInactive_deterministic_transition
+#print axioms safe_noCommonInactive_single_or_consumed_blocker
+#print axioms safe_noCommonInactive_blocker_forbids_reuse
 
 end OrderedEdgeColoring
 end JSP000404Research
