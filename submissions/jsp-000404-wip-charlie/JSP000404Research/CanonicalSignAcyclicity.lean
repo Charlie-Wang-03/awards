@@ -86,7 +86,7 @@ theorem planeHalfPositive_smul_of_pos
       rw [hx.1]
       simp
     · change 0 < rho * x 0
-      positivity
+      exact mul_pos hrho hx.2
 
 theorem rayDirection_halfPositive
     {theta : ℝ}
