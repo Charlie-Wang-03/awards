@@ -65,6 +65,29 @@ structure MiddleHiddenPinnedCycleCertificate
 
 namespace MiddleHiddenPinnedCycleCertificate
 
+theorem ray_length_eq_five
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {hp : Function.Injective p}
+    {top i : V} {htopi : top ≠ i}
+    {C : CentreProjectiveCycle hp i} {t : ℝ}
+    (H : MiddleHiddenPinnedCycleCertificate hp top i htopi C t) :
+    C.rays.length = 5 := by
+  have h := congrArg List.length H.rays_rotate
+  rw [List.length_rotate] at h
+  simpa using h
+
+theorem quotient_length_eq_five
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {hp : Function.Injective p}
+    {top i : V} {htopi : top ≠ i}
+    {C : CentreProjectiveCycle hp i} {t : ℝ}
+    (H : MiddleHiddenPinnedCycleCertificate hp top i htopi C t) :
+    (quotientList t C.gaps).length = 5 := by
+  rw [quotientList_length, C.gaps_length]
+  exact H.ray_length_eq_five
+
 theorem pre_post_length_eq_four
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
@@ -199,6 +222,8 @@ theorem exists_middle_hidden_pinned_cycle_certificate
     tail_split := htail
   }⟩
 
+#print axioms MiddleHiddenPinnedCycleCertificate.ray_length_eq_five
+#print axioms MiddleHiddenPinnedCycleCertificate.quotient_length_eq_five
 #print axioms MiddleHiddenPinnedCycleCertificate.pre_post_length_eq_four
 #print axioms exists_middle_hidden_pinned_cycle_certificate
 
