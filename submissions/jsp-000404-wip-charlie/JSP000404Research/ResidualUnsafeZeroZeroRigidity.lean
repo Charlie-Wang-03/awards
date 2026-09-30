@@ -125,13 +125,19 @@ theorem zero_zero_overlap_completion_cubes_eq_singleton
     have hmem : word ∈ {fun c => retainedBit C u c} := by
       rw [← huSingleton]
       exact huWord
-    simpa using hmem.symm
+    have heq :
+        word = (fun c => retainedBit C u c) := by
+      simpa using hmem
+    exact heq.symm
   have hvBase :
       (fun c => retainedBit C v c) = word := by
     have hmem : word ∈ {fun c => retainedBit C v c} := by
       rw [← hvSingleton]
       exact hvWord
-    simpa using hmem.symm
+    have heq :
+        word = (fun c => retainedBit C v c) := by
+      simpa using hmem
+    exact heq.symm
   constructor
   · simpa [huBase] using huSingleton
   · simpa [hvBase] using hvSingleton
