@@ -1518,3 +1518,6 @@ import JSP000404Research.HardWordHallOutlet
 
 
 import JSP000404Research.ResidualUnsafeSymmetricFlipDescent
+
+
+import JSP000404Research.ResidualUnsafeSaturatedWordClassification
