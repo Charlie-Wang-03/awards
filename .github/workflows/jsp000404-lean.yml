@@ -99,6 +99,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenCycleCertificate
 
+      - name: Check middle-hidden cycle geometry
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MiddleHiddenCycleGeometry
+
       - name: Check middle-hidden canonical wrap cases
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenWrapCases
@@ -170,6 +174,10 @@ jobs:
       - name: Check two enriched mixed patterns
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.MixedSupportThreeSeparatedPatterns
+
+      - name: Check paired middle-hidden transition witnesses
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MixedSupportThreeMiddleWitnesses
 
       - name: Check canonical sign order
         working-directory: submissions/jsp-000404-wip-charlie
