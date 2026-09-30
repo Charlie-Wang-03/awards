@@ -135,3 +135,7 @@ jobs:
       - name: Check canonical sign order
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.CanonicalSignOrder
+
+      - name: Check canonical-rank middle terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.CanonicalRankMiddleTerminal
