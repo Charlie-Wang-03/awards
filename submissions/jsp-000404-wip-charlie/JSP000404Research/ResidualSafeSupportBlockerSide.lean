@@ -175,45 +175,31 @@ theorem commonIncoming_oneFlip_blocker_left_of_upper
     intro h
     subst w
     exact (flip_active_not_mem_completion C hvWord hcV) hwFlip
-  have hresUV :=
-    isResidual_of_retainedCompletion_overlap_lt
-      C huv huWord hvWord
-  have hbaseAtU :=
-    (mem_retainedCompletionWords C u word).1 huWord c hcU
-  have hbaseAtV :=
-    (mem_retainedCompletionWords C v word).1 hvWord c hcV
   rcases lt_or_gt_of_ne hwv with hwvlt | hvwlt
   · exact hwvlt
-  · have hwu : w ≠ u := by
-      intro h
-      subst w
-      exact (flip_active_not_mem_completion C huWord hcU) hwFlip
+  · have hresUV :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C huv huWord hvWord
     rcases oneFlip_blocker_edge_retained_colour_or_residual
-        C hwu huWord hcU hwFlip with hright | hleft
-    · obtain ⟨huwlt,hcase⟩ := hright
-      -- Since v<w in this branch, u<w; residual u--w need not itself contradict.
-      -- Use the upper endpoint v instead.
-      have hvwNe : v ≠ w := ne_of_lt hvwlt
-      rcases oneFlip_blocker_edge_retained_colour_or_residual
-          C hvwNe hvWord hcV hwFlip with hvRight | hvLeft
-      · obtain ⟨hvw,hcaseVW⟩ := hvRight
-        rcases hcaseVW with hresVW | hret
-        · exact False.elim
-            (no_two_residual_on_path C huv hvw hresUV hresVW)
-        · obtain ⟨hret,hcol⟩ := hret
-          have hcOutV : c ∈ outgoingRetained C v := by
-            apply (mem_outgoingRetained_iff C v c).2
-            refine ⟨w,hvw,?_⟩
-            apply Fin.ext
-            have hval := congrArg Fin.val hcol
-            simpa [retainedColor] using hval
-          exact False.elim
-            (Finset.disjoint_left.mp
-              (incomingRetained_disjoint_outgoingRetained C v)
-              hcInV hcOutV)
+        C (ne_of_lt hvwlt) hvWord hcV hwFlip
+      with hright | hleft
+    · obtain ⟨hvw,hcase⟩ := hright
+      rcases hcase with hresVW | hret
       · exact False.elim
-          ((not_lt_of_ge (le_of_lt huv.trans_le (le_of_lt hvwlt))) hvLeft.1)
-    · exact False.elim ((not_lt_of_ge (le_of_lt huv)) hleft.1)
+          (no_two_residual_on_path C huv hvw hresUV hresVW)
+      · obtain ⟨hret,hcol⟩ := hret
+        have hcOutV : c ∈ outgoingRetained C v := by
+          apply (mem_outgoingRetained_iff C v c).2
+          refine ⟨w,hvw,?_⟩
+          apply Fin.ext
+          have hval := congrArg Fin.val hcol
+          simpa [retainedColor] using hval
+        exact False.elim
+          (Finset.disjoint_left.mp
+            (incomingRetained_disjoint_outgoingRetained C v)
+            hcInV hcOutV)
+    · exact False.elim
+        ((not_lt_of_ge (le_of_lt hvwlt)) hleft.1)
 
 #print axioms oneFlip_blocker_edge_retained_colour_or_residual
 #print axioms commonOutgoing_oneFlip_blocker_right_of_lower
