@@ -123,3 +123,7 @@ jobs:
       - name: Check middle-hidden cross-angle amplification
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.MiddleHiddenCrossAngle
+
+      - name: Check enriched middle-hidden certificate
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenSeparatedPattern
