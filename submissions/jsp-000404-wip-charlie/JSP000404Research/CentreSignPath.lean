@@ -218,10 +218,8 @@ theorem centre_changesOnlyOnPositive
     unfold wrapRayQuotient
     simp only [List.getLastD_nil]
     rw [harg]
-    have ht0 : 0 ≤ t := ht.le
     have hfloor : 1 ≤ Nat.floor t := by
-      apply Nat.le_floor ht0
-      exact_mod_cast htone
+      exact Nat.le_floor htone
     omega
   · let last : OtherVertex i := rest.getLastD first
     have hlastMem : last ∈ rest := by
