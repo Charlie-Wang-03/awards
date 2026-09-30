@@ -1,6 +1,7 @@
 import JSP000404Research.SupportThreeLeftHiddenDeletionGain
 import JSP000404Research.SupportThreeRightHiddenDeletionGain
 import JSP000404Research.SixPointSupportThreeShape
+import JSP000404Research.SupportThreePinnedMiddleShape
 import Mathlib.Tactic
 
 /-!
@@ -22,32 +23,6 @@ This is the structural reduction needed by compensated minimum deletion.
 -/
 
 namespace JSP000404Research
-
-def SupportThreePinnedMiddleShape
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
-    {t : ℝ}
-    {s i : V}
-    (hsi : s ≠ i)
-    (C : CentreProjectiveCycle hp i) : Prop :=
-  ∃ first0 : OtherVertex i,
-    ∃ rest0 : List (OtherVertex i),
-    ∃ k : ℕ,
-    ∃ preTop postTop : List (OtherVertex i),
-    ∃ r : OtherVertex i,
-    ∃ rest : List (OtherVertex i),
-    ∃ qFirst qLast qHidden : ℕ,
-      C.rays = first0 :: rest0 ∧
-      C.rays =
-        preTop ++ (⟨s,hsi⟩ : OtherVertex i) :: postTop ∧
-      k = preTop.length ∧
-      C.rays.rotate k =
-        (⟨s,hsi⟩ : OtherVertex i) :: r :: rest ∧
-      (quotientList t C.gaps).rotate k =
-        qFirst :: [0,qHidden,0] ++ [qLast] ∧
-      1 ≤ qFirst ∧
-      1 ≤ qLast ∧
-      qHidden ≠ 0
 
 theorem support_three_pinned_middle_or_nonTop_deletion_gain
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -155,7 +130,6 @@ theorem support_three_pinned_middle_or_nonTop_deletion_gain
         (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht).le
     exact Or.inr ⟨deleted, hir, hdelTop, hgain⟩
 
-#print axioms SupportThreePinnedMiddleShape
 #print axioms support_three_pinned_middle_or_nonTop_deletion_gain
 
 end JSP000404Research
