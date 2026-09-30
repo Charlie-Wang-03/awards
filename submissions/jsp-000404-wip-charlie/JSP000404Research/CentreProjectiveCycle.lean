@@ -39,25 +39,25 @@ structure CentreProjectiveCycle
 
 namespace CentreProjectiveCycle
 
-def angles
+noncomputable def angles
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i) : List ℝ :=
   C.rays.map (rayThetaAt hp i)
 
-def signs
+noncomputable def signs
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i) : List Bool :=
   C.rays.map (raySignAt hp i)
 
-def radii
+noncomputable def radii
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i) : List ℝ :=
   C.rays.map (rayRhoAt hp i)
 
-def gaps
+noncomputable def gaps
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i) : List ℝ :=
@@ -138,7 +138,7 @@ theorem gaps_sum
   obtain ⟨a, xs, hangles⟩ : ∃ a xs, C.angles = a :: xs := by
     cases h : C.angles with
     | nil => exact False.elim (C.angles_nonempty h)
-    | cons a xs => exact ⟨a, xs, h⟩
+    | cons a xs => exact ⟨a, xs, rfl⟩
   rw [gaps, hangles]
   exact normalizedProjectiveGaps_sum
 
@@ -150,7 +150,7 @@ theorem gaps_nonneg
   obtain ⟨a, xs, hangles⟩ : ∃ a xs, C.angles = a :: xs := by
     cases h : C.angles with
     | nil => exact False.elim (C.angles_nonempty h)
-    | cons a xs => exact ⟨a, xs, h⟩
+    | cons a xs => exact ⟨a, xs, rfl⟩
   have haMem : a ∈ C.angles := by
     rw [hangles]
     simp
