@@ -127,3 +127,7 @@ jobs:
       - name: Check enriched middle-hidden certificate
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenSeparatedPattern
+
+      - name: Check two enriched mixed patterns
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MixedSupportThreeSeparatedPatterns
