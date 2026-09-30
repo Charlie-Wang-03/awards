@@ -36,7 +36,9 @@ theorem map_getLastD
   cases xs with
   | nil => rfl
   | cons x xs =>
-      simp
+      cases xs with
+      | nil => simp
+      | cons y ys => simp
 
 /-- boolLastFrom is just getLastD with the initial sign as default. -/
 theorem boolLastFrom_eq_getLastD
@@ -45,12 +47,14 @@ theorem boolLastFrom_eq_getLastD
   induction xs generalizing a with
   | nil => rfl
   | cons b bs ih =>
-      simp only [boolLastFrom]
-      rw [ih]
-      simp
+      cases bs with
+      | nil => simp [boolLastFrom]
+      | cons c cs =>
+          simp only [boolLastFrom]
+          simpa using ih b
 
 /-- Quotients of the ordinary non-wrap gaps along a ray list. -/
-def consecutiveRayQuotients
+noncomputable def consecutiveRayQuotients
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t : ℝ) :
@@ -122,7 +126,7 @@ theorem consecutive_changesOnlyOnPositive
 
 /-- The normalized wrap quotient from the last ray back to the lifted first
 ray. -/
-def wrapRayQuotient
+noncomputable def wrapRayQuotient
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t : ℝ)
@@ -144,14 +148,12 @@ theorem centreQuotientList_decompose
       consecutiveRayQuotients hp i t first rest ++
         [wrapRayQuotient hp i t first (rest.getLastD first)] := by
   rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
-  simp only [List.map_cons, normalizedProjectiveGaps, projectiveGaps,
-    List.map_append, List.map_singleton, quotientList, List.map_map]
-  rw [← consecutiveRayQuotients_eq_quotientList]
-  congr 2
-  simp [wrapRayQuotient, map_getLastD]
+  simp [normalizedProjectiveGaps, projectiveGaps,
+    quotientList, consecutiveRayQuotients,
+    wrapRayQuotient, map_getLastD]
 
 /-- The concrete lifted cyclic sign path. -/
-def liftedCentreSignPath
+noncomputable def liftedCentreSignPath
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
     (i : V)
@@ -215,16 +217,23 @@ theorem centre_changesOnlyOnPositive
         t * ((rayThetaAt hp i first + Real.pi -
           rayThetaAt hp i first) / Real.pi) = t := by
       field_simp [hpi]
+      ring
     unfold wrapRayQuotient
     simp only [List.getLastD_nil]
     rw [harg]
     have hfloor : 1 ≤ Nat.floor t := by
-      exact Nat.le_floor htone
+      exact (Nat.le_floor ht.le).2 (by exact_mod_cast htone)
     omega
   · let last : OtherVertex i := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
-      exact List.getLastD_mem hrest
+      cases hR : rest with
+      | nil =>
+          exact False.elim (hrest hR)
+      | cons x xs =>
+          cases xs with
+          | nil => simp
+          | cons y ys => simp
     have hfirstLast : first ≠ last := by
       intro h
       subst last
