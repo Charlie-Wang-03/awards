@@ -27,7 +27,7 @@ canonical projective ray cycle.
 namespace JSP000404Research
 
 /-- Natural Sendov quotients of a normalized gap list. -/
-def quotientList (t : ℝ) (gaps : List ℝ) : List ℕ :=
+noncomputable def quotientList (t : ℝ) (gaps : List ℝ) : List ℕ :=
   gaps.map fun g => Nat.floor (t * g)
 
 /-- Exact upper half of the floor window. -/
@@ -131,9 +131,12 @@ theorem centreQuotient_sum_le_n
     omega
   have hcast :
       ((n + 1 : ℕ) : ℝ) ≤
-        ((quotientList t C.gaps).sum : ℕ) := by
+        ((quotientList t C.gaps).sum : ℝ) := by
     exact_mod_cast hnat
-  push_cast at hcast
+  have hncast :
+      ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by
+    norm_num
+  rw [hncast] at hcast
   linarith
 
 /-- The concrete centre quotient list is aligned with its actual projective
