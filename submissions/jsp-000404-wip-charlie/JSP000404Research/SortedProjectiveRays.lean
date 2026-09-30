@@ -81,8 +81,10 @@ theorem exists_theta_sorted_other_vertices
         (fun a b =>
           rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
   classical
-  letI : LinearOrder (OtherVertex i) :=
+  let rayOrd : LinearOrder (OtherVertex i) :=
     otherVertexRayOrder hp i
+  letI : LinearOrder (OtherVertex i) := rayOrd
+  letI : LE (OtherVertex i) := rayOrd.toLE
   let rays : List (OtherVertex i) :=
     (Finset.univ : Finset (OtherVertex i)).sort
   refine ⟨rays, ?_, ?_, ?_⟩
@@ -96,8 +98,6 @@ theorem exists_theta_sorted_other_vertices
       exact Finset.pairwise_sort _ _
     apply hpair.imp
     intro a b hab
-    change @LE.le (OtherVertex i)
-      (otherVertexRayOrder hp i).toLE a b at hab
     exact rayTheta_le_of_rayOrder_le hp i hab
 
 /-- In particular the sorted ray list has exactly card(V)-1 entries. -/
