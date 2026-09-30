@@ -68,19 +68,28 @@ theorem deficit_three_structure
   · left
     constructor
     · exact hp1
-    · rw [hell, hdec, hp1] at *
+    · have heq :
+          3 = (n - ∑ i, q i) + 1 := by
+        rw [← hell]
+        simpa [hp1] using hdec
       omega
   · right
     left
     constructor
     · exact hp2
-    · rw [hell, hdec, hp2] at *
+    · have heq :
+          3 = (n - ∑ i, q i) + 2 := by
+        rw [← hell]
+        simpa [hp2] using hdec
       omega
   · right
     right
     constructor
     · exact hp3
-    · rw [hell, hdec, hp3] at *
+    · have heq :
+          3 = (n - ∑ i, q i) + 3 := by
+        rw [← hell]
+        simpa [hp3] using hdec
       omega
 
 theorem deficit_three_zero_gap_budget
@@ -107,7 +116,7 @@ theorem deficit_three_zero_gap_budget
     refine ⟨h1.1, h1.2, ?_⟩
     have hb :=
       zeroGapMass_scaled_le_delta_add_deficit_sub_support
-        gap q n 3 delta t ht hgap hQ rfl hfloor
+        gap q n 3 delta t ht hgap hQ hell.symm hfloor
     rw [h1.1] at hb
     norm_num at hb ⊢
     exact hb
@@ -116,7 +125,7 @@ theorem deficit_three_zero_gap_budget
     refine ⟨h2.1, h2.2, ?_⟩
     have hb :=
       zeroGapMass_scaled_le_delta_add_deficit_sub_support
-        gap q n 3 delta t ht hgap hQ rfl hfloor
+        gap q n 3 delta t ht hgap hQ hell.symm hfloor
     rw [h2.1] at hb
     norm_num at hb ⊢
     exact hb
