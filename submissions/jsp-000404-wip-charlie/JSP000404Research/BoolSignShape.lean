@@ -73,8 +73,8 @@ theorem list_eq_replicate_length_of_forall_eq
         a :: bs =
             a :: List.replicate bs.length a :=
           congrArg (List.cons a) htail
-        _ = List.replicate (bs.length + 1) a :=
-          (List.replicate_succ a bs.length).symm
+        _ = List.replicate (bs.length + 1) a := by
+          rw [List.replicate_succ]
         _ = List.replicate (a :: bs).length a := by rfl
 
 /-- Exactly one transition, together with antiperiodic endpoint, gives the
