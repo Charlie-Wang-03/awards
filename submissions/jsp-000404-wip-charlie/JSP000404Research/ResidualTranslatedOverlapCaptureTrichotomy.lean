@@ -105,7 +105,6 @@ theorem twoFlip_capture_zero_full_or_half
     rcases twoFlip_blocker_fullFree_or_halfCapture C hc hd
       with hfull | hhalf
     · left
-      apply Finset.card_congr
       let f :
           {word // word ∈ twoFlipCapturedSourceWords C u v w c d} ≃
           {word // word ∈
@@ -128,7 +127,8 @@ theorem twoFlip_capture_zero_full_or_half
                 C u v w c d word.1).2
               exact ⟨word.2,hfullCapture word.1 word.2⟩
           ⟩
-      exact Fintype.card_congr f
+      have hcard := Fintype.card_congr f
+      simpa only [Fintype.card_coe] using hcard
     · exact Or.inr hhalf
 
 #print axioms oneFlip_capture_zero_full_or_half
