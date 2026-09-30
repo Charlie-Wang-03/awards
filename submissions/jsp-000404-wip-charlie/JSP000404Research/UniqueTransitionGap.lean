@@ -62,9 +62,11 @@ theorem one_transition_positive_gap_decomposition
           rcases hchanges with ⟨hstep, hrest⟩
           by_cases hab : a = b
           · subst b
-            simp only [boolTransitionCountFrom, if_pos rfl, zero_add] at htrans
+            have htrans' :
+                boolTransitionCountFrom a bs = 1 := by
+              simpa [boolTransitionCountFrom] using htrans
             obtain ⟨pre, post, q0, hq0, hqs, hsigns⟩ :=
-              ih a qs hrest htrans
+              ih a qs hrest htrans'
             refine ⟨q :: pre, post, q0, hq0, ?_, ?_⟩
             · simp [hqs]
             · rw [hsigns]
@@ -73,7 +75,9 @@ theorem one_transition_positive_gap_decomposition
             have hq : q ≠ 0 := hstep hab
             have hrestZero :
                 boolTransitionCountFrom b bs = 0 := by
-              simp only [boolTransitionCountFrom, hab, if_false] at htrans
+              have htrans' :
+                  1 + boolTransitionCountFrom b bs = 1 := by
+                simpa [boolTransitionCountFrom, hab] using htrans
               omega
             have hall :
                 ∀ x ∈ bs, x = b :=
