@@ -28,9 +28,9 @@ open Real
 theorem support_one_and_small_angle_force_large_third
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -83,9 +83,9 @@ theorem support_one_and_small_angle_force_large_third
 theorem hamiltonian_residual_support_one_amplification
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
