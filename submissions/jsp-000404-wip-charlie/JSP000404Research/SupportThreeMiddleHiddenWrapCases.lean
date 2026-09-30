@@ -73,7 +73,6 @@ theorem eq_rotate_one_of_rotate_four_eq
     rw [List.rotate_eq_drop_append_take_mod]
     rw [hlen]
     norm_num
-    simp
   have hback : (xs.rotate 4).rotate 1 = xs := by
     rw [List.rotate_rotate]
     exact hperiod
@@ -91,7 +90,6 @@ theorem eq_rotate_two_of_rotate_three_eq
     rw [List.rotate_eq_drop_append_take_mod]
     rw [hlen]
     norm_num
-    simp
   have hback : (xs.rotate 3).rotate 2 = xs := by
     rw [List.rotate_rotate]
     exact hperiod
@@ -109,7 +107,6 @@ theorem eq_rotate_three_of_rotate_two_eq
     rw [List.rotate_eq_drop_append_take_mod]
     rw [hlen]
     norm_num
-    simp
   have hback : (xs.rotate 2).rotate 3 = xs := by
     rw [List.rotate_rotate]
     exact hperiod
@@ -127,7 +124,6 @@ theorem eq_rotate_four_of_rotate_one_eq
     rw [List.rotate_eq_drop_append_take_mod]
     rw [hlen]
     norm_num
-    simp
   have hback : (xs.rotate 1).rotate 4 = xs := by
     rw [List.rotate_rotate]
     exact hperiod
