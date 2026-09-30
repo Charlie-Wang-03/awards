@@ -63,9 +63,10 @@ theorem two_mul_oneFlipCaptured_le_overlap_of_commonInactive_active
     oneFlipCapturedSourceWords C u v w c
   have hcapSub : captured ⊆ source := by
     intro word hword
-    exact
+    have hdata :=
       (mem_oneFlipCapturedSourceWords
-        C u v w c word).1 hword |>.1
+        C u v w c word).1 hword
+    exact hdata.1
   let target := source  captured
 
   have heData :=
