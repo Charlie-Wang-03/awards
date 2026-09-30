@@ -70,9 +70,9 @@ Sendov normalization. -/
 theorem concrete_unit_deficit_is_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
