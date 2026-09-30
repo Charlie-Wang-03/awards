@@ -93,15 +93,17 @@ theorem translatedLossFibre_card_le_n
   have hinj :=
     translatedLossFibre_choice_injective
       C exponent hexp honeLoss choice word
+  have hmaps :
+      Set.MapsTo choice
+        (translatedLossFibre C exponent choice word : Set V)
+        ((Finset.univ : Finset (Fin n)) : Set (Fin n)) := by
+    intro v hv
+    exact Finset.mem_univ _
   have hcard :
       (translatedLossFibre C exponent choice word).card ≤
-        Fintype.card (Fin n) := by
+        (Finset.univ : Finset (Fin n)).card := by
     exact Finset.card_le_card_of_injOn
-      (fun v => choice v)
-      (translatedLossFibre C exponent choice word)
-      Finset.univ
-      (fun v hv => Finset.mem_univ _)
-      hinj
+      choice hmaps hinj
   simpa using hcard
 
 theorem translatedLossFibre_false_propagates_right
