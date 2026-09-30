@@ -30,7 +30,7 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-def centreQuotient
+noncomputable def centreQuotient
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
@@ -82,7 +82,7 @@ theorem listExponent_quotientList_eq_centreExponent
 
 
 /-- Concrete Sendov exponent of one centre. -/
-def centreExponent
+noncomputable def centreExponent
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
@@ -101,7 +101,7 @@ def centreExponent
   exact listExponent_quotientList_eq_centreExponent C t
 
 /-- Concrete Sendov deficit at integer level n. -/
-def centreDeficit
+noncomputable def centreDeficit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
