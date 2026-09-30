@@ -1,6 +1,5 @@
 import JSP000404Research.PositiveTransitionAngleAlignment
-import JSP000404Research.SupportThreeMiddleOrDeletionGain
-import JSP000404Research.SixPointSupportThreeShape
+import JSP000404Research.SupportThreePinnedMiddleShape
 import JSP000404Research.ConcreteDeficitThree
 import JSP000404Research.CyclicEdgeRotation
 import Mathlib.Tactic
