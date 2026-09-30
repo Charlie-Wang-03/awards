@@ -42,6 +42,7 @@ theorem quotientGapAligned_length
     {t : ℝ} {qs : List ℕ} {gaps : List ℝ}
     (h : QuotientGapAligned t qs gaps) :
     qs.length = gaps.length := by
+  unfold QuotientGapAligned at h
   exact List.Forall₂.length_eq h
 
 /-- Split aligned quotient/gap lists at a distinguished quotient entry. -/
@@ -69,7 +70,7 @@ theorem aligned_gap_decomposition
           | cons hqe hpost =>
               refine ⟨[], gpost, ge, ?_, rfl, ?_, hqe, ?_, hpost⟩
               · rfl
-              · exact quotientGapAligned_length hpost
+              · exact (quotientGapAligned_length hpost).symm
               · exact List.Forall₂.nil
   | cons q pre ih =>
       simp only [List.cons_append] at halign
@@ -133,7 +134,7 @@ theorem rotate_aligned_transition_to_last
     aligned_gap_decomposition halign
   refine ⟨gpre, gpost, ge, hgaps, ?_, ?_, hqe, hpre, hpost⟩
   · exact rotate_decomposition_to_last pre post qe
-  · rw [hgaps, hpre]
+  · rw [hgaps, ← hpre]
     exact rotate_decomposition_to_last gpre gpost ge
 
 #print axioms quotientGapAligned_length
