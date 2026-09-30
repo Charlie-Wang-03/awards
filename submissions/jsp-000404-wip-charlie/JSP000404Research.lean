@@ -1552,3 +1552,6 @@ import JSP000404Research.ResidualSafeFlipTransition
 
 
 import JSP000404Research.ResidualSafeDeterministicTransition
+
+
+import JSP000404Research.ResidualPairReplacement
