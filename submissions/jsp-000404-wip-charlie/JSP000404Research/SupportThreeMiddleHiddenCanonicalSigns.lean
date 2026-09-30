@@ -35,7 +35,7 @@ theorem nonexposed_middle_hidden_canonical_sign_cases
       positiveSupport (centreQuotient C t) = 3)
     (hnot : ¬ StrictlyExposedAt p i)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp htopi C) :
+      SupportThreePinnedMiddleShape (t := t) hp htopi C) :
     ∃ H : MiddleHiddenPinnedCycleCertificate hp top i htopi C t,
       let sTop :=
         raySignAt hp i
