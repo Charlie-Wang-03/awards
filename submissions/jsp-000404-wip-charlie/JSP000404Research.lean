@@ -1583,3 +1583,17 @@ import JSP000404Research.WeightedHallOutlet
 import JSP000404Research.ResidualLocalCandidateCapacity
 
 import JSP000404Research.ProjectionLocalCandidateCapacity
+
+import JSP000404Research.BoundedLoadHall
+
+import JSP000404Research.ResidualLossTranslatedConflict
+
+import JSP000404Research.ResidualLossCoordinateSlices
+
+import JSP000404Research.ResidualLossCrossSliceConflict
+
+import JSP000404Research.ResidualLossCrossSliceCarrier
+
+import JSP000404Research.ResidualLossFibreRigidity
+
+import JSP000404Research.ResidualLossFibreGlobal
