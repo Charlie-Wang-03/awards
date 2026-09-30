@@ -51,10 +51,11 @@ def SixPointNoCompensatedMinimumDeletion
 
 theorem support_three_middle_of_no_compensated_minimum_deletion
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -87,10 +88,11 @@ theorem support_three_middle_of_no_compensated_minimum_deletion
 support-multiplicity regimes are mixed (1,2) and pure (2,2). -/
 theorem six_point_hard_support_profile_reduction
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
