@@ -97,7 +97,7 @@ theorem one_div_t_le_gap_of_positive_quotient
   have hqR : (1 : ℝ) ≤ q := by exact_mod_cast hq1
   have hone : 1 ≤ t * gap := hqR.trans hfloor
   rw [div_le_iff₀ ht]
-  simpa [one_mul] using hone
+  simpa [mul_comm] using hone
 
 /-- Quantitative quotient form: an aligned quotient q pays q full cap
 units of angular width. -/
