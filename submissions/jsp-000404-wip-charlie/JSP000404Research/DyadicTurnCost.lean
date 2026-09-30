@@ -94,10 +94,13 @@ theorem n_mul_two_pow_le_cost_mul_top_pow
         ≤ ((k + 1) * 2 ^ d) * 2 ^ k :=
           Nat.mul_le_mul_right (2 ^ k) hcost
     _ = (k + 1) * 2 ^ (n - 1) := by
-      rw [← pow_add]
-      have : d + k = n - 1 := by omega
-      rw [this]
-      ring
+      calc
+        ((k + 1) * 2 ^ d) * 2 ^ k
+            = (k + 1) * (2 ^ d * 2 ^ k) := by ring
+        _ = (k + 1) * 2 ^ (d + k) := by rw [pow_add]
+        _ = (k + 1) * 2 ^ (n - 1) := by
+          have : d + k = n - 1 := by omega
+          rw [this]
 
 /-- Main dyadic turn-cost knapsack theorem. -/
 theorem dyadic_sum_le_two_pow_of_turn_cost
