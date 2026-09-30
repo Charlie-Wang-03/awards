@@ -147,17 +147,17 @@ produces the enriched ordered angle certificate. -/
 theorem support_three_middle_hidden_separated_pattern
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    {top i : V}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
-    {top i : V}
     (hit : i ≠ top)
     (hexp : centreExponent C t = n - 3)
     (hsupport :
