@@ -141,11 +141,9 @@ theorem minimalDeficient_biUnion_erase_eq
       ((S.erase x).biUnion targets).card =
         (S.biUnion targets).card := by
     omega
-  apply Finset.Subset.antisymm
-  · exact biUnion_mono targets (Finset.erase_subset x S)
-  · exact Finset.eq_of_subset_of_card_le
-      (biUnion_mono targets (Finset.erase_subset x S))
-      (by omega)
+  exact Finset.eq_of_subset_of_card_le
+    (biUnion_mono targets (Finset.erase_subset x S))
+    (by omega)
 
 /-- Every target in a minimal Hall obstruction is still represented after any
 chosen demand is removed. -/
