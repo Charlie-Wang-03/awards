@@ -179,9 +179,9 @@ automatically. -/
 theorem centre_three_transition_positive_angles_large
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {n : ℕ} {delta t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {n : ℕ} {delta t lam : ℝ}
     (hn2 : 2 ≤ n)
     (htpos : 0 < t)
     (htone : 1 ≤ t)
