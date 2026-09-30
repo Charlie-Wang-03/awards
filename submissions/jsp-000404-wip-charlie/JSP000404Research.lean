@@ -1512,3 +1512,6 @@ import JSP000404Research.PlanarLowerBranchHardWordInjection
 
 
 import JSP000404Research.PlanarUpperBranchHardDefect
+
+
+import JSP000404Research.HardWordHallOutlet
