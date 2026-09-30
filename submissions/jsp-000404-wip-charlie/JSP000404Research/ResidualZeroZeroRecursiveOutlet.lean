@@ -181,7 +181,7 @@ theorem zero_zero_hole_or_strict_paid_or_exact_loss_star
       refine ⟨blocker,hinj,hneU,hneV,hblock,?_⟩
       intro c
       rcases hprofile c with hsur | hexact | hloss
-      · exact False.elim ((not_le.mpr (hstrictPaid c)) hsur)
+      · exact False.elim (hstrictPaid c hsur)
       · exact Or.inl hexact
       · exact Or.inr hloss
 
