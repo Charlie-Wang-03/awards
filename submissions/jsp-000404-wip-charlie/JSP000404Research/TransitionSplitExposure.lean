@@ -114,7 +114,7 @@ theorem strictlyExposedAt_of_common_canonical_sign
       ∃ first rest, rays = first :: rest := by
     cases h : rays with
     | nil => exact False.elim (hne h)
-    | cons first rest => exact ⟨first, rest, h⟩
+    | cons first rest => exact ⟨first, rest, rfl⟩
   have hpair :
       (first :: rest).Pairwise
         (fun a b =>
@@ -149,8 +149,7 @@ theorem strictlyExposedAt_of_common_canonical_sign
   have hfirstLe :
       rayThetaAt hp i first ≤ rayThetaAt hp i jo := by
     rcases List.mem_cons.mp hjmem with hEq | htail
-    · subst jo
-      rfl
+    · simpa [hEq]
     · exact (List.pairwise_cons.mp hpair).1 jo htail
   have hjLast :
       rayThetaAt hp i jo ≤ rayThetaAt hp i last := by
