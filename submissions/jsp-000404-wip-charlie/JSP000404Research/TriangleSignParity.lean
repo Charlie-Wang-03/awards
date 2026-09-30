@@ -39,8 +39,11 @@ def boolXor (a b : Bool) : Bool :=
 /-- Pure Boolean triangle parity under edge reversal. -/
 theorem triangle_transition_xor
     (sij sik sjk : Bool) :
-    boolXor sij sik !=
-      (boolXor (!sij) sjk != boolXor (!sik) (!sjk)) = false := by
+    boolXor
+        (boolXor sij sik)
+        (boolXor
+          (boolXor (Bool.not sij) sjk)
+          (boolXor (Bool.not sik) (Bool.not sjk))) = false := by
   cases sij <;> cases sik <;> cases sjk <;> decide
 
 /-- More useful consequence: if i is same-sign, exactly one of the other two
@@ -48,8 +51,10 @@ vertices is opposite-sign. -/
 theorem exactly_one_other_transition_of_same_at_first
     {sij sik sjk : Bool}
     (hi : sij = sik) :
-    ( (!sij ≠ sjk) ∧ ¬ (!sik ≠ !sjk) ) ∨
-    ( ¬ (!sij ≠ sjk) ∧ (!sik ≠ !sjk) ) := by
+    ( (Bool.not sij ≠ sjk) ∧
+        ¬ (Bool.not sik ≠ Bool.not sjk) ) ∨
+    ( ¬ (Bool.not sij ≠ sjk) ∧
+        (Bool.not sik ≠ Bool.not sjk) ) := by
   subst sik
   cases sij <;> cases sjk <;> simp
 
@@ -88,7 +93,7 @@ theorem triangle_exactly_one_other_sign_transition
   rw [hji, hki] at hpure
   have hkj' :
       raySignAt hp k ⟨j, hjk⟩ =
-        ! raySignAt hp j ⟨k, hjk.symm⟩ := hkj
+        Bool.not (raySignAt hp j ⟨k, hjk.symm⟩) := hkj
   rw [hkj'] at hpure
   exact hpure
 
