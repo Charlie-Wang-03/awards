@@ -26,9 +26,9 @@ namespace JSP000404Research
 theorem support_three_transition_count_one_or_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -98,9 +98,9 @@ theorem support_three_transition_count_one_or_three
 theorem strictlyExposedAt_of_support_three_one_transition
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -139,9 +139,9 @@ slots. -/
 theorem support_three_strictlyExposed_or_three_transitions
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -171,9 +171,9 @@ slots. -/
 theorem three_transitions_of_support_three_not_strictlyExposed
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
