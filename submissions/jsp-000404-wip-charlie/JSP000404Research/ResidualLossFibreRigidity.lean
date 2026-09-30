@@ -59,7 +59,8 @@ theorem translated_loss_conflict_lower_colour_forces_word_true
         apply (mem_outgoingRetained_iff C v c).2
         refine ⟨w,hvw,?_⟩
         apply Fin.ext
-        simpa [retainedColor, hcolour])
+        have hval := congrArg Fin.val hcolour
+        simpa [retainedColor] using hval)
   rw [flipBoolWordAt_at, hbitLower] at hvAt
   cases h : word c <;> simp [h] at hvAt ⊢
 
@@ -95,7 +96,8 @@ theorem translated_loss_conflict_upper_colour_forces_word_false
     apply (mem_incomingRetained_iff C w d).2
     refine ⟨v,hvw,?_⟩
     apply Fin.ext
-    simpa [retainedColor, hcolour]
+    have hval := congrArg Fin.val hcolour
+    simpa [retainedColor] using hval
   rw [flipBoolWordAt_at, hbitUpper] at hwAt
   cases h : word d <;> simp [h] at hwAt ⊢
 
