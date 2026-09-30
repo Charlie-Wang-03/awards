@@ -1542,3 +1542,6 @@ import JSP000404Research.RefinedHardWordHallOutlet
 
 
 import JSP000404Research.MinimalHallObstruction
+
+
+import JSP000404Research.NearPerfectRefinedHardMatching
