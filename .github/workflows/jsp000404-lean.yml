@@ -95,6 +95,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenSigns
 
+      - name: Check explicit middle-hidden cycle certificate
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.SupportThreeMiddleHiddenCycleCertificate
+
       - name: Check Hamiltonian transversal ordering
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualTransversal
