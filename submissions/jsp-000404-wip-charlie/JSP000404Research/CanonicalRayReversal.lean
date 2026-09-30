@@ -54,7 +54,7 @@ theorem canonical_signed_projective_unique
     theta = phi ∧ sigma = tau := by
   have hleftne :
       rho • signedRayDirection sigma theta ≠ 0 := by
-    exact smul_ne_zero ℝ (ne_of_gt hrho)
+    exact smul_ne_zero (ne_of_gt hrho)
       (signedRayDirection_ne_zero sigma theta)
   have hang0 :
       InnerProductGeometry.angle
