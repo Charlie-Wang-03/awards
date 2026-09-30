@@ -1599,3 +1599,21 @@ import JSP000404Research.ResidualLossFibreRigidity
 import JSP000404Research.ResidualLossFibreGlobal
 
 import JSP000404Research.ResidualLossFibreEdgeClassification
+
+import JSP000404Research.ResidualLossBlockerEdge
+
+import JSP000404Research.ResidualLossTriangularBlock
+
+import JSP000404Research.ResidualLossDirectionalWitness
+
+import JSP000404Research.ResidualLossDirectedFibre
+
+import JSP000404Research.ResidualLossExtremeReduction
+
+import JSP000404Research.ResidualLossExtremeExchange
+
+import JSP000404Research.ResidualLossTwoExitAvoidance
+
+import JSP000404Research.ResidualLossExtremeInward
+
+import JSP000404Research.ResidualLossExtremeTerminal
