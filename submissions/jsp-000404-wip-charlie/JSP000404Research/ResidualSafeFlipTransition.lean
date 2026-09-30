@@ -318,12 +318,133 @@ theorem safe_right_active_flip_single_or_unique_blocker
         isResidual_of_retainedCompletion_overlap_lt
           C huw hflip.1 hw⟩
 
+
+theorem safe_left_active_flip_blocker_strictly_left_of_anchor
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {word : Fin n → Bool} {c : Fin n}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : c ∉ residualForbidden C u v)
+    (hcu : c ∈ retainedActive C u)
+    (hw :
+      flipRetainedWord word c ∈ retainedCompletionWords C w)
+    (hwv : w ≠ v) :
+    w < v := by
+  have holdRes :=
+    isResidual_of_retainedCompletion_overlap_lt
+      C huv hu hv
+  have hflip :=
+    flip_overlap_to_right_single C hu hv hsafe hcu
+  rcases lt_or_gt_of_ne hwv with hwvlt | hvw
+  · exact hwvlt
+  · have hnewRes :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C hvw hflip.1 hw
+    exact False.elim
+      (no_two_residual_on_path C huv hvw holdRes hnewRes)
+
+theorem safe_left_active_flip_blocker_consumes_coordinate
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {word : Fin n → Bool} {c : Fin n}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : c ∉ residualForbidden C u v)
+    (hcu : c ∈ retainedActive C u)
+    (hw :
+      flipRetainedWord word c ∈ retainedCompletionWords C w)
+    (hwv : w ≠ v) :
+    w < v ∧
+      IsResidual C w v ∧
+      c ∈ residualForbidden C w v := by
+  have hwvlt :=
+    safe_left_active_flip_blocker_strictly_left_of_anchor
+      C huv hu hv hsafe hcu hw hwv
+  have hflip :=
+    flip_overlap_to_right_single C hu hv hsafe hcu
+  have hres :=
+    isResidual_of_retainedCompletion_overlap_lt
+      C hwvlt hw hflip.1
+  have hcInW :=
+    safe_left_active_flip_blocker_incoming
+      C huv hu hv hsafe hcu hw hwv
+  have hcForbid :
+      c ∈ residualForbidden C w v := by
+    unfold residualForbidden
+    exact Finset.mem_union_left _ hcInW
+  exact ⟨hwvlt,hres,hcForbid⟩
+
+theorem safe_right_active_flip_blocker_strictly_right_of_anchor
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {word : Fin n → Bool} {c : Fin n}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : c ∉ residualForbidden C u v)
+    (hcv : c ∈ retainedActive C v)
+    (hw :
+      flipRetainedWord word c ∈ retainedCompletionWords C w)
+    (hwu : w ≠ u) :
+    u < w := by
+  have holdRes :=
+    isResidual_of_retainedCompletion_overlap_lt
+      C huv hu hv
+  have hflip :=
+    flip_overlap_to_left_single C hu hv hsafe hcv
+  rcases lt_or_gt_of_ne hwu with hwult | huw
+  · have hnewRes :=
+      isResidual_of_retainedCompletion_overlap_lt
+        C hwult hw hflip.1
+    exact False.elim
+      (no_two_residual_on_path C hwult huv hnewRes holdRes)
+  · exact huw
+
+theorem safe_right_active_flip_blocker_consumes_coordinate
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V} {word : Fin n → Bool} {c : Fin n}
+    (huv : u < v)
+    (hu : word ∈ retainedCompletionWords C u)
+    (hv : word ∈ retainedCompletionWords C v)
+    (hsafe : c ∉ residualForbidden C u v)
+    (hcv : c ∈ retainedActive C v)
+    (hw :
+      flipRetainedWord word c ∈ retainedCompletionWords C w)
+    (hwu : w ≠ u) :
+    u < w ∧
+      IsResidual C u w ∧
+      c ∈ residualForbidden C u w := by
+  have huw :=
+    safe_right_active_flip_blocker_strictly_right_of_anchor
+      C huv hu hv hsafe hcv hw hwu
+  have hflip :=
+    flip_overlap_to_left_single C hu hv hsafe hcv
+  have hres :=
+    isResidual_of_retainedCompletion_overlap_lt
+      C huw hflip.1 hw
+  have hcOutW :=
+    safe_right_active_flip_blocker_outgoing
+      C huv hu hv hsafe hcv hw hwu
+  have hcForbid :
+      c ∈ residualForbidden C u w := by
+    unfold residualForbidden
+    exact Finset.mem_union_right _ hcOutW
+  exact ⟨huw,hres,hcForbid⟩
+
 #print axioms safe_left_active_flip_blocker_incoming
 #print axioms safe_left_active_flip_blocker_outward_safe
 #print axioms safe_left_active_flip_single_or_unique_blocker
 #print axioms safe_right_active_flip_blocker_outgoing
 #print axioms safe_right_active_flip_blocker_outward_safe
 #print axioms safe_right_active_flip_single_or_unique_blocker
+#print axioms safe_left_active_flip_blocker_strictly_left_of_anchor
+#print axioms safe_left_active_flip_blocker_consumes_coordinate
+#print axioms safe_right_active_flip_blocker_strictly_right_of_anchor
+#print axioms safe_right_active_flip_blocker_consumes_coordinate
 
 end OrderedEdgeColoring
 end JSP000404Research
