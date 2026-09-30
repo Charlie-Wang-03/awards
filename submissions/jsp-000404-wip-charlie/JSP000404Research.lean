@@ -1597,3 +1597,5 @@ import JSP000404Research.ResidualLossCrossSliceCarrier
 import JSP000404Research.ResidualLossFibreRigidity
 
 import JSP000404Research.ResidualLossFibreGlobal
+
+import JSP000404Research.ResidualLossFibreEdgeClassification
