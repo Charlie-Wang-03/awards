@@ -1533,3 +1533,6 @@ import JSP000404Research.ZeroExponentMinimalDeletionRigidity
 
 
 import JSP000404Research.MinimalOverweightResidualDefect
+
+
+import JSP000404Research.RefinedResidualHardRemainder
