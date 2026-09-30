@@ -73,14 +73,18 @@ theorem exists_saturated_pair_injective_structural_exit
   intro word
   dsimp
   have hlocal := (f word).2
+  have hnotUnion :
+      (f word).1 ∉
+        retainedCompletionWords C u ∪ retainedCompletionWords C v :=
+    (Finset.mem_sdiff.mp hlocal).2
   have hnotU :
       (f word).1 ∉ retainedCompletionWords C u := by
-    exact (Finset.mem_sdiff.mp hlocal).2
-      (Finset.mem_union_left _ ·)
+    intro hu
+    exact hnotUnion (Finset.mem_union_left _ hu)
   have hnotV :
       (f word).1 ∉ retainedCompletionWords C v := by
-    exact (Finset.mem_sdiff.mp hlocal).2
-      (Finset.mem_union_right _ ·)
+    intro hv
+    exact hnotUnion (Finset.mem_union_right _ hv)
   rcases completionWord_structural_trichotomy C (f word).1
     with hhole | hsingle | hoverlap
   · exact Or.inl hhole
