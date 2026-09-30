@@ -94,8 +94,15 @@ theorem getLastD_lt_pi_of_all_lt
     (a : ℝ) (xs : List ℝ)
     (hall : ∀ theta ∈ a :: xs, theta < Real.pi) :
     xs.getLastD a < Real.pi := by
-  exact hall _ (by
-    cases xs <;> simp)
+  induction xs generalizing a with
+  | nil =>
+      exact hall a (by simp)
+  | cons b bs ih =>
+      have htail :
+          ∀ theta ∈ b :: bs, theta < Real.pi := by
+        intro theta htheta
+        exact hall theta (by simp [htheta])
+      simpa only [List.getLastD_cons] using ih b htail
 
 /-- Sorted canonical angles in [0,pi) give nonnegative cyclic gaps. -/
 theorem projectiveGaps_nonneg
