@@ -186,3 +186,7 @@ jobs:
       - name: Check positive transition large-angle converse
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.PositiveTransitionLargeAngleBound
+
+      - name: Check mixed support-one outer witness pair
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MixedSupportOneOuterPair
