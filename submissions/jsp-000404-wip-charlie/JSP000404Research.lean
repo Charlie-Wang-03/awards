@@ -1564,3 +1564,14 @@ import JSP000404Research.ProjectionLossFlipCoordinate
 
 
 import JSP000404Research.ResidualLossTranslatedBlock
+
+
+import JSP000404Research.ResidualCarrierBipartite
+
+import JSP000404Research.ResidualSingleFibreTransition
+
+import JSP000404Research.ResidualAugmentingState
+
+import JSP000404Research.ResidualSingleFibreBranching
+
+import JSP000404Research.ProjectionLossAugmentingTransition
