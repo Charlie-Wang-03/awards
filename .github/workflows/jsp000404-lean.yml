@@ -218,3 +218,7 @@ jobs:
       - name: Check mixed support-one outer witness pair
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.MixedSupportOneOuterPair
+
+      - name: Check mixed support-one outer quotient bound
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MixedSupportOneOuterQuotientBound
