@@ -43,7 +43,7 @@ theorem triangle_transition_xor
         (boolXor sij sik)
         (boolXor
           (boolXor (Bool.not sij) sjk)
-          (boolXor (Bool.not sik) (Bool.not sjk))) = false := by
+          (boolXor (Bool.not sik) (Bool.not sjk))) = true := by
   cases sij <;> cases sik <;> cases sjk <;> decide
 
 /-- More useful consequence: if i is same-sign, exactly one of the other two
@@ -90,12 +90,7 @@ theorem triangle_exactly_one_other_sign_transition
       (sij := sij) (sik := sik) (sjk := sjk)
       (by simpa [sij, sik] using hi)
   dsimp [sij, sik, sjk] at hpure
-  rw [hji, hki] at hpure
-  have hkj' :
-      raySignAt hp k ⟨j, hjk⟩ =
-        Bool.not (raySignAt hp j ⟨k, hjk.symm⟩) := hkj
-  rw [hkj'] at hpure
-  exact hpure
+  simpa [hji, hki, hkj] using hpure
 
 #print axioms triangle_transition_xor
 #print axioms exactly_one_other_transition_of_same_at_first
