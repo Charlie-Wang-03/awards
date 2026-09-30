@@ -180,8 +180,10 @@ theorem true_top_prefix_card_le_retainedActive
       C exponent hexp honeLoss choice word).mono
       (by
         intro x hx
-        exact (mem_translatedLossFibrePrefix
-          C exponent choice word w x).1 hx |>.1))
+        have hxData :=
+          (mem_translatedLossFibrePrefix
+            C exponent choice word w x).1 hx
+        exact hxData.1))
 
 theorem false_bottom_suffix_card_le_retainedActive
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -210,8 +212,10 @@ theorem false_bottom_suffix_card_le_retainedActive
       C exponent hexp honeLoss choice word).mono
       (by
         intro x hx
-        exact (mem_translatedLossFibreSuffix
-          C exponent choice word v x).1 hx |>.1))
+        have hxData :=
+          (mem_translatedLossFibreSuffix
+            C exponent choice word v x).1 hx
+        exact hxData.1))
 
 #print axioms true_top_prefix_card_le_retainedActive
 #print axioms false_bottom_suffix_card_le_retainedActive
