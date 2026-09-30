@@ -112,7 +112,7 @@ theorem one_le_t_mul_normalized_gap_of_opposite_signs
 
 
 /-- Projective angular distance between two canonical parameters in [0,pi). -/
-def projectiveRayDistance (theta phi : ℝ) : ℝ :=
+noncomputable def projectiveRayDistance (theta phi : ℝ) : ℝ :=
   min |theta - phi| (Real.pi - |theta - phi|)
 
 /-- A signed-ray angle is either the projective distance or its supplement. -/
@@ -139,7 +139,6 @@ theorem angle_signedRayDirection_eq_projective_or_supplement
       have hrev : Real.pi - d ≤ d := le_of_not_ge hhalf
       rw [hang]
       simp [projectiveRayDistance, d, min_eq_right hrev]
-      ring
   · have hang :=
       angle_signedRayDirection_eq_pi_sub_of_sign_ne hsign hdiff
     by_cases hhalf : d ≤ Real.pi - d
@@ -212,7 +211,7 @@ theorem actual_angle_eq_projective_of_projective_lt_lam
     have hcapjk :
         EuclideanGeometry.angle (p j.1) (p i) (p k.1) ≤
           Real.pi - lam :=
-      hcap j.1 i k.1 j.2 k.2.symm hjkVal
+      hcap j.1 i k.1 j.2 hjkVal k.2.symm
     rw [h] at hcapjk
     linarith
 
