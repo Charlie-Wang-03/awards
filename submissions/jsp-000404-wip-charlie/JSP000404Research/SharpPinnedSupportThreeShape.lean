@@ -36,9 +36,9 @@ open Real
 theorem exists_sharp_pinned_support_three_shape_with_split
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -397,9 +397,9 @@ also retained by the stronger theorem. -/
 theorem exists_sharp_pinned_support_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
