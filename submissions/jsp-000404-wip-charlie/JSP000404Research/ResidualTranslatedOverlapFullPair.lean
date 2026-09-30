@@ -229,6 +229,79 @@ theorem oneFlip_source_overlap_card_le_two_fullBlocker_intersection
   simpa only [Fintype.card_coe] using
     Fintype.card_le_of_injective f hf
 
+
+theorem twoFlip_source_overlap_card_le_two_fullBlocker_intersection
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w z : V} {c d : Fin n}
+    (hw : w ∈ twoFlipFullBlockers C u v c d)
+    (hz : z ∈ twoFlipFullBlockers C u v c d) :
+    (retainedCompletionWords C u ∩
+      retainedCompletionWords C v).card
+      ≤
+    (retainedCompletionWords C w ∩
+      retainedCompletionWords C z).card := by
+  classical
+  let f :
+      {x : Fin n → Bool //
+        x ∈ retainedCompletionWords C u ∩
+          retainedCompletionWords C v} →
+      {y : Fin n → Bool //
+        y ∈ retainedCompletionWords C w ∩
+          retainedCompletionWords C z} :=
+    fun x => ⟨flipBoolWordAt (flipBoolWordAt x.1 c) d, by
+      apply Finset.mem_inter.mpr
+      constructor
+      · have hfull :=
+          (mem_twoFlipFullBlockers C u v c d w).1 hw
+        have hsub :
+            twoFlipCapturedSourceWords C u v w c d ⊆
+              retainedCompletionWords C u ∩
+                retainedCompletionWords C v := by
+          intro q hq
+          exact ((mem_twoFlipCapturedSourceWords
+            C u v w c d q).1 hq).1
+        have heq :
+            twoFlipCapturedSourceWords C u v w c d =
+              retainedCompletionWords C u ∩
+                retainedCompletionWords C v := by
+          apply Finset.eq_of_subset_of_card_le hsub
+          rw [hfull]
+        have hxCap :
+            x.1 ∈ twoFlipCapturedSourceWords C u v w c d := by
+          rw [heq]
+          exact x.2
+        exact ((mem_twoFlipCapturedSourceWords
+          C u v w c d x.1).1 hxCap).2
+      · have hfull :=
+          (mem_twoFlipFullBlockers C u v c d z).1 hz
+        have hsub :
+            twoFlipCapturedSourceWords C u v z c d ⊆
+              retainedCompletionWords C u ∩
+                retainedCompletionWords C v := by
+          intro q hq
+          exact ((mem_twoFlipCapturedSourceWords
+            C u v z c d q).1 hq).1
+        have heq :
+            twoFlipCapturedSourceWords C u v z c d =
+              retainedCompletionWords C u ∩
+                retainedCompletionWords C v := by
+          apply Finset.eq_of_subset_of_card_le hsub
+          rw [hfull]
+        have hxCap :
+            x.1 ∈ twoFlipCapturedSourceWords C u v z c d := by
+          rw [heq]
+          exact x.2
+        exact ((mem_twoFlipCapturedSourceWords
+          C u v z c d x.1).1 hxCap).2⟩
+  have hf : Function.Injective f := by
+    intro x y hxy
+    apply Subtype.ext
+    apply two_flip_injective c d
+    exact congrArg Subtype.val hxy
+  simpa only [Fintype.card_coe] using
+    Fintype.card_le_of_injective f hf
+
 #print axioms oneFlip_fullBlocker_fullFree
 #print axioms twoFlip_fullBlocker_fullFree
 #print axioms oneFlip_two_fullBlockers_form_residual_pair
@@ -236,6 +309,7 @@ theorem oneFlip_source_overlap_card_le_two_fullBlocker_intersection
 #print axioms oneFlip_two_fullBlockers_inherit_commonInactive
 #print axioms twoFlip_two_fullBlockers_inherit_commonInactive
 #print axioms oneFlip_source_overlap_card_le_two_fullBlocker_intersection
+#print axioms twoFlip_source_overlap_card_le_two_fullBlocker_intersection
 
 end OrderedEdgeColoring
 end JSP000404Research
