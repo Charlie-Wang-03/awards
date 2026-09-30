@@ -119,6 +119,7 @@ theorem remainder_sum_eq_delta_add_floorDefect
     _ = ((n : ℝ) + delta) -
         ((∑ i, q i : ℕ) : ℝ) := by
           rw [hgap, hQcast, ht]
+          ring
     _ = delta + (n - ∑ i, q i : ℕ) := by
           rw [hsubcast]
           ring
