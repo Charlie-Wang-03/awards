@@ -1515,3 +1515,6 @@ import JSP000404Research.PlanarUpperBranchHardDefect
 
 
 import JSP000404Research.HardWordHallOutlet
+
+
+import JSP000404Research.ResidualUnsafeSymmetricFlipDescent
