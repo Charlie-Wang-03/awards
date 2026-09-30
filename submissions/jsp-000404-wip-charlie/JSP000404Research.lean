@@ -1561,3 +1561,6 @@ import JSP000404Research.ProjectionLossZeroUnitStep
 
 
 import JSP000404Research.ProjectionLossFlipCoordinate
+
+
+import JSP000404Research.ResidualLossTranslatedBlock
