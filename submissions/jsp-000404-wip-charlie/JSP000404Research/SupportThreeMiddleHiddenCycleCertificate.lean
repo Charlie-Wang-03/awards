@@ -1,4 +1,4 @@
-import JSP000404Research.SupportThreeMiddleOrDeletionGain
+import JSP000404Research.SupportThreePinnedMiddleShape
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic
 
