@@ -1,5 +1,4 @@
 import JSP000404Research.SupportThreePinnedMiddleShape
-import JSP000404Research.ConcreteDeficitThree
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic
 
@@ -171,8 +170,15 @@ theorem exists_middle_hidden_pinned_cycle_certificate
       hFirst, hLast, hHidden⟩ := hmiddle
 
   have hlenRays : C.rays.length = 5 := by
-    rw [centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
+    have htoFinset :
+        C.rays.toFinset.card = C.rays.length :=
+      List.toFinset_card_of_nodup C.nodup
+    rw [C.complete, Finset.card_univ] at htoFinset
+    have hother :
+        Fintype.card (OtherVertex i) = 5 := by
+      simp [OtherVertex, hcard]
+    rw [hother] at htoFinset
+    omega
   have hlenRot : (C.rays.rotate k).length = 5 := by
     rw [List.length_rotate, hlenRays]
   rw [hrot] at hlenRot
