@@ -1,4 +1,5 @@
 import JSP000404Research.SignedRayAngle
+import JSP000404Research.SignedRayMonodromy
 import JSP000404Research.CanonicalRayReversal
 import Mathlib.Tactic
 
@@ -94,7 +95,8 @@ theorem actual_angle_le_delta_lam_of_ordinary_same_sign_gap
           (rayThetaAt hp i k - rayThetaAt hp i j) := by ring
     rw [hrewrite] at hsmall
     have :=
-      (le_div_iff₀ htpi).mpr hsmall
+      (le_div_iff₀ htpi).mpr (by
+        simpa [mul_comm] using hsmall)
     field_simp [ne_of_gt ht, ne_of_gt hpi] at this ⊢
     nlinarith
   exact hnorm
@@ -128,8 +130,7 @@ theorem actual_angle_eq_wrap_projective_gap_of_lifted_sign_eq
           signedRayDirection (!raySignAt hp i first)
             (rayThetaAt hp i first + Real.pi) := by
     rw [rayRepAt_eq hp i first]
-    exact same_ray_after_pi_shift_to_common_sign
-      (raySignAt hp i first) (rayThetaAt hp i first)
+    rw [signedRayDirection_not_add_pi]
   change
     InnerProductGeometry.angle
         (p last.1 - p i) (p first.1 - p i) =
@@ -185,7 +186,8 @@ theorem actual_angle_le_delta_lam_of_wrap_same_sign_gap
   rw [hrewrite] at hsmall
   have htpi : 0 < t / Real.pi := div_pos ht hpi
   have hnorm : d ≤ delta / (t / Real.pi) :=
-    (le_div_iff₀ htpi).mpr hsmall
+    (le_div_iff₀ htpi).mpr (by
+      simpa [mul_comm] using hsmall)
   dsimp [d] at hnorm ⊢
   field_simp [ne_of_gt ht, ne_of_gt hpi] at hnorm ⊢
   nlinarith
