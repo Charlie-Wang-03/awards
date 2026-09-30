@@ -147,3 +147,7 @@ jobs:
       - name: Check support-one Hamiltonian amplification
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportOneHamiltonianResidual
+
+      - name: Check middle-hidden bridge lower bound
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MiddleHiddenBridgeLowerBound
