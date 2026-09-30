@@ -111,6 +111,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SupportThreeMiddleHiddenCanonicalSigns
 
+      - name: Check middle-hidden canonical rank band
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MiddleHiddenCanonicalRankBand
+
       - name: Check Hamiltonian transversal ordering
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.HamiltonianResidualTransversal
