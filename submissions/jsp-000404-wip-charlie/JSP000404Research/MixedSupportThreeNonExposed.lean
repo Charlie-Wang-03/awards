@@ -27,10 +27,11 @@ namespace JSP000404Research
 
 theorem mixed_support_one_has_two_nonexposed_support_three
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -229,10 +230,11 @@ theorem mixed_support_one_has_two_nonexposed_support_three
 centres each use all three positive quotient positions as sign transitions. -/
 theorem mixed_support_one_has_two_three_transition_centres
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
