@@ -1558,3 +1558,6 @@ import JSP000404Research.ResidualPairReplacement
 
 
 import JSP000404Research.ProjectionLossZeroUnitStep
+
+
+import JSP000404Research.ProjectionLossFlipCoordinate
