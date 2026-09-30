@@ -71,7 +71,6 @@ theorem oneFlip_blocker_incidence_injective
             congrArg Prod.fst hxy
           have hword : xx.1 = yy.1 :=
             congrArg Subtype.val hwordSub
-          subst yy
           have hbit :
               bit C wx (residualCoord n) =
                 bit C wy (residualCoord n) :=
@@ -79,15 +78,21 @@ theorem oneFlip_blocker_incidence_injective
           have hxData :=
             (mem_oneFlipCapturedSourceWords
               C u v wx c xx.1).1 xx.2
-          have hyData :=
+          have hyData0 :=
             (mem_oneFlipCapturedSourceWords
-              C u v wy c xx.1).1 yy.2
+              C u v wy c yy.1).1 yy.2
+          have hyComp :
+              flipBoolWordAt xx.1 c ∈
+                retainedCompletionWords C wy := by
+            simpa [hword] using hyData0.2
           have hwEq :
               wx = wy :=
             completion_carriers_eq_of_residualBit_eq
-              C hxData.2 hyData.2 hbit
+              C hxData.2 hyComp hbit
           subst wy
-          rfl
+          apply Sigma.ext rfl
+          apply Subtype.ext
+          exact hword
 
 theorem twoFlip_blocker_incidence_injective
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -123,7 +128,6 @@ theorem twoFlip_blocker_incidence_injective
             congrArg Prod.fst hxy
           have hword : xx.1 = yy.1 :=
             congrArg Subtype.val hwordSub
-          subst yy
           have hbit :
               bit C wx (residualCoord n) =
                 bit C wy (residualCoord n) :=
@@ -131,15 +135,21 @@ theorem twoFlip_blocker_incidence_injective
           have hxData :=
             (mem_twoFlipCapturedSourceWords
               C u v wx c d xx.1).1 xx.2
-          have hyData :=
+          have hyData0 :=
             (mem_twoFlipCapturedSourceWords
-              C u v wy c d xx.1).1 yy.2
+              C u v wy c d yy.1).1 yy.2
+          have hyComp :
+              flipBoolWordAt (flipBoolWordAt xx.1 c) d ∈
+                retainedCompletionWords C wy := by
+            simpa [hword] using hyData0.2
           have hwEq :
               wx = wy :=
             completion_carriers_eq_of_residualBit_eq
-              C hxData.2 hyData.2 hbit
+              C hxData.2 hyComp hbit
           subst wy
-          rfl
+          apply Sigma.ext rfl
+          apply Subtype.ext
+          exact hword
 
 theorem sum_oneFlip_blocker_capture_le_two_mul_overlap
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -167,7 +177,7 @@ theorem sum_oneFlip_blocker_capture_le_two_mul_overlap
   have hcard :=
     Fintype.card_le_of_injective f hf
   rw [Fintype.card_sigma] at hcard
-  simpa [Fintype.card_prod, Fintype.card_coe] using hcard
+  simpa [Fintype.card_prod, Fintype.card_coe, Nat.mul_comm] using hcard
 
 theorem sum_twoFlip_blocker_capture_le_two_mul_overlap
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -195,7 +205,7 @@ theorem sum_twoFlip_blocker_capture_le_two_mul_overlap
   have hcard :=
     Fintype.card_le_of_injective f hf
   rw [Fintype.card_sigma] at hcard
-  simpa [Fintype.card_prod, Fintype.card_coe] using hcard
+  simpa [Fintype.card_prod, Fintype.card_coe, Nat.mul_comm] using hcard
 
 #print axioms sum_oneFlip_blocker_capture_le_two_mul_overlap
 #print axioms sum_twoFlip_blocker_capture_le_two_mul_overlap
