@@ -88,6 +88,32 @@ theorem quotient_length_eq_five
   rw [quotientList_length, C.gaps_length]
   exact H.ray_length_eq_five
 
+theorem covers_every_other_nonTop
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {hp : Function.Injective p}
+    {top i : V} {htopi : top ≠ i}
+    {C : CentreProjectiveCycle hp i} {t : ℝ}
+    (H : MiddleHiddenPinnedCycleCertificate hp top i htopi C t)
+    {v : V}
+    (hvi : v ≠ i)
+    (hvt : v ≠ top) :
+    v = H.r.1 ∨ v = H.b.1 ∨ v = H.c.1 ∨ v = H.d.1 := by
+  let vr : OtherVertex i := ⟨v, hvi⟩
+  have hvMem : vr ∈ C.rays := C.mem_rays_iff vr
+  have hvRot : vr ∈ C.rays.rotate H.k := by
+    simpa using hvMem
+  rw [H.rays_rotate] at hvRot
+  simp only [List.mem_cons, List.mem_singleton] at hvRot
+  rcases hvRot with htop | hr | hb | hc | hd
+  · exfalso
+    apply hvt
+    exact congrArg Subtype.val htop
+  · exact Or.inl (congrArg Subtype.val hr)
+  · exact Or.inr (Or.inl (congrArg Subtype.val hb))
+  · exact Or.inr (Or.inr (Or.inl (congrArg Subtype.val hc)))
+  · exact Or.inr (Or.inr (Or.inr (congrArg Subtype.val hd)))
+
 theorem pre_post_length_eq_four
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
@@ -224,6 +250,7 @@ theorem exists_middle_hidden_pinned_cycle_certificate
 
 #print axioms MiddleHiddenPinnedCycleCertificate.ray_length_eq_five
 #print axioms MiddleHiddenPinnedCycleCertificate.quotient_length_eq_five
+#print axioms MiddleHiddenPinnedCycleCertificate.covers_every_other_nonTop
 #print axioms MiddleHiddenPinnedCycleCertificate.pre_post_length_eq_four
 #print axioms exists_middle_hidden_pinned_cycle_certificate
 
