@@ -69,9 +69,14 @@ theorem eq_rotate_one_of_rotate_four_eq
     (hlen : xs.length = 5)
     (h : xs.rotate 4 = ys) :
     xs = ys.rotate 1 := by
+  have hperiod : xs.rotate 5 = xs := by
+    rw [List.rotate_eq_drop_append_take_mod]
+    rw [hlen]
+    norm_num
+    simp
   have hback : (xs.rotate 4).rotate 1 = xs := by
     rw [List.rotate_rotate]
-    simpa [hlen]
+    exact hperiod
   calc
     xs = (xs.rotate 4).rotate 1 := hback.symm
     _ = ys.rotate 1 := by rw [h]
@@ -82,9 +87,14 @@ theorem eq_rotate_two_of_rotate_three_eq
     (hlen : xs.length = 5)
     (h : xs.rotate 3 = ys) :
     xs = ys.rotate 2 := by
+  have hperiod : xs.rotate 5 = xs := by
+    rw [List.rotate_eq_drop_append_take_mod]
+    rw [hlen]
+    norm_num
+    simp
   have hback : (xs.rotate 3).rotate 2 = xs := by
     rw [List.rotate_rotate]
-    simpa [hlen]
+    exact hperiod
   calc
     xs = (xs.rotate 3).rotate 2 := hback.symm
     _ = ys.rotate 2 := by rw [h]
@@ -95,9 +105,14 @@ theorem eq_rotate_three_of_rotate_two_eq
     (hlen : xs.length = 5)
     (h : xs.rotate 2 = ys) :
     xs = ys.rotate 3 := by
+  have hperiod : xs.rotate 5 = xs := by
+    rw [List.rotate_eq_drop_append_take_mod]
+    rw [hlen]
+    norm_num
+    simp
   have hback : (xs.rotate 2).rotate 3 = xs := by
     rw [List.rotate_rotate]
-    simpa [hlen]
+    exact hperiod
   calc
     xs = (xs.rotate 2).rotate 3 := hback.symm
     _ = ys.rotate 3 := by rw [h]
@@ -108,9 +123,14 @@ theorem eq_rotate_four_of_rotate_one_eq
     (hlen : xs.length = 5)
     (h : xs.rotate 1 = ys) :
     xs = ys.rotate 4 := by
+  have hperiod : xs.rotate 5 = xs := by
+    rw [List.rotate_eq_drop_append_take_mod]
+    rw [hlen]
+    norm_num
+    simp
   have hback : (xs.rotate 1).rotate 4 = xs := by
     rw [List.rotate_rotate]
-    simpa [hlen]
+    exact hperiod
   calc
     xs = (xs.rotate 1).rotate 4 := hback.symm
     _ = ys.rotate 4 := by rw [h]
