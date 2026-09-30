@@ -1549,3 +1549,6 @@ import JSP000404Research.NearPerfectRefinedHardMatching
 
 import JSP000404Research.ResidualUniqueBlocker
 import JSP000404Research.ResidualSafeFlipTransition
+
+
+import JSP000404Research.ResidualSafeDeterministicTransition
