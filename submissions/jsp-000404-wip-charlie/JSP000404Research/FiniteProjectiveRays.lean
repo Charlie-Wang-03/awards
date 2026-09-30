@@ -38,18 +38,18 @@ structure ProjectiveRayRep (x : Plane) where
 representation. -/
 noncomputable def canonicalRayRep
     (x : Plane) (hx : x ≠ 0) :
-    ProjectiveRayRep x := by
-  classical
-  obtain ⟨rho, sigma, theta, hrho, htheta0, hthetapi, hrepr⟩ :=
-    exists_canonical_projective_representation hx
-  exact
-    { rho := rho
-      sigma := sigma
-      theta := theta
-      rho_pos := hrho
-      theta_nonneg := htheta0
-      theta_lt_pi := hthetapi
-      eq_smul := hrepr }
+    ProjectiveRayRep x :=
+  Classical.choice (show Nonempty (ProjectiveRayRep x) from by
+    obtain ⟨rho, sigma, theta, hrho, htheta0, hthetapi, hrepr⟩ :=
+      exists_canonical_projective_representation hx
+    exact ⟨
+      { rho := rho
+        sigma := sigma
+        theta := theta
+        rho_pos := hrho
+        theta_nonneg := htheta0
+        theta_lt_pi := hthetapi
+        eq_smul := hrepr }⟩)
 
 /-- The displacement from the centre to every other vertex is nonzero. -/
 theorem displacement_ne_zero
