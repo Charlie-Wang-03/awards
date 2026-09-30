@@ -103,3 +103,11 @@ jobs:
       - name: Check crossed sign contradiction
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.TriangleTwoSplitContradiction
+
+      - name: Check transition quotient large angle
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.TransitionQuotientLargeAngle
+
+      - name: Check positive member quotient bound
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ListPositiveMemberBound
