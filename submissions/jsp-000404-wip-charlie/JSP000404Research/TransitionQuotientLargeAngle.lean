@@ -41,9 +41,11 @@ theorem parameter_gap_lt_n_sub_one_mul_lam_of_floor_le_n_sub_two
       g < (Nat.floor g : ℝ) + 1 := by
     have h := Nat.lt_floor_add_one g
     exact_mod_cast h
+  have hq' :
+      Nat.floor g ≤ n - 2 := by
+    simpa [g] using hq
   have hfloor :
       Nat.floor g + 1 ≤ n - 1 := by
-    dsimp [g] at hq
     omega
   have hgUpper :
       g < ((n - 1 : ℕ) : ℝ) := by
@@ -102,7 +104,8 @@ theorem signed_transition_angle_gt_one_add_delta_mul_lam_of_floor_le
   rw [hpiEq, ht]
   have hnCast :
       ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
-    exact_mod_cast Nat.sub_add_cancel (by omega : 1 ≤ n)
+    rw [Nat.cast_sub (by omega : 1 ≤ n)]
+    norm_num
   rw [hnCast] at hgap
   nlinarith
 
@@ -180,11 +183,28 @@ theorem actual_angle_gt_one_add_delta_mul_lam_of_wrap_transition_quotient_le
   have hgap :=
     parameter_gap_lt_n_sub_one_mul_lam_of_floor_le_n_sub_two
       hn2 htpos ht hlam hwrapOrder hq
+  have hthetaGap :
+      |rayThetaAt hp i first - rayThetaAt hp i last| =
+        rayThetaAt hp i last - rayThetaAt hp i first := by
+    rw [abs_of_nonpos]
+    · ring
+    · linarith
+  have hspan :
+      |rayThetaAt hp i first - rayThetaAt hp i last| ≤ Real.pi := by
+    rw [hthetaGap]
+    exact (canonical_parameter_gap_bounds hp i horder).2
   have hang :
       EuclideanGeometry.angle (p first.1) (p i) (p last.1) =
-        rayThetaAt hp i last - rayThetaAt hp i first :=
-    actual_angle_eq_ordinary_projective_gap_of_sign_eq
-      hp i horder hsame
+        rayThetaAt hp i last - rayThetaAt hp i first := by
+    change
+      InnerProductGeometry.angle
+          (p first.1 - p i) (p last.1 - p i) =
+        rayThetaAt hp i last - rayThetaAt hp i first
+    rw [rayRepAt_eq hp i first, rayRepAt_eq hp i last,
+        angle_positive_smul_signedRay
+          (rayRhoAt_pos hp i first) (rayRhoAt_pos hp i last),
+        angle_signedRayDirection_eq_of_sign_eq hsame.symm hspan,
+        hthetaGap]
   have hcomm :
       EuclideanGeometry.angle (p last.1) (p i) (p first.1) =
         EuclideanGeometry.angle (p first.1) (p i) (p last.1) :=
@@ -199,7 +219,8 @@ theorem actual_angle_gt_one_add_delta_mul_lam_of_wrap_transition_quotient_le
   rw [hpiEq, ht] at hgap
   have hnCast :
       ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
-    exact_mod_cast Nat.sub_add_cancel (by omega : 1 ≤ n)
+    rw [Nat.cast_sub (by omega : 1 ≤ n)]
+    norm_num
   rw [hnCast] at hgap
   nlinarith
 
