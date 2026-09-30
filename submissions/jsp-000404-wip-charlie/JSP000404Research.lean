@@ -1509,3 +1509,6 @@ import JSP000404Research.ResidualSaturatedSafeUnsafeSplit
 
 
 import JSP000404Research.PlanarLowerBranchHardWordInjection
+
+
+import JSP000404Research.PlanarUpperBranchHardDefect
