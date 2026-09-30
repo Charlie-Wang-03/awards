@@ -48,8 +48,10 @@ theorem deficit_eq_floorDefect_add_one_of_support_one
     (hell : ell = n - floorExcess q) :
     ell = (n - ∑ i, q i) + 1 := by
   have hdec := deficit_eq_floorDefect_add_support q n hQ
-  rw [hsupport, hell] at hdec
-  exact hdec
+  calc
+    ell = n - floorExcess q := hell
+    _ = (n - ∑ i, q i) + positiveSupport q := hdec
+    _ = (n - ∑ i, q i) + 1 := by rw [hsupport]
 
 /-- Equivalently, the integer floor defect is ell-1. -/
 theorem floorDefect_eq_deficit_sub_one_of_support_one
