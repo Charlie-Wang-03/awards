@@ -905,7 +905,7 @@ theorem shared_iff_mem_fibre_and_card_eq_two_of_three_lt_girth
     · exact hvData.2
     · apply Finset.mem_biUnion.mpr
       exact ⟨w,
-        Finset.mem_erase.mpr ⟨hwv,hvData.1 ▸ hwData.1⟩,
+        Finset.mem_erase.mpr ⟨hwv,hwData.1⟩,
         hwData.2⟩
 
 #print axioms coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
