@@ -112,25 +112,25 @@ theorem no_three_supportOne_secondLayer_among_four_n3
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ 3)
         hdelta0 hdelta1 ht hlam
-        a Ca (by simpa using haSecond))
+        a Ca (by rw [haSecond]))
   let certB :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ 3)
         hdelta0 hdelta1 ht hlam
-        b Cb (by simpa using hbSecond))
+        b Cb (by rw [hbSecond]))
   let certC :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ 3)
         hdelta0 hdelta1 ht hlam
-        c Cc (by simpa using hcSecond))
+        c Cc (by rw [hcSecond]))
   let certD :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ 3)
         hdelta0 hdelta1 ht hlam
-        d Cd (by simpa using hdSecond))
+        d Cd (by rw [hdSecond]))
   have hqa :
       certA.qe = 2 :=
     deficit_two_support_one_transition_qe_eq
