@@ -2343,9 +2343,201 @@ theorem longCycle_at_most_one_topLoss
     omega
   exact (hmin U hUProper) hUDef
 
-#print axioms longCycle_core_card_ge_four
-#print axioms two_topLoss_enlargedBlocks_union_eq_univ
+
+theorem longCycleHardCredit_eq_zero_of_not_exact_not_topLoss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hnotExact : ¬ ExactProjectedBudget C exponent v)
+    (hnotTopLoss :
+      ¬ (v ∈ projectedLossVertices C exponent ∧
+          exponent v = n - 1)) :
+    longCycleHardCredit C exponent v = 0 := by
+  unfold longCycleHardCredit
+  simp [hnotExact,hnotTopLoss]
+
+theorem longCycle_noExact_totalHardCredit_le_topCube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    (hnoExact :
+      ∀ v ∈ T, ¬ ExactProjectedBudget C exponent v)
+    {top : V}
+    (htopT : top ∈ T)
+    (htopLoss : top ∈ projectedLossVertices C exponent)
+    (htopExp : exponent top = n - 1) :
+    (∑ v ∈ T, longCycleHardCredit C exponent v)
+      ≤
+    (retainedCompletionWords C top).card := by
+  classical
+  have htopCredit :
+      longCycleHardCredit C exponent top =
+        (retainedCompletionWords C top).card := by
+    unfold longCycleHardCredit
+    simp [hnoExact top htopT,htopLoss,htopExp]
+  calc
+    (∑ v ∈ T, longCycleHardCredit C exponent v)
+      =
+    longCycleHardCredit C exponent top +
+      ∑ v ∈ T.erase top,
+        longCycleHardCredit C exponent v := by
+      rw [← Finset.sum_erase_add _ _ htopT]
+      omega
+    _ =
+    longCycleHardCredit C exponent top := by
+      have hzero :
+          ∀ v ∈ T.erase top,
+            longCycleHardCredit C exponent v = 0 := by
+        intro v hvErase
+        have hvT := (Finset.mem_erase.mp hvErase).2
+        have hvNe := (Finset.mem_erase.mp hvErase).1
+        have hnotTop :
+            ¬ (v ∈ projectedLossVertices C exponent ∧
+                exponent v = n - 1) := by
+          rintro ⟨hvLoss,hvExp⟩
+          have heq :=
+            longCycle_at_most_one_topLoss
+              C exponent hexp honeLoss
+              hdef hmin hgirth
+              hvT htopT hvLoss htopLoss
+              hvExp htopExp
+          exact hvNe heq
+        have hz :=
+          longCycleHardCredit_eq_zero_of_not_exact_not_topLoss
+            C exponent
+            (hnoExact v hvT) hnotTop
+        rw [Finset.sum_eq_zero fun v hv => hzero v hv]
+        simp
+    _ =
+    (retainedCompletionWords C top).card := htopCredit
+
+theorem longCycle_noExact_two_mul_deficiency_le_topCube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    (hnoExact :
+      ∀ v ∈ T, ¬ ExactProjectedBudget C exponent v)
+    {top : V}
+    (htopT : top ∈ T)
+    (htopLoss : top ∈ projectedLossVertices C exponent)
+    (htopExp : exponent top = n - 1) :
+    2 *
+      blockDeficiencyAmount
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T
+      ≤
+    (retainedCompletionWords C top).card := by
+  exact
+    (longCycle_two_mul_deficiency_le_totalHardCredit
+      C exponent hexpLt hexp honeLoss hdef hgirth).trans
+      (longCycle_noExact_totalHardCredit_le_topCube
+        C exponent hexp honeLoss
+        hdef hmin hgirth hnoExact
+        htopT htopLoss htopExp)
+
+theorem longCycle_exact_or_singleTopLoss_lowDefect
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (
+      ∃ v ∈ T, ExactProjectedBudget C exponent v
+    )
+    ∨
+    (
+      ∃ top ∈ T,
+        top ∈ projectedLossVertices C exponent ∧
+        exponent top = n - 1 ∧
+        2 *
+          blockDeficiencyAmount
+            (fun x => 2 ^ exponent x)
+            (enlargedProjectedCandidateBlock C exponent)
+            T
+          ≤
+        (retainedCompletionWords C top).card
+    ) := by
+  classical
+  by_cases hexact :
+      ∃ v ∈ T, ExactProjectedBudget C exponent v
+  · exact Or.inl hexact
+  · right
+    have hnoExact :
+        ∀ v ∈ T, ¬ ExactProjectedBudget C exponent v := by
+      intro v hvT hvExact
+      exact hexact ⟨v,hvT,hvExact⟩
+    obtain ⟨top,htopT,htopHard⟩ :=
+      longCycle_exists_exact_or_topLoss_vertex
+        C exponent hexpLt hexp honeLoss
+        hdef hgirth
+    rcases htopHard with htopExact | ⟨htopLoss,htopExp⟩
+    · exact False.elim
+        (hnoExact top htopT htopExact)
+    · exact ⟨top,htopT,htopLoss,htopExp,
+        longCycle_noExact_two_mul_deficiency_le_topCube
+          C exponent hexpLt hexp honeLoss
+          hdef hmin hgirth hnoExact
+          htopT htopLoss htopExp⟩
+
 #print axioms longCycle_at_most_one_topLoss
+#print axioms longCycle_noExact_two_mul_deficiency_le_topCube
+#print axioms longCycle_exact_or_singleTopLoss_lowDefect
 
 end OrderedEdgeColoring
 end JSP000404Research
