@@ -258,6 +258,91 @@ theorem enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
 #print axioms enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
 
 
+/-- Common-word-preserving version of the triangle reduction.  When the hard
+branch contains two loss vertices, retain the actual common Boolean word in
+both selected enlarged candidate blocks. -/
+theorem enlargedCollisionGraph_commonWord_triangle_twoLoss_or_paid_or_exactRecursive
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (huw :
+      (enlargedCollisionGraph C exponent T).Adj u w)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w)
+    {word : Fin n → Bool}
+    (huWord :
+      word ∈ enlargedProjectedCandidateBlock C exponent u.1)
+    (hvWord :
+      word ∈ enlargedProjectedCandidateBlock C exponent v.1)
+    (hwWord :
+      word ∈ enlargedProjectedCandidateBlock C exponent w.1) :
+    (
+      ∃ a b : {x : V // x ∈ T},
+        a ≠ b ∧
+        a.1 ∈ projectedLossVertices C exponent ∧
+        b.1 ∈ projectedLossVertices C exponent ∧
+        word ∈ enlargedProjectedCandidateBlock C exponent a.1 ∧
+        word ∈ enlargedProjectedCandidateBlock C exponent b.1
+    )
+    ∨
+    (
+      ∃ z : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) z
+    )
+    ∨
+    (
+      ∃ source : V,
+        ExactRecursiveOutlet C exponent source
+    ) := by
+  rcases
+    enlargedCollisionGraph_triangle_loss_shape
+      C exponent T huv huw hvw
+    with hU | hV | hW | hUV | hUW | hVW
+  · rcases
+      enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+        C exponent hexp honeLoss T
+        hvw hU.hvNonloss hU.hwNonloss
+      with hpaid | hrec
+    · exact Or.inr (Or.inl hpaid)
+    · exact Or.inr (Or.inr hrec)
+  · rcases
+      enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+        C exponent hexp honeLoss T
+        huw hV.huNonloss hV.hwNonloss
+      with hpaid | hrec
+    · exact Or.inr (Or.inl hpaid)
+    · exact Or.inr (Or.inr hrec)
+  · rcases
+      enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+        C exponent hexp honeLoss T
+        huv hW.huNonloss hW.hvNonloss
+      with hpaid | hrec
+    · exact Or.inr (Or.inl hpaid)
+    · exact Or.inr (Or.inr hrec)
+  · exact Or.inl
+      ⟨u,v,
+        (enlargedCollisionGraph C exponent T).ne_of_adj huv,
+        hUV.huLoss,hUV.hvLoss,huWord,hvWord⟩
+  · exact Or.inl
+      ⟨u,w,
+        (enlargedCollisionGraph C exponent T).ne_of_adj huw,
+        hUW.huLoss,hUW.hwLoss,huWord,hwWord⟩
+  · exact Or.inl
+      ⟨v,w,
+        (enlargedCollisionGraph C exponent T).ne_of_adj hvw,
+        hVW.hvLoss,hVW.hwLoss,hvWord,hwWord⟩
+
+#print axioms enlargedCollisionGraph_commonWord_triangle_twoLoss_or_paid_or_exactRecursive
+
+
 /-- Two distinct projected-loss vertices which are not already deep can only
 occupy the top or second exponent layers.  Since the top layer has global
 multiplicity at most one, the hard pair has one of exactly three layer
