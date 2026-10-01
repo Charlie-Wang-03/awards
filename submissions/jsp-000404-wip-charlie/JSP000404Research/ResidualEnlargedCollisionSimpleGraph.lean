@@ -306,11 +306,112 @@ theorem minimal_enlargedCollisionGraph_two_leaves_of_acyclic
     exact ⟨hconn,hacyclic⟩
   exact htree.exists_ne_and_degree_eq_one
 
+
+theorem enlargedCollisionGraph_degree_one_unique_neighbor
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (u : {x : V // x ∈ T})
+    (hdeg :
+      (enlargedCollisionGraph C exponent T).degree u = 1) :
+    ∃ w : V,
+      w ∈ T ∧
+      w ≠ u.1 ∧
+      ∀ z : V,
+        z ∈ T →
+        z ≠ u.1 →
+        EnlargedBlocksCross C exponent u.1 z →
+        z = w := by
+  classical
+  let G := enlargedCollisionGraph C exponent T
+  obtain ⟨w, huw, huniq⟩ :=
+    SimpleGraph.degree_eq_one_iff_existsUnique_adj.mp hdeg
+  refine ⟨w.1,w.2,?_,?_⟩
+  · exact (G.ne_of_adj huw).symm
+  · intro z hzT hzu hcross
+    have huz :
+        G.Adj u ⟨z,hzT⟩ := by
+      dsimp [G]
+      exact enlargedCollisionGraph_adj_of_cross
+        C exponent T u.2 hzT
+        (by
+          intro h
+          exact hzu (congrArg Subtype.val h))
+        hcross
+    have hsubEq : (⟨z,hzT⟩ : {x : V // x ∈ T}) = w :=
+      huniq _ huz
+    exact congrArg Subtype.val hsubEq
+
+theorem minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hacyclic :
+      (enlargedCollisionGraph C exponent T).IsAcyclic) :
+    ∃ u v wu wv : V,
+      u ∈ T ∧
+      v ∈ T ∧
+      u ≠ v ∧
+      wu ∈ T ∧
+      wv ∈ T ∧
+      wu ≠ u ∧
+      wv ≠ v ∧
+      (
+        ∀ z : V,
+          z ∈ T →
+          z ≠ u →
+          EnlargedBlocksCross C exponent u z →
+          z = wu
+      ) ∧
+      (
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = wv
+      ) := by
+  obtain ⟨u,v,huv,hdu,hdv⟩ :=
+    minimal_enlargedCollisionGraph_two_leaves_of_acyclic
+      C exponent hexpLt hexp honeLoss hdef hmin hacyclic
+  obtain ⟨wu,hwuT,hwuNe,huniqU⟩ :=
+    enlargedCollisionGraph_degree_one_unique_neighbor
+      C exponent T u hdu
+  obtain ⟨wv,hwvT,hwvNe,huniqV⟩ :=
+    enlargedCollisionGraph_degree_one_unique_neighbor
+      C exponent T v hdv
+  exact ⟨u.1,v.1,wu,wv,
+    u.2,v.2,
+    (by
+      intro h
+      apply huv
+      apply Subtype.ext
+      exact h),
+    hwuT,hwvT,hwuNe,hwvNe,
+    huniqU,huniqV⟩
+
 #print axioms enlargedCollisionGraph_adj
-#print axioms minimal_enlargedCollisionGraph_preconnected
 #print axioms minimal_enlargedCollisionGraph_connected
-#print axioms enlarged_minimal_deficient_core_card_ge_two
 #print axioms minimal_enlargedCollisionGraph_two_leaves_of_acyclic
+#print axioms enlargedCollisionGraph_degree_one_unique_neighbor
+#print axioms minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
 
 end OrderedEdgeColoring
 end JSP000404Research
