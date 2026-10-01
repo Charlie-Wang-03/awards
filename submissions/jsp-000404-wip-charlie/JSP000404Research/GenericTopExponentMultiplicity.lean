@@ -1,5 +1,6 @@
 import JSP000404Research.ConcreteSharpCentre
 import JSP000404Research.SharpCentre
+import JSP000404Research.ProjectionOrderedVertices
 import Mathlib.Tactic
 
 /-!
@@ -86,4 +87,60 @@ theorem generic_topExponent_filter_card_le_one
 
 #print axioms generic_topExponent_filter_card_le_one
 
+
+namespace ProjectionOrdered
+
+theorem angleCap_reindexedPoint
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam : ℝ}
+    (hcap : AngleCap p lam) :
+    AngleCap (reindexedPoint p) lam := by
+  intro a b c hab hac hbc
+  unfold reindexedPoint
+  exact hcap
+    (toOriginal a) (toOriginal b) (toOriginal c)
+    (by
+      intro h
+      exact hab (toOriginal_injective h))
+    (by
+      intro h
+      exact hac (toOriginal_injective h))
+    (by
+      intro h
+      exact hbc (toOriginal_injective h))
+
+theorem projectionOrdered_topExponent_filter_card_le_one
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (hn : 2 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    ((Finset.univ : Finset (ProjectionOrdered V)).filter
+      (fun i => centreExponent (C i) t = n - 1)).card ≤ 1 := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
+  have hcapRe :
+      AngleCap (reindexedPoint p) lam :=
+    angleCap_reindexedPoint hp hcap
+  exact generic_topExponent_filter_card_le_one
+    (reindexedPoint_injective hp)
+    hcapRe hcard hn hdelta0 hdeltaHalf ht hlam C
+
+#print axioms angleCap_reindexedPoint
+#print axioms projectionOrdered_topExponent_filter_card_le_one
+
+end ProjectionOrdered
 end JSP000404Research
