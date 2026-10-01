@@ -344,6 +344,160 @@ theorem minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
   omega
 
 
+
+theorem minimal_enlargedCandidate_loss_two_nonloss_neighbours_top
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {r u v : V}
+    (hrT : r ∈ T)
+    (hrLoss : r ∈ projectedLossVertices C exponent)
+    (huNonloss : u ∉ projectedLossVertices C exponent)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hru : r ≠ u)
+    (hrv : r ≠ v)
+    (hneighbours :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ r →
+        EnlargedBlocksCross C exponent r z →
+        z = u ∨ z = v) :
+    exponent r = n - 1 := by
+  classical
+  let q := (retainedCompletionWords C r).card
+  let shared :=
+    sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T r
+
+  have hlocal :
+      2 ^ exponent r ≤
+        (enlargedProjectedCandidateBlock C exponent r).card :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss r
+
+  have hsharedLower :=
+    minimal_deficient_shared_card_ge_slack_add_one
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hrT hlocal
+
+  have hsharedSub :
+      shared ⊆
+        (enlargedProjectedCandidateBlock C exponent r ∩
+          enlargedProjectedCandidateBlock C exponent u)
+        ∪
+        (enlargedProjectedCandidateBlock C exponent r ∩
+          enlargedProjectedCandidateBlock C exponent v) := by
+    intro word hword
+    have hdata :=
+      sharedBlockWords_has_other_block
+        (enlargedProjectedCandidateBlock C exponent)
+        hword
+    obtain ⟨hrWord,z,hzT,hzr,hzWord⟩ := hdata
+    have hzCross :
+        EnlargedBlocksCross C exponent r z :=
+      ⟨word,hrWord,hzWord⟩
+    rcases hneighbours z hzT hzr hzCross with rfl | rfl
+    · exact Finset.mem_union_left _
+        (Finset.mem_inter.mpr ⟨hrWord,hzWord⟩)
+    · exact Finset.mem_union_right _
+        (Finset.mem_inter.mpr ⟨hrWord,hzWord⟩)
+
+  have hruCard :
+      (enlargedProjectedCandidateBlock C exponent r ∩
+        enlargedProjectedCandidateBlock C exponent u).card
+        ≤ q := by
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hrLoss,
+        enlargedProjectedCandidateBlock_nonloss
+          C exponent huNonloss]
+    exact
+      allActiveLossCandidateBlock_inter_blocker_card_le_cube
+        C exponent hexp honeLoss hrLoss hru
+
+  have hrvCard :
+      (enlargedProjectedCandidateBlock C exponent r ∩
+        enlargedProjectedCandidateBlock C exponent v).card
+        ≤ q := by
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hrLoss,
+        enlargedProjectedCandidateBlock_nonloss
+          C exponent hvNonloss]
+    exact
+      allActiveLossCandidateBlock_inter_blocker_card_le_cube
+        C exponent hexp honeLoss hrLoss hrv
+
+  have hsharedUpper :
+      shared.card ≤ 2 * q := by
+    have hsubCard := Finset.card_le_card hsharedSub
+    have hunion :=
+      Finset.card_union_le
+        (enlargedProjectedCandidateBlock C exponent r ∩
+          enlargedProjectedCandidateBlock C exponent u)
+        (enlargedProjectedCandidateBlock C exponent r ∩
+          enlargedProjectedCandidateBlock C exponent v)
+    omega
+
+  have hblock :
+      (enlargedProjectedCandidateBlock C exponent r).card =
+        ((retainedActive C r).card + 1) * q := by
+    rw [enlargedProjectedCandidateBlock_loss
+      C exponent hrLoss]
+    exact allActiveLossCandidateBlock_card C r
+  have htarget :
+      2 ^ exponent r = 2 * q := by
+    dsimp [q]
+    exact projectedLoss_target_eq_two_mul_completion
+      C exponent hrLoss
+  have hqPos : 0 < q := by
+    dsimp [q]
+    rw [retainedCompletionWords_card]
+    positivity
+  have hactiveGe :
+      2 ≤ (retainedActive C r).card :=
+    projectedLoss_active_card_ge_two_of_exponent_lt_n
+      C exponent hrLoss (hexpLt r)
+
+  change shared.card ≥
+      (enlargedProjectedCandidateBlock C exponent r).card -
+        2 ^ exponent r + 1 at hsharedLower
+  rw [hblock,htarget] at hsharedLower
+
+  have hactiveEq :
+      (retainedActive C r).card = 2 := by
+    by_contra hne
+    have hge3 : 3 ≤ (retainedActive C r).card := by omega
+    have hdecomp :
+        ((retainedActive C r).card + 1) * q - 2 * q
+          ≥ 2 * q := by
+      omega
+    omega
+
+  have hloss :=
+    (mem_projectedLossVertices C exponent r).1 hrLoss
+  unfold projectedFree at hloss
+  rw [hactiveEq] at hloss
+  omega
+
+
 theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_is_mixedUnpaid
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
