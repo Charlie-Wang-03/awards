@@ -49,12 +49,18 @@ theorem generic_topExponent_filter_card_le_one
   let c : V := e.symm kc
   have hca : c ≠ a := by
     intro h
-    subst c
-    exact hkca (e.apply_symm_apply kc)
+    apply hkca
+    calc
+      kc = e (e.symm kc) := (e.apply_symm_apply kc).symm
+      _ = e c := by rfl
+      _ = e a := congrArg e h
   have hcb : c ≠ b := by
     intro h
-    subst c
-    exact hkcb (e.apply_symm_apply kc)
+    apply hkcb
+    calc
+      kc = e (e.symm kc) := (e.apply_symm_apply kc).symm
+      _ = e c := by rfl
+      _ = e b := congrArg e h
 
   have hdelta1 : delta < 1 := by linarith
   have hsharpA :=
