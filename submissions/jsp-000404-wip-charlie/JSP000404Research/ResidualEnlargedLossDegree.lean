@@ -2554,10 +2554,169 @@ theorem minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
         C exponent hexpLt hexp honeLoss
         hdef hmin hvT hvLoss hwv hunique
 
-#print axioms minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_lt
-#print axioms minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_gt
+
+theorem minimal_enlargedCandidate_nonloss_leaf_transfer_le_parent_cube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvw : v ≠ w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ≤
+    (retainedCompletionWords C w).card := by
+  classical
+  have hproj :=
+    exponent_le_projectedFree_add_one
+      C exponent hexp honeLoss v
+  have hneq :
+      exponent v ≠ projectedFree C v + 1 := by
+    intro h
+    exact hvNonloss
+      ((mem_projectedLossVertices C exponent v).2 h)
+  have hvLe : exponent v ≤ projectedFree C v := by
+    omega
+  have hlocal :
+      2 ^ exponent v ≤
+        (enlargedProjectedCandidateBlock C exponent v).card := by
+    rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss]
+    exact nonloss_completionBlock_target_le
+      C exponent hvLe
+
+  have htransfer :=
+    deletedVertexTransfer_eq_shared_minus_slack
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      T v hlocal
+
+  have hsharedSub :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ⊆
+      enlargedProjectedCandidateBlock C exponent v ∩
+        enlargedProjectedCandidateBlock C exponent w := by
+    exact sharedBlockWords_subset_single_neighbor_intersection
+      (enlargedProjectedCandidateBlock C exponent)
+      hvT
+      (by
+        intro z hzT hzv hcross
+        exact hunique z hzT hzv hcross)
+  have hsharedUpper :=
+    Finset.card_le_card hsharedSub
+
+  have hpairUpper :
+      (enlargedProjectedCandidateBlock C exponent v ∩
+        enlargedProjectedCandidateBlock C exponent w).card
+        ≤
+      (retainedCompletionWords C w).card := by
+    by_cases hwLoss : w ∈ projectedLossVertices C exponent
+    · rw [enlargedProjectedCandidateBlock_nonloss
+          C exponent hvNonloss,
+        enlargedProjectedCandidateBlock_loss
+          C exponent hwLoss]
+      have hinter :=
+        allActiveLossCandidateBlock_inter_blocker_card_le_cube
+          C exponent hexp honeLoss hwLoss hvw.symm
+      simpa [Finset.inter_comm] using hinter
+    · rw [enlargedProjectedCandidateBlock_nonloss
+          C exponent hvNonloss,
+        enlargedProjectedCandidateBlock_nonloss
+          C exponent hwLoss]
+      exact Finset.card_le_card Finset.inter_subset_right
+
+  rw [htransfer]
+  omega
+
+theorem minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hwT : w ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvw : v ≠ w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let transfer :=
+      deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+    BlockDeficient
+      (addDemandAt
+        (fun x => 2 ^ exponent x) w transfer)
+      (enlargedProjectedCandidateBlock C exponent)
+      (T.erase v)
+    ∧
+    transfer ≤
+      (retainedCompletionWords C w).card := by
+  dsimp
+  constructor
+  · apply minimal_deficient_delete_with_transfer_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT
+    exact Finset.mem_erase.mpr ⟨hvw.symm,hwT⟩
+  · exact
+      minimal_enlargedCandidate_nonloss_leaf_transfer_le_parent_cube
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hvT hvNonloss hvw hunique
+
 #print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
 #print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
+#print axioms minimal_enlargedCandidate_nonloss_leaf_transfer_le_parent_cube
+#print axioms minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
 
 end OrderedEdgeColoring
 end JSP000404Research
