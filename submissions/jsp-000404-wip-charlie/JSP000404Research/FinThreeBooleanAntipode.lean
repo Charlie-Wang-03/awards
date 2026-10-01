@@ -247,5 +247,113 @@ theorem tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
 
+
+/-- Every Fin-3 Boolean word is either the base word, a one-coordinate
+neighbour of it, the antipode, or a one-coordinate neighbour of the antipode.
+Equivalently the two radius-one Hamming balls around antipodal vertices cover
+the whole 3-cube. -/
+theorem fin3_word_base_or_single_or_antipode_or_antipode_single
+    (base q : Fin 3 → Bool)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    q = base
+    ∨ (∃ d : Fin 3, q = flipBoolWordAt base d)
+    ∨ q = tripleFlipBoolWord base a b c
+    ∨ (∃ d : Fin 3,
+        q = flipBoolWordAt
+          (tripleFlipBoolWord base a b c) d) := by
+  classical
+  let S : Finset (Fin 3) :=
+    Finset.univ.filter fun d => q d ≠ base d
+  have hcard : S.card ≤ 3 := by
+    simpa using Finset.card_le_univ S
+  interval_cases h : S.card
+  · left
+    funext d
+    have hdNot : d ∉ S := by
+      intro hd
+      have hp := Finset.card_pos.mpr ⟨d,hd⟩
+      omega
+    simpa [S] using hdNot
+  · right; left
+    obtain ⟨d,hdS,hS⟩ := Finset.card_eq_one.mp h
+    refine ⟨d,?_⟩
+    funext e
+    by_cases hed : e = d
+    · subst e
+      have hdiff : q d ≠ base d := by
+        have : d ∈ S := by rw [hS]; simp
+        simpa [S] using this
+      cases hq : q d <;> cases hb : base d <;>
+        simp [hq,hb] at hdiff ⊢
+    · have heNot : e ∉ S := by
+        rw [hS]
+        simp [hed]
+      have heEq : q e = base e := by
+        simpa [S] using heNot
+      rw [flipBoolWordAt_off base hed]
+      exact heEq
+  · right; right; right
+    -- With exactly two differing coordinates, there is a unique coordinate
+    -- on which q agrees with base.  Flipping that coordinate in the antipode
+    -- gives q.
+    have hcomp :
+        ((Finset.univ : Finset (Fin 3))  S).card = 1 := by
+      rw [Finset.card_sdiff]
+      · simp [h]
+      · exact Finset.filter_subset _ _
+    obtain ⟨d,hdEq⟩ := Finset.card_eq_one.mp hcomp
+    refine ⟨d,?_⟩
+    funext e
+    have hanti :=
+      tripleFlipBoolWord_at base hab hac hbc (q := e)
+    by_cases hed : e = d
+    · subst e
+      have hdComp : d ∈ (Finset.univ : Finset (Fin 3))  S := by
+        rw [hdEq]
+        simp
+      have hdNotS := (Finset.mem_sdiff.mp hdComp).2
+      have hdBase : q d = base d := by
+        simpa [S] using hdNotS
+      rw [flipBoolWordAt_at, hanti, hdBase]
+      cases hb : base d <;> simp [hb]
+    · have heNotComp :
+          e ∉ (Finset.univ : Finset (Fin 3))  S := by
+        rw [hdEq]
+        simp [hed]
+      have heS : e ∈ S := by
+        by_contra heNotS
+        apply heNotComp
+        exact Finset.mem_sdiff.mpr ⟨by simp,heNotS⟩
+      have heDiff : q e ≠ base e := by
+        simpa [S] using heS
+      rw [flipBoolWordAt_off _ hed, hanti]
+      cases hq : q e <;> cases hb : base e <;>
+        simp [hq,hb] at heDiff ⊢
+  · right; right; left
+    funext d
+    rw [tripleFlipBoolWord_at base hab hac hbc]
+    have hdS : d ∈ S := by
+      by_contra hdNot
+      have hsub :
+          S ⊆ (Finset.univ : Finset (Fin 3)).erase d := by
+        intro e he
+        exact Finset.mem_erase.mpr
+          ⟨by
+            intro hed
+            subst e
+            exact hdNot he,
+           by simp⟩
+      have hc := Finset.card_le_card hsub
+      simp [h] at hc
+    have hdiff : q d ≠ base d := by
+      simpa [S] using hdS
+    cases hq : q d <;> cases hb : base d <;>
+      simp [hq,hb] at hdiff ⊢
+
+#print axioms fin3_word_base_or_single_or_antipode_or_antipode_single
+
 end OrderedEdgeColoring
 end JSP000404Research
