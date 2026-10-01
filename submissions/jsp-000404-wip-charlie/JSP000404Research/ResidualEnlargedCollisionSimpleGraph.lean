@@ -407,11 +407,63 @@ theorem minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
     hwuT,hwvT,hwuNe,hwvNe,
     huniqU,huniqV⟩
 
+
+theorem minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hacyclic :
+      (enlargedCollisionGraph C exponent T).IsAcyclic) :
+    ∃ u v wu wv : V,
+      u ∈ T ∧
+      v ∈ T ∧
+      u ≠ v ∧
+      wu ∈ T ∧
+      wv ∈ T ∧
+      wu ≠ u ∧
+      wv ≠ v ∧
+      EnlargedLeafOutlet C exponent T u wu ∧
+      EnlargedLeafOutlet C exponent T v wv := by
+  obtain ⟨u,v,wu,wv,
+      huT,hvT,huv,hwuT,hwvT,hwuNe,hwvNe,
+      huniqU,huniqV⟩ :=
+    minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hacyclic
+  have huOutlet :=
+    minimal_enlargedCandidate_any_leaf_outlet
+      C exponent hexpLt hexp honeLoss
+      hdef hmin huT huniqU
+  have hvOutlet :=
+    minimal_enlargedCandidate_any_leaf_outlet
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT huniqV
+  exact ⟨u,v,wu,wv,
+    huT,hvT,huv,hwuT,hwvT,hwuNe,hwvNe,
+    huOutlet,hvOutlet⟩
+
 #print axioms enlargedCollisionGraph_adj
 #print axioms minimal_enlargedCollisionGraph_connected
 #print axioms minimal_enlargedCollisionGraph_two_leaves_of_acyclic
-#print axioms enlargedCollisionGraph_degree_one_unique_neighbor
 #print axioms minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
+#print axioms minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
 
 end OrderedEdgeColoring
 end JSP000404Research
