@@ -1,6 +1,7 @@
 import JSP000404Research.SupportThreeZeroAngleBlocks
 import JSP000404Research.SupportTwoNarrowClusters
 import JSP000404Research.CyclicActualAngles
+import JSP000404Research.ThreeMarkedRayAngleSplit
 import Mathlib.Tactic
 
 /-!
@@ -228,5 +229,91 @@ theorem three_marked_arcs_support_two_small_pair
   · exact Or.inr (Or.inr (hca.trans h₃.2))
 
 #print axioms three_marked_arcs_support_two_small_pair
+
+
+/-- Synchronize an arbitrary quotient list with three already-separated angle
+blocks by cutting at the two angle-block lengths. -/
+theorem aligned_three_angle_blocks_support_two_small_pair
+    {V : Type*} {p : V → Plane}
+    (i a b c : V)
+    (qs : List ℕ)
+    (A₁ A₂ A₃ : List ℝ)
+    (hlen :
+      qs.length = (A₁ ++ A₂ ++ A₃).length)
+    (hsupport : listPositiveCount qs = 2)
+    (hA0 :
+      ∀ A ∈ A₁ ++ A₂ ++ A₃, 0 ≤ A)
+    {D : ℝ}
+    (hmass :
+      listZeroAngleMass qs (A₁ ++ A₂ ++ A₃) ≤ D)
+    (hab :
+      EuclideanGeometry.angle (p a) (p i) (p b) ≤ A₁.sum)
+    (hbc :
+      EuclideanGeometry.angle (p b) (p i) (p c) ≤ A₂.sum)
+    (hca :
+      EuclideanGeometry.angle (p c) (p i) (p a) ≤ A₃.sum) :
+    EuclideanGeometry.angle (p a) (p i) (p b) ≤ D
+    ∨ EuclideanGeometry.angle (p b) (p i) (p c) ≤ D
+    ∨ EuclideanGeometry.angle (p c) (p i) (p a) ≤ D := by
+  let q₁ := qs.take A₁.length
+  let qrest := qs.drop A₁.length
+  let q₂ := qrest.take A₂.length
+  let q₃ := qrest.drop A₂.length
+
+  have hA₁le : A₁.length ≤ qs.length := by
+    rw [hlen]
+    simp
+  have hq₁len : q₁.length = A₁.length := by
+    dsimp [q₁]
+    rw [List.length_take]
+    exact Nat.min_eq_left hA₁le
+  have hrestLen :
+      qrest.length = A₂.length + A₃.length := by
+    dsimp [qrest]
+    rw [List.length_drop, hlen]
+    simp
+  have hA₂le : A₂.length ≤ qrest.length := by
+    rw [hrestLen]
+    omega
+  have hq₂len : q₂.length = A₂.length := by
+    dsimp [q₂]
+    rw [List.length_take]
+    exact Nat.min_eq_left hA₂le
+  have hq₃len : q₃.length = A₃.length := by
+    dsimp [q₃]
+    rw [List.length_drop, hrestLen]
+    omega
+
+  have hsplit₁ :
+      q₁ ++ qrest = qs := by
+    dsimp [q₁,qrest]
+    exact List.take_append_drop A₁.length qs
+  have hsplit₂ :
+      q₂ ++ q₃ = qrest := by
+    dsimp [q₂,q₃]
+    exact List.take_append_drop A₂.length qrest
+  have hsplit :
+      q₁ ++ q₂ ++ q₃ = qs := by
+    rw [← hsplit₂]
+    simpa [List.append_assoc] using hsplit₁
+
+  have hsupport' :
+      listPositiveCount (q₁ ++ q₂ ++ q₃) = 2 := by
+    rw [hsplit]
+    exact hsupport
+  have hmass' :
+      listZeroAngleMass
+          (q₁ ++ q₂ ++ q₃)
+          (A₁ ++ A₂ ++ A₃) ≤ D := by
+    rw [hsplit]
+    exact hmass
+  exact three_marked_arcs_support_two_small_pair
+    (p := p) i a b c
+    q₁ q₂ q₃ A₁ A₂ A₃
+    hq₁len hq₂len hq₃len
+    hsupport' hA0 hmass'
+    hab hbc hca
+
+#print axioms aligned_three_angle_blocks_support_two_small_pair
 
 end JSP000404Research
