@@ -1,5 +1,4 @@
-import JSP000404Research.HighExponentTransitionPacking
-import JSP000404Research.DeficitTwo
+import JSP000404Research.FourCentreTransitionCases
 import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
