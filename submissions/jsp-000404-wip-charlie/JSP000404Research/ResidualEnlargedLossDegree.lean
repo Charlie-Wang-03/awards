@@ -292,8 +292,59 @@ theorem minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
       using hmul'
   omega
 
+
+theorem minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hmaxLoss :
+      ∀ z : V,
+        z ∈ T →
+        z ∈ projectedLossVertices C exponent →
+        (retainedCompletionWords C z).card ≤
+          (retainedCompletionWords C v).card)
+    (hdegree :
+      (enlargedCollisionNeighbours C exponent T v).card = 1) :
+    exponent v = n - 1 := by
+  have hactiveLe :=
+    minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hmaxLoss
+  rw [hdegree] at hactiveLe
+  have hactiveGe :=
+    projectedLoss_active_card_ge_two_of_exponent_lt_n
+      C exponent hvLoss (hexpLt v)
+  have hactiveEq :
+      (retainedActive C v).card = 2 := by
+    omega
+  have hloss :=
+    (mem_projectedLossVertices C exponent v).1 hvLoss
+  unfold projectedFree at hloss
+  omega
+
 #print axioms maximalLoss_shared_card_le_degree_mul_two_cube
 #print axioms minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
+#print axioms minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
 
 end OrderedEdgeColoring
 end JSP000404Research
