@@ -676,6 +676,67 @@ theorem QTT_unique_third_exit_fresh_blocker_or_closed
 #print axioms QTT_unique_third_exit_fresh_blocker_or_closed
 
 
+/-- In the hard third-exit branch, the fresh loss blocker must itself activate
+the third coordinate.  Otherwise its completion cube is invariant under that
+flip, so the original QTT word would lie simultaneously in the two distinct
+loss completion cubes Q_s and Q_z. -/
+theorem QTT_fresh_loss_blocker_third_coordinate_active
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {s z : V}
+    (hsz : s ≠ z)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {e : Fin n}
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hzFlip :
+      flipBoolWordAt word e ∈ retainedCompletionWords C z) :
+    e ∈ retainedActive C z := by
+  by_contra heInactive
+  have hzQ :
+      word ∈ retainedCompletionWords C z :=
+    (mem_completion_iff_flip_of_inactive C heInactive).1 hzFlip
+  exact Finset.disjoint_left.mp
+    (projectedLoss_completion_disjoint
+      C exponent hexp honeLoss hsLoss hsz)
+    hsQ hzQ
+
+/-- Hence the fresh third-exit blocker is genuinely a translated carrier of
+the original QTT word. -/
+theorem QTT_fresh_loss_blocker_gives_translated_carrier
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {s z : V}
+    (hsz : s ≠ z)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {e : Fin n}
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hzFlip :
+      flipBoolWordAt word e ∈ retainedCompletionWords C z) :
+    e ∈ retainedActive C z ∧
+      word ∈ translatedCompletionWords C z e := by
+  have heActive :=
+    QTT_fresh_loss_blocker_third_coordinate_active
+      C exponent hexp honeLoss
+      hsz hsLoss hzLoss hsQ hzFlip
+  exact ⟨heActive,
+    (mem_translatedCompletionWords C z e word).2 hzFlip⟩
+
+#print axioms QTT_fresh_loss_blocker_third_coordinate_active
+#print axioms QTT_fresh_loss_blocker_gives_translated_carrier
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
