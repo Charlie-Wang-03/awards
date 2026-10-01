@@ -2054,6 +2054,200 @@ theorem planar_QTTT_secondLayer_support_reduction
 #print axioms planar_QTTT_secondLayer_support_reduction
 
 
+/-- Current strongest planar multiplicity-first root.  After the standard
+closed outlets, the only remaining Boolean obstruction is a saturated Q/T/T/T
+configuration on four distinct second-layer projected-loss centres.  This
+terminal is immediately reduced geometrically to the small parameter n=3 or
+to the existence of two support-two centres among the four. -/
+theorem planar_deficientCore_girthFree_QTTT_support_root
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ q : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) q
+    )
+    ∨
+    (
+      ∃ q : ProjectionOrdered V,
+        ExactProjectedBudget R exponent q
+    )
+    ∨
+    (
+      ∃ source : ProjectionOrdered V,
+        ExactRecursiveOutlet R exponent source
+    )
+    ∨
+    (
+      ∃ q : ProjectionOrdered V,
+        q ∈ projectedLossVertices R exponent ∧
+        exponent q + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ word : Fin n → Bool,
+      ∃ s x y z : ProjectionOrdered V,
+      ∃ cx cy cz : Fin n,
+        s ≠ x ∧ s ≠ y ∧ s ≠ z ∧
+        x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+        s ∈ projectedLossVertices R exponent ∧
+        x ∈ projectedLossVertices R exponent ∧
+        y ∈ projectedLossVertices R exponent ∧
+        z ∈ projectedLossVertices R exponent ∧
+        exponent s = n - 2 ∧
+        exponent x = n - 2 ∧
+        exponent y = n - 2 ∧
+        exponent z = n - 2 ∧
+        cx ∈ retainedActive R x ∧
+        cy ∈ retainedActive R y ∧
+        cz ∈ retainedActive R z ∧
+        cx ≠ cy ∧ cx ≠ cz ∧ cy ≠ cz ∧
+        retainedActive R s = {cx,cy,cz} ∧
+        word ∈ retainedCompletionWords R s ∧
+        word ∈ translatedCompletionWords R x cx ∧
+        word ∈ translatedCompletionWords R y cy ∧
+        word ∈ translatedCompletionWords R z cz ∧
+        (
+          n = 3 ∨
+          ∃ a b : ProjectionOrdered V,
+            a ≠ b ∧
+            a ∈ ({s,x,y,z} :
+              Finset (ProjectionOrdered V)) ∧
+            b ∈ ({s,x,y,z} :
+              Finset (ProjectionOrdered V)) ∧
+            positiveSupport (centreQuotient (C a) t) = 2 ∧
+            positiveSupport (centreQuotient (C b) t) = 2
+        )
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hexpLt :
+      ∀ q : ProjectionOrdered V, exponent q < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ q : ProjectionOrdered V, exponent q ≤ n := by
+    intro q
+    exact Nat.le_of_lt (hexpLt q)
+  have hone :
+      ∀ q, (active R q).card ≤ n - exponent q + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+
+  rcases
+    planar_deficientCore_girthFree_QTT_root
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hcard C hdef
+    with hhole | hpaid | hexact | hrec | hdeep | hQTT
+  · exact Or.inl hhole
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+  · obtain ⟨word,s,x,y,cx,cy,
+      hsx,hsy,hxy,
+      hsLoss,hxLoss,hyLoss,
+      hsSecond,hxSecond,hySecond,
+      hcx,hcy,hcxy,
+      hsQ,hxT,hyT⟩ := hQTT
+    rcases
+      QTT_hard_branch_upgrades_to_QTTT
+        R exponent hexpLt hexp hone
+        hsx hsy hxy
+        hsLoss hxLoss hyLoss
+        hsSecond hxSecond hySecond
+        hcx hcy hcxy hsQ hxT hyT
+      with hhole2 | hpaid2 | hexact2 | htop2 | hdeep2 | hQTTT
+    · exact Or.inl hhole2
+    · exact Or.inr (Or.inl hpaid2)
+    · exact Or.inr (Or.inr (Or.inl hexact2))
+    · obtain ⟨top,htopLoss,htopExp⟩ := htop2
+      have htopLossGeom :
+          top ∈ projectedLossVertices
+            (planarStandardResidualColoring
+              hp hcap (by omega : 1 ≤ n)
+              hdelta0 (by linarith : delta < 1) ht hlam)
+            (planarCentreExponent hp C) := by
+        simpa [R,exponent,hn1,hdelta1] using htopLoss
+      have htopExpGeom :
+          centreExponent (C top) t = n - 1 := by
+        simpa [exponent,planarCentreExponent] using htopExp
+      rcases
+        planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C htopLossGeom htopExpGeom
+        with hhole3 | hpaid3 | hexact3 | hdeep3
+      · exact Or.inl hhole3
+      · exact Or.inr (Or.inl hpaid3)
+      · exact Or.inr (Or.inr (Or.inl hexact3))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep3))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep2))))
+    · obtain ⟨cz,z,hsz,hxz,hyz,
+        hzLoss,hzSecond,
+        hcxS,hcyS,hczS,
+        _hcxy2,hcxz,hcyz,hsActive,
+        _hcxX,_hcyY,hczZ,
+        _hsQ2,_hxT2,_hyT2,hzT⟩ := hQTTT
+      have hsSecondGeom :
+          centreExponent (C s) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hsSecond
+      have hxSecondGeom :
+          centreExponent (C x) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hxSecond
+      have hySecondGeom :
+          centreExponent (C y) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hySecond
+      have hzSecondGeom :
+          centreExponent (C z) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hzSecond
+      have hsupport :=
+        planar_QTTT_secondLayer_support_reduction
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam C
+          hsx hsy hsz hxy hxz hyz
+          hsSecondGeom hxSecondGeom hySecondGeom hzSecondGeom
+      exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+        ⟨word,s,x,y,z,cx,cy,cz,
+          hsx,hsy,hsz,hxy,hxz,hyz,
+          hsLoss,hxLoss,hyLoss,hzLoss,
+          hsSecond,hxSecond,hySecond,hzSecond,
+          hcx,hcy,hczZ,
+          hcxy,hcxz,hcyz,hsActive,
+          hsQ,hxT,hyT,hzT,hsupport⟩))))
+
+#print axioms planar_deficientCore_girthFree_QTTT_support_root
+
+
 theorem planar_longCycle_overload_recursive_outlet
     {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
