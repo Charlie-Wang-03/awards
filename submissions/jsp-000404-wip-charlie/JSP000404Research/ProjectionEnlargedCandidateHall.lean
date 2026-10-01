@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualEnlargedCandidateHall
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
+import JSP000404Research.ResidualEnlargedTriangleOutlet
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
@@ -1100,9 +1101,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
       (
         ∃ u v w :
             {x : ProjectionOrdered V // x ∈ T},
-          (enlargedCollisionGraph R exponent T).Adj u v ∧
-          (enlargedCollisionGraph R exponent T).Adj u w ∧
-          (enlargedCollisionGraph R exponent T).Adj v w
+          EnlargedTriangleOutlet R exponent T u v w
       )
       ∨
       (
@@ -1174,7 +1173,11 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
       R exponent hexpLt hexp hone hdefR hminR
     with hleaf | htri | hlong
   · exact Or.inl hleaf
-  · exact Or.inr (Or.inl htri)
+  · obtain ⟨u,v,w,huv,huw,hvw⟩ := htri
+    exact Or.inr (Or.inl
+      ⟨u,v,w,
+        enlargedCollisionGraph_triangle_outlet
+          R exponent hexp hone T huv huw hvw⟩)
   · rcases
       planar_longCycle_overload_recursive_outlet
         hp hcap hn3 hdelta0 hdeltaHalf ht hlam
