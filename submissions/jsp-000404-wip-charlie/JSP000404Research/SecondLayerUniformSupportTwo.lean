@@ -5,16 +5,17 @@ import Mathlib.Tactic
 /-!
 # Uniform four-second-layer support-two reduction
 
-The previous no-top reduction used only three centres and therefore needed
-n >= 4.  For four second-layer centres one can keep all four transition
-certificates.  If at most one centre has support two, at least three have
-support one and hence contribute n-1 each.  The remaining certificate has
-positive transition quotient at least one.  Therefore the four-centre
-transition quotient sum is at least 3n-2, which is strictly larger than 2n
+The earlier three-centre reduction needed n >= 4 because three support-one
+second-layer centres contribute exactly 2n when n=3.  Keeping a fourth
+second-layer centre removes this equality case: its transition certificate
+has positive quotient, so the four-centre sum is at least
+
+  3 * (n - 1) + 1 = 3n - 2 > 2n
+
 for every n >= 3.
 
-Hence every four distinct second-layer centres contain two support-two centres,
-uniformly for all n >= 3.
+Hence every four distinct second-layer centres contain two distinct
+support-two centres, uniformly for all n >= 3.
 -/
 
 namespace JSP000404Research
@@ -84,6 +85,7 @@ theorem no_three_supportOne_among_four_secondLayer
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -109,38 +111,34 @@ theorem no_three_supportOne_among_four_secondLayer
   let certA :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
-        hp (by omega : 1 ≤ n)
+        hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
         a Ca (by rw [haSecond]))
   let certB :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
-        hp (by omega : 1 ≤ n)
+        hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
         b Cb (by rw [hbSecond]))
   let certC :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
-        hp (by omega : 1 ≤ n)
+        hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
         c Cc (by rw [hcSecond]))
   let certD :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
-        hp (by omega : 1 ≤ n)
+        hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
         d Cd (by rw [hdSecond]))
-
-  have hqA :
-      certA.qe = n - 1 :=
+  have hqA : certA.qe = n - 1 :=
     deficit_two_support_one_transition_qe_eq
       Ca certA hn3 haSecond haSupport
-  have hqB :
-      certB.qe = n - 1 :=
+  have hqB : certB.qe = n - 1 :=
     deficit_two_support_one_transition_qe_eq
       Cb certB hn3 hbSecond hbSupport
-  have hqC :
-      certC.qe = n - 1 :=
+  have hqC : certC.qe = n - 1 :=
     deficit_two_support_one_transition_qe_eq
       Cc certC hn3 hcSecond hcSupport
   have hqDpos : 1 ≤ certD.qe :=
@@ -154,11 +152,11 @@ theorem no_three_supportOne_among_four_secondLayer
   rw [hqA,hqB,hqC] at hpack
   omega
 
-/-- Uniform version of the four-second-layer reduction: no n=3 exception. -/
 theorem four_secondLayer_has_two_supportTwo_uniform
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -191,49 +189,61 @@ theorem four_secondLayer_has_two_supportTwo_uniform
   have hd :=
     deficit_two_support_one_or_two_concrete
       (C d) hn3 hdelta0 hdeltaHalf ht hdSecond
+
+  have hnoABC :
+      ¬ (positiveSupport (centreQuotient (C a) t) = 1 ∧
+         positiveSupport (centreQuotient (C b) t) = 1 ∧
+         positiveSupport (centreQuotient (C c) t) = 1) := by
+    rintro ⟨ha1,hb1,hc1⟩
+    exact no_three_supportOne_among_four_secondLayer
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab hac had hbc hbd hcd
+      (C a) (C b) (C c) (C d)
+      haSecond hbSecond hcSecond hdSecond ha1 hb1 hc1
+  have hnoABD :
+      ¬ (positiveSupport (centreQuotient (C a) t) = 1 ∧
+         positiveSupport (centreQuotient (C b) t) = 1 ∧
+         positiveSupport (centreQuotient (C d) t) = 1) := by
+    rintro ⟨ha1,hb1,hd1⟩
+    exact no_three_supportOne_among_four_secondLayer
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab had hac hbd hbc hcd.symm
+      (C a) (C b) (C d) (C c)
+      haSecond hbSecond hdSecond hcSecond ha1 hb1 hd1
+  have hnoACD :
+      ¬ (positiveSupport (centreQuotient (C a) t) = 1 ∧
+         positiveSupport (centreQuotient (C c) t) = 1 ∧
+         positiveSupport (centreQuotient (C d) t) = 1) := by
+    rintro ⟨ha1,hc1,hd1⟩
+    exact no_three_supportOne_among_four_secondLayer
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hac had hab hcd hbc.symm hbd.symm
+      (C a) (C c) (C d) (C b)
+      haSecond hcSecond hdSecond hbSecond ha1 hc1 hd1
+  have hnoBCD :
+      ¬ (positiveSupport (centreQuotient (C b) t) = 1 ∧
+         positiveSupport (centreQuotient (C c) t) = 1 ∧
+         positiveSupport (centreQuotient (C d) t) = 1) := by
+    rintro ⟨hb1,hc1,hd1⟩
+    exact no_three_supportOne_among_four_secondLayer
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hbc hbd hab.symm hcd hac.symm had.symm
+      (C b) (C c) (C d) (C a)
+      hbSecond hcSecond hdSecond haSecond hb1 hc1 hd1
+
   rcases ha with ha1 | ha2 <;>
     rcases hb with hb1 | hb2 <;>
     rcases hc with hc1 | hc2 <;>
     rcases hd with hd1 | hd2
-  · exact False.elim
-      (no_three_supportOne_among_four_secondLayer
-        hp hn3 hdelta0 hdeltaHalf ht hlam
-        hab hac had hbc hbd hcd
-        (C a) (C b) (C c) (C d)
-        haSecond hbSecond hcSecond hdSecond
-        ha1 hb1 hc1)
-  · exact False.elim
-      (no_three_supportOne_among_four_secondLayer
-        hp hn3 hdelta0 hdeltaHalf ht hlam
-        hab hac had hbc hbd hcd
-        (C a) (C b) (C c) (C d)
-        haSecond hbSecond hcSecond hdSecond
-        ha1 hb1 hc1)
-  · exact False.elim
-      (no_three_supportOne_among_four_secondLayer
-        hp hn3 hdelta0 hdeltaHalf ht hlam
-        hab hac had hbc hbd hcd
-        (C a) (C b) (C c) (C d)
-        haSecond hbSecond hcSecond hdSecond
-        ha1 hb1 hd1)
+  · exact False.elim (hnoABC ⟨ha1,hb1,hc1⟩)
+  · exact False.elim (hnoABC ⟨ha1,hb1,hc1⟩)
+  · exact False.elim (hnoABD ⟨ha1,hb1,hd1⟩)
   · exact ⟨c,d,hcd,by simp,by simp,hc2,hd2⟩
-  · exact False.elim
-      (no_three_supportOne_among_four_secondLayer
-        hp hn3 hdelta0 hdeltaHalf ht hlam
-        hac hab had hbc hcd hbd
-        (C a) (C c) (C b) (C d)
-        haSecond hcSecond hbSecond hdSecond
-        ha1 hc1 hb1)
+  · exact False.elim (hnoACD ⟨ha1,hc1,hd1⟩)
   · exact ⟨b,d,hbd,by simp,by simp,hb2,hd2⟩
   · exact ⟨b,c,hbc,by simp,by simp,hb2,hc2⟩
   · exact ⟨b,c,hbc,by simp,by simp,hb2,hc2⟩
-  · exact False.elim
-      (no_three_supportOne_among_four_secondLayer
-        hp hn3 hdelta0 hdeltaHalf ht hlam
-        hbc hab hbd hac hcd had
-        (C b) (C c) (C a) (C d)
-        hbSecond hcSecond haSecond hdSecond
-        hb1 hc1 ha1)
+  · exact False.elim (hnoBCD ⟨hb1,hc1,hd1⟩)
   · exact ⟨a,d,had,by simp,by simp,ha2,hd2⟩
   · exact ⟨a,c,hac,by simp,by simp,ha2,hc2⟩
   · exact ⟨a,c,hac,by simp,by simp,ha2,hc2⟩
