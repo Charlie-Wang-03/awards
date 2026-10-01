@@ -2713,10 +2713,101 @@ theorem minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
         C exponent hexpLt hexp honeLoss
         hdef hmin hvT hvNonloss hvw hunique
 
+
+theorem minimal_enlargedCandidate_prune_any_leaf_to_parent
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hwT : w ∈ T)
+    (hvw : v ≠ w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let transfer :=
+      deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+    BlockDeficient
+      (addDemandAt
+        (fun x => 2 ^ exponent x) w transfer)
+      (enlargedProjectedCandidateBlock C exponent)
+      (T.erase v)
+    ∧
+    transfer ≤ (retainedCompletionWords C w).card := by
+  dsimp
+  by_cases hvLoss :
+      v ∈ projectedLossVertices C exponent
+  · rcases lt_or_gt_of_ne hvw with hvwlt | hwvlt
+    · obtain ⟨hdef',htransfer⟩ :=
+        minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
+          C exponent hexpLt hexp honeLoss
+          hdef hmin hvT hwT hvLoss hvwlt hunique
+      refine ⟨hdef',?_⟩
+      let hret :=
+        projectedLoss_edge_right_retained
+          C exponent hexp honeLoss hvLoss hvwlt
+      have hsub :
+          lossLeafParentSliceWords
+              C exponent T v w hvwlt hret
+            ⊆
+          translatedCompletionWords C w
+            (retainedColor C v w hret) :=
+        Finset.inter_subset_right
+      have hcard :=
+        Finset.card_le_card hsub
+      rw [translatedCompletionWords_card] at hcard
+      exact htransfer.trans hcard
+    · obtain ⟨hdef',htransfer⟩ :=
+        minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
+          C exponent hexpLt hexp honeLoss
+          hdef hmin hvT hwT hvLoss hwvlt hunique
+      refine ⟨hdef',?_⟩
+      let hret :=
+        projectedLoss_edge_left_retained
+          C exponent hexp honeLoss hvLoss hwvlt
+      have hsub :
+          lossLeafParentSliceWordsOfLeft
+              C exponent T v w hwvlt hret
+            ⊆
+          translatedCompletionWords C w
+            (retainedColor C w v hret) :=
+        Finset.inter_subset_right
+      have hcard :=
+        Finset.card_le_card hsub
+      rw [translatedCompletionWords_card] at hcard
+      exact htransfer.trans hcard
+  · exact
+      minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hvT hwT hvLoss hvw hunique
+
 #print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
 #print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
-#print axioms minimal_enlargedCandidate_nonloss_leaf_transfer_le_parent_cube
 #print axioms minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
+#print axioms minimal_enlargedCandidate_prune_any_leaf_to_parent
 
 end OrderedEdgeColoring
 end JSP000404Research
