@@ -868,6 +868,95 @@ theorem QTT_hard_branch_upgrades_to_QTTT
 #print axioms QTT_hard_branch_upgrades_to_QTTT
 
 
+/-- Full star semantics of a saturated Q/T/T/T state.  The three translated
+owner coordinates are exactly the three active coordinates at the completion
+owner, and each translated owner's position relative to s determines both the
+actual retained edge colour and the Boolean value at its owner coordinate. -/
+theorem QTTT_completion_owner_star_semantics
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {s x y z : V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcz : cz ∈ retainedActive C z)
+    (hcxy : cx ≠ cy) (hcxz : cx ≠ cz) (hcyz : cy ≠ cz)
+    (hsActive : retainedActive C s = {cx,cy,cz})
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    (
+      retainedActive C s = {cx,cy,cz}
+    )
+    ∧
+    (
+      (
+        ∃ hxs : x < s,
+          ∃ hret : (C.color x s).val < n,
+            retainedColor C x s hret = cx ∧
+            word cx = true
+      )
+      ∨
+      (
+        ∃ hsxlt : s < x,
+          ∃ hret : (C.color s x).val < n,
+            retainedColor C s x hret = cx ∧
+            word cx = false
+      )
+    )
+    ∧
+    (
+      (
+        ∃ hys : y < s,
+          ∃ hret : (C.color y s).val < n,
+            retainedColor C y s hret = cy ∧
+            word cy = true
+      )
+      ∨
+      (
+        ∃ hsylt : s < y,
+          ∃ hret : (C.color s y).val < n,
+            retainedColor C s y hret = cy ∧
+            word cy = false
+      )
+    )
+    ∧
+    (
+      (
+        ∃ hzs : z < s,
+          ∃ hret : (C.color z s).val < n,
+            retainedColor C z s hret = cz ∧
+            word cz = true
+      )
+      ∨
+      (
+        ∃ hszlt : s < z,
+          ∃ hret : (C.color s z).val < n,
+            retainedColor C s z hret = cz ∧
+            word cz = false
+      )
+    ) := by
+  refine ⟨hsActive,?_,?_,?_⟩
+  · exact QTT_owner_edge_semantics
+      C exponent hexp honeLoss hsx hxLoss hcx hsQ hxT
+  · exact QTT_owner_edge_semantics
+      C exponent hexp honeLoss hsy hyLoss hcy hsQ hyT
+  · exact QTT_owner_edge_semantics
+      C exponent hexp honeLoss hsz hzLoss hcz hsQ hzT
+
+#print axioms QTTT_completion_owner_star_semantics
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
