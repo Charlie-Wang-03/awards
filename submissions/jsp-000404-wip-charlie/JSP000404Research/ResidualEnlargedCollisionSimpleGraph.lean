@@ -2249,39 +2249,77 @@ theorem longCycle_at_most_one_topLoss
       4 ≤ T.card :=
     longCycle_core_card_ge_four
       C exponent hgirth
-  have hproperPair :
+  have hpairSub :
+      ({u,v} : Finset V) ⊆ T := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact huT
+    · exact hvT
+  have hpairProper :
       ({u,v} : Finset V) ⊂ T := by
-    constructor
-    · intro x hx
-      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-      rcases hx with rfl | rfl
-      · exact huT
-      · exact hvT
-    · intro heq
-      have hc := congrArg Finset.card heq
-      simp [huv] at hc
-      omega
-  have hpairDef :
+    refine ⟨hpairSub,?_⟩
+    intro heq
+    have hc := congrArg Finset.card heq
+    simp [huv] at hc
+    omega
+  obtain ⟨w,hwT,hwNotPair⟩ :=
+    Finset.exists_of_ssubset hpairProper
+  have hwu : w ≠ u := by
+    intro h
+    subst w
+    exact hwNotPair (by simp)
+  have hwv : w ≠ v := by
+    intro h
+    subst w
+    exact hwNotPair (by simp)
+  let U : Finset V := {u,v,w}
+  have hUSub : U ⊆ T := by
+    intro x hx
+    simp only [U, Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact huT
+    · exact hvT
+    · exact hwT
+  have hUCard : U.card = 3 := by
+    simp [U,huv,hwu,hwv]
+  have hUProper : U ⊂ T := by
+    refine ⟨hUSub,?_⟩
+    intro heq
+    have hc := congrArg Finset.card heq
+    rw [hUCard] at hc
+    omega
+  have hUUnion :
+      U.biUnion
+          (enlargedProjectedCandidateBlock C exponent)
+        =
+      (Finset.univ : Finset (Fin n → Bool)) := by
+    apply Finset.eq_univ_of_subset
+    intro word hword
+    have hpairWord :
+        word ∈ enlargedProjectedCandidateBlock C exponent u ∪
+          enlargedProjectedCandidateBlock C exponent v := by
+      rw [hcover]
+      exact Finset.mem_univ _
+    rcases Finset.mem_union.mp hpairWord with huWord | hvWord
+    · apply Finset.mem_biUnion.mpr
+      exact ⟨u,by simp [U],huWord⟩
+    · apply Finset.mem_biUnion.mpr
+      exact ⟨v,by simp [U],hvWord⟩
+  have hUDef :
       BlockDeficient
         (fun x => 2 ^ exponent x)
         (enlargedProjectedCandidateBlock C exponent)
-        {u,v} := by
+        U := by
     unfold BlockDeficient
+    rw [hUUnion]
     have hsum :
-        (∑ x ∈ ({u,v} : Finset V), 2 ^ exponent x)
+        (∑ x ∈ U, 2 ^ exponent x)
           =
-        2 ^ exponent u + 2 ^ exponent v := by
-      simp [huv]
+        2 ^ exponent u + 2 ^ exponent v +
+          2 ^ exponent w := by
+      simp [U,huv,hwu,hwv,add_assoc]
     rw [hsum,huTop,hvTop]
-    have hunion :
-        ({u,v} : Finset V).biUnion
-            (enlargedProjectedCandidateBlock C exponent)
-          =
-        enlargedProjectedCandidateBlock C exponent u ∪
-          enlargedProjectedCandidateBlock C exponent v := by
-      ext word
-      simp
-    rw [hunion,hcover]
     simp only [Finset.card_univ, Fintype.card_fun,
       Fintype.card_fin, Fintype.card_bool]
     have hn1 : 1 ≤ n := by
@@ -2297,8 +2335,9 @@ theorem longCycle_at_most_one_topLoss
         _ = 2 ^ (n - 1) * 2 := by rw [pow_succ]
         _ = 2 * 2 ^ (n - 1) := by omega
     rw [hpow]
+    have hwPos : 0 < 2 ^ exponent w := by positivity
     omega
-  exact (hmin {u,v} hproperPair) hpairDef
+  exact (hmin U hUProper) hUDef
 
 #print axioms longCycle_core_card_ge_four
 #print axioms two_topLoss_enlargedBlocks_union_eq_univ
