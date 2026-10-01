@@ -1,6 +1,7 @@
 import JSP000404Research.SupportTwoNarrowClusters
 import JSP000404Research.ConcreteTransitionInterval
 import JSP000404Research.DeficitTwo
+import JSP000404Research.PinnedCycleRotation
 import Mathlib.Tactic
 
 /-!
