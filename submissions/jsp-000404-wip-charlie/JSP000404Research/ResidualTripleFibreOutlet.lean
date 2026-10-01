@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualBoundedMultiplicityAccounting
 import JSP000404Research.ResidualEnlargedTriangleOutlet
+import JSP000404Research.ResidualLossDirectedFibre
 import Mathlib.Tactic
 
 /-!
@@ -452,6 +453,301 @@ theorem lossPair_common_enlarged_word_ordered_edgeSlice_xor
 
 #print axioms lossPair_common_enlarged_word_edgeSlice_xor
 #print axioms lossPair_common_enlarged_word_ordered_edgeSlice_xor
+
+
+/-- If a loss block and a non-loss completion block share a word, the loss
+side must carry that word in the translated slice indexed by their actual
+retained edge colour. -/
+theorem loss_nonloss_common_word_edgeSlice_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {x y : V}
+    (hxy : x < y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyNonloss : y ∉ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (hxBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent x)
+    (hyBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent y) :
+    let hret :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hxLoss hxy
+    word ∈ translatedCompletionWords C x
+      (retainedColor C x y hret) := by
+  dsimp
+  have hyQ :
+      word ∈ retainedCompletionWords C y := by
+    simpa [enlargedProjectedCandidateBlock_nonloss
+      C exponent hyNonloss] using hyBlock
+  have hxAll :
+      word ∈ allActiveLossCandidateBlock C x := by
+    simpa [enlargedProjectedCandidateBlock_loss
+      C exponent hxLoss] using hxBlock
+  unfold allActiveLossCandidateBlock at hxAll
+  rcases Finset.mem_union.mp hxAll with hxQ | hxT
+  · exact False.elim
+      (Finset.disjoint_left.mp
+        (projectedLoss_completion_disjoint
+          C exponent hexp honeLoss hxLoss (ne_of_lt hxy))
+        hxQ hyQ)
+  · obtain ⟨d,hdActive,hdWord⟩ :=
+      Finset.mem_biUnion.mp hxT
+    have hdInter :
+        (translatedCompletionWords C x d ∩
+          retainedCompletionWords C y).Nonempty :=
+      ⟨word,hdWord,hyQ⟩
+    have hedge :=
+      loss_translated_intersection_forces_edge_colour
+        C exponent hexp honeLoss hxLoss
+        (ne_of_lt hxy) hdActive hdInter
+    rcases hedge with hforward | hback
+    · obtain ⟨_,hretD,hdEq⟩ := hforward
+      have hret :=
+        projectedLoss_edge_right_retained
+          C exponent hexp honeLoss hxLoss hxy
+      have hdEdge :
+          d = retainedColor C x y hret := by
+        apply Fin.ext
+        have hval := congrArg Fin.val hdEq
+        simpa [retainedColor] using hval
+      simpa [hdEdge] using hdWord
+    · exact False.elim ((not_lt_of_ge hxy.le) hback.1)
+
+/-- Symmetric incoming version: if x is non-loss, y is loss, and x<y, the
+common word lies in y's incoming edge-colour translated slice. -/
+theorem nonloss_loss_common_word_edgeSlice_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {x y : V}
+    (hxy : x < y)
+    (hxNonloss : x ∉ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (hxBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent x)
+    (hyBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent y) :
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hyLoss hxy
+    word ∈ translatedCompletionWords C y
+      (retainedColor C x y hret) := by
+  dsimp
+  have hxQ :
+      word ∈ retainedCompletionWords C x := by
+    simpa [enlargedProjectedCandidateBlock_nonloss
+      C exponent hxNonloss] using hxBlock
+  have hyAll :
+      word ∈ allActiveLossCandidateBlock C y := by
+    simpa [enlargedProjectedCandidateBlock_loss
+      C exponent hyLoss] using hyBlock
+  unfold allActiveLossCandidateBlock at hyAll
+  rcases Finset.mem_union.mp hyAll with hyQ | hyT
+  · have hdisj :=
+      projectedLoss_completion_disjoint
+        C exponent hexp honeLoss hyLoss (ne_of_gt hxy)
+    exact False.elim
+      (Finset.disjoint_left.mp hdisj hyQ hxQ)
+  · obtain ⟨d,hdActive,hdWord⟩ :=
+      Finset.mem_biUnion.mp hyT
+    have hdInter :
+        (translatedCompletionWords C y d ∩
+          retainedCompletionWords C x).Nonempty :=
+      ⟨word,hdWord,hxQ⟩
+    have hedge :=
+      loss_translated_intersection_forces_edge_colour
+        C exponent hexp honeLoss hyLoss
+        (ne_of_gt hxy) hdActive hdInter
+    rcases hedge with hforward | hback
+    · exact False.elim ((not_lt_of_ge hxy.le) hforward.1)
+    · obtain ⟨_,hretD,hdEq⟩ := hback
+      have hret :=
+        projectedLoss_edge_left_retained
+          C exponent hexp honeLoss hyLoss hxy
+      have hdEdge :
+          d = retainedColor C x y hret := by
+        apply Fin.ext
+        have hval := congrArg Fin.val hdEq
+        simpa [retainedColor] using hval
+      simpa [hdEdge] using hdWord
+
+/-- Ordered exact-two-loss triple carrier, lower two vertices loss and the top
+vertex non-loss.  The common word is forced onto the two outgoing triangle
+slices, hence is true at both owner coordinates. -/
+theorem commonWord_lowerTwoLoss_topNonloss_outgoing_pattern
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {a b c : V}
+    (hab : a < b)
+    (hbc : b < c)
+    (haLoss : a ∈ projectedLossVertices C exponent)
+    (hbLoss : b ∈ projectedLossVertices C exponent)
+    (hcNonloss : c ∉ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (haBlock : word ∈ enlargedProjectedCandidateBlock C exponent a)
+    (hbBlock : word ∈ enlargedProjectedCandidateBlock C exponent b)
+    (hcBlock : word ∈ enlargedProjectedCandidateBlock C exponent c) :
+    let habRet :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss haLoss hab
+    let hbcRet :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hbLoss hbc
+    let eab := retainedColor C a b habRet
+    let ebc := retainedColor C b c hbcRet
+    word ∈ translatedCompletionWords C a eab ∧
+    word ∈ translatedCompletionWords C b ebc ∧
+    word eab = true ∧
+    word ebc = true := by
+  dsimp
+  have habRet :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss haLoss hab
+  have hbcRet :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hbLoss hbc
+  let eab := retainedColor C a b habRet
+  let ebc := retainedColor C b c hbcRet
+  have hbRight :
+      word ∈ translatedCompletionWords C b ebc := by
+    exact loss_nonloss_common_word_edgeSlice_of_lt
+      C exponent hexp honeLoss hbc hbLoss hcNonloss hbBlock hcBlock
+  have habXor :=
+    lossPair_common_enlarged_word_edgeSlice_xor
+      C exponent hexp honeLoss hab haLoss hbLoss haBlock hbBlock
+  have heNe : eab ≠ ebc := by
+    exact projectedLoss_two_sided_retained_colours_ne
+      C exponent hexp honeLoss hbLoss hab hbc
+  have heabB :
+      eab ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_right C hab habRet
+  have hebcB :
+      ebc ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_left C hbc hbcRet
+  have haLeft :
+      word ∈ translatedCompletionWords C a eab := by
+    rcases habXor with hA | hB
+    · exact hA.1
+    · exfalso
+      have hdisj :=
+        translatedCompletionWords_disjoint_same_owner_distinct_active
+          C heabB heNe
+      exact Finset.disjoint_left.mp hdisj hB.1 hbRight
+  have heabOut :
+      eab ∈ outgoingRetained C a := by
+    apply (mem_outgoingRetained_iff C a eab).2
+    refine ⟨b,hab,?_⟩
+    apply Fin.ext
+    rfl
+  have hebcOut :
+      ebc ∈ outgoingRetained C b := by
+    apply (mem_outgoingRetained_iff C b ebc).2
+    refine ⟨c,hbc,?_⟩
+    apply Fin.ext
+    rfl
+  exact ⟨haLeft,hbRight,
+    translated_loss_word_true_of_outgoing C heabOut haLeft,
+    translated_loss_word_true_of_outgoing C hebcOut hbRight⟩
+
+/-- Symmetric exact-two-loss pattern: the bottom vertex is non-loss and the
+upper two are loss.  The common word lies on the two incoming triangle slices
+and is false at both owner coordinates. -/
+theorem commonWord_bottomNonloss_upperTwoLoss_incoming_pattern
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {a b c : V}
+    (hab : a < b)
+    (hbc : b < c)
+    (haNonloss : a ∉ projectedLossVertices C exponent)
+    (hbLoss : b ∈ projectedLossVertices C exponent)
+    (hcLoss : c ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (haBlock : word ∈ enlargedProjectedCandidateBlock C exponent a)
+    (hbBlock : word ∈ enlargedProjectedCandidateBlock C exponent b)
+    (hcBlock : word ∈ enlargedProjectedCandidateBlock C exponent c) :
+    let habRet :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hbLoss hab
+    let hbcRet :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hbLoss hbc
+    let eab := retainedColor C a b habRet
+    let ebc := retainedColor C b c hbcRet
+    word ∈ translatedCompletionWords C b eab ∧
+    word ∈ translatedCompletionWords C c ebc ∧
+    word eab = false ∧
+    word ebc = false := by
+  dsimp
+  have habRet :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hbLoss hab
+  have hbcRet :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hbLoss hbc
+  let eab := retainedColor C a b habRet
+  let ebc := retainedColor C b c hbcRet
+  have hbLeft :
+      word ∈ translatedCompletionWords C b eab :=
+    nonloss_loss_common_word_edgeSlice_of_lt
+      C exponent hexp honeLoss hab haNonloss hbLoss haBlock hbBlock
+  have hbcXor :=
+    lossPair_common_enlarged_word_edgeSlice_xor
+      C exponent hexp honeLoss hbc hbLoss hcLoss hbBlock hcBlock
+  have heNe : eab ≠ ebc := by
+    exact projectedLoss_two_sided_retained_colours_ne
+      C exponent hexp honeLoss hbLoss hab hbc
+  have heabB :
+      eab ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_right C hab habRet
+  have hebcB :
+      ebc ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_left C hbc hbcRet
+  have hcRight :
+      word ∈ translatedCompletionWords C c ebc := by
+    rcases hbcXor with hB | hC
+    · exfalso
+      have hdisj :=
+        translatedCompletionWords_disjoint_same_owner_distinct_active
+          C hebcB heNe.symm
+      exact Finset.disjoint_left.mp hdisj hB.1 hbLeft
+    · exact hC.1
+  have heabIn :
+      eab ∈ incomingRetained C b := by
+    apply (mem_incomingRetained_iff C b eab).2
+    refine ⟨a,hab,?_⟩
+    apply Fin.ext
+    rfl
+  have hebcIn :
+      ebc ∈ incomingRetained C c := by
+    apply (mem_incomingRetained_iff C c ebc).2
+    refine ⟨b,hbc,?_⟩
+    apply Fin.ext
+    rfl
+  exact ⟨hbLeft,hcRight,
+    translated_loss_word_false_of_incoming C heabIn hbLeft,
+    translated_loss_word_false_of_incoming C hebcIn hcRight⟩
+
+#print axioms loss_nonloss_common_word_edgeSlice_of_lt
+#print axioms nonloss_loss_common_word_edgeSlice_of_lt
+#print axioms commonWord_lowerTwoLoss_topNonloss_outgoing_pattern
+#print axioms commonWord_bottomNonloss_upperTwoLoss_incoming_pattern
 
 end OrderedEdgeColoring
 end JSP000404Research
