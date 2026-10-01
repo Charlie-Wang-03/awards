@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualTripleFibreOutlet
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
+import JSP000404Research.FinThreeBooleanAntipode
 import Mathlib.Tactic
 
 /-!
@@ -955,6 +956,74 @@ theorem QTTT_completion_owner_star_semantics
       C exponent hexp honeLoss hsz hzLoss hcz hsQ hzT
 
 #print axioms QTTT_completion_owner_star_semantics
+
+
+/-- At n=3, a second-layer projected-loss vertex has all three retained
+coordinates active. -/
+theorem secondLayer_fin3_retainedActive_eq_univ
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1) :
+    retainedActive C v = (Finset.univ : Finset (Fin 3)) := by
+  apply Finset.eq_univ_of_card
+  have hcard :=
+    secondLayerLoss_retainedActive_card_eq_three
+      (n := 3) C exponent hvLoss (by simpa using hvSecond)
+  simpa using hcard
+
+/-- Hence the retained completion cube of an n=3 second-layer loss vertex is
+a singleton: any two completion words at that vertex coincide. -/
+theorem secondLayer_fin3_completion_unique
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1)
+    {u w : Fin 3 → Bool}
+    (hu : u ∈ retainedCompletionWords C v)
+    (hw : w ∈ retainedCompletionWords C v) :
+    u = w := by
+  have hactive :=
+    secondLayer_fin3_retainedActive_eq_univ
+      C exponent hvLoss hvSecond
+  funext q
+  have hqu : q ∈ retainedActive C v := by
+    rw [hactive]
+    simp
+  have huComp :=
+    (mem_retainedCompletionWords C v u).1 hu q hqu
+  have hwComp :=
+    (mem_retainedCompletionWords C v w).1 hw q hqu
+  exact huComp.trans hwComp.symm
+
+/-- Membership in an active translated slice of an n=3 second-layer loss
+vertex determines its base completion word exactly. -/
+theorem secondLayer_fin3_translated_base_eq_flip
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1)
+    {word : Fin 3 → Bool}
+    {c : Fin 3}
+    (hwordT : word ∈ translatedCompletionWords C v c)
+    {base : Fin 3 → Bool}
+    (hbase : base ∈ retainedCompletionWords C v) :
+    base = flipBoolWordAt word c := by
+  have hflip :
+      flipBoolWordAt word c ∈ retainedCompletionWords C v :=
+    (mem_translatedCompletionWords C v c word).1 hwordT
+  exact secondLayer_fin3_completion_unique
+    C exponent hvLoss hvSecond hbase hflip
+
+#print axioms secondLayer_fin3_retainedActive_eq_univ
+#print axioms secondLayer_fin3_completion_unique
+#print axioms secondLayer_fin3_translated_base_eq_flip
 
 
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
