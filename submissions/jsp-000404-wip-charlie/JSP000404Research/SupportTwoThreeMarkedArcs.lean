@@ -1,4 +1,5 @@
 import JSP000404Research.SupportThreeZeroAngleBlocks
+import JSP000404Research.SupportTwoNarrowClusters
 import JSP000404Research.CyclicActualAngles
 import Mathlib.Tactic
 
