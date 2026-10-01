@@ -749,5 +749,74 @@ theorem commonWord_bottomNonloss_upperTwoLoss_incoming_pattern
 #print axioms commonWord_lowerTwoLoss_topNonloss_outgoing_pattern
 #print axioms commonWord_bottomNonloss_upperTwoLoss_incoming_pattern
 
+
+/-- The remaining exact-two-loss ordering has loss vertices at the two
+extremes and a non-loss middle vertex.  The common word is translated
+outward from the lower loss and inward to the upper loss, producing a
+true/false owner-bit pattern. -/
+theorem commonWord_extremeLoss_middleNonloss_cross_pattern
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {a b c : V}
+    (hab : a < b)
+    (hbc : b < c)
+    (haLoss : a ∈ projectedLossVertices C exponent)
+    (hbNonloss : b ∉ projectedLossVertices C exponent)
+    (hcLoss : c ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (haBlock : word ∈ enlargedProjectedCandidateBlock C exponent a)
+    (hbBlock : word ∈ enlargedProjectedCandidateBlock C exponent b)
+    (hcBlock : word ∈ enlargedProjectedCandidateBlock C exponent c) :
+    let habRet :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss haLoss hab
+    let hbcRet :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hcLoss hbc
+    let eab := retainedColor C a b habRet
+    let ebc := retainedColor C b c hbcRet
+    word ∈ translatedCompletionWords C a eab ∧
+    word ∈ translatedCompletionWords C c ebc ∧
+    word eab = true ∧
+    word ebc = false := by
+  dsimp
+  have habRet :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss haLoss hab
+  have hbcRet :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hcLoss hbc
+  let eab := retainedColor C a b habRet
+  let ebc := retainedColor C b c hbcRet
+  have haTrans :
+      word ∈ translatedCompletionWords C a eab :=
+    loss_nonloss_common_word_edgeSlice_of_lt
+      C exponent hexp honeLoss hab haLoss hbNonloss haBlock hbBlock
+  have hcTrans :
+      word ∈ translatedCompletionWords C c ebc :=
+    nonloss_loss_common_word_edgeSlice_of_lt
+      C exponent hexp honeLoss hbc hbNonloss hcLoss hbBlock hcBlock
+  have heabOut :
+      eab ∈ outgoingRetained C a := by
+    apply (mem_outgoingRetained_iff C a eab).2
+    refine ⟨b,hab,?_⟩
+    apply Fin.ext
+    rfl
+  have hebcIn :
+      ebc ∈ incomingRetained C c := by
+    apply (mem_incomingRetained_iff C c ebc).2
+    refine ⟨b,hbc,?_⟩
+    apply Fin.ext
+    rfl
+  exact ⟨haTrans,hcTrans,
+    translated_loss_word_true_of_outgoing C heabOut haTrans,
+    translated_loss_word_false_of_incoming C hebcIn hcTrans⟩
+
+#print axioms commonWord_extremeLoss_middleNonloss_cross_pattern
+
 end OrderedEdgeColoring
 end JSP000404Research
