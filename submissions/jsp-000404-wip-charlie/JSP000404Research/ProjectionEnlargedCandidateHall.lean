@@ -921,6 +921,128 @@ theorem planar_topLoss_word_closed_outlet
 #print axioms planar_secondLayerLoss_word_closed_outlet
 #print axioms planar_topLoss_word_closed_outlet
 
+
+theorem planar_longCycle_overload_recursive_outlet
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      let exponent := planarCentreExponent hp C
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T)
+    (hgirth :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      let exponent := planarCentreExponent hp C
+      3 < (enlargedCollisionGraph R exponent T).girth) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ v ∈ T,
+        ExactSharedOutlet R exponent v
+    )
+    ∨
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        ExactProjectedBudget R exponent w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w + 3 ≤ n
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤
+        n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  have hdefR :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T := by
+    simpa [R,exponent,hn1,hdelta1] using hdef
+  have hgirthR :
+      3 < (enlargedCollisionGraph R exponent T).girth := by
+    simpa [R,exponent,hn1,hdelta1] using hgirth
+
+  rcases
+    longCycle_overload_recursive_outlet
+      R exponent hexpLt hexp hone
+      hdefR hgirthR
+    with hexactOutlet | htop
+  · exact Or.inl hexactOutlet
+  · obtain ⟨v,hvT,hvLoss,hvTop,hsharedQ⟩ := htop
+    obtain ⟨word,hwordSharedQ⟩ := hsharedQ
+    have hword :
+        word ∈ retainedCompletionWords R v :=
+      (Finset.mem_inter.mp hwordSharedQ).2
+    have hvTopGeom :
+        centreExponent (C v) t = n - 1 := by
+      simpa [exponent,planarCentreExponent] using hvTop
+    rcases
+      planar_topLoss_word_closed_outlet
+        hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+        hcard C
+        (v := v)
+        (by simpa [R,exponent,hn1,hdelta1] using hvLoss)
+        hvTopGeom
+        (word := word)
+        (by simpa [R,hn1,hdelta1] using hword)
+      with hhole | hpaid | hexact | hdeep
+    · exact Or.inr (Or.inl hhole)
+    · exact Or.inr (Or.inr (Or.inl hpaid))
+    · exact Or.inr (Or.inr (Or.inr (Or.inl hexact)))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr hdeep)))
+
+#print axioms planar_longCycle_overload_recursive_outlet
+
 #print axioms planarEnlargedCandidateBlock_local_capacity
 #print axioms planar_lowerBranch_capacity_of_enlargedBlock_expansion
 #print axioms planar_enlarged_expansion_failure_minimal_core
