@@ -189,4 +189,44 @@ theorem three_blocks_support_two_has_small_zero_arc
 #print axioms zero_block_angle_sum_le_global_zero_mass
 #print axioms three_blocks_support_two_has_small_zero_arc
 
+
+/-- Geometry-facing wrapper: once three marked rays cut a support-two cycle
+into three aligned arc blocks, one marked pair is D-small. -/
+theorem three_marked_arcs_support_two_small_pair
+    {V : Type*} {p : V → Plane}
+    (i a b c : V)
+    (q₁ q₂ q₃ : List ℕ)
+    (A₁ A₂ A₃ : List ℝ)
+    (hlen₁ : q₁.length = A₁.length)
+    (hlen₂ : q₂.length = A₂.length)
+    (hlen₃ : q₃.length = A₃.length)
+    (hsupport :
+      listPositiveCount (q₁ ++ q₂ ++ q₃) = 2)
+    (hA0 :
+      ∀ A ∈ A₁ ++ A₂ ++ A₃, 0 ≤ A)
+    {D : ℝ}
+    (hmass :
+      listZeroAngleMass
+        (q₁ ++ q₂ ++ q₃)
+        (A₁ ++ A₂ ++ A₃) ≤ D)
+    (hab :
+      EuclideanGeometry.angle (p a) (p i) (p b) ≤ A₁.sum)
+    (hbc :
+      EuclideanGeometry.angle (p b) (p i) (p c) ≤ A₂.sum)
+    (hca :
+      EuclideanGeometry.angle (p c) (p i) (p a) ≤ A₃.sum) :
+    EuclideanGeometry.angle (p a) (p i) (p b) ≤ D
+    ∨ EuclideanGeometry.angle (p b) (p i) (p c) ≤ D
+    ∨ EuclideanGeometry.angle (p c) (p i) (p a) ≤ D := by
+  rcases
+    three_blocks_support_two_has_small_zero_arc
+      q₁ q₂ q₃ A₁ A₂ A₃
+      hlen₁ hlen₂ hlen₃ hsupport hA0 hmass
+    with h₁ | h₂ | h₃
+  · exact Or.inl (hab.trans h₁.2)
+  · exact Or.inr (Or.inl (hbc.trans h₂.2))
+  · exact Or.inr (Or.inr (hca.trans h₃.2))
+
+#print axioms three_marked_arcs_support_two_small_pair
+
 end JSP000404Research
