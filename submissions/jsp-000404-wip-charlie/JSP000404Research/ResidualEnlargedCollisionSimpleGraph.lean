@@ -1350,6 +1350,151 @@ theorem longCycle_sum_block_cards_eq_union_add_double
       C exponent T hgirth)
 
 
+
+theorem longCycle_sum_shared_cards_eq_two_mul_doubleCovered
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (∑ v ∈ T,
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card)
+      =
+    2 * (coreDoubleCoveredWords C exponent T).card := by
+  classical
+  have hpoint :
+      ∀ word : Fin n → Bool,
+        (∑ v ∈ T,
+          if word ∈ sharedBlockWords
+              (enlargedProjectedCandidateBlock C exponent)
+              T v
+          then 1 else 0)
+        =
+        if word ∈ coreDoubleCoveredWords C exponent T
+        then 2 else 0 := by
+    intro word
+    by_cases hdouble :
+        word ∈ coreDoubleCoveredWords C exponent T
+    · have hcard :=
+        (mem_coreDoubleCoveredWords
+          C exponent T word).1 hdouble
+      have hfilterEq :
+          T.filter
+              (fun v =>
+                word ∈ sharedBlockWords
+                  (enlargedProjectedCandidateBlock C exponent)
+                  T v)
+            =
+          coreEnlargedCandidateFibre
+            C exponent T word := by
+        ext v
+        simp only [Finset.mem_filter]
+        constructor
+        · rintro ⟨hvT,hshared⟩
+          exact mem_coreEnlargedCandidateFibre_of_shared
+            C exponent hvT hshared
+        · intro hvF
+          have hvData :=
+            (mem_coreEnlargedCandidateFibre
+              C exponent T word v).1 hvF
+          refine ⟨hvData.1,?_⟩
+          exact
+            (shared_iff_mem_fibre_and_card_eq_two_of_three_lt_girth
+              C exponent hgirth hvData.1).2
+              ⟨hvF,hcard⟩
+      calc
+        (∑ v ∈ T,
+          if word ∈ sharedBlockWords
+              (enlargedProjectedCandidateBlock C exponent)
+              T v
+          then 1 else 0)
+          =
+        (T.filter
+          (fun v =>
+            word ∈ sharedBlockWords
+              (enlargedProjectedCandidateBlock C exponent)
+              T v)).card := by
+            symm
+            exact Finset.card_filter _ _
+        _ =
+        (coreEnlargedCandidateFibre
+          C exponent T word).card := by rw [hfilterEq]
+        _ = 2 := hcard
+        _ =
+        if word ∈ coreDoubleCoveredWords C exponent T
+        then 2 else 0 := by simp [hdouble]
+    · have hnone :
+          ∀ v ∈ T,
+            word ∉ sharedBlockWords
+              (enlargedProjectedCandidateBlock C exponent)
+              T v := by
+        intro v hvT hshared
+        have hcard :=
+          coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
+            C exponent hgirth hvT hshared
+        exact hdouble
+          ((mem_coreDoubleCoveredWords
+            C exponent T word).2 hcard)
+      simp [hdouble,hnone]
+
+  calc
+    (∑ v ∈ T,
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card)
+      =
+    ∑ v ∈ T,
+      ∑ word : Fin n → Bool,
+        if word ∈ sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+        then 1 else 0 := by
+          apply Finset.sum_congr rfl
+          intro v hvT
+          symm
+          exact Finset.card_eq_sum_ite
+            (Finset.subset_univ
+              (sharedBlockWords
+                (enlargedProjectedCandidateBlock C exponent)
+                T v))
+    _ =
+    ∑ word : Fin n → Bool,
+      ∑ v ∈ T,
+        if word ∈ sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+        then 1 else 0 := by
+          rw [Finset.sum_comm]
+    _ =
+    ∑ word : Fin n → Bool,
+      if word ∈ coreDoubleCoveredWords C exponent T
+      then 2 else 0 := by
+          apply Finset.sum_congr rfl
+          intro word hword
+          exact hpoint word
+    _ =
+    2 * (coreDoubleCoveredWords C exponent T).card := by
+      have hcard :
+          (coreDoubleCoveredWords C exponent T).card
+            =
+          ∑ word : Fin n → Bool,
+            if word ∈ coreDoubleCoveredWords C exponent T
+            then 1 else 0 := by
+        exact Finset.card_eq_sum_ite
+          (Finset.subset_univ
+            (coreDoubleCoveredWords C exponent T))
+      rw [hcard, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro word hword
+      by_cases hmem :
+          word ∈ coreDoubleCoveredWords C exponent T
+      · simp [hmem]
+      · simp [hmem]
+
+
 theorem longCycle_doubleCovered_eq_totalSlack_add_deficiency
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
