@@ -396,6 +396,78 @@ theorem enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecurs
 #print axioms enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
 
 
+/-- Root-ready form of the triangle reduction: deep loss is exported
+immediately, while the only unresolved triangle branch is a distinct
+high-layer loss pair of type top--second, second--top, or second--second. -/
+theorem enlargedCollisionGraph_triangle_deep_or_highPair_or_paid_or_exactRecursive
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (htop :
+      ((Finset.univ : Finset V).filter
+        (fun z => exponent z = n - 1)).card ≤ 1)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (huw :
+      (enlargedCollisionGraph C exponent T).Adj u w)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w) :
+    (
+      ∃ z : V,
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ a b : {x : V // x ∈ T},
+        a ≠ b ∧
+        a.1 ∈ projectedLossVertices C exponent ∧
+        b.1 ∈ projectedLossVertices C exponent ∧
+        (
+          (exponent a.1 = n - 1 ∧ exponent b.1 = n - 2)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 1)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 2)
+        )
+    )
+    ∨
+    (
+      ∃ z : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) z
+    )
+    ∨
+    (
+      ∃ source : V,
+        ExactRecursiveOutlet C exponent source
+    ) := by
+  rcases
+    enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
+      C exponent hexpLt hexp honeLoss htop T huv huw hvw
+    with hlossPair | hpaid | hrec
+  · obtain ⟨a,b,hab,haLoss,hbLoss,hcases⟩ := hlossPair
+    rcases hcases with haDeep | hbDeep | haTopSecond | haSecondTop | hbothSecond
+    · exact Or.inl ⟨a.1,haLoss,haDeep⟩
+    · exact Or.inl ⟨b.1,hbLoss,hbDeep⟩
+    · exact Or.inr (Or.inl
+        ⟨a,b,hab,haLoss,hbLoss,Or.inl haTopSecond⟩)
+    · exact Or.inr (Or.inl
+        ⟨a,b,hab,haLoss,hbLoss,Or.inr (Or.inl haSecondTop)⟩)
+    · exact Or.inr (Or.inl
+        ⟨a,b,hab,haLoss,hbLoss,Or.inr (Or.inr hbothSecond)⟩)
+  · exact Or.inr (Or.inr (Or.inl hpaid))
+  · exact Or.inr (Or.inr (Or.inr hrec))
+
+#print axioms enlargedCollisionGraph_triangle_deep_or_highPair_or_paid_or_exactRecursive
+
+
 /-- At an ordered triangle's middle projected-loss vertex, the two incident
 edge colours are retained, active, and distinct.  In the top layer these two
 coordinates exhaust the active-cardinality budget. -/
