@@ -346,9 +346,27 @@ theorem sum_addDemandAt
     (∑ x ∈ S, addDemandAt demand w r x) =
       (∑ x ∈ S, demand x) + r := by
   classical
-  unfold addDemandAt
-  rw [Finset.sum_ite_irrel]
-  simp [hw, Finset.sum_add_distrib]
+  have hpoint :
+      ∀ x ∈ S,
+        addDemandAt demand w r x =
+          demand x + (if x = w then r else 0) := by
+    intro x hx
+    simp [addDemandAt]
+  calc
+    (∑ x ∈ S, addDemandAt demand w r x)
+      =
+    ∑ x ∈ S, (demand x + (if x = w then r else 0)) := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      exact hpoint x hx
+    _ =
+      (∑ x ∈ S, demand x) +
+        ∑ x ∈ S, (if x = w then r else 0) := by
+      rw [Finset.sum_add_distrib]
+    _ =
+      (∑ x ∈ S, demand x) + r := by
+      rw [Finset.sum_ite_eq' S w (fun _ => r)]
+      simp [hw]
 
 theorem minimal_deficient_delete_with_transfer_deficient
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
