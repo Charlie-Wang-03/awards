@@ -256,5 +256,143 @@ theorem enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
 #print axioms enlargedTriangle_nonloss_edge_paid_or_exactRecursive
 #print axioms enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
 
+
+/-- Two distinct projected-loss vertices which are not already deep can only
+occupy the top or second exponent layers.  Since the top layer has global
+multiplicity at most one, the hard pair has one of exactly three layer
+patterns: top--second, second--top, or second--second. -/
+theorem two_projectedLoss_highLayer_classification
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (htop :
+      ((Finset.univ : Finset V).filter
+        (fun z => exponent z = n - 1)).card ≤ 1)
+    {u v : V}
+    (huv : u ≠ v)
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent) :
+    (
+      exponent u + 3 ≤ n
+    )
+    ∨
+    (
+      exponent v + 3 ≤ n
+    )
+    ∨
+    (
+      exponent u = n - 1 ∧ exponent v = n - 2
+    )
+    ∨
+    (
+      exponent u = n - 2 ∧ exponent v = n - 1
+    )
+    ∨
+    (
+      exponent u = n - 2 ∧ exponent v = n - 2
+    ) := by
+  classical
+  by_cases huDeep : exponent u + 3 ≤ n
+  · exact Or.inl huDeep
+  · right
+    by_cases hvDeep : exponent v + 3 ≤ n
+    · exact Or.inl hvDeep
+    · right
+      have huLayer :
+          exponent u = n - 1 ∨ exponent u = n - 2 := by
+        have huLt := hexpLt u
+        omega
+      have hvLayer :
+          exponent v = n - 1 ∨ exponent v = n - 2 := by
+        have hvLt := hexpLt v
+        omega
+      rcases huLayer with huTop | huSecond
+      · rcases hvLayer with hvTop | hvSecond
+        · exfalso
+          have huMem :
+              u ∈ (Finset.univ : Finset V).filter
+                (fun z => exponent z = n - 1) := by
+            simp [huTop]
+          have hvMem :
+              v ∈ (Finset.univ : Finset V).filter
+                (fun z => exponent z = n - 1) := by
+            simp [hvTop]
+          exact huv (Finset.card_le_one.mp htop huMem hvMem)
+        · exact Or.inl ⟨huTop,hvSecond⟩
+      · rcases hvLayer with hvTop | hvSecond
+        · exact Or.inr (Or.inl ⟨huSecond,hvTop⟩)
+        · exact Or.inr (Or.inr ⟨huSecond,hvSecond⟩)
+
+/-- Consequently the genuinely hard two-loss branch of a collision triangle
+is reduced to a finite high-layer pair classification. -/
+theorem enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (htop :
+      ((Finset.univ : Finset V).filter
+        (fun z => exponent z = n - 1)).card ≤ 1)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (huw :
+      (enlargedCollisionGraph C exponent T).Adj u w)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w) :
+    (
+      ∃ a b : {x : V // x ∈ T},
+        a ≠ b ∧
+        a.1 ∈ projectedLossVertices C exponent ∧
+        b.1 ∈ projectedLossVertices C exponent ∧
+        (
+          exponent a.1 + 3 ≤ n
+          ∨
+          exponent b.1 + 3 ≤ n
+          ∨
+          (exponent a.1 = n - 1 ∧ exponent b.1 = n - 2)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 1)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 2)
+        )
+    )
+    ∨
+    (
+      ∃ z : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) z
+    )
+    ∨
+    (
+      ∃ source : V,
+        ExactRecursiveOutlet C exponent source
+    ) := by
+  rcases
+    enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
+      C exponent hexp honeLoss T huv huw hvw
+    with hlossPair | hpaid | hrec
+  · obtain ⟨a,b,hab,haLoss,hbLoss⟩ := hlossPair
+    exact Or.inl
+      ⟨a,b,hab,haLoss,hbLoss,
+        two_projectedLoss_highLayer_classification
+          C exponent hexpLt htop
+          (by
+            intro h
+            apply hab
+            apply Subtype.ext
+            exact h)
+          haLoss hbLoss⟩
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr hrec)
+
+#print axioms two_projectedLoss_highLayer_classification
+#print axioms enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
+
 end OrderedEdgeColoring
 end JSP000404Research
