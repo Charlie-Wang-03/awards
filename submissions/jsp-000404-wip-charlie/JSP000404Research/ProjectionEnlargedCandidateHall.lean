@@ -286,10 +286,171 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
     i (C i)
     (by simpa [exponent, planarCentreExponent] using hiExp)
 
+
+theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 2 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T)
+    (hmin :
+      ∀ U : Finset (ProjectionOrdered V),
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun i => 2 ^ centreExponent (C i) t)
+          (planarEnlargedCandidateBlock
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 hdeltaHalf ht hlam C)
+          U)
+    {a b : ProjectionOrdered V}
+    (haT : a ∈ T)
+    (hbT : b ∈ T)
+    (haLoss :
+      a ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith) ht hlam)
+        (planarCentreExponent hp C))
+    (hbLoss :
+      b ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith) ht hlam)
+        (planarCentreExponent hp C))
+    (haMax :
+      ∀ z : ProjectionOrdered V,
+        z ∈ T →
+        z ∈ projectedLossVertices
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam)
+          (planarCentreExponent hp C) →
+        (retainedCompletionWords
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam) z).card
+          ≤
+        (retainedCompletionWords
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam) a).card)
+    (hbMax :
+      ∀ z : ProjectionOrdered V,
+        z ∈ T →
+        z ∈ projectedLossVertices
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam)
+          (planarCentreExponent hp C) →
+        (retainedCompletionWords
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam) z).card
+          ≤
+        (retainedCompletionWords
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith) ht hlam) b).card)
+    (haDegree :
+      (enlargedCollisionNeighbours
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith) ht hlam)
+        (planarCentreExponent hp C) T a).card = 1)
+    (hbDegree :
+      (enlargedCollisionNeighbours
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith) ht hlam)
+        (planarCentreExponent hp C) T b).card = 1) :
+    a = b := by
+  let R :=
+    planarStandardResidualColoring
+      hp hcap (by omega : 1 ≤ n)
+      hdelta0 (by linarith) ht hlam
+  let exponent := planarCentreExponent hp C
+  have hdelta1 : delta < 1 := by linarith
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n := by
+    intro x
+    simpa [exponent, planarCentreExponent] using
+      (centreExponent_lt_n
+        (C x) n delta t (by omega : 1 ≤ n)
+        hdelta0 hdelta1 ht)
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤ n - exponent x + 1 := by
+    exact planarStandardResidual_oneLayer_budget
+      hp hcap (by omega : 1 ≤ n)
+      hdelta0 hdelta1 ht hlam C
+  have hdefR :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T := by
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent] using hdef
+  have hminR :
+      ∀ U : Finset (ProjectionOrdered V),
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock R exponent)
+          U := by
+    intro U hUT
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent] using hmin U hUT
+  have haExp :
+      exponent a = n - 1 :=
+    minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
+      R exponent hexpLt hexp hone
+      hdefR hminR haT
+      (by simpa [R,exponent] using haLoss)
+      (by
+        intro z hzT hzLoss
+        simpa [R,exponent] using
+          haMax z hzT (by simpa [R,exponent] using hzLoss))
+      (by simpa [R,exponent] using haDegree)
+  have hbExp :
+      exponent b = n - 1 :=
+    minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
+      R exponent hexpLt hexp hone
+      hdefR hminR hbT
+      (by simpa [R,exponent] using hbLoss)
+      (by
+        intro z hzT hzLoss
+        simpa [R,exponent] using
+          hbMax z hzT (by simpa [R,exponent] using hzLoss))
+      (by simpa [R,exponent] using hbDegree)
+  have htop :=
+    projectionOrdered_topExponent_filter_card_le_one
+      hp hcap hcard hn hdelta0 hdeltaHalf ht hlam C
+  apply Finset.card_le_one.mp htop
+  · simp [exponent, planarCentreExponent, haExp]
+  · simp [exponent, planarCentreExponent, hbExp]
+
 #print axioms planarEnlargedCandidateBlock_local_capacity
 #print axioms planar_lowerBranch_capacity_of_enlargedBlock_expansion
 #print axioms planar_enlarged_expansion_failure_minimal_core
 #print axioms planar_minimal_enlarged_maxLoss_degree_one_is_sharp
+#print axioms planar_minimal_enlarged_no_two_maxLoss_degree_one
 
 end
 end ProjectionOrdered
