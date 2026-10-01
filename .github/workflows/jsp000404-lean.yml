@@ -231,6 +231,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualTranslatedOverlapCrossDisjoint
 
+      - name: Check second-layer three-exit avoidance
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualLossThreeExitAvoidance
+
       - name: Check safe common-inactive tensor reduction
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeCommonInactiveTensor
