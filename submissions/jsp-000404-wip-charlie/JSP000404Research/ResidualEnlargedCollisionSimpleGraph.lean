@@ -1142,9 +1142,109 @@ theorem longCycle_sum_block_cards_eq_union_add_double
     (coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
       C exponent T hgirth)
 
-#print axioms sum_coreEnlargedCandidateFibre_cards_eq_sum_block_cards
-#print axioms sum_fibre_cards_eq_union_add_double_of_card_le_two
-#print axioms longCycle_sum_block_cards_eq_union_add_double
+
+theorem longCycle_doubleCovered_eq_totalSlack_add_deficiency
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (coreDoubleCoveredWords C exponent T).card
+      =
+    (∑ v ∈ T,
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ))
+      +
+    blockDeficiencyAmount
+      (fun x => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      T := by
+  classical
+  have hcount :=
+    longCycle_sum_block_cards_eq_union_add_double
+      C exponent T hgirth
+
+  have hlocal :
+      ∀ v : V,
+        2 ^ exponent v ≤
+          (enlargedProjectedCandidateBlock
+            C exponent v).card :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss
+
+  have hslackAdd :
+      (∑ v ∈ T,
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        ))
+        +
+      (∑ v ∈ T, 2 ^ exponent v)
+      =
+      ∑ v ∈ T,
+        (enlargedProjectedCandidateBlock C exponent v).card := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro v hvT
+    exact Nat.sub_add_cancel (hlocal v)
+
+  have hdef' :
+      (T.biUnion
+        (enlargedProjectedCandidateBlock C exponent)).card
+        <
+      ∑ v ∈ T, 2 ^ exponent v := hdef
+
+  unfold blockDeficiencyAmount
+  omega
+
+theorem longCycle_totalSlack_lt_doubleCovered
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (∑ v ∈ T,
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ))
+      <
+    (coreDoubleCoveredWords C exponent T).card := by
+  have heq :=
+    longCycle_doubleCovered_eq_totalSlack_add_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  have hpos :=
+    blockDeficiencyAmount_pos_of_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef
+  omega
+
+#print axioms longCycle_doubleCovered_eq_totalSlack_add_deficiency
+#print axioms longCycle_totalSlack_lt_doubleCovered
 
 end OrderedEdgeColoring
 end JSP000404Research
