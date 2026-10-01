@@ -2210,9 +2210,121 @@ theorem uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
   rw [hdecomp] at hsum
   omega
 
-#print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
-#print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
-#print axioms uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
+
+theorem minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvw : v < w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hvLoss hvw
+    blockDeficiencyAmount
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T
+      ≤
+    (lossLeafParentSliceWords
+      C exponent T v w hvw hret).card := by
+  dsimp
+  have hlocal :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss v
+  have hglobal :=
+    minimal_deficient_amount_le_shared_excess
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT hlocal
+  have hleaf :=
+    minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hvw hunique
+  omega
+
+theorem minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_gt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwv : w < v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hvLoss hwv
+    blockDeficiencyAmount
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T
+      ≤
+    (lossLeafParentSliceWordsOfLeft
+      C exponent T v w hwv hret).card := by
+  dsimp
+  have hlocal :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss v
+  have hglobal :=
+    minimal_deficient_amount_le_shared_excess
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT hlocal
+  have hleaf :=
+    minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hwv hunique
+  omega
+
+#print axioms minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_lt
+#print axioms minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_gt
 #print axioms uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
 #print axioms uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
 
