@@ -867,85 +867,49 @@ theorem threeTranslatedLoss_topAtUpper_true_impossible
     · exact htrue
     · rw [hzTrue] at hfalse
       contradiction
-  have hxzEdge :=
-    translated_loss_fibre_true_true_edge_colour_lower
-      C exponent hexp honeLoss
-      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-      word
-      (by
-        intro q hqF
-        have hqData :=
-          (mem_translatedLossFibre
-            C exponent
-            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-            word q).1 hqF
-        by_cases hqx : q = x
-        · subst q
-          simpa using hcx
-        · by_cases hqy : q = y
-          · subst q
-            simpa [hqx] using hcy
-          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
-              simp [hqx,hqy]
-            rw [hqChoice]
-            exact
-              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word x).2
-        simp [hxLoss,hxT])
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word z).2
-        have hzx : z ≠ x := ne_of_gt hxz
-        have hzy : z ≠ y := ne_of_gt hyz
-        simp [hzx,hzy,hzLoss,hzT])
-      hxz hxTrue hzTrue
-  have hyzEdge :=
-    translated_loss_fibre_true_true_edge_colour_lower
-      C exponent hexp honeLoss
-      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-      word
-      (by
-        intro q hqF
-        have hqData :=
-          (mem_translatedLossFibre
-            C exponent
-            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-            word q).1 hqF
-        by_cases hqx : q = x
-        · subst q
-          simpa using hcx
-        · by_cases hqy : q = y
-          · subst q
-            simpa [hqx] using hcy
-          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
-              simp [hqx,hqy]
-            rw [hqChoice]
-            exact
-              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word y).2
-        have hyx : y ≠ x := ne_of_gt hxy
-        simp [hyx,hyLoss,hyT])
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word z).2
-        have hzx : z ≠ x := ne_of_gt hxz
-        have hzy : z ≠ y := ne_of_gt hyz
-        simp [hzx,hzy,hzLoss,hzT])
-      hyz hyTrue hzTrue
-  obtain ⟨hxzRet,hxzCol⟩ := hxzEdge
-  obtain ⟨hyzRet,hyzCol⟩ := hyzEdge
+
+  have hxzColour :
+      ∃ hret : (C.color x z).val < n,
+        retainedColor C x z hret = cx := by
+    have hedge :=
+      translated_loss_conflict_edge_colour
+        C exponent hexp honeLoss
+        hxLoss hzLoss (ne_of_lt hxz) hxT hzT
+    rcases hedge with hforward | hbackward
+    · obtain ⟨_hxz,hret,hcol⟩ := hforward
+      rcases hcol with hcxCol | hczCol
+      · exact ⟨hret,hcxCol⟩
+      · have hzFalse :=
+          translated_loss_conflict_upper_colour_forces_word_false
+            C exponent hexp honeLoss hxz
+            hxLoss hzLoss hcx hcz hxT hzT hret hczCol
+        rw [hzTrue] at hzFalse
+        contradiction
+    · obtain ⟨hzx,_,_⟩ := hbackward
+      exact False.elim ((not_lt_of_ge hxz.le) hzx)
+
+  have hyzColour :
+      ∃ hret : (C.color y z).val < n,
+        retainedColor C y z hret = cy := by
+    have hedge :=
+      translated_loss_conflict_edge_colour
+        C exponent hexp honeLoss
+        hyLoss hzLoss (ne_of_lt hyz) hyT hzT
+    rcases hedge with hforward | hbackward
+    · obtain ⟨_hyz,hret,hcol⟩ := hforward
+      rcases hcol with hcyCol | hczCol
+      · exact ⟨hret,hcyCol⟩
+      · have hzFalse :=
+          translated_loss_conflict_upper_colour_forces_word_false
+            C exponent hexp honeLoss hyz
+            hyLoss hzLoss hcy hcz hyT hzT hret hczCol
+        rw [hzTrue] at hzFalse
+        contradiction
+    · obtain ⟨hzy,_,_⟩ := hbackward
+      exact False.elim ((not_lt_of_ge hyz.le) hzy)
+
+  obtain ⟨hxzRet,hxzCol⟩ := hxzColour
+  obtain ⟨hyzRet,hyzCol⟩ := hyzColour
   have hcxAtZ : cx ∈ retainedActive C z := by
     rw [retainedActive_eq_incoming_union_outgoing C z]
     apply Finset.mem_union_left
@@ -962,6 +926,7 @@ theorem threeTranslatedLoss_topAtUpper_true_impossible
     apply Fin.ext
     have hval := congrArg Fin.val hyzCol
     simpa [retainedColor] using hval
+
   have hcxy : cx ≠ cy := by
     intro h
     have hdisj :=
@@ -989,6 +954,7 @@ theorem threeTranslatedLoss_topAtUpper_true_impossible
     have hzT' : word ∈ translatedCompletionWords C z cy := by
       simpa [h] using hzT
     exact Finset.disjoint_left.mp hdisj hyT hzT'
+
   have hthree :
       3 ≤ (retainedActive C z).card := by
     have hsub :
@@ -1044,83 +1010,49 @@ theorem threeTranslatedLoss_topAtLower_false_impossible
     translated_loss_fibre_monotone_bits
       C exponent hexp honeLoss hxz
       hxLoss hzLoss hcx hcz hxT hzT hxFalse
-  have hxyEdge :=
-    translated_loss_fibre_false_false_edge_colour_upper
-      C exponent hexp honeLoss
-      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-      word
-      (by
-        intro q hqF
-        have hqData :=
-          (mem_translatedLossFibre
-            C exponent
-            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-            word q).1 hqF
-        by_cases hqx : q = x
-        · subst q
-          simpa using hcx
-        · by_cases hqy : q = y
-          · subst q
-            simpa [hqx] using hcy
-          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
-              simp [hqx,hqy]
-            rw [hqChoice]
-            exact
-              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word x).2
-        simp [hxLoss,hxT])
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word y).2
-        have hyx : y ≠ x := ne_of_gt hxy
-        simp [hyx,hyLoss,hyT])
-      hxy hxFalse hyFalse
-  have hxzEdge :=
-    translated_loss_fibre_false_false_edge_colour_upper
-      C exponent hexp honeLoss
-      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-      word
-      (by
-        intro q hqF
-        have hqData :=
-          (mem_translatedLossFibre
-            C exponent
-            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-            word q).1 hqF
-        by_cases hqx : q = x
-        · subst q
-          simpa using hcx
-        · by_cases hqy : q = y
-          · subst q
-            simpa [hqx] using hcy
-          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
-              simp [hqx,hqy]
-            rw [hqChoice]
-            exact
-              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word x).2
-        simp [hxLoss,hxT])
-      (by
-        apply (mem_translatedLossFibre
-          C exponent
-          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
-          word z).2
-        have hzx : z ≠ x := ne_of_gt hxz
-        have hzy : z ≠ y := ne_of_gt hyz
-        simp [hzx,hzy,hzLoss,hzT])
-      hxz hxFalse hzFalse
-  obtain ⟨hxyRet,hxyCol⟩ := hxyEdge
-  obtain ⟨hxzRet,hxzCol⟩ := hxzEdge
+
+  have hxyColour :
+      ∃ hret : (C.color x y).val < n,
+        retainedColor C x y hret = cy := by
+    have hedge :=
+      translated_loss_conflict_edge_colour
+        C exponent hexp honeLoss
+        hxLoss hyLoss (ne_of_lt hxy) hxT hyT
+    rcases hedge with hforward | hbackward
+    · obtain ⟨_hxy,hret,hcol⟩ := hforward
+      rcases hcol with hcxCol | hcyCol
+      · have hxTrue :=
+          translated_loss_conflict_lower_colour_forces_word_true
+            C exponent hexp honeLoss hxy
+            hxLoss hyLoss hcx hcy hxT hyT hret hcxCol
+        rw [hxFalse] at hxTrue
+        contradiction
+      · exact ⟨hret,hcyCol⟩
+    · obtain ⟨hyx,_,_⟩ := hbackward
+      exact False.elim ((not_lt_of_ge hxy.le) hyx)
+
+  have hxzColour :
+      ∃ hret : (C.color x z).val < n,
+        retainedColor C x z hret = cz := by
+    have hedge :=
+      translated_loss_conflict_edge_colour
+        C exponent hexp honeLoss
+        hxLoss hzLoss (ne_of_lt hxz) hxT hzT
+    rcases hedge with hforward | hbackward
+    · obtain ⟨_hxz,hret,hcol⟩ := hforward
+      rcases hcol with hcxCol | hczCol
+      · have hxTrue :=
+          translated_loss_conflict_lower_colour_forces_word_true
+            C exponent hexp honeLoss hxz
+            hxLoss hzLoss hcx hcz hxT hzT hret hcxCol
+        rw [hxFalse] at hxTrue
+        contradiction
+      · exact ⟨hret,hczCol⟩
+    · obtain ⟨hzx,_,_⟩ := hbackward
+      exact False.elim ((not_lt_of_ge hxz.le) hzx)
+
+  obtain ⟨hxyRet,hxyCol⟩ := hxyColour
+  obtain ⟨hxzRet,hxzCol⟩ := hxzColour
   have hcyAtX : cy ∈ retainedActive C x := by
     rw [retainedActive_eq_incoming_union_outgoing C x]
     apply Finset.mem_union_right
@@ -1137,6 +1069,7 @@ theorem threeTranslatedLoss_topAtLower_false_impossible
     apply Fin.ext
     have hval := congrArg Fin.val hxzCol
     simpa [retainedColor] using hval
+
   have hcxy : cx ≠ cy := by
     intro h
     have hdisj :=
@@ -1164,6 +1097,7 @@ theorem threeTranslatedLoss_topAtLower_false_impossible
     have hzT' : word ∈ translatedCompletionWords C z cy := by
       simpa [h] using hzT
     exact Finset.disjoint_left.mp hdisj hyT hzT'
+
   have hthree :
       3 ≤ (retainedActive C x).card := by
     have hsub :
