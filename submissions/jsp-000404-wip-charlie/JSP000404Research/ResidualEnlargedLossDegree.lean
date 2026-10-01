@@ -1950,11 +1950,153 @@ theorem minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
       using hmul
   omega
 
-#print axioms minimal_enlargedCandidate_strict_nonloss_leaf_rematch_or_rank_increases
-#print axioms minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
+
+theorem uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent) :
+    ((leaves : Finset V) : Set V).PairwiseDisjoint
+      (enlargedProjectedCandidateBlock C exponent) := by
+  intro u hu v hv huv
+  classical
+  rw [Finset.disjoint_left]
+  intro word huWord hvWord
+  have huT : u ∈ T := hleavesT hu
+  have hvT : v ∈ T := hleavesT hv
+  have hcross :
+      EnlargedBlocksCross C exponent u v := by
+    exact ⟨word,huWord,hvWord⟩
+  have hvParent :
+      v = parent :=
+    hunique u hu v hvT huv hcross
+  subst v
+  exact hparentNotLeaf hv
+
+theorem uniqueNeighbourLeafCharges_pairwiseDisjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (charge : V → Finset (Fin n → Bool))
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hcharge :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v) :
+    ((leaves : Finset V) : Set V).PairwiseDisjoint charge := by
+  have hblocks :=
+    uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
+      C exponent hleavesT hparentNotLeaf hunique
+  intro u hu v hv huv
+  exact Disjoint.mono
+    (hcharge u hu)
+    (hcharge v hv)
+    (hblocks hu hv huv)
+
+theorem uniqueNeighbourLeafCharges_sum_le_parent_allActiveTranslated
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (charge : V → Finset (Fin n → Bool))
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆ allActiveTranslatedWords C parent) :
+    (∑ v ∈ leaves, (charge v).card) ≤
+      (allActiveTranslatedWords C parent).card := by
+  classical
+  have hpairwise :=
+    uniqueNeighbourLeafCharges_pairwiseDisjoint
+      C exponent charge
+      hleavesT hparentNotLeaf hunique hchargeChild
+  have hcardUnion :
+      (leaves.biUnion charge).card =
+        ∑ v ∈ leaves, (charge v).card := by
+    rw [Finset.card_biUnion hpairwise]
+  have hsub :
+      leaves.biUnion charge ⊆
+        allActiveTranslatedWords C parent := by
+    intro word hword
+    obtain ⟨v,hvLeaves,hvWord⟩ :=
+      Finset.mem_biUnion.mp hword
+    exact hchargeParent v hvLeaves hvWord
+  have hle :=
+    Finset.card_le_card hsub
+  rw [hcardUnion] at hle
+  exact hle
+
+theorem uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (charge : V → Finset (Fin n → Bool))
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆ allActiveTranslatedWords C parent) :
+    (∑ v ∈ leaves, (charge v).card) ≤
+      (retainedActive C parent).card *
+        (retainedCompletionWords C parent).card := by
+  have hsum :=
+    uniqueNeighbourLeafCharges_sum_le_parent_allActiveTranslated
+      C exponent charge
+      hleavesT hparentNotLeaf hunique
+      hchargeChild hchargeParent
+  rw [allActiveTranslatedWords_card] at hsum
+  exact hsum
+
 #print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
 #print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
-#print axioms strictLeafProgressRank_le
+#print axioms uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
+#print axioms uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
 
 end OrderedEdgeColoring
 end JSP000404Research
