@@ -200,5 +200,52 @@ theorem tripleFlipBoolWord_ne_flip_singleFlip
 #print axioms tripleFlipBoolWord_ne_doubleFlip
 #print axioms tripleFlipBoolWord_ne_flip_singleFlip
 
+
+theorem tripleFlipBoolWord_eq_twoFlip_from_firstNeighbour
+    (word : Fin 3 → Bool)
+    (a b c : Fin 3) :
+    tripleFlipBoolWord word a b c =
+      flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word a) b) c := rfl
+
+theorem tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
+    (word : Fin 3 → Bool)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    tripleFlipBoolWord word a b c =
+      flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word b) a) c := by
+  unfold tripleFlipBoolWord
+  rw [flipBoolWordAt_comm word hab]
+
+theorem tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
+    (word : Fin 3 → Bool)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    tripleFlipBoolWord word a b c =
+      flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word c) a) b := by
+  funext q
+  rw [tripleFlipBoolWord_at word hab hac hbc]
+  obtain hq : q = a ∨ q = b ∨ q = c :=
+    three_distinct_fin3_exhaust hab hac hbc (q := q)
+  rcases hq with rfl | rfl | rfl
+  · rw [flipBoolWordAt_off _ hab.symm]
+    rw [flipBoolWordAt_at]
+    rw [flipBoolWordAt_off word hac]
+  · rw [flipBoolWordAt_at]
+    rw [flipBoolWordAt_off _ hab]
+    rw [flipBoolWordAt_off word hbc]
+  · rw [flipBoolWordAt_off _ hbc]
+    rw [flipBoolWordAt_off _ hac]
+    rw [flipBoolWordAt_at]
+
+#print axioms tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
+#print axioms tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
+
 end OrderedEdgeColoring
 end JSP000404Research
