@@ -2093,10 +2093,121 @@ theorem uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
   rw [allActiveTranslatedWords_card] at hsum
   exact hsum
 
+
+theorem uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (charge excess : V → Finset (Fin n → Bool))
+    (hparentLoss :
+      parent ∈ projectedLossVertices C exponent)
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆ allActiveTranslatedWords C parent)
+    (hexcessCharge :
+      ∀ v ∈ leaves,
+        (excess v).card ≤ (charge v).card) :
+    (∑ v ∈ leaves, (excess v).card) -
+        (
+          (enlargedProjectedCandidateBlock C exponent parent).card -
+            2 ^ exponent parent
+        )
+      ≤
+    (retainedCompletionWords C parent).card := by
+  classical
+  have hsumCharge :=
+    uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
+      C exponent charge
+      hleavesT hparentNotLeaf hunique
+      hchargeChild hchargeParent
+  have hsumExcess :
+      (∑ v ∈ leaves, (excess v).card) ≤
+        ∑ v ∈ leaves, (charge v).card := by
+    apply Finset.sum_le_sum
+    intro v hv
+    exact hexcessCharge v hv
+  have hsum :
+      (∑ v ∈ leaves, (excess v).card) ≤
+        (retainedActive C parent).card *
+          (retainedCompletionWords C parent).card :=
+    hsumExcess.trans hsumCharge
+
+  have hparentSlack :
+      (enlargedProjectedCandidateBlock C exponent parent).card -
+          2 ^ exponent parent
+        =
+      ((retainedActive C parent).card - 1) *
+        (retainedCompletionWords C parent).card := by
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hparentLoss,
+        allActiveLossCandidateBlock_card,
+        projectedLoss_target_eq_two_mul_completion
+          C exponent hparentLoss]
+    have hactivePos :
+        1 ≤ (retainedActive C parent).card := by
+      have hloss :=
+        (mem_projectedLossVertices C exponent parent).1 hparentLoss
+      unfold projectedFree at hloss
+      have hcardLe :
+          (retainedActive C parent).card ≤ n := by
+        simpa using Finset.card_le_univ
+          (retainedActive C parent)
+      omega
+    have ha :
+        (retainedActive C parent).card =
+          ((retainedActive C parent).card - 1) + 1 := by
+      omega
+    rw [ha]
+    ring_nf
+    rw [Nat.add_sub_cancel_left]
+
+  rw [hparentSlack]
+  have hdecomp :
+      (retainedActive C parent).card *
+          (retainedCompletionWords C parent).card
+        =
+      ((retainedActive C parent).card - 1) *
+          (retainedCompletionWords C parent).card +
+        (retainedCompletionWords C parent).card := by
+    have hactivePos :
+        1 ≤ (retainedActive C parent).card := by
+      have hloss :=
+        (mem_projectedLossVertices C exponent parent).1 hparentLoss
+      unfold projectedFree at hloss
+      have hcardLe :
+          (retainedActive C parent).card ≤ n := by
+        simpa using Finset.card_le_univ
+          (retainedActive C parent)
+      omega
+    have ha :
+        (retainedActive C parent).card =
+          ((retainedActive C parent).card - 1) + 1 := by
+      omega
+    rw [ha]
+    ring
+  rw [hdecomp] at hsum
+  omega
+
 #print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
 #print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
 #print axioms uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
 #print axioms uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
+#print axioms uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
 
 end OrderedEdgeColoring
 end JSP000404Research
