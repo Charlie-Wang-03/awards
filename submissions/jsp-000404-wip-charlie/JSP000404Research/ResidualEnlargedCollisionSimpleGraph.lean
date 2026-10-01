@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualLossTwoExitRecursiveOutlet
+import JSP000404Research.ResidualCompletionMultiplicity
 import Mathlib.Combinatorics.SimpleGraph.Acyclic
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Combinatorics.SimpleGraph.Clique
@@ -608,6 +609,90 @@ theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
     (simpleGraph_no_triangle_of_three_lt_girth
       (enlargedCollisionGraph C exponent T)
       hgirth huv hvw) huwAdj
+
+
+
+theorem enlargedCollisionGraph_triangle_has_loss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (huw :
+      (enlargedCollisionGraph C exponent T).Adj u w)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w) :
+    u.1 ∈ projectedLossVertices C exponent
+    ∨ v.1 ∈ projectedLossVertices C exponent
+    ∨ w.1 ∈ projectedLossVertices C exponent := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+  have huNonloss :
+      u.1 ∉ projectedLossVertices C exponent := hnone.1
+  have hvNonloss :
+      v.1 ∉ projectedLossVertices C exponent := hnone.2.1
+  have hwNonloss :
+      w.1 ∉ projectedLossVertices C exponent := hnone.2.2
+
+  have huvCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T huv
+  have huwCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T huw
+  have hvwCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T hvw
+  obtain ⟨wordUV,huUV,hvUV⟩ := huvCross
+  obtain ⟨wordUW,huUW,hwUW⟩ := huwCross
+  obtain ⟨wordVW,hvVW,hwVW⟩ := hvwCross
+
+  rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent huNonloss] at huUV huUW
+  rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hvNonloss] at hvUV hvVW
+  rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hwNonloss] at hwUW hwVW
+
+  have hUV :
+      (retainedCompletionWords C u.1 ∩
+        retainedCompletionWords C v.1).Nonempty :=
+    ⟨wordUV,Finset.mem_inter.mpr ⟨huUV,hvUV⟩⟩
+  have hUW :
+      (retainedCompletionWords C u.1 ∩
+        retainedCompletionWords C w.1).Nonempty :=
+    ⟨wordUW,Finset.mem_inter.mpr ⟨huUW,hwUW⟩⟩
+  have hVW :
+      (retainedCompletionWords C v.1 ∩
+        retainedCompletionWords C w.1).Nonempty :=
+    ⟨wordVW,Finset.mem_inter.mpr ⟨hvVW,hwVW⟩⟩
+
+  obtain ⟨word,hwordU,hwordV,hwordW⟩ :=
+    three_retainedCompletion_pairwise_nonempty_common
+      C hUV hUW hVW
+
+  have huvNe : u.1 ≠ v.1 := by
+    intro h
+    apply (enlargedCollisionGraph C exponent T).ne_of_adj huv
+    apply Subtype.ext
+    exact h
+  have huwNe : u.1 ≠ w.1 := by
+    intro h
+    apply (enlargedCollisionGraph C exponent T).ne_of_adj huw
+    apply Subtype.ext
+    exact h
+  have hvwNe : v.1 ≠ w.1 := by
+    intro h
+    apply (enlargedCollisionGraph C exponent T).ne_of_adj hvw
+    apply Subtype.ext
+    exact h
+
+  exact no_three_distinct_share_retained_completion
+    C huvNe huwNe hvwNe
+    hwordU hwordV hwordW
 
 
 theorem enlargedCollisionGraph_triangle_or_three_lt_girth
