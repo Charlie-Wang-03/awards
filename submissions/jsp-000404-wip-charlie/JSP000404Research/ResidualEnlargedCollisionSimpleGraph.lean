@@ -1672,29 +1672,6 @@ theorem longCycle_exists_nonstrict_vertex
   classical
   by_contra hnone
   push_neg at hnone
-  have hstrict :
-      ∀ v ∈ T,
-        exponent v < projectedFree C v := by
-    intro v hvT
-    exact lt_of_le_of_ne
-      (by
-        have hprofile :=
-          exponent_le_projectedFree_add_one
-            C exponent hexp honeLoss v
-        by_contra hnot
-        have heq :
-            exponent v = projectedFree C v + 1 := by
-          omega
-        have hloss :
-            v ∈ projectedLossVertices C exponent :=
-          (mem_projectedLossVertices C exponent v).2 heq
-        have hnotStrict := hnone v hvT
-        have heq' :=
-          (mem_projectedLossVertices C exponent v).1 hloss
-        omega)
-      (by
-        intro heq
-        exact hnone v hvT (by simpa [heq]))
 
   have hblockLe :
       (∑ v ∈ T,
@@ -1711,7 +1688,7 @@ theorem longCycle_exists_nonstrict_vertex
     apply Finset.sum_le_sum
     intro v hvT
     exact strict_enlargedBlock_card_le_two_mul_localSlack
-      C exponent (hstrict v hvT)
+      C exponent (hnone v hvT)
 
   have hedgeLe :=
     longCycle_two_mul_pairOverlaps_le_sum_block_cards
