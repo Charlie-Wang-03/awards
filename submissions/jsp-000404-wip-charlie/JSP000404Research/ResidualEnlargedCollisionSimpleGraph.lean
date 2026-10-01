@@ -2052,9 +2052,257 @@ theorem longCycle_two_mul_deficiency_le_totalHardCredit
       hdef hgirth
   omega
 
-#print axioms longCycleHardCredit
-#print axioms enlargedBlock_card_le_two_slack_add_hardCredit
-#print axioms longCycle_two_mul_deficiency_le_totalHardCredit
+
+theorem longCycle_core_card_ge_four
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    4 ≤ T.card := by
+  classical
+  let G := enlargedCollisionGraph C exponent T
+  have hcyclic : ¬ G.IsAcyclic := by
+    intro hacyclic
+    have hzero := hacyclic.girth_eq_zero
+    dsimp [G] at hzero
+    omega
+  obtain ⟨a,p,hcycle,hgirthEq⟩ :=
+    (SimpleGraph.exists_girth_eq_length
+      (G := G)).2 hcyclic
+  have hpLen : 4 ≤ p.length := by
+    dsimp [G] at hgirthEq
+    omega
+  have htailPath : p.tail.IsPath :=
+    hcycle.isPath_tail
+  have htailLt :
+      p.tail.length < Fintype.card {x : V // x ∈ T} :=
+    htailPath.length_lt
+  have htailLen :
+      p.tail.length + 1 = p.length := by
+    exact SimpleGraph.Walk.length_tail_add_one hcycle.not_nil
+  have hcardSubtype :
+      4 ≤ Fintype.card {x : V // x ∈ T} := by
+    omega
+  simpa only [Fintype.card_coe] using hcardSubtype
+
+theorem topLoss_completion_card_current
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1) :
+    (retainedCompletionWords C v).card = 2 ^ (n - 2) := by
+  rw [retainedCompletionWords_card]
+  have hloss :=
+    (mem_projectedLossVertices C exponent v).1 hvLoss
+  unfold projectedFree at hloss
+  have hact :
+      (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
+  have hfree :
+      n - (retainedActive C v).card = n - 2 := by
+    omega
+  rw [hfree]
+
+theorem topLoss_enlargedBlock_card_current
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1) :
+    (enlargedProjectedCandidateBlock C exponent v).card =
+      3 * 2 ^ (n - 2) := by
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent hvLoss,
+      allActiveLossCandidateBlock_card,
+      projectedLoss_retainedActive_card
+        C exponent hvLoss,
+      topLoss_completion_card_current
+        C exponent hvLoss hvTop]
+  have hn2 : 2 ≤ n := by
+    have hloss :=
+      (mem_projectedLossVertices C exponent v).1 hvLoss
+    unfold projectedFree at hloss
+    omega
+  omega
+
+theorem two_topLoss_enlargedBlocks_union_eq_univ
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v : V}
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (huv : u ≠ v)
+    (huTop : exponent u = n - 1)
+    (hvTop : exponent v = n - 1) :
+    enlargedProjectedCandidateBlock C exponent u ∪
+        enlargedProjectedCandidateBlock C exponent v
+      =
+    (Finset.univ : Finset (Fin n → Bool)) := by
+  classical
+  have hn2 : 2 ≤ n := by
+    have huEq :=
+      (mem_projectedLossVertices C exponent u).1 huLoss
+    unfold projectedFree at huEq
+    omega
+  have hqU :=
+    topLoss_completion_card_current
+      C exponent huLoss huTop
+  have hqV :=
+    topLoss_completion_card_current
+      C exponent hvLoss hvTop
+  have hblockU :=
+    topLoss_enlargedBlock_card_current
+      C exponent huLoss huTop
+  have hblockV :=
+    topLoss_enlargedBlock_card_current
+      C exponent hvLoss hvTop
+  have hinter :=
+    loss_allActive_pair_intersection_card_le_sum_cubes
+      C exponent hexp honeLoss
+      huLoss hvLoss huv
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent huLoss,
+      enlargedProjectedCandidateBlock_loss
+        C exponent hvLoss,
+      hqU,hqV] at hinter
+  have hambient :
+      (enlargedProjectedCandidateBlock C exponent u ∪
+        enlargedProjectedCandidateBlock C exponent v).card
+        ≤ 2 ^ n := by
+    have hsub :
+        enlargedProjectedCandidateBlock C exponent u ∪
+            enlargedProjectedCandidateBlock C exponent v
+          ⊆
+        (Finset.univ : Finset (Fin n → Bool)) :=
+      Finset.subset_univ _
+    simpa only [Finset.card_univ, Fintype.card_fun,
+      Fintype.card_fin, Fintype.card_bool] using
+      Finset.card_le_card hsub
+  rw [Finset.card_union,hblockU,hblockV] at hambient
+  have hpowN :
+      2 ^ n = 4 * 2 ^ (n - 2) := by
+    have hs : n - 2 + 2 = n := by omega
+    calc
+      2 ^ n = 2 ^ (n - 2 + 2) := by rw [hs]
+      _ = 2 ^ (n - 2) * 2 ^ 2 := by rw [pow_add]
+      _ = 4 * 2 ^ (n - 2) := by ring
+  rw [hpowN] at hambient
+  have hinterEq :
+      (enlargedProjectedCandidateBlock C exponent u ∩
+        enlargedProjectedCandidateBlock C exponent v).card
+        =
+      2 * 2 ^ (n - 2) := by
+    omega
+  apply Finset.eq_univ_of_card
+  rw [Finset.card_union,hblockU,hblockV,hinterEq]
+  simp only [Finset.card_univ, Fintype.card_fun,
+    Fintype.card_fin, Fintype.card_bool]
+  rw [hpowN]
+  omega
+
+theorem longCycle_at_most_one_topLoss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    {u v : V}
+    (huT : u ∈ T)
+    (hvT : v ∈ T)
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (huTop : exponent u = n - 1)
+    (hvTop : exponent v = n - 1) :
+    u = v := by
+  classical
+  by_contra huv
+  have hcover :=
+    two_topLoss_enlargedBlocks_union_eq_univ
+      C exponent hexp honeLoss
+      huLoss hvLoss huv huTop hvTop
+  have hcardT :
+      4 ≤ T.card :=
+    longCycle_core_card_ge_four
+      C exponent hgirth
+  have hproperPair :
+      ({u,v} : Finset V) ⊂ T := by
+    constructor
+    · intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact huT
+      · exact hvT
+    · intro heq
+      have hc := congrArg Finset.card heq
+      simp [huv] at hc
+      omega
+  have hpairDef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        {u,v} := by
+    unfold BlockDeficient
+    have hsum :
+        (∑ x ∈ ({u,v} : Finset V), 2 ^ exponent x)
+          =
+        2 ^ exponent u + 2 ^ exponent v := by
+      simp [huv]
+    rw [hsum,huTop,hvTop]
+    have hunion :
+        ({u,v} : Finset V).biUnion
+            (enlargedProjectedCandidateBlock C exponent)
+          =
+        enlargedProjectedCandidateBlock C exponent u ∪
+          enlargedProjectedCandidateBlock C exponent v := by
+      ext word
+      simp
+    rw [hunion,hcover]
+    simp only [Finset.card_univ, Fintype.card_fun,
+      Fintype.card_fin, Fintype.card_bool]
+    have hn1 : 1 ≤ n := by
+      have huEq :=
+        (mem_projectedLossVertices C exponent u).1 huLoss
+      unfold projectedFree at huEq
+      omega
+    have hpow :
+        2 ^ n = 2 * 2 ^ (n - 1) := by
+      have hs : n - 1 + 1 = n := by omega
+      calc
+        2 ^ n = 2 ^ (n - 1 + 1) := by rw [hs]
+        _ = 2 ^ (n - 1) * 2 := by rw [pow_succ]
+        _ = 2 * 2 ^ (n - 1) := by omega
+    rw [hpow]
+    omega
+  exact (hmin {u,v} hproperPair) hpairDef
+
+#print axioms longCycle_core_card_ge_four
+#print axioms two_topLoss_enlargedBlocks_union_eq_univ
+#print axioms longCycle_at_most_one_topLoss
 
 end OrderedEdgeColoring
 end JSP000404Research
