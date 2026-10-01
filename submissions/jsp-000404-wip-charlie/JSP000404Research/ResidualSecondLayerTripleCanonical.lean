@@ -1420,6 +1420,114 @@ theorem QTTT_fin3_secondLayer_antipode_blocker_covers_cube
 #print axioms QTTT_fin3_secondLayer_antipode_blocker_covers_cube
 
 
+/-- Complete profile reduction of the n=3 Q/T/T/T antipode blocker.  The only
+non-closed branch is a fresh second-layer loss blocker antipodal to the
+completion owner; in that branch the two enlarged blocks cover the whole
+3-cube. -/
+theorem QTTT_fin3_antipode_blocker_profile_reduction
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    (hexpLt : ∀ q, exponent q < 3)
+    (hexp : ∀ q, exponent q ≤ 3)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ 3 - exponent q + 1)
+    {s x y z : V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hxSecond : exponent x = 1)
+    (hySecond : exponent y = 1)
+    (hzSecond : exponent z = 1)
+    {word : Fin 3 → Bool}
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    (
+      ∃ hole : Fin 3 → Bool,
+        hole ∉ coveredCompletionWords C
+    )
+    ∨
+    (
+      ∃ q : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) q
+    )
+    ∨
+    (
+      ∃ q : V,
+        ExactProjectedBudget C exponent q
+    )
+    ∨
+    (
+      ∃ q : V,
+        q ∈ projectedLossVertices C exponent ∧
+        exponent q = 2
+    )
+    ∨
+    (
+      ∃ q : V,
+        q ∈ projectedLossVertices C exponent ∧
+        exponent q + 3 ≤ 3
+    )
+    ∨
+    (
+      ∃ r : V,
+        r ≠ s ∧ r ≠ x ∧ r ≠ y ∧ r ≠ z ∧
+        r ∈ projectedLossVertices C exponent ∧
+        exponent r = 1 ∧
+        tripleFlipBoolWord word cx cy cz ∈
+          retainedCompletionWords C r ∧
+        enlargedProjectedCandidateBlock C exponent s ∪
+            enlargedProjectedCandidateBlock C exponent r
+          =
+        (Finset.univ : Finset (Fin 3 → Bool))
+    ) := by
+  rcases
+    QTTT_fin3_antipode_hole_or_fresh_blocker
+      C exponent
+      hsx hsy hsz hxy hxz hyz
+      hsLoss hxLoss hyLoss hzLoss
+      hsSecond hxSecond hySecond hzSecond
+      hcxy hcxz hcyz hsQ hxT hyT hzT
+    with hhole | hblock
+  · exact Or.inl ⟨tripleFlipBoolWord word cx cy cz,hhole⟩
+  · obtain ⟨r,hrs,hrx,hry,hrz,hrQ⟩ := hblock
+    rcases projectedProfile_strict_exact_or_loss
+        C exponent hexp honeLoss r
+      with hstrict | hexact | hrLoss
+    · exact Or.inr (Or.inl
+        ⟨r,projected_strict_surplus_at_least_one
+          exponent (projectedFree C) hstrict⟩)
+    · exact Or.inr (Or.inr (Or.inl ⟨r,hexact⟩))
+    · have hrLt := hexpLt r
+      by_cases htop : exponent r = 2
+      · exact Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨r,hrLoss,htop⟩)))
+      · by_cases hsecond : exponent r = 1
+        · have hcover :=
+            QTTT_fin3_secondLayer_antipode_blocker_covers_cube
+              C exponent hsLoss hrLoss hsSecond hsecond
+              hsQ hcxy hcxz hcyz hrQ
+          exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+            ⟨r,hrs,hrx,hry,hrz,hrLoss,hsecond,hrQ,hcover⟩))))
+        · have hdeep : exponent r + 3 ≤ 3 := by
+            omega
+          exact Or.inr (Or.inr (Or.inr (Or.inr
+            (Or.inl ⟨r,hrLoss,hdeep⟩))))
+
+#print axioms QTTT_fin3_antipode_blocker_profile_reduction
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
