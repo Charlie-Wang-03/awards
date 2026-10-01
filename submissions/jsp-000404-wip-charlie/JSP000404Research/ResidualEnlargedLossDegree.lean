@@ -3280,9 +3280,77 @@ theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
   · exact Or.inr
       (mixedUnpaidChild_exponent_lt C exponent hmixed)
 
+
+theorem minimal_enlargedCandidate_exact_leaf_profile_outlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvExact : ExactProjectedBudget C exponent v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    (
+      deletedVertexTransfer
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ≤
+      dyadicProfileSurplus exponent (projectedFree C) w
+    )
+    ∨
+    (
+      exponent w < exponent v
+    )
+    ∨
+    ExactProjectedBudget C exponent w
+    ∨
+    w ∈ projectedLossVertices C exponent := by
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss w
+    with hwStrict | hwExact | hwLoss
+  · have hwNonloss :
+        w ∉ projectedLossVertices C exponent := by
+      intro hwLoss
+      have hwEq :=
+        (mem_projectedLossVertices C exponent w).1 hwLoss
+      unfold projectedFree at hwEq
+      omega
+    rcases
+      minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
+        C exponent hdef hmin hvT
+        hvNonloss hvExact hwNonloss hwStrict hunique
+      with hpaid | hdesc
+    · exact Or.inl hpaid
+    · exact Or.inr (Or.inl hdesc)
+  · exact Or.inr (Or.inr (Or.inl hwExact))
+  · exact Or.inr (Or.inr (Or.inr hwLoss))
+
 #print axioms minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
 #print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
 #print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
+#print axioms minimal_enlargedCandidate_exact_leaf_profile_outlet
 
 end OrderedEdgeColoring
 end JSP000404Research
