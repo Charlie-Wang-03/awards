@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualBoundedMultiplicityAccounting
 import JSP000404Research.ResidualEnlargedTriangleOutlet
 import JSP000404Research.ResidualLossDirectedFibre
+import JSP000404Research.ResidualLossFibreEdgeClassification
 import Mathlib.Tactic
 
 /-!
@@ -817,6 +818,373 @@ theorem commonWord_extremeLoss_middleNonloss_cross_pattern
     translated_loss_word_false_of_incoming C hebcIn hcTrans⟩
 
 #print axioms commonWord_extremeLoss_middleNonloss_cross_pattern
+
+
+/-- Three translated loss carriers below a top loss cannot all culminate in a
+true-labelled top owner coordinate: the two lower owner coordinates and the
+top owner's own coordinate give three distinct active coordinates at the top,
+contradicting top active-cardinality two. -/
+theorem threeTranslatedLoss_topAtUpper_true_impossible
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {x y z : V}
+    (hxy : x < y)
+    (hyz : y < z)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hzTop : exponent z = n - 1)
+    {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcz : cz ∈ retainedActive C z)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz)
+    (hzTrue : word cz = true) :
+    False := by
+  have hxz : x < z := lt_trans hxy hyz
+  have hyTrue :
+      word cy = true := by
+    rcases translated_loss_fibre_no_false_before_true
+      C exponent hexp honeLoss hyz
+      hyLoss hzLoss hcy hcz hyT hzT
+      with htrue | hfalse
+    · exact htrue
+    · rw [hzTrue] at hfalse
+      contradiction
+  have hxTrue :
+      word cx = true := by
+    rcases translated_loss_fibre_no_false_before_true
+      C exponent hexp honeLoss hxz
+      hxLoss hzLoss hcx hcz hxT hzT
+      with htrue | hfalse
+    · exact htrue
+    · rw [hzTrue] at hfalse
+      contradiction
+  have hxzEdge :=
+    translated_loss_fibre_true_true_edge_colour_lower
+      C exponent hexp honeLoss
+      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+      word
+      (by
+        intro q hqF
+        have hqData :=
+          (mem_translatedLossFibre
+            C exponent
+            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+            word q).1 hqF
+        by_cases hqx : q = x
+        · subst q
+          simpa using hcx
+        · by_cases hqy : q = y
+          · subst q
+            simpa [hqx] using hcy
+          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
+              simp [hqx,hqy]
+            rw [hqChoice]
+            exact
+              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word x).2
+        simp [hxLoss,hxT])
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word z).2
+        have hzx : z ≠ x := ne_of_gt hxz
+        have hzy : z ≠ y := ne_of_gt hyz
+        simp [hzx,hzy,hzLoss,hzT])
+      hxz hxTrue hzTrue
+  have hyzEdge :=
+    translated_loss_fibre_true_true_edge_colour_lower
+      C exponent hexp honeLoss
+      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+      word
+      (by
+        intro q hqF
+        have hqData :=
+          (mem_translatedLossFibre
+            C exponent
+            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+            word q).1 hqF
+        by_cases hqx : q = x
+        · subst q
+          simpa using hcx
+        · by_cases hqy : q = y
+          · subst q
+            simpa [hqx] using hcy
+          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
+              simp [hqx,hqy]
+            rw [hqChoice]
+            exact
+              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word y).2
+        have hyx : y ≠ x := ne_of_gt hxy
+        simp [hyx,hyLoss,hyT])
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word z).2
+        have hzx : z ≠ x := ne_of_gt hxz
+        have hzy : z ≠ y := ne_of_gt hyz
+        simp [hzx,hzy,hzLoss,hzT])
+      hyz hyTrue hzTrue
+  obtain ⟨hxzRet,hxzCol⟩ := hxzEdge
+  obtain ⟨hyzRet,hyzCol⟩ := hyzEdge
+  have hcxAtZ : cx ∈ retainedActive C z := by
+    rw [retainedActive_eq_incoming_union_outgoing C z]
+    apply Finset.mem_union_left
+    apply (mem_incomingRetained_iff C z cx).2
+    refine ⟨x,hxz,?_⟩
+    apply Fin.ext
+    have hval := congrArg Fin.val hxzCol
+    simpa [retainedColor] using hval
+  have hcyAtZ : cy ∈ retainedActive C z := by
+    rw [retainedActive_eq_incoming_union_outgoing C z]
+    apply Finset.mem_union_left
+    apply (mem_incomingRetained_iff C z cy).2
+    refine ⟨y,hyz,?_⟩
+    apply Fin.ext
+    have hval := congrArg Fin.val hyzCol
+    simpa [retainedColor] using hval
+  have hcxy : cx ≠ cy := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hxLoss hyLoss (ne_of_lt hxy) cx
+    have hyT' : word ∈ translatedCompletionWords C y cx := by
+      simpa [h] using hyT
+    exact Finset.disjoint_left.mp hdisj hxT hyT'
+  have hcxz : cx ≠ cz := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hxLoss hzLoss (ne_of_lt hxz) cx
+    have hzT' : word ∈ translatedCompletionWords C z cx := by
+      simpa [h] using hzT
+    exact Finset.disjoint_left.mp hdisj hxT hzT'
+  have hcyz : cy ≠ cz := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hyLoss hzLoss (ne_of_lt hyz) cy
+    have hzT' : word ∈ translatedCompletionWords C z cy := by
+      simpa [h] using hzT
+    exact Finset.disjoint_left.mp hdisj hyT hzT'
+  have hthree :
+      3 ≤ (retainedActive C z).card := by
+    have hsub :
+        ({cx,cy,cz} : Finset (Fin n)) ⊆ retainedActive C z := by
+      intro q hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with rfl | rfl | rfl
+      · exact hcxAtZ
+      · exact hcyAtZ
+      · exact hcz
+    have hcard3 : ({cx,cy,cz} : Finset (Fin n)).card = 3 := by
+      simp [hcxy,hcxz,hcyz]
+    rw [← hcard3]
+    exact Finset.card_le_card hsub
+  have htopCard :=
+    topLoss_retainedActive_card_eq_two
+      C exponent hzLoss hzTop
+  omega
+
+/-- Dual extreme-top overflow: if the bottom translated carrier is top-loss
+and false-labelled, the two upper owner coordinates plus its own coordinate
+give three active coordinates at the bottom, impossible for a top loss. -/
+theorem threeTranslatedLoss_topAtLower_false_impossible
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {x y z : V}
+    (hxy : x < y)
+    (hyz : y < z)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hxTop : exponent x = n - 1)
+    {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcz : cz ∈ retainedActive C z)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz)
+    (hxFalse : word cx = false) :
+    False := by
+  have hxz : x < z := lt_trans hxy hyz
+  have hyFalse :=
+    translated_loss_fibre_monotone_bits
+      C exponent hexp honeLoss hxy
+      hxLoss hyLoss hcx hcy hxT hyT hxFalse
+  have hzFalse :=
+    translated_loss_fibre_monotone_bits
+      C exponent hexp honeLoss hxz
+      hxLoss hzLoss hcx hcz hxT hzT hxFalse
+  have hxyEdge :=
+    translated_loss_fibre_false_false_edge_colour_upper
+      C exponent hexp honeLoss
+      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+      word
+      (by
+        intro q hqF
+        have hqData :=
+          (mem_translatedLossFibre
+            C exponent
+            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+            word q).1 hqF
+        by_cases hqx : q = x
+        · subst q
+          simpa using hcx
+        · by_cases hqy : q = y
+          · subst q
+            simpa [hqx] using hcy
+          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
+              simp [hqx,hqy]
+            rw [hqChoice]
+            exact
+              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word x).2
+        simp [hxLoss,hxT])
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word y).2
+        have hyx : y ≠ x := ne_of_gt hxy
+        simp [hyx,hyLoss,hyT])
+      hxy hxFalse hyFalse
+  have hxzEdge :=
+    translated_loss_fibre_false_false_edge_colour_upper
+      C exponent hexp honeLoss
+      (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+      word
+      (by
+        intro q hqF
+        have hqData :=
+          (mem_translatedLossFibre
+            C exponent
+            (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+            word q).1 hqF
+        by_cases hqx : q = x
+        · subst q
+          simpa using hcx
+        · by_cases hqy : q = y
+          · subst q
+            simpa [hqx] using hcy
+          · have hqChoice : (if hq : q = x then cx else if hq' : q = y then cy else cz) = cz := by
+              simp [hqx,hqy]
+            rw [hqChoice]
+            exact
+              (mem_translatedCompletionWords C q cz word).1 hqData.2 |>.1)
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word x).2
+        simp [hxLoss,hxT])
+      (by
+        apply (mem_translatedLossFibre
+          C exponent
+          (fun q => if hq : q = x then cx else if hq' : q = y then cy else cz)
+          word z).2
+        have hzx : z ≠ x := ne_of_gt hxz
+        have hzy : z ≠ y := ne_of_gt hyz
+        simp [hzx,hzy,hzLoss,hzT])
+      hxz hxFalse hzFalse
+  obtain ⟨hxyRet,hxyCol⟩ := hxyEdge
+  obtain ⟨hxzRet,hxzCol⟩ := hxzEdge
+  have hcyAtX : cy ∈ retainedActive C x := by
+    rw [retainedActive_eq_incoming_union_outgoing C x]
+    apply Finset.mem_union_right
+    apply (mem_outgoingRetained_iff C x cy).2
+    refine ⟨y,hxy,?_⟩
+    apply Fin.ext
+    have hval := congrArg Fin.val hxyCol
+    simpa [retainedColor] using hval
+  have hczAtX : cz ∈ retainedActive C x := by
+    rw [retainedActive_eq_incoming_union_outgoing C x]
+    apply Finset.mem_union_right
+    apply (mem_outgoingRetained_iff C x cz).2
+    refine ⟨z,hxz,?_⟩
+    apply Fin.ext
+    have hval := congrArg Fin.val hxzCol
+    simpa [retainedColor] using hval
+  have hcxy : cx ≠ cy := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hxLoss hyLoss (ne_of_lt hxy) cx
+    have hyT' : word ∈ translatedCompletionWords C y cx := by
+      simpa [h] using hyT
+    exact Finset.disjoint_left.mp hdisj hxT hyT'
+  have hcxz : cx ≠ cz := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hxLoss hzLoss (ne_of_lt hxz) cx
+    have hzT' : word ∈ translatedCompletionWords C z cx := by
+      simpa [h] using hzT
+    exact Finset.disjoint_left.mp hdisj hxT hzT'
+  have hcyz : cy ≠ cz := by
+    intro h
+    have hdisj :=
+      translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss
+        hyLoss hzLoss (ne_of_lt hyz) cy
+    have hzT' : word ∈ translatedCompletionWords C z cy := by
+      simpa [h] using hzT
+    exact Finset.disjoint_left.mp hdisj hyT hzT'
+  have hthree :
+      3 ≤ (retainedActive C x).card := by
+    have hsub :
+        ({cx,cy,cz} : Finset (Fin n)) ⊆ retainedActive C x := by
+      intro q hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with rfl | rfl | rfl
+      · exact hcx
+      · exact hcyAtX
+      · exact hczAtX
+    have hcard3 : ({cx,cy,cz} : Finset (Fin n)).card = 3 := by
+      simp [hcxy,hcxz,hcyz]
+    rw [← hcard3]
+    exact Finset.card_le_card hsub
+  have htopCard :=
+    topLoss_retainedActive_card_eq_two
+      C exponent hxLoss hxTop
+  omega
+
+#print axioms threeTranslatedLoss_topAtUpper_true_impossible
+#print axioms threeTranslatedLoss_topAtLower_false_impossible
 
 end OrderedEdgeColoring
 end JSP000404Research
