@@ -1230,6 +1230,121 @@ theorem minimal_enlargedCandidate_strict_nonloss_leaf_progress
   · left
     omega
 
+
+def strictLeafProgressRank
+    (n freeDim exponent : ℕ) : ℕ :=
+  freeDim * (n + 1) + exponent
+
+theorem strictLeafProgressRank_lt_of_free_lt
+    {n freeDim freeDim' exponent exponent' : ℕ}
+    (hexp : exponent ≤ n)
+    (hfree : freeDim < freeDim') :
+    strictLeafProgressRank n freeDim exponent <
+      strictLeafProgressRank n freeDim' exponent' := by
+  unfold strictLeafProgressRank
+  have hstep :
+      freeDim + 1 ≤ freeDim' := by
+    omega
+  have hmul :
+      (freeDim + 1) * (n + 1) ≤
+        freeDim' * (n + 1) :=
+    Nat.mul_le_mul_right (n + 1) hstep
+  have hgap :
+      freeDim * (n + 1) + n <
+        (freeDim + 1) * (n + 1) := by
+    omega
+  have hleft :
+      freeDim * (n + 1) + exponent ≤
+        freeDim * (n + 1) + n := by
+    omega
+  have hright :
+      (freeDim + 1) * (n + 1) ≤
+        freeDim' * (n + 1) + exponent' := by
+    omega
+  exact lt_of_le_of_lt hleft
+    (lt_of_lt_of_le hgap hright)
+
+theorem strictLeafProgressRank_lt_of_equal_free_exponent_lt
+    {n freeDim exponent exponent' : ℕ}
+    (hexp : exponent < exponent') :
+    strictLeafProgressRank n freeDim exponent <
+      strictLeafProgressRank n freeDim exponent' := by
+  unfold strictLeafProgressRank
+  omega
+
+theorem minimal_enlargedCandidate_strict_nonloss_leaf_rematch_or_rank_increases
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvStrict : exponent v < projectedFree C v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    retainedCompletionWords C v =
+        retainedCompletionWords C w
+    ∨
+    strictLeafProgressRank n
+        (projectedFree C v) (exponent v)
+      <
+    strictLeafProgressRank n
+        (projectedFree C w) (exponent w) := by
+  rcases
+    minimal_enlargedCandidate_strict_nonloss_leaf_progress
+      C exponent hexp honeLoss
+      hdef hmin hvT hvNonloss hvStrict hunique
+    with hfree | heq
+  · right
+    exact strictLeafProgressRank_lt_of_free_lt
+      (hexp v) hfree
+  · rcases heq with ⟨hfreeEq,hexpOrBlock⟩
+    rcases hexpOrBlock with hexpLt | hblocks
+    · right
+      rw [hfreeEq]
+      exact strictLeafProgressRank_lt_of_equal_free_exponent_lt
+        hexpLt
+    · exact Or.inl hblocks
+
+theorem strictLeafProgressRank_le
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (v : V) :
+    strictLeafProgressRank n
+        (projectedFree C v) (exponent v)
+      ≤
+    n * (n + 1) + n := by
+  unfold strictLeafProgressRank projectedFree
+  have hfree :
+      n - (retainedActive C v).card ≤ n :=
+    Nat.sub_le _ _
+  have hmul :=
+    Nat.mul_le_mul_right (n + 1) hfree
+  have hvExp := hexp v
+  omega
+
 #print axioms maximalLoss_shared_card_le_degree_mul_two_cube
 #print axioms minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
 #print axioms minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
@@ -1238,6 +1353,8 @@ theorem minimal_enlargedCandidate_strict_nonloss_leaf_progress
 #print axioms minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
 #print axioms minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_equalFree_blocks_eq
 #print axioms minimal_enlargedCandidate_strict_nonloss_leaf_progress
+#print axioms minimal_enlargedCandidate_strict_nonloss_leaf_rematch_or_rank_increases
+#print axioms strictLeafProgressRank_le
 
 end OrderedEdgeColoring
 end JSP000404Research
