@@ -1561,6 +1561,216 @@ theorem longCycle_doubleCovered_eq_totalSlack_add_deficiency
   unfold blockDeficiencyAmount
   omega
 
+
+theorem longCycle_sum_shared_eq_two_slack_add_two_deficiency
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (∑ v ∈ T,
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card)
+      =
+    2 *
+      (∑ v ∈ T,
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        ))
+      +
+    2 *
+      blockDeficiencyAmount
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T := by
+  have hshared :=
+    longCycle_sum_shared_cards_eq_two_mul_doubleCovered
+      C exponent hgirth
+  have hdouble :=
+    longCycle_doubleCovered_eq_totalSlack_add_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  rw [hdouble] at hshared
+  omega
+
+theorem longCycle_exists_shared_overload_vertex
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ∃ v ∈ T,
+      2 *
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        )
+        <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+  have hsumLe :
+      (∑ v ∈ T,
+        (sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v).card)
+        ≤
+      2 *
+        (∑ v ∈ T,
+          (
+            (enlargedProjectedCandidateBlock C exponent v).card -
+              2 ^ exponent v
+          )) := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_le_sum fun v hv =>
+      hnone v hv
+  have heq :=
+    longCycle_sum_shared_eq_two_slack_add_two_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  have hpos :=
+    blockDeficiencyAmount_pos_of_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef
+  omega
+
+theorem longCycle_shared_overload_exact_or_topLoss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    {v : V}
+    (hvT : v ∈ T)
+    (hover :
+      2 *
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        )
+        <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card) :
+    ExactProjectedBudget C exponent v
+    ∨
+    (
+      v ∈ projectedLossVertices C exponent
+      ∧ exponent v = n - 1
+    ) := by
+  classical
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss v
+    with hstrict | hexact | hloss
+  · have hblock :=
+      strict_enlargedBlock_card_le_two_mul_localSlack
+        C exponent hstrict
+    have hsharedLe :
+        (sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v).card
+          ≤
+        (enlargedProjectedCandidateBlock C exponent v).card := by
+      exact Finset.card_le_card
+        (sharedBlockWords_subset_block
+          (enlargedProjectedCandidateBlock C exponent) T v)
+    omega
+  · exact Or.inl hexact
+  · by_cases htop : exponent v = n - 1
+    · exact Or.inr ⟨hloss,htop⟩
+    · have hlower :
+          exponent v + 2 ≤ n := by
+        have hlt := hexpLt v
+        omega
+      have hblock :=
+        lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+          C exponent hloss hlower
+      have hsharedLe :
+          (sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v).card
+            ≤
+          (enlargedProjectedCandidateBlock C exponent v).card := by
+        exact Finset.card_le_card
+          (sharedBlockWords_subset_block
+            (enlargedProjectedCandidateBlock C exponent) T v)
+      omega
+
+theorem longCycle_exists_exact_or_topLoss_overload
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ∃ v ∈ T,
+      (
+        ExactProjectedBudget C exponent v
+        ∨
+        (
+          v ∈ projectedLossVertices C exponent
+          ∧ exponent v = n - 1
+        )
+      )
+      ∧
+      2 *
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        )
+        <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card := by
+  obtain ⟨v,hvT,hover⟩ :=
+    longCycle_exists_shared_overload_vertex
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  exact ⟨v,hvT,
+    longCycle_shared_overload_exact_or_topLoss
+      C exponent hexpLt hexp honeLoss
+      hvT hover,
+    hover⟩
+
+
 theorem longCycle_totalSlack_lt_doubleCovered
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
