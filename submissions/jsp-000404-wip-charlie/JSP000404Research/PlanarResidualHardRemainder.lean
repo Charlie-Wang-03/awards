@@ -3,6 +3,7 @@ import JSP000404Research.PlanarStandardResidualBudget
 import JSP000404Research.ResidualHardRemainder
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.GenericTopExponentMultiplicity
+import JSP000404Research.SharpSecondLayerMultiplicity
 import Mathlib.Tactic
 
 /-!
@@ -249,6 +250,126 @@ theorem planar_topLoss_word_four_exit_outlet
         w hwMem z hzMem
     exact False.elim (hwz hwzEq)
 
+
+theorem planar_topLoss_word_layered_outlet
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (hn : 2 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    {v : ProjectionOrdered V}
+    (hvLoss :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      v ∈ projectedLossVertices R exponent)
+    (hvTop :
+      planarCentreExponent hp C v = n - 1)
+    {word : Fin n → Bool}
+    (hword :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      word ∈ retainedCompletionWords R v) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
+        ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ e : Fin n,
+        e ∈ retainedActive R v ∧
+        flipBoolWordAt word e ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        ExactProjectedBudget R exponent w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w = n - 2
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w + 3 ≤ n
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hfour :=
+    planar_topLoss_word_four_exit_outlet
+      hp hcap hcard hn hdelta0 hdeltaHalf
+      ht hlam C hvLoss hvTop hword
+  dsimp [R,exponent,hn1,hdelta1] at hfour ⊢
+  rcases hfour with hhole | hpaid | hexact | hlower
+  · exact Or.inl hhole
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · obtain ⟨w,hwLoss,hwLower⟩ := hlower
+    have hwLt :
+        planarCentreExponent hp C w < n :=
+      planarCentreExponent_lt_n
+        hp hn1 hdelta0 hdelta1 ht C w
+    rcases lowerLoss_secondLayer_or_deep
+        R (planarCentreExponent hp C)
+        hwLoss hwLt hwLower
+      with hsecond | hdeep
+    · exact Or.inr (Or.inr (Or.inr
+        (Or.inl ⟨w,hwLoss,hsecond⟩)))
+    · exact Or.inr (Or.inr (Or.inr
+        (Or.inr ⟨w,hwLoss,hdeep⟩)))
+
+theorem planar_topLoss_secondLayer_companion_card_le_two
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    (s : ProjectionOrdered V)
+    (hS : planarCentreExponent hp C s = n - 1) :
+    ((Finset.univ : Finset (ProjectionOrdered V)).filter
+      (fun i =>
+        i ≠ s ∧
+        planarCentreExponent hp C i = n - 2)).card ≤ 2 := by
+  have hcapRe :
+      AngleCap (reindexedPoint p) lam :=
+    angleCap_reindexedPoint hp hcap
+  exact secondLayer_companion_card_le_two
+    (reindexedPoint_injective hp)
+    hcapRe hn hdelta0 hdeltaHalf ht hlam
+    C s hS
+
 /-- Main genuine-planar hard remainder outlet. -/
 theorem planar_centre_capacity_of_hard_words_fit_holes
     {lam t delta : ℝ} {n : ℕ}
@@ -297,6 +418,8 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
 #print axioms planarCentreExponent_lt_n
 #print axioms planarStandardResidual_oneLayer_budget
 #print axioms planar_topLoss_word_four_exit_outlet
+#print axioms planar_topLoss_word_layered_outlet
+#print axioms planar_topLoss_secondLayer_companion_card_le_two
 #print axioms planar_centre_capacity_of_hard_words_fit_holes
 
 end
