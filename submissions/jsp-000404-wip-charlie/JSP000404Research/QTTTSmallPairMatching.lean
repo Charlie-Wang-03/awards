@@ -122,4 +122,54 @@ theorem two_smallPairAmongOtherThree_reduce_to_crossed
 #print axioms two_delta_small_angles_same_triangle_impossible
 #print axioms two_smallPairAmongOtherThree_reduce_to_crossed
 
+
+/-- Geometric compression: two designated support-two members of four
+second-layer centres force one of the seven crossed small-angle patterns. -/
+theorem two_supportTwo_secondLayer_four_crossed
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (C : ∀ v : V, CentreProjectiveCycle hp v)
+    (haSecond : centreExponent (C a) t = n - 2)
+    (hbSecond : centreExponent (C b) t = n - 2)
+    (haSupport :
+      positiveSupport (centreQuotient (C a) t) = 2)
+    (hbSupport :
+      positiveSupport (centreQuotient (C b) t) = 2) :
+    CrossedTwoCentreSmallPairPattern p delta lam a b c d := by
+  have haSmall :
+      SmallPairAmongOtherThree p delta lam a b c d :=
+    secondLayer_supportTwo_first_has_small_pair_among_three
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab hac had hbc hbd hcd
+      (C a) haSecond haSupport
+  have hbSmall :
+      SmallPairAmongOtherThree p delta lam b a c d :=
+    secondLayer_supportTwo_first_has_small_pair_among_three
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab.symm hbc hbd hac had hcd
+      (C b) hbSecond hbSupport
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  exact two_smallPairAmongOtherThree_reduce_to_crossed
+    hp hcap hdeltaHalf hlampos
+    hab hac had hbc hbd hcd
+    haSmall hbSmall
+
+#print axioms two_supportTwo_secondLayer_four_crossed
+
 end JSP000404Research
