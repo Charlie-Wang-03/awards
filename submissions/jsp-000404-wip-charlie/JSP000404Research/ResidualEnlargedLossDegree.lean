@@ -3347,10 +3347,110 @@ theorem minimal_enlargedCandidate_exact_leaf_profile_outlet
   · exact Or.inr (Or.inr (Or.inl hwExact))
   · exact Or.inr (Or.inr (Or.inr hwLoss))
 
-#print axioms minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
-#print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
-#print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
-#print axioms minimal_enlargedCandidate_exact_leaf_profile_outlet
+
+inductive EnlargedLeafOutlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (v w : V) : Prop
+  | strictProgress
+      (hvStrict : exponent v < projectedFree C v)
+      (hprogress :
+        retainedCompletionWords C v =
+            retainedCompletionWords C w
+        ∨
+        strictLeafProgressRank n
+            (projectedFree C v) (exponent v)
+          <
+        strictLeafProgressRank n
+            (projectedFree C w) (exponent w))
+  | exactOutlet
+      (hvExact : ExactProjectedBudget C exponent v)
+      (hout :
+        deletedVertexTransfer
+            (fun x => 2 ^ exponent x)
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+          ≤
+        dyadicProfileSurplus exponent (projectedFree C) w
+        ∨
+        exponent w < exponent v
+        ∨
+        ExactProjectedBudget C exponent w
+        ∨
+        w ∈ projectedLossVertices C exponent)
+  | lossProgress
+      (hvLoss : v ∈ projectedLossVertices C exponent)
+      (hprogress :
+        exponent v = n - 1
+        ∨
+        exponent v < exponent w)
+
+theorem minimal_enlargedCandidate_any_leaf_outlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    EnlargedLeafOutlet C exponent T v w := by
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss v
+    with hvStrict | hvExact | hvLoss
+  · have hvNonloss :
+        v ∉ projectedLossVertices C exponent := by
+      intro hvLoss
+      have hvEq :=
+        (mem_projectedLossVertices C exponent v).1 hvLoss
+      unfold projectedFree at hvEq
+      omega
+    exact EnlargedLeafOutlet.strictProgress
+      hvStrict
+      (minimal_enlargedCandidate_strict_nonloss_leaf_rematch_or_rank_increases
+        C exponent hexp honeLoss
+        hdef hmin hvT hvNonloss hvStrict hunique)
+  · have hvNonloss :
+        v ∉ projectedLossVertices C exponent := by
+      intro hvLoss
+      have hvEq :=
+        (mem_projectedLossVertices C exponent v).1 hvLoss
+      unfold ExactProjectedBudget projectedFree at hvExact hvEq
+      omega
+    exact EnlargedLeafOutlet.exactOutlet
+      hvExact
+      (minimal_enlargedCandidate_exact_leaf_profile_outlet
+        C exponent hexp honeLoss
+        hdef hmin hvT hvNonloss hvExact hunique)
+  · exact EnlargedLeafOutlet.lossProgress
+      hvLoss
+      (minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hvT hvLoss hunique)
+
+#print axioms minimal_enlargedCandidate_any_leaf_outlet
 
 end OrderedEdgeColoring
 end JSP000404Research
