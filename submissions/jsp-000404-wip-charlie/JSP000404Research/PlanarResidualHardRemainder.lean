@@ -370,6 +370,206 @@ theorem planar_topLoss_secondLayer_companion_card_le_two
     hcapRe hn hdelta0 hdeltaHalf ht hlam
     C s hS
 
+
+noncomputable def planarTopSecondLayerLossVertices
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    (s : ProjectionOrdered V) :
+    Finset (ProjectionOrdered V) := by
+  classical
+  let R :=
+    planarStandardResidualColoring
+      hp hcap (by omega : 1 ≤ n)
+      hdelta0 (by linarith : delta < 1)
+      ht hlam
+  let exponent := planarCentreExponent hp C
+  exact (Finset.univ : Finset (ProjectionOrdered V)).filter
+    (fun i =>
+      i ≠ s ∧
+      i ∈ projectedLossVertices R exponent ∧
+      exponent i = n - 2)
+
+theorem planarTopSecondLayerLossVertices_card_le_two
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    (s : ProjectionOrdered V)
+    (hS : planarCentreExponent hp C s = n - 1) :
+    (planarTopSecondLayerLossVertices
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C s).card ≤ 2 := by
+  classical
+  let S :=
+    planarTopSecondLayerLossVertices
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C s
+  let A :=
+    (Finset.univ : Finset (ProjectionOrdered V)).filter
+      (fun i =>
+        i ≠ s ∧
+        planarCentreExponent hp C i = n - 2)
+  have hsub : S ⊆ A := by
+    intro i hi
+    simp only [S,planarTopSecondLayerLossVertices,
+      Finset.mem_filter, Finset.mem_univ, true_and] at hi
+    simp only [A,Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hi.1,hi.2.2⟩
+  have hcardA :
+      A.card ≤ 2 := by
+    simpa [A] using
+      planar_topLoss_secondLayer_companion_card_le_two
+        hp hcap hn hdelta0 hdeltaHalf
+        ht hlam C s hS
+  exact (Finset.card_le_card hsub).trans hcardA
+
+theorem planar_secondLayerLoss_completion_card
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    {w : ProjectionOrdered V}
+    (hwLoss :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      w ∈ projectedLossVertices R exponent)
+    (hwSecond :
+      planarCentreExponent hp C w = n - 2) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
+        ht hlam
+    (retainedCompletionWords R w).card = 2 ^ (n - 3) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hwLoss' :
+      w ∈ projectedLossVertices R exponent := by
+    simpa [R,exponent,hn1,hdelta1] using hwLoss
+  rw [retainedCompletionWords_card]
+  have heq :=
+    (mem_projectedLossVertices R exponent w).1 hwLoss'
+  unfold projectedFree at heq
+  have hfree :
+      n - (retainedActive R w).card = n - 3 := by
+    rw [projectedLoss_retainedActive_card
+      R exponent hwLoss']
+    dsimp [exponent]
+    rw [hwSecond]
+    omega
+  rw [hfree]
+
+theorem planar_top_secondLayerLoss_total_cube_le_top_cube
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    {s : ProjectionOrdered V}
+    (hsLoss :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      s ∈ projectedLossVertices R exponent)
+    (hS : planarCentreExponent hp C s = n - 1) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
+        ht hlam
+    let S :=
+      planarTopSecondLayerLossVertices
+        hp hcap hn hdelta0 hdeltaHalf ht hlam C s
+    (∑ w ∈ S, (retainedCompletionWords R w).card)
+      ≤
+    (retainedCompletionWords R s).card := by
+  classical
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  let S :=
+    planarTopSecondLayerLossVertices
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C s
+  have hsLoss' :
+      s ∈ projectedLossVertices R exponent := by
+    simpa [R,exponent,hn1,hdelta1] using hsLoss
+  have hScard :
+      S.card ≤ 2 :=
+    planarTopSecondLayerLossVertices_card_le_two
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C s hS
+  have hsum :
+      (∑ w ∈ S, (retainedCompletionWords R w).card)
+        =
+      S.card * 2 ^ (n - 3) := by
+    calc
+      (∑ w ∈ S, (retainedCompletionWords R w).card)
+          =
+      ∑ _w ∈ S, 2 ^ (n - 3) := by
+        apply Finset.sum_congr rfl
+        intro w hwS
+        have hwData :
+            w ≠ s ∧
+            w ∈ projectedLossVertices R exponent ∧
+            exponent w = n - 2 := by
+          simpa [S,planarTopSecondLayerLossVertices,
+            R,exponent,hn1,hdelta1] using hwS
+        exact planar_secondLayerLoss_completion_card
+          hp hcap hn hdelta0 hdeltaHalf ht hlam C
+          hwData.2.1 hwData.2.2
+      _ = S.card * 2 ^ (n - 3) := by
+        simp [Nat.mul_comm]
+  have htopCard :
+      (retainedCompletionWords R s).card =
+        2 ^ (n - 2) := by
+    exact topLoss_completion_card_current
+      R exponent hsLoss' hS
+  rw [hsum,htopCard]
+  calc
+    S.card * 2 ^ (n - 3)
+        ≤ 2 * 2 ^ (n - 3) :=
+      Nat.mul_le_mul_right _ hScard
+    _ = 2 ^ (n - 2) := by
+      have hs : n - 3 + 1 = n - 2 := by omega
+      rw [← hs, pow_succ]
+      omega
+
 /-- Main genuine-planar hard remainder outlet. -/
 theorem planar_centre_capacity_of_hard_words_fit_holes
     {lam t delta : ℝ} {n : ℕ}
@@ -420,6 +620,8 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
 #print axioms planar_topLoss_word_four_exit_outlet
 #print axioms planar_topLoss_word_layered_outlet
 #print axioms planar_topLoss_secondLayer_companion_card_le_two
+#print axioms planarTopSecondLayerLossVertices_card_le_two
+#print axioms planar_top_secondLayerLoss_total_cube_le_top_cube
 #print axioms planar_centre_capacity_of_hard_words_fit_holes
 
 end
