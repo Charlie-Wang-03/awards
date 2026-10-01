@@ -59,6 +59,14 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check current recursive triangle frontier
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualEnlargedTriangleOutlet
+          lake build JSP000404Research.ResidualLossThreeExitRecursiveOutlet
+          lake build JSP000404Research.ResidualExactSharedRecursiveOutlet
+          lake build JSP000404Research.ProjectionEnlargedCandidateHall
+
       - name: Check source-assembly repairs
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.SourceAssemblyRepairs
