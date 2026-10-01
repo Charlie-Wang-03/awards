@@ -794,7 +794,122 @@ theorem coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
       (enlargedCollisionGraph C exponent T)
       hgirth hUV hVW) hUW
 
-#print axioms coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
+
+theorem mem_coreEnlargedCandidateFibre_of_shared
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    {v : V}
+    {word : Fin n → Bool}
+    (hvT : v ∈ T)
+    (hshared :
+      word ∈ sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v) :
+    v ∈ coreEnlargedCandidateFibre
+      C exponent T word := by
+  have hparts := Finset.mem_inter.mp hshared
+  exact (mem_coreEnlargedCandidateFibre
+    C exponent T word v).2 ⟨hvT,hparts.1⟩
+
+theorem coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    {v : V}
+    (hvT : v ∈ T)
+    {word : Fin n → Bool}
+    (hshared :
+      word ∈ sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v) :
+    (coreEnlargedCandidateFibre
+      C exponent T word).card = 2 := by
+  have hvF :=
+    mem_coreEnlargedCandidateFibre_of_shared
+      C exponent hvT hshared
+  have hdata :=
+    sharedBlockWords_has_other_block
+      (enlargedProjectedCandidateBlock C exponent)
+      hshared
+  obtain ⟨_hvWord,w,hwT,hwv,hwWord⟩ := hdata
+  have hwF :
+      w ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word w).2 ⟨hwT,hwWord⟩
+  have htwo :
+      2 ≤ (coreEnlargedCandidateFibre
+        C exponent T word).card := by
+    exact Finset.two_le_card.mpr ⟨v,hvF,w,hwF,hwv.symm⟩
+  have hle :=
+    coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
+      C exponent T hgirth word
+  omega
+
+theorem shared_iff_mem_fibre_and_card_eq_two_of_three_lt_girth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    {v : V}
+    (hvT : v ∈ T)
+    {word : Fin n → Bool} :
+    word ∈ sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ↔
+    v ∈ coreEnlargedCandidateFibre C exponent T word
+      ∧
+    (coreEnlargedCandidateFibre
+      C exponent T word).card = 2 := by
+  constructor
+  · intro hshared
+    exact ⟨
+      mem_coreEnlargedCandidateFibre_of_shared
+        C exponent hvT hshared,
+      coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
+        C exponent hgirth hvT hshared
+    ⟩
+  · rintro ⟨hvF,hcard⟩
+    have hvData :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word v).1 hvF
+    have hexists :
+        ∃ w ∈ coreEnlargedCandidateFibre
+            C exponent T word,
+          w ≠ v := by
+      by_contra hnot
+      push_neg at hnot
+      have hsub :
+          coreEnlargedCandidateFibre
+              C exponent T word
+            ⊆ {v} := by
+        intro w hw
+        simpa [hnot w hw]
+      have hle :=
+        Finset.card_le_card hsub
+      simp [hcard] at hle
+    obtain ⟨w,hwF,hwv⟩ := hexists
+    have hwData :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word w).1 hwF
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact hvData.2
+    · apply Finset.mem_biUnion.mpr
+      exact ⟨w,
+        Finset.mem_erase.mpr ⟨hwv,hvData.1 ▸ hwData.1⟩,
+        hwData.2⟩
+
+#print axioms coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
+#print axioms shared_iff_mem_fibre_and_card_eq_two_of_three_lt_girth
 
 end OrderedEdgeColoring
 end JSP000404Research
