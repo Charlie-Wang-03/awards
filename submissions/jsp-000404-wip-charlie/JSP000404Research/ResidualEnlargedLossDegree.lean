@@ -3045,10 +3045,243 @@ theorem uniqueNeighbourLeafTransfers_after_lossParentSlack_le_cube
   rw [hmass] at hsum
   omega
 
-#print axioms minimal_enlargedCandidate_prune_any_leaf_to_parent
-#print axioms uniqueNeighbourLeafTransfers_sum_le_parent_block
-#print axioms uniqueNeighbourLeafTransfers_after_nonlossParentSlack_le_cube
-#print axioms uniqueNeighbourLeafTransfers_after_lossParentSlack_le_cube
+
+theorem minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvExact : ExactProjectedBudget C exponent v) :
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      =
+    (sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T v).card := by
+  have hblock :
+      (enlargedProjectedCandidateBlock C exponent v).card =
+        2 ^ exponent v := by
+    rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss,
+      retainedCompletionWords_card,
+      hvExact]
+  have hsplit :=
+    block_card_eq_private_add_shared
+      (enlargedProjectedCandidateBlock C exponent)
+      T v
+  unfold deletedVertexTransfer
+  rw [hblock] at hsplit
+  omega
+
+theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvExact : ExactProjectedBudget C exponent v)
+    (hwNonloss : w ∉ projectedLossVertices C exponent)
+    (hwStrict : exponent w < projectedFree C w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ≤
+      dyadicProfileSurplus exponent (projectedFree C) w
+    ∨
+    MixedUnpaidChild C exponent v w := by
+  classical
+  have htransferEq :=
+    minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
+      C exponent hdef hmin hvT hvNonloss hvExact
+  by_cases hpaid :
+      deletedVertexTransfer
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ≤
+      dyadicProfileSurplus exponent (projectedFree C) w
+  · exact Or.inl hpaid
+  · right
+
+    have hsharedNonempty :
+        (sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v).Nonempty := by
+      have hpos :=
+        minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
+          C exponent hdef hmin hvT hvNonloss hvExact
+      have htransferPos :=
+        minimal_deficient_deletedVertexTransfer_pos
+          (fun x : V => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          hdef hmin hvT
+      rw [hpos] at htransferPos
+      exact Finset.card_pos.mp htransferPos
+
+    obtain ⟨base,hbaseShared⟩ := hsharedNonempty
+    have hdata :=
+      sharedBlockWords_has_other_block
+        (enlargedProjectedCandidateBlock C exponent)
+        hbaseShared
+    obtain ⟨hbaseVBlock,z,hzT,hzv,hbaseZBlock⟩ := hdata
+    have hzCross :
+        EnlargedBlocksCross C exponent v z :=
+      ⟨base,hbaseVBlock,hbaseZBlock⟩
+    have hzw : z = w :=
+      hunique z hzT hzv hzCross
+    subst z
+
+    have hbaseV :
+        base ∈ retainedCompletionWords C v := by
+      rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hvNonloss] at hbaseVBlock
+      exact hbaseVBlock
+    have hbaseW :
+        base ∈ retainedCompletionWords C w := by
+      rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hwNonloss] at hbaseZBlock
+      exact hbaseZBlock
+
+    have hsharedSub :
+        sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+          ⊆
+        retainedCompletionWords C v ∩
+          retainedCompletionWords C w := by
+      intro y hy
+      have hyData :=
+        sharedBlockWords_has_other_block
+          (enlargedProjectedCandidateBlock C exponent)
+          hy
+      obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
+      have hzCross' :
+          EnlargedBlocksCross C exponent v z :=
+        ⟨y,hyV,hyZ⟩
+      have hzw' := hunique z hzT' hzv' hzCross'
+      subst z
+      rw [enlargedProjectedCandidateBlock_nonloss
+            C exponent hvNonloss] at hyV
+      rw [enlargedProjectedCandidateBlock_nonloss
+            C exponent hwNonloss] at hyZ
+      exact Finset.mem_inter.mpr ⟨hyV,hyZ⟩
+
+    have hsharedLe :=
+      Finset.card_le_card hsharedSub
+    have hunpaid :
+        ¬ ((retainedCompletionWords C v ∩
+            retainedCompletionWords C w).card
+          ≤
+          dyadicProfileSurplus exponent (projectedFree C) w) := by
+      intro hoverPaid
+      have htransferLe :
+          deletedVertexTransfer
+              (fun x => 2 ^ exponent x)
+              (enlargedProjectedCandidateBlock C exponent)
+              T v
+            ≤
+          dyadicProfileSurplus exponent (projectedFree C) w := by
+        rw [htransferEq]
+        exact hsharedLe.trans hoverPaid
+      exact hpaid htransferLe
+
+    exact ⟨
+      (by
+        intro hvwEq
+        subst w
+        exact hwStrict (by simpa [hvExact])),
+      hvExact,
+      hwStrict,
+      base,hbaseV,hbaseW,hunpaid
+    ⟩
+
+theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvExact : ExactProjectedBudget C exponent v)
+    (hwNonloss : w ∉ projectedLossVertices C exponent)
+    (hwStrict : exponent w < projectedFree C w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ≤
+      dyadicProfileSurplus exponent (projectedFree C) w
+    ∨
+    exponent w < exponent v := by
+  rcases
+    minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
+      C exponent hdef hmin hvT
+      hvNonloss hvExact hwNonloss hwStrict hunique
+    with hpaid | hmixed
+  · exact Or.inl hpaid
+  · exact Or.inr
+      (mixedUnpaidChild_exponent_lt C exponent hmixed)
+
+#print axioms minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
+#print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
+#print axioms minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
 
 end OrderedEdgeColoring
 end JSP000404Research
