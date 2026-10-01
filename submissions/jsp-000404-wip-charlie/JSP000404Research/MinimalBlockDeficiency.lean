@@ -44,26 +44,24 @@ theorem exists_minimal_deficient_subset
         U ⊂ T →
         ¬ BlockDeficient demand blocks U := by
   classical
-  let candidates :=
-    (S.powerset).filter
-      (fun T => BlockDeficient demand blocks T)
-  have hnonempty : candidates.Nonempty := by
-    refine ⟨S,?_⟩
-    simp [candidates,hS]
-  let T := candidates.min' hnonempty
-  have hTmem : T ∈ candidates := Finset.min'_mem _ _
-  have hTdata := Finset.mem_filter.mp hTmem
-  refine ⟨T,?_,hTdata.2,?_⟩
-  · exact Finset.mem_powerset.mp hTdata.1
-  · intro U hUT hUdef
-    have hUS : U ⊆ S :=
-      hUT.1.trans (Finset.mem_powerset.mp hTdata.1)
-    have hUmem : U ∈ candidates := by
-      apply Finset.mem_filter.mpr
-      exact ⟨Finset.mem_powerset.mpr hUS,hUdef⟩
-    have hle : T ≤ U :=
-      Finset.min'_le candidates U hUmem
-    exact (not_le_of_gt (Finset.card_lt_card hUT)) hle
+  let P : ℕ → Prop := fun m =>
+    ∃ T : Finset V,
+      T ⊆ S ∧
+      BlockDeficient demand blocks T ∧
+      T.card = m
+  have hP : ∃ m, P m := by
+    refine ⟨S.card,S,Finset.Subset.rfl,hS,rfl⟩
+  let m := Nat.find hP
+  have hm : P m := Nat.find_spec hP
+  obtain ⟨T,hTS,hTdef,hTcard⟩ := hm
+  refine ⟨T,hTS,hTdef,?_⟩
+  intro U hUT hUdef
+  have hUS : U ⊆ S := hUT.1.trans hTS
+  have hPU : P U.card := ⟨U,hUS,hUdef,rfl⟩
+  have hmle : m ≤ U.card := Nat.find_min' hP hPU
+  have hlt : U.card < T.card := Finset.card_lt_card hUT
+  rw [hTcard] at hlt
+  omega
 
 theorem minimal_deficient_delete_recovers
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
