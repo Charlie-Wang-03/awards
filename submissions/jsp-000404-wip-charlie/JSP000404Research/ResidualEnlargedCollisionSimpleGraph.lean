@@ -212,9 +212,105 @@ theorem minimal_enlargedCollisionGraph_connected
   · obtain ⟨v,hv⟩ := hT
     exact ⟨⟨v,hv⟩⟩
 
+
+theorem enlarged_minimal_deficient_core_card_ge_two
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T) :
+    2 ≤ T.card := by
+  classical
+  have hT :
+      T.Nonempty :=
+    deficient_set_nonempty_of_positive_demands
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      (fun x => by positivity)
+      hdef
+  have hcardPos : 0 < T.card :=
+    Finset.card_pos.mpr hT
+  by_contra hnot
+  have hcardLe : T.card ≤ 1 := by
+    omega
+  have hcardEq : T.card = 1 := by
+    omega
+  obtain ⟨v,hTv⟩ := Finset.card_eq_one.mp hcardEq
+  subst T
+  have hlocal :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss v
+  unfold BlockDeficient at hdef
+  simp at hdef
+  omega
+
+theorem minimal_enlargedCollisionGraph_two_leaves_of_acyclic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    (hacyclic :
+      (enlargedCollisionGraph C exponent T).IsAcyclic) :
+    ∃ u v : {x : V // x ∈ T},
+      u ≠ v ∧
+      (enlargedCollisionGraph C exponent T).degree u = 1 ∧
+      (enlargedCollisionGraph C exponent T).degree v = 1 := by
+  classical
+  let G := enlargedCollisionGraph C exponent T
+  have hT :
+      T.Nonempty :=
+    deficient_set_nonempty_of_positive_demands
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      (fun x => by positivity)
+      hdef
+  have hconn :
+      G.Connected := by
+    dsimp [G]
+    exact minimal_enlargedCollisionGraph_connected
+      C exponent hT hdef hmin
+  have hcard :
+      2 ≤ T.card :=
+    enlarged_minimal_deficient_core_card_ge_two
+      C exponent hexpLt hexp honeLoss hdef
+  have hcardSubtype :
+      1 < Fintype.card {x : V // x ∈ T} := by
+    simpa using hcard
+  letI : Nontrivial {x : V // x ∈ T} :=
+    Fintype.one_lt_card_iff_nontrivial.mp hcardSubtype
+  have htree : G.IsTree := by
+    exact ⟨hconn,hacyclic⟩
+  exact htree.exists_ne_and_degree_eq_one
+
 #print axioms enlargedCollisionGraph_adj
 #print axioms minimal_enlargedCollisionGraph_preconnected
 #print axioms minimal_enlargedCollisionGraph_connected
+#print axioms enlarged_minimal_deficient_core_card_ge_two
+#print axioms minimal_enlargedCollisionGraph_two_leaves_of_acyclic
 
 end OrderedEdgeColoring
 end JSP000404Research
