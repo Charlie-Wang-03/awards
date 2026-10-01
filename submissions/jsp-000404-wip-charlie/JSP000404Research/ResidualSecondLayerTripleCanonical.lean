@@ -1153,6 +1153,169 @@ theorem secondLayer_fin3_antipode_not_mem_enlarged
 #print axioms secondLayer_fin3_antipode_not_mem_enlarged
 
 
+/-- In a saturated n=3 Q/T/T/T state, the antipode of the common Q-word is
+outside all four enlarged candidate blocks. -/
+theorem QTTT_fin3_antipode_outside_four_blocks
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {s x y z : V}
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hxSecond : exponent x = 1)
+    (hySecond : exponent y = 1)
+    (hzSecond : exponent z = 1)
+    {word : Fin 3 → Bool}
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    let anti := tripleFlipBoolWord word cx cy cz
+    anti ∉ enlargedProjectedCandidateBlock C exponent s ∧
+    anti ∉ enlargedProjectedCandidateBlock C exponent x ∧
+    anti ∉ enlargedProjectedCandidateBlock C exponent y ∧
+    anti ∉ enlargedProjectedCandidateBlock C exponent z := by
+  dsimp
+  have hsOut :=
+    secondLayer_fin3_antipode_not_mem_enlarged
+      C exponent hsLoss hsSecond hsQ
+      hcxy hcxz hcyz
+
+  have hxBase :
+      flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
+    (mem_translatedCompletionWords C x cx word).1 hxT
+  have hxOut :
+      tripleFlipBoolWord word cx cy cz ∉
+        enlargedProjectedCandidateBlock C exponent x := by
+    have h :=
+      secondLayer_fin3_twoFlip_not_mem_enlarged
+        C exponent hxLoss hxSecond hxBase hcyz
+        (a := cy) (b := cz)
+    simpa [tripleFlipBoolWord] using h
+
+  have hyBase :
+      flipBoolWordAt word cy ∈ retainedCompletionWords C y :=
+    (mem_translatedCompletionWords C y cy word).1 hyT
+  have hyOut :
+      tripleFlipBoolWord word cx cy cz ∉
+        enlargedProjectedCandidateBlock C exponent y := by
+    have h :=
+      secondLayer_fin3_twoFlip_not_mem_enlarged
+        C exponent hyLoss hySecond hyBase hcxz
+        (a := cx) (b := cz)
+    rw [← tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
+      word hcxy hcxz hcyz] at h
+    exact h
+
+  have hzBase :
+      flipBoolWordAt word cz ∈ retainedCompletionWords C z :=
+    (mem_translatedCompletionWords C z cz word).1 hzT
+  have hzOut :
+      tripleFlipBoolWord word cx cy cz ∉
+        enlargedProjectedCandidateBlock C exponent z := by
+    have h :=
+      secondLayer_fin3_twoFlip_not_mem_enlarged
+        C exponent hzLoss hzSecond hzBase hcxy
+        (a := cx) (b := cy)
+    rw [← tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
+      word hcxy hcxz hcyz] at h
+    exact h
+
+  exact ⟨hsOut,hxOut,hyOut,hzOut⟩
+
+/-- Therefore the n=3 Q/T/T/T terminal either gives an immediate Boolean
+hole, or any completion blocker of the antipode is a genuinely fresh fifth
+vertex outside the four Q/T/T/T carriers. -/
+theorem QTTT_fin3_antipode_hole_or_fresh_blocker
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {s x y z : V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hxSecond : exponent x = 1)
+    (hySecond : exponent y = 1)
+    (hzSecond : exponent z = 1)
+    {word : Fin 3 → Bool}
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    let anti := tripleFlipBoolWord word cx cy cz
+    anti ∉ coveredCompletionWords C
+    ∨
+    ∃ r : V,
+      r ≠ s ∧ r ≠ x ∧ r ≠ y ∧ r ≠ z ∧
+      anti ∈ retainedCompletionWords C r := by
+  dsimp
+  let anti := tripleFlipBoolWord word cx cy cz
+  have hout :=
+    QTTT_fin3_antipode_outside_four_blocks
+      C exponent
+      hsLoss hxLoss hyLoss hzLoss
+      hsSecond hxSecond hySecond hzSecond
+      hcxy hcxz hcyz hsQ hxT hyT hzT
+  by_cases hhole : anti ∉ coveredCompletionWords C
+  · exact Or.inl hhole
+  · right
+    have hcovered : anti ∈ coveredCompletionWords C := by
+      simpa using hhole
+    obtain ⟨r,hrF⟩ :=
+      (mem_coveredCompletionWords C anti).1 hcovered
+    have hrQ :
+        anti ∈ retainedCompletionWords C r :=
+      (mem_completionFibre C anti r).1 hrF
+
+    have hrs : r ≠ s := by
+      intro h
+      subst r
+      apply hout.1
+      rw [enlargedProjectedCandidateBlock_loss C exponent hsLoss]
+      unfold allActiveLossCandidateBlock
+      exact Finset.mem_union_left _ hrQ
+    have hrx : r ≠ x := by
+      intro h
+      subst r
+      apply hout.2.1
+      rw [enlargedProjectedCandidateBlock_loss C exponent hxLoss]
+      unfold allActiveLossCandidateBlock
+      exact Finset.mem_union_left _ hrQ
+    have hry : r ≠ y := by
+      intro h
+      subst r
+      apply hout.2.2.1
+      rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
+      unfold allActiveLossCandidateBlock
+      exact Finset.mem_union_left _ hrQ
+    have hrz : r ≠ z := by
+      intro h
+      subst r
+      apply hout.2.2.2
+      rw [enlargedProjectedCandidateBlock_loss C exponent hzLoss]
+      unfold allActiveLossCandidateBlock
+      exact Finset.mem_union_left _ hrQ
+    exact ⟨r,hrs,hrx,hry,hrz,hrQ⟩
+
+#print axioms QTTT_fin3_antipode_outside_four_blocks
+#print axioms QTTT_fin3_antipode_hole_or_fresh_blocker
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
