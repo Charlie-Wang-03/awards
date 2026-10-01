@@ -2032,6 +2032,7 @@ theorem longCycle_overload_recursive_outlet
       3 < (enlargedCollisionGraph C exponent T).girth) :
     (
       ∃ v ∈ T,
+        ExactProjectedBudget C exponent v ∧
         ExactSharedOutlet C exponent v
     )
     ∨
@@ -2053,7 +2054,7 @@ theorem longCycle_overload_recursive_outlet
       hdef hgirth
   rcases hprofile with hvExact | ⟨hvLoss,hvTop⟩
   · exact Or.inl
-      ⟨v,hvT,
+      ⟨v,hvT,hvExact,
         longCycle_exact_overload_has_shared_outlet
           C exponent hexp honeLoss
           hvT hvExact hover⟩
