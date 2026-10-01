@@ -1,6 +1,8 @@
 import JSP000404Research.ResidualEnlargedCandidateHall
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
+import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
+import JSP000404Research.SharpSecondLayerMultiplicity
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.PlanarResidualHardRemainder
 import JSP000404Research.ProjectionStandardBandBudget
@@ -647,6 +649,139 @@ theorem planar_enlarged_expansion_failure_root_reduction
   exact planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
     hp hcap hn hdelta0 hdeltaHalf ht hlam C
     hdef hmin
+
+
+theorem planar_secondLayerLoss_word_closed_outlet
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (s : ProjectionOrdered V)
+    (hS : centreExponent (C s) t = n - 1)
+    {v : ProjectionOrdered V}
+    (hvLoss :
+      v ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp C))
+    (hvSecond : centreExponent (C v) t = n - 2)
+    {word : Fin n → Bool}
+    (hword :
+      word ∈ retainedCompletionWords
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam) v) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ e : Fin n,
+        e ∈ retainedActive R v ∧
+        flipBoolWordAt word e ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        ExactProjectedBudget R exponent w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w + 1 ≤ n - 2
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤
+        n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+
+  have htop :
+      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+        (fun z => exponent z = n - 1)).card ≤ 1 := by
+    simpa [exponent,planarCentreExponent] using
+      (projectionOrdered_topExponent_filter_card_le_one
+        hp hcap hcard (by omega : 2 ≤ n)
+        hdelta0 hdeltaHalf ht hlam C)
+
+  have hcapRe :
+      AngleCap (reindexedPoint p) lam :=
+    angleCap_reindexedPoint hp hcap
+  have hsecondComp :=
+    secondLayer_companion_card_le_two
+      (reindexedPoint_injective hp)
+      hcapRe hn3 hdelta0 hdeltaHalf ht hlam
+      C s hS
+
+  have hsecondEq :
+      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+        (fun z => exponent z = n - 2))
+        =
+      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+        (fun z => z ≠ s ∧
+          centreExponent (C z) t = n - 2)) := by
+    ext z
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro hz
+      have hz' :
+          centreExponent (C z) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hz
+      refine ⟨?_,hz'⟩
+      intro hzs
+      subst z
+      omega
+    · rintro ⟨_hzs,hz⟩
+      simpa [exponent,planarCentreExponent] using hz
+
+  have hsecond :
+      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+        (fun z => exponent z = n - 2)).card ≤ 2 := by
+    rw [hsecondEq]
+    exact hsecondComp
+
+  have hvSecondR :
+      exponent v = n - 2 := by
+    simpa [exponent,planarCentreExponent] using hvSecond
+
+  simpa [R,exponent,hn1,hdelta1] using
+    (secondLayerLoss_word_closed_outlet_of_multiplicity
+      R exponent hexpLt hexp hone
+      htop hsecond
+      (by simpa [R,exponent,hn1,hdelta1] using hvLoss)
+      hvSecondR
+      (by simpa [R,hn1,hdelta1] using hword))
 
 #print axioms planarEnlargedCandidateBlock_local_capacity
 #print axioms planar_lowerBranch_capacity_of_enlargedBlock_expansion
