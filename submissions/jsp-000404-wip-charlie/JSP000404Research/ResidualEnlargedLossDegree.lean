@@ -3227,7 +3227,8 @@ theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
       (by
         intro hvwEq
         subst w
-        exact hwStrict (by simpa [hvExact])),
+        unfold ExactProjectedBudget at hvExact
+        omega),
       hvExact,
       hwStrict,
       base,hbaseV,hbaseW,hunpaid
