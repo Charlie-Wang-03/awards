@@ -491,9 +491,62 @@ theorem enlargedCollisionCycle_edge_cross
   enlargedCollisionGraph_cross_of_adj
     C exponent T hadj
 
+
+theorem minimal_enlargedCollisionGraph_leaf_outlets_or_cycle
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U) :
+    (
+      ∃ u v wu wv : V,
+        u ∈ T ∧
+        v ∈ T ∧
+        u ≠ v ∧
+        wu ∈ T ∧
+        wv ∈ T ∧
+        wu ≠ u ∧
+        wv ≠ v ∧
+        EnlargedLeafOutlet C exponent T u wu ∧
+        EnlargedLeafOutlet C exponent T v wv
+    )
+    ∨
+    (
+      ∃ a : {x : V // x ∈ T},
+        ∃ p :
+          (enlargedCollisionGraph C exponent T).Walk a a,
+          p.IsCycle
+    ) := by
+  by_cases hacyclic :
+      (enlargedCollisionGraph C exponent T).IsAcyclic
+  · left
+    exact
+      minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hacyclic
+  · right
+    exact
+      minimal_enlargedCollisionGraph_cycle_of_not_acyclic
+        C exponent hacyclic
+
 #print axioms minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
 #print axioms minimal_enlargedCollisionGraph_cycle_of_not_acyclic
-#print axioms enlargedCollisionCycle_edge_cross
+#print axioms minimal_enlargedCollisionGraph_leaf_outlets_or_cycle
 
 end OrderedEdgeColoring
 end JSP000404Research
