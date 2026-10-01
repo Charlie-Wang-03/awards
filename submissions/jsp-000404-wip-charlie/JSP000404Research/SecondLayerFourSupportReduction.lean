@@ -259,4 +259,97 @@ theorem four_secondLayer_has_two_supportTwo_of_three_le_n
 #print axioms no_three_supportOne_secondLayer_among_four_n3
 #print axioms four_secondLayer_has_two_supportTwo_of_three_le_n
 
+
+/-- If four distinct second-layer centres split exactly as two support-one and
+two support-two centres, four-centre transition packing forces both
+support-two transition quotients to be exactly one. -/
+theorem twoSupportOne_twoSupportTwo_transition_qe_eq_one
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (Ca : CentreProjectiveCycle hp a)
+    (Cb : CentreProjectiveCycle hp b)
+    (Cc : CentreProjectiveCycle hp c)
+    (Cd : CentreProjectiveCycle hp d)
+    (haSecond : centreExponent Ca t = n - 2)
+    (hbSecond : centreExponent Cb t = n - 2)
+    (hcSecond : centreExponent Cc t = n - 2)
+    (hdSecond : centreExponent Cd t = n - 2)
+    (haSupport : positiveSupport (centreQuotient Ca t) = 1)
+    (hbSupport : positiveSupport (centreQuotient Cb t) = 1)
+    (hcSupport : positiveSupport (centreQuotient Cc t) = 2)
+    (hdSupport : positiveSupport (centreQuotient Cd t) = 2) :
+    ∃ certC : HighExponentTransitionIntervalCertificate hp t c Cc,
+    ∃ certD : HighExponentTransitionIntervalCertificate hp t d Cd,
+      certC.qe = 1 ∧ certD.qe = 1 ∧
+      (n - 1 ∈ quotientList t Cc.gaps) ∧
+      (n - 1 ∈ quotientList t Cd.gaps) := by
+  let hdelta1 : delta < 1 := by linarith
+  let certA :=
+    Classical.choice
+      (exists_highExponentTransitionIntervalCertificate
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 hdelta1 ht hlam
+        a Ca (by rw [haSecond]; omega))
+  let certB :=
+    Classical.choice
+      (exists_highExponentTransitionIntervalCertificate
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 hdelta1 ht hlam
+        b Cb (by rw [hbSecond]; omega))
+  let certC :=
+    Classical.choice
+      (exists_highExponentTransitionIntervalCertificate
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 hdelta1 ht hlam
+        c Cc (by rw [hcSecond]; omega))
+  let certD :=
+    Classical.choice
+      (exists_highExponentTransitionIntervalCertificate
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 hdelta1 ht hlam
+        d Cd (by rw [hdSecond]; omega))
+  have hqa :
+      certA.qe = n - 1 :=
+    deficit_two_support_one_transition_qe_eq
+      Ca certA hn3 haSecond haSupport
+  have hqb :
+      certB.qe = n - 1 :=
+    deficit_two_support_one_transition_qe_eq
+      Cb certB hn3 hbSecond hbSupport
+  have hqcPos : 1 ≤ certC.qe :=
+    Nat.one_le_iff_ne_zero.mpr certC.qe_ne
+  have hqdPos : 1 ≤ certD.qe :=
+    Nat.one_le_iff_ne_zero.mpr certD.qe_ne
+  have hpack :=
+    four_transition_quotient_sum_le_two_n
+      hp (by omega : 1 ≤ n)
+      hdelta0 hdeltaHalf ht
+      hab hac had hbc hbd hcd
+      Ca Cb Cc Cd certA certB certC certD
+  rw [hqa,hqb] at hpack
+  have hqc : certC.qe = 1 := by omega
+  have hqd : certD.qe = 1 := by omega
+  have hcHidden :=
+    mixed_support_two_has_hidden_n_sub_one
+      Cc certC hn3 hdelta0 hdeltaHalf ht
+      hcSecond hcSupport hqc
+  have hdHidden :=
+    mixed_support_two_has_hidden_n_sub_one
+      Cd certD hn3 hdelta0 hdeltaHalf ht
+      hdSecond hdSupport hqd
+  exact ⟨certC,certD,hqc,hqd,hcHidden,hdHidden⟩
+
+#print axioms twoSupportOne_twoSupportTwo_transition_qe_eq_one
+
 end JSP000404Research
