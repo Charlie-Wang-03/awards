@@ -737,6 +737,137 @@ theorem QTT_fresh_loss_blocker_gives_translated_carrier
 #print axioms QTT_fresh_loss_blocker_gives_translated_carrier
 
 
+/-- Hard Q/T/T plus a covered unique third exit upgrades canonically to a
+Q/T/T/T saturation state: the completion owner s is second-layer, and the
+same Boolean word is translated at three distinct second-layer loss blockers
+x,y,z along three pairwise distinct coordinates.  Those coordinates are
+exactly the three active coordinates of s. -/
+theorem QTT_hard_branch_upgrades_to_QTTT
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ q, exponent q < n)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {s x y : V}
+    (hsx : s ≠ x)
+    (hsy : s ≠ y)
+    (hxy : x ≠ y)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = n - 2)
+    (hxSecond : exponent x = n - 2)
+    (hySecond : exponent y = n - 2)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcxy : cx ≠ cy)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords C
+    )
+    ∨
+    (
+      ∃ q : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) q
+    )
+    ∨
+    (
+      ∃ q : V,
+        ExactProjectedBudget C exponent q
+    )
+    ∨
+    (
+      ∃ q : V,
+        q ∈ projectedLossVertices C exponent ∧
+        exponent q = n - 1
+    )
+    ∨
+    (
+      ∃ q : V,
+        q ∈ projectedLossVertices C exponent ∧
+        exponent q + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ e : Fin n,
+      ∃ z : V,
+        s ≠ z ∧ x ≠ z ∧ y ≠ z ∧
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z = n - 2 ∧
+        cx ∈ retainedActive C s ∧
+        cy ∈ retainedActive C s ∧
+        e ∈ retainedActive C s ∧
+        cx ≠ cy ∧ cx ≠ e ∧ cy ≠ e ∧
+        retainedActive C s = {cx,cy,e} ∧
+        cx ∈ retainedActive C x ∧
+        cy ∈ retainedActive C y ∧
+        e ∈ retainedActive C z ∧
+        word ∈ retainedCompletionWords C s ∧
+        word ∈ translatedCompletionWords C x cx ∧
+        word ∈ translatedCompletionWords C y cy ∧
+        word ∈ translatedCompletionWords C z e
+    ) := by
+  classical
+  rcases
+    QTT_unique_third_exit_fresh_blocker_or_closed
+      C exponent hexpLt hexp honeLoss
+      hsx hsy hxy
+      hsLoss hxLoss hyLoss hsSecond
+      hcx hcy hcxy hsQ hxT hyT
+    with hhole | hpaid | hexact | htop | hdeep | hfresh
+  · exact Or.inl hhole
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl htop)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+  · obtain ⟨e,z,heS,heCx,heCy,hzS,hzX,hzY,
+      hzLoss,hzSecond,hzFlip⟩ := hfresh
+    have hzCarrier :=
+      QTT_fresh_loss_blocker_gives_translated_carrier
+        C exponent hexp honeLoss
+        hzS.symm hsLoss hzLoss hsQ hzFlip
+    have hknown :=
+      QTT_two_known_active_coordinates_at_completion_owner
+        C exponent hexp honeLoss
+        hsx hsy hxLoss hyLoss hcx hcy hsQ hxT hyT
+    have hsCard :=
+      secondLayerLoss_retainedActive_card_eq_three
+        C exponent hsLoss hsSecond
+    have hsetSub :
+        ({cx,cy,e} : Finset (Fin n)) ⊆ retainedActive C s := by
+      intro q hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with rfl | rfl | rfl
+      · exact hknown.1
+      · exact hknown.2
+      · exact heS
+    have hsetCard :
+        ({cx,cy,e} : Finset (Fin n)).card = 3 := by
+      simp [hcxy,heCx,heCy]
+    have hsEq :
+        retainedActive C s = {cx,cy,e} := by
+      apply Finset.eq_of_subset_of_card_le
+      · exact hsetSub
+      · simpa [hsCard,hsetCard]
+    exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+      ⟨e,z,hzS.symm,hzX.symm,hzY.symm,
+        hzLoss,hzSecond,
+        hknown.1,hknown.2,heS,
+        hcxy,heCx,heCy,hsEq,
+        hcx,hcy,hzCarrier.1,
+        hsQ,hxT,hyT,hzCarrier.2⟩))))
+
+#print axioms QTT_hard_branch_upgrades_to_QTTT
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
