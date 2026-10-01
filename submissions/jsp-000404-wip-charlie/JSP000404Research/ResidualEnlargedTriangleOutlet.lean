@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
+import JSP000404Research.ResidualLossCycleLocal
 import Mathlib.Tactic
 
 /-!
@@ -393,6 +394,118 @@ theorem enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecurs
 
 #print axioms two_projectedLoss_highLayer_classification
 #print axioms enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
+
+
+/-- At an ordered triangle's middle projected-loss vertex, the two incident
+edge colours are retained, active, and distinct.  In the top layer these two
+coordinates exhaust the active-cardinality budget. -/
+theorem topLoss_middle_triangle_palette_card_two
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {a b c : V}
+    (hab : a < b)
+    (hbc : b < c)
+    (hbLoss : b ∈ projectedLossVertices C exponent)
+    (hbTop : exponent b = n - 1) :
+    let hleft :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hbLoss hab
+    let hright :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hbLoss hbc
+    let cleft := retainedColor C a b hleft
+    let cright := retainedColor C b c hright
+    cleft ∈ retainedActive C b ∧
+    cright ∈ retainedActive C b ∧
+    cleft ≠ cright ∧
+    (retainedActive C b).card = 2 := by
+  dsimp
+  let hleft :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hbLoss hab
+  let hright :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hbLoss hbc
+  have hleftActive :
+      retainedColor C a b hleft ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_right C hab hleft
+  have hrightActive :
+      retainedColor C b c hright ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_left C hbc hright
+  have hne :
+      retainedColor C a b hleft ≠
+        retainedColor C b c hright :=
+    projectedLoss_two_sided_retained_colours_ne
+      C exponent hexp honeLoss hbLoss hab hbc
+  have hcard :
+      (retainedActive C b).card = 2 := by
+    rw [projectedLoss_retainedActive_card C exponent hbLoss, hbTop]
+    have hn2 : 2 ≤ n := by
+      have hloss :=
+        (mem_projectedLossVertices C exponent b).1 hbLoss
+      unfold projectedFree at hloss
+      omega
+    omega
+  exact ⟨hleftActive,hrightActive,hne,hcard⟩
+
+/-- The corresponding second-layer middle loss vertex has the same two
+distinct incident active coordinates and active-cardinality exactly three.
+Hence downstream arguments have exactly one further active-coordinate slot
+beyond the two triangle directions. -/
+theorem secondLayerLoss_middle_triangle_palette_card_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {a b c : V}
+    (hab : a < b)
+    (hbc : b < c)
+    (hbLoss : b ∈ projectedLossVertices C exponent)
+    (hbSecond : exponent b = n - 2) :
+    let hleft :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hbLoss hab
+    let hright :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hbLoss hbc
+    let cleft := retainedColor C a b hleft
+    let cright := retainedColor C b c hright
+    cleft ∈ retainedActive C b ∧
+    cright ∈ retainedActive C b ∧
+    cleft ≠ cright ∧
+    (retainedActive C b).card = 3 := by
+  dsimp
+  let hleft :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hbLoss hab
+  let hright :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hbLoss hbc
+  have hleftActive :
+      retainedColor C a b hleft ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_right C hab hleft
+  have hrightActive :
+      retainedColor C b c hright ∈ retainedActive C b :=
+    retainedColor_mem_retainedActive_left C hbc hright
+  have hne :
+      retainedColor C a b hleft ≠
+        retainedColor C b c hright :=
+    projectedLoss_two_sided_retained_colours_ne
+      C exponent hexp honeLoss hbLoss hab hbc
+  have hcard :
+      (retainedActive C b).card = 3 :=
+    secondLayerLoss_retainedActive_card_eq_three
+      C exponent hbLoss hbSecond
+  exact ⟨hleftActive,hrightActive,hne,hcard⟩
+
+#print axioms topLoss_middle_triangle_palette_card_two
+#print axioms secondLayerLoss_middle_triangle_palette_card_three
 
 end OrderedEdgeColoring
 end JSP000404Research
