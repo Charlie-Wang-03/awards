@@ -2897,6 +2897,134 @@ theorem topLoss_word_five_exit_outlet
             hwTop.1,hzTop.1,hwTop.2,hzTop.2⟩)))
 
 
+
+theorem topLoss_word_five_exit_outlet_with_lower_witness
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1)
+    {word : Fin n → Bool}
+    (hword : word ∈ retainedCompletionWords C v) :
+    (
+      ∃ e : Fin n,
+        e ∈ retainedActive C v ∧
+        flipBoolWordAt word e ∉ coveredCompletionWords C
+    )
+    ∨
+    (
+      ∃ w : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) w
+    )
+    ∨
+    (
+      ∃ w : V,
+        ExactProjectedBudget C exponent w
+    )
+    ∨
+    (
+      ∃ w : V,
+        w ∈ projectedLossVertices C exponent ∧
+        exponent w + 1 ≤ n - 1 ∧
+        ∃ e : Fin n,
+          e ∈ retainedActive C v ∧
+          flipBoolWordAt word e ∈ retainedCompletionWords C w
+    )
+    ∨
+    (
+      ∃ w z : V,
+        w ≠ z ∧
+        w ∈ projectedLossVertices C exponent ∧
+        z ∈ projectedLossVertices C exponent ∧
+        exponent w = n - 1 ∧
+        exponent z = n - 1
+    ) := by
+  classical
+  obtain ⟨c,d,hc,hd,hcd⟩ :=
+    topLoss_exists_two_distinct_active
+      C exponent hvLoss hvTop
+  rcases
+    projectedLoss_two_exit_hole_or_paid_or_disjoint_exact_loss_fibres
+      C exponent hexp honeLoss
+      hvLoss hword hc hd hcd
+    with hcHole | hdHole | hpaid | hhard
+  · exact Or.inl ⟨c,hc,hcHole⟩
+  · exact Or.inl ⟨d,hd,hdHole⟩
+  · exact Or.inr (Or.inl
+      ⟨hpaid.choose,hpaid.choose_spec.2⟩)
+  · obtain ⟨hcNonempty,hdNonempty,_hcCard,_hdCard,hdisj,hprofile⟩ :=
+      hhard
+    by_cases hexact :
+        ∃ w : V,
+          (
+            w ∈ completionFibre C (flipBoolWordAt word c)
+            ∨
+            w ∈ completionFibre C (flipBoolWordAt word d)
+          ) ∧
+          ExactProjectedBudget C exponent w
+    · obtain ⟨w,_hwF,hwExact⟩ := hexact
+      exact Or.inr (Or.inr (Or.inl ⟨w,hwExact⟩))
+    · by_cases hlower :
+        ∃ w : V,
+          (
+            w ∈ completionFibre C (flipBoolWordAt word c)
+            ∨
+            w ∈ completionFibre C (flipBoolWordAt word d)
+          ) ∧
+          w ∈ projectedLossVertices C exponent ∧
+          exponent w + 1 ≤ n - 1
+      · obtain ⟨w,hwF,hwLoss,hwLower⟩ := hlower
+        rcases hwF with hwc | hwd
+        · exact Or.inr (Or.inr (Or.inr
+            (Or.inl ⟨w,hwLoss,hwLower,
+              c,hc,
+              (mem_completionFibre
+                C (flipBoolWordAt word c) w).1 hwc⟩)))
+        · exact Or.inr (Or.inr (Or.inr
+            (Or.inl ⟨w,hwLoss,hwLower,
+              d,hd,
+              (mem_completionFibre
+                C (flipBoolWordAt word d) w).1 hwd⟩)))
+      · have hallTop :
+          ∀ w : V,
+            (
+              w ∈ completionFibre C (flipBoolWordAt word c)
+              ∨
+              w ∈ completionFibre C (flipBoolWordAt word d)
+            ) →
+            w ∈ projectedLossVertices C exponent ∧
+            exponent w = n - 1 := by
+          intro w hwF
+          have hwProfile := hprofile w hwF
+          rcases hwProfile.2 with hwExact | hwLoss
+          · exact False.elim
+              (hexact ⟨w,hwF,hwExact⟩)
+          · refine ⟨hwLoss,?_⟩
+            have hwLt := hexpLt w
+            by_contra hnotTop
+            have hwLower : exponent w + 1 ≤ n - 1 := by
+              omega
+            exact hlower ⟨w,hwF,hwLoss,hwLower⟩
+        obtain ⟨w,hwc⟩ := hcNonempty
+        obtain ⟨z,hzd⟩ := hdNonempty
+        have hwTop := hallTop w (Or.inl hwc)
+        have hzTop := hallTop z (Or.inr hzd)
+        have hwz : w ≠ z := by
+          intro h
+          subst z
+          exact Finset.disjoint_left.mp hdisj hwc hzd
+        exact Or.inr (Or.inr (Or.inr
+          (Or.inr ⟨w,z,hwz,
+            hwTop.1,hzTop.1,hwTop.2,hzTop.2⟩)))
+
+#print axioms topLoss_word_five_exit_outlet_with_lower_witness
+
 theorem deepLoss_enlargedBlock_add_cube_le_two_mul_localSlack
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
