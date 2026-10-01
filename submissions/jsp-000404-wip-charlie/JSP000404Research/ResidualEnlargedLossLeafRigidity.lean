@@ -84,6 +84,27 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
       C exponent hexp honeLoss
       hdef hmin hvT hvLoss (hexpLt v) hunique
 
+  have hsharedNonempty :=
+    minimal_enlargedCandidate_loss_shared_nonempty
+      C exponent hdef hmin hvT hvLoss (hexpLt v)
+  obtain ⟨sharedWord,hsharedWord⟩ := hsharedNonempty
+  have hsharedData :=
+    sharedBlockWords_has_other_block
+      (enlargedProjectedCandidateBlock C exponent)
+      hsharedWord
+  obtain ⟨hvShared,z,hzT,hzv,hzShared⟩ := hsharedData
+  have hzCross : EnlargedBlocksCross C exponent v z := by
+    exact ⟨sharedWord,hvShared,hzShared⟩
+  have hzw : z = w :=
+    hunique z hzT hzv hzCross
+  have hwT : w ∈ T := by
+    rw [← hzw]
+    exact hzT
+  have hwv : w ≠ v := by
+    intro hwvEq
+    apply hzv
+    rw [hzw, hwvEq]
+
   have hsharedSub :
       sharedBlockWords
           (enlargedProjectedCandidateBlock C exponent)
@@ -115,34 +136,13 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
       loss_allActive_pair_intersection_card_le_sum_cubes
         C exponent hexp honeLoss
         hvLoss hwLoss
-        (by
-          intro hvw
-          subst w
-          exact hunique v hvT (by simp) (by
-            unfold EnlargedBlocksCross
-            simp))
+        hwv
     exact hcard.trans hinter
 
   have hwCubeLe :
       (retainedCompletionWords C w).card ≤
         (retainedCompletionWords C v).card :=
-    hmaxLoss w
-      (by
-        by_contra hwNotT
-        have hshared :=
-          minimal_enlargedCandidate_loss_shared_nonempty
-            C exponent hdef hmin hvT hvLoss (hexpLt v)
-        obtain ⟨word,hword⟩ := hshared
-        have hdata :=
-          sharedBlockWords_has_other_block
-            (enlargedProjectedCandidateBlock C exponent) hword
-        obtain ⟨_hvWord,z,hzT,hzv,hzWord⟩ := hdata
-        have hcross : EnlargedBlocksCross C exponent v z := by
-          exact ⟨word,_hvWord,hzWord⟩
-        have hzw := hunique z hzT hzv hcross
-        subst z
-        exact hwNotT hzT)
-      hwLoss
+    hmaxLoss w hwT hwLoss
 
   have hsharedUpper2 :
       (sharedBlockWords
