@@ -115,8 +115,136 @@ theorem minimal_deficient_exact_block_has_shared_word
     omega
   exact Finset.card_pos.mp hpos
 
+
+def blockDeficiencyAmount
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    (T : Finset V) : ℕ :=
+  (∑ v ∈ T, demand v) - (T.biUnion blocks).card
+
+theorem blockDeficiencyAmount_pos_of_deficient
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T) :
+    0 < blockDeficiencyAmount demand blocks T := by
+  unfold blockDeficiencyAmount BlockDeficient
+  omega
+
+theorem minimal_deficient_amount_le_shared_minus_slack
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card) :
+    blockDeficiencyAmount demand blocks T ≤
+      (sharedBlockWords blocks T v).card -
+        ((blocks v).card - demand v) := by
+  classical
+  have hdelete :=
+    minimal_deficient_delete_recovers
+      demand blocks hdef hmin v hv
+  have hprivate :=
+    minimal_deficient_private_card_lt_demand
+      demand blocks hdef hmin hv
+  have hsplit :=
+    block_card_eq_private_add_shared blocks T v
+
+  have hUnionSplit :
+      (T.biUnion blocks).card =
+        ((T.erase v).biUnion blocks).card +
+          (privateBlockWords blocks T v).card := by
+    have hdisj :
+        Disjoint
+          ((T.erase v).biUnion blocks)
+          (privateBlockWords blocks T v) := by
+      rw [Finset.disjoint_left]
+      intro w hwOthers hwPrivate
+      exact (Finset.mem_sdiff.mp hwPrivate).2 hwOthers
+    have hEq :
+        T.biUnion blocks =
+          (T.erase v).biUnion blocks ∪
+            privateBlockWords blocks T v := by
+      ext w
+      constructor
+      · intro hwT
+        obtain ⟨u,huT,huW⟩ := Finset.mem_biUnion.mp hwT
+        by_cases huv : u = v
+        · subst u
+          by_cases hwOther :
+              w ∈ (T.erase v).biUnion blocks
+          · exact Finset.mem_union_left _ hwOther
+          · apply Finset.mem_union_right
+            exact Finset.mem_sdiff.mpr ⟨huW,hwOther⟩
+        · apply Finset.mem_union_left
+          apply Finset.mem_biUnion.mpr
+          exact ⟨u,Finset.mem_erase.mpr ⟨huv,huT⟩,huW⟩
+      · intro hw
+        rcases Finset.mem_union.mp hw with hwOther | hwPrivate
+        · obtain ⟨u,huErase,huW⟩ := Finset.mem_biUnion.mp hwOther
+          apply Finset.mem_biUnion.mpr
+          exact ⟨u,(Finset.mem_erase.mp huErase).2,huW⟩
+        · have hwBlock := (Finset.mem_sdiff.mp hwPrivate).1
+          apply Finset.mem_biUnion.mpr
+          exact ⟨v,hv,hwBlock⟩
+    rw [hEq, Finset.card_union_of_disjoint hdisj]
+
+  have hSumSplit :
+      (∑ u ∈ T, demand u) =
+        (∑ u ∈ T.erase v, demand u) + demand v := by
+    rw [← Finset.sum_erase_add _ _ hv]
+
+  unfold blockDeficiencyAmount
+  rw [hUnionSplit,hSumSplit]
+  have hslackEq :
+      (blocks v).card - demand v =
+        (sharedBlockWords blocks T v).card -
+          (demand v - (privateBlockWords blocks T v).card) := by
+    omega
+  omega
+
+theorem minimal_deficient_amount_le_shared_excess
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card) :
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤
+    (sharedBlockWords blocks T v).card := by
+  have h :=
+    minimal_deficient_amount_le_shared_minus_slack
+      demand blocks hdef hmin hv hlocal
+  have hslackLe :
+      (blocks v).card - demand v ≤
+        (sharedBlockWords blocks T v).card := by
+    have hpos :=
+      blockDeficiencyAmount_pos_of_deficient
+        demand blocks hdef
+    omega
+  omega
+
 #print axioms block_card_eq_private_add_shared
 #print axioms minimal_deficient_shared_card_ge_slack_add_one
-#print axioms minimal_deficient_exact_block_has_shared_word
+#print axioms blockDeficiencyAmount_pos_of_deficient
+#print axioms minimal_deficient_amount_le_shared_minus_slack
+#print axioms minimal_deficient_amount_le_shared_excess
 
 end JSP000404Research
