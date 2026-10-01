@@ -1725,10 +1725,235 @@ theorem minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
       using hmul
   omega
 
+
+noncomputable def lossLeafParentSliceWordsOfLeft
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (v w : V)
+    (hwv : w < v)
+    (hret : (C.color w v).val < n) :
+    Finset (Fin n → Bool) :=
+  sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T v
+    ∩
+  translatedCompletionWords C w
+    (retainedColor C w v hret)
+
+theorem minimal_enlargedCandidate_loss_leaf_shared_le_cube_add_parentSlice_of_gt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwv : w < v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hvLoss hwv
+    (sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T v).card
+      ≤
+    (retainedCompletionWords C v).card +
+      (lossLeafParentSliceWordsOfLeft
+        C exponent T v w hwv hret).card := by
+  classical
+  dsimp
+  let hret :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hvLoss hwv
+  let e := retainedColor C w v hret
+
+  have hwLoss :
+      w ∈ projectedLossVertices C exponent :=
+    minimal_enlargedCandidate_loss_unique_neighbor_is_loss
+      C exponent hexp honeLoss
+      hdef hmin hvT hvLoss (hexpLt v) hunique
+
+  have hsharedSubPair :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ⊆
+      enlargedProjectedCandidateBlock C exponent v ∩
+        enlargedProjectedCandidateBlock C exponent w :=
+    sharedBlockWords_subset_single_neighbor_intersection
+      (enlargedProjectedCandidateBlock C exponent)
+      hvT
+      (by
+        intro z hzT hzv hcross
+        exact hunique z hzT hzv hcross)
+
+  have hpairSubRaw :=
+    loss_allActive_pair_intersection_subset_edge_slices_of_lt
+      C exponent hexp honeLoss
+      hwLoss hvLoss hwv hret
+
+  have hsharedSub :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ⊆
+      translatedCompletionWords C v e ∪
+        lossLeafParentSliceWordsOfLeft
+          C exponent T v w hwv hret := by
+    intro word hword
+    have hpair := hsharedSubPair hword
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hvLoss,
+        enlargedProjectedCandidateBlock_loss
+          C exponent hwLoss] at hpair
+    have hpair' :
+        word ∈
+          allActiveLossCandidateBlock C w ∩
+            allActiveLossCandidateBlock C v := by
+      exact Finset.mem_inter.mpr
+        ⟨(Finset.mem_inter.mp hpair).2,
+         (Finset.mem_inter.mp hpair).1⟩
+    have hslices := hpairSubRaw hpair'
+    rcases Finset.mem_union.mp hslices with hwSlice | hvSlice
+    · apply Finset.mem_union_right
+      exact Finset.mem_inter.mpr ⟨hword,hwSlice⟩
+    · exact Finset.mem_union_left _ hvSlice
+
+  calc
+    (sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T v).card
+      ≤
+    (translatedCompletionWords C v e ∪
+      lossLeafParentSliceWordsOfLeft
+        C exponent T v w hwv hret).card :=
+      Finset.card_le_card hsharedSub
+    _ ≤
+      (translatedCompletionWords C v e).card +
+        (lossLeafParentSliceWordsOfLeft
+          C exponent T v w hwv hret).card :=
+      Finset.card_union_le _ _
+    _ =
+      (retainedCompletionWords C v).card +
+        (lossLeafParentSliceWordsOfLeft
+          C exponent T v w hwv hret).card := by
+      rw [translatedCompletionWords_card]
+
+theorem minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwv : w < v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hvLoss hwv
+    (sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent)
+      T v).card -
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      )
+      ≤
+    (lossLeafParentSliceWordsOfLeft
+      C exponent T v w hwv hret).card := by
+  dsimp
+  let hret :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hvLoss hwv
+  have hshared :=
+    minimal_enlargedCandidate_loss_leaf_shared_le_cube_add_parentSlice_of_gt
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hwv hunique
+  have hslack :
+      (retainedCompletionWords C v).card ≤
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v := by
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hvLoss,
+        allActiveLossCandidateBlock_card,
+        projectedLoss_target_eq_two_mul_completion
+          C exponent hvLoss]
+    have hactive :=
+      projectedLoss_active_card_ge_two_of_exponent_lt_n
+        C exponent hvLoss (hexpLt v)
+    have hdecomp :
+        ((retainedActive C v).card + 1) *
+            (retainedCompletionWords C v).card
+          =
+        2 * (retainedCompletionWords C v).card +
+          ((retainedActive C v).card - 1) *
+            (retainedCompletionWords C v).card := by
+      have ha :
+          (retainedActive C v).card =
+            ((retainedActive C v).card - 1) + 1 := by
+        omega
+      rw [ha]
+      ring
+    rw [hdecomp, Nat.add_sub_cancel_left]
+    have hcoef :
+        1 ≤ (retainedActive C v).card - 1 := by
+      omega
+    have hmul :=
+      Nat.mul_le_mul_right
+        (retainedCompletionWords C v).card hcoef
+    simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc]
+      using hmul
+  omega
+
 #print axioms minimal_enlargedCandidate_strict_nonloss_leaf_rematch_or_rank_increases
 #print axioms minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
-#print axioms minimal_enlargedCandidate_loss_leaf_shared_le_cube_add_parentSlice_of_lt
 #print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
+#print axioms minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
 #print axioms strictLeafProgressRank_le
 
 end OrderedEdgeColoring
