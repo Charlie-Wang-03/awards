@@ -74,10 +74,7 @@ theorem enlargedProjectedCandidateBlock_local_capacity
     have hplus :=
       projectedLoss_allActiveBlock_target_plus_cube_le
         C exponent hvLoss (hexpLt v)
-    exact le_trans
-      (Nat.le_add_right (2 ^ exponent v)
-        (retainedCompletionWords C v).card)
-      hplus
+    omega
   · rw [enlargedProjectedCandidateBlock_nonloss
       C exponent hvLoss]
     have hproj :=
