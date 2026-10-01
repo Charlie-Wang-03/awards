@@ -2323,10 +2323,241 @@ theorem minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_gt
       hdef hmin hvT hvLoss hwv hunique
   omega
 
-#print axioms minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_lt
-#print axioms minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_gt
-#print axioms uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
-#print axioms uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
+
+theorem minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvw : v < w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hvLoss hvw
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ≤
+    (lossLeafParentSliceWords
+      C exponent T v w hvw hret).card := by
+  dsimp
+  have hlocal :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss v
+  rw [deletedVertexTransfer_eq_shared_minus_slack
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      T v hlocal]
+  exact
+    minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hvw hunique
+
+theorem minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_gt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwv : w < v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hvLoss hwv
+    deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ≤
+    (lossLeafParentSliceWordsOfLeft
+      C exponent T v w hwv hret).card := by
+  dsimp
+  have hlocal :=
+    enlargedProjectedCandidateBlock_local_capacity
+      C exponent hexpLt hexp honeLoss v
+  rw [deletedVertexTransfer_eq_shared_minus_slack
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      T v hlocal]
+  exact
+    minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
+      C exponent hexpLt hexp honeLoss
+      hdef hmin hvT hvLoss hwv hunique
+
+theorem minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hwT : w ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvw : v < w)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let transfer :=
+      deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+    let hret :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hvLoss hvw
+    BlockDeficient
+      (addDemandAt
+        (fun x => 2 ^ exponent x) w transfer)
+      (enlargedProjectedCandidateBlock C exponent)
+      (T.erase v)
+    ∧
+    transfer ≤
+      (lossLeafParentSliceWords
+        C exponent T v w hvw hret).card := by
+  dsimp
+  constructor
+  · apply minimal_deficient_delete_with_transfer_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT
+    exact Finset.mem_erase.mpr ⟨(ne_of_lt hvw).symm,hwT⟩
+  · exact
+      minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_lt
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hvT hvLoss hvw hunique
+
+theorem minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hwT : w ∈ T)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwv : w < v)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    let transfer :=
+      deletedVertexTransfer
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+    let hret :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hvLoss hwv
+    BlockDeficient
+      (addDemandAt
+        (fun x => 2 ^ exponent x) w transfer)
+      (enlargedProjectedCandidateBlock C exponent)
+      (T.erase v)
+    ∧
+    transfer ≤
+      (lossLeafParentSliceWordsOfLeft
+        C exponent T v w hwv hret).card := by
+  dsimp
+  constructor
+  · apply minimal_deficient_delete_with_transfer_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT
+    exact Finset.mem_erase.mpr ⟨ne_of_lt hwv,hwT⟩
+  · exact
+      minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_gt
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hvT hvLoss hwv hunique
+
+#print axioms minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_lt
+#print axioms minimal_enlargedCandidate_loss_leaf_transfer_le_parentSlice_of_gt
+#print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
+#print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
 
 end OrderedEdgeColoring
 end JSP000404Research
