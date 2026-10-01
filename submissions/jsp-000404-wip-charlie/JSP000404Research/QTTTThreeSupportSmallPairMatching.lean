@@ -159,4 +159,63 @@ theorem three_smallPairAmongOtherThree_reduce_to_eleven
 
 #print axioms three_smallPairAmongOtherThree_reduce_to_eleven
 
+
+/-- Geometric specialization: three support-two second-layer centres among four
+distinct vertices force one of the eleven crossed small-pair patterns. -/
+theorem three_supportTwo_secondLayer_four_reduce_to_eleven
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (C : ∀ v : V, CentreProjectiveCycle hp v)
+    (haSecond : centreExponent (C a) t = n - 2)
+    (hbSecond : centreExponent (C b) t = n - 2)
+    (hcSecond : centreExponent (C c) t = n - 2)
+    (haSupport :
+      positiveSupport (centreQuotient (C a) t) = 2)
+    (hbSupport :
+      positiveSupport (centreQuotient (C b) t) = 2)
+    (hcSupport :
+      positiveSupport (centreQuotient (C c) t) = 2) :
+    ThreeSupportTwoCrossedPattern11 p delta lam a b c d := by
+  have haSmall :
+      SmallPairAmongOtherThree p delta lam a b c d :=
+    secondLayer_supportTwo_first_has_small_pair_among_three
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab hac had hbc hbd hcd
+      (C a) haSecond haSupport
+  have hbSmall :
+      SmallPairAmongOtherThree p delta lam b a c d :=
+    secondLayer_supportTwo_first_has_small_pair_among_three
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hab.symm hbc hbd hac had hcd
+      (C b) hbSecond hbSupport
+  have hcSmall :
+      SmallPairAmongOtherThree p delta lam c a b d :=
+    secondLayer_supportTwo_first_has_small_pair_among_three
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hac.symm hbc.symm hcd hab had hbd
+      (C c) hcSecond hcSupport
+  have htpos :
+      0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  exact three_smallPairAmongOtherThree_reduce_to_eleven
+    hp hcap hdeltaHalf hlampos
+    hab hac had hbc hbd hcd
+    haSmall hbSmall hcSmall
+
+#print axioms three_supportTwo_secondLayer_four_reduce_to_eleven
+
 end JSP000404Research
