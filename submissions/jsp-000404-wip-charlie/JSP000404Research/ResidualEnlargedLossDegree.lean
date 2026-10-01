@@ -671,11 +671,144 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
   unfold projectedFree at hwEq
   omega
 
+
+theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v w : V}
+    (hvT : v ∈ T)
+    (hvNonloss : v ∉ projectedLossVertices C exponent)
+    (hvStrict : exponent v < projectedFree C v)
+    (hwNonloss : w ∉ projectedLossVertices C exponent)
+    (hunique :
+      ∀ z : V,
+        z ∈ T →
+        z ≠ v →
+        EnlargedBlocksCross C exponent v z →
+        z = w) :
+    projectedFree C v ≤ projectedFree C w := by
+  classical
+  have hvLocal :
+      2 ^ exponent v ≤
+        (enlargedProjectedCandidateBlock C exponent v).card := by
+    rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss]
+    exact nonloss_completionBlock_target_le
+      C exponent (Nat.le_of_lt hvStrict)
+  have hsharedLower :=
+    minimal_deficient_shared_card_ge_slack_add_one
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef hmin hvT hvLocal
+
+  have hsharedNonempty :
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).Nonempty := by
+    apply Finset.card_pos.mp
+    rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss] at hsharedLower
+    have hqPos :
+        0 < (retainedCompletionWords C v).card := by
+      rw [retainedCompletionWords_card]
+      positivity
+    omega
+
+  obtain ⟨word,hwordShared⟩ := hsharedNonempty
+  have hdata :=
+    sharedBlockWords_has_other_block
+      (enlargedProjectedCandidateBlock C exponent)
+      hwordShared
+  obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
+  have hzCross : EnlargedBlocksCross C exponent v z := by
+    exact ⟨word,hvWord,hzWord⟩
+  have hzw : z = w := hunique z hzT hzv hzCross
+  subst z
+
+  have hsharedSub :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ⊆
+      retainedCompletionWords C v ∩
+        retainedCompletionWords C w := by
+    intro y hy
+    have hyData :=
+      sharedBlockWords_has_other_block
+        (enlargedProjectedCandidateBlock C exponent)
+        hy
+    obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
+    have hzCross' : EnlargedBlocksCross C exponent v z := by
+      exact ⟨y,hyV,hyZ⟩
+    have hzw' := hunique z hzT' hzv' hzCross'
+    subst z
+    rw [enlargedProjectedCandidateBlock_nonloss
+          C exponent hvNonloss] at hyV
+    rw [enlargedProjectedCandidateBlock_nonloss
+          C exponent hwNonloss] at hyZ
+    exact Finset.mem_inter.mpr ⟨hyV,hyZ⟩
+
+  have hsharedUpper :=
+    Finset.card_le_card hsharedSub
+  rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss] at hsharedLower
+
+  have hsurplusEq :
+      dyadicProfileSurplus exponent (projectedFree C) v =
+        (retainedCompletionWords C v).card -
+          2 ^ exponent v := by
+    unfold dyadicProfileSurplus
+    rw [retainedCompletionWords_card]
+
+  have hqwGtSurplus :
+      dyadicProfileSurplus exponent (projectedFree C) v <
+        (retainedCompletionWords C w).card := by
+    rw [hsurplusEq]
+    have hinterLe :
+        (retainedCompletionWords C v ∩
+          retainedCompletionWords C w).card
+          ≤
+        (retainedCompletionWords C w).card :=
+      Finset.card_le_card Finset.inter_subset_right
+    omega
+
+  have hhalfLe :
+      2 ^ (projectedFree C v - 1) ≤
+        dyadicProfileSurplus exponent (projectedFree C) v :=
+    half_pow_le_dyadic_surplus_of_lt hvStrict
+
+  by_contra hnot
+  have hwFreeLe :
+      projectedFree C w ≤ projectedFree C v - 1 := by
+    omega
+  have hpowLe :
+      (retainedCompletionWords C w).card ≤
+        2 ^ (projectedFree C v - 1) := by
+    rw [retainedCompletionWords_card]
+    exact Nat.pow_le_pow_right
+      (by norm_num : 0 < 2) hwFreeLe
+  omega
+
 #print axioms maximalLoss_shared_card_le_degree_mul_two_cube
 #print axioms minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
 #print axioms minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
 #print axioms minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_exponent_lt
 #print axioms minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
+#print axioms minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
 
 end OrderedEdgeColoring
 end JSP000404Research
