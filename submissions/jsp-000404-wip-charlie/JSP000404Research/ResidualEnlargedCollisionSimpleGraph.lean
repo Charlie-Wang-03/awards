@@ -700,8 +700,101 @@ theorem minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
     · exact Or.inr (Or.inl htri)
     · exact Or.inr (Or.inr hlong)
 
-#print axioms enlargedCollisionGraph_triangle_or_three_lt_girth
-#print axioms minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
+
+noncomputable def coreEnlargedCandidateFibre
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (word : Fin n → Bool) : Finset V := by
+  classical
+  exact T.filter fun v =>
+    word ∈ enlargedProjectedCandidateBlock C exponent v
+
+@[simp] theorem mem_coreEnlargedCandidateFibre
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (word : Fin n → Bool)
+    (v : V) :
+    v ∈ coreEnlargedCandidateFibre C exponent T word ↔
+      v ∈ T ∧
+      word ∈ enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  simp [coreEnlargedCandidateFibre]
+
+theorem coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth)
+    (word : Fin n → Bool) :
+    (coreEnlargedCandidateFibre C exponent T word).card ≤ 2 := by
+  classical
+  by_contra hnot
+  have hthree :
+      3 ≤ (coreEnlargedCandidateFibre
+        C exponent T word).card := by
+    omega
+  obtain ⟨s,hsSub,hsCard⟩ :=
+    Finset.exists_subset_card_eq hthree
+  have hsCard' : s.card = 3 := hsCard
+  obtain ⟨u,v,w,huv,huw,hvw,hsEq⟩ :=
+    Finset.card_eq_three.mp hsCard'
+  subst s
+
+  have huF :
+      u ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    hsSub (by simp)
+  have hvF :
+      v ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    hsSub (by simp)
+  have hwF :
+      w ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    hsSub (by simp)
+
+  have huData :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word u).1 huF
+  have hvData :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word v).1 hvF
+  have hwData :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word w).1 hwF
+
+  let U : {x : V // x ∈ T} := ⟨u,huData.1⟩
+  let Vv : {x : V // x ∈ T} := ⟨v,hvData.1⟩
+  let W : {x : V // x ∈ T} := ⟨w,hwData.1⟩
+
+  have hUV :
+      (enlargedCollisionGraph C exponent T).Adj U Vv := by
+    apply enlargedCollisionGraph_adj_of_cross
+      C exponent T huData.1 hvData.1 huv
+    exact ⟨word,huData.2,hvData.2⟩
+  have hVW :
+      (enlargedCollisionGraph C exponent T).Adj Vv W := by
+    apply enlargedCollisionGraph_adj_of_cross
+      C exponent T hvData.1 hwData.1 hvw
+    exact ⟨word,hvData.2,hwData.2⟩
+  have hUW :
+      (enlargedCollisionGraph C exponent T).Adj U W := by
+    apply enlargedCollisionGraph_adj_of_cross
+      C exponent T huData.1 hwData.1 huw
+    exact ⟨word,huData.2,hwData.2⟩
+
+  exact
+    (simpleGraph_no_triangle_of_three_lt_girth
+      (enlargedCollisionGraph C exponent T)
+      hgirth hUV hVW) hUW
+
+#print axioms coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
 
 end OrderedEdgeColoring
 end JSP000404Research
