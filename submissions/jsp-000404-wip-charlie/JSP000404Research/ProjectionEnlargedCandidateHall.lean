@@ -2,6 +2,7 @@ import JSP000404Research.ResidualEnlargedCandidateHall
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.ResidualEnlargedTriangleOutlet
+import JSP000404Research.ResidualTripleFibreOutlet
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
@@ -920,6 +921,150 @@ theorem planar_topLoss_word_closed_outlet
 
 #print axioms planar_secondLayerLoss_word_closed_outlet
 #print axioms planar_topLoss_word_closed_outlet
+
+
+/-- Girth-free planar deficient-core root.  The previous
+leaf/triangle/long-cycle graph split is replaced by fibre multiplicity.
+All bounded-multiplicity overloads are recursively discharged; a top shared
+completion word is fed through the planar top-loss closed outlet.  The only
+remaining structural branch is a high-layer two-loss pair. -/
+theorem planar_deficientCore_girthFree_recursive_root
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) z
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        ExactProjectedBudget R exponent z
+    )
+    ∨
+    (
+      ∃ source : ProjectionOrdered V,
+        ExactRecursiveOutlet R exponent source
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        z ∈ projectedLossVertices R exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ a b : {x : ProjectionOrdered V // x ∈ T},
+        a ≠ b ∧
+        a.1 ∈ projectedLossVertices R exponent ∧
+        b.1 ∈ projectedLossVertices R exponent ∧
+        (
+          (exponent a.1 = n - 1 ∧ exponent b.1 = n - 2)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 1)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 2)
+        )
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤ n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  have htop :
+      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+        (fun z => exponent z = n - 1)).card ≤ 1 := by
+    simpa [exponent,planarCentreExponent] using
+      (projectionOrdered_topExponent_filter_card_le_one
+        hp hcap hcard (by omega : 2 ≤ n)
+        hdelta0 hdeltaHalf ht hlam C)
+  have hdefR :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T := by
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent,hn1,hdelta1] using hdef
+
+  rcases
+    deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShared
+      R exponent hexpLt hexp hone htop hdefR
+    with hdeep | hpair | hpaid | hrec | htopShared
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hpair))))
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+  · obtain ⟨top,htopT,htopLoss,htopExp,hshared⟩ := htopShared
+    obtain ⟨word,hword⟩ := hshared
+    have hparts := Finset.mem_inter.mp hword
+    have htopLossGeom :
+        top ∈ projectedLossVertices
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith : delta < 1) ht hlam)
+          (planarCentreExponent hp C) := by
+      simpa [R,exponent,hn1,hdelta1] using htopLoss
+    have htopExpGeom :
+        centreExponent (C top) t = n - 1 := by
+      simpa [exponent,planarCentreExponent] using htopExp
+    have hwordGeom :
+        word ∈ retainedCompletionWords
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith : delta < 1) ht hlam) top := by
+      simpa [R,hn1,hdelta1] using hparts.2
+    rcases
+      planar_topLoss_word_closed_outlet
+        hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+        hcard C htopLossGeom htopExpGeom hwordGeom
+      with hhole | hpaid2 | hexact2 | hdeep2
+    · exact Or.inl hhole
+    · exact Or.inr (Or.inl hpaid2)
+    · exact Or.inr (Or.inr (Or.inl hexact2))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep2))))
+
+#print axioms planar_deficientCore_girthFree_recursive_root
 
 
 theorem planar_longCycle_overload_recursive_outlet
