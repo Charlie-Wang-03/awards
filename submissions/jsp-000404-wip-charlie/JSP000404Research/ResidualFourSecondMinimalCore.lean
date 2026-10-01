@@ -198,27 +198,26 @@ theorem minimal_deficient_core_card_le_five_of_four_secondLayer
       W.biUnion (enlargedProjectedCandidateBlock C exponent)
         =
       (Finset.univ : Finset (Fin n → Bool)) := by
-    apply Finset.eq_univ_of_card
-    have hUsubset :
-        U.biUnion (enlargedProjectedCandidateBlock C exponent)
-          ⊆
-        W.biUnion (enlargedProjectedCandidateBlock C exponent) := by
-      apply Finset.biUnion_mono hUsub
-      intro x hx
-      exact Finset.subset_rfl
-    rw [hUuniv] at hUsubset
-    have hfull :
-        (Finset.univ : Finset (Fin n → Bool)) ⊆
-          W.biUnion (enlargedProjectedCandidateBlock C exponent) :=
-      hUsubset
-    exact Finset.eq_univ_iff_forall.mpr
-      (fun x => hfull (by simp))
+    ext word
+    constructor
+    · intro _h
+      simp
+    · intro _h
+      have hwordU :
+          word ∈ U.biUnion
+            (enlargedProjectedCandidateBlock C exponent) := by
+        rw [hUuniv]
+        simp
+      obtain ⟨q,hqU,hqWord⟩ :=
+        Finset.mem_biUnion.mp hwordU
+      apply Finset.mem_biUnion.mpr
+      exact ⟨q,hWsub (hUsub hqU),hqWord⟩
 
   have hUSum :
       (∑ x ∈ U, 2 ^ exponent x) = 2 ^ n := by
-    simp [U,hab,hac,had,hbc,hbd,hcd]
-    exact four_secondLayer_demand_eq_cube
-      exponent hn2 ha hb hc hd
+    simpa [U,hab,hac,had,hbc,hbd,hcd] using
+      (four_secondLayer_demand_eq_cube
+        exponent hn2 ha hb hc hd)
   have hWSum :
       (∑ x ∈ W, 2 ^ exponent x) =
         2 ^ n + 2 ^ exponent w := by
