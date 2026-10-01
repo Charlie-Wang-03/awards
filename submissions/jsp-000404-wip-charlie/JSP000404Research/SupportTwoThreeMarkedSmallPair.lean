@@ -1,5 +1,6 @@
 import JSP000404Research.SupportTwoThreeMarkedArcs
 import JSP000404Research.CyclicEdgeRotation
+import JSP000404Research.ThreeMarkedCyclicDecomposition
 import Mathlib.Tactic
 
 /-!
@@ -265,5 +266,79 @@ theorem supportTwo_three_marked_small_pair_of_rotated_decomposition
     hpaths.1 hpaths.2.1 hpaths.2.2
 
 #print axioms supportTwo_three_marked_small_pair_of_rotated_decomposition
+
+
+/-- Order-free form: at a second-layer support-two centre, any three distinct
+other vertices contain a delta*lambda-small pair as seen from the centre. -/
+theorem supportTwo_three_other_vertices_has_small_pair
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {i a b c : V}
+    (hia : i ≠ a)
+    (hib : i ≠ b)
+    (hic : i ≠ c)
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c)
+    (C : CentreProjectiveCycle hp i)
+    (hexp : centreExponent C t = n - 2)
+    (hsupport :
+      positiveSupport (centreQuotient C t) = 2) :
+    EuclideanGeometry.angle (p a) (p i) (p b)
+        ≤ delta * lam
+    ∨ EuclideanGeometry.angle (p b) (p i) (p c)
+        ≤ delta * lam
+    ∨ EuclideanGeometry.angle (p c) (p i) (p a)
+        ≤ delta * lam := by
+  classical
+  let ao : OtherVertex i := ⟨a,hia⟩
+  let bo : OtherVertex i := ⟨b,hib⟩
+  let co : OtherVertex i := ⟨c,hic⟩
+  have hao : ao ∈ C.rays := C.mem_rays_iff ao
+  have hbo : bo ∈ C.rays := C.mem_rays_iff bo
+  have hco : co ∈ C.rays := C.mem_rays_iff co
+  have habo : ao ≠ bo := by
+    intro h
+    apply hab
+    exact congrArg Subtype.val h
+  have haco : ao ≠ co := by
+    intro h
+    apply hac
+    exact congrArg Subtype.val h
+  have hbco : bo ≠ co := by
+    intro h
+    apply hbc
+    exact congrArg Subtype.val h
+
+  obtain ⟨k,horder | horder⟩ :=
+    three_marked_cyclic_decomposition
+      C.rays hao hbo hco habo haco hbco
+  · obtain ⟨X,Y,Z,hrot⟩ := horder
+    simpa [ao,bo,co] using
+      (supportTwo_three_marked_small_pair_of_rotated_decomposition
+        hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+        C hexp hsupport ao bo co X Y Z k hrot)
+  · obtain ⟨X,Y,Z,hrot⟩ := horder
+    have h :=
+      supportTwo_three_marked_small_pair_of_rotated_decomposition
+        hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+        C hexp hsupport ao co bo X Y Z k hrot
+    rcases h with hacSmall | hcbSmall | hbaSmall
+    · exact Or.inr (Or.inr (by
+        simpa [ao,bo,co,EuclideanGeometry.angle_comm] using hacSmall))
+    · exact Or.inr (Or.inl (by
+        simpa [ao,bo,co,EuclideanGeometry.angle_comm] using hcbSmall))
+    · exact Or.inl (by
+        simpa [ao,bo,co,EuclideanGeometry.angle_comm] using hbaSmall)
+
+#print axioms supportTwo_three_other_vertices_has_small_pair
 
 end JSP000404Research
