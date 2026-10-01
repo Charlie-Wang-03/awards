@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualEnlargedLossDegree
 import Mathlib.Combinatorics.SimpleGraph.Acyclic
+import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Tactic
 
@@ -459,11 +460,40 @@ theorem minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
     huT,hvT,huv,hwuT,hwvT,hwuNe,hwvNe,
     huOutlet,hvOutlet⟩
 
-#print axioms enlargedCollisionGraph_adj
-#print axioms minimal_enlargedCollisionGraph_connected
-#print axioms minimal_enlargedCollisionGraph_two_leaves_of_acyclic
-#print axioms minimal_enlargedCollisionGraph_two_unique_leaves_of_acyclic
+
+theorem minimal_enlargedCollisionGraph_cycle_of_not_acyclic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hcyclic :
+      ¬ (enlargedCollisionGraph C exponent T).IsAcyclic) :
+    ∃ a : {x : V // x ∈ T},
+      ∃ p :
+        (enlargedCollisionGraph C exponent T).Walk a a,
+        p.IsCycle := by
+  let G := enlargedCollisionGraph C exponent T
+  have h :=
+    (SimpleGraph.exists_girth_eq_length
+      (G := G)).2 hcyclic
+  obtain ⟨a,p,hcycle,_hgirth⟩ := h
+  exact ⟨a,p,hcycle⟩
+
+theorem enlargedCollisionCycle_edge_cross
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    {u v : {x : V // x ∈ T}}
+    (hadj :
+      (enlargedCollisionGraph C exponent T).Adj u v) :
+    EnlargedBlocksCross C exponent u.1 v.1 :=
+  enlargedCollisionGraph_cross_of_adj
+    C exponent T hadj
+
 #print axioms minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
+#print axioms minimal_enlargedCollisionGraph_cycle_of_not_acyclic
+#print axioms enlargedCollisionCycle_edge_cross
 
 end OrderedEdgeColoring
 end JSP000404Research
