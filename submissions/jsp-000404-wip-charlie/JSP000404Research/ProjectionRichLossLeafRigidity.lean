@@ -2,6 +2,7 @@ import JSP000404Research.ProjectionRichCandidateBlock
 import JSP000404Research.ResidualLossStarOrdinaryCollision
 import JSP000404Research.ResidualLossStarCrossBound
 import JSP000404Research.MinimalBlockSharedDeficit
+import JSP000404Research.MinimalBlockConnectivity
 import Mathlib.Tactic
 
 /-!
@@ -165,7 +166,7 @@ theorem planarRich_loss_leaf_neighbour_is_loss
               hp hn hdelta0 (by linarith) ht C)
             (planarStandardResidual_oneLayer_budget
               hp hcap hn hdelta0 (by linarith) ht hlam C)
-            hvLoss huniq.2.1
+            hvLoss huniq.2.1.symm
   have hrequired :=
     planar_minimal_rich_core_loss_shared_ge_half_target_add_one
       hp hcap hn hdelta0 hdeltaHalf ht hlam C
@@ -271,7 +272,7 @@ theorem planarRich_maxExponent_loss_leaf_is_top_layer
         hp hn hdelta0 (by linarith) ht C)
       (planarStandardResidual_oneLayer_budget
         hp hcap hn hdelta0 (by linarith) ht hlam C)
-      hvLoss hwLoss huniq.2.1
+      hvLoss hwLoss huniq.2.1.symm
   have hsharedUpper :
       (sharedBlockWords
         (planarRichCandidateBlock
