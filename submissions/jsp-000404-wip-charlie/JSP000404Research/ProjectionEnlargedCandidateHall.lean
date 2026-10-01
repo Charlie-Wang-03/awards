@@ -7,6 +7,7 @@ import JSP000404Research.ResidualSecondLayerTripleCanonical
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
+import JSP000404Research.SecondLayerNoTopReduction
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.PlanarResidualHardRemainder
 import JSP000404Research.ProjectionStandardBandBudget
@@ -1993,6 +1994,68 @@ theorem planar_deficientCore_girthFree_QTT_root
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hQTT))))
 
 #print axioms planar_deficientCore_girthFree_QTT_root
+
+
+/-- Four distinct second-layer centres arising in the saturated Q/T/T/T
+terminal either occur at the small parameter n=3, or (for n>=4) contain two
+distinct support-two centres.  This is the geometry-facing reduction of the
+current Boolean terminal. -/
+theorem planar_QTTT_secondLayer_support_reduction
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {s x y z : ProjectionOrdered V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hsSecond : centreExponent (C s) t = n - 2)
+    (hxSecond : centreExponent (C x) t = n - 2)
+    (hySecond : centreExponent (C y) t = n - 2)
+    (hzSecond : centreExponent (C z) t = n - 2) :
+    n = 3 ∨
+    ∃ a b : ProjectionOrdered V,
+      a ≠ b ∧
+      a ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      b ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      positiveSupport (centreQuotient (C a) t) = 2 ∧
+      positiveSupport (centreQuotient (C b) t) = 2 := by
+  by_cases hnEq : n = 3
+  · exact Or.inl hnEq
+  · right
+    have hn4 : 4 ≤ n := by omega
+    exact four_secondLayer_has_two_supportTwo
+      (p := fun q : ProjectionOrdered V => p q.1)
+      (projectionOrdered_embedding_injective hp)
+      (by
+        intro a b c hab hac hbc
+        exact hcap a.1 b.1 c.1
+          (by
+            intro h
+            apply hab
+            apply Subtype.ext
+            exact h)
+          (by
+            intro h
+            apply hac
+            apply Subtype.ext
+            exact h)
+          (by
+            intro h
+            apply hbc
+            apply Subtype.ext
+            exact h))
+      hn4 hdelta0 hdeltaHalf ht hlam
+      C
+      hsx hsy hsz hxy hxz hyz
+      hsSecond hxSecond hySecond hzSecond
+
+#print axioms planar_QTTT_secondLayer_support_reduction
 
 
 theorem planar_longCycle_overload_recursive_outlet
