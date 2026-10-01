@@ -342,6 +342,25 @@ theorem deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShare
 #print axioms deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShared
 
 
+theorem translated_mem_enlargedProjectedCandidateBlock_of_loss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {c : Fin n}
+    (hc : c ∈ retainedActive C v)
+    (hword : word ∈ translatedCompletionWords C v c) :
+    word ∈ enlargedProjectedCandidateBlock C exponent v := by
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  apply Finset.mem_union_right
+  unfold allActiveTranslatedWords
+  exact Finset.mem_biUnion.mpr ⟨c,hc,hword⟩
+
+#print axioms translated_mem_enlargedProjectedCandidateBlock_of_loss
+
 /-- A common word of two distinct loss blocks is localized to the actual
 retained edge colour: for an ordered pair x<y it lies in exactly one of the
 two edge-colour translated slices.  This is the key semantic refinement of a
