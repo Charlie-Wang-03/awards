@@ -816,6 +816,111 @@ theorem oneLoss_twoNonloss_triangle_colour_shape
   ⟩
 
 
+
+inductive EnlargedTriangleLossShape
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (u v w : {x : V // x ∈ T}) : Prop
+  | oneLossU
+      (huLoss : u.1 ∈ projectedLossVertices C exponent)
+      (hvNonloss : v.1 ∉ projectedLossVertices C exponent)
+      (hwNonloss : w.1 ∉ projectedLossVertices C exponent)
+  | oneLossV
+      (hvLoss : v.1 ∈ projectedLossVertices C exponent)
+      (huNonloss : u.1 ∉ projectedLossVertices C exponent)
+      (hwNonloss : w.1 ∉ projectedLossVertices C exponent)
+  | oneLossW
+      (hwLoss : w.1 ∈ projectedLossVertices C exponent)
+      (huNonloss : u.1 ∉ projectedLossVertices C exponent)
+      (hvNonloss : v.1 ∉ projectedLossVertices C exponent)
+  | atLeastTwoLossUV
+      (huLoss : u.1 ∈ projectedLossVertices C exponent)
+      (hvLoss : v.1 ∈ projectedLossVertices C exponent)
+  | atLeastTwoLossUW
+      (huLoss : u.1 ∈ projectedLossVertices C exponent)
+      (hwLoss : w.1 ∈ projectedLossVertices C exponent)
+  | atLeastTwoLossVW
+      (hvLoss : v.1 ∈ projectedLossVertices C exponent)
+      (hwLoss : w.1 ∈ projectedLossVertices C exponent)
+
+theorem enlargedCollisionGraph_triangle_loss_shape
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (huw :
+      (enlargedCollisionGraph C exponent T).Adj u w)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w) :
+    EnlargedTriangleLossShape C exponent T u v w := by
+  have hloss :=
+    enlargedCollisionGraph_triangle_has_loss
+      C exponent T huv huw hvw
+  by_cases huLoss :
+      u.1 ∈ projectedLossVertices C exponent
+  · by_cases hvLoss :
+      v.1 ∈ projectedLossVertices C exponent
+    · exact EnlargedTriangleLossShape.atLeastTwoLossUV
+        huLoss hvLoss
+    · by_cases hwLoss :
+        w.1 ∈ projectedLossVertices C exponent
+      · exact EnlargedTriangleLossShape.atLeastTwoLossUW
+          huLoss hwLoss
+      · exact EnlargedTriangleLossShape.oneLossU
+          huLoss hvLoss hwLoss
+  · by_cases hvLoss :
+      v.1 ∈ projectedLossVertices C exponent
+    · by_cases hwLoss :
+        w.1 ∈ projectedLossVertices C exponent
+      · exact EnlargedTriangleLossShape.atLeastTwoLossVW
+          hvLoss hwLoss
+      · exact EnlargedTriangleLossShape.oneLossV
+          hvLoss huLoss hwLoss
+    · have hwLoss :
+        w.1 ∈ projectedLossVertices C exponent := by
+      rcases hloss with h | h | h
+      · exact False.elim (huLoss h)
+      · exact False.elim (hvLoss h)
+      · exact h
+      exact EnlargedTriangleLossShape.oneLossW
+        hwLoss huLoss hvLoss
+
+theorem enlargedTriangle_oneLoss_has_nonloss_residual_edge
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (T : Finset V)
+    {r u v : {x : V // x ∈ T}}
+    (hru :
+      (enlargedCollisionGraph C exponent T).Adj r u)
+    (hrv :
+      (enlargedCollisionGraph C exponent T).Adj r v)
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (hrLoss : r.1 ∈ projectedLossVertices C exponent)
+    (huNonloss : u.1 ∉ projectedLossVertices C exponent)
+    (hvNonloss : v.1 ∉ projectedLossVertices C exponent) :
+    (
+      (u.1 < v.1 ∧ IsResidual C u.1 v.1)
+      ∨
+      (v.1 < u.1 ∧ IsResidual C v.1 u.1)
+    ) := by
+  exact
+    (oneLoss_twoNonloss_triangle_colour_shape
+      C exponent hexp honeLoss T
+      hru hrv huv hrLoss huNonloss hvNonloss).2.2
+
+#print axioms enlargedCollisionGraph_triangle_loss_shape
+#print axioms enlargedTriangle_oneLoss_has_nonloss_residual_edge
+
 theorem enlargedCollisionGraph_triangle_or_three_lt_girth
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
