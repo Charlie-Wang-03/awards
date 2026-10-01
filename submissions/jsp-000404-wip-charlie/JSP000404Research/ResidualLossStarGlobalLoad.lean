@@ -63,32 +63,26 @@ noncomputable def translatedLossOwnerCoordinate
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     (word : Fin n → Bool)
-    (v : V) : Fin n := by
-  classical
-  if hv : v ∈ translatedLossOwners C exponent word then
-    exact Classical.choose
-      (translatedLossOwner_has_unique_coordinate
-        C exponent hv)
-  else
-    exact Classical.choice inferInstance
+    (v : {x : V // x ∈ translatedLossOwners C exponent word}) :
+    Fin n :=
+  Classical.choose
+    (translatedLossOwner_has_unique_coordinate
+      C exponent v.2)
 
 theorem translatedLossOwnerCoordinate_spec
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     (word : Fin n → Bool)
-    {v : V}
-    (hv : v ∈ translatedLossOwners C exponent word) :
+    (v : {x : V // x ∈ translatedLossOwners C exponent word}) :
     translatedLossOwnerCoordinate C exponent word v
-      ∈ retainedActive C v
+      ∈ retainedActive C v.1
     ∧
-    word ∈ translatedCompletionWords C v
-      (translatedLossOwnerCoordinate C exponent word v) := by
-  classical
-  simp [translatedLossOwnerCoordinate, hv]
-  exact Classical.choose_spec
+    word ∈ translatedCompletionWords C v.1
+      (translatedLossOwnerCoordinate C exponent word v) :=
+  (Classical.choose_spec
     (translatedLossOwner_has_unique_coordinate
-      C exponent hv) |>.1
+      C exponent v.2)).1
 
 theorem translatedLossOwnerCoordinate_injective
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -98,21 +92,21 @@ theorem translatedLossOwnerCoordinate_injective
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     (word : Fin n → Bool) :
-    Set.InjOn
-      (translatedLossOwnerCoordinate C exponent word)
-      (translatedLossOwners C exponent word : Set V) := by
-  intro v hv w hw hcoord
+    Function.Injective
+      (translatedLossOwnerCoordinate C exponent word) := by
+  intro v w hcoord
+  apply Subtype.ext
   by_contra hvw
-  have hvData := Finset.mem_filter.mp hv
-  have hwData := Finset.mem_filter.mp hw
+  have hvData := Finset.mem_filter.mp v.2
+  have hwData := Finset.mem_filter.mp w.2
   have hvSpec :=
     translatedLossOwnerCoordinate_spec
-      C exponent word hv
+      C exponent word v
   have hwSpec :=
     translatedLossOwnerCoordinate_spec
-      C exponent word hw
+      C exponent word w
   have hwWord' :
-      word ∈ translatedCompletionWords C w
+      word ∈ translatedCompletionWords C w.1
         (translatedLossOwnerCoordinate C exponent word v) := by
     simpa [hcoord] using hwSpec.2
   have hdisj :=
@@ -133,23 +127,12 @@ theorem translatedLossOwners_card_le_n
     (word : Fin n → Bool) :
     (translatedLossOwners C exponent word).card ≤ n := by
   classical
-  have hinj :=
-    translatedLossOwnerCoordinate_injective
-      C exponent hexp honeLoss word
-  have hmaps :
-      Set.MapsTo
-        (translatedLossOwnerCoordinate C exponent word)
-        (translatedLossOwners C exponent word : Set V)
-        ((Finset.univ : Finset (Fin n)) : Set (Fin n)) := by
-    intro v hv
-    exact Finset.mem_univ _
-  have hcard :
-      (translatedLossOwners C exponent word).card ≤
-        (Finset.univ : Finset (Fin n)).card :=
-    Finset.card_le_card_of_injOn
+  have hcard :=
+    Fintype.card_le_of_injective
       (translatedLossOwnerCoordinate C exponent word)
-      hmaps hinj
-  simpa using hcard
+      (translatedLossOwnerCoordinate_injective
+        C exponent hexp honeLoss word)
+  simpa only [Fintype.card_coe, Fintype.card_fin] using hcard
 
 noncomputable def lossStarOwners
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
