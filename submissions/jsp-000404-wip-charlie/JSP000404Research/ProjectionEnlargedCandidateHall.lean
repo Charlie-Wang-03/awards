@@ -8,6 +8,7 @@ import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
 import JSP000404Research.SecondLayerNoTopReduction
+import JSP000404Research.SecondLayerUniformSupportTwo
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.PlanarResidualHardRemainder
 import JSP000404Research.ProjectionStandardBandBudget
@@ -2052,6 +2053,59 @@ theorem planar_QTTT_secondLayer_support_reduction
       hsSecond hxSecond hySecond hzSecond
 
 #print axioms planar_QTTT_secondLayer_support_reduction
+
+
+/-- Uniform planar reduction for saturated Q/T/T/T: for every n>=3 the four
+second-layer centres already contain two distinct support-two centres.  The
+small-parameter n=3 exception disappears once all four transition
+certificates are packed simultaneously. -/
+theorem planar_QTTT_secondLayer_support_reduction_uniform
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {s x y z : ProjectionOrdered V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hsSecond : centreExponent (C s) t = n - 2)
+    (hxSecond : centreExponent (C x) t = n - 2)
+    (hySecond : centreExponent (C y) t = n - 2)
+    (hzSecond : centreExponent (C z) t = n - 2) :
+    ∃ a b : ProjectionOrdered V,
+      a ≠ b ∧
+      a ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      b ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      positiveSupport (centreQuotient (C a) t) = 2 ∧
+      positiveSupport (centreQuotient (C b) t) = 2 := by
+  have hcapR :
+      AngleCap (reindexedPoint p) lam := by
+    intro a b c hab hac hbc
+    apply hcap a.toOriginal b.toOriginal c.toOriginal
+    · intro h
+      apply hab
+      exact ProjectionOrdered.toOriginal_injective h
+    · intro h
+      apply hac
+      exact ProjectionOrdered.toOriginal_injective h
+    · intro h
+      apply hbc
+      exact ProjectionOrdered.toOriginal_injective h
+  exact four_secondLayer_has_two_supportTwo_uniform
+    (p := reindexedPoint p)
+    (reindexedPoint_injective hp)
+    hcapR
+    hn3 hdelta0 hdeltaHalf ht hlam
+    C
+    hsx hsy hsz hxy hxz hyz
+    hsSecond hxSecond hySecond hzSecond
+
+#print axioms planar_QTTT_secondLayer_support_reduction_uniform
 
 
 /-- Current strongest planar multiplicity-first root.  After the standard
