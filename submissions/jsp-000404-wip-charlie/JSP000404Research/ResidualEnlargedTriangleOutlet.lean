@@ -507,5 +507,166 @@ theorem secondLayerLoss_middle_triangle_palette_card_three
 #print axioms topLoss_middle_triangle_palette_card_two
 #print axioms secondLayerLoss_middle_triangle_palette_card_three
 
+
+/-- Away from genuine triple coverage, the two pair-overlap sets incident to a
+triangle vertex are disjoint.  Thus a triangle differs from the long-cycle
+counting regime precisely when one Boolean word is carried by all three
+candidate blocks. -/
+theorem triangle_incident_overlaps_disjoint_of_no_triple_word
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v w : V}
+    (hnoTriple :
+      ¬ ∃ word : Fin n → Bool,
+        word ∈ enlargedProjectedCandidateBlock C exponent u ∧
+        word ∈ enlargedProjectedCandidateBlock C exponent v ∧
+        word ∈ enlargedProjectedCandidateBlock C exponent w) :
+    Disjoint
+      (enlargedProjectedCandidateBlock C exponent u ∩
+        enlargedProjectedCandidateBlock C exponent v)
+      (enlargedProjectedCandidateBlock C exponent u ∩
+        enlargedProjectedCandidateBlock C exponent w) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro word huv huw
+  have huvParts := Finset.mem_inter.mp huv
+  have huwParts := Finset.mem_inter.mp huw
+  exact hnoTriple
+    ⟨word,huvParts.1,huvParts.2,huwParts.2⟩
+
+/-- Conversely, failure of incident pair-overlap disjointness produces an
+explicit triple-covered Boolean word. -/
+theorem triangle_triple_word_of_incident_overlaps_not_disjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {u v w : V}
+    (hnot :
+      ¬ Disjoint
+        (enlargedProjectedCandidateBlock C exponent u ∩
+          enlargedProjectedCandidateBlock C exponent v)
+        (enlargedProjectedCandidateBlock C exponent u ∩
+          enlargedProjectedCandidateBlock C exponent w)) :
+    ∃ word : Fin n → Bool,
+      word ∈ enlargedProjectedCandidateBlock C exponent u ∧
+      word ∈ enlargedProjectedCandidateBlock C exponent v ∧
+      word ∈ enlargedProjectedCandidateBlock C exponent w := by
+  by_contra hno
+  exact hnot
+    (triangle_incident_overlaps_disjoint_of_no_triple_word
+      C exponent hno)
+
+/-- For three distinct projected-loss vertices, a common enlarged-block word
+must be translated at at least two vertices.  Those two translations
+necessarily use different retained coordinates. -/
+theorem three_loss_triple_word_has_cross_translated_pair
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v w : V}
+    (huv : u ≠ v)
+    (huw : u ≠ w)
+    (hvw : v ≠ w)
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwLoss : w ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (huBlock : word ∈ enlargedProjectedCandidateBlock C exponent u)
+    (hvBlock : word ∈ enlargedProjectedCandidateBlock C exponent v)
+    (hwBlock : word ∈ enlargedProjectedCandidateBlock C exponent w) :
+    (
+      ∃ c d : Fin n,
+        c ∈ retainedActive C u ∧
+        d ∈ retainedActive C v ∧
+        c ≠ d ∧
+        word ∈ translatedCompletionWords C u c ∧
+        word ∈ translatedCompletionWords C v d
+    )
+    ∨
+    (
+      ∃ c d : Fin n,
+        c ∈ retainedActive C u ∧
+        d ∈ retainedActive C w ∧
+        c ≠ d ∧
+        word ∈ translatedCompletionWords C u c ∧
+        word ∈ translatedCompletionWords C w d
+    )
+    ∨
+    (
+      ∃ c d : Fin n,
+        c ∈ retainedActive C v ∧
+        d ∈ retainedActive C w ∧
+        c ≠ d ∧
+        word ∈ translatedCompletionWords C v c ∧
+        word ∈ translatedCompletionWords C w d
+    ) := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent huLoss] at huBlock
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent hvLoss] at hvBlock
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent hwLoss] at hwBlock
+  unfold allActiveLossCandidateBlock at huBlock hvBlock hwBlock
+  rcases Finset.mem_union.mp huBlock with huQ | huT
+  · rcases Finset.mem_union.mp hvBlock with hvQ | hvT
+    · exact False.elim
+        (Finset.disjoint_left.mp
+          (projectedLoss_completion_disjoint
+            C exponent hexp honeLoss huLoss huv)
+          huQ hvQ)
+    · rcases Finset.mem_union.mp hwBlock with hwQ | hwT
+      · exact False.elim
+          (Finset.disjoint_left.mp
+            (projectedLoss_completion_disjoint
+              C exponent hexp honeLoss huLoss huw)
+            huQ hwQ)
+      · obtain ⟨cv,hcv,hvWord⟩ :=
+          Finset.mem_biUnion.mp hvT
+        obtain ⟨cw,hcw,hwWord⟩ :=
+          Finset.mem_biUnion.mp hwT
+        have hne :=
+          translated_loss_conflict_distinct_coordinates
+            C exponent hexp honeLoss
+            hvLoss hwLoss hvw
+            ⟨word,hvWord,hwWord⟩
+        exact Or.inr (Or.inr
+          ⟨cv,cw,hcv,hcw,hne,hvWord,hwWord⟩)
+  · obtain ⟨cu,hcu,huWord⟩ :=
+      Finset.mem_biUnion.mp huT
+    rcases Finset.mem_union.mp hvBlock with hvQ | hvT
+    · rcases Finset.mem_union.mp hwBlock with hwQ | hwT
+      · exact False.elim
+          (Finset.disjoint_left.mp
+            (projectedLoss_completion_disjoint
+              C exponent hexp honeLoss hvLoss hvw)
+            hvQ hwQ)
+      · obtain ⟨cw,hcw,hwWord⟩ :=
+          Finset.mem_biUnion.mp hwT
+        have hne :=
+          translated_loss_conflict_distinct_coordinates
+            C exponent hexp honeLoss
+            huLoss hwLoss huw
+            ⟨word,huWord,hwWord⟩
+        exact Or.inr
+          (Or.inl ⟨cu,cw,hcu,hcw,hne,huWord,hwWord⟩)
+    · obtain ⟨cv,hcv,hvWord⟩ :=
+        Finset.mem_biUnion.mp hvT
+      have hne :=
+        translated_loss_conflict_distinct_coordinates
+          C exponent hexp honeLoss
+          huLoss hvLoss huv
+          ⟨word,huWord,hvWord⟩
+      exact Or.inl
+        ⟨cu,cv,hcu,hcv,hne,huWord,hvWord⟩
+
+#print axioms triangle_incident_overlaps_disjoint_of_no_triple_word
+#print axioms triangle_triple_word_of_incident_overlaps_not_disjoint
+#print axioms three_loss_triple_word_has_cross_translated_pair
+
 end OrderedEdgeColoring
 end JSP000404Research
