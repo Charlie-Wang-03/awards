@@ -577,6 +577,7 @@ theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
       (enlargedCollisionGraph C exponent T).Adj u v)
     (hvw :
       (enlargedCollisionGraph C exponent T).Adj v w)
+    (huw : u ≠ w)
     (hgirth :
       3 < (enlargedCollisionGraph C exponent T).girth) :
     Disjoint
@@ -592,23 +593,13 @@ theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
   have huwCross :
       EnlargedBlocksCross C exponent u.1 w.1 := by
     exact ⟨word,hleftParts.2,hrightParts.2⟩
-  have huwNe : u ≠ w := by
-    intro h
-    subst w
-    exact (enlargedCollisionGraph C exponent T).irrefl _
-      (by
-        exact (simpleGraph_no_triangle_of_three_lt_girth
-          (enlargedCollisionGraph C exponent T)
-          hgirth huv hvw)
-          ((enlargedCollisionGraph C exponent T).irrefl u
-            (by simpa using huv)))
   have huwAdj :
       (enlargedCollisionGraph C exponent T).Adj u w := by
     exact enlargedCollisionGraph_adj_of_cross
       C exponent T u.2 w.2
       (by
         intro h
-        apply huwNe
+        apply huw
         apply Subtype.ext
         exact h)
       huwCross
