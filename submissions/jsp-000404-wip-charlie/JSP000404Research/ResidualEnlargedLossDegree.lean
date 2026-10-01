@@ -275,12 +275,12 @@ theorem minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
 
   have haSplit : a = (a - 1) + 1 := by
     omega
-  have hslack :
-      (a + 1) * q - 2 * q = (a - 1) * q := by
+  have hdecomp :
+      (a + 1) * q = 2 * q + (a - 1) * q := by
     rw [haSplit]
     ring
-
-  rw [hblock, htarget, hslack] at hsharedLower
+  rw [hblock, htarget, hdecomp,
+      Nat.add_sub_cancel_left] at hsharedLower
 
   by_contra hdegree
   have h2dLt : 2 * d < a := by omega
