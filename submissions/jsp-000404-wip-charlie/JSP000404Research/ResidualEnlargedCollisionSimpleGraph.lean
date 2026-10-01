@@ -608,8 +608,100 @@ theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
       (enlargedCollisionGraph C exponent T)
       hgirth huv hvw) huwAdj
 
-#print axioms simpleGraph_no_triangle_of_three_lt_girth
-#print axioms enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
+
+theorem enlargedCollisionGraph_triangle_or_three_lt_girth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hcyclic :
+      ¬ (enlargedCollisionGraph C exponent T).IsAcyclic) :
+    (
+      ∃ u v w : {x : V // x ∈ T},
+        (enlargedCollisionGraph C exponent T).Adj u v ∧
+        (enlargedCollisionGraph C exponent T).Adj u w ∧
+        (enlargedCollisionGraph C exponent T).Adj v w
+    )
+    ∨
+    3 < (enlargedCollisionGraph C exponent T).girth := by
+  let G := enlargedCollisionGraph C exponent T
+  have hthree : 3 ≤ G.girth :=
+    SimpleGraph.three_le_girth hcyclic
+  by_cases heq : G.girth = 3
+  · left
+    have hcycleMin :=
+      (SimpleGraph.exists_girth_eq_length
+        (G := G)).2 hcyclic
+    obtain ⟨a,p,hcycle,hgirth⟩ := hcycleMin
+    have hp3 : p.length = 3 := by
+      omega
+    have hcliqueExists :=
+      (SimpleGraph.is3Clique_iff_exists_cycle_length_three
+        (G := G)).2 ⟨a,p,hcycle,hp3⟩
+    obtain ⟨s,hs⟩ := hcliqueExists
+    obtain ⟨u,v,w,huv,huw,hvw,_hs⟩ :=
+      (SimpleGraph.is3Clique_iff).1 hs
+    exact ⟨u,v,w,huv,huw,hvw⟩
+  · right
+    omega
+
+theorem minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U) :
+    (
+      ∃ u v wu wv : V,
+        u ∈ T ∧
+        v ∈ T ∧
+        u ≠ v ∧
+        wu ∈ T ∧
+        wv ∈ T ∧
+        wu ≠ u ∧
+        wv ≠ v ∧
+        EnlargedLeafOutlet C exponent T u wu ∧
+        EnlargedLeafOutlet C exponent T v wv
+    )
+    ∨
+    (
+      ∃ u v w : {x : V // x ∈ T},
+        (enlargedCollisionGraph C exponent T).Adj u v ∧
+        (enlargedCollisionGraph C exponent T).Adj u w ∧
+        (enlargedCollisionGraph C exponent T).Adj v w
+    )
+    ∨
+    3 < (enlargedCollisionGraph C exponent T).girth := by
+  by_cases hacyclic :
+      (enlargedCollisionGraph C exponent T).IsAcyclic
+  · exact Or.inl
+      (minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
+        C exponent hexpLt hexp honeLoss
+        hdef hmin hacyclic)
+  · rcases
+      enlargedCollisionGraph_triangle_or_three_lt_girth
+        C exponent T hacyclic
+      with htri | hlong
+    · exact Or.inr (Or.inl htri)
+    · exact Or.inr (Or.inr hlong)
+
+#print axioms enlargedCollisionGraph_triangle_or_three_lt_girth
+#print axioms minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
 
 end OrderedEdgeColoring
 end JSP000404Research
