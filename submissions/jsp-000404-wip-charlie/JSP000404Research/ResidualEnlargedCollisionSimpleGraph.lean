@@ -1735,10 +1735,117 @@ theorem longCycle_exists_exact_or_loss_vertex
   · exact ⟨v,hvT,Or.inl hexact⟩
   · exact ⟨v,hvT,Or.inr hloss⟩
 
-#print axioms coreDoubleCoveredWords_subset_coreUnion
-#print axioms longCycle_two_mul_pairOverlaps_le_sum_block_cards
-#print axioms strict_enlargedBlock_card_le_two_mul_localSlack
-#print axioms longCycle_exists_exact_or_loss_vertex
+
+theorem lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hlower : exponent v + 2 ≤ n) :
+    (enlargedProjectedCandidateBlock C exponent v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ) := by
+  have hactive :
+      3 ≤ (retainedActive C v).card := by
+    rw [projectedLoss_retainedActive_card
+      C exponent hvLoss]
+    omega
+  have hblock :=
+    allActiveLossCandidateBlock_card C v
+  have hslack :=
+    enlargedLoss_local_slack_eq_translated_minus_one_cube
+      C exponent hvLoss
+  rw [enlargedProjectedCandidateBlock_loss
+      C exponent hvLoss]
+  rw [hslack]
+  rw [hblock]
+  have hcoef :
+      (retainedActive C v).card + 1
+        ≤
+      2 * ((retainedActive C v).card - 1) := by
+    omega
+  exact Nat.mul_le_mul_right
+    (retainedCompletionWords C v).card hcoef
+
+theorem longCycle_exists_exact_or_topLoss_vertex
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ∃ v ∈ T,
+      ExactProjectedBudget C exponent v
+      ∨
+      (
+        v ∈ projectedLossVertices C exponent
+        ∧ exponent v = n - 1
+      ) := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+
+  have hblockLe :
+      (∑ v ∈ T,
+        (enlargedProjectedCandidateBlock
+          C exponent v).card)
+        ≤
+      2 *
+        (∑ v ∈ T,
+          (
+            (enlargedProjectedCandidateBlock C exponent v).card -
+              2 ^ exponent v
+          )) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro v hvT
+    rcases projectedProfile_strict_exact_or_loss
+        C exponent hexp honeLoss v
+      with hstrict | hexact | hloss
+    · exact strict_enlargedBlock_card_le_two_mul_localSlack
+        C exponent hstrict
+    · exact False.elim ((hnone v hvT).1 hexact)
+    · have hnotTop :
+          exponent v ≠ n - 1 := by
+        intro htop
+        exact (hnone v hvT).2 hloss htop
+      have hlower :
+          exponent v + 2 ≤ n := by
+        have hlt := hexpLt v
+        omega
+      exact lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+        C exponent hloss hlower
+
+  have hedgeLe :=
+    longCycle_two_mul_pairOverlaps_le_sum_block_cards
+      C exponent T hgirth
+  have hedgeEq :=
+    longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  have hpos :=
+    blockDeficiencyAmount_pos_of_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef
+  omega
+
+#print axioms lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+#print axioms longCycle_exists_exact_or_topLoss_vertex
 
 end OrderedEdgeColoring
 end JSP000404Research
