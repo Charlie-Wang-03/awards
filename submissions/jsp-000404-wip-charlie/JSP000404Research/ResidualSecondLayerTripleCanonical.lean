@@ -1528,6 +1528,198 @@ theorem QTTT_fin3_antipode_blocker_profile_reduction
 #print axioms QTTT_fin3_antipode_blocker_profile_reduction
 
 
+/-- In the n=3 second-layer case, the enlarged block contains its unique
+completion base and every one-coordinate neighbour of that base. -/
+theorem secondLayer_fin3_base_or_single_mem_enlarged
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1)
+    {base q : Fin 3 → Bool}
+    (hbase : base ∈ retainedCompletionWords C v)
+    (hq :
+      q = base ∨
+      ∃ d : Fin 3, q = flipBoolWordAt base d) :
+    q ∈ enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  rcases hq with rfl | ⟨d,rfl⟩
+  · exact Finset.mem_union_left _ hbase
+  · apply Finset.mem_union_right
+    unfold allActiveTranslatedWords
+    apply Finset.mem_biUnion.mpr
+    have hdActive : d ∈ retainedActive C v := by
+      rw [secondLayer_fin3_retainedActive_eq_univ
+        C exponent hvLoss hvSecond]
+      simp
+    refine ⟨d,hdActive,?_⟩
+    apply (mem_translatedCompletionWords C v d _).2
+    simpa [flipBoolWordAt_involutive] using hbase
+
+/-- The three original n=3 Q/T/T blocks already cover exactly seven of the
+eight Boolean words.  Their unique missing word is the triple antipode. -/
+theorem QTT_fin3_three_blocks_union_eq_univ_erase_antipode
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {s x y : V}
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hxSecond : exponent x = 1)
+    (hySecond : exponent y = 1)
+    {word : Fin 3 → Bool}
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    (enlargedProjectedCandidateBlock C exponent s ∪
+      enlargedProjectedCandidateBlock C exponent x) ∪
+        enlargedProjectedCandidateBlock C exponent y
+      =
+    (Finset.univ : Finset (Fin 3 → Bool)).erase
+      (tripleFlipBoolWord word cx cy cz) := by
+  classical
+  let anti := tripleFlipBoolWord word cx cy cz
+  have hxBase :
+      flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
+    (mem_translatedCompletionWords C x cx word).1 hxT
+  have hyBase :
+      flipBoolWordAt word cy ∈ retainedCompletionWords C y :=
+    (mem_translatedCompletionWords C y cy word).1 hyT
+  have hsOut :
+      anti ∉ enlargedProjectedCandidateBlock C exponent s := by
+    dsimp [anti]
+    exact secondLayer_fin3_antipode_not_mem_enlarged
+      C exponent hsLoss hsSecond hsQ hcxy hcxz hcyz
+  have hxOut :
+      anti ∉ enlargedProjectedCandidateBlock C exponent x := by
+    dsimp [anti]
+    have h :=
+      secondLayer_fin3_twoFlip_not_mem_enlarged
+        C exponent hxLoss hxSecond hxBase hcyz
+        (a := cy) (b := cz)
+    simpa [tripleFlipBoolWord] using h
+  have hyOut :
+      anti ∉ enlargedProjectedCandidateBlock C exponent y := by
+    dsimp [anti]
+    have h :=
+      secondLayer_fin3_twoFlip_not_mem_enlarged
+        C exponent hyLoss hySecond hyBase hcxz
+        (a := cx) (b := cz)
+    rw [← tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
+      word hcxy hcxz hcyz] at h
+    exact h
+  ext q
+  constructor
+  · intro hq
+    have hqNe : q ≠ anti := by
+      intro hqa
+      subst q
+      rcases Finset.mem_union.mp hq with hsxMem | hyMem
+      · rcases Finset.mem_union.mp hsxMem with hsMem | hxMem
+        · exact hsOut hsMem
+        · exact hxOut hxMem
+      · exact hyOut hyMem
+    simp [anti,hqNe]
+  · intro hq
+    have hqNe : q ≠ anti := by
+      simpa [anti] using (Finset.mem_erase.mp hq).1
+    rcases
+      fin3_word_base_or_single_or_antipode_or_antipode_single
+        word q hcxy hcxz hcyz
+      with hbase | hsingle | hanti | hantiSingle
+    · apply Finset.mem_union_left
+      apply Finset.mem_union_left
+      exact secondLayer_fin3_base_or_single_mem_enlarged
+        C exponent hsLoss hsSecond hsQ (Or.inl hbase)
+    · apply Finset.mem_union_left
+      apply Finset.mem_union_left
+      exact secondLayer_fin3_base_or_single_mem_enlarged
+        C exponent hsLoss hsSecond hsQ (Or.inr hsingle)
+    · exact False.elim (hqNe (by simpa [anti] using hanti))
+    · obtain ⟨d,hd⟩ := hantiSingle
+      obtain hdCase : d = cx ∨ d = cy ∨ d = cz :=
+        three_distinct_fin3_exhaust hcxy hcxz hcyz (q := d)
+      rcases hdCase with rfl | rfl | rfl
+      · apply Finset.mem_union_right
+        apply secondLayer_fin3_base_or_single_mem_enlarged
+          C exponent hyLoss hySecond hyBase
+        right
+        refine ⟨cz,?_⟩
+        rw [hd]
+        funext e
+        obtain he : e = cx ∨ e = cy ∨ e = cz :=
+          three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
+        rcases he with rfl | rfl | rfl <;>
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
+      · apply Finset.mem_union_left
+        apply Finset.mem_union_right
+        apply secondLayer_fin3_base_or_single_mem_enlarged
+          C exponent hxLoss hxSecond hxBase
+        right
+        refine ⟨cz,?_⟩
+        rw [hd]
+        funext e
+        obtain he : e = cx ∨ e = cy ∨ e = cz :=
+          three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
+        rcases he with rfl | rfl | rfl <;>
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
+      · apply Finset.mem_union_left
+        apply Finset.mem_union_right
+        apply secondLayer_fin3_base_or_single_mem_enlarged
+          C exponent hxLoss hxSecond hxBase
+        right
+        refine ⟨cy,?_⟩
+        rw [hd]
+        funext e
+        obtain he : e = cx ∨ e = cy ∨ e = cz :=
+          three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
+        rcases he with rfl | rfl | rfl <;>
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
+
+/-- Cardinal form: the three original Q/T/T blocks cover exactly seven words. -/
+theorem QTT_fin3_three_blocks_union_card_eq_seven
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {s x y : V}
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hxSecond : exponent x = 1)
+    (hySecond : exponent y = 1)
+    {word : Fin 3 → Bool}
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    ((enlargedProjectedCandidateBlock C exponent s ∪
+      enlargedProjectedCandidateBlock C exponent x) ∪
+        enlargedProjectedCandidateBlock C exponent y).card = 7 := by
+  rw [QTT_fin3_three_blocks_union_eq_univ_erase_antipode
+    C exponent
+    hsLoss hxLoss hyLoss
+    hsSecond hxSecond hySecond
+    hcxy hcxz hcyz hsQ hxT hyT]
+  simp
+
+#print axioms secondLayer_fin3_base_or_single_mem_enlarged
+#print axioms QTT_fin3_three_blocks_union_eq_univ_erase_antipode
+#print axioms QTT_fin3_three_blocks_union_card_eq_seven
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
