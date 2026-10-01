@@ -2804,10 +2804,251 @@ theorem minimal_enlargedCandidate_prune_any_leaf_to_parent
         C exponent hexpLt hexp honeLoss
         hdef hmin hvT hwT hvLoss hvw hunique
 
-#print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_lt
-#print axioms minimal_enlargedCandidate_prune_loss_leaf_to_parent_of_gt
-#print axioms minimal_enlargedCandidate_prune_nonloss_leaf_to_parent
+
+theorem uniqueNeighbourLeafTransfers_sum_le_parent_block
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (transfer : V → ℕ)
+    (charge : V → Finset (Fin n → Bool))
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent parent)
+    (htransfer :
+      ∀ v ∈ leaves,
+        transfer v ≤ (charge v).card) :
+    (∑ v ∈ leaves, transfer v) ≤
+      (enlargedProjectedCandidateBlock C exponent parent).card := by
+  classical
+  have hpairwise :=
+    uniqueNeighbourLeafCharges_pairwiseDisjoint
+      C exponent charge
+      hleavesT hparentNotLeaf hunique hchargeChild
+  have hcardUnion :
+      (leaves.biUnion charge).card =
+        ∑ v ∈ leaves, (charge v).card := by
+    rw [Finset.card_biUnion hpairwise]
+  have hsub :
+      leaves.biUnion charge ⊆
+        enlargedProjectedCandidateBlock C exponent parent := by
+    intro word hword
+    obtain ⟨v,hvLeaves,hvWord⟩ :=
+      Finset.mem_biUnion.mp hword
+    exact hchargeParent v hvLeaves hvWord
+  have hunionLe :=
+    Finset.card_le_card hsub
+  rw [hcardUnion] at hunionLe
+  have hsum :
+      (∑ v ∈ leaves, transfer v) ≤
+        ∑ v ∈ leaves, (charge v).card := by
+    apply Finset.sum_le_sum
+    intro v hv
+    exact htransfer v hv
+  exact hsum.trans hunionLe
+
+theorem uniqueNeighbourLeafTransfers_after_nonlossParentSlack_le_cube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T leaves : Finset V}
+    {parent : V}
+    (transfer : V → ℕ)
+    (charge : V → Finset (Fin n → Bool))
+    (hparentNonloss :
+      parent ∉ projectedLossVertices C exponent)
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent parent)
+    (htransfer :
+      ∀ v ∈ leaves,
+        transfer v ≤ (charge v).card) :
+    (∑ v ∈ leaves, transfer v) -
+        (
+          (enlargedProjectedCandidateBlock C exponent parent).card -
+            2 ^ exponent parent
+        )
+      ≤
+    (retainedCompletionWords C parent).card := by
+  have hsum :=
+    uniqueNeighbourLeafTransfers_sum_le_parent_block
+      C exponent transfer charge
+      hleavesT hparentNotLeaf hunique
+      hchargeChild hchargeParent htransfer
+  have hblock :
+      enlargedProjectedCandidateBlock C exponent parent =
+        retainedCompletionWords C parent :=
+    enlargedProjectedCandidateBlock_nonloss
+      C exponent hparentNonloss
+  rw [hblock] at hsum ⊢
+  have hproj :=
+    exponent_le_projectedFree_add_one
+      C exponent hexp honeLoss parent
+  have hneq :
+      exponent parent ≠ projectedFree C parent + 1 := by
+    intro h
+    exact hparentNonloss
+      ((mem_projectedLossVertices C exponent parent).2 h)
+  have hle : exponent parent ≤ projectedFree C parent := by
+    omega
+  have htarget :
+      2 ^ exponent parent ≤
+        (retainedCompletionWords C parent).card :=
+    nonloss_completionBlock_target_le
+      C exponent hle
+  omega
+
+theorem uniqueNeighbourLeafTransfers_after_lossParentSlack_le_cube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T leaves : Finset V}
+    {parent : V}
+    (transfer : V → ℕ)
+    (charge : V → Finset (Fin n → Bool))
+    (hparentLoss :
+      parent ∈ projectedLossVertices C exponent)
+    (hleavesT : leaves ⊆ T)
+    (hparentNotLeaf : parent ∉ leaves)
+    (hunique :
+      ∀ v ∈ leaves,
+        ∀ z : V,
+          z ∈ T →
+          z ≠ v →
+          EnlargedBlocksCross C exponent v z →
+          z = parent)
+    (hchargeChild :
+      ∀ v ∈ leaves,
+        charge v ⊆
+          enlargedProjectedCandidateBlock C exponent v)
+    (hchargeParent :
+      ∀ v ∈ leaves,
+        charge v ⊆ allActiveTranslatedWords C parent)
+    (htransfer :
+      ∀ v ∈ leaves,
+        transfer v ≤ (charge v).card) :
+    (∑ v ∈ leaves, transfer v) -
+        (
+          (enlargedProjectedCandidateBlock C exponent parent).card -
+            2 ^ exponent parent
+        )
+      ≤
+    (retainedCompletionWords C parent).card := by
+  classical
+  have hsumCharge :=
+    uniqueNeighbourLeafCharges_sum_le_parent_active_mul_cube
+      C exponent charge
+      hleavesT hparentNotLeaf hunique
+      hchargeChild hchargeParent
+  have hsumTransfer :
+      (∑ v ∈ leaves, transfer v) ≤
+        ∑ v ∈ leaves, (charge v).card := by
+    apply Finset.sum_le_sum
+    intro v hv
+    exact htransfer v hv
+  have hsum :
+      (∑ v ∈ leaves, transfer v) ≤
+        (retainedActive C parent).card *
+          (retainedCompletionWords C parent).card :=
+    hsumTransfer.trans hsumCharge
+  have hslack :
+      (enlargedProjectedCandidateBlock C exponent parent).card -
+          2 ^ exponent parent
+        =
+      ((retainedActive C parent).card - 1) *
+        (retainedCompletionWords C parent).card := by
+    rw [enlargedProjectedCandidateBlock_loss
+          C exponent hparentLoss,
+        allActiveLossCandidateBlock_card,
+        projectedLoss_target_eq_two_mul_completion
+          C exponent hparentLoss]
+    have hactivePos :
+        1 ≤ (retainedActive C parent).card := by
+      have hloss :=
+        (mem_projectedLossVertices C exponent parent).1 hparentLoss
+      unfold projectedFree at hloss
+      have hcardLe :
+          (retainedActive C parent).card ≤ n := by
+        simpa using Finset.card_le_univ
+          (retainedActive C parent)
+      omega
+    have ha :
+        (retainedActive C parent).card =
+          ((retainedActive C parent).card - 1) + 1 := by
+      omega
+    have hdecomp :
+        ((retainedActive C parent).card + 1) *
+            (retainedCompletionWords C parent).card
+          =
+        2 * (retainedCompletionWords C parent).card +
+          ((retainedActive C parent).card - 1) *
+            (retainedCompletionWords C parent).card := by
+      rw [ha]
+      ring
+    rw [hdecomp, Nat.add_sub_cancel_left]
+  rw [hslack]
+  have hactivePos :
+      1 ≤ (retainedActive C parent).card := by
+    have hloss :=
+      (mem_projectedLossVertices C exponent parent).1 hparentLoss
+    unfold projectedFree at hloss
+    have hcardLe :
+        (retainedActive C parent).card ≤ n := by
+      simpa using Finset.card_le_univ
+        (retainedActive C parent)
+    omega
+  have ha :
+      (retainedActive C parent).card =
+        ((retainedActive C parent).card - 1) + 1 := by
+    omega
+  have hmass :
+      (retainedActive C parent).card *
+          (retainedCompletionWords C parent).card
+        =
+      ((retainedActive C parent).card - 1) *
+          (retainedCompletionWords C parent).card +
+        (retainedCompletionWords C parent).card := by
+    rw [ha]
+    ring
+  rw [hmass] at hsum
+  omega
+
 #print axioms minimal_enlargedCandidate_prune_any_leaf_to_parent
+#print axioms uniqueNeighbourLeafTransfers_sum_le_parent_block
+#print axioms uniqueNeighbourLeafTransfers_after_nonlossParentSlack_le_cube
+#print axioms uniqueNeighbourLeafTransfers_after_lossParentSlack_le_cube
 
 end OrderedEdgeColoring
 end JSP000404Research
