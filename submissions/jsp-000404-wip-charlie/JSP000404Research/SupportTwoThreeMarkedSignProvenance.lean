@@ -238,4 +238,115 @@ theorem zero_marked_arc₂_canonical_sameSide
 #print axioms zero_marked_arc₁_canonical_sameSide
 #print axioms zero_marked_arc₂_canonical_sameSide
 
+
+/-- The third marked arc contains the projective wrap.  If every quotient on
+that arc is zero, the endpoint signs are opposite: sign(c)=!sign(a). -/
+theorem zero_marked_arc₃_sign_not
+    {V : Type*}
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    {i : V}
+    (a c : OtherVertex i)
+    (Z : List (OtherVertex i))
+    (hac : a ≠ c)
+    (haZ : a ∉ Z)
+    (hnodup : (c :: Z).Nodup)
+    (hsorted :
+      (c :: Z).Pairwise
+        (fun u v => rayThetaAt hp i u ≤ rayThetaAt hp i v))
+    (horder :
+      rayThetaAt hp i a ≤
+        rayThetaAt hp i (Z.getLastD c))
+    (hzero :
+      listPositiveCount
+        (markedQuotientArc₃ hp i t a c Z) = 0) :
+    raySignAt hp i c = !raySignAt hp i a := by
+  have hallZero :
+      ∀ q ∈ markedQuotientArc₃ hp i t a c Z, q = 0 :=
+    listPositiveCount_eq_zero_forall _ hzero
+  have hordinaryZero :
+      ∀ q ∈ consecutiveRayQuotients hp i t c Z, q = 0 := by
+    intro q hq
+    exact hallZero q (by
+      unfold markedQuotientArc₃
+      exact List.mem_append_left _ hq)
+  have hchanges :=
+    consecutive_changesOnlyOnPositive
+      hp hcap ht hlam i c Z hnodup hsorted
+  have hlastSign :=
+    lastSign_eq_entry_of_zero_block
+      (raySignAt hp i c)
+      (Z.map (raySignAt hp i))
+      (consecutiveRayQuotients hp i t c Z)
+      hchanges hordinaryZero
+  have hlastEq :
+      raySignAt hp i (Z.getLastD c) =
+        raySignAt hp i c := by
+    rw [boolLastFrom_eq_getLastD, map_getLastD] at hlastSign
+    exact hlastSign.symm
+  have hwrapZero :
+      wrapRayQuotient hp i t a (Z.getLastD c) = 0 := by
+    exact hallZero _ (by
+      unfold markedQuotientArc₃
+      simp)
+  have hfl : a ≠ Z.getLastD c := by
+    by_cases hZ : Z = []
+    · subst Z
+      simpa using hac
+    · intro h
+      have hmem :
+          Z.getLastD c ∈ Z :=
+        getLastD_mem_of_ne_nil c Z hZ
+      rw [← h] at hmem
+      exact haZ hmem
+  have hwrapSign :
+      raySignAt hp i (Z.getLastD c) =
+        !raySignAt hp i a := by
+    by_contra hne
+    have hnonzero :=
+      floor_t_mul_wrap_gap_ne_zero_of_canonical_sign_ne
+        hp hcap ht hlam i hfl horder hne
+    unfold wrapRayQuotient at hwrapZero
+    exact hnonzero hwrapZero
+  exact hlastEq.symm.trans hwrapSign
+
+theorem zero_marked_arc₃_canonical_oppositeSides
+    {V : Type*}
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    {i : V}
+    (a c : OtherVertex i)
+    (Z : List (OtherVertex i))
+    (hac : a ≠ c)
+    (haZ : a ∉ Z)
+    (hnodup : (c :: Z).Nodup)
+    (hsorted :
+      (c :: Z).Pairwise
+        (fun u v => rayThetaAt hp i u ≤ rayThetaAt hp i v))
+    (horder :
+      rayThetaAt hp i a ≤
+        rayThetaAt hp i (Z.getLastD c))
+    (hzero :
+      listPositiveCount
+        (markedQuotientArc₃ hp i t a c Z) = 0) :
+    CanonicalOppositeSides p i c.1 a.1 := by
+  have hsign :=
+    zero_marked_arc₃_sign_not
+      hp hcap ht hlam a c Z
+      hac haZ hnodup hsorted horder hzero
+  exact
+    (raySign_not_eq_iff_canonicalOppositeSides
+      hp c.2.symm a.2.symm).1 hsign
+
+#print axioms zero_marked_arc₃_sign_not
+#print axioms zero_marked_arc₃_canonical_oppositeSides
+
 end JSP000404Research
