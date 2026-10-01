@@ -161,6 +161,10 @@ theorem exists_saturated_pair_progress_outlet
     obtain ⟨c,hcu,hcv,hmap,hcard,hhalf,hprofile,_hpair⟩ := hone
     refine ⟨c,hcu,hcv,hmap,hcard,hhalf,?_,?_⟩
     · intro w hw
+      have hsourcePos :
+          0 < (retainedCompletionWords C u ∩
+            retainedCompletionWords C v).card :=
+        Finset.card_pos.mpr ⟨base,hbase⟩
       rcases hprofile w hw with hstrictPaid | hexact | hloss
       · left
         by_contra hnot
@@ -184,6 +188,10 @@ theorem exists_saturated_pair_progress_outlet
     obtain ⟨c,d,hcd,hcu,hdv,hmap,hcard,hhalf,hprofile,_hpair⟩ := htwo
     refine ⟨c,d,hcd,hcu,hdv,hmap,hcard,hhalf,?_,?_⟩
     · intro w hw
+      have hsourcePos :
+          0 < (retainedCompletionWords C u ∩
+            retainedCompletionWords C v).card :=
+        Finset.card_pos.mpr ⟨base,hbase⟩
       rcases hprofile w hw with hstrictPaid | hexact | hloss
       · left
         by_contra hnot
