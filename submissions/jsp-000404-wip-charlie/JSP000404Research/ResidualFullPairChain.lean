@@ -47,7 +47,21 @@ theorem dimension_chain_equal_step_or_length_le
       · exact False.elim (heq ⟨i,hEq⟩)
       · exact hLt
     have hstrict : StrictMono dim := by
-      exact strictMono_fin_of_lt_succ hstrictSucc
+      intro i j hij
+      have hval : i.val < j.val := hij
+      obtain ⟨k,hk⟩ := Nat.exists_eq_add_of_le (Nat.succ_le_iff.mp hval)
+      subst j
+      induction k with
+      | zero =>
+          simpa using hstrictSucc ⟨i.val, by omega⟩
+      | succ k ih =>
+          have hstepLast :=
+            hstrictSucc ⟨i.val + k + 1, by omega⟩
+          have ih' :
+              dim i <
+                dim ⟨i.val + k + 1, by omega⟩ := by
+            exact ih
+          exact lt_trans ih' (by simpa using hstepLast)
     exact strict_dimension_chain_length_le
       dim hbound hstrict
 
