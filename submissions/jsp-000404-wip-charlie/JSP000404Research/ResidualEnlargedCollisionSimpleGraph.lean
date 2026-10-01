@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualEnlargedLossDegree
 import Mathlib.Combinatorics.SimpleGraph.Acyclic
 import Mathlib.Combinatorics.SimpleGraph.Girth
+import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Tactic
 
@@ -544,9 +545,80 @@ theorem minimal_enlargedCollisionGraph_leaf_outlets_or_cycle
       minimal_enlargedCollisionGraph_cycle_of_not_acyclic
         C exponent hacyclic
 
-#print axioms minimal_enlargedCollisionGraph_two_leaf_outlets_of_acyclic
-#print axioms minimal_enlargedCollisionGraph_cycle_of_not_acyclic
-#print axioms minimal_enlargedCollisionGraph_leaf_outlets_or_cycle
+
+theorem simpleGraph_no_triangle_of_three_lt_girth
+    {X : Type*} [Fintype X]
+    (G : SimpleGraph X)
+    (hgirth : 3 < G.girth)
+    {u v w : X}
+    (huv : G.Adj u v)
+    (hvw : G.Adj v w) :
+    ¬ G.Adj u w := by
+  intro huw
+  have hclique :
+      G.IsNClique 3 ({u,v,w} : Finset X) := by
+    exact (SimpleGraph.is3Clique_triple_iff).2
+      ⟨huv,huw,hvw⟩
+  have hcycle3 :=
+    (SimpleGraph.is3Clique_iff_exists_cycle_length_three
+      (G := G)).1 ⟨{u,v,w},hclique⟩
+  obtain ⟨a,p,hcycle,hp3⟩ := hcycle3
+  have hle := hcycle.girth_le_length
+  rw [hp3] at hle
+  omega
+
+theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    {u v w : {x : V // x ∈ T}}
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (hvw :
+      (enlargedCollisionGraph C exponent T).Adj v w)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    Disjoint
+      (enlargedProjectedCandidateBlock C exponent v.1 ∩
+        enlargedProjectedCandidateBlock C exponent u.1)
+      (enlargedProjectedCandidateBlock C exponent v.1 ∩
+        enlargedProjectedCandidateBlock C exponent w.1) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro word hleft hright
+  have hleftParts := Finset.mem_inter.mp hleft
+  have hrightParts := Finset.mem_inter.mp hright
+  have huwCross :
+      EnlargedBlocksCross C exponent u.1 w.1 := by
+    exact ⟨word,hleftParts.2,hrightParts.2⟩
+  have huwNe : u ≠ w := by
+    intro h
+    subst w
+    exact (enlargedCollisionGraph C exponent T).irrefl _
+      (by
+        exact (simpleGraph_no_triangle_of_three_lt_girth
+          (enlargedCollisionGraph C exponent T)
+          hgirth huv hvw)
+          ((enlargedCollisionGraph C exponent T).irrefl u
+            (by simpa using huv)))
+  have huwAdj :
+      (enlargedCollisionGraph C exponent T).Adj u w := by
+    exact enlargedCollisionGraph_adj_of_cross
+      C exponent T u.2 w.2
+      (by
+        intro h
+        apply huwNe
+        apply Subtype.ext
+        exact h)
+      huwCross
+  exact
+    (simpleGraph_no_triangle_of_three_lt_girth
+      (enlargedCollisionGraph C exponent T)
+      hgirth huv hvw) huwAdj
+
+#print axioms simpleGraph_no_triangle_of_three_lt_girth
+#print axioms enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
 
 end OrderedEdgeColoring
 end JSP000404Research
