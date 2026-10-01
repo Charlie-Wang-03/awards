@@ -923,6 +923,75 @@ theorem planar_topLoss_word_closed_outlet
 #print axioms planar_topLoss_word_closed_outlet
 
 
+/-- A planar top projected-loss vertex is already closed without specifying a
+completion word: its retained completion cube is nonempty, so choose any word
+and apply the word-level top-loss outlet. -/
+theorem planar_topLoss_closed_outlet
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {v : ProjectionOrdered V}
+    (hvLoss :
+      v ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp C))
+    (hvTop : centreExponent (C v) t = n - 1) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        ExactProjectedBudget R exponent w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w + 3 ≤ n
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hnonempty :
+      (retainedCompletionWords R v).Nonempty := by
+    apply Finset.card_pos.mp
+    rw [retainedCompletionWords_card]
+    positivity
+  obtain ⟨word,hword⟩ := hnonempty
+  simpa [R,exponent,hn1,hdelta1,planarCentreExponent] using
+    (planar_topLoss_word_closed_outlet
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hcard C hvLoss hvTop hword)
+
+#print axioms planar_topLoss_closed_outlet
+
+
 /-- Girth-free planar deficient-core root.  The previous
 leaf/triangle/long-cycle graph split is replaced by fibre multiplicity.
 All bounded-multiplicity overloads are recursively discharged; a top shared
