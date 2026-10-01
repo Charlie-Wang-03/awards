@@ -2013,6 +2013,57 @@ theorem longCycle_exact_overload_has_shared_outlet
 #print axioms exactSharedOutlet_of_shared_word
 #print axioms longCycle_exact_overload_has_shared_outlet
 
+
+theorem longCycle_overload_recursive_outlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (
+      ∃ v ∈ T,
+        ExactSharedOutlet C exponent v
+    )
+    ∨
+    (
+      ∃ v ∈ T,
+        v ∈ projectedLossVertices C exponent ∧
+        exponent v = n - 1 ∧
+        (
+          sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+          ∩
+          retainedCompletionWords C v
+        ).Nonempty
+    ) := by
+  obtain ⟨v,hvT,hprofile,hover⟩ :=
+    longCycle_exists_exact_or_topLoss_overload
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  rcases hprofile with hvExact | ⟨hvLoss,hvTop⟩
+  · exact Or.inl
+      ⟨v,hvT,
+        longCycle_exact_overload_has_shared_outlet
+          C exponent hexp honeLoss
+          hvT hvExact hover⟩
+  · exact Or.inr
+      ⟨v,hvT,hvLoss,hvTop,
+        topLoss_overload_has_shared_completion_word
+          C exponent hvLoss hvTop hover⟩
+
+#print axioms longCycle_overload_recursive_outlet
+
 theorem longCycle_totalSlack_lt_doubleCovered
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
