@@ -139,4 +139,61 @@ theorem impossible_first_crossed_matching_of_boundary_angle_sum
 #print axioms impossible_crossed_cycle_of_four_angle_sum_two_pi
 #print axioms impossible_first_crossed_matching_of_boundary_angle_sum
 
+
+/-- Second crossed matching: s1 pairs s2 with o2, while s2 pairs s1 with o1.
+If cycle o2-s1-s2-o1 is a convex boundary cycle, contradiction. -/
+theorem impossible_second_crossed_matching_of_boundary_angle_sum
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {o₁ o₂ s₁ s₂ : V}
+    (ho12 : o₁ ≠ o₂)
+    (ho1s1 : o₁ ≠ s₁) (ho1s2 : o₁ ≠ s₂)
+    (ho2s1 : o₂ ≠ s₁) (ho2s2 : o₂ ≠ s₂)
+    (hs12 : s₁ ≠ s₂)
+    (Co1 : CentreProjectiveCycle hp o₁)
+    (Co2 : CentreProjectiveCycle hp o₂)
+    (ho1Exp : centreExponent Co1 t = n - 2)
+    (ho2Exp : centreExponent Co2 t = n - 2)
+    (ho1Support :
+      positiveSupport (centreQuotient Co1 t) = 1)
+    (ho2Support :
+      positiveSupport (centreQuotient Co2 t) = 1)
+    (Ho1 : HighExponentTransitionIntervalCertificate hp t o₁ Co1)
+    (Ho2 : HighExponentTransitionIntervalCertificate hp t o₂ Co2)
+    (hs1 :
+      EuclideanGeometry.angle (p o₂) (p s₁) (p s₂)
+        ≤ delta * lam)
+    (hs2 :
+      EuclideanGeometry.angle (p s₁) (p s₂) (p o₁)
+        ≤ delta * lam)
+    (hsum :
+      EuclideanGeometry.angle (p s₁) (p o₂) (p o₁) +
+      EuclideanGeometry.angle (p o₂) (p s₁) (p s₂) +
+      EuclideanGeometry.angle (p s₁) (p s₂) (p o₁) +
+      EuclideanGeometry.angle (p s₂) (p o₁) (p o₂)
+        = 2 * Real.pi) :
+    False := by
+  have ho2Angle :=
+    secondLayer_supportOne_all_angles_le_one_add_delta_lam
+      hp hn3 hdelta0 ht hlam
+      Co2 ho2Exp ho2Support Ho2
+      ho2s1.symm ho12
+  have ho1Angle :=
+    secondLayer_supportOne_all_angles_le_one_add_delta_lam
+      hp hn3 hdelta0 ht hlam
+      Co1 ho1Exp ho1Support Ho1
+      ho1s2.symm ho12.symm
+  exact impossible_crossed_cycle_of_four_angle_sum_two_pi
+    hn3 hdelta0 hdeltaHalf ht hlam
+    ho2Angle hs1 hs2 ho1Angle hsum
+
+#print axioms impossible_second_crossed_matching_of_boundary_angle_sum
+
 end JSP000404Research
