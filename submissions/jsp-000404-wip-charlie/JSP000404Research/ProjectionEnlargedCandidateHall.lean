@@ -2029,27 +2029,23 @@ theorem planar_QTTT_secondLayer_support_reduction
   · exact Or.inl hnEq
   · right
     have hn4 : 4 ≤ n := by omega
+    have hcapR :
+        AngleCap (reindexedPoint p) lam := by
+      intro a b c hab hac hbc
+      apply hcap a.toOriginal b.toOriginal c.toOriginal
+      · intro h
+        apply hab
+        exact ProjectionOrdered.toOriginal_injective h
+      · intro h
+        apply hac
+        exact ProjectionOrdered.toOriginal_injective h
+      · intro h
+        apply hbc
+        exact ProjectionOrdered.toOriginal_injective h
     exact four_secondLayer_has_two_supportTwo
-      (p := fun q : ProjectionOrdered V => p q.1)
-      (projectionOrdered_embedding_injective hp)
-      (by
-        intro a b c hab hac hbc
-        exact hcap a.1 b.1 c.1
-          (by
-            intro h
-            apply hab
-            apply Subtype.ext
-            exact h)
-          (by
-            intro h
-            apply hac
-            apply Subtype.ext
-            exact h)
-          (by
-            intro h
-            apply hbc
-            apply Subtype.ext
-            exact h))
+      (p := reindexedPoint p)
+      (reindexedPoint_injective hp)
+      hcapR
       hn4 hdelta0 hdeltaHalf ht hlam
       C
       hsx hsy hsz hxy hxz hyz
