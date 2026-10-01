@@ -39,55 +39,7 @@ theorem oneFlip_fullPair_bijective_of_equal_card
       {y : Fin n → Bool //
         y ∈ retainedCompletionWords C w ∩
           retainedCompletionWords C z},
-      ∀ x, e x = ⟨flipBoolWordAt x.1 c, by
-        apply Finset.mem_inter.mpr
-        constructor
-        · have hfull :=
-            (mem_oneFlipFullBlockers C u v c w).1 hw
-          have hsub :
-              oneFlipCapturedSourceWords C u v w c ⊆
-                retainedCompletionWords C u ∩
-                  retainedCompletionWords C v := by
-            intro q hq
-            exact
-              ((mem_oneFlipCapturedSourceWords
-                C u v w c q).1 hq).1
-          have heq :
-              oneFlipCapturedSourceWords C u v w c =
-                retainedCompletionWords C u ∩
-                  retainedCompletionWords C v := by
-            apply Finset.eq_of_subset_of_card_le hsub
-            rw [hfull]
-          have hx :
-              x.1 ∈ oneFlipCapturedSourceWords C u v w c := by
-            rw [heq]
-            exact x.2
-          exact
-            ((mem_oneFlipCapturedSourceWords
-              C u v w c x.1).1 hx).2
-        · have hfull :=
-            (mem_oneFlipFullBlockers C u v c z).1 hz
-          have hsub :
-              oneFlipCapturedSourceWords C u v z c ⊆
-                retainedCompletionWords C u ∩
-                  retainedCompletionWords C v := by
-            intro q hq
-            exact
-              ((mem_oneFlipCapturedSourceWords
-                C u v z c q).1 hq).1
-          have heq :
-              oneFlipCapturedSourceWords C u v z c =
-                retainedCompletionWords C u ∩
-                  retainedCompletionWords C v := by
-            apply Finset.eq_of_subset_of_card_le hsub
-            rw [hfull]
-          have hx :
-              x.1 ∈ oneFlipCapturedSourceWords C u v z c := by
-            rw [heq]
-            exact x.2
-          exact
-            ((mem_oneFlipCapturedSourceWords
-              C u v z c x.1).1 hx).2⟩ := by
+      ∀ x, (e x).1 = flipBoolWordAt x.1 c := by
   classical
   let f :
       {x : Fin n → Bool //
