@@ -4,6 +4,7 @@ import JSP000404Research.ResidualHardRemainder
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.SharpSecondLayerMultiplicity
+import JSP000404Research.ResidualWeightedRecursionRank
 import Mathlib.Tactic
 
 /-!
@@ -570,6 +571,90 @@ theorem planar_top_secondLayerLoss_total_cube_le_top_cube
       rw [← hs, pow_succ]
       omega
 
+
+theorem planar_top_secondLayerLoss_child_rank_lt
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : ProjectionOrdered V,
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i)
+    {s w : ProjectionOrdered V}
+    (hsLoss :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      s ∈ projectedLossVertices R exponent)
+    (hS : planarCentreExponent hp C s = n - 1)
+    (hwLoss :
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      w ∈ projectedLossVertices R exponent)
+    (hW : planarCentreExponent hp C w = n - 2) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
+        ht hlam
+    lossLayerHardStateRank n
+        (retainedCompletionWords R w).card
+        (planarCentreExponent hp C w)
+      <
+    lossLayerHardStateRank n
+        (retainedCompletionWords R s).card
+        (planarCentreExponent hp C s) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hsLoss' :
+      s ∈ projectedLossVertices R exponent := by
+    simpa [R,exponent,hn1,hdelta1] using hsLoss
+  have hwLoss' :
+      w ∈ projectedLossVertices R exponent := by
+    simpa [R,exponent,hn1,hdelta1] using hwLoss
+  have hsCard :
+      (retainedCompletionWords R s).card =
+        2 ^ (n - 2) :=
+    topLoss_completion_card_current
+      R exponent hsLoss' hS
+  have hwCard :
+      (retainedCompletionWords R w).card =
+        2 ^ (n - 3) :=
+    planar_secondLayerLoss_completion_card
+      hp hcap hn hdelta0 hdeltaHalf
+      ht hlam C hwLoss hW
+  have hpayload :
+      (retainedCompletionWords R w).card <
+        (retainedCompletionWords R s).card := by
+    rw [hwCard,hsCard]
+    have hs : n - 3 + 1 = n - 2 := by omega
+    rw [← hs, pow_succ]
+    have hpos : 0 < 2 ^ (n - 3) := by positivity
+    omega
+  exact lossLayerHardStateRank_lt_of_payload_lt
+    (n := n)
+    (payload := (retainedCompletionWords R s).card)
+    (payload' := (retainedCompletionWords R w).card)
+    (exponent := planarCentreExponent hp C s)
+    (exponent' := planarCentreExponent hp C w)
+    (by rw [hS]; omega)
+    (by rw [hW]; omega)
+    hpayload
+
 /-- Main genuine-planar hard remainder outlet. -/
 theorem planar_centre_capacity_of_hard_words_fit_holes
     {lam t delta : ℝ} {n : ℕ}
@@ -622,6 +707,7 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
 #print axioms planar_topLoss_secondLayer_companion_card_le_two
 #print axioms planarTopSecondLayerLossVertices_card_le_two
 #print axioms planar_top_secondLayerLoss_total_cube_le_top_cube
+#print axioms planar_top_secondLayerLoss_child_rank_lt
 #print axioms planar_centre_capacity_of_hard_words_fit_holes
 
 end
