@@ -408,11 +408,59 @@ theorem minimal_deficient_delete_with_transfer_deficient
   rw [hUnion,hSum] at hdef
   omega
 
+
+theorem deficient_delete_with_transfer_deficient
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    {v w : V}
+    (hv : v ∈ T)
+    (hw : w ∈ T.erase v) :
+    BlockDeficient
+      (addDemandAt demand w
+        (deletedVertexTransfer demand blocks T v))
+      blocks
+      (T.erase v) := by
+  classical
+  have hUnion :=
+    biUnion_card_eq_delete_add_private
+      blocks hv
+  have hSum :
+      (∑ x ∈ T, demand x) =
+        (∑ x ∈ T.erase v, demand x) + demand v := by
+    rw [← Finset.sum_erase_add _ _ hv]
+  unfold BlockDeficient at hdef ⊢
+  rw [sum_addDemandAt demand (T.erase v) hw]
+  rw [hUnion,hSum] at hdef
+  unfold deletedVertexTransfer
+  omega
+
+theorem minimal_deficient_delete_with_transfer_deficient'
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v w : V}
+    (hv : v ∈ T)
+    (hw : w ∈ T.erase v) :
+    BlockDeficient
+      (addDemandAt demand w
+        (deletedVertexTransfer demand blocks T v))
+      blocks
+      (T.erase v) :=
+  deficient_delete_with_transfer_deficient
+    demand blocks hdef hv hw
+
 #print axioms blockDeficiencyAmount_pos_of_deficient
 #print axioms minimal_deficient_amount_le_shared_excess
-#print axioms minimal_deficient_deletedVertexTransfer_pos
-#print axioms deletedVertexTransfer_eq_shared_minus_slack
-#print axioms biUnion_card_eq_delete_add_private
+#print axioms deficient_delete_with_transfer_deficient
 #print axioms minimal_deficient_delete_with_transfer_deficient
 
 end JSP000404Research
