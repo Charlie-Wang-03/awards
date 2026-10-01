@@ -1576,10 +1576,192 @@ theorem longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
     C exponent hexpLt hexp honeLoss
     hdef hgirth
 
-#print axioms ordered_pair_eq_of_pair_finset_eq
-#print axioms longCycle_pairOverlapWords_pairwiseDisjoint
-#print axioms longCycle_doubleCovered_card_eq_sum_pairOverlaps
-#print axioms longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
+
+theorem coreDoubleCoveredWords_subset_coreUnion
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V) :
+    coreDoubleCoveredWords C exponent T ⊆
+      T.biUnion (enlargedProjectedCandidateBlock C exponent) := by
+  intro word hdouble
+  have hcard :=
+    (mem_coreDoubleCoveredWords
+      C exponent T word).1 hdouble
+  have hpos :
+      0 < (coreEnlargedCandidateFibre
+        C exponent T word).card := by
+    omega
+  exact (mem_core_union_iff_fibre_nonempty
+    C exponent T word).2
+    (Finset.card_pos.mp hpos)
+
+theorem longCycle_two_mul_pairOverlaps_le_sum_block_cards
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    2 *
+      (∑ uv ∈ coreOrderedVertexPairs T,
+        (corePairOverlapWords C exponent uv).card)
+      ≤
+    ∑ v ∈ T,
+      (enlargedProjectedCandidateBlock
+        C exponent v).card := by
+  have hpair :=
+    longCycle_doubleCovered_card_eq_sum_pairOverlaps
+      C exponent T hgirth
+  have hcount :=
+    longCycle_sum_block_cards_eq_union_add_double
+      C exponent T hgirth
+  have hsub :=
+    Finset.card_le_card
+      (coreDoubleCoveredWords_subset_coreUnion
+        C exponent T)
+  rw [← hpair] 
+  omega
+
+theorem strict_enlargedBlock_card_le_two_mul_localSlack
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hstrict : exponent v < projectedFree C v) :
+    (enlargedProjectedCandidateBlock C exponent v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ) := by
+  have hnonloss :
+      v ∉ projectedLossVertices C exponent := by
+    intro hloss
+    have heq :=
+      (mem_projectedLossVertices C exponent v).1 hloss
+    omega
+  rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hnonloss]
+  have hcube :=
+    retainedCompletionWords_card_le_two_mul_surplus_of_strict
+      C exponent hstrict
+  rw [retainedCompletionWords_card] at hcube ⊢
+  unfold dyadicProfileSurplus at hcube
+  exact hcube
+
+theorem longCycle_exists_nonstrict_vertex
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ∃ v ∈ T,
+      ¬ exponent v < projectedFree C v := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+  have hstrict :
+      ∀ v ∈ T,
+        exponent v < projectedFree C v := by
+    intro v hvT
+    exact lt_of_le_of_ne
+      (by
+        have hprofile :=
+          exponent_le_projectedFree_add_one
+            C exponent hexp honeLoss v
+        by_contra hnot
+        have heq :
+            exponent v = projectedFree C v + 1 := by
+          omega
+        have hloss :
+            v ∈ projectedLossVertices C exponent :=
+          (mem_projectedLossVertices C exponent v).2 heq
+        have hnotStrict := hnone v hvT
+        have heq' :=
+          (mem_projectedLossVertices C exponent v).1 hloss
+        omega)
+      (by
+        intro heq
+        exact hnone v hvT (by simpa [heq]))
+
+  have hblockLe :
+      (∑ v ∈ T,
+        (enlargedProjectedCandidateBlock
+          C exponent v).card)
+        ≤
+      2 *
+        (∑ v ∈ T,
+          (
+            (enlargedProjectedCandidateBlock C exponent v).card -
+              2 ^ exponent v
+          )) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro v hvT
+    exact strict_enlargedBlock_card_le_two_mul_localSlack
+      C exponent (hstrict v hvT)
+
+  have hedgeLe :=
+    longCycle_two_mul_pairOverlaps_le_sum_block_cards
+      C exponent T hgirth
+  have hedgeEq :=
+    longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  have hpos :=
+    blockDeficiencyAmount_pos_of_deficient
+      (fun x : V => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      hdef
+  omega
+
+theorem longCycle_exists_exact_or_loss_vertex
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ∃ v ∈ T,
+      ExactProjectedBudget C exponent v
+      ∨
+      v ∈ projectedLossVertices C exponent := by
+  obtain ⟨v,hvT,hvNotStrict⟩ :=
+    longCycle_exists_nonstrict_vertex
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss v
+    with hstrict | hexact | hloss
+  · exact False.elim (hvNotStrict hstrict)
+  · exact ⟨v,hvT,Or.inl hexact⟩
+  · exact ⟨v,hvT,Or.inr hloss⟩
+
+#print axioms coreDoubleCoveredWords_subset_coreUnion
+#print axioms longCycle_two_mul_pairOverlaps_le_sum_block_cards
+#print axioms strict_enlargedBlock_card_le_two_mul_localSlack
+#print axioms longCycle_exists_exact_or_loss_vertex
 
 end OrderedEdgeColoring
 end JSP000404Research
