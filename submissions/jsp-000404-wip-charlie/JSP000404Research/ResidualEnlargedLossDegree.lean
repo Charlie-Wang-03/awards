@@ -480,7 +480,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_is_mixedUn
     rw [hsurplus] at hpaid
     omega
 
-  exact ⟨hwv.symm,hwExact,hvStrict,
+  exact ⟨hwv,hwExact,hvStrict,
     word,hwWord,hvWord,hunpaid⟩
 
 theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_exponent_lt
