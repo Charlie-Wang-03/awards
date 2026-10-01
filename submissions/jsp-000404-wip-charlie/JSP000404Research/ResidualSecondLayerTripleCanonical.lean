@@ -511,5 +511,169 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
 #print axioms QTT_two_known_active_coordinates_at_completion_owner
 #print axioms QTT_secondLayer_completion_owner_has_unique_third_active
 
+
+/-- A canonical second-layer Q/T/T configuration either closes immediately
+through the unique third active exit of the completion owner, or produces a
+fresh fourth blocker vertex.  Freshness from both translated owners follows
+from pairwise disjointness of the three single-flip blocker fibres. -/
+theorem QTT_unique_third_exit_fresh_blocker_or_closed
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ z, exponent z < n)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {s x y : V}
+    (hsx : s ≠ x)
+    (hsy : s ≠ y)
+    (hxy : x ≠ y)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = n - 2)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcxy : cx ≠ cy)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords C
+    )
+    ∨
+    (
+      ∃ z : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) z
+    )
+    ∨
+    (
+      ∃ z : V,
+        ExactProjectedBudget C exponent z
+    )
+    ∨
+    (
+      ∃ z : V,
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z = n - 1
+    )
+    ∨
+    (
+      ∃ z : V,
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ e : Fin n,
+      ∃ z : V,
+        e ∈ retainedActive C s ∧
+        e ≠ cx ∧
+        e ≠ cy ∧
+        z ≠ s ∧ z ≠ x ∧ z ≠ y ∧
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z = n - 2 ∧
+        flipBoolWordAt word e ∈ retainedCompletionWords C z
+    ) := by
+  classical
+  obtain ⟨e,he,heUnique⟩ :=
+    QTT_secondLayer_completion_owner_has_unique_third_active
+      C exponent hexp honeLoss
+      hsx hsy hsLoss hsSecond
+      hxLoss hyLoss hcx hcy hcxy
+      hsQ hxT hyT
+
+  have hsSingle :=
+    projectedLoss_word_is_singleCompletionWord
+      C exponent hexp honeLoss hsLoss hsQ
+
+  have hxBlock :
+      flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
+    (mem_translatedCompletionWords C x cx word).1 hxT
+  have hyBlock :
+      flipBoolWordAt word cy ∈ retainedCompletionWords C y :=
+    (mem_translatedCompletionWords C y cy word).1 hyT
+
+  by_cases heHole :
+      flipBoolWordAt word e ∉ coveredCompletionWords C
+  · exact Or.inl ⟨flipBoolWordAt word e,heHole⟩
+  · have heCovered :
+        flipBoolWordAt word e ∈ coveredCompletionWords C := by
+      simpa using heHole
+    have heNonempty :=
+      (mem_coveredCompletionWords C
+        (flipBoolWordAt word e)).1 heCovered
+    obtain ⟨z,hzF⟩ := heNonempty
+    have hzBlock :
+        flipBoolWordAt word e ∈ retainedCompletionWords C z :=
+      (mem_completionFibre C
+        (flipBoolWordAt word e) z).1 hzF
+
+    have heNeCx : e ≠ cx := he.2.1
+    have heNeCy : e ≠ cy := he.2.2
+
+    have hzNeS :
+        z ≠ s :=
+      single_flip_blocker_ne_owner
+        C hsSingle he.1 hzBlock
+
+    have hxeDisj :=
+      two_single_flips_have_disjoint_blocker_fibres
+        C hsSingle he.1
+        (QTT_two_known_active_coordinates_at_completion_owner
+          C exponent hexp honeLoss hsx hsy
+          hxLoss hyLoss hcx hcy hsQ hxT hyT).1
+        heNeCx
+    have hyeDisj :=
+      two_single_flips_have_disjoint_blocker_fibres
+        C hsSingle he.1
+        (QTT_two_known_active_coordinates_at_completion_owner
+          C exponent hexp honeLoss hsx hsy
+          hxLoss hyLoss hcx hcy hsQ hxT hyT).2
+        heNeCy
+
+    have hxF :
+        x ∈ completionFibre C (flipBoolWordAt word cx) :=
+      (mem_completionFibre C
+        (flipBoolWordAt word cx) x).2 hxBlock
+    have hyF :
+        y ∈ completionFibre C (flipBoolWordAt word cy) :=
+      (mem_completionFibre C
+        (flipBoolWordAt word cy) y).2 hyBlock
+
+    have hzNeX : z ≠ x := by
+      intro hzx
+      subst z
+      exact Finset.disjoint_left.mp hxeDisj hzF hxF
+    have hzNeY : z ≠ y := by
+      intro hzy
+      subst z
+      exact Finset.disjoint_left.mp hyeDisj hzF hyF
+
+    rcases projectedProfile_strict_exact_or_loss
+        C exponent hexp honeLoss z
+      with hzStrict | hzExact | hzLoss
+    · exact Or.inr (Or.inl
+        ⟨z,
+          projected_strict_surplus_at_least_one
+            exponent (projectedFree C) hzStrict⟩)
+    · exact Or.inr (Or.inr (Or.inl ⟨z,hzExact⟩))
+    · rcases exponent_top_second_or_deep
+        exponent (hexpLt z)
+      with hzTop | hzSecond | hzDeep
+      · exact Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨z,hzLoss,hzTop⟩)))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          ⟨e,z,he.1,he.2.1,he.2.2,
+            hzNeS,hzNeX,hzNeY,hzLoss,hzSecond,hzBlock⟩))))
+      · exact Or.inr (Or.inr (Or.inr
+          (Or.inr (Or.inl ⟨z,hzLoss,hzDeep⟩))))
+
+#print axioms QTT_unique_third_exit_fresh_blocker_or_closed
+
 end OrderedEdgeColoring
 end JSP000404Research
