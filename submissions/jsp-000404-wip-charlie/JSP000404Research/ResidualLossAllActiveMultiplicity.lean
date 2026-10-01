@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossAllActivePairOverlap
+import JSP000404Research.ResidualEnlargedCandidateBlock
 import JSP000404Research.ResidualLossTranslatedConflict
 import Mathlib.Tactic
 
@@ -144,8 +145,89 @@ theorem allActiveTranslatedLossFibre_card_le_n
         C exponent hexp honeLoss word)
   simpa only [Fintype.card_coe, Fintype.card_fin] using hcard
 
+
+noncomputable def enlargedCandidateFibre
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (word : Fin n → Bool) : Finset V := by
+  classical
+  exact (Finset.univ : Finset V).filter
+    (fun v =>
+      word ∈ enlargedProjectedCandidateBlock C exponent v)
+
+@[simp] theorem mem_enlargedCandidateFibre
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (word : Fin n → Bool)
+    (v : V) :
+    v ∈ enlargedCandidateFibre C exponent word ↔
+      word ∈ enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  simp [enlargedCandidateFibre]
+
+theorem enlargedCandidateFibre_subset_completion_union_translatedLoss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (word : Fin n → Bool) :
+    enlargedCandidateFibre C exponent word ⊆
+      completionFibre C word ∪
+        allActiveTranslatedLossFibre C exponent word := by
+  classical
+  intro v hv
+  have hvBlock :=
+    (mem_enlargedCandidateFibre
+      C exponent word v).1 hv
+  by_cases hvLoss :
+      v ∈ projectedLossVertices C exponent
+  · rw [enlargedProjectedCandidateBlock_loss
+        C exponent hvLoss] at hvBlock
+    unfold allActiveLossCandidateBlock at hvBlock
+    rcases Finset.mem_union.mp hvBlock with hQ | hT
+    · apply Finset.mem_union_left
+      exact (mem_completionFibre C word v).2 hQ
+    · apply Finset.mem_union_right
+      exact (mem_allActiveTranslatedLossFibre
+        C exponent word v).2 ⟨hvLoss,hT⟩
+  · rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hvLoss] at hvBlock
+    apply Finset.mem_union_left
+    exact (mem_completionFibre C word v).2 hvBlock
+
+theorem enlargedCandidateFibre_card_le_n_add_two
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (word : Fin n → Bool) :
+    (enlargedCandidateFibre C exponent word).card ≤ n + 2 := by
+  classical
+  have hsub :=
+    enlargedCandidateFibre_subset_completion_union_translatedLoss
+      C exponent word
+  have hcard :=
+    Finset.card_le_card hsub
+  have hunion :
+      (completionFibre C word ∪
+        allActiveTranslatedLossFibre C exponent word).card
+        ≤
+      (completionFibre C word).card +
+        (allActiveTranslatedLossFibre C exponent word).card :=
+    Finset.card_union_le _ _
+  have hcomp :=
+    completionFibre_card_le_two C word
+  have htrans :=
+    allActiveTranslatedLossFibre_card_le_n
+      C exponent hexp honeLoss word
+  omega
+
 #print axioms allActiveTranslatedFibreCoordinate_injective
 #print axioms allActiveTranslatedLossFibre_card_le_n
+#print axioms enlargedCandidateFibre_card_le_n_add_two
 
 end OrderedEdgeColoring
 end JSP000404Research
