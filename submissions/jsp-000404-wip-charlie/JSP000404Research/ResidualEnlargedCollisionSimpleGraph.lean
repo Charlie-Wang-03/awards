@@ -1797,7 +1797,6 @@ theorem longCycle_exists_exact_or_topLoss_vertex
       ) := by
   classical
   by_contra hnone
-  push_neg at hnone
 
   have hblockLe :
       (∑ v ∈ T,
@@ -1818,7 +1817,8 @@ theorem longCycle_exists_exact_or_topLoss_vertex
       with hstrict | hexact | hloss
     · exact strict_enlargedBlock_card_le_two_mul_localSlack
         C exponent hstrict
-    · exact False.elim ((hnone v hvT).1 hexact)
+    · exact False.elim
+        (hnone ⟨v,hvT,Or.inl hexact⟩)
     · have hnotTop :
           exponent v ≠ n - 1 := by
         intro htop
