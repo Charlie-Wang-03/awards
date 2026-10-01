@@ -146,5 +146,59 @@ theorem tripleFlipBoolWord_ne_singleFlip
 #print axioms tripleFlipBoolWord_eq_not
 #print axioms tripleFlipBoolWord_ne_singleFlip
 
+
+theorem twoFlipBoolWord_ne_tripleFlip
+    (word : Fin 3 → Bool)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    flipBoolWordAt (flipBoolWordAt word a) b ≠
+      tripleFlipBoolWord word a b c := by
+  intro h
+  have hcEq := congrFun h c
+  rw [flipBoolWordAt_off _ hbc.symm] at hcEq
+  rw [flipBoolWordAt_off word hac.symm] at hcEq
+  rw [tripleFlipBoolWord_at word hab hac hbc] at hcEq
+  cases hw : word c <;> simp [hw] at hcEq
+
+theorem tripleFlipBoolWord_ne_doubleFlip
+    (word : Fin 3 → Bool)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    tripleFlipBoolWord word a b c ≠
+      flipBoolWordAt (flipBoolWordAt word a) b :=
+  (twoFlipBoolWord_ne_tripleFlip word hab hac hbc).symm
+
+/-- From any one-coordinate neighbour of a Fin-3 word, a further single flip
+still cannot reach the antipode unless it is followed by both remaining
+coordinates.  In particular one extra flip from a one-flip base never reaches
+the triple antipode. -/
+theorem tripleFlipBoolWord_ne_flip_singleFlip
+    (word : Fin 3 → Bool)
+    {a b c d : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    tripleFlipBoolWord word a b c ≠
+      flipBoolWordAt (flipBoolWordAt word a) d := by
+  obtain hd : d = a ∨ d = b ∨ d = c :=
+    three_distinct_fin3_exhaust hab hac hbc (q := d)
+  rcases hd with rfl | rfl | rfl
+  · rw [flipBoolWordAt_involutive]
+    exact tripleFlipBoolWord_ne_word word hab hac hbc
+  · exact tripleFlipBoolWord_ne_doubleFlip word hab hac hbc
+  · intro h
+    have hbEq := congrFun h b
+    rw [tripleFlipBoolWord_at word hab hac hbc] at hbEq
+    rw [flipBoolWordAt_off _ hbc.symm] at hbEq
+    rw [flipBoolWordAt_off word hab.symm] at hbEq
+    cases hw : word b <;> simp [hw] at hbEq
+
+#print axioms tripleFlipBoolWord_ne_doubleFlip
+#print axioms tripleFlipBoolWord_ne_flip_singleFlip
+
 end OrderedEdgeColoring
 end JSP000404Research
