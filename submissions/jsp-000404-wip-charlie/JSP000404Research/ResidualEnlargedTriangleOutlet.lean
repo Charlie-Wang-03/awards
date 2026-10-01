@@ -668,5 +668,110 @@ theorem three_loss_triple_word_has_cross_translated_pair
 #print axioms triangle_triple_word_of_incident_overlaps_not_disjoint
 #print axioms three_loss_triple_word_has_cross_translated_pair
 
+
+/-- A genuine cross-translated loss pair inherits the monotone owner-bit
+constraint from the translated-loss fibre theory. -/
+theorem cross_translated_loss_pair_ordered_bit_semantics
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {x y : V}
+    (hxy : x ≠ y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hxWord : word ∈ translatedCompletionWords C x cx)
+    (hyWord : word ∈ translatedCompletionWords C y cy) :
+    (
+      x < y ∧ (word cx = true ∨ word cy = false)
+    )
+    ∨
+    (
+      y < x ∧ (word cy = true ∨ word cx = false)
+    ) := by
+  rcases lt_or_gt_of_ne hxy with hlt | hgt
+  · exact Or.inl
+      ⟨hlt,
+        translated_loss_fibre_no_false_before_true
+          C exponent hexp honeLoss hlt
+          hxLoss hyLoss hcx hcy hxWord hyWord⟩
+  · exact Or.inr
+      ⟨hgt,
+        translated_loss_fibre_no_false_before_true
+          C exponent hexp honeLoss hgt
+          hyLoss hxLoss hcy hcx hyWord hxWord⟩
+
+/-- Therefore every triple-covered word of three distinct loss vertices
+contains an ordered cross-translated carrier pair satisfying the fibre
+monotonicity bit constraint. -/
+theorem three_loss_triple_word_has_ordered_monotone_cross_pair
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {u v w : V}
+    (huv : u ≠ v)
+    (huw : u ≠ w)
+    (hvw : v ≠ w)
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwLoss : w ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (huBlock : word ∈ enlargedProjectedCandidateBlock C exponent u)
+    (hvBlock : word ∈ enlargedProjectedCandidateBlock C exponent v)
+    (hwBlock : word ∈ enlargedProjectedCandidateBlock C exponent w) :
+    (
+      ∃ x y : V, ∃ cx cy : Fin n,
+        x ≠ y ∧
+        x ∈ projectedLossVertices C exponent ∧
+        y ∈ projectedLossVertices C exponent ∧
+        cx ∈ retainedActive C x ∧
+        cy ∈ retainedActive C y ∧
+        cx ≠ cy ∧
+        word ∈ translatedCompletionWords C x cx ∧
+        word ∈ translatedCompletionWords C y cy ∧
+        (
+          (x < y ∧ (word cx = true ∨ word cy = false))
+          ∨
+          (y < x ∧ (word cy = true ∨ word cx = false))
+        )
+    ) := by
+  rcases
+    three_loss_triple_word_has_cross_translated_pair
+      C exponent hexp honeLoss
+      huv huw hvw
+      huLoss hvLoss hwLoss
+      huBlock hvBlock hwBlock
+    with huvT | huwT | hvwT
+  · obtain ⟨cu,cv,hcu,hcv,hne,huWord,hvWord⟩ := huvT
+    exact ⟨u,v,cu,cv,huv,huLoss,hvLoss,hcu,hcv,hne,
+      huWord,hvWord,
+      cross_translated_loss_pair_ordered_bit_semantics
+        C exponent hexp honeLoss
+        huv huLoss hvLoss hcu hcv huWord hvWord⟩
+  · obtain ⟨cu,cw,hcu,hcw,hne,huWord,hwWord⟩ := huwT
+    exact ⟨u,w,cu,cw,huw,huLoss,hwLoss,hcu,hcw,hne,
+      huWord,hwWord,
+      cross_translated_loss_pair_ordered_bit_semantics
+        C exponent hexp honeLoss
+        huw huLoss hwLoss hcu hcw huWord hwWord⟩
+  · obtain ⟨cv,cw,hcv,hcw,hne,hvWord,hwWord⟩ := hvwT
+    exact ⟨v,w,cv,cw,hvw,hvLoss,hwLoss,hcv,hcw,hne,
+      hvWord,hwWord,
+      cross_translated_loss_pair_ordered_bit_semantics
+        C exponent hexp honeLoss
+        hvw hvLoss hwLoss hcv hcw hvWord hwWord⟩
+
+#print axioms cross_translated_loss_pair_ordered_bit_semantics
+#print axioms three_loss_triple_word_has_ordered_monotone_cross_pair
+
 end OrderedEdgeColoring
 end JSP000404Research
