@@ -3451,64 +3451,6 @@ theorem minimal_enlargedCandidate_any_leaf_outlet
         hdef hmin hvT hvLoss hunique)
 
 
-theorem enlargedLoss_shared_words_subset_translated_region
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (hexp : ∀ x, exponent x ≤ n)
-    (honeLoss :
-      ∀ x, (active C x).card ≤ n - exponent x + 1)
-    {T : Finset V}
-    {v : V}
-    (hvT : v ∈ T)
-    (hvLoss : v ∈ projectedLossVertices C exponent) :
-    sharedBlockWords
-        (enlargedProjectedCandidateBlock C exponent)
-        T v
-      ⊆
-    allActiveTranslatedWords C v := by
-  classical
-  intro word hshared
-  have hdata :=
-    sharedBlockWords_has_other_block
-      (enlargedProjectedCandidateBlock C exponent)
-      hshared
-  obtain ⟨hvWord,w,hwT,hwv,hwWord⟩ := hdata
-  rw [enlargedProjectedCandidateBlock_loss
-      C exponent hvLoss] at hvWord
-  unfold allActiveLossCandidateBlock at hvWord
-  rcases Finset.mem_union.mp hvWord with hbase | htranslated
-  · by_cases hwLoss :
-        w ∈ projectedLossVertices C exponent
-    · rw [enlargedProjectedCandidateBlock_loss
-          C exponent hwLoss] at hwWord
-      unfold allActiveLossCandidateBlock at hwWord
-      rcases Finset.mem_union.mp hwWord with hwBase | hwTranslated
-      · have hdisj :=
-          projectedLoss_completion_disjoint
-            C exponent hexp honeLoss
-            hvLoss hwv
-        exact False.elim
-          (Finset.disjoint_left.mp hdisj hbase hwBase)
-      · have hbaseNotTranslated :
-            word ∉ allActiveTranslatedWords C w := by
-          have hdisj :=
-            loss_completion_disjoint_allActiveTranslated
-              C exponent hexp honeLoss
-              hvLoss hwLoss hwv
-          exact fun h =>
-            Finset.disjoint_left.mp hdisj hbase h
-        exact False.elim (hbaseNotTranslated hwTranslated)
-    · rw [enlargedProjectedCandidateBlock_nonloss
-          C exponent hwLoss] at hwWord
-      have hdisj :=
-        projectedLoss_completion_disjoint
-          C exponent hexp honeLoss
-          hvLoss hwv
-      exact False.elim
-        (Finset.disjoint_left.mp hdisj hbase hwWord)
-  · exact htranslated
-
 theorem enlargedLoss_local_slack_eq_translated_minus_one_cube
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -3553,7 +3495,6 @@ theorem enlargedLoss_translated_region_card_eq_active_mul_cube
       (retainedCompletionWords C v).card := by
   exact allActiveTranslatedWords_card C v
 
-#print axioms enlargedLoss_shared_words_subset_translated_region
 #print axioms enlargedLoss_local_slack_eq_translated_minus_one_cube
 #print axioms enlargedLoss_translated_region_card_eq_active_mul_cube
 
