@@ -375,6 +375,78 @@ theorem duplicate_completion_internal_dichotomy
     left
     omega
 
+
+theorem three_retainedCompletion_pairwise_nonempty_common
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v w : V}
+    (huv :
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).Nonempty)
+    (huw :
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C w).Nonempty)
+    (hvw :
+      (retainedCompletionWords C v ∩
+        retainedCompletionWords C w).Nonempty) :
+    ∃ word : Fin n → Bool,
+      word ∈ retainedCompletionWords C u ∧
+      word ∈ retainedCompletionWords C v ∧
+      word ∈ retainedCompletionWords C w := by
+  classical
+  obtain ⟨baseUV,hbaseUV⟩ := huv
+  obtain ⟨baseUW,hbaseUW⟩ := huw
+  obtain ⟨baseVW,hbaseVW⟩ := hvw
+  have hUV := Finset.mem_inter.mp hbaseUV
+  have hUW := Finset.mem_inter.mp hbaseUW
+  have hVW := Finset.mem_inter.mp hbaseVW
+  have hcompUVu :=
+    (mem_retainedCompletionWords C u baseUV).1 hUV.1
+  have hcompUVv :=
+    (mem_retainedCompletionWords C v baseUV).1 hUV.2
+  have hcompUWu :=
+    (mem_retainedCompletionWords C u baseUW).1 hUW.1
+  have hcompUWw :=
+    (mem_retainedCompletionWords C w baseUW).1 hUW.2
+  have hcompVWv :=
+    (mem_retainedCompletionWords C v baseVW).1 hVW.1
+  have hcompVWw :=
+    (mem_retainedCompletionWords C w baseVW).1 hVW.2
+
+  let word : Fin n → Bool :=
+    fun c =>
+      if hcW : c ∈ retainedActive C w then
+        retainedBit C w c
+      else
+        baseUV c
+
+  refine ⟨word,?_,?_,?_⟩
+  · apply (mem_retainedCompletionWords C u word).2
+    intro c hcU
+    by_cases hcW : c ∈ retainedActive C w
+    · have hUwAgree :
+          retainedBit C u c = retainedBit C w c := by
+        exact
+          (hcompUWu c hcU).symm.trans
+            (hcompUWw c hcW)
+      simp [word,hcW,hUwAgree]
+    · simp [word,hcW,hcompUVu c hcU]
+  · apply (mem_retainedCompletionWords C v word).2
+    intro c hcV
+    by_cases hcW : c ∈ retainedActive C w
+    · have hVwAgree :
+          retainedBit C v c = retainedBit C w c := by
+        exact
+          (hcompVWv c hcV).symm.trans
+            (hcompVWw c hcW)
+      simp [word,hcW,hVwAgree]
+    · simp [word,hcW,hcompUVv c hcV]
+  · apply (mem_retainedCompletionWords C w word).2
+    intro c hcW
+    simp [word,hcW]
+
+#print axioms three_retainedCompletion_pairwise_nonempty_common
+
 #print axioms retainedActive_union_eq_univ_of_no_common_inactive
 #print axioms common_retained_completion_eq_base
 #print axioms retainedCompletionWords_inter_eq_singleton
