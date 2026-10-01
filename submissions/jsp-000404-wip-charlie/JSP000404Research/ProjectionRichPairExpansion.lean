@@ -33,7 +33,7 @@ section
 
 variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
-variable (hp : FunctionInjective p)
+variable (hp : Function.Injective p)
 
 local instance projectionOrder :
     LinearOrder (ProjectionOrdered V) :=
