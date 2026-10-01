@@ -1822,7 +1822,8 @@ theorem longCycle_exists_exact_or_topLoss_vertex
     · have hnotTop :
           exponent v ≠ n - 1 := by
         intro htop
-        exact (hnone v hvT).2 hloss htop
+        exact hnone
+          ⟨v,hvT,Or.inr ⟨hloss,htop⟩⟩
       have hlower :
           exponent v + 2 ≤ n := by
         have hlt := hexpLt v
@@ -2294,18 +2295,21 @@ theorem longCycle_at_most_one_topLoss
           (enlargedProjectedCandidateBlock C exponent)
         =
       (Finset.univ : Finset (Fin n → Bool)) := by
-    apply Finset.eq_univ_of_subset
-    intro word hword
-    have hpairWord :
-        word ∈ enlargedProjectedCandidateBlock C exponent u ∪
-          enlargedProjectedCandidateBlock C exponent v := by
-      rw [hcover]
+    ext word
+    constructor
+    · intro hword
       exact Finset.mem_univ _
-    rcases Finset.mem_union.mp hpairWord with huWord | hvWord
-    · apply Finset.mem_biUnion.mpr
-      exact ⟨u,by simp [U],huWord⟩
-    · apply Finset.mem_biUnion.mpr
-      exact ⟨v,by simp [U],hvWord⟩
+    · intro _hword
+      have hpairWord :
+          word ∈ enlargedProjectedCandidateBlock C exponent u ∪
+            enlargedProjectedCandidateBlock C exponent v := by
+        rw [hcover]
+        exact Finset.mem_univ _
+      rcases Finset.mem_union.mp hpairWord with huWord | hvWord
+      · apply Finset.mem_biUnion.mpr
+        exact ⟨u,by simp [U],huWord⟩
+      · apply Finset.mem_biUnion.mpr
+        exact ⟨v,by simp [U],hvWord⟩
   have hUDef :
       BlockDeficient
         (fun x => 2 ^ exponent x)
