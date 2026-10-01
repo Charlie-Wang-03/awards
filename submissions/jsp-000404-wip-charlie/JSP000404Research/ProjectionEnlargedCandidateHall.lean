@@ -2,6 +2,7 @@ import JSP000404Research.ResidualEnlargedCandidateHall
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
+import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.PlanarResidualHardRemainder
@@ -959,7 +960,7 @@ theorem planar_longCycle_overload_recursive_outlet
     let exponent := planarCentreExponent hp C
     (
       ∃ v ∈ T,
-        ExactSharedOutlet R exponent v
+        ExactRecursiveOutlet R exponent v
     )
     ∨
     (
@@ -1017,7 +1018,11 @@ theorem planar_longCycle_overload_recursive_outlet
       R exponent hexpLt hexp hone
       hdefR hgirthR
     with hexactOutlet | htop
-  · exact Or.inl hexactOutlet
+  · obtain ⟨v,hvT,hvExact,hout⟩ := hexactOutlet
+    exact Or.inl
+      ⟨v,hvT,
+        exactSharedOutlet_to_recursive
+          R exponent hvExact hout⟩
   · obtain ⟨v,hvT,hvLoss,hvTop,hsharedQ⟩ := htop
     obtain ⟨word,hwordSharedQ⟩ := hsharedQ
     have hword :
