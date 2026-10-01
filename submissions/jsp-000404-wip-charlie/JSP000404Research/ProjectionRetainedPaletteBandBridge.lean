@@ -110,10 +110,9 @@ theorem projectionCut_occupiedBands_eq_retainedActive_valMap
       simpa [d] using hj
     apply Finset.mem_map.mpr
     refine ⟨d,hd,?_⟩
-    have hval : d.val = m := by
-      have := congrArg Fin.val hcm
-      simpa [d] using this
-    simpa using hval
+    have hval : c.val = m := by
+      simpa using hcm
+    simpa [d] using hval
   · intro hm
     obtain ⟨d,hd,hdm⟩ := Finset.mem_map.mp hm
     let c : Fin (n + 1) := d.castSucc
@@ -131,9 +130,8 @@ theorem projectionCut_occupiedBands_eq_retainedActive_valMap
     apply Finset.mem_map.mpr
     refine ⟨c,hc,?_⟩
     have hval : d.val = m := by
-      simpa using congrArg Fin.val hdm
-    apply Nat.cast_injective
-    simp [c,hval]
+      simpa using hdm
+    simpa [c] using hval
 
 #print axioms projectionCut_occupiedBands_eq_retainedActive_valMap
 
