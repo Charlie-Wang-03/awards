@@ -3,6 +3,7 @@ import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.ResidualEnlargedTriangleOutlet
 import JSP000404Research.ResidualTripleFibreOutlet
+import JSP000404Research.ResidualSecondLayerTripleCanonical
 import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.SharpSecondLayerMultiplicity
@@ -1836,6 +1837,162 @@ theorem planar_deficientCore_girthFree_threeSecond_root
             (Or.inl ⟨u.1,huLoss,huDeep⟩))))
 
 #print axioms planar_deficientCore_girthFree_threeSecond_root
+
+
+/-- Canonical planar root at the current frontier.  After all standard closed
+outlets are removed, the only remaining structure is a Q/T/T common-word
+configuration on three distinct second-layer projected-loss vertices. -/
+theorem planar_deficientCore_girthFree_QTT_root
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) z
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        ExactProjectedBudget R exponent z
+    )
+    ∨
+    (
+      ∃ source : ProjectionOrdered V,
+        ExactRecursiveOutlet R exponent source
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        z ∈ projectedLossVertices R exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ word : Fin n → Bool,
+      ∃ s x y : ProjectionOrdered V,
+      ∃ cx cy : Fin n,
+        s ≠ x ∧ s ≠ y ∧ x ≠ y ∧
+        s ∈ projectedLossVertices R exponent ∧
+        x ∈ projectedLossVertices R exponent ∧
+        y ∈ projectedLossVertices R exponent ∧
+        exponent s = n - 2 ∧
+        exponent x = n - 2 ∧
+        exponent y = n - 2 ∧
+        cx ∈ retainedActive R x ∧
+        cy ∈ retainedActive R y ∧
+        cx ≠ cy ∧
+        word ∈ retainedCompletionWords R s ∧
+        word ∈ translatedCompletionWords R x cx ∧
+        word ∈ translatedCompletionWords R y cy
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hexpLt :
+      ∀ z : ProjectionOrdered V, exponent z < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ z : ProjectionOrdered V, exponent z ≤ n := by
+    intro z
+    exact Nat.le_of_lt (hexpLt z)
+  have hone :
+      ∀ z, (active R z).card ≤ n - exponent z + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+
+  rcases
+    planar_deficientCore_girthFree_threeSecond_root
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hcard C hdef
+    with hhole | hpaid | hexact | hrec | hdeep | htriple
+  · exact Or.inl hhole
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+  · obtain ⟨word,u,v,w,huv,huw,hvw,
+      huWord,hvWord,hwWord,_hUV,_hUW,_hVW,
+      huLoss,hvLoss,hwLoss,huSecond,hvSecond,hwSecond⟩ := htriple
+    have huvVal : u.1 ≠ v.1 := by
+      intro h
+      apply huv
+      apply Subtype.ext
+      exact h
+    have huwVal : u.1 ≠ w.1 := by
+      intro h
+      apply huw
+      apply Subtype.ext
+      exact h
+    have hvwVal : v.1 ≠ w.1 := by
+      intro h
+      apply hvw
+      apply Subtype.ext
+      exact h
+    rcases
+      threeSecond_commonWord_QTT_or_closed
+        R exponent hexpLt hexp hone
+        huvVal huwVal hvwVal
+        huLoss hvLoss hwLoss
+        huSecond hvSecond hwSecond
+        huWord hvWord hwWord
+      with hhole2 | hpaid2 | hexact2 | htop2 | hdeep2 | hQTT
+    · exact Or.inl hhole2
+    · exact Or.inr (Or.inl hpaid2)
+    · exact Or.inr (Or.inr (Or.inl hexact2))
+    · obtain ⟨top,htopLoss,htopExp⟩ := htop2
+      have htopLossGeom :
+          top ∈ projectedLossVertices
+            (planarStandardResidualColoring
+              hp hcap (by omega : 1 ≤ n)
+              hdelta0 (by linarith : delta < 1) ht hlam)
+            (planarCentreExponent hp C) := by
+        simpa [R,exponent,hn1,hdelta1] using htopLoss
+      have htopExpGeom :
+          centreExponent (C top) t = n - 1 := by
+        simpa [exponent,planarCentreExponent] using htopExp
+      rcases planar_topLoss_closed_outlet
+        hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+        hcard C htopLossGeom htopExpGeom
+        with hhole3 | hpaid3 | hexact3 | hdeep3
+      · exact Or.inl hhole3
+      · exact Or.inr (Or.inl hpaid3)
+      · exact Or.inr (Or.inr (Or.inl hexact3))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep3))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep2))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hQTT))))
+
+#print axioms planar_deficientCore_girthFree_QTT_root
 
 
 theorem planar_longCycle_overload_recursive_outlet
