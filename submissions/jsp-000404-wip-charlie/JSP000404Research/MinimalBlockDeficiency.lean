@@ -102,8 +102,88 @@ theorem deficient_set_nonempty_of_positive_demands
   subst T
   simp [BlockDeficient] at hdef
 
+
+theorem minimal_deficient_no_noncross_partition
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T A B : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    (hA : A.Nonempty)
+    (hB : B.Nonempty)
+    (hdisjAB : Disjoint A B)
+    (hunion : A ∪ B = T)
+    (hcross :
+      Disjoint
+        (A.biUnion blocks)
+        (B.biUnion blocks)) :
+    False := by
+  classical
+  have hAsub : A ⊆ T := by
+    rw [← hunion]
+    exact Finset.subset_union_left
+  have hBsub : B ⊆ T := by
+    rw [← hunion]
+    exact Finset.subset_union_right
+
+  have hAproper : A ⊂ T := by
+    refine ⟨hAsub,?_⟩
+    intro hEq
+    obtain ⟨b,hbB⟩ := hB
+    have hbT : b ∈ T := hBsub hbB
+    have hbA : b ∉ A := by
+      intro hbA
+      exact Finset.disjoint_left.mp hdisjAB hbA hbB
+    rw [← hEq] at hbT
+    exact hbA hbT
+
+  have hBproper : B ⊂ T := by
+    refine ⟨hBsub,?_⟩
+    intro hEq
+    obtain ⟨a,haA⟩ := hA
+    have haT : a ∈ T := hAsub haA
+    have haB : a ∉ B := by
+      intro haB
+      exact Finset.disjoint_left.mp hdisjAB haA haB
+    rw [← hEq] at haT
+    exact haB haT
+
+  have hAok := hmin A hAproper
+  have hBok := hmin B hBproper
+  unfold BlockDeficient at hAok hBok hdef
+  push_neg at hAok hBok
+
+  have hUnionBlocks :
+      T.biUnion blocks =
+        A.biUnion blocks ∪ B.biUnion blocks := by
+    rw [← hunion]
+    ext w
+    simp [or_assoc, or_left_comm, or_comm]
+
+  have hCard :
+      (T.biUnion blocks).card =
+        (A.biUnion blocks).card +
+          (B.biUnion blocks).card := by
+    rw [hUnionBlocks,
+      Finset.card_union_of_disjoint hcross]
+
+  have hSum :
+      (∑ v ∈ T, demand v) =
+        (∑ v ∈ A, demand v) +
+          (∑ v ∈ B, demand v) := by
+    rw [← hunion]
+    exact Finset.sum_union hdisjAB
+
+  rw [hCard,hSum] at hdef
+  omega
+
 #print axioms exists_minimal_deficient_subset
 #print axioms minimal_deficient_delete_recovers
 #print axioms deficient_set_nonempty_of_positive_demands
+#print axioms minimal_deficient_no_noncross_partition
 
 end JSP000404Research
