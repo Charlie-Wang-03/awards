@@ -109,4 +109,63 @@ theorem payload_strictly_decreases_of_half_capture
 #print axioms weightedHardStateRank_lt_of_progress
 #print axioms payload_strictly_decreases_of_half_capture
 
+
+def lossLayerHardStateRank
+    (n payload exponent : ℕ) : ℕ :=
+  payload * (n + 1) + exponent
+
+theorem lossLayerHardStateRank_lt_of_payload_lt
+    {n payload payload' exponent exponent' : ℕ}
+    (hexp : exponent ≤ n)
+    (hexp' : exponent' ≤ n)
+    (hpayload : payload' < payload) :
+    lossLayerHardStateRank n payload' exponent' <
+      lossLayerHardStateRank n payload exponent := by
+  unfold lossLayerHardStateRank
+  have hgap :
+      payload' * (n + 1) + n <
+        payload * (n + 1) := by
+    have hstep : payload' + 1 ≤ payload := by omega
+    have hmul :
+        (payload' + 1) * (n + 1) ≤
+          payload * (n + 1) :=
+      Nat.mul_le_mul_right (n + 1) hstep
+    omega
+  have hleft :
+      payload' * (n + 1) + exponent'
+        ≤ payload' * (n + 1) + n := by
+    omega
+  have hright :
+      payload * (n + 1) ≤
+        payload * (n + 1) + exponent := by
+    omega
+  exact lt_of_le_of_lt hleft (lt_of_lt_of_le hgap hright)
+
+theorem lossLayerHardStateRank_lt_of_exponent_lt
+    {n payload exponent exponent' : ℕ}
+    (hexp : exponent ≤ n)
+    (hexp' : exponent' < exponent) :
+    lossLayerHardStateRank n payload exponent' <
+      lossLayerHardStateRank n payload exponent := by
+  unfold lossLayerHardStateRank
+  omega
+
+theorem lossLayerHardStateRank_lt_of_progress
+    {n payload payload' exponent exponent' : ℕ}
+    (hexp : exponent ≤ n)
+    (hexp' : exponent' ≤ n)
+    (hprogress :
+      payload' < payload
+      ∨
+      (payload' = payload ∧ exponent' < exponent)) :
+    lossLayerHardStateRank n payload' exponent' <
+      lossLayerHardStateRank n payload exponent := by
+  rcases hprogress with hpayload | ⟨rfl,hexponent⟩
+  · exact lossLayerHardStateRank_lt_of_payload_lt
+      hexp hexp' hpayload
+  · exact lossLayerHardStateRank_lt_of_exponent_lt
+      hexp hexponent
+
+#print axioms lossLayerHardStateRank_lt_of_progress
+
 end JSP000404Research
