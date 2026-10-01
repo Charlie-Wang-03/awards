@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualActiveStarCandidate
 import JSP000404Research.ResidualProjectionLoss
+import JSP000404Research.MinimalBlockSharedDeficit
 import Mathlib.Tactic
 
 /-!
