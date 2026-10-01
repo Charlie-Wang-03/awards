@@ -783,6 +783,144 @@ theorem planar_secondLayerLoss_word_closed_outlet
       hvSecondR
       (by simpa [R,hn1,hdelta1] using hword))
 
+
+theorem planar_topLoss_word_closed_outlet
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {v : ProjectionOrdered V}
+    (hvLoss :
+      v ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp C))
+    (hvTop : centreExponent (C v) t = n - 1)
+    {word : Fin n → Bool}
+    (hword :
+      word ∈ retainedCompletionWords
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam) v) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        ExactProjectedBudget R exponent w
+    )
+    ∨
+    (
+      ∃ w : ProjectionOrdered V,
+        w ∈ projectedLossVertices R exponent ∧
+        exponent w + 3 ≤ n
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤
+        n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  have hvTopR :
+      exponent v = n - 1 := by
+    simpa [exponent,planarCentreExponent] using hvTop
+  have hvLossR :
+      v ∈ projectedLossVertices R exponent := by
+    simpa [R,exponent,hn1,hdelta1] using hvLoss
+
+  rcases
+    topLoss_word_five_exit_outlet_with_lower_witness
+      R exponent hexpLt hexp hone
+      hvLossR hvTopR
+      (by simpa [R,hn1,hdelta1] using hword)
+    with hhole | hpaid | hexact | hlower | htwoTop
+  · obtain ⟨e,_heActive,heHole⟩ := hhole
+    exact Or.inl ⟨flipBoolWordAt word e,heHole⟩
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · obtain ⟨w,hwLoss,hwLower,e,heActive,hwWord⟩ := hlower
+    rcases lowerLoss_secondLayer_or_deep
+        R exponent hwLoss (hexpLt w) hwLower
+      with hwSecond | hwDeep
+    · have hwSecondGeom :
+          centreExponent (C w) t = n - 2 := by
+        simpa [exponent,planarCentreExponent] using hwSecond
+      rcases
+        planar_secondLayerLoss_word_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C v hvTop
+          (v := w)
+          (by simpa [R,exponent,hn1,hdelta1] using hwLoss)
+          hwSecondGeom
+          (word := flipBoolWordAt word e)
+          (by simpa [R,hn1,hdelta1] using hwWord)
+        with hhole2 | hpaid2 | hexact2 | hdeep2
+      · obtain ⟨e2,_he2Active,he2Hole⟩ := hhole2
+        exact Or.inl
+          ⟨flipBoolWordAt (flipBoolWordAt word e) e2,
+            he2Hole⟩
+      · exact Or.inr (Or.inl hpaid2)
+      · exact Or.inr (Or.inr (Or.inl hexact2))
+      · obtain ⟨z,hzLoss,hzDeep⟩ := hdeep2
+        exact Or.inr (Or.inr (Or.inr
+          ⟨z,hzLoss,by omega⟩))
+    · exact Or.inr (Or.inr (Or.inr
+        ⟨w,hwLoss,hwDeep⟩))
+  · obtain ⟨w,z,hwz,hwLoss,hzLoss,hwTop,hzTop⟩ := htwoTop
+    have htop :=
+      projectionOrdered_topExponent_filter_card_le_one
+        hp hcap hcard (by omega : 2 ≤ n)
+        hdelta0 hdeltaHalf ht hlam C
+    have hwMem :
+        w ∈ (Finset.univ : Finset (ProjectionOrdered V)).filter
+          (fun x => centreExponent (C x) t = n - 1) := by
+      simp [exponent,planarCentreExponent] at hwTop
+      simp [hwTop]
+    have hzMem :
+        z ∈ (Finset.univ : Finset (ProjectionOrdered V)).filter
+          (fun x => centreExponent (C x) t = n - 1) := by
+      simp [exponent,planarCentreExponent] at hzTop
+      simp [hzTop]
+    have hwEqz := Finset.card_le_one.mp htop hwMem hzMem
+    exact False.elim (hwz hwEqz)
+
+#print axioms planar_secondLayerLoss_word_closed_outlet
+#print axioms planar_topLoss_word_closed_outlet
+
 #print axioms planarEnlargedCandidateBlock_local_capacity
 #print axioms planar_lowerBranch_capacity_of_enlargedBlock_expansion
 #print axioms planar_enlarged_expansion_failure_minimal_core
