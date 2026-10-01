@@ -1844,8 +1844,217 @@ theorem longCycle_exists_exact_or_topLoss_vertex
       hdef
   omega
 
-#print axioms lowerLoss_enlargedBlock_card_le_two_mul_localSlack
-#print axioms longCycle_exists_exact_or_topLoss_vertex
+
+noncomputable def longCycleHardCredit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (v : V) : ℕ := by
+  classical
+  exact
+    if ExactProjectedBudget C exponent v then
+      2 ^ exponent v
+    else if
+      v ∈ projectedLossVertices C exponent ∧
+        exponent v = n - 1
+    then
+      (retainedCompletionWords C v).card
+    else 0
+
+theorem enlargedBlock_card_le_two_slack_add_hardCredit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (v : V) :
+    (enlargedProjectedCandidateBlock C exponent v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      )
+      +
+    longCycleHardCredit C exponent v := by
+  classical
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss v
+    with hstrict | hexact | hloss
+  · have hcredit :
+        longCycleHardCredit C exponent v = 0 := by
+      unfold longCycleHardCredit
+      have hnotExact :
+          ¬ ExactProjectedBudget C exponent v := by
+        intro h
+        unfold ExactProjectedBudget at h
+        omega
+      have hnotTopLoss :
+          ¬ (v ∈ projectedLossVertices C exponent ∧
+              exponent v = n - 1) := by
+        rintro ⟨hloss',_⟩
+        have heq :=
+          (mem_projectedLossVertices C exponent v).1 hloss'
+        omega
+      simp [hnotExact,hnotTopLoss]
+    rw [hcredit]
+    simpa using
+      strict_enlargedBlock_card_le_two_mul_localSlack
+        C exponent hstrict
+  · have hnonloss :
+        v ∉ projectedLossVertices C exponent := by
+      intro hloss'
+      have heq :=
+        (mem_projectedLossVertices C exponent v).1 hloss'
+      unfold ExactProjectedBudget at hexact
+      omega
+    have hblock :
+        (enlargedProjectedCandidateBlock C exponent v).card =
+          2 ^ exponent v := by
+      rw [enlargedProjectedCandidateBlock_nonloss
+          C exponent hnonloss,
+        retainedCompletionWords_card,
+        hexact]
+    have hcredit :
+        longCycleHardCredit C exponent v =
+          2 ^ exponent v := by
+      unfold longCycleHardCredit
+      simp [hexact]
+    rw [hblock,hcredit]
+    simp
+  · by_cases htop : exponent v = n - 1
+    · have hcredit :
+          longCycleHardCredit C exponent v =
+            (retainedCompletionWords C v).card := by
+        unfold longCycleHardCredit
+        have hnotExact :
+            ¬ ExactProjectedBudget C exponent v := by
+          intro h
+          unfold ExactProjectedBudget at h
+          have heq :=
+            (mem_projectedLossVertices C exponent v).1 hloss
+          omega
+        simp [hnotExact,hloss,htop]
+      have hactive :
+          (retainedActive C v).card = 2 := by
+        rw [projectedLoss_retainedActive_card
+          C exponent hloss, htop]
+        have hlt := hexpLt v
+        omega
+      have hblock :
+          (enlargedProjectedCandidateBlock C exponent v).card =
+            3 * (retainedCompletionWords C v).card := by
+        rw [enlargedProjectedCandidateBlock_loss
+            C exponent hloss,
+          allActiveLossCandidateBlock_card,
+          hactive]
+      have hslack :=
+        enlargedLoss_local_slack_eq_translated_minus_one_cube
+          C exponent hloss
+      rw [hcredit,hblock,hslack,hactive]
+      omega
+    · have hlower :
+          exponent v + 2 ≤ n := by
+        have hlt := hexpLt v
+        omega
+      have hcredit :
+          longCycleHardCredit C exponent v = 0 := by
+        unfold longCycleHardCredit
+        have hnotExact :
+            ¬ ExactProjectedBudget C exponent v := by
+          intro h
+          unfold ExactProjectedBudget at h
+          have heq :=
+            (mem_projectedLossVertices C exponent v).1 hloss
+          omega
+        simp [hnotExact,hloss,htop]
+      rw [hcredit]
+      simpa using
+        lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+          C exponent hloss hlower
+
+theorem longCycle_two_mul_deficiency_le_totalHardCredit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    2 *
+      blockDeficiencyAmount
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T
+      ≤
+    ∑ v ∈ T,
+      longCycleHardCredit C exponent v := by
+  classical
+  have hblocks :
+      (∑ v ∈ T,
+        (enlargedProjectedCandidateBlock C exponent v).card)
+        ≤
+      2 *
+        (∑ v ∈ T,
+          (
+            (enlargedProjectedCandidateBlock C exponent v).card -
+              2 ^ exponent v
+          ))
+        +
+      ∑ v ∈ T,
+        longCycleHardCredit C exponent v := by
+    calc
+      (∑ v ∈ T,
+        (enlargedProjectedCandidateBlock C exponent v).card)
+        ≤
+      ∑ v ∈ T,
+        (
+          2 *
+            (
+              (enlargedProjectedCandidateBlock C exponent v).card -
+                2 ^ exponent v
+            )
+          +
+          longCycleHardCredit C exponent v
+        ) := by
+          apply Finset.sum_le_sum
+          intro v hvT
+          exact enlargedBlock_card_le_two_slack_add_hardCredit
+            C exponent hexpLt hexp honeLoss v
+      _ =
+      2 *
+        (∑ v ∈ T,
+          (
+            (enlargedProjectedCandidateBlock C exponent v).card -
+              2 ^ exponent v
+          ))
+        +
+      ∑ v ∈ T,
+        longCycleHardCredit C exponent v := by
+          rw [Finset.sum_add_distrib, Finset.mul_sum]
+
+  have hedgeLe :=
+    longCycle_two_mul_pairOverlaps_le_sum_block_cards
+      C exponent T hgirth
+  have hedgeEq :=
+    longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
+      C exponent hexpLt hexp honeLoss
+      hdef hgirth
+  omega
+
+#print axioms longCycleHardCredit
+#print axioms enlargedBlock_card_le_two_slack_add_hardCredit
+#print axioms longCycle_two_mul_deficiency_le_totalHardCredit
 
 end OrderedEdgeColoring
 end JSP000404Research
