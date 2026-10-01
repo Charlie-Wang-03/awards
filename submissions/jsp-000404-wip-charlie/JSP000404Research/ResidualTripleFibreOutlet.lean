@@ -250,5 +250,94 @@ theorem deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topOverl
 #print axioms deficientCore_tripleWord_or_exactTopLossOverload
 #print axioms deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topOverload
 
+
+/-- Girth-free deficient-core root with recursive data exposed.  The only
+structural triangle remainder is a high-layer two-loss pair. -/
+theorem deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShared
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (htop :
+      ((Finset.univ : Finset V).filter
+        (fun z => exponent z = n - 1)).card ≤ 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T) :
+    (
+      ∃ z : V,
+        z ∈ projectedLossVertices C exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ a b : {x : V // x ∈ T},
+        a ≠ b ∧
+        a.1 ∈ projectedLossVertices C exponent ∧
+        b.1 ∈ projectedLossVertices C exponent ∧
+        (
+          (exponent a.1 = n - 1 ∧ exponent b.1 = n - 2)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 1)
+          ∨
+          (exponent a.1 = n - 2 ∧ exponent b.1 = n - 2)
+        )
+    )
+    ∨
+    (
+      ∃ z : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) z
+    )
+    ∨
+    (
+      ∃ source : V,
+        ExactRecursiveOutlet C exponent source
+    )
+    ∨
+    (
+      ∃ top ∈ T,
+        top ∈ projectedLossVertices C exponent ∧
+        exponent top = n - 1 ∧
+        (
+          sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T top
+          ∩
+          retainedCompletionWords C top
+        ).Nonempty
+    ) := by
+  rcases
+    deficientCore_tripleFibre_or_recursiveOverload
+      C exponent hexpLt hexp honeLoss hdef
+    with htriple | hexact | htopShared
+  · obtain ⟨word,hthree⟩ := htriple
+    obtain ⟨u,v,w,_huv,_huw,_hvw,
+      _huWord,_hvWord,_hwWord,hUV,hUW,hVW⟩ :=
+      tripleFibre_has_common_word_collision_triangle
+        C exponent hthree
+    rcases
+      enlargedCollisionGraph_triangle_deep_or_highPair_or_paid_or_exactRecursive
+        C exponent hexpLt hexp honeLoss htop T
+        hUV hUW hVW
+      with hdeep | hpair | hpaid | hrec
+    · exact Or.inl hdeep
+    · exact Or.inr (Or.inl hpair)
+    · exact Or.inr (Or.inr (Or.inl hpaid))
+    · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+  · obtain ⟨v,hvT,hvExact,hout⟩ := hexact
+    exact Or.inr (Or.inr (Or.inr (Or.inl
+      ⟨v,exactSharedOutlet_to_recursive
+        C exponent hvExact hout⟩)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr htopShared)))
+
+#print axioms deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShared
+
 end OrderedEdgeColoring
 end JSP000404Research
