@@ -1869,6 +1869,150 @@ theorem topLoss_overload_has_shared_completion_word
 #print axioms topLoss_localSlack_eq_completionCube
 #print axioms topLoss_overload_has_shared_completion_word
 
+
+inductive ExactSharedOutlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (v : V) : Prop
+  | strictPaid
+      (w : V)
+      (hwStrict : exponent w < projectedFree C w)
+      (hpaid :
+        (retainedCompletionWords C v ∩
+          retainedCompletionWords C w).card
+          ≤
+        dyadicProfileSurplus exponent (projectedFree C) w)
+  | strictUnpaid
+      (w : V)
+      (hrel : MixedUnpaidChild C exponent v w)
+  | exactPair
+      (w : V)
+      (hvw : v ≠ w)
+      (hwExact : ExactProjectedBudget C exponent w)
+      (word : Fin n → Bool)
+      (hvWord : word ∈ retainedCompletionWords C v)
+      (hwWord : word ∈ retainedCompletionWords C w)
+  | loss
+      (w : V)
+      (hvw : v ≠ w)
+      (hwLoss : w ∈ projectedLossVertices C exponent)
+
+theorem exactSharedOutlet_of_shared_word
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    {v : V}
+    (hvT : v ∈ T)
+    (hvExact : ExactProjectedBudget C exponent v)
+    {word : Fin n → Bool}
+    (hshared :
+      word ∈ sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v) :
+    ExactSharedOutlet C exponent v := by
+  classical
+  have hvNonloss :
+      v ∉ projectedLossVertices C exponent := by
+    intro hvLoss
+    have heq :=
+      (mem_projectedLossVertices C exponent v).1 hvLoss
+    unfold ExactProjectedBudget at hvExact
+    omega
+  have hdata :=
+    sharedBlockWords_has_other_block
+      (enlargedProjectedCandidateBlock C exponent)
+      hshared
+  obtain ⟨hvBlock,w,hwT,hwv,hwBlock⟩ := hdata
+  have hvWord :
+      word ∈ retainedCompletionWords C v := by
+    rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hvNonloss] at hvBlock
+    exact hvBlock
+
+  rcases projectedProfile_strict_exact_or_loss
+      C exponent hexp honeLoss w
+    with hwStrict | hwExact | hwLoss
+  · have hwNonloss :
+        w ∉ projectedLossVertices C exponent := by
+      intro hwLoss'
+      have heq :=
+        (mem_projectedLossVertices C exponent w).1 hwLoss'
+      omega
+    have hwWord :
+        word ∈ retainedCompletionWords C w := by
+      rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hwNonloss] at hwBlock
+      exact hwBlock
+    by_cases hpaid :
+        (retainedCompletionWords C v ∩
+          retainedCompletionWords C w).card
+          ≤
+        dyadicProfileSurplus exponent (projectedFree C) w
+    · exact ExactSharedOutlet.strictPaid
+        w hwStrict hpaid
+    · exact ExactSharedOutlet.strictUnpaid
+        w
+        ⟨hwv.symm,hvExact,hwStrict,
+          word,hvWord,hwWord,hpaid⟩
+  · have hwNonloss :
+        w ∉ projectedLossVertices C exponent := by
+      intro hwLoss'
+      have heq :=
+        (mem_projectedLossVertices C exponent w).1 hwLoss'
+      unfold ExactProjectedBudget at hwExact
+      omega
+    have hwWord :
+        word ∈ retainedCompletionWords C w := by
+      rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hwNonloss] at hwBlock
+      exact hwBlock
+    exact ExactSharedOutlet.exactPair
+      w hwv.symm hwExact word hvWord hwWord
+  · exact ExactSharedOutlet.loss
+      w hwv.symm hwLoss
+
+theorem longCycle_exact_overload_has_shared_outlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    {v : V}
+    (hvT : v ∈ T)
+    (hvExact : ExactProjectedBudget C exponent v)
+    (hover :
+      2 *
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        )
+        <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card) :
+    ExactSharedOutlet C exponent v := by
+  have hsharedPos :
+      0 <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card := by
+    omega
+  obtain ⟨word,hword⟩ :=
+    Finset.card_pos.mp hsharedPos
+  exact exactSharedOutlet_of_shared_word
+    C exponent hexp honeLoss
+    hvT hvExact hword
+
+#print axioms exactSharedOutlet_of_shared_word
+#print axioms longCycle_exact_overload_has_shared_outlet
+
 theorem longCycle_totalSlack_lt_doubleCovered
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
