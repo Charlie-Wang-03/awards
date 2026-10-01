@@ -675,5 +675,213 @@ theorem QTT_unique_third_exit_fresh_blocker_or_closed
 
 #print axioms QTT_unique_third_exit_fresh_blocker_or_closed
 
+
+/-- The translated--translated edge in a canonical Q/T/T obstruction uses one
+of the two translated owner coordinates. -/
+theorem QTT_translated_edge_colour_one_of_owners
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {x y : V}
+    (hxy : x ≠ y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    (
+      ∃ hlt : x < y,
+        ∃ hret : (C.color x y).val < n,
+          retainedColor C x y hret = cx ∨
+          retainedColor C x y hret = cy
+    )
+    ∨
+    (
+      ∃ hlt : y < x,
+        ∃ hret : (C.color y x).val < n,
+          retainedColor C y x hret = cx ∨
+          retainedColor C y x hret = cy
+    ) := by
+  exact translated_loss_conflict_edge_colour
+    C exponent hexp honeLoss
+    hxLoss hyLoss hxy hxT hyT
+
+/-- Order-sensitive two-colour triangle law for Q/T/T.
+
+The two completion-owner edges have colours cx and cy.  If one translated
+owner lies between the completion owner and the other translated owner, the
+no-monochromatic-two-path axiom forces the translated--translated edge to use
+the opposite colour.
+
+The only unconstrained ordering is when the completion owner itself is the
+middle vertex: its two incident colours are already distinct, so the outer
+edge may use either cx or cy. -/
+theorem QTT_ordered_two_colour_triangle
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {s x y : V}
+    (hsx : s ≠ x)
+    (hsy : s ≠ y)
+    (hxy : x ≠ y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcxy : cx ≠ cy)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    (
+      x < s ∧ s < y ∧
+      word cx = true ∧ word cy = false
+    )
+    ∨
+    (
+      y < s ∧ s < x ∧
+      word cy = true ∧ word cx = false
+    )
+    ∨
+    (
+      s < x ∧ x < y ∧
+      ∃ hret : (C.color x y).val < n,
+        retainedColor C x y hret = cy
+    )
+    ∨
+    (
+      s < y ∧ y < x ∧
+      ∃ hret : (C.color y x).val < n,
+        retainedColor C y x hret = cx
+    )
+    ∨
+    (
+      x < y ∧ y < s ∧
+      ∃ hret : (C.color x y).val < n,
+        retainedColor C x y hret = cx
+    )
+    ∨
+    (
+      y < x ∧ x < s ∧
+      ∃ hret : (C.color y x).val < n,
+        retainedColor C y x hret = cy
+    ) := by
+  have hxSem :=
+    QTT_owner_edge_semantics
+      C exponent hexp honeLoss
+      hsx hxLoss hcx hsQ hxT
+  have hySem :=
+    QTT_owner_edge_semantics
+      C exponent hexp honeLoss
+      hsy hyLoss hcy hsQ hyT
+  have hxySem :=
+    QTT_translated_edge_colour_one_of_owners
+      C exponent hexp honeLoss
+      hxy hxLoss hyLoss hcx hcy hxT hyT
+  rcases hxSem with hxLeft | hxRight <;>
+    rcases hySem with hyLeft | hyRight
+  · obtain ⟨hxs,_hxret,_hxcol,hxTrue⟩ := hxLeft
+    obtain ⟨hys,_hyret,_hycol,hyTrue⟩ := hyLeft
+    rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
+    · right; right; right; right
+      left
+      refine ⟨hxylt,?_,?_⟩
+      · exact lt_of_lt_of_le hxylt hys.le
+      · rcases hxySem with hforward | hbackward
+        · obtain ⟨_,hret,hcol⟩ := hforward
+          rcases hcol with hcxCol | hcyCol
+          · exact ⟨hret,hcxCol⟩
+          · have hmono :
+                C.color x y ≠ C.color y s :=
+              C.noMonoTwoPath hxylt hys
+            exfalso
+            apply hmono
+            apply Fin.ext
+            have h1 := congrArg Fin.val hcyCol
+            have hySem' :=
+              QTT_owner_edge_semantics
+                C exponent hexp honeLoss
+                hsy hyLoss hcy hsQ hyT
+            rcases hySem' with hyL | hyR
+            · obtain ⟨_,hyret,hycol,_⟩ := hyL
+              have h2 := congrArg Fin.val hycol
+              simpa [retainedColor] using h1.trans h2.symm
+            · exact False.elim ((not_lt_of_ge hys.le) hyR.1)
+        · exact False.elim ((not_lt_of_ge hxylt.le) hbackward.1)
+    · right; right; right; right; right
+      refine ⟨hyxlt,?_,?_⟩
+      · exact lt_of_lt_of_le hyxlt hxs.le
+      · rcases hxySem with hforward | hbackward
+        · exact False.elim ((not_lt_of_ge hyxlt.le) hforward.1)
+        · obtain ⟨_,hret,hcol⟩ := hbackward
+          rcases hcol with hcxCol | hcyCol
+          · have hmono :
+                C.color y x ≠ C.color x s :=
+              C.noMonoTwoPath hyxlt hxs
+            exfalso
+            apply hmono
+            apply Fin.ext
+            have h1 := congrArg Fin.val hcxCol
+            rcases hxLeft with ⟨_,hxret,hxcol,_⟩
+            have h2 := congrArg Fin.val hxcol
+            simpa [retainedColor] using h1.trans h2.symm
+          · exact ⟨hret,hcyCol⟩
+  · obtain ⟨hxs,_hxret,_hxcol,hxTrue⟩ := hxLeft
+    obtain ⟨hsy,_hyret,_hycol,hyFalse⟩ := hyRight
+    exact Or.inl ⟨hxs,hsy,hxTrue,hyFalse⟩
+  · obtain ⟨hsxlt,_hxret,_hxcol,hxFalse⟩ := hxRight
+    obtain ⟨hys,_hyret,_hycol,hyTrue⟩ := hyLeft
+    exact Or.inr (Or.inl ⟨hys,hsxlt,hyTrue,hxFalse⟩)
+  · obtain ⟨hsxlt,hxret,hxcol,_hxFalse⟩ := hxRight
+    obtain ⟨hsylt,hyret,hycol,_hyFalse⟩ := hyRight
+    rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
+    · right; right
+      left
+      refine ⟨hsxlt,hxylt,?_⟩
+      rcases hxySem with hforward | hbackward
+      · obtain ⟨_,hret,hcol⟩ := hforward
+        rcases hcol with hcxCol | hcyCol
+        · have hmono :
+              C.color s x ≠ C.color x y :=
+            C.noMonoTwoPath hsxlt hxylt
+          exfalso
+          apply hmono
+          apply Fin.ext
+          have h1 := congrArg Fin.val hxcol
+          have h2 := congrArg Fin.val hcxCol
+          simpa [retainedColor] using h1.trans h2.symm
+        · exact ⟨hret,hcyCol⟩
+      · exact False.elim ((not_lt_of_ge hxylt.le) hbackward.1)
+    · right; right; right
+      left
+      refine ⟨hsylt,hyxlt,?_⟩
+      rcases hxySem with hforward | hbackward
+      · exact False.elim ((not_lt_of_ge hyxlt.le) hforward.1)
+      · obtain ⟨_,hret,hcol⟩ := hbackward
+        rcases hcol with hcxCol | hcyCol
+        · exact ⟨hret,hcxCol⟩
+        · have hmono :
+              C.color s y ≠ C.color y x :=
+            C.noMonoTwoPath hsylt hyxlt
+          exfalso
+          apply hmono
+          apply Fin.ext
+          have h1 := congrArg Fin.val hycol
+          have h2 := congrArg Fin.val hcyCol
+          simpa [retainedColor] using h1.trans h2.symm
+
+#print axioms QTT_translated_edge_colour_one_of_owners
+#print axioms QTT_ordered_two_colour_triangle
+
 end OrderedEdgeColoring
 end JSP000404Research
