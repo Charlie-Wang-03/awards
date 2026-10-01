@@ -484,5 +484,120 @@ theorem deficientCore_tripleFibre_or_exactTopLossOverload
 #print axioms boundedMultiplicity_exists_shared_overload_vertex
 #print axioms deficientCore_tripleFibre_or_exactTopLossOverload
 
+
+/-- Under the fibre-multiplicity bound, the shared-mass overload already
+produces the same recursive data previously extracted only in the long-cycle
+branch: either an exact shared outlet, or a top-loss retained completion word
+which is shared with another candidate block. -/
+theorem boundedMultiplicity_overload_recursive_outlet
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hle :
+      ∀ word : Fin n → Bool,
+        (coreEnlargedCandidateFibre C exponent T word).card ≤ 2) :
+    (
+      ∃ v ∈ T,
+        ExactProjectedBudget C exponent v ∧
+        ExactSharedOutlet C exponent v
+    )
+    ∨
+    (
+      ∃ v ∈ T,
+        v ∈ projectedLossVertices C exponent ∧
+        exponent v = n - 1 ∧
+        (
+          sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+          ∩
+          retainedCompletionWords C v
+        ).Nonempty
+    ) := by
+  obtain ⟨v,hvT,hover⟩ :=
+    boundedMultiplicity_exists_shared_overload_vertex
+      C exponent hexpLt hexp honeLoss hdef hle
+  rcases
+    longCycle_shared_overload_exact_or_topLoss
+      C exponent hexpLt hexp honeLoss hvT hover
+    with hvExact | ⟨hvLoss,hvTop⟩
+  · exact Or.inl
+      ⟨v,hvT,hvExact,
+        longCycle_exact_overload_has_shared_outlet
+          C exponent hexp honeLoss hvT hvExact hover⟩
+  · exact Or.inr
+      ⟨v,hvT,hvLoss,hvTop,
+        topLoss_overload_has_shared_completion_word
+          C exponent hvLoss hvTop hover⟩
+
+/-- Girth-free recursive root: a deficient core either contains a
+triple-covered Boolean word, or already has an exact shared outlet / top-loss
+shared completion word. -/
+theorem deficientCore_tripleFibre_or_recursiveOverload
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T) :
+    (
+      ∃ word : Fin n → Bool,
+        3 ≤ (coreEnlargedCandidateFibre
+          C exponent T word).card
+    )
+    ∨
+    (
+      ∃ v ∈ T,
+        ExactProjectedBudget C exponent v ∧
+        ExactSharedOutlet C exponent v
+    )
+    ∨
+    (
+      ∃ v ∈ T,
+        v ∈ projectedLossVertices C exponent ∧
+        exponent v = n - 1 ∧
+        (
+          sharedBlockWords
+            (enlargedProjectedCandidateBlock C exponent)
+            T v
+          ∩
+          retainedCompletionWords C v
+        ).Nonempty
+    ) := by
+  classical
+  by_cases hle :
+      ∀ word : Fin n → Bool,
+        (coreEnlargedCandidateFibre C exponent T word).card ≤ 2
+  · rcases
+      boundedMultiplicity_overload_recursive_outlet
+        C exponent hexpLt hexp honeLoss hdef hle
+      with hexact | htop
+    · exact Or.inr (Or.inl hexact)
+    · exact Or.inr (Or.inr htop)
+  · left
+    push_neg at hle
+    obtain ⟨word,hword⟩ := hle
+    exact ⟨word,by omega⟩
+
+#print axioms boundedMultiplicity_overload_recursive_outlet
+#print axioms deficientCore_tripleFibre_or_recursiveOverload
+
 end OrderedEdgeColoring
 end JSP000404Research
