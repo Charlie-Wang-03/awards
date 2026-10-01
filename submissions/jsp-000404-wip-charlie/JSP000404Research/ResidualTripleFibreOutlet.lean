@@ -1120,5 +1120,214 @@ theorem threeTranslatedLoss_topAtLower_false_impossible
 #print axioms threeTranslatedLoss_topAtUpper_true_impossible
 #print axioms threeTranslatedLoss_topAtLower_false_impossible
 
+
+/-- For three translated loss carriers x<y<z with the unique top layer at the
+middle vertex y, the top owner coordinate must equal one of the two incident
+edge colours (those two colours exhaust the top active palette).  The common
+word then falls into exactly one of two mirror patterns:
+
+* the top owner is the left/incoming edge colour; y and z are false-labelled
+  on the two incident edge slices;
+* the top owner is the right/outgoing edge colour; x and y are true-labelled
+  on the two incident edge slices.
+
+This is the finite middle-top state left after extreme-top rank overflow. -/
+theorem threeTranslatedLoss_middleTop_two_pattern
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {x y z : V}
+    (hxy : x < y)
+    (hyz : y < z)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hyTop : exponent y = n - 1)
+    {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcz : cz ∈ retainedActive C z)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    let hleft :=
+      projectedLoss_edge_left_retained
+        C exponent hexp honeLoss hyLoss hxy
+    let hright :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hyLoss hyz
+    let eleft := retainedColor C x y hleft
+    let eright := retainedColor C y z hright
+    (
+      cy = eleft ∧
+      word ∈ translatedCompletionWords C y eleft ∧
+      word ∈ translatedCompletionWords C z eright ∧
+      word eleft = false ∧
+      word eright = false
+    )
+    ∨
+    (
+      cy = eright ∧
+      word ∈ translatedCompletionWords C x eleft ∧
+      word ∈ translatedCompletionWords C y eright ∧
+      word eleft = true ∧
+      word eright = true
+    ) := by
+  dsimp
+  have hleft :=
+    projectedLoss_edge_left_retained
+      C exponent hexp honeLoss hyLoss hxy
+  have hright :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hyLoss hyz
+  let eleft := retainedColor C x y hleft
+  let eright := retainedColor C y z hright
+
+  have heleftActive :
+      eleft ∈ retainedActive C y :=
+    retainedColor_mem_retainedActive_right C hxy hleft
+  have herightActive :
+      eright ∈ retainedActive C y :=
+    retainedColor_mem_retainedActive_left C hyz hright
+  have hne :
+      eleft ≠ eright :=
+    projectedLoss_two_sided_retained_colours_ne
+      C exponent hexp honeLoss hyLoss hxy hyz
+  have hcard :
+      (retainedActive C y).card = 2 :=
+    topLoss_retainedActive_card_eq_two
+      C exponent hyLoss hyTop
+  have hpalette :
+      retainedActive C y = {eleft,eright} := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro q hq
+      have hqMem : q = eleft ∨ q = eright := by
+        by_contra hnot
+        push_neg at hnot
+        have hthree :
+            3 ≤ (retainedActive C y).card := by
+          have hsub :
+              ({eleft,eright,q} : Finset (Fin n)) ⊆ retainedActive C y := by
+            intro r hr
+            simp only [Finset.mem_insert, Finset.mem_singleton] at hr
+            rcases hr with rfl | rfl | rfl
+            · exact heleftActive
+            · exact herightActive
+            · exact hq
+          have hc3 : ({eleft,eright,q} : Finset (Fin n)).card = 3 := by
+            simp [hne,hnot.1,hnot.2]
+          rw [← hc3]
+          exact Finset.card_le_card hsub
+        omega
+      simpa [hpalette] using hqMem
+    · simp [hcard,hne]
+
+  have hcyCase : cy = eleft ∨ cy = eright := by
+    have hmem : cy ∈ ({eleft,eright} : Finset (Fin n)) := by
+      rw [← hpalette]
+      exact hcy
+    simpa using hmem
+
+  rcases hcyCase with hcyLeft | hcyRight
+  · left
+    have hyLeft :
+        word ∈ translatedCompletionWords C y eleft := by
+      simpa [hcyLeft] using hyT
+    have hyzXor :=
+      lossPair_common_enlarged_word_edgeSlice_xor
+        C exponent hexp honeLoss
+        hyz hyLoss hzLoss
+        (by simpa [enlargedProjectedCandidateBlock_loss
+          C exponent hyLoss, allActiveLossCandidateBlock] using
+            (show word ∈ enlargedProjectedCandidateBlock C exponent y from
+              by
+                rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
+                unfold allActiveLossCandidateBlock
+                apply Finset.mem_union_right
+                apply Finset.mem_biUnion.mpr
+                exact ⟨cy,hcy,hyT⟩))
+        (by
+          rw [enlargedProjectedCandidateBlock_loss C exponent hzLoss]
+          unfold allActiveLossCandidateBlock
+          apply Finset.mem_union_right
+          apply Finset.mem_biUnion.mpr
+          exact ⟨cz,hcz,hzT⟩)
+    have hzRight :
+        word ∈ translatedCompletionWords C z eright := by
+      rcases hyzXor with hyEdge | hzEdge
+      · have hyRight := hyEdge.1
+        have hdisj :=
+          translatedCompletionWords_disjoint_same_owner_distinct_active
+            C heleftActive hne
+        exact False.elim
+          (Finset.disjoint_left.mp hdisj hyLeft hyRight)
+      · exact hzEdge.1
+    have heleftIn :
+        eleft ∈ incomingRetained C y := by
+      apply (mem_incomingRetained_iff C y eleft).2
+      refine ⟨x,hxy,?_⟩
+      apply Fin.ext
+      rfl
+    have herightIn :
+        eright ∈ incomingRetained C z := by
+      apply (mem_incomingRetained_iff C z eright).2
+      refine ⟨y,hyz,?_⟩
+      apply Fin.ext
+      rfl
+    exact ⟨hcyLeft,hyLeft,hzRight,
+      translated_loss_word_false_of_incoming C heleftIn hyLeft,
+      translated_loss_word_false_of_incoming C herightIn hzRight⟩
+  · right
+    have hyRight :
+        word ∈ translatedCompletionWords C y eright := by
+      simpa [hcyRight] using hyT
+    have hxyXor :=
+      lossPair_common_enlarged_word_edgeSlice_xor
+        C exponent hexp honeLoss
+        hxy hxLoss hyLoss
+        (by
+          rw [enlargedProjectedCandidateBlock_loss C exponent hxLoss]
+          unfold allActiveLossCandidateBlock
+          apply Finset.mem_union_right
+          apply Finset.mem_biUnion.mpr
+          exact ⟨cx,hcx,hxT⟩)
+        (by
+          rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
+          unfold allActiveLossCandidateBlock
+          apply Finset.mem_union_right
+          apply Finset.mem_biUnion.mpr
+          exact ⟨cy,hcy,hyT⟩)
+    have hxLeft :
+        word ∈ translatedCompletionWords C x eleft := by
+      rcases hxyXor with hxEdge | hyEdge
+      · exact hxEdge.1
+      · have hyLeft := hyEdge.1
+        have hdisj :=
+          translatedCompletionWords_disjoint_same_owner_distinct_active
+            C heleftActive hne
+        exact False.elim
+          (Finset.disjoint_left.mp hdisj hyLeft hyRight)
+    have heleftOut :
+        eleft ∈ outgoingRetained C x := by
+      apply (mem_outgoingRetained_iff C x eleft).2
+      refine ⟨y,hxy,?_⟩
+      apply Fin.ext
+      rfl
+    have herightOut :
+        eright ∈ outgoingRetained C y := by
+      apply (mem_outgoingRetained_iff C y eright).2
+      refine ⟨z,hyz,?_⟩
+      apply Fin.ext
+      rfl
+    exact ⟨hcyRight,hxLeft,hyRight,
+      translated_loss_word_true_of_outgoing C heleftOut hxLeft,
+      translated_loss_word_true_of_outgoing C herightOut hyRight⟩
+
+#print axioms threeTranslatedLoss_middleTop_two_pattern
+
 end OrderedEdgeColoring
 end JSP000404Research
