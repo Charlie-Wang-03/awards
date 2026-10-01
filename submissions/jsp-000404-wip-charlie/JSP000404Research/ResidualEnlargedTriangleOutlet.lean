@@ -478,6 +478,20 @@ theorem enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecurs
   · exact Or.inr (Or.inr hrec)
 
 #print axioms two_projectedLoss_highLayer_classification
+
+
+/-- Any exponent strictly below n is either top, second-layer, or deep. -/
+theorem exponent_top_second_or_deep
+    {V : Type*} {n : ℕ}
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLt : exponent v < n) :
+    exponent v = n - 1
+    ∨ exponent v = n - 2
+    ∨ exponent v + 3 ≤ n := by
+  omega
+
+#print axioms exponent_top_second_or_deep
 #print axioms enlargedCollisionGraph_triangle_highLayerLossPair_or_paid_or_exactRecursive
 
 
