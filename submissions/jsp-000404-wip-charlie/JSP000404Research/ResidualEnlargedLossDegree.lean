@@ -2172,9 +2172,16 @@ theorem uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
         (retainedActive C parent).card =
           ((retainedActive C parent).card - 1) + 1 := by
       omega
-    rw [ha]
-    ring_nf
-    rw [Nat.add_sub_cancel_left]
+    have hblockDecomp :
+        ((retainedActive C parent).card + 1) *
+            (retainedCompletionWords C parent).card
+          =
+        2 * (retainedCompletionWords C parent).card +
+          ((retainedActive C parent).card - 1) *
+            (retainedCompletionWords C parent).card := by
+      rw [ha]
+      ring
+    rw [hblockDecomp, Nat.add_sub_cancel_left]
 
   rw [hparentSlack]
   have hdecomp :
