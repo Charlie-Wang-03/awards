@@ -1026,6 +1026,133 @@ theorem secondLayer_fin3_translated_base_eq_flip
 #print axioms secondLayer_fin3_translated_base_eq_flip
 
 
+/-- In the n=3 second-layer case the enlarged loss block is exactly the
+Hamming radius-one ball around its unique completion word.  In particular a
+two-coordinate flip of that base word is outside the enlarged block. -/
+theorem secondLayer_fin3_twoFlip_not_mem_enlarged
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1)
+    {base : Fin 3 → Bool}
+    (hbase : base ∈ retainedCompletionWords C v)
+    {a b : Fin 3}
+    (hab : a ≠ b) :
+    flipBoolWordAt (flipBoolWordAt base a) b ∉
+      enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  intro hmem
+  rcases Finset.mem_union.mp hmem with hQ | hT
+  · have heq :=
+      secondLayer_fin3_completion_unique
+        C exponent hvLoss hvSecond hQ hbase
+    have hneq :
+        flipBoolWordAt (flipBoolWordAt base a) b ≠ base := by
+      intro h
+      have hbEq := congrFun h b
+      rw [flipBoolWordAt_at] at hbEq
+      rw [flipBoolWordAt_off base hab] at hbEq
+      cases hw : base b <;> simp [hw] at hbEq
+    exact hneq heq
+  · unfold allActiveTranslatedWords at hT
+    obtain ⟨d,hdActive,hdT⟩ := Finset.mem_biUnion.mp hT
+    have hflipQ :
+        flipBoolWordAt
+            (flipBoolWordAt (flipBoolWordAt base a) b) d
+          ∈ retainedCompletionWords C v :=
+      (mem_translatedCompletionWords
+        C v d
+        (flipBoolWordAt (flipBoolWordAt base a) b)).1 hdT
+    have heq :=
+      secondLayer_fin3_completion_unique
+        C exponent hvLoss hvSecond hflipQ hbase
+    obtain hd : d = a ∨ d = b ∨
+        (d ≠ a ∧ d ≠ b) := by
+      by_cases hda : d = a
+      · exact Or.inl hda
+      by_cases hdb : d = b
+      · exact Or.inr (Or.inl hdb)
+      exact Or.inr (Or.inr ⟨hda,hdb⟩)
+    rcases hd with rfl | rfl | hdOther
+    · have hcomm :=
+        flipBoolWordAt_comm
+          (flipBoolWordAt base a) (c := b) (d := a) hab.symm
+      have heq' := heq
+      rw [hcomm, flipBoolWordAt_involutive] at heq'
+      have hneq := flipBoolWordAt_at_ne base b
+      exact hneq heq'
+    · rw [flipBoolWordAt_involutive] at heq
+      exact flipBoolWordAt_at_ne base a heq
+    · have hneq :
+          flipBoolWordAt
+              (flipBoolWordAt (flipBoolWordAt base a) b) d
+            ≠ base := by
+        intro h
+        have hdEq := congrFun h d
+        rw [flipBoolWordAt_at] at hdEq
+        rw [flipBoolWordAt_off _ hdOther.2.symm] at hdEq
+        rw [flipBoolWordAt_off base hdOther.1.symm] at hdEq
+        cases hw : base d <;> simp [hw] at hdEq
+      exact hneq heq
+
+/-- The antipode of a Fin-3 word is outside the n=3 second-layer enlarged
+block whose completion base is the word itself. -/
+theorem secondLayer_fin3_antipode_not_mem_enlarged
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = 1)
+    {word : Fin 3 → Bool}
+    (hword : word ∈ retainedCompletionWords C v)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    tripleFlipBoolWord word a b c ∉
+      enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  intro hmem
+  rcases Finset.mem_union.mp hmem with hQ | hT
+  · have heq :=
+      secondLayer_fin3_completion_unique
+        C exponent hvLoss hvSecond hQ hword
+    exact tripleFlipBoolWord_ne_word word hab hac hbc heq
+  · unfold allActiveTranslatedWords at hT
+    obtain ⟨d,hdActive,hdT⟩ := Finset.mem_biUnion.mp hT
+    have hflipQ :
+        flipBoolWordAt (tripleFlipBoolWord word a b c) d ∈
+          retainedCompletionWords C v :=
+      (mem_translatedCompletionWords
+        C v d (tripleFlipBoolWord word a b c)).1 hdT
+    have heq :=
+      secondLayer_fin3_completion_unique
+        C exponent hvLoss hvSecond hflipQ hword
+    have hcontra :
+        tripleFlipBoolWord word a b c =
+          flipBoolWordAt word d := by
+      calc
+        tripleFlipBoolWord word a b c =
+            flipBoolWordAt
+              (flipBoolWordAt
+                (tripleFlipBoolWord word a b c) d) d := by
+              symm
+              exact flipBoolWordAt_involutive d _
+        _ = flipBoolWordAt word d := by rw [heq]
+    exact tripleFlipBoolWord_ne_singleFlip
+      word hab hac hbc hcontra
+
+#print axioms secondLayer_fin3_twoFlip_not_mem_enlarged
+#print axioms secondLayer_fin3_antipode_not_mem_enlarged
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
