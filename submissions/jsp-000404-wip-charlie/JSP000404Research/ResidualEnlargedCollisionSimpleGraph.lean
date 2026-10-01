@@ -1393,9 +1393,193 @@ theorem longCycle_totalSlack_lt_sum_pairOverlaps
     (longCycle_doubleCovered_card_le_sum_pairOverlaps
       C exponent T hgirth)
 
-#print axioms longCycle_doubleCoveredWords_eq_pairOverlapUnion
-#print axioms longCycle_doubleCovered_card_le_sum_pairOverlaps
-#print axioms longCycle_totalSlack_lt_sum_pairOverlaps
+
+theorem ordered_pair_eq_of_pair_finset_eq
+    {V : Type*} [LinearOrder V]
+    {u v x y : V}
+    (huv : u < v)
+    (hxy : x < y)
+    (hset : ({u,v} : Finset V) = {x,y}) :
+    (u,v) = (x,y) := by
+  classical
+  have huMem : u ∈ ({x,y} : Finset V) := by
+    rw [← hset]
+    simp
+  have hvMem : v ∈ ({x,y} : Finset V) := by
+    rw [← hset]
+    simp
+  have hu : u = x ∨ u = y := by
+    simpa [Finset.mem_insert, Finset.mem_singleton] using huMem
+  have hv : v = x ∨ v = y := by
+    simpa [Finset.mem_insert, Finset.mem_singleton] using hvMem
+  rcases hu with hux | huy
+  · subst x
+    rcases hv with hvu | hvy
+    · subst v
+      exact False.elim ((lt_irrefl u) huv)
+    · subst y
+      rfl
+  · subst y
+    rcases hv with hvx | hvu
+    · subst x
+      exact False.elim (lt_asymm huv hxy)
+    · subst v
+      exact False.elim ((lt_irrefl u) huv)
+
+theorem longCycle_pairOverlapWords_pairwiseDisjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    ((coreOrderedVertexPairs T : Finset (V × V)) : Set (V × V)).PairwiseDisjoint
+      (corePairOverlapWords C exponent) := by
+  classical
+  intro p hp q hq hpq
+  rcases p with ⟨u,v⟩
+  rcases q with ⟨x,y⟩
+  have hpData :=
+    (mem_coreOrderedVertexPairs T u v).1 hp
+  have hqData :=
+    (mem_coreOrderedVertexPairs T x y).1 hq
+  rw [Finset.disjoint_left]
+  intro word hpWord hqWord
+  have hpParts := Finset.mem_inter.mp hpWord
+  have hqParts := Finset.mem_inter.mp hqWord
+
+  have huF :
+      u ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word u).2
+      ⟨hpData.1,hpParts.1⟩
+  have hvF :
+      v ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word v).2
+      ⟨hpData.2.1,hpParts.2⟩
+  have hxF :
+      x ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word x).2
+      ⟨hqData.1,hqParts.1⟩
+  have hyF :
+      y ∈ coreEnlargedCandidateFibre
+        C exponent T word :=
+    (mem_coreEnlargedCandidateFibre
+      C exponent T word y).2
+      ⟨hqData.2.1,hqParts.2⟩
+
+  have hle :=
+    coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
+      C exponent T hgirth word
+  have htwo :
+      2 ≤ (coreEnlargedCandidateFibre
+        C exponent T word).card := by
+    exact Finset.two_le_card.mpr
+      ⟨u,huF,v,hvF,ne_of_lt hpData.2.2⟩
+  have hcard :
+      (coreEnlargedCandidateFibre
+        C exponent T word).card = 2 := by
+    omega
+
+  have hpSubset :
+      ({u,v} : Finset V) ⊆
+        coreEnlargedCandidateFibre
+          C exponent T word := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact huF
+    · exact hvF
+  have hqSubset :
+      ({x,y} : Finset V) ⊆
+        coreEnlargedCandidateFibre
+          C exponent T word := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact hxF
+    · exact hyF
+
+  have hpEq :
+      ({u,v} : Finset V) =
+        coreEnlargedCandidateFibre
+          C exponent T word := by
+    apply Finset.eq_of_subset_of_card_le hpSubset
+    simpa [hcard, ne_of_lt hpData.2.2]
+  have hqEq :
+      ({x,y} : Finset V) =
+        coreEnlargedCandidateFibre
+          C exponent T word := by
+    apply Finset.eq_of_subset_of_card_le hqSubset
+    simpa [hcard, ne_of_lt hqData.2.2]
+
+  have hpqEq : (u,v) = (x,y) :=
+    ordered_pair_eq_of_pair_finset_eq
+      hpData.2.2 hqData.2.2
+      (hpEq.trans hqEq.symm)
+  exact hpq hpqEq
+
+theorem longCycle_doubleCovered_card_eq_sum_pairOverlaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (coreDoubleCoveredWords C exponent T).card
+      =
+    ∑ uv ∈ coreOrderedVertexPairs T,
+      (corePairOverlapWords C exponent uv).card := by
+  rw [longCycle_doubleCoveredWords_eq_pairOverlapUnion
+    C exponent T hgirth]
+  exact Finset.card_biUnion
+    (longCycle_pairOverlapWords_pairwiseDisjoint
+      C exponent T hgirth)
+
+theorem longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (∑ uv ∈ coreOrderedVertexPairs T,
+      (corePairOverlapWords C exponent uv).card)
+      =
+    (∑ v ∈ T,
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ))
+      +
+    blockDeficiencyAmount
+      (fun x => 2 ^ exponent x)
+      (enlargedProjectedCandidateBlock C exponent)
+      T := by
+  rw [← longCycle_doubleCovered_card_eq_sum_pairOverlaps
+    C exponent T hgirth]
+  exact longCycle_doubleCovered_eq_totalSlack_add_deficiency
+    C exponent hexpLt hexp honeLoss
+    hdef hgirth
+
+#print axioms ordered_pair_eq_of_pair_finset_eq
+#print axioms longCycle_pairOverlapWords_pairwiseDisjoint
+#print axioms longCycle_doubleCovered_card_eq_sum_pairOverlaps
+#print axioms longCycle_sum_pairOverlaps_eq_totalSlack_add_deficiency
 
 end OrderedEdgeColoring
 end JSP000404Research
