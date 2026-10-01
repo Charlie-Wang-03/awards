@@ -2690,8 +2690,58 @@ theorem topLoss_word_five_exit_outlet
           (Or.inr ⟨w,z,hwz,
             hwTop.1,hzTop.1,hwTop.2,hzTop.2⟩)))
 
-#print axioms topLoss_retainedActive_card_eq_two
-#print axioms topLoss_word_five_exit_outlet
+
+theorem deepLoss_enlargedBlock_add_cube_le_two_mul_localSlack
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hdeep : exponent v + 3 ≤ n) :
+    (enlargedProjectedCandidateBlock C exponent v).card +
+        (retainedCompletionWords C v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ) := by
+  have hactive :
+      4 ≤ (retainedActive C v).card := by
+    rw [projectedLoss_retainedActive_card
+      C exponent hvLoss]
+    omega
+  have hblock :=
+    allActiveLossCandidateBlock_card C v
+  have hslack :=
+    enlargedLoss_local_slack_eq_translated_minus_one_cube
+      C exponent hvLoss
+  rw [enlargedProjectedCandidateBlock_loss
+      C exponent hvLoss]
+  rw [hslack,hblock]
+  have hcoef :
+      (retainedActive C v).card + 2
+        ≤
+      2 * ((retainedActive C v).card - 1) := by
+    omega
+  exact Nat.mul_le_mul_right
+    (retainedCompletionWords C v).card hcoef
+
+theorem lowerLoss_secondLayer_or_deep
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hexpLt : exponent v < n)
+    (hlower : exponent v + 1 ≤ n - 1) :
+    exponent v = n - 2
+    ∨
+    exponent v + 3 ≤ n := by
+  omega
+
+#print axioms deepLoss_enlargedBlock_add_cube_le_two_mul_localSlack
+#print axioms lowerLoss_secondLayer_or_deep
 
 end OrderedEdgeColoring
 end JSP000404Research
