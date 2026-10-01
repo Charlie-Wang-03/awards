@@ -695,6 +695,127 @@ theorem enlargedCollisionGraph_triangle_has_loss
     hwordU hwordV hwordW
 
 
+
+theorem projectedLoss_incident_collision_with_nonloss_is_retained
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {r u : V}
+    (hrLoss : r ∈ projectedLossVertices C exponent)
+    (hru : r ≠ u)
+    (hcross :
+      EnlargedBlocksCross C exponent r u) :
+    if h : r < u then
+      (C.color r u).val < n
+    else
+      (C.color u r).val < n := by
+  have hrInactive :=
+    residual_inactive_of_projectedLoss
+      C exponent hexp honeLoss hrLoss
+  by_cases hlt : r < u
+  · simp [hlt]
+    by_contra hnot
+    have hres : IsResidual C r u := by
+      unfold IsResidual residualCoord
+      apply Fin.ext
+      simp
+      omega
+    exact hrInactive
+      (residualCoord_mem_active_of_isResidual
+        C hlt hres).1
+  · have hul : u < r := lt_of_le_of_ne
+      (not_lt.mp hlt) hru.symm
+    simp [hlt]
+    by_contra hnot
+    have hres : IsResidual C u r := by
+      unfold IsResidual residualCoord
+      apply Fin.ext
+      simp
+      omega
+    exact hrInactive
+      (residualCoord_mem_active_of_isResidual
+        C hul hres).2
+
+theorem oneLoss_twoNonloss_triangle_colour_shape
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (T : Finset V)
+    {r u v : {x : V // x ∈ T}}
+    (hru :
+      (enlargedCollisionGraph C exponent T).Adj r u)
+    (hrv :
+      (enlargedCollisionGraph C exponent T).Adj r v)
+    (huv :
+      (enlargedCollisionGraph C exponent T).Adj u v)
+    (hrLoss : r.1 ∈ projectedLossVertices C exponent)
+    (huNonloss : u.1 ∉ projectedLossVertices C exponent)
+    (hvNonloss : v.1 ∉ projectedLossVertices C exponent) :
+    (
+      if h : r.1 < u.1 then
+        (C.color r.1 u.1).val < n
+      else
+        (C.color u.1 r.1).val < n
+    )
+    ∧
+    (
+      if h : r.1 < v.1 then
+        (C.color r.1 v.1).val < n
+      else
+        (C.color v.1 r.1).val < n
+    )
+    ∧
+    (
+      (u.1 < v.1 ∧ IsResidual C u.1 v.1)
+      ∨
+      (v.1 < u.1 ∧ IsResidual C v.1 u.1)
+    ) := by
+  have hruCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T hru
+  have hrvCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T hrv
+  have huvCross :=
+    enlargedCollisionGraph_cross_of_adj
+      C exponent T huv
+  have hruNe : r.1 ≠ u.1 := by
+    intro h
+    apply (enlargedCollisionGraph C exponent T).ne_of_adj hru
+    apply Subtype.ext
+    exact h
+  have hrvNe : r.1 ≠ v.1 := by
+    intro h
+    apply (enlargedCollisionGraph C exponent T).ne_of_adj hrv
+    apply Subtype.ext
+    exact h
+  obtain ⟨wordUV,huWord,hvWord⟩ := huvCross
+  rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent huNonloss] at huWord
+  rw [enlargedProjectedCandidateBlock_nonloss
+        C exponent hvNonloss] at hvWord
+  exact ⟨
+    projectedLoss_incident_collision_with_nonloss_is_retained
+      C exponent hexp honeLoss hrLoss hruNe hruCross,
+    projectedLoss_incident_collision_with_nonloss_is_retained
+      C exponent hexp honeLoss hrLoss hrvNe hrvCross,
+    retainedCompletion_overlap_forces_residual
+      C
+      (by
+        intro h
+        apply (enlargedCollisionGraph C exponent T).ne_of_adj huv
+        apply Subtype.ext
+        exact h)
+      huWord hvWord
+  ⟩
+
+
 theorem enlargedCollisionGraph_triangle_or_three_lt_girth
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
