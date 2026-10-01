@@ -65,11 +65,10 @@ noncomputable def planarCanonicalLossCoordinate
   let exponent := planarCentreExponent hp C
   have hloss' : i ∈ projectedLossVertices R exponent := by
     simpa [R, exponent] using hloss
-  obtain ⟨c,hc,_hexit⟩ :=
-    planar_projectedLoss_has_retained_active_flip_coordinate
+  exact Classical.choose
+    (planar_projectedLoss_has_retained_active_flip_coordinate
       hp hcap hn hdelta0 hdeltaHalf ht hlam C i
-      (by simpa [R, exponent] using hloss')
-  exact c
+      (by simpa [R, exponent] using hloss'))
 
 theorem planarCanonicalLossCoordinate_active
     {lam t delta : ℝ} {n : ℕ}
@@ -100,29 +99,12 @@ theorem planarCanonicalLossCoordinate_active
   let exponent := planarCentreExponent hp C
   have hloss' : i ∈ projectedLossVertices R exponent := by
     simpa [R, exponent] using hloss
-  have hchosen :=
+  have hspec :=
     Classical.choose_spec
-      (show ∃ c : Fin n,
-          c ∈ retainedActive R i ∧
-          ∀ word : Fin n → Bool,
-            word ∈ retainedCompletionWords R i →
-            let y := flipBoolWordAt word c
-            ((completionFibre R y).card = 0)
-            ∨
-            ((completionFibre R y).card = 1 ∨
-              (completionFibre R y).card = 2) ∧
-              ∀ w : ProjectionOrdered V,
-                y ∈ retainedCompletionWords R w →
-                w ≠ i ∧
-                c ∈ retainedActive R w ∧
-                retainedBit R w c =
-                  !(retainedBit R i c) by
-        exact planar_projectedLoss_uniform_augmenting_coordinate
-          hp hcap hn hdelta0 hdeltaHalf ht hlam C i
-          (by simpa [R, exponent] using hloss'))
-  -- The chosen coordinate in the definition is propositionally the same
-  -- witness supplied by the existential theorem.
-  simpa [planarCanonicalLossCoordinate, R, exponent] using hchosen.1
+      (planar_projectedLoss_has_retained_active_flip_coordinate
+        hp hcap hn hdelta0 hdeltaHalf ht hlam C i
+        (by simpa [R, exponent] using hloss'))
+  simpa [planarCanonicalLossCoordinate, R, exponent] using hspec.1
 
 noncomputable def planarCanonicalCandidateBlock
     {lam t delta : ℝ} {n : ℕ}
