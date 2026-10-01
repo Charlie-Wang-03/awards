@@ -1263,6 +1263,359 @@ theorem planar_deficientCore_girthFree_secondPair_root
 #print axioms planar_deficientCore_girthFree_secondPair_root
 
 
+/-- Witness-preserving planar root.  The sole structural remainder is a
+triple-covered word carried by a collision triangle in which at least one
+triangle edge joins two second-layer loss vertices. -/
+theorem planar_deficientCore_girthFree_secondTriple_root
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords R
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree R) z
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        ExactProjectedBudget R exponent z
+    )
+    ∨
+    (
+      ∃ source : ProjectionOrdered V,
+        ExactRecursiveOutlet R exponent source
+    )
+    ∨
+    (
+      ∃ z : ProjectionOrdered V,
+        z ∈ projectedLossVertices R exponent ∧
+        exponent z + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ word : Fin n → Bool,
+      ∃ u v w : {x : ProjectionOrdered V // x ∈ T},
+        u ≠ v ∧
+        u ≠ w ∧
+        v ≠ w ∧
+        word ∈ enlargedProjectedCandidateBlock R exponent u.1 ∧
+        word ∈ enlargedProjectedCandidateBlock R exponent v.1 ∧
+        word ∈ enlargedProjectedCandidateBlock R exponent w.1 ∧
+        (enlargedCollisionGraph R exponent T).Adj u v ∧
+        (enlargedCollisionGraph R exponent T).Adj u w ∧
+        (enlargedCollisionGraph R exponent T).Adj v w ∧
+        (
+          (u.1 ∈ projectedLossVertices R exponent ∧
+            v.1 ∈ projectedLossVertices R exponent ∧
+            exponent u.1 = n - 2 ∧
+            exponent v.1 = n - 2)
+          ∨
+          (u.1 ∈ projectedLossVertices R exponent ∧
+            w.1 ∈ projectedLossVertices R exponent ∧
+            exponent u.1 = n - 2 ∧
+            exponent w.1 = n - 2)
+          ∨
+          (v.1 ∈ projectedLossVertices R exponent ∧
+            w.1 ∈ projectedLossVertices R exponent ∧
+            exponent v.1 = n - 2 ∧
+            exponent w.1 = n - 2)
+        )
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤ n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  have hdefR :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T := by
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent,hn1,hdelta1] using hdef
+
+  rcases
+    deficientCore_tripleFibre_or_recursiveOverload
+      R exponent hexpLt hexp hone hdefR
+    with htriple | hexactOutlet | htopShared
+  · obtain ⟨word,hthree⟩ := htriple
+    obtain ⟨u,v,w,huv,huw,hvw,
+      huWord,hvWord,hwWord,hUV,hUW,hVW⟩ :=
+      tripleFibre_has_common_word_collision_triangle
+        R exponent hthree
+    rcases
+      enlargedCollisionGraph_triangle_loss_shape
+        R exponent T hUV hUW hVW
+      with hU | hV | hW | hUVLoss | hUWLoss | hVWLoss
+    · rcases
+        enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+          R exponent hexp hone T
+          hVW hU.hvNonloss hU.hwNonloss
+        with hpaid | hrec
+      · exact Or.inr (Or.inl hpaid)
+      · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+    · rcases
+        enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+          R exponent hexp hone T
+          hUW hV.huNonloss hV.hwNonloss
+        with hpaid | hrec
+      · exact Or.inr (Or.inl hpaid)
+      · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+    · rcases
+        enlargedTriangle_nonloss_edge_paid_or_exactRecursive
+          R exponent hexp hone T
+          hUV hW.huNonloss hW.hvNonloss
+        with hpaid | hrec
+      · exact Or.inr (Or.inl hpaid)
+      · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
+    · rcases
+        two_projectedLoss_highLayer_classification
+          R exponent hexpLt
+          (by
+            simpa [exponent,planarCentreExponent] using
+              (projectionOrdered_topExponent_filter_card_le_one
+                hp hcap hcard (by omega : 2 ≤ n)
+                hdelta0 hdeltaHalf ht hlam C))
+          (by
+            intro h
+            apply huv
+            apply Subtype.ext
+            exact h)
+          hUVLoss.huLoss hUVLoss.hvLoss
+      with huDeep | hvDeep | huTopSecond | huSecondTop | hBothSecond
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨u.1,hUVLoss.huLoss,huDeep⟩))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨v.1,hUVLoss.hvLoss,hvDeep⟩))))
+      · have huLossGeom :
+            u.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hUVLoss.huLoss
+        have huTopGeom :
+            centreExponent (C u.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using huTopSecond.1
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C huLossGeom huTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · have hvLossGeom :
+            v.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hUVLoss.hvLoss
+        have hvTopGeom :
+            centreExponent (C v.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using huSecondTop.2
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C hvLossGeom hvTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          ⟨word,u,v,w,huv,huw,hvw,
+            huWord,hvWord,hwWord,hUV,hUW,hVW,
+            Or.inl ⟨hUVLoss.huLoss,hUVLoss.hvLoss,
+              hBothSecond.1,hBothSecond.2⟩⟩))))
+    · rcases
+        two_projectedLoss_highLayer_classification
+          R exponent hexpLt
+          (by
+            simpa [exponent,planarCentreExponent] using
+              (projectionOrdered_topExponent_filter_card_le_one
+                hp hcap hcard (by omega : 2 ≤ n)
+                hdelta0 hdeltaHalf ht hlam C))
+          (by
+            intro h
+            apply huw
+            apply Subtype.ext
+            exact h)
+          hUWLoss.huLoss hUWLoss.hwLoss
+      with huDeep | hwDeep | huTopSecond | huSecondTop | hBothSecond
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨u.1,hUWLoss.huLoss,huDeep⟩))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨w.1,hUWLoss.hwLoss,hwDeep⟩))))
+      · have huLossGeom :
+            u.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hUWLoss.huLoss
+        have huTopGeom :
+            centreExponent (C u.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using huTopSecond.1
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C huLossGeom huTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · have hwLossGeom :
+            w.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hUWLoss.hwLoss
+        have hwTopGeom :
+            centreExponent (C w.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using huSecondTop.2
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C hwLossGeom hwTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          ⟨word,u,v,w,huv,huw,hvw,
+            huWord,hvWord,hwWord,hUV,hUW,hVW,
+            Or.inr (Or.inl
+              ⟨hUWLoss.huLoss,hUWLoss.hwLoss,
+                hBothSecond.1,hBothSecond.2⟩)⟩))))
+    · rcases
+        two_projectedLoss_highLayer_classification
+          R exponent hexpLt
+          (by
+            simpa [exponent,planarCentreExponent] using
+              (projectionOrdered_topExponent_filter_card_le_one
+                hp hcap hcard (by omega : 2 ≤ n)
+                hdelta0 hdeltaHalf ht hlam C))
+          (by
+            intro h
+            apply hvw
+            apply Subtype.ext
+            exact h)
+          hVWLoss.hvLoss hVWLoss.hwLoss
+      with hvDeep | hwDeep | hvTopSecond | hvSecondTop | hBothSecond
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨v.1,hVWLoss.hvLoss,hvDeep⟩))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr
+          (Or.inl ⟨w.1,hVWLoss.hwLoss,hwDeep⟩))))
+      · have hvLossGeom :
+            v.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hVWLoss.hvLoss
+        have hvTopGeom :
+            centreExponent (C v.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using hvTopSecond.1
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C hvLossGeom hvTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · have hwLossGeom :
+            w.1 ∈ projectedLossVertices
+              (planarStandardResidualColoring
+                hp hcap (by omega : 1 ≤ n)
+                hdelta0 (by linarith : delta < 1) ht hlam)
+              (planarCentreExponent hp C) := by
+          simpa [R,exponent,hn1,hdelta1] using hVWLoss.hwLoss
+        have hwTopGeom :
+            centreExponent (C w.1) t = n - 1 := by
+          simpa [exponent,planarCentreExponent] using hvSecondTop.2
+        rcases planar_topLoss_closed_outlet
+          hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+          hcard C hwLossGeom hwTopGeom
+          with hhole | hpaid | hexact | hdeep
+        · exact Or.inl hhole
+        · exact Or.inr (Or.inl hpaid)
+        · exact Or.inr (Or.inr (Or.inl hexact))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          ⟨word,u,v,w,huv,huw,hvw,
+            huWord,hvWord,hwWord,hUV,hUW,hVW,
+            Or.inr (Or.inr
+              ⟨hVWLoss.hvLoss,hVWLoss.hwLoss,
+                hBothSecond.1,hBothSecond.2⟩)⟩))))
+  · obtain ⟨v,hvT,hvExact,hout⟩ := hexactOutlet
+    exact Or.inr (Or.inr (Or.inr (Or.inl
+      ⟨v,exactSharedOutlet_to_recursive
+        R exponent hvExact hout⟩)))
+  · obtain ⟨top,htopT,htopLoss,htopExp,_hshared⟩ := htopShared
+    have htopLossGeom :
+        top ∈ projectedLossVertices
+          (planarStandardResidualColoring
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 (by linarith : delta < 1) ht hlam)
+          (planarCentreExponent hp C) := by
+      simpa [R,exponent,hn1,hdelta1] using htopLoss
+    have htopExpGeom :
+        centreExponent (C top) t = n - 1 := by
+      simpa [exponent,planarCentreExponent] using htopExp
+    rcases planar_topLoss_closed_outlet
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      hcard C htopLossGeom htopExpGeom
+      with hhole | hpaid | hexact | hdeep
+    · exact Or.inl hhole
+    · exact Or.inr (Or.inl hpaid)
+    · exact Or.inr (Or.inr (Or.inl hexact))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep))))
+
+#print axioms planar_deficientCore_girthFree_secondTriple_root
+
+
 theorem planar_longCycle_overload_recursive_outlet
     {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
