@@ -131,23 +131,30 @@ theorem projectedLoss_allActiveBlock_target_plus_cube_le
         (retainedCompletionWords C v).card
       ≤
     (allActiveLossCandidateBlock C v).card := by
-  have hactive :=
+  have hactive :
+      2 ≤ (retainedActive C v).card :=
     projectedLoss_active_card_ge_two_of_exponent_lt_n
       C exponent hvLoss hvLt
-  have htarget :=
-    projectedLoss_doubledBlock_card_eq_target
-      C exponent hvLoss
-      (by
-        have hne :
-            (retainedActive C v).Nonempty :=
-          Finset.card_pos.mp (by omega)
-        exact hne.choose_spec)
+  have hnonempty :
+      (retainedActive C v).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨c,hc⟩ := hnonempty
+  have hdouble :
+      2 * (retainedCompletionWords C v).card =
+        2 ^ exponent v := by
+    have hblock :=
+      projectedLoss_doubledBlock_card_eq_target
+        C exponent hvLoss hc
+    rw [doubledCompletionBlock_card_of_active C hc] at hblock
+    exact hblock
   rw [allActiveLossCandidateBlock_card]
-  rw [retainedCompletionWords_card]
-  have hlossEq :=
-    (mem_projectedLossVertices C exponent v).1 hvLoss
-  unfold projectedFree at hlossEq
-  rw [hlossEq, pow_succ]
+  rw [← hdouble]
+  have hcoef :
+      3 ≤ (retainedActive C v).card + 1 := by
+    omega
+  have hmul :=
+    Nat.mul_le_mul_right
+      (retainedCompletionWords C v).card hcoef
   omega
 
 #print axioms allActiveTranslatedWords_card
