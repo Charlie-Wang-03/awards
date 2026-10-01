@@ -1247,21 +1247,10 @@ theorem threeTranslatedLoss_middleTop_two_pattern
       lossPair_common_enlarged_word_edgeSlice_xor
         C exponent hexp honeLoss
         hyz hyLoss hzLoss
-        (by simpa [enlargedProjectedCandidateBlock_loss
-          C exponent hyLoss, allActiveLossCandidateBlock] using
-            (show word ∈ enlargedProjectedCandidateBlock C exponent y from
-              by
-                rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
-                unfold allActiveLossCandidateBlock
-                apply Finset.mem_union_right
-                apply Finset.mem_biUnion.mpr
-                exact ⟨cy,hcy,hyT⟩))
-        (by
-          rw [enlargedProjectedCandidateBlock_loss C exponent hzLoss]
-          unfold allActiveLossCandidateBlock
-          apply Finset.mem_union_right
-          apply Finset.mem_biUnion.mpr
-          exact ⟨cz,hcz,hzT⟩)
+        (translated_mem_enlargedProjectedCandidateBlock_of_loss
+          C exponent hyLoss hcy hyT)
+        (translated_mem_enlargedProjectedCandidateBlock_of_loss
+          C exponent hzLoss hcz hzT)
     have hzRight :
         word ∈ translatedCompletionWords C z eright := by
       rcases hyzXor with hyEdge | hzEdge
@@ -1295,18 +1284,10 @@ theorem threeTranslatedLoss_middleTop_two_pattern
       lossPair_common_enlarged_word_edgeSlice_xor
         C exponent hexp honeLoss
         hxy hxLoss hyLoss
-        (by
-          rw [enlargedProjectedCandidateBlock_loss C exponent hxLoss]
-          unfold allActiveLossCandidateBlock
-          apply Finset.mem_union_right
-          apply Finset.mem_biUnion.mpr
-          exact ⟨cx,hcx,hxT⟩)
-        (by
-          rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
-          unfold allActiveLossCandidateBlock
-          apply Finset.mem_union_right
-          apply Finset.mem_biUnion.mpr
-          exact ⟨cy,hcy,hyT⟩)
+        (translated_mem_enlargedProjectedCandidateBlock_of_loss
+          C exponent hxLoss hcx hxT)
+        (translated_mem_enlargedProjectedCandidateBlock_of_loss
+          C exponent hyLoss hcy hyT)
     have hxLeft :
         word ∈ translatedCompletionWords C x eleft := by
       rcases hxyXor with hxEdge | hyEdge
