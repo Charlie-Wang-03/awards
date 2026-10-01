@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualEnlargedCandidateHall
 import JSP000404Research.ResidualEnlargedLossDegree
+import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.PlanarResidualHardRemainder
 import JSP000404Research.ProjectionStandardBandBudget
@@ -446,11 +447,214 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
   · simp [exponent, planarCentreExponent, haExp]
   · simp [exponent, planarCentreExponent, hbExp]
 
+
+theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 2 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    {T : Finset (ProjectionOrdered V)}
+    (hdef :
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarEnlargedCandidateBlock
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 hdeltaHalf ht hlam C)
+        T)
+    (hmin :
+      ∀ U : Finset (ProjectionOrdered V),
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun i => 2 ^ centreExponent (C i) t)
+          (planarEnlargedCandidateBlock
+            hp hcap (by omega : 1 ≤ n)
+            hdelta0 hdeltaHalf ht hlam C)
+          U) :
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
+        ht hlam
+    let exponent := planarCentreExponent hp C
+    (
+      ∃ u v wu wv : ProjectionOrdered V,
+        u ∈ T ∧
+        v ∈ T ∧
+        u ≠ v ∧
+        wu ∈ T ∧
+        wv ∈ T ∧
+        wu ≠ u ∧
+        wv ≠ v ∧
+        EnlargedLeafOutlet R exponent T u wu ∧
+        EnlargedLeafOutlet R exponent T v wv
+    )
+    ∨
+    (
+      ∃ u v w :
+          {x : ProjectionOrdered V // x ∈ T},
+        (enlargedCollisionGraph R exponent T).Adj u v ∧
+        (enlargedCollisionGraph R exponent T).Adj u w ∧
+        (enlargedCollisionGraph R exponent T).Adj v w
+    )
+    ∨
+    (
+      ∃ v ∈ T,
+        ExactProjectedBudget R exponent v
+    )
+    ∨
+    (
+      ∃ top ∈ T,
+        top ∈ projectedLossVertices R exponent ∧
+        exponent top = n - 1 ∧
+        2 *
+          blockDeficiencyAmount
+            (fun x => 2 ^ exponent x)
+            (enlargedProjectedCandidateBlock R exponent)
+            T
+          ≤
+        (retainedCompletionWords R top).card
+    ) := by
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent hp C
+
+  have hexpLt :
+      ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n
+      hp hn1 hdelta0 hdelta1 ht C
+  have hexp :
+      ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone :
+      ∀ x, (active R x).card ≤
+        n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+
+  have hdefR :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock R exponent)
+        T := by
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent,hn1,hdelta1] using hdef
+  have hminR :
+      ∀ U : Finset (ProjectionOrdered V),
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock R exponent)
+          U := by
+    intro U hUT
+    simpa [planarEnlargedCandidateBlock,R,exponent,
+      planarCentreExponent,hn1,hdelta1] using hmin U hUT
+
+  rcases
+    minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
+      R exponent hexpLt hexp hone hdefR hminR
+    with hleaf | htri | hlong
+  · exact Or.inl hleaf
+  · exact Or.inr (Or.inl htri)
+  · rcases
+      longCycle_exact_or_singleTopLoss_lowDefect
+        R exponent hexpLt hexp hone
+        hdefR hminR hlong
+      with hexact | htop
+    · exact Or.inr (Or.inr (Or.inl hexact))
+    · exact Or.inr (Or.inr (Or.inr htop))
+
+theorem planar_enlarged_expansion_failure_root_reduction
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 2 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (hfail :
+      ¬ ∀ S : Finset (ProjectionOrdered V),
+        (∑ i ∈ S, 2 ^ centreExponent (C i) t) ≤
+          (S.biUnion
+            (planarEnlargedCandidateBlock
+              hp hcap (by omega : 1 ≤ n)
+              hdelta0 hdeltaHalf ht hlam C)).card) :
+    ∃ T : Finset (ProjectionOrdered V),
+      T.Nonempty ∧
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
+          ht hlam
+      let exponent := planarCentreExponent hp C
+      (
+        (
+          ∃ u v wu wv : ProjectionOrdered V,
+            u ∈ T ∧
+            v ∈ T ∧
+            u ≠ v ∧
+            wu ∈ T ∧
+            wv ∈ T ∧
+            wu ≠ u ∧
+            wv ≠ v ∧
+            EnlargedLeafOutlet R exponent T u wu ∧
+            EnlargedLeafOutlet R exponent T v wv
+        )
+        ∨
+        (
+          ∃ u v w :
+              {x : ProjectionOrdered V // x ∈ T},
+            (enlargedCollisionGraph R exponent T).Adj u v ∧
+            (enlargedCollisionGraph R exponent T).Adj u w ∧
+            (enlargedCollisionGraph R exponent T).Adj v w
+        )
+        ∨
+        (
+          ∃ v ∈ T,
+            ExactProjectedBudget R exponent v
+        )
+        ∨
+        (
+          ∃ top ∈ T,
+            top ∈ projectedLossVertices R exponent ∧
+            exponent top = n - 1 ∧
+            2 *
+              blockDeficiencyAmount
+                (fun x => 2 ^ exponent x)
+                (enlargedProjectedCandidateBlock R exponent)
+                T
+              ≤
+            (retainedCompletionWords R top).card
+        )
+      ) := by
+  obtain ⟨T,hT,hdef,hmin⟩ :=
+    planar_enlarged_expansion_failure_minimal_core
+      hp hcap (by omega : 1 ≤ n) hdelta0
+      hdeltaHalf ht hlam C hfail
+  refine ⟨T,hT,?_⟩
+  exact planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
+    hp hcap hn hdelta0 hdeltaHalf ht hlam C
+    hdef hmin
+
 #print axioms planarEnlargedCandidateBlock_local_capacity
 #print axioms planar_lowerBranch_capacity_of_enlargedBlock_expansion
 #print axioms planar_enlarged_expansion_failure_minimal_core
 #print axioms planar_minimal_enlarged_maxLoss_degree_one_is_sharp
 #print axioms planar_minimal_enlarged_no_two_maxLoss_degree_one
+#print axioms planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
+#print axioms planar_enlarged_expansion_failure_root_reduction
 
 end
 end ProjectionOrdered
