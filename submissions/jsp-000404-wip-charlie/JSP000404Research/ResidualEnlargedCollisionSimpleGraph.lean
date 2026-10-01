@@ -1771,6 +1771,104 @@ theorem longCycle_exists_exact_or_topLoss_overload
     hover⟩
 
 
+
+theorem topLoss_localSlack_eq_completionCube
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1) :
+    (enlargedProjectedCandidateBlock C exponent v).card -
+        2 ^ exponent v
+      =
+    (retainedCompletionWords C v).card := by
+  have hactive :=
+    topLoss_retainedActive_card_eq_two
+      C exponent hvLoss hvTop
+  rw [enlargedProjectedCandidateBlock_loss
+        C exponent hvLoss,
+      allActiveLossCandidateBlock_card,
+      projectedLoss_target_eq_two_mul_completion
+        C exponent hvLoss,
+      hactive]
+  omega
+
+theorem topLoss_overload_has_shared_completion_word
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1)
+    (hover :
+      2 *
+        (
+          (enlargedProjectedCandidateBlock C exponent v).card -
+            2 ^ exponent v
+        )
+        <
+      (sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v).card) :
+    (
+      sharedBlockWords
+        (enlargedProjectedCandidateBlock C exponent)
+        T v
+      ∩
+      retainedCompletionWords C v
+    ).Nonempty := by
+  classical
+  have hslack :=
+    topLoss_localSlack_eq_completionCube
+      C exponent hvLoss hvTop
+  rw [hslack] at hover
+  by_contra hempty
+  have hinterEmpty :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ∩
+      retainedCompletionWords C v = ∅ :=
+    Finset.not_nonempty_iff_eq_empty.mp hempty
+  have hsub :
+      sharedBlockWords
+          (enlargedProjectedCandidateBlock C exponent)
+          T v
+        ⊆
+      allActiveTranslatedWords C v := by
+    intro word hshared
+    have hblock :=
+      (sharedBlockWords_subset_block
+        (enlargedProjectedCandidateBlock C exponent)
+        T v) hshared
+    rw [enlargedProjectedCandidateBlock_loss
+      C exponent hvLoss] at hblock
+    unfold allActiveLossCandidateBlock at hblock
+    rcases Finset.mem_union.mp hblock with hQ | hT
+    · have hboth :
+          word ∈
+            sharedBlockWords
+              (enlargedProjectedCandidateBlock C exponent)
+              T v
+            ∩
+            retainedCompletionWords C v :=
+        Finset.mem_inter.mpr ⟨hshared,hQ⟩
+      rw [hinterEmpty] at hboth
+      exact False.elim (by simpa using hboth)
+    · exact hT
+  have hcardLe :=
+    Finset.card_le_card hsub
+  have hactive :=
+    topLoss_retainedActive_card_eq_two
+      C exponent hvLoss hvTop
+  rw [allActiveTranslatedWords_card,hactive] at hcardLe
+  omega
+
+#print axioms topLoss_localSlack_eq_completionCube
+#print axioms topLoss_overload_has_shared_completion_word
+
 theorem longCycle_totalSlack_lt_doubleCovered
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
