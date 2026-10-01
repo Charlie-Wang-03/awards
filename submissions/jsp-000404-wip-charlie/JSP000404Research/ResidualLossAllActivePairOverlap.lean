@@ -200,9 +200,94 @@ theorem loss_allActive_pair_intersection_card_le_sum_cubes
         C exponent hexp honeLoss hwLoss hvLoss hwvlt
     simpa [Finset.inter_comm, Nat.add_comm] using h
 
-#print axioms loss_allActive_pair_intersection_subset_edge_slices_of_lt
-#print axioms loss_allActive_pair_intersection_card_le_sum_cubes_of_lt
-#print axioms loss_allActive_pair_intersection_card_le_sum_cubes
+
+theorem loss_allActive_pair_intersection_edge_slice_xor_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {v w : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwLoss : w ∈ projectedLossVertices C exponent)
+    (hvw : v < w)
+    (hret : (C.color v w).val < n)
+    {word : Fin n → Bool}
+    (hword :
+      word ∈ allActiveLossCandidateBlock C v ∩
+        allActiveLossCandidateBlock C w) :
+    (
+      word ∈ translatedCompletionWords C v
+        (retainedColor C v w hret)
+      ∧
+      word ∉ translatedCompletionWords C w
+        (retainedColor C v w hret)
+    )
+    ∨
+    (
+      word ∈ translatedCompletionWords C w
+        (retainedColor C v w hret)
+      ∧
+      word ∉ translatedCompletionWords C v
+        (retainedColor C v w hret)
+    ) := by
+  have hsub :=
+    loss_allActive_pair_intersection_subset_edge_slices_of_lt
+      C exponent hexp honeLoss
+      hvLoss hwLoss hvw hret hword
+  have hdisj :=
+    translated_loss_blocks_disjoint_same_coordinate
+      C exponent hexp honeLoss
+      hvLoss hwLoss (ne_of_lt hvw)
+      (retainedColor C v w hret)
+  rcases Finset.mem_union.mp hsub with hvSlice | hwSlice
+  · left
+    refine ⟨hvSlice,?_⟩
+    intro hwSlice
+    exact Finset.disjoint_left.mp hdisj hvSlice hwSlice
+  · right
+    refine ⟨hwSlice,?_⟩
+    intro hvSlice
+    exact Finset.disjoint_left.mp hdisj hvSlice hwSlice
+
+theorem loss_allActive_pair_intersection_disjoint_edge_slice_cover_of_lt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {v w : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwLoss : w ∈ projectedLossVertices C exponent)
+    (hvw : v < w)
+    (hret : (C.color v w).val < n) :
+    Disjoint
+      (translatedCompletionWords C v
+        (retainedColor C v w hret))
+      (translatedCompletionWords C w
+        (retainedColor C v w hret))
+    ∧
+    allActiveLossCandidateBlock C v ∩
+        allActiveLossCandidateBlock C w
+      ⊆
+    translatedCompletionWords C v
+        (retainedColor C v w hret)
+      ∪
+    translatedCompletionWords C w
+        (retainedColor C v w hret) := by
+  constructor
+  · exact translated_loss_blocks_disjoint_same_coordinate
+      C exponent hexp honeLoss
+      hvLoss hwLoss (ne_of_lt hvw)
+      (retainedColor C v w hret)
+  · exact loss_allActive_pair_intersection_subset_edge_slices_of_lt
+      C exponent hexp honeLoss
+      hvLoss hwLoss hvw hret
+
+#print axioms loss_allActive_pair_intersection_edge_slice_xor_of_lt
+#print axioms loss_allActive_pair_intersection_disjoint_edge_slice_cover_of_lt
 
 end OrderedEdgeColoring
 end JSP000404Research
