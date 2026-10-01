@@ -458,9 +458,82 @@ theorem minimal_deficient_delete_with_transfer_deficient'
   deficient_delete_with_transfer_deficient
     demand blocks hdef hv hw
 
+
+theorem blockDeficiencyAmount_delete_with_transfer
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    {v w : V}
+    (hv : v ∈ T)
+    (hw : w ∈ T.erase v)
+    (hdef : BlockDeficient demand blocks T) :
+    blockDeficiencyAmount
+      (addDemandAt demand w
+        (deletedVertexTransfer demand blocks T v))
+      blocks
+      (T.erase v)
+      =
+    blockDeficiencyAmount demand blocks T := by
+  classical
+  have hUnion :=
+    biUnion_card_eq_delete_add_private
+      blocks hv
+  have hSum :
+      (∑ x ∈ T, demand x) =
+        (∑ x ∈ T.erase v, demand x) + demand v := by
+    rw [← Finset.sum_erase_add _ _ hv]
+  have hdefNat :
+      (T.biUnion blocks).card <
+        ∑ x ∈ T, demand x := hdef
+  have hprivateLeDemand :
+      (privateBlockWords blocks T v).card ≤ demand v := by
+    by_contra hnot
+    have hprivGt :
+        demand v < (privateBlockWords blocks T v).card := by
+      omega
+    rw [hUnion,hSum] at hdefNat
+    have hrestNonneg :
+        0 ≤ ((T.erase v).biUnion blocks).card := Nat.zero_le _
+    omega
+  unfold blockDeficiencyAmount
+  rw [sum_addDemandAt demand (T.erase v) hw]
+  rw [hUnion,hSum]
+  unfold deletedVertexTransfer
+  omega
+
+theorem deficient_delete_with_transfer_preserves_amount
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    {v w : V}
+    (hv : v ∈ T)
+    (hw : w ∈ T.erase v) :
+    BlockDeficient
+      (addDemandAt demand w
+        (deletedVertexTransfer demand blocks T v))
+      blocks
+      (T.erase v)
+    ∧
+    blockDeficiencyAmount
+      (addDemandAt demand w
+        (deletedVertexTransfer demand blocks T v))
+      blocks
+      (T.erase v)
+      =
+    blockDeficiencyAmount demand blocks T := by
+  exact ⟨
+    deficient_delete_with_transfer_deficient
+      demand blocks hdef hv hw,
+    blockDeficiencyAmount_delete_with_transfer
+      demand blocks hv hw hdef
+  ⟩
+
 #print axioms blockDeficiencyAmount_pos_of_deficient
-#print axioms minimal_deficient_amount_le_shared_excess
 #print axioms deficient_delete_with_transfer_deficient
-#print axioms minimal_deficient_delete_with_transfer_deficient
+#print axioms blockDeficiencyAmount_delete_with_transfer
+#print axioms deficient_delete_with_transfer_preserves_amount
 
 end JSP000404Research
