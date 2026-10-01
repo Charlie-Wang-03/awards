@@ -339,5 +339,119 @@ theorem deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShare
 
 #print axioms deficientCore_deep_or_highLossPair_or_paid_or_exactRecursive_or_topShared
 
+
+/-- A common word of two distinct loss blocks is localized to the actual
+retained edge colour: for an ordered pair x<y it lies in exactly one of the
+two edge-colour translated slices.  This is the key semantic refinement of a
+high-layer loss-pair witness. -/
+theorem lossPair_common_enlarged_word_edgeSlice_xor
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {x y : V}
+    (hxy : x < y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (hxBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent x)
+    (hyBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent y) :
+    let hret :=
+      projectedLoss_edge_right_retained
+        C exponent hexp honeLoss hxLoss hxy
+    let e := retainedColor C x y hret
+    (
+      word ∈ translatedCompletionWords C x e ∧
+      word ∉ translatedCompletionWords C y e
+    )
+    ∨
+    (
+      word ∈ translatedCompletionWords C y e ∧
+      word ∉ translatedCompletionWords C x e
+    ) := by
+  dsimp
+  have hret :=
+    projectedLoss_edge_right_retained
+      C exponent hexp honeLoss hxLoss hxy
+  have hinter :
+      word ∈
+        allActiveLossCandidateBlock C x ∩
+          allActiveLossCandidateBlock C y := by
+    apply Finset.mem_inter.mpr
+    constructor
+    · simpa [enlargedProjectedCandidateBlock_loss
+        C exponent hxLoss] using hxBlock
+    · simpa [enlargedProjectedCandidateBlock_loss
+        C exponent hyLoss] using hyBlock
+  exact
+    loss_allActive_pair_intersection_edge_slice_xor_of_lt
+      C exponent hexp honeLoss
+      hxLoss hyLoss hxy hret hinter
+
+/-- Symmetric order-free form of edge-slice localization. -/
+theorem lossPair_common_enlarged_word_ordered_edgeSlice_xor
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {x y : V}
+    (hxyNe : x ≠ y)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    (hxBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent x)
+    (hyBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent y) :
+    (
+      ∃ hxy : x < y,
+        let hret :=
+          projectedLoss_edge_right_retained
+            C exponent hexp honeLoss hxLoss hxy
+        let e := retainedColor C x y hret
+        (
+          (word ∈ translatedCompletionWords C x e ∧
+            word ∉ translatedCompletionWords C y e)
+          ∨
+          (word ∈ translatedCompletionWords C y e ∧
+            word ∉ translatedCompletionWords C x e)
+        )
+    )
+    ∨
+    (
+      ∃ hyx : y < x,
+        let hret :=
+          projectedLoss_edge_right_retained
+            C exponent hexp honeLoss hyLoss hyx
+        let e := retainedColor C y x hret
+        (
+          (word ∈ translatedCompletionWords C y e ∧
+            word ∉ translatedCompletionWords C x e)
+          ∨
+          (word ∈ translatedCompletionWords C x e ∧
+            word ∉ translatedCompletionWords C y e)
+        )
+    ) := by
+  rcases lt_or_gt_of_ne hxyNe with hxy | hyx
+  · exact Or.inl
+      ⟨hxy,
+        lossPair_common_enlarged_word_edgeSlice_xor
+          C exponent hexp honeLoss
+          hxy hxLoss hyLoss hxBlock hyBlock⟩
+  · exact Or.inr
+      ⟨hyx,
+        lossPair_common_enlarged_word_edgeSlice_xor
+          C exponent hexp honeLoss
+          hyx hyLoss hxLoss hyBlock hxBlock⟩
+
+#print axioms lossPair_common_enlarged_word_edgeSlice_xor
+#print axioms lossPair_common_enlarged_word_ordered_edgeSlice_xor
+
 end OrderedEdgeColoring
 end JSP000404Research
