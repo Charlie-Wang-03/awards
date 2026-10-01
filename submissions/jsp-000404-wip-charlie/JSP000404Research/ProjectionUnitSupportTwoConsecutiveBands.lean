@@ -1,4 +1,5 @@
 import JSP000404Research.SecondLayerUnitTransitionBandRigidity
+import JSP000404Research.ProjectionRetainedPaletteBandBridge
 import JSP000404Research.ProjectionLossZeroUnitStep
 import Mathlib.Tactic
 
@@ -160,6 +161,112 @@ theorem planar_projectedLoss_unitSupportTwo_threeBands_consecutive
     (by simpa [L] using htopAbsent)
 
 #print axioms planar_projectedLoss_unitSupportTwo_threeBands_consecutive
+
+
+/-- Retained-palette form of the same rigidity: at a projected-loss
+second-layer support-two centre with unit transition, the three retained
+colour labels are exactly three consecutive integers. -/
+theorem planar_projectedLoss_unitSupportTwo_retainedPalette_consecutive
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (i : ProjectionOrdered V)
+    (hloss :
+      i ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp C))
+    (hsecond : centreExponent (C i) t = n - 2)
+    (hsupport :
+      positiveSupport (centreQuotient (C i) t) = 2)
+    (cert :
+      HighExponentTransitionIntervalCertificate
+        (reindexedPoint_injective hp) t i (C i))
+    (hqe : cert.qe = 1) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let R :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    ∃ m : ℕ,
+      (retainedActive R i).map Fin.valEmbedding =
+        {m,m+1,m+2} := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
+  have hn1 : 1 ≤ n := by omega
+  have hdelta1 : delta < 1 := by linarith
+  have htpos : 0 < t :=
+    sendov_scale_pos hn1 hdelta0 ht
+  have hwidthR : t < (n : ℝ) + 1 := by
+    rw [ht]
+    linarith
+  have hwidth : t < (n + 1 : ℕ) := by
+    exact_mod_cast hwidthR
+  let D :=
+    genericDirectionData_sendov hp hcap htpos hlam
+  let R : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
+    standardResidualColoring D n hwidth
+  let exponent : ProjectionOrdered V → ℕ :=
+    fun q => centreExponent (C q) t
+  let L :=
+    projectionCutLocalCycle hp hcap htpos hlam i (C i)
+
+  have hloss' : i ∈ projectedLossVertices R exponent := by
+    simpa [R,D,exponent,planarStandardResidualColoring,
+      planarCentreExponent] using hloss
+
+  have hprofile :=
+    genericProjection_lowerBranch_profile_hypotheses
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  have hexp : ∀ q, exponent q ≤ n := by
+    intro q
+    exact Nat.le_of_lt
+      (by simpa [exponent] using hprofile.1 q)
+  have hone :
+      ∀ q, (active R q).card ≤ n - exponent q + 1 := by
+    intro q
+    simpa [R,D,exponent] using hprofile.2 q
+  have hresInactive :
+      residualCoord n ∉ active R i :=
+    residual_inactive_of_mem_projectedLossVertices
+      R exponent hexp hone hloss'
+
+  obtain ⟨m,hm⟩ :=
+    planar_projectedLoss_unitSupportTwo_threeBands_consecutive
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam
+      C i
+      (by simpa [R,D,exponent] using hloss')
+      hsecond hsupport cert hqe
+
+  have hbridge :=
+    projectionCut_occupiedBands_eq_retainedActive_valMap
+      hp hcap htpos hlam hwidth i (C i)
+      (by simpa [R,D] using hresInactive)
+
+  refine ⟨m,?_⟩
+  have hocc :
+      occupiedNatBands L.values = {m,m+1,m+2} := by
+    simpa [L] using hm
+  have hbridge' :
+      occupiedNatBands L.values =
+        (retainedActive R i).map Fin.valEmbedding := by
+    simpa [L,R,D] using hbridge
+  rw [← hbridge']
+  exact hocc
+
+#print axioms planar_projectedLoss_unitSupportTwo_retainedPalette_consecutive
 
 end ProjectionOrdered
 end JSP000404Research
