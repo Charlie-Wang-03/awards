@@ -318,5 +318,198 @@ theorem threeSecond_commonWord_QTT_or_closed
 #print axioms secondLayer_translated_word_blocker_or_closed
 #print axioms threeSecond_commonWord_QTT_or_closed
 
+
+/-- In a canonical Q/T/T obstruction, each translated owner coordinate is
+exactly the retained colour of the edge joining that translated owner to the
+completion owner.  The side of the completion owner also determines the
+translated word bit at that coordinate. -/
+theorem QTT_owner_edge_semantics
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {s x : V}
+    (hsx : s ≠ x)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    {word : Fin n → Bool}
+    {cx : Fin n}
+    (hcx : cx ∈ retainedActive C x)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx) :
+    (
+      ∃ hxs : x < s,
+        ∃ hret : (C.color x s).val < n,
+          retainedColor C x s hret = cx ∧
+          word cx = true
+    )
+    ∨
+    (
+      ∃ hsxlt : s < x,
+        ∃ hret : (C.color s x).val < n,
+          retainedColor C s x hret = cx ∧
+          word cx = false
+    ) := by
+  have hxBase :
+      flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
+    (mem_translatedCompletionWords C x cx word).1 hxT
+  have hsAsFlip :
+      flipBoolWordAt (flipBoolWordAt word cx) cx ∈
+        retainedCompletionWords C s := by
+    simpa [flipBoolWordAt_involutive] using hsQ
+  have hedge :=
+    loss_translated_blocker_edge_colour
+      C exponent hexp honeLoss
+      hxLoss hsx.symm hcx hxBase hsAsFlip
+  rcases hedge with hright | hleft
+  · obtain ⟨hxs,hret,hcol⟩ := hright
+    left
+    refine ⟨hxs,hret,hcol,?_⟩
+    have hOut : cx ∈ outgoingRetained C x := by
+      apply (mem_outgoingRetained_iff C x cx).2
+      refine ⟨s,hxs,?_⟩
+      apply Fin.ext
+      have hval := congrArg Fin.val hcol
+      simpa [retainedColor] using hval
+    exact translated_loss_word_true_of_outgoing C hOut hxT
+  · obtain ⟨hsxlt,hret,hcol⟩ := hleft
+    right
+    refine ⟨hsxlt,hret,hcol,?_⟩
+    have hIn : cx ∈ incomingRetained C x := by
+      apply (mem_incomingRetained_iff C x cx).2
+      refine ⟨s,hsxlt,?_⟩
+      apply Fin.ext
+      have hval := congrArg Fin.val hcol
+      simpa [retainedColor] using hval
+    exact translated_loss_word_false_of_incoming C hIn hxT
+
+/-- Both Q/T edges of a canonical Q/T/T obstruction use the corresponding
+translated owner coordinates.  Consequently those two distinct coordinates
+are active at the completion owner as well. -/
+theorem QTT_two_known_active_coordinates_at_completion_owner
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {s x y : V}
+    (hsx : s ≠ x)
+    (hsy : s ≠ y)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    cx ∈ retainedActive C s ∧
+    cy ∈ retainedActive C s := by
+  have hxSem :=
+    QTT_owner_edge_semantics
+      C exponent hexp honeLoss
+      hsx hxLoss hcx hsQ hxT
+  have hySem :=
+    QTT_owner_edge_semantics
+      C exponent hexp honeLoss
+      hsy hyLoss hcy hsQ hyT
+  constructor
+  · rcases hxSem with hleft | hright
+    · obtain ⟨hxs,hret,hcol,_⟩ := hleft
+      have hc :
+          retainedColor C x s hret ∈ retainedActive C s :=
+        retainedColor_mem_retainedActive_right C hxs hret
+      simpa [hcol] using hc
+    · obtain ⟨hsxlt,hret,hcol,_⟩ := hright
+      have hc :
+          retainedColor C s x hret ∈ retainedActive C s :=
+        retainedColor_mem_retainedActive_left C hsxlt hret
+      simpa [hcol] using hc
+  · rcases hySem with hleft | hright
+    · obtain ⟨hys,hret,hcol,_⟩ := hleft
+      have hc :
+          retainedColor C y s hret ∈ retainedActive C s :=
+        retainedColor_mem_retainedActive_right C hys hret
+      simpa [hcol] using hc
+    · obtain ⟨hsylt,hret,hcol,_⟩ := hright
+      have hc :
+          retainedColor C s y hret ∈ retainedActive C s :=
+        retainedColor_mem_retainedActive_left C hsylt hret
+      simpa [hcol] using hc
+
+/-- At a second-layer completion owner in Q/T/T, the two translated-owner
+coordinates occupy two of the three active slots, leaving a unique third active
+coordinate. -/
+theorem QTT_secondLayer_completion_owner_has_unique_third_active
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ z, exponent z ≤ n)
+    (honeLoss :
+      ∀ z, (active C z).card ≤ n - exponent z + 1)
+    {s x y : V}
+    (hsx : s ≠ x)
+    (hsy : s ≠ y)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = n - 2)
+    {word : Fin n → Bool}
+    {cx cy : Fin n}
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hcx : cx ∈ retainedActive C x)
+    (hcy : cy ∈ retainedActive C y)
+    (hcxy : cx ≠ cy)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    ∃! e : Fin n,
+      e ∈ retainedActive C s ∧ e ≠ cx ∧ e ≠ cy := by
+  classical
+  have hknown :=
+    QTT_two_known_active_coordinates_at_completion_owner
+      C exponent hexp honeLoss
+      hsx hsy hxLoss hyLoss hcx hcy hsQ hxT hyT
+  have hcard :=
+    secondLayerLoss_retainedActive_card_eq_three
+      C exponent hsLoss hsSecond
+  have hexists :
+      ∃ e ∈ retainedActive C s, e ≠ cx ∧ e ≠ cy := by
+    by_contra hnone
+    push_neg at hnone
+    have hsub :
+        retainedActive C s ⊆ {cx,cy} := by
+      intro e he
+      have heq := hnone e he
+      simp [heq]
+    have hle := Finset.card_le_card hsub
+    simp [hcard,hcxy] at hle
+  obtain ⟨e,he,hecx,hecy⟩ := hexists
+  refine ⟨e,⟨he,hecx,hecy⟩,?_⟩
+  intro d hd
+  by_contra hde
+  have hsub :
+      ({cx,cy,e,d} : Finset (Fin n)) ⊆ retainedActive C s := by
+    intro q hq
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+    rcases hq with rfl | rfl | rfl | rfl
+    · exact hknown.1
+    · exact hknown.2
+    · exact he
+    · exact hd.1
+  have hcard4 :
+      ({cx,cy,e,d} : Finset (Fin n)).card = 4 := by
+    simp [hcxy,hecx,hecy,hd.2.1,hd.2.2,hde]
+  have hfour : 4 ≤ (retainedActive C s).card := by
+    rw [← hcard4]
+    exact Finset.card_le_card hsub
+  omega
+
+#print axioms QTT_owner_edge_semantics
+#print axioms QTT_two_known_active_coordinates_at_completion_owner
+#print axioms QTT_secondLayer_completion_owner_has_unique_third_active
+
 end OrderedEdgeColoring
 end JSP000404Research
