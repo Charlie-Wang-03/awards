@@ -1233,9 +1233,7 @@ theorem planar_enlarged_expansion_failure_recursive_root
         (
           ∃ u v w :
               {x : ProjectionOrdered V // x ∈ T},
-            (enlargedCollisionGraph R exponent T).Adj u v ∧
-            (enlargedCollisionGraph R exponent T).Adj u w ∧
-            (enlargedCollisionGraph R exponent T).Adj v w
+            EnlargedTriangleOutlet R exponent T u v w
         )
         ∨
         (
