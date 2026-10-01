@@ -76,7 +76,145 @@ theorem enlargedCollisionGraph_cross_of_adj
     EnlargedBlocksCross C exponent u.1 v.1 :=
   (enlargedCollisionGraph_adj C exponent T u v).1 h |>.2
 
+
+theorem minimal_enlargedCollisionGraph_preconnected
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U) :
+    (enlargedCollisionGraph C exponent T).Preconnected := by
+  classical
+  let G := enlargedCollisionGraph C exponent T
+  intro u v
+  by_contra huvReach
+
+  let A : Finset V :=
+    T.filter fun x =>
+      ∃ hx : x ∈ T, G.Reachable u ⟨x,hx⟩
+  let B : Finset V := T \ A
+
+  have hAsub : A ⊆ T := by
+    intro x hx
+    exact (Finset.mem_filter.mp hx).1
+
+  have hA : A.Nonempty := by
+    refine ⟨u.1,?_⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨u.2,?_⟩
+    exact ⟨u.2, SimpleGraph.Reachable.refl⟩
+
+  have hvNotA : v.1 ∉ A := by
+    intro hvA
+    obtain ⟨_hvT,hvReach⟩ :=
+      Finset.mem_filter.mp hvA
+    obtain ⟨hvProof,hReach⟩ := hvReach
+    apply huvReach
+    simpa using hReach
+
+  have hB : B.Nonempty := by
+    refine ⟨v.1,?_⟩
+    exact Finset.mem_sdiff.mpr ⟨v.2,hvNotA⟩
+
+  have hdisjAB : Disjoint A B := by
+    exact Finset.disjoint_sdiff_right
+
+  have hunion : A ∪ B = T := by
+    dsimp [B]
+    exact Finset.union_sdiff_of_subset hAsub
+
+  have hcross :
+      Disjoint
+        (A.biUnion
+          (enlargedProjectedCandidateBlock C exponent))
+        (B.biUnion
+          (enlargedProjectedCandidateBlock C exponent)) := by
+    rw [Finset.disjoint_left]
+    intro word hwordA hwordB
+    obtain ⟨x,hxA,hxWord⟩ :=
+      Finset.mem_biUnion.mp hwordA
+    obtain ⟨y,hyB,hyWord⟩ :=
+      Finset.mem_biUnion.mp hwordB
+
+    have hxT : x ∈ T := hAsub hxA
+    have hyData := Finset.mem_sdiff.mp hyB
+    have hyT : y ∈ T := hyData.1
+    have hyNotA : y ∉ A := hyData.2
+    have hxy : x ≠ y := by
+      intro h
+      subst y
+      exact hyNotA hxA
+
+    have hCrossXY :
+        EnlargedBlocksCross C exponent x y := by
+      exact ⟨word,hxWord,hyWord⟩
+    have hAdj :
+        G.Adj ⟨x,hxT⟩ ⟨y,hyT⟩ := by
+      dsimp [G]
+      exact enlargedCollisionGraph_adj_of_cross
+        C exponent T hxT hyT hxy hCrossXY
+
+    obtain ⟨_hxT,hxReachData⟩ :=
+      Finset.mem_filter.mp hxA
+    obtain ⟨hxProof,hxReach⟩ := hxReachData
+    have hxReach' :
+        G.Reachable u ⟨x,hxT⟩ := by
+      simpa using hxReach
+    have hyReach :
+        G.Reachable u ⟨y,hyT⟩ :=
+      hxReach'.trans hAdj.reachable
+
+    have hyA : y ∈ A := by
+      apply Finset.mem_filter.mpr
+      refine ⟨hyT,?_⟩
+      exact ⟨hyT,hyReach⟩
+    exact hyNotA hyA
+
+  exact minimal_deficient_no_noncross_partition
+    (fun x : V => 2 ^ exponent x)
+    (enlargedProjectedCandidateBlock C exponent)
+    hdef hmin hA hB hdisjAB hunion hcross
+
+theorem minimal_enlargedCollisionGraph_connected
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {T : Finset V}
+    (hT : T.Nonempty)
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U) :
+    (enlargedCollisionGraph C exponent T).Connected := by
+  rw [SimpleGraph.connected_iff]
+  constructor
+  · exact minimal_enlargedCollisionGraph_preconnected
+      C exponent hdef hmin
+  · obtain ⟨v,hv⟩ := hT
+    exact ⟨⟨v,hv⟩⟩
+
 #print axioms enlargedCollisionGraph_adj
+#print axioms minimal_enlargedCollisionGraph_preconnected
+#print axioms minimal_enlargedCollisionGraph_connected
 
 end OrderedEdgeColoring
 end JSP000404Research
