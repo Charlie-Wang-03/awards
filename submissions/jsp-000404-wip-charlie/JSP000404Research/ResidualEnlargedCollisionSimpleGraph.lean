@@ -1243,8 +1243,159 @@ theorem longCycle_totalSlack_lt_doubleCovered
       hdef
   omega
 
-#print axioms longCycle_doubleCovered_eq_totalSlack_add_deficiency
-#print axioms longCycle_totalSlack_lt_doubleCovered
+
+noncomputable def coreOrderedVertexPairs
+    {V : Type*} [LinearOrder V]
+    (T : Finset V) : Finset (V × V) := by
+  classical
+  exact (T.product T).filter fun uv => uv.1 < uv.2
+
+noncomputable def corePairOverlapWords
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (uv : V × V) : Finset (Fin n → Bool) :=
+  enlargedProjectedCandidateBlock C exponent uv.1 ∩
+    enlargedProjectedCandidateBlock C exponent uv.2
+
+@[simp] theorem mem_coreOrderedVertexPairs
+    {V : Type*} [LinearOrder V]
+    (T : Finset V)
+    (u v : V) :
+    (u,v) ∈ coreOrderedVertexPairs T ↔
+      u ∈ T ∧ v ∈ T ∧ u < v := by
+  classical
+  simp [coreOrderedVertexPairs, and_assoc]
+
+theorem longCycle_doubleCoveredWords_eq_pairOverlapUnion
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    coreDoubleCoveredWords C exponent T
+      =
+    (coreOrderedVertexPairs T).biUnion
+      (corePairOverlapWords C exponent) := by
+  classical
+  ext word
+  constructor
+  · intro hdouble
+    have hcard :=
+      (mem_coreDoubleCoveredWords
+        C exponent T word).1 hdouble
+    obtain ⟨u,v,huv,hfib⟩ :=
+      Finset.card_eq_two.mp hcard
+    have huF :
+        u ∈ coreEnlargedCandidateFibre
+          C exponent T word := by
+      rw [hfib]
+      simp
+    have hvF :
+        v ∈ coreEnlargedCandidateFibre
+          C exponent T word := by
+      rw [hfib]
+      simp
+    have huData :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word u).1 huF
+    have hvData :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word v).1 hvF
+    rcases lt_or_gt_of_ne huv with huvlt | hvult
+    · apply Finset.mem_biUnion.mpr
+      refine ⟨(u,v),?_,?_⟩
+      · exact (mem_coreOrderedVertexPairs T u v).2
+          ⟨huData.1,hvData.1,huvlt⟩
+      · exact Finset.mem_inter.mpr
+          ⟨huData.2,hvData.2⟩
+    · apply Finset.mem_biUnion.mpr
+      refine ⟨(v,u),?_,?_⟩
+      · exact (mem_coreOrderedVertexPairs T v u).2
+          ⟨hvData.1,huData.1,hvult⟩
+      · exact Finset.mem_inter.mpr
+          ⟨hvData.2,huData.2⟩
+  · intro hunion
+    obtain ⟨uv,huvPair,hwordPair⟩ :=
+      Finset.mem_biUnion.mp hunion
+    rcases uv with ⟨u,v⟩
+    have hpair :=
+      (mem_coreOrderedVertexPairs T u v).1 huvPair
+    have hwordParts :=
+      Finset.mem_inter.mp hwordPair
+    have huF :
+        u ∈ coreEnlargedCandidateFibre
+          C exponent T word :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word u).2
+        ⟨hpair.1,hwordParts.1⟩
+    have hvF :
+        v ∈ coreEnlargedCandidateFibre
+          C exponent T word :=
+      (mem_coreEnlargedCandidateFibre
+        C exponent T word v).2
+        ⟨hpair.2.1,hwordParts.2⟩
+    have htwo :
+        2 ≤ (coreEnlargedCandidateFibre
+          C exponent T word).card := by
+      exact Finset.two_le_card.mpr
+        ⟨u,huF,v,hvF,ne_of_lt hpair.2.2⟩
+    have hle :=
+      coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
+        C exponent T hgirth word
+    apply (mem_coreDoubleCoveredWords
+      C exponent T word).2
+    omega
+
+theorem longCycle_doubleCovered_card_le_sum_pairOverlaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (T : Finset V)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (coreDoubleCoveredWords C exponent T).card
+      ≤
+    ∑ uv ∈ coreOrderedVertexPairs T,
+      (corePairOverlapWords C exponent uv).card := by
+  rw [longCycle_doubleCoveredWords_eq_pairOverlapUnion
+    C exponent T hgirth]
+  exact Finset.card_biUnion_le
+
+theorem longCycle_totalSlack_lt_sum_pairOverlaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ x, exponent x < n)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hgirth :
+      3 < (enlargedCollisionGraph C exponent T).girth) :
+    (∑ v ∈ T,
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ))
+      <
+    ∑ uv ∈ coreOrderedVertexPairs T,
+      (corePairOverlapWords C exponent uv).card := by
+  exact lt_of_lt_of_le
+    (longCycle_totalSlack_lt_doubleCovered
+      C exponent hexpLt hexp honeLoss hdef hgirth)
+    (longCycle_doubleCovered_card_le_sum_pairOverlaps
+      C exponent T hgirth)
+
+#print axioms longCycle_doubleCoveredWords_eq_pairOverlapUnion
+#print axioms longCycle_doubleCovered_card_le_sum_pairOverlaps
+#print axioms longCycle_totalSlack_lt_sum_pairOverlaps
 
 end OrderedEdgeColoring
 end JSP000404Research
