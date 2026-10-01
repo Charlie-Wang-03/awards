@@ -1316,6 +1316,110 @@ theorem QTTT_fin3_antipode_hole_or_fresh_blocker
 #print axioms QTTT_fin3_antipode_hole_or_fresh_blocker
 
 
+/-- Two n=3 second-layer loss blocks whose unique completion words are
+antipodal cover the entire Boolean 3-cube. -/
+theorem secondLayer_fin3_antipodal_enlarged_union_eq_univ
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {u v : V}
+    (huLoss : u ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (huSecond : exponent u = 1)
+    (hvSecond : exponent v = 1)
+    {base : Fin 3 → Bool}
+    (huBase : base ∈ retainedCompletionWords C u)
+    {a b c : Fin 3}
+    (hab : a ≠ b)
+    (hac : a ≠ c)
+    (hbc : b ≠ c)
+    (hvAnti :
+      tripleFlipBoolWord base a b c ∈
+        retainedCompletionWords C v) :
+    enlargedProjectedCandidateBlock C exponent u ∪
+        enlargedProjectedCandidateBlock C exponent v
+      =
+    (Finset.univ : Finset (Fin 3 → Bool)) := by
+  classical
+  apply Finset.eq_univ_of_forall
+  intro q
+  rcases
+    fin3_word_base_or_single_or_antipode_or_antipode_single
+      base q hab hac hbc
+    with hbase | hsingle | hanti | hantiSingle
+  · subst q
+    apply Finset.mem_union_left
+    rw [enlargedProjectedCandidateBlock_loss C exponent huLoss]
+    unfold allActiveLossCandidateBlock
+    exact Finset.mem_union_left _ huBase
+  · obtain ⟨d,rfl⟩ := hsingle
+    apply Finset.mem_union_left
+    rw [enlargedProjectedCandidateBlock_loss C exponent huLoss]
+    unfold allActiveLossCandidateBlock
+    apply Finset.mem_union_right
+    unfold allActiveTranslatedWords
+    apply Finset.mem_biUnion.mpr
+    have hdActive : d ∈ retainedActive C u := by
+      rw [secondLayer_fin3_retainedActive_eq_univ
+        C exponent huLoss huSecond]
+      simp
+    refine ⟨d,hdActive,?_⟩
+    apply (mem_translatedCompletionWords C u d _).2
+    simpa [flipBoolWordAt_involutive] using huBase
+  · subst q
+    apply Finset.mem_union_right
+    rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+    unfold allActiveLossCandidateBlock
+    exact Finset.mem_union_left _ hvAnti
+  · obtain ⟨d,rfl⟩ := hantiSingle
+    apply Finset.mem_union_right
+    rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+    unfold allActiveLossCandidateBlock
+    apply Finset.mem_union_right
+    unfold allActiveTranslatedWords
+    apply Finset.mem_biUnion.mpr
+    have hdActive : d ∈ retainedActive C v := by
+      rw [secondLayer_fin3_retainedActive_eq_univ
+        C exponent hvLoss hvSecond]
+      simp
+    refine ⟨d,hdActive,?_⟩
+    apply (mem_translatedCompletionWords C v d _).2
+    simpa [flipBoolWordAt_involutive] using hvAnti
+
+/-- If the n=3 Q/T/T/T antipode is blocked by another second-layer loss
+vertex, then the completion owner and that fresh blocker already cover the
+whole Boolean cube with their two enlarged blocks. -/
+theorem QTTT_fin3_secondLayer_antipode_blocker_covers_cube
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V 4)
+    (exponent : V → ℕ)
+    {s r : V}
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hrLoss : r ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = 1)
+    (hrSecond : exponent r = 1)
+    {word : Fin 3 → Bool}
+    (hsQ : word ∈ retainedCompletionWords C s)
+    {cx cy cz : Fin 3}
+    (hcxy : cx ≠ cy)
+    (hcxz : cx ≠ cz)
+    (hcyz : cy ≠ cz)
+    (hrAnti :
+      tripleFlipBoolWord word cx cy cz ∈
+        retainedCompletionWords C r) :
+    enlargedProjectedCandidateBlock C exponent s ∪
+        enlargedProjectedCandidateBlock C exponent r
+      =
+    (Finset.univ : Finset (Fin 3 → Bool)) :=
+  secondLayer_fin3_antipodal_enlarged_union_eq_univ
+    C exponent
+    hsLoss hrLoss hsSecond hrSecond
+    hsQ hcxy hcxz hcyz hrAnti
+
+#print axioms secondLayer_fin3_antipodal_enlarged_union_eq_univ
+#print axioms QTTT_fin3_secondLayer_antipode_blocker_covers_cube
+
+
 /-- The translated--translated edge in a canonical Q/T/T obstruction uses one
 of the two translated owner coordinates. -/
 theorem QTT_translated_edge_colour_one_of_owners
