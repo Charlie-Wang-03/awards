@@ -1201,36 +1201,23 @@ theorem threeTranslatedLoss_middleTop_two_pattern
       (retainedActive C y).card = 2 :=
     topLoss_retainedActive_card_eq_two
       C exponent hyLoss hyTop
-  have hpalette :
-      retainedActive C y = {eleft,eright} := by
-    apply Finset.eq_of_subset_of_card_le
-    · intro q hq
-      have hqMem : q = eleft ∨ q = eright := by
-        by_contra hnot
-        push_neg at hnot
-        have hthree :
-            3 ≤ (retainedActive C y).card := by
-          have hsub :
-              ({eleft,eright,q} : Finset (Fin n)) ⊆ retainedActive C y := by
-            intro r hr
-            simp only [Finset.mem_insert, Finset.mem_singleton] at hr
-            rcases hr with rfl | rfl | rfl
-            · exact heleftActive
-            · exact herightActive
-            · exact hq
-          have hc3 : ({eleft,eright,q} : Finset (Fin n)).card = 3 := by
-            simp [hne,hnot.1,hnot.2]
-          rw [← hc3]
-          exact Finset.card_le_card hsub
-        omega
-      simpa [hpalette] using hqMem
-    · simp [hcard,hne]
-
   have hcyCase : cy = eleft ∨ cy = eright := by
-    have hmem : cy ∈ ({eleft,eright} : Finset (Fin n)) := by
-      rw [← hpalette]
-      exact hcy
-    simpa using hmem
+    by_contra hnot
+    push_neg at hnot
+    have hsub :
+        ({eleft,eright,cy} : Finset (Fin n)) ⊆ retainedActive C y := by
+      intro q hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with rfl | rfl | rfl
+      · exact heleftActive
+      · exact herightActive
+      · exact hcy
+    have hc3 : ({eleft,eright,cy} : Finset (Fin n)).card = 3 := by
+      simp [hne,hnot.1,hnot.2]
+    have hthree : 3 ≤ (retainedActive C y).card := by
+      rw [← hc3]
+      exact Finset.card_le_card hsub
+    omega
 
   rcases hcyCase with hcyLeft | hcyRight
   · left
