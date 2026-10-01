@@ -790,13 +790,12 @@ theorem QTT_ordered_two_colour_triangle
       hxy hxLoss hyLoss hcx hcy hxT hyT
   rcases hxSem with hxLeft | hxRight <;>
     rcases hySem with hyLeft | hyRight
-  · obtain ⟨hxs,_hxret,_hxcol,hxTrue⟩ := hxLeft
-    obtain ⟨hys,_hyret,_hycol,hyTrue⟩ := hyLeft
+  · obtain ⟨hxs,hxret,hxcol,hxTrue⟩ := hxLeft
+    obtain ⟨hys,hyret,hycol,hyTrue⟩ := hyLeft
     rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
     · right; right; right; right
       left
-      refine ⟨hxylt,?_,?_⟩
-      · exact lt_of_lt_of_le hxylt hys.le
+      refine ⟨hxylt,hys,?_⟩
       · rcases hxySem with hforward | hbackward
         · obtain ⟨_,hret,hcol⟩ := hforward
           rcases hcol with hcxCol | hcyCol
@@ -808,19 +807,11 @@ theorem QTT_ordered_two_colour_triangle
             apply hmono
             apply Fin.ext
             have h1 := congrArg Fin.val hcyCol
-            have hySem' :=
-              QTT_owner_edge_semantics
-                C exponent hexp honeLoss
-                hsy hyLoss hcy hsQ hyT
-            rcases hySem' with hyL | hyR
-            · obtain ⟨_,hyret,hycol,_⟩ := hyL
-              have h2 := congrArg Fin.val hycol
-              simpa [retainedColor] using h1.trans h2.symm
-            · exact False.elim ((not_lt_of_ge hys.le) hyR.1)
+            have h2 := congrArg Fin.val hycol
+            simpa [retainedColor] using h1.trans h2.symm
         · exact False.elim ((not_lt_of_ge hxylt.le) hbackward.1)
     · right; right; right; right; right
-      refine ⟨hyxlt,?_,?_⟩
-      · exact lt_of_lt_of_le hyxlt hxs.le
+      refine ⟨hyxlt,hxs,?_⟩
       · rcases hxySem with hforward | hbackward
         · exact False.elim ((not_lt_of_ge hyxlt.le) hforward.1)
         · obtain ⟨_,hret,hcol⟩ := hbackward
@@ -832,7 +823,6 @@ theorem QTT_ordered_two_colour_triangle
             apply hmono
             apply Fin.ext
             have h1 := congrArg Fin.val hcxCol
-            rcases hxLeft with ⟨_,hxret,hxcol,_⟩
             have h2 := congrArg Fin.val hxcol
             simpa [retainedColor] using h1.trans h2.symm
           · exact ⟨hret,hcyCol⟩
