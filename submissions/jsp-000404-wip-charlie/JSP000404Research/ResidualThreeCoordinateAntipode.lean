@@ -152,6 +152,155 @@ theorem tripleFlipBoolWordN_outside_enlarged_of_three_active
     exact tripleFlipBoolWordN_not_mem_translated_of_three_active
       C hab hac hbc ha hb hc hword hTd
 
+noncomputable def doubleFlipBoolWordN
+    {n : ℕ}
+    (word : Fin n → Bool)
+    (a b : Fin n) :
+    Fin n → Bool :=
+  flipBoolWordAt (flipBoolWordAt word a) b
+
+theorem doubleFlipBoolWordN_not_mem_enlarged_of_two_active
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V} {base : Fin n → Bool}
+    {a b : Fin n}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hab : a ≠ b)
+    (ha : a ∈ retainedActive C v)
+    (hb : b ∈ retainedActive C v)
+    (hbase : base ∈ retainedCompletionWords C v) :
+    doubleFlipBoolWordN base a b ∉
+      enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  intro hmem
+  rcases Finset.mem_union.mp hmem with hQ | hT
+  · have hfix :=
+      (mem_retainedCompletionWords C v
+        (doubleFlipBoolWordN base a b)).1 hQ
+    have hbaseFix :=
+      (mem_retainedCompletionWords C v base).1 hbase
+    have h1 := hbaseFix a ha
+    have h2 := hfix a ha
+    unfold doubleFlipBoolWordN at h2
+    rw [flipBoolWordAt_off _ hab.symm,
+        flipBoolWordAt_at, h1] at h2
+    cases h : retainedBit C v a <;> simp [h] at h2
+  · unfold allActiveTranslatedWords at hT
+    obtain ⟨d,hd,hTd⟩ := Finset.mem_biUnion.mp hT
+    have htranslated :
+        flipBoolWordAt (doubleFlipBoolWordN base a b) d ∈
+          retainedCompletionWords C v :=
+      (mem_translatedCompletionWords C v d _).1 hTd
+    have hfix :=
+      (mem_retainedCompletionWords C v
+        (flipBoolWordAt (doubleFlipBoolWordN base a b) d)).1
+        htranslated
+    have hbaseFix :=
+      (mem_retainedCompletionWords C v base).1 hbase
+    by_cases hda : d = a
+    · subst d
+      have h1 := hbaseFix b hb
+      have h2 := hfix b hb
+      unfold doubleFlipBoolWordN at h2
+      rw [flipBoolWordAt_off _ hab.symm,
+          flipBoolWordAt_at] at h2
+      rw [flipBoolWordAt_at] at h2
+      rw [h1] at h2
+      cases h : retainedBit C v b <;> simp [h] at h2
+    · have h1 := hbaseFix a ha
+      have h2 := hfix a ha
+      unfold doubleFlipBoolWordN at h2
+      rw [flipBoolWordAt_off _ hda,
+          flipBoolWordAt_off _ hab.symm,
+          flipBoolWordAt_at, h1] at h2
+      cases h : retainedBit C v a <;> simp [h] at h2
+
+theorem QTT_equal_palette_x_excludes_triple_antipode
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {s x : V} {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hcxy : cx ≠ cy) (hcxz : cx ≠ cz) (hcyz : cy ≠ cz)
+    (hsActive : retainedActive C s = {cx,cy,cz})
+    (hxEq : retainedActive C x = retainedActive C s)
+    (hxT : word ∈ translatedCompletionWords C x cx) :
+    tripleFlipBoolWordN word cx cy cz ∉
+      enlargedProjectedCandidateBlock C exponent x := by
+  have hbase :
+      flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
+    (mem_translatedCompletionWords C x cx word).1 hxT
+  have hcy : cy ∈ retainedActive C x := by rw [hxEq,hsActive]; simp
+  have hcz : cz ∈ retainedActive C x := by rw [hxEq,hsActive]; simp
+  simpa [tripleFlipBoolWordN, doubleFlipBoolWordN] using
+    (doubleFlipBoolWordN_not_mem_enlarged_of_two_active
+      C exponent hxLoss hcyz hcy hcz hbase)
+
+theorem QTT_equal_palette_y_excludes_triple_antipode
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {s y : V} {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hcxy : cx ≠ cy) (hcxz : cx ≠ cz) (hcyz : cy ≠ cz)
+    (hsActive : retainedActive C s = {cx,cy,cz})
+    (hyEq : retainedActive C y = retainedActive C s)
+    (hyT : word ∈ translatedCompletionWords C y cy) :
+    tripleFlipBoolWordN word cx cy cz ∉
+      enlargedProjectedCandidateBlock C exponent y := by
+  have hbase :
+      flipBoolWordAt word cy ∈ retainedCompletionWords C y :=
+    (mem_translatedCompletionWords C y cy word).1 hyT
+  have hcx : cx ∈ retainedActive C y := by rw [hyEq,hsActive]; simp
+  have hcz : cz ∈ retainedActive C y := by rw [hyEq,hsActive]; simp
+  have hdouble :=
+    doubleFlipBoolWordN_not_mem_enlarged_of_two_active
+      C exponent hyLoss hcxz hcx hcz hbase
+  intro hanti
+  apply hdouble
+  have heq :
+      tripleFlipBoolWordN word cx cy cz =
+        doubleFlipBoolWordN (flipBoolWordAt word cy) cx cz := by
+    unfold tripleFlipBoolWordN doubleFlipBoolWordN
+    rw [flipBoolWordAt_comm word hcxy]
+  rwa [← heq]
+
+theorem QTT_equal_palette_z_excludes_triple_antipode
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {s z : V} {word : Fin n → Bool}
+    {cx cy cz : Fin n}
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hcxy : cx ≠ cy) (hcxz : cx ≠ cz) (hcyz : cy ≠ cz)
+    (hsActive : retainedActive C s = {cx,cy,cz})
+    (hzEq : retainedActive C z = retainedActive C s)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    tripleFlipBoolWordN word cx cy cz ∉
+      enlargedProjectedCandidateBlock C exponent z := by
+  have hbase :
+      flipBoolWordAt word cz ∈ retainedCompletionWords C z :=
+    (mem_translatedCompletionWords C z cz word).1 hzT
+  have hcx : cx ∈ retainedActive C z := by rw [hzEq,hsActive]; simp
+  have hcy : cy ∈ retainedActive C z := by rw [hzEq,hsActive]; simp
+  have hdouble :=
+    doubleFlipBoolWordN_not_mem_enlarged_of_two_active
+      C exponent hzLoss hcxy hcx hcy hbase
+  intro hanti
+  apply hdouble
+  have heq :
+      tripleFlipBoolWordN word cx cy cz =
+        doubleFlipBoolWordN (flipBoolWordAt word cz) cx cy := by
+    unfold tripleFlipBoolWordN doubleFlipBoolWordN
+    rw [flipBoolWordAt_comm (flipBoolWordAt word cx) hcyz]
+    rw [flipBoolWordAt_comm word hcxz]
+  rwa [← heq]
+
 theorem tripleFlipBoolWordN_outside_enlarged_of_exact_three_palette
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
