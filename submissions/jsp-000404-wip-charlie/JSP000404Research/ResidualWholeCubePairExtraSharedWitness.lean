@@ -256,5 +256,91 @@ theorem minimal_core_wholeCubeQTPair_has_extra_shared_word
 #print axioms secondLayer_projectedLoss_enlargedBlock_slack_eq
 #print axioms minimal_core_wholeCubeQTPair_has_extra_shared_word
 
+
+/-- The extra shared word forced by minimality cannot be supplied by the
+whole-cube partner itself.  Hence it has a third core source. -/
+theorem minimal_core_wholeCubeQTPair_has_third_source
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hn3 : 3 ≤ n)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun x => 2 ^ exponent x)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun x => 2 ^ exponent x)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {s v : V} {c : Fin n}
+    (hvT : v ∈ T)
+    (hsT : s ∈ T)
+    (hsv : s ≠ v)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = n - 2)
+    (hcV : c ∈ retainedActive C v)
+    (hwhole : WholeCubeQTPair C s v c) :
+    ∃ word : Fin n → Bool,
+    ∃ w : V,
+      word ∈
+        enlargedProjectedCandidateBlock C exponent v
+      ∧
+      word ∈
+        enlargedProjectedCandidateBlock C exponent w
+      ∧
+      word ∉ retainedCompletionWords C v
+      ∧
+      word ∉ retainedCompletionWords C s
+      ∧
+      w ∈ T
+      ∧
+      w ≠ v
+      ∧
+      w ≠ s := by
+  obtain ⟨word,hshared,hnotV,hnotS⟩ :=
+    minimal_core_wholeCubeQTPair_has_extra_shared_word
+      C exponent hn3 hdef hmin
+      hvT hsT hsv hsLoss hvLoss hvSecond hcV hwhole
+
+  have hparts := Finset.mem_inter.mp hshared
+  have hvBlock :
+      word ∈ enlargedProjectedCandidateBlock C exponent v :=
+    hparts.1
+  obtain ⟨w,hwErase,hwBlock⟩ :=
+    Finset.mem_biUnion.mp hparts.2
+  have hwNeV : w ≠ v :=
+    (Finset.mem_erase.mp hwErase).1
+  have hwT : w ∈ T :=
+    (Finset.mem_erase.mp hwErase).2
+
+  have hwNeS : w ≠ s := by
+    intro hws
+    subst w
+    have hinter :
+        word ∈
+          enlargedProjectedCandidateBlock C exponent v ∩
+            enlargedProjectedCandidateBlock C exponent s :=
+      Finset.mem_inter.mpr ⟨hvBlock,hwBlock⟩
+    have htwo :
+        word ∈
+          retainedCompletionWords C v ∪
+            retainedCompletionWords C s := by
+      rw [← wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
+        C exponent hsLoss hvLoss hcV hwhole]
+      exact hinter
+    rcases Finset.mem_union.mp htwo with hV | hS
+    · exact hnotV hV
+    · exact hnotS hS
+
+  exact ⟨word,w,hvBlock,hwBlock,hnotV,hnotS,hwT,hwNeV,hwNeS⟩
+
+#print axioms minimal_core_wholeCubeQTPair_has_third_source
+
 end OrderedEdgeColoring
 end JSP000404Research
