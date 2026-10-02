@@ -155,8 +155,6 @@ theorem centreForwardLiftedAngle_nonneg_of_lt
   have hneg : theta < 0 := lt_of_not_ge hnot
   rw [hsigma, if_pos hneg] at hsigmaTrue
   simp at hsigmaTrue
-  simpa [centreForwardLiftedAngle,hij,theta] using
-    (le_of_not_gt hnot)
 
 theorem cutRaySign_projectionCut_eq_false_of_lt
     {V : Type*} [Fintype V]
