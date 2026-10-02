@@ -213,8 +213,11 @@ theorem secondLayer_TT_fullRematch_or_halfCapture
     (hinter :
       (translatedCompletionWords C v d ∩
         translatedCompletionWords C w e).Nonempty) :
-    translatedCompletionWords C v d =
+    (
+      retainedActive C v = retainedActive C w ∧
+      translatedCompletionWords C v d =
         translatedCompletionWords C w e
+    )
     ∨
     2 * (translatedTranslatedCapture C v w d e).card
       ≤ (translatedCompletionWords C v d).card := by
@@ -229,8 +232,9 @@ theorem secondLayer_TT_fullRematch_or_halfCapture
   by_cases hEq :
       retainedActive C v = retainedActive C w
   · exact Or.inl
-      (translatedCompletionWords_eq_of_same_palette_nonempty_inter
-        C hEq hinter)
+      ⟨hEq,
+        translatedCompletionWords_eq_of_same_palette_nonempty_inter
+          C hEq hinter⟩
   · right
     have hnotSub :
         ¬ retainedActive C v ⊆ retainedActive C w := by
