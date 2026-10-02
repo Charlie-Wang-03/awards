@@ -46,6 +46,26 @@ theorem common_distance_two_are_threeNatInterval_endpoints
   · left; omega
   · right; omega
 
+
+/-- A length-three interval containing the middle label m+1 of another
+length-three interval must contain at least one of that interval's endpoints. -/
+theorem threeNatInterval_containing_middle_contains_endpoint
+    {m r : ℕ}
+    (hmid : m + 1 ∈ threeNatInterval r) :
+    m ∈ threeNatInterval r ∨
+      m + 2 ∈ threeNatInterval r := by
+  have hmidB := mem_threeNatInterval_iff_bounds.mp hmid
+  by_cases hm : m ∈ threeNatInterval r
+  · exact Or.inl hm
+  · right
+    apply mem_threeNatInterval_iff_bounds.mpr
+    have hmNot :
+        ¬ (r ≤ m ∧ m ≤ r + 2) := by
+      simpa [mem_threeNatInterval_iff_bounds] using hm
+    constructor <;> omega
+
+#print axioms threeNatInterval_containing_middle_contains_endpoint
+
 #print axioms threeNatInterval_start_eq_of_common_distance_two
 #print axioms threeNatInterval_eq_of_common_distance_two
 #print axioms common_distance_two_are_threeNatInterval_endpoints
