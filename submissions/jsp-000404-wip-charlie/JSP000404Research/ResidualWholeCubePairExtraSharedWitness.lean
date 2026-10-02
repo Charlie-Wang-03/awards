@@ -15,9 +15,10 @@ In an inclusion-minimal deficient core, minimality forces at least
 
 shared words at v.
 
-If v has a whole-cube Q/T partner s inside the same core, the two whole cubes
-Q_v and Q_s already form exactly 2^(n-2) shared words.  Therefore at least one
-additional shared word must exist outside Q_v ∪ Q_s.  This is the first
+If v has a whole-cube Q/T partner s (whether or not s lies in the same core),
+the two whole cubes Q_v and Q_s together have exactly 2^(n-2) words.
+Therefore the minimal-core shared set at v, of size at least 2^(n-2)+1,
+must contain a word outside Q_v ∪ Q_s.  This is the first
 genuine augmenting witness beyond the whole-cube collision.
 -/
 
@@ -187,9 +188,6 @@ theorem minimal_core_wholeCubeQTPair_has_extra_shared_word
           U)
     {s v : V} {c : Fin n}
     (hvT : v ∈ T)
-    (hsT : s ∈ T)
-    (hsv : s ≠ v)
-    (hsLoss : s ∈ projectedLossVertices C exponent)
     (hvLoss : v ∈ projectedLossVertices C exponent)
     (hvSecond : exponent v = n - 2)
     (hcV : c ∈ retainedActive C v)
@@ -306,7 +304,7 @@ theorem minimal_core_wholeCubeQTPair_has_third_source
   obtain ⟨word,hshared,hnotV,hnotS⟩ :=
     minimal_core_wholeCubeQTPair_has_extra_shared_word
       C exponent hn3 hdef hmin
-      hvT hsT hsv hsLoss hvLoss hvSecond hcV hwhole
+      hvT hvLoss hvSecond hcV hwhole
 
   have hparts := Finset.mem_inter.mp hshared
   have hvBlock :
