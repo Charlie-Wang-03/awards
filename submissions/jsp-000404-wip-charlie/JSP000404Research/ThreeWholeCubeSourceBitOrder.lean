@@ -174,5 +174,66 @@ theorem threeWholeCube_source_bit_order_partition
 #print axioms source_lt_wholeCube_partner_iff_bit_false
 #print axioms threeWholeCube_source_bit_order_partition
 
+
+/-- Partners whose source bits differ lie on opposite sides of the source.
+If ci is true and cj is false at the source, then si < v < sj. -/
+theorem wholeCube_partners_straddle_source_of_true_false
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {v sᵢ sⱼ : V}
+    (hvi : v ≠ sᵢ)
+    (hvj : v ≠ sⱼ)
+    {cᵢ cⱼ : Fin n}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hciV : cᵢ ∈ retainedActive C v)
+    (hcjV : cⱼ ∈ retainedActive C v)
+    (hi : WholeCubeQTPair C sᵢ v cᵢ)
+    (hj : WholeCubeQTPair C sⱼ v cⱼ)
+    (hbitI : retainedBit C v cᵢ = true)
+    (hbitJ : retainedBit C v cⱼ = false) :
+    sᵢ < v ∧ v < sⱼ ∧ sᵢ < sⱼ := by
+  have hiv :
+      sᵢ < v :=
+    (wholeCube_partner_lt_source_iff_bit_true
+      C exponent hexp honeLoss hvi.symm
+      hvLoss hciV hi).2 hbitI
+  have hvj' :
+      v < sⱼ :=
+    (source_lt_wholeCube_partner_iff_bit_false
+      C exponent hexp honeLoss hvj.symm
+      hvLoss hcjV hj).2 hbitJ
+  exact ⟨hiv,hvj',lt_trans hiv hvj'⟩
+
+theorem wholeCube_partners_straddle_source_of_false_true
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    {v sᵢ sⱼ : V}
+    (hvi : v ≠ sᵢ)
+    (hvj : v ≠ sⱼ)
+    {cᵢ cⱼ : Fin n}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hciV : cᵢ ∈ retainedActive C v)
+    (hcjV : cⱼ ∈ retainedActive C v)
+    (hi : WholeCubeQTPair C sᵢ v cᵢ)
+    (hj : WholeCubeQTPair C sⱼ v cⱼ)
+    (hbitI : retainedBit C v cᵢ = false)
+    (hbitJ : retainedBit C v cⱼ = true) :
+    sⱼ < v ∧ v < sᵢ ∧ sⱼ < sᵢ := by
+  exact wholeCube_partners_straddle_source_of_true_false
+    C exponent hexp honeLoss
+    hvj hvi hvLoss hcjV hciV hj hi
+    hbitJ hbitI
+
+#print axioms wholeCube_partners_straddle_source_of_true_false
+#print axioms wholeCube_partners_straddle_source_of_false_true
+
 end OrderedEdgeColoring
 end JSP000404Research
