@@ -87,6 +87,71 @@ theorem tripleFlipBoolWordN_not_mem_completion_of_three_active
   rw [tripleFlipBoolWordN_at_a word hab hac, hbaseA] at hantiA
   cases h : retainedBit C v a <;> simp [h] at hantiA
 
+theorem tripleFlipBoolWordN_not_mem_translated_of_three_active
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V} {word : Fin n → Bool}
+    {a b c d : Fin n}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha : a ∈ retainedActive C v)
+    (hb : b ∈ retainedActive C v)
+    (hc : c ∈ retainedActive C v)
+    (hword : word ∈ retainedCompletionWords C v) :
+    tripleFlipBoolWordN word a b c ∉
+      translatedCompletionWords C v d := by
+  intro hantiT
+  have hantiBase :
+      flipBoolWordAt (tripleFlipBoolWordN word a b c) d ∈
+        retainedCompletionWords C v :=
+    (mem_translatedCompletionWords
+      C v d (tripleFlipBoolWordN word a b c)).1 hantiT
+  have hbase :=
+    (mem_retainedCompletionWords C v word).1 hword
+  have hcomp :=
+    (mem_retainedCompletionWords C v
+      (flipBoolWordAt (tripleFlipBoolWordN word a b c) d)).1
+      hantiBase
+  by_cases hda : d = a
+  · subst d
+    have h1 := hbase b hb
+    have h2 := hcomp b hb
+    rw [flipBoolWordAt_off _ hab.symm,
+        tripleFlipBoolWordN_at_b word hab hbc,
+        h1] at h2
+    cases h : retainedBit C v b <;> simp [h] at h2
+  · have h1 := hbase a ha
+    have h2 := hcomp a ha
+    rw [flipBoolWordAt_off _ hda,
+        tripleFlipBoolWordN_at_a word hab hac,
+        h1] at h2
+    cases h : retainedBit C v a <;> simp [h] at h2
+
+theorem tripleFlipBoolWordN_outside_enlarged_of_three_active
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V} {word : Fin n → Bool}
+    {a b c : Fin n}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha : a ∈ retainedActive C v)
+    (hb : b ∈ retainedActive C v)
+    (hc : c ∈ retainedActive C v)
+    (hword : word ∈ retainedCompletionWords C v) :
+    tripleFlipBoolWordN word a b c ∉
+      enlargedProjectedCandidateBlock C exponent v := by
+  classical
+  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
+  unfold allActiveLossCandidateBlock
+  intro hmem
+  rcases Finset.mem_union.mp hmem with hQ | hT
+  · exact tripleFlipBoolWordN_not_mem_completion_of_three_active
+      C hab hac hbc ha hb hc hword hQ
+  · unfold allActiveTranslatedWords at hT
+    obtain ⟨d,hd,hTd⟩ := Finset.mem_biUnion.mp hT
+    exact tripleFlipBoolWordN_not_mem_translated_of_three_active
+      C hab hac hbc ha hb hc hword hTd
+
 theorem tripleFlipBoolWordN_outside_enlarged_of_exact_three_palette
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -99,51 +164,12 @@ theorem tripleFlipBoolWordN_outside_enlarged_of_exact_three_palette
     (hword : word ∈ retainedCompletionWords C v) :
     tripleFlipBoolWordN word a b c ∉
       enlargedProjectedCandidateBlock C exponent v := by
-  classical
-  have ha : a ∈ retainedActive C v := by rw [hactive]; simp
-  have hb : b ∈ retainedActive C v := by rw [hactive]; simp
-  have hc : c ∈ retainedActive C v := by rw [hactive]; simp
-  rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss]
-  unfold allActiveLossCandidateBlock
-  intro hmem
-  rcases Finset.mem_union.mp hmem with hQ | hT
-  · exact tripleFlipBoolWordN_not_mem_completion_of_three_active
-      C hab hac hbc ha hb hc hword hQ
-  · unfold allActiveTranslatedWords at hT
-    obtain ⟨d,hd,hTd⟩ := Finset.mem_biUnion.mp hT
-    have hdCase : d = a ∨ d = b ∨ d = c := by
-      rw [hactive] at hd
-      simpa using hd
-    have hantiBase :
-        flipBoolWordAt (tripleFlipBoolWordN word a b c) d ∈
-          retainedCompletionWords C v :=
-      (mem_translatedCompletionWords
-        C v d (tripleFlipBoolWordN word a b c)).1 hTd
-    have hbase :=
-      (mem_retainedCompletionWords C v word).1 hword
-    have hcomp :=
-      (mem_retainedCompletionWords C v
-        (flipBoolWordAt (tripleFlipBoolWordN word a b c) d)).1
-        hantiBase
-    rcases hdCase with rfl | rfl | rfl
-    · have h1 := hbase b hb
-      have h2 := hcomp b hb
-      rw [flipBoolWordAt_off _ hab.symm,
-          tripleFlipBoolWordN_at_b word hab hbc,
-          h1] at h2
-      cases h : retainedBit C v b <;> simp [h] at h2
-    · have h1 := hbase a ha
-      have h2 := hcomp a ha
-      rw [flipBoolWordAt_off _ hab,
-          tripleFlipBoolWordN_at_a word hab hac,
-          h1] at h2
-      cases h : retainedBit C v a <;> simp [h] at h2
-    · have h1 := hbase a ha
-      have h2 := hcomp a ha
-      rw [flipBoolWordAt_off _ hac,
-          tripleFlipBoolWordN_at_a word hab hac,
-          h1] at h2
-      cases h : retainedBit C v a <;> simp [h] at h2
+  apply tripleFlipBoolWordN_outside_enlarged_of_three_active
+    C exponent hvLoss hab hac hbc
+  · rw [hactive]; simp
+  · rw [hactive]; simp
+  · rw [hactive]; simp
+  · exact hword
 
 /-- Equal-palette Q/T partner form.  The common Q-word is translated at v
 along owner coordinate a, and v has the same three-coordinate palette as s.
