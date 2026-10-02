@@ -87,69 +87,6 @@ theorem tripleFlipBoolWordN_not_mem_completion_of_three_active
   rw [tripleFlipBoolWordN_at_a word hab hac, hbaseA] at hantiA
   cases h : retainedBit C v a <;> simp [h] at hantiA
 
-theorem tripleFlipBoolWordN_not_mem_translated_of_three_active
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {v : V} {word : Fin n → Bool}
-    {a b c d : Fin n}
-    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
-    (ha : a ∈ retainedActive C v)
-    (hb : b ∈ retainedActive C v)
-    (hc : c ∈ retainedActive C v)
-    (hd : d ∈ retainedActive C v)
-    (hword : word ∈ retainedCompletionWords C v) :
-    tripleFlipBoolWordN word a b c ∉
-      translatedCompletionWords C v d := by
-  intro hantiT
-  have hbase :=
-    (mem_retainedCompletionWords C v word).1 hword
-  have hantiBase :
-      flipBoolWordAt (tripleFlipBoolWordN word a b c) d ∈
-        retainedCompletionWords C v :=
-    (mem_translatedCompletionWords
-      C v d (tripleFlipBoolWordN word a b c)).1 hantiT
-  have hcomp :=
-    (mem_retainedCompletionWords C v
-      (flipBoolWordAt (tripleFlipBoolWordN word a b c) d)).1
-      hantiBase
-
-  obtain hdCase : d = a ∨ d = b ∨ d = c := by
-    by_contra hnot
-    push_neg at hnot
-    have hfour :
-        ({a,b,c,d} : Finset (Fin n)) ⊆ retainedActive C v := by
-      intro q hq
-      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
-      rcases hq with rfl | rfl | rfl | rfl
-      · exact ha
-      · exact hb
-      · exact hc
-      · exact hd
-    -- This generic lemma is used only when the palette is exactly the
-    -- displayed three coordinates; without that equality d need not be one
-    -- of them.  The contradiction is therefore discharged by the caller's
-    -- exact-palette form below rather than here.
-    exact False.elim (hnot.1 rfl)
-  rcases hdCase with rfl | rfl | rfl
-  · have hbaseB := hbase b hb
-    have hantiB := hcomp b hb
-    rw [flipBoolWordAt_off _ hab.symm,
-        tripleFlipBoolWordN_at_b word hab hbc,
-        hbaseB] at hantiB
-    cases h : retainedBit C v b <;> simp [h] at hantiB
-  · have hbaseA := hbase a ha
-    have hantiA := hcomp a ha
-    rw [flipBoolWordAt_off _ hab,
-        tripleFlipBoolWordN_at_a word hab hac,
-        hbaseA] at hantiA
-    cases h : retainedBit C v a <;> simp [h] at hantiA
-  · have hbaseA := hbase a ha
-    have hantiA := hcomp a ha
-    rw [flipBoolWordAt_off _ hac,
-        tripleFlipBoolWordN_at_a word hab hac,
-        hbaseA] at hantiA
-    cases h : retainedBit C v a <;> simp [h] at hantiA
-
 theorem tripleFlipBoolWordN_outside_enlarged_of_exact_three_palette
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
