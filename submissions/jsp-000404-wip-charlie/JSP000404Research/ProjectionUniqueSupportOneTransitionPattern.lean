@@ -191,5 +191,143 @@ theorem uniqueSupportOne_threeSupportTwo_transition_pattern
 
 #print axioms uniqueSupportOne_threeSupportTwo_transition_pattern
 
+
+/-- Complete integer classification of the three support-two transition
+quotients in the unique-support-one terminal.  Either all three are unit
+transitions, or exactly one is n-1 and the other two are unit transitions. -/
+theorem uniqueSupportOne_threeSupportTwo_transition_classification
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    {lam t delta : ℝ} {n m : ℕ}
+    (hn4 : 4 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (Cfam :
+      ∀ q : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) q)
+    {o a b c : ProjectionOrdered V}
+    (hoa : o ≠ a) (hob : o ≠ b) (hoc : o ≠ c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hoSecond : centreExponent (Cfam o) t = n - 2)
+    (haSecond : centreExponent (Cfam a) t = n - 2)
+    (hbSecond : centreExponent (Cfam b) t = n - 2)
+    (hcSecond : centreExponent (Cfam c) t = n - 2)
+    (hoSupport :
+      positiveSupport (centreQuotient (Cfam o) t) = 1)
+    (haSupport :
+      positiveSupport (centreQuotient (Cfam a) t) = 2)
+    (hbSupport :
+      positiveSupport (centreQuotient (Cfam b) t) = 2)
+    (hcSupport :
+      positiveSupport (centreQuotient (Cfam c) t) = 2)
+    (haLoss :
+      a ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp Cfam))
+    (hbLoss :
+      b ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp Cfam))
+    (hcLoss :
+      c ∈ projectedLossVertices
+        (planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam)
+        (planarCentreExponent hp Cfam))
+    (hpalA :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      (retainedActive R a).map Fin.valEmbedding =
+        threeNatInterval m)
+    (hpalB :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      (retainedActive R b).map Fin.valEmbedding =
+        threeNatInterval m)
+    (hpalC :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      let R :=
+        planarStandardResidualColoring
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      (retainedActive R c).map Fin.valEmbedding =
+        threeNatInterval m) :
+    ∃ Ho :
+      HighExponentTransitionIntervalCertificate
+        (reindexedPoint_injective hp) t o (Cfam o),
+    ∃ Ha :
+      HighExponentTransitionIntervalCertificate
+        (reindexedPoint_injective hp) t a (Cfam a),
+    ∃ Hb :
+      HighExponentTransitionIntervalCertificate
+        (reindexedPoint_injective hp) t b (Cfam b),
+    ∃ Hc :
+      HighExponentTransitionIntervalCertificate
+        (reindexedPoint_injective hp) t c (Cfam c),
+      Ho.qe = n - 1 ∧
+      (
+        (Ha.qe = 1 ∧ Hb.qe = 1 ∧ Hc.qe = 1)
+        ∨
+        (Ha.qe = n - 1 ∧ Hb.qe = 1 ∧ Hc.qe = 1)
+        ∨
+        (Ha.qe = 1 ∧ Hb.qe = n - 1 ∧ Hc.qe = 1)
+        ∨
+        (Ha.qe = 1 ∧ Hb.qe = 1 ∧ Hc.qe = n - 1)
+      ) := by
+  obtain ⟨Ho,Ha,Hb,Hc,hqo,hqa,hqb,hqc,
+      hnotAB,hnotAC,hnotBC⟩ :=
+    uniqueSupportOne_threeSupportTwo_transition_pattern
+      hp hcap hn4 hdelta0 hdeltaHalf ht hlam Cfam
+      hoa hob hoc hab hac hbc
+      hoSecond haSecond hbSecond hcSecond
+      hoSupport haSupport hbSupport hcSupport
+      haLoss hbLoss hcLoss hpalA hpalB hpalC
+  refine ⟨Ho,Ha,Hb,Hc,hqo,?_⟩
+  rcases hqa with ha1 | haN <;>
+    rcases hqb with hb1 | hbN <;>
+    rcases hqc with hc1 | hcN
+  · exact Or.inl ⟨ha1,hb1,hc1⟩
+  · exact Or.inr (Or.inr (Or.inr ⟨ha1,hb1,hcN⟩))
+  · exact Or.inr (Or.inr (Or.inl ⟨ha1,hbN,hc1⟩))
+  · exact False.elim (hnotBC ⟨hbN,hcN⟩)
+  · exact Or.inr (Or.inl ⟨haN,hb1,hc1⟩)
+  · exact False.elim (hnotAC ⟨haN,hcN⟩)
+  · exact False.elim (hnotAB ⟨haN,hbN⟩)
+  · exact False.elim (hnotAB ⟨haN,hbN⟩)
+
+/-- In the non-unit alternative the four transition quotients exactly saturate
+the packing budget 2n. -/
+theorem uniqueSupportOne_threeSupportTwo_large_case_saturates
+    {n : ℕ}
+    {Ho Ha Hb Hc : ℕ}
+    (hn4 : 4 ≤ n)
+    (hqo : Ho = n - 1)
+    (hcase :
+      (Ha = n - 1 ∧ Hb = 1 ∧ Hc = 1)
+      ∨ (Ha = 1 ∧ Hb = n - 1 ∧ Hc = 1)
+      ∨ (Ha = 1 ∧ Hb = 1 ∧ Hc = n - 1)) :
+    Ho + Ha + Hb + Hc = 2 * n := by
+  rcases hcase with h | h | h <;> omega
+
+#print axioms uniqueSupportOne_threeSupportTwo_transition_classification
+#print axioms uniqueSupportOne_threeSupportTwo_large_case_saturates
+
 end ProjectionOrdered
 end JSP000404Research
