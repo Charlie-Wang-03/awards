@@ -188,6 +188,24 @@ theorem wholeCubeQTPair_secondLayer_block_intersection_ge_demand
   exact hbase
 
 #print axioms wholeCubeQTPair_completion_swap_of_active
+
+
+/-- A whole-cube Q/T pair is symmetric once its owner coordinate is known
+active at the translated endpoint. -/
+theorem wholeCubeQTPair_symm_of_active
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {s v : V} {c : Fin n}
+    (hcV : c ∈ retainedActive C v)
+    (hwhole : WholeCubeQTPair C s v c) :
+    WholeCubeQTPair C v s c := by
+  rcases hwhole with ⟨hactiveEq,htransEq⟩
+  obtain ⟨hcS,hswap⟩ :=
+    wholeCubeQTPair_completion_swap_of_active
+      C hcV ⟨hactiveEq,htransEq⟩
+  exact ⟨hactiveEq.symm,hswap⟩
+
+#print axioms wholeCubeQTPair_symm_of_active
 #print axioms wholeCubeQTPair_two_cubes_subset_block_intersection
 #print axioms wholeCubeQTPair_block_intersection_card_ge_two_cubes
 #print axioms wholeCubeQTPair_secondLayer_block_intersection_ge_demand
