@@ -59,6 +59,8 @@ inductive WholeCubeSecondCoordinateRecursionStep
       (hdc : d ≠ c)
       (heW : e ∈ retainedActive C w)
       (hed : e ≠ d)
+      (hactiveEq :
+        retainedActive C v = retainedActive C w)
       (hfull :
         translatedCompletionWords C v d =
           translatedCompletionWords C w e)
@@ -121,7 +123,8 @@ theorem wholeCubeSecondCoordinate_secondLayer_recursionStep
         hdV heW hinter
       with hfull | hhalf
     · exact WholeCubeSecondCoordinateRecursionStep.ttFull
-        w d e hwT hwNeV hwNeS hdV hdc heW hed hfull
+        w d e hwT hwNeV hwNeS hdV hdc heW hed
+        hfull.1 hfull.2
     · have hpos :
           0 < (translatedTranslatedCapture C v w d e).card := by
         apply Finset.card_pos.mpr
