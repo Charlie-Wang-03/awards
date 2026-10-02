@@ -12,8 +12,8 @@ translated owner whose three-coordinate palette equals that of the completion
 owner s.
 
 Consider the word obtained from the common Q/T/T/T word by flipping all three
-owner coordinates.  It is outside s's enlarged block, and it is outside the
-enlarged block of every translated owner whose palette equals s.
+owner coordinates.  It is outside s's enlarged block, and outside the enlarged
+block of every translated owner whose palette equals s.
 
 Hence either this three-coordinate antipode is a genuine Boolean completion
 hole, or any completion blocker is different from s and from at least one
@@ -112,68 +112,10 @@ theorem QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
       refine ⟨hxEq,?_⟩
       intro hrx
       subst r
-      have hxActive : retainedActive C x = {cx,cy,cz} := by
-        rw [hxEq,hsActive]
-      have hxBase :
-          flipBoolWordAt word cx ∈ retainedCompletionWords C x :=
-        (mem_translatedCompletionWords C x cx word).1 hxT
-      have hxOut :
-          anti ∉ enlargedProjectedCandidateBlock C exponent x := by
-        dsimp [anti]
-        have ha : cx ∈ retainedActive C x := hcxX
-        have hb : cy ∈ retainedActive C x := by rw [hxActive]; simp
-        have hc : cz ∈ retainedActive C x := by rw [hxActive]; simp
-        -- Relative to x's completion base, anti differs at cy and cz.
-        rw [enlargedProjectedCandidateBlock_loss C exponent hxLoss]
-        unfold allActiveLossCandidateBlock
-        intro hm
-        rcases Finset.mem_union.mp hm with hQ | hT
-        · have hcomp :=
-            (mem_retainedCompletionWords C x anti).1 hQ
-          have hbase :=
-            (mem_retainedCompletionWords C x
-              (flipBoolWordAt word cx)).1 hxBase
-          have h1 := hbase cy hb
-          have h2 := hcomp cy hb
-          rw [flipBoolWordAt_off word hcxy,
-              tripleFlipBoolWordN_at_b word hcxy hcyz, h1] at h2
-          cases h : retainedBit C x cy <;> simp [h] at h2
-        · unfold allActiveTranslatedWords at hT
-          obtain ⟨e,he,hTe⟩ := Finset.mem_biUnion.mp hT
-          have heCase : e = cx ∨ e = cy ∨ e = cz := by
-            rw [hxActive] at he
-            simpa using he
-          have hantiBase :
-              flipBoolWordAt anti e ∈ retainedCompletionWords C x :=
-            (mem_translatedCompletionWords C x e anti).1 hTe
-          have hcomp :=
-            (mem_retainedCompletionWords C x
-              (flipBoolWordAt anti e)).1 hantiBase
-          have hbase :=
-            (mem_retainedCompletionWords C x
-              (flipBoolWordAt word cx)).1 hxBase
-          rcases heCase with rfl | rfl | rfl
-          · have h1 := hbase cy hb
-            have h2 := hcomp cy hb
-            rw [flipBoolWordAt_off _ hcxy.symm,
-                tripleFlipBoolWordN_at_b word hcxy hcyz] at h2
-            rw [flipBoolWordAt_off word hcxy] at h1
-            rw [h1] at h2
-            cases h : retainedBit C x cy <;> simp [h] at h2
-          · have h1 := hbase cz hc
-            have h2 := hcomp cz hc
-            rw [flipBoolWordAt_off _ hcyz,
-                tripleFlipBoolWordN_at_c word hcxz hcyz] at h2
-            rw [flipBoolWordAt_off word hcxz] at h1
-            rw [h1] at h2
-            cases h : retainedBit C x cz <;> simp [h] at h2
-          · have h1 := hbase cy hb
-            have h2 := hcomp cy hb
-            rw [flipBoolWordAt_off _ hcyz.symm,
-                tripleFlipBoolWordN_at_b word hcxy hcyz] at h2
-            rw [flipBoolWordAt_off word hcxy] at h1
-            rw [h1] at h2
-            cases h : retainedBit C x cy <;> simp [h] at h2
+      have hxOut :=
+        QTT_equal_palette_partner_excludes_triple_antipode
+          C exponent hxLoss hcxy hcxz hcyz
+          hsActive hxEq hcxX hxT
       exact hxOut
         (by
           rw [enlargedProjectedCandidateBlock_loss C exponent hxLoss]
@@ -183,24 +125,42 @@ theorem QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
       refine ⟨hyEq,?_⟩
       intro hry
       subst r
-      have hyActive : retainedActive C y = {cx,cy,cz} := by
+      have hyOut :=
+        QTT_equal_palette_partner_excludes_triple_antipode
+          C exponent hyLoss
+          hcyz hcyz.symm hcxy
+          (by
+            simpa [Finset.pair_comm, Finset.insert_comm,
+              Finset.insert_left_comm] using hsActive)
+          hyEq hcyY hyT
+      -- The helper above is parameterized with the translated coordinate
+      -- first.  Reordering the three flips does not change the antipode;
+      -- use the direct three-active exclusion instead to avoid permutation
+      -- bookkeeping.
+      have hcxY : cx ∈ retainedActive C y := by
         rw [hyEq,hsActive]
+        simp
+      have hczY : cz ∈ retainedActive C y := by
+        rw [hyEq,hsActive]
+        simp
       have hyBase :
           flipBoolWordAt word cy ∈ retainedCompletionWords C y :=
         (mem_translatedCompletionWords C y cy word).1 hyT
-      have hyOut :
+      have hyAntiOut :
           anti ∉ enlargedProjectedCandidateBlock C exponent y := by
-        -- anti differs from hyBase at cx and cz; both are active.
+        -- anti differs from hyBase at cx and cz; a one-coordinate translate
+        -- cannot repair both active discrepancies.
+        dsimp [anti]
         rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
         unfold allActiveLossCandidateBlock
         intro hm
-        have hcxY : cx ∈ retainedActive C y := by rw [hyActive]; simp
-        have hcyY' : cy ∈ retainedActive C y := hcyY
-        have hczY : cz ∈ retainedActive C y := by rw [hyActive]; simp
         rcases Finset.mem_union.mp hm with hQ | hT
-        · have hcomp := (mem_retainedCompletionWords C y anti).1 hQ
-          have hbase := (mem_retainedCompletionWords C y
-            (flipBoolWordAt word cy)).1 hyBase
+        · have hcomp :=
+            (mem_retainedCompletionWords C y
+              (tripleFlipBoolWordN word cx cy cz)).1 hQ
+          have hbase :=
+            (mem_retainedCompletionWords C y
+              (flipBoolWordAt word cy)).1 hyBase
           have h1 := hbase cx hcxY
           have h2 := hcomp cx hcxY
           rw [flipBoolWordAt_off word hcxy.symm,
@@ -208,39 +168,34 @@ theorem QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
           cases h : retainedBit C y cx <;> simp [h] at h2
         · unfold allActiveTranslatedWords at hT
           obtain ⟨e,he,hTe⟩ := Finset.mem_biUnion.mp hT
-          have heCase : e = cx ∨ e = cy ∨ e = cz := by
-            rw [hyActive] at he
-            simpa using he
           have hantiBase :
-              flipBoolWordAt anti e ∈ retainedCompletionWords C y :=
-            (mem_translatedCompletionWords C y e anti).1 hTe
-          have hcomp := (mem_retainedCompletionWords C y
-            (flipBoolWordAt anti e)).1 hantiBase
-          have hbase := (mem_retainedCompletionWords C y
-            (flipBoolWordAt word cy)).1 hyBase
-          rcases heCase with rfl | rfl | rfl
-          · have h1 := hbase cz hczY
+              flipBoolWordAt
+                (tripleFlipBoolWordN word cx cy cz) e
+                ∈ retainedCompletionWords C y :=
+            (mem_translatedCompletionWords C y e _).1 hTe
+          have hcomp :=
+            (mem_retainedCompletionWords C y _).1 hantiBase
+          by_cases hecx : e = cx
+          · subst e
+            have h1 :=
+              (mem_retainedCompletionWords C y
+                (flipBoolWordAt word cy)).1 hyBase cz hczY
             have h2 := hcomp cz hczY
             rw [flipBoolWordAt_off _ hcxz.symm,
                 tripleFlipBoolWordN_at_c word hcxz hcyz] at h2
             rw [flipBoolWordAt_off word hcyz] at h1
             rw [h1] at h2
             cases h : retainedBit C y cz <;> simp [h] at h2
-          · have h1 := hbase cx hcxY
+          · have h1 :=
+              (mem_retainedCompletionWords C y
+                (flipBoolWordAt word cy)).1 hyBase cx hcxY
             have h2 := hcomp cx hcxY
-            rw [flipBoolWordAt_off _ hcxy,
+            rw [flipBoolWordAt_off _ hecx,
                 tripleFlipBoolWordN_at_a word hcxy hcxz] at h2
             rw [flipBoolWordAt_off word hcxy.symm] at h1
             rw [h1] at h2
             cases h : retainedBit C y cx <;> simp [h] at h2
-          · have h1 := hbase cx hcxY
-            have h2 := hcomp cx hcxY
-            rw [flipBoolWordAt_off _ hcxz,
-                tripleFlipBoolWordN_at_a word hcxy hcxz] at h2
-            rw [flipBoolWordAt_off word hcxy.symm] at h1
-            rw [h1] at h2
-            cases h : retainedBit C y cx <;> simp [h] at h2
-      exact hyOut
+      exact hyAntiOut
         (by
           rw [enlargedProjectedCandidateBlock_loss C exponent hyLoss]
           unfold allActiveLossCandidateBlock
@@ -249,23 +204,28 @@ theorem QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
       refine ⟨hzEq,?_⟩
       intro hrz
       subst r
-      have hzActive : retainedActive C z = {cx,cy,cz} := by
+      have hcxZ : cx ∈ retainedActive C z := by
         rw [hzEq,hsActive]
+        simp
+      have hcyZ : cy ∈ retainedActive C z := by
+        rw [hzEq,hsActive]
+        simp
       have hzBase :
           flipBoolWordAt word cz ∈ retainedCompletionWords C z :=
         (mem_translatedCompletionWords C z cz word).1 hzT
-      have hzOut :
+      have hzAntiOut :
           anti ∉ enlargedProjectedCandidateBlock C exponent z := by
+        dsimp [anti]
         rw [enlargedProjectedCandidateBlock_loss C exponent hzLoss]
         unfold allActiveLossCandidateBlock
         intro hm
-        have hcxZ : cx ∈ retainedActive C z := by rw [hzActive]; simp
-        have hcyZ : cy ∈ retainedActive C z := by rw [hzActive]; simp
-        have hczZ' : cz ∈ retainedActive C z := hczZ
         rcases Finset.mem_union.mp hm with hQ | hT
-        · have hcomp := (mem_retainedCompletionWords C z anti).1 hQ
-          have hbase := (mem_retainedCompletionWords C z
-            (flipBoolWordAt word cz)).1 hzBase
+        · have hcomp :=
+            (mem_retainedCompletionWords C z
+              (tripleFlipBoolWordN word cx cy cz)).1 hQ
+          have hbase :=
+            (mem_retainedCompletionWords C z
+              (flipBoolWordAt word cz)).1 hzBase
           have h1 := hbase cx hcxZ
           have h2 := hcomp cx hcxZ
           rw [flipBoolWordAt_off word hcxz.symm,
@@ -273,39 +233,34 @@ theorem QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
           cases h : retainedBit C z cx <;> simp [h] at h2
         · unfold allActiveTranslatedWords at hT
           obtain ⟨e,he,hTe⟩ := Finset.mem_biUnion.mp hT
-          have heCase : e = cx ∨ e = cy ∨ e = cz := by
-            rw [hzActive] at he
-            simpa using he
           have hantiBase :
-              flipBoolWordAt anti e ∈ retainedCompletionWords C z :=
-            (mem_translatedCompletionWords C z e anti).1 hTe
-          have hcomp := (mem_retainedCompletionWords C z
-            (flipBoolWordAt anti e)).1 hantiBase
-          have hbase := (mem_retainedCompletionWords C z
-            (flipBoolWordAt word cz)).1 hzBase
-          rcases heCase with rfl | rfl | rfl
-          · have h1 := hbase cy hcyZ
+              flipBoolWordAt
+                (tripleFlipBoolWordN word cx cy cz) e
+                ∈ retainedCompletionWords C z :=
+            (mem_translatedCompletionWords C z e _).1 hTe
+          have hcomp :=
+            (mem_retainedCompletionWords C z _).1 hantiBase
+          by_cases hecx : e = cx
+          · subst e
+            have h1 :=
+              (mem_retainedCompletionWords C z
+                (flipBoolWordAt word cz)).1 hzBase cy hcyZ
             have h2 := hcomp cy hcyZ
             rw [flipBoolWordAt_off _ hcxy.symm,
                 tripleFlipBoolWordN_at_b word hcxy hcyz] at h2
             rw [flipBoolWordAt_off word hcyz.symm] at h1
             rw [h1] at h2
             cases h : retainedBit C z cy <;> simp [h] at h2
-          · have h1 := hbase cx hcxZ
+          · have h1 :=
+              (mem_retainedCompletionWords C z
+                (flipBoolWordAt word cz)).1 hzBase cx hcxZ
             have h2 := hcomp cx hcxZ
-            rw [flipBoolWordAt_off _ hcxy,
+            rw [flipBoolWordAt_off _ hecx,
                 tripleFlipBoolWordN_at_a word hcxy hcxz] at h2
             rw [flipBoolWordAt_off word hcxz.symm] at h1
             rw [h1] at h2
             cases h : retainedBit C z cx <;> simp [h] at h2
-          · have h1 := hbase cx hcxZ
-            have h2 := hcomp cx hcxZ
-            rw [flipBoolWordAt_off _ hcxz,
-                tripleFlipBoolWordN_at_a word hcxy hcxz] at h2
-            rw [flipBoolWordAt_off word hcxz.symm] at h1
-            rw [h1] at h2
-            cases h : retainedBit C z cx <;> simp [h] at h2
-      exact hzOut
+      exact hzAntiOut
         (by
           rw [enlargedProjectedCandidateBlock_loss C exponent hzLoss]
           unfold allActiveLossCandidateBlock
