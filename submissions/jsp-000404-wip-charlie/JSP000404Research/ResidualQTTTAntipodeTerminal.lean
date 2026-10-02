@@ -250,6 +250,103 @@ theorem QTTT_common_colour_tripleAntipode_profile_reduction
           exact Or.inr (Or.inr (Or.inr (Or.inr
             (Or.inl ⟨r,hrLoss,hdeep⟩))))
 
+
+
+/-- Eliminate the top-loss antipode blocker once an external argument rules
+out every top blocker in the current application. -/
+theorem QTTT_common_colour_tripleAntipode_profile_reduction_no_top
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexpLt : ∀ q, exponent q < n)
+    (hexp : ∀ q, exponent q ≤ n)
+    (honeLoss :
+      ∀ q, (active C q).card ≤ n - exponent q + 1)
+    (hNoTop :
+      ∀ r : V,
+        r ∈ projectedLossVertices C exponent →
+        exponent r = n - 1 →
+        False)
+    {s x y z : V}
+    (hsx : s ≠ x) (hsy : s ≠ y) (hsz : s ≠ z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hxLoss : x ∈ projectedLossVertices C exponent)
+    (hyLoss : y ∈ projectedLossVertices C exponent)
+    (hzLoss : z ∈ projectedLossVertices C exponent)
+    (hsSecond : exponent s = n - 2)
+    (hxSecond : exponent x = n - 2)
+    (hySecond : exponent y = n - 2)
+    (hzSecond : exponent z = n - 2)
+    {word : Fin n → Bool}
+    {cx cy cz d : Fin n}
+    (hcxy : cx ≠ cy) (hcxz : cx ≠ cz) (hcyz : cy ≠ cz)
+    (hsActive : retainedActive C s = {cx,cy,cz})
+    (hcommonS : d ∈ retainedActive C s)
+    (hcommonX : d ∈ retainedActive C x)
+    (hcommonY : d ∈ retainedActive C y)
+    (hcommonZ : d ∈ retainedActive C z)
+    (hcxX : cx ∈ retainedActive C x)
+    (hcyY : cy ∈ retainedActive C y)
+    (hczZ : cz ∈ retainedActive C z)
+    (hsQ : word ∈ retainedCompletionWords C s)
+    (hxT : word ∈ translatedCompletionWords C x cx)
+    (hyT : word ∈ translatedCompletionWords C y cy)
+    (hzT : word ∈ translatedCompletionWords C z cz) :
+    (
+      ∃ hole : Fin n → Bool,
+        hole ∉ coveredCompletionWords C
+    )
+    ∨
+    (
+      ∃ q : V,
+        1 ≤ dyadicProfileSurplus
+          exponent (projectedFree C) q
+    )
+    ∨
+    (
+      ∃ q : V,
+        ExactProjectedBudget C exponent q
+    )
+    ∨
+    (
+      ∃ r : V,
+        r ∈ projectedLossVertices C exponent ∧
+        exponent r + 3 ≤ n
+    )
+    ∨
+    (
+      ∃ r : V,
+        r ∈ projectedLossVertices C exponent ∧
+        exponent r = n - 2 ∧
+        r ≠ s ∧
+        (
+          (retainedActive C x = retainedActive C s ∧ r ≠ x) ∨
+          (retainedActive C y = retainedActive C s ∧ r ≠ y) ∨
+          (retainedActive C z = retainedActive C s ∧ r ≠ z)
+        ) ∧
+        tripleFlipBoolWordN word cx cy cz ∈
+          retainedCompletionWords C r
+    ) := by
+  rcases
+    QTTT_common_colour_tripleAntipode_profile_reduction
+      C exponent hexpLt hexp honeLoss
+      hsx hsy hsz hxy hxz hyz
+      hsLoss hxLoss hyLoss hzLoss
+      hsSecond hxSecond hySecond hzSecond
+      hcxy hcxz hcyz hsActive
+      hcommonS hcommonX hcommonY hcommonZ
+      hcxX hcyY hczZ hsQ hxT hyT hzT
+    with hhole | hpaid | hexact | htop | hdeep | hsecond
+  · exact Or.inl hhole
+  · exact Or.inr (Or.inl hpaid)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · obtain ⟨r,hrLoss,hrTop⟩ := htop
+    exact False.elim (hNoTop r hrLoss hrTop)
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hdeep)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr hsecond)))
+
+#print axioms QTTT_common_colour_tripleAntipode_profile_reduction_no_top
 #print axioms QTTT_common_colour_tripleAntipode_profile_reduction
 #print axioms QTTT_common_colour_tripleAntipode_hole_or_blocker_avoids_equal_partner
 
