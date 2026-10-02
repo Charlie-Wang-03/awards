@@ -60,13 +60,8 @@ theorem discovered_coordinates_card_le_three_of_subset_secondLayerActive
     coords.card ≤ 3 := by
   have hactive :
       (retainedActive C v).card = 3 :=
-    secondLayer_projectedLoss_retainedActive_card_eq_three
-      C exponent (by
-        have heq :=
-          secondLayerLoss_retainedActive_card_eq_three
-            C exponent hvLoss hvSecond
-        exact heq)
-      hvLoss hvSecond
+    secondLayerLoss_retainedActive_card_eq_three
+      C exponent hvLoss hvSecond
   exact (Finset.card_le_card hsub).trans_eq hactive
 
 /-- A profile-preserving lossless T/Q rematch at a fixed second-layer endpoint
