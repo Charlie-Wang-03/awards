@@ -192,5 +192,98 @@ theorem wholeCubeQTPair_secondLayer_block_intersection_ge_demand
 #print axioms wholeCubeQTPair_block_intersection_card_ge_two_cubes
 #print axioms wholeCubeQTPair_secondLayer_block_intersection_ge_demand
 
+
+/-- For a projected-loss whole-cube Q/T pair, the two enlarged all-active
+blocks intersect in exactly the two exchanged completion cubes. -/
+theorem wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {s v : V} {c : Fin n}
+    (hsLoss : s ∈ projectedLossVertices C exponent)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hcV : c ∈ retainedActive C v)
+    (hwhole : WholeCubeQTPair C s v c) :
+    enlargedProjectedCandidateBlock C exponent v ∩
+        enlargedProjectedCandidateBlock C exponent s
+      =
+    retainedCompletionWords C v ∪
+      retainedCompletionWords C s := by
+  classical
+  rcases hwhole with ⟨hactiveEq,htransEq⟩
+  have hcS : c ∈ retainedActive C s := by
+    rw [← hactiveEq]
+    exact hcV
+
+  let baseS : Fin n → Bool := fun d => retainedBit C s d
+  have hbaseSQ :
+      baseS ∈ retainedCompletionWords C s := by
+    apply (mem_retainedCompletionWords C s baseS).2
+    intro d hd
+    rfl
+  have hbaseVT :
+      baseS ∈ translatedCompletionWords C v c := by
+    rw [htransEq]
+    exact hbaseSQ
+  have hcode :=
+    QTT_equal_palette_oneBit_code
+      C hactiveEq hcV hbaseSQ hbaseVT
+
+  apply Finset.Subset.antisymm
+  · intro word hword
+    have hvBlock := (Finset.mem_inter.mp hword).1
+    have hsBlock := (Finset.mem_inter.mp hword).2
+    rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss,
+        enlargedProjectedCandidateBlock_loss C exponent hsLoss] at
+      hvBlock hsBlock
+    unfold allActiveLossCandidateBlock at hvBlock hsBlock
+    rcases Finset.mem_union.mp hvBlock with hvQ | hvTrans
+    · exact Finset.mem_union_left _ hvQ
+    · unfold allActiveTranslatedWords at hvTrans
+      obtain ⟨d,hdV,hdT⟩ := Finset.mem_biUnion.mp hvTrans
+      by_cases hdc : d = c
+      · subst d
+        rw [htransEq] at hdT
+        exact Finset.mem_union_right _ hdT
+      · rcases Finset.mem_union.mp hsBlock with hsQ | hsTrans
+        · exact Finset.mem_union_right _ hsQ
+        · unfold allActiveTranslatedWords at hsTrans
+          obtain ⟨e,heS,heT⟩ := Finset.mem_biUnion.mp hsTrans
+          by_cases hec : e = c
+          · subst e
+            have hswap :=
+              (wholeCubeQTPair_completion_swap_of_active
+                C hcV ⟨hactiveEq,htransEq⟩).2
+            rw [hswap] at heT
+            exact Finset.mem_union_left _ heT
+          · have hdBase :
+                flipBoolWordAt word d ∈
+                  retainedCompletionWords C v :=
+              (mem_translatedCompletionWords C v d word).1 hdT
+            have heBase :
+                flipBoolWordAt word e ∈
+                  retainedCompletionWords C s :=
+              (mem_translatedCompletionWords C s e word).1 heT
+            have hdComp :=
+              (mem_retainedCompletionWords C v
+                (flipBoolWordAt word d)).1 hdBase
+            have heComp :=
+              (mem_retainedCompletionWords C s
+                (flipBoolWordAt word e)).1 heBase
+            have hdC := hdComp c hcV
+            have heC := heComp c hcS
+            rw [flipBoolWordAt_off word (Ne.symm hdc)] at hdC
+            rw [flipBoolWordAt_off word (Ne.symm hec)] at heC
+            have hbit :
+                retainedBit C v c =
+                  !(retainedBit C s c) :=
+              hcode.1
+            rw [← hdC, ← heC] at hbit
+            cases hw : word c <;> simp [hw] at hbit
+  · exact wholeCubeQTPair_two_cubes_subset_block_intersection
+      C exponent hsLoss hvLoss hcV ⟨hactiveEq,htransEq⟩
+
+#print axioms wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
+
 end OrderedEdgeColoring
 end JSP000404Research
