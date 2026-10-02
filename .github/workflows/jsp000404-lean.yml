@@ -247,6 +247,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeCommonInactiveCapacity
 
+      - name: Check whole-cube finite-state closure
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualWholeCubeFiniteStateClosure
+
       - name: Check safe common-inactive reduced-zero rigidity
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeCommonInactiveReducedZero
