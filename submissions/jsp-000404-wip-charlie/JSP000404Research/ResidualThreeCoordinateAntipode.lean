@@ -402,6 +402,39 @@ theorem QTT_equal_palette_partner_excludes_triple_antipode
       rw [h1] at h2
       cases h : retainedBit C v b <;> simp [h] at h2
 
+
+
+/-- A translated owner cannot contain the triple owner-coordinate antipode in
+its completion cube when one of the other owner coordinates is active there.
+The translated completion base agrees with the common word off its own owner
+coordinate, while the antipode flips the other active coordinate. -/
+theorem QTT_other_active_excludes_triple_antipode_completion
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V} {word : Fin n → Bool}
+    {owner q a b c : Fin n}
+    (hqOwner : q ≠ owner)
+    (hqActive : q ∈ retainedActive C v)
+    (hvT : word ∈ translatedCompletionWords C v owner)
+    (hanti :
+      tripleFlipBoolWordN word a b c q = !(word q)) :
+    tripleFlipBoolWordN word a b c ∉
+      retainedCompletionWords C v := by
+  intro hQ
+  have hbase :
+      flipBoolWordAt word owner ∈ retainedCompletionWords C v :=
+    (mem_translatedCompletionWords C v owner word).1 hvT
+  have hbaseFix :=
+    (mem_retainedCompletionWords C v
+      (flipBoolWordAt word owner)).1 hbase q hqActive
+  have hantiFix :=
+    (mem_retainedCompletionWords C v
+      (tripleFlipBoolWordN word a b c)).1 hQ q hqActive
+  rw [flipBoolWordAt_off word hqOwner, hanti] at hbaseFix hantiFix
+  rw [hbaseFix] at hantiFix
+  cases h : retainedBit C v q <;> simp [h] at hantiFix
+
+#print axioms QTT_other_active_excludes_triple_antipode_completion
 #print axioms tripleFlipBoolWordN_outside_enlarged_of_exact_three_palette
 #print axioms QTT_equal_palette_partner_excludes_triple_antipode
 
