@@ -277,7 +277,6 @@ theorem minimal_core_wholeCubeQTPair_has_third_source
           U)
     {s v : V} {c : Fin n}
     (hvT : v ∈ T)
-    (hsT : s ∈ T)
     (hsv : s ≠ v)
     (hsLoss : s ∈ projectedLossVertices C exponent)
     (hvLoss : v ∈ projectedLossVertices C exponent)
@@ -318,23 +317,27 @@ theorem minimal_core_wholeCubeQTPair_has_third_source
     (Finset.mem_erase.mp hwErase).2
 
   have hwNeS : w ≠ s := by
-    intro hws
-    subst w
-    have hinter :
-        word ∈
-          enlargedProjectedCandidateBlock C exponent v ∩
-            enlargedProjectedCandidateBlock C exponent s :=
-      Finset.mem_inter.mpr ⟨hvBlock,hwBlock⟩
-    have htwo :
-        word ∈
-          retainedCompletionWords C v ∪
-            retainedCompletionWords C s := by
-      rw [← wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
-        C exponent hsLoss hvLoss hcV hwhole]
-      exact hinter
-    rcases Finset.mem_union.mp htwo with hV | hS
-    · exact hnotV hV
-    · exact hnotS hS
+    by_cases hsT : s ∈ T
+    · intro hws
+      subst w
+      have hinter :
+          word ∈
+            enlargedProjectedCandidateBlock C exponent v ∩
+              enlargedProjectedCandidateBlock C exponent s :=
+        Finset.mem_inter.mpr ⟨hvBlock,hwBlock⟩
+      have htwo :
+          word ∈
+            retainedCompletionWords C v ∪
+              retainedCompletionWords C s := by
+        rw [← wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
+          C exponent hsLoss hvLoss hcV hwhole]
+        exact hinter
+      rcases Finset.mem_union.mp htwo with hV | hS
+      · exact hnotV hV
+      · exact hnotS hS
+    · intro hws
+      subst w
+      exact hsT hwT
 
   exact ⟨word,w,hvBlock,hwBlock,hnotV,hnotS,hwT,hwNeV,hwNeS⟩
 
