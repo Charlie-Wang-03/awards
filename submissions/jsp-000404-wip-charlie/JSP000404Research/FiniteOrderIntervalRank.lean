@@ -32,17 +32,12 @@ theorem orderIntervalSpan_symm
     {V : Type*} [LinearOrder V] [Fintype V]
     (a b : V) :
     orderIntervalSpan a b = orderIntervalSpan b a := by
-  unfold orderIntervalSpan
-  by_cases hab : a ≤ b
-  · have hba : ¬ b ≤ a := by
-      intro h
-      exact lt_irrefl a (lt_of_le_of_ne hab (Ne.symm (ne_of_lt (lt_of_le_of_ne hab (by
-        intro hEq
-        subst b
-        exact False.elim (hba (le_refl a)))))))
-    simp [hab]
-  · have hba : b ≤ a := le_of_not_ge hab
-    simp [hab,hba]
+  rcases lt_trichotomy a b with hab | rfl | hba
+  · unfold orderIntervalSpan
+    simp [hab.le, not_le_of_gt hab]
+  · rfl
+  · unfold orderIntervalSpan
+    simp [hba.le, not_le_of_gt hba]
 
 theorem Icc_ssubset_Icc_of_right_lt
     {V : Type*} [LinearOrder V]
@@ -108,10 +103,28 @@ theorem orderIntervalSpan_lt_of_same_right_outward
     (hba : b ≤ a) :
     orderIntervalSpan a b < orderIntervalSpan a c := by
   classical
-  rw [orderIntervalSpan_symm a b,
-      orderIntervalSpan_symm a c]
-  exact orderIntervalSpan_lt_of_same_left_outward
-    hba hcb
+  unfold orderIntervalSpan
+  have hca : c ≤ a := hcb.le.trans hba
+  have habBranch : ¬ a ≤ b := by
+    by_cases hEq : a = b
+    · subst a
+      exact not_le_of_gt hcb
+    · exact not_le_of_gt (lt_of_le_of_ne hba hEq.symm)
+  have hacBranch : ¬ a ≤ c := by
+    exact not_le_of_gt (hcb.trans_le hba)
+  simp [habBranch,hacBranch]
+  apply Finset.card_lt_card
+  constructor
+  · intro x hx
+    simp only [Finset.mem_Icc] at hx ⊢
+    exact ⟨hcb.le.trans hx.1,hx.2⟩
+  · intro hEq
+    have hcOld : c ∈ Finset.Icc b a := by
+      rw [hEq]
+      simp only [Finset.mem_Icc]
+      exact ⟨le_rfl,hca⟩
+    simp only [Finset.mem_Icc] at hcOld
+    exact (not_le_of_gt hcb) hcOld.1
 
 theorem orderIntervalRank_lt_of_span_lt
     {V : Type*} [LinearOrder V] [Fintype V]
