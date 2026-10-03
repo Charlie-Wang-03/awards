@@ -110,7 +110,6 @@ private theorem zeroAngleMass_append_three
   rw [zeroAngleMass_append
       (q₁ ++ q₂) q₃ (A₁ ++ A₂) A₃ hlen₁₂]
   rw [zeroAngleMass_append q₁ q₂ A₁ A₂ hlen₁]
-  ring
 
 
 theorem three_blocks_positiveCount_two_has_zero_block
@@ -362,8 +361,8 @@ theorem aligned_three_angle_blocks_support_two_small_pair
     exact List.take_append_drop A₂.length qrest
   have hsplit :
       q₁ ++ q₂ ++ q₃ = qs := by
-    rw [← hsplit₂]
-    simpa [List.append_assoc] using hsplit₁
+    rw [List.append_assoc, hsplit₂]
+    exact hsplit₁
 
   have hsupport' :
       listPositiveCount (q₁ ++ q₂ ++ q₃) = 2 := by
