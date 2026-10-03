@@ -432,7 +432,7 @@ theorem four_supportTwo_angle_derangement_nine_reduce_to_three_core
     exact False.elim
       (four_cycle_small_angles_impossible_core
         (p := p) hp hcap hdeltaHalf hlampos hlamHalf
-        hac had hab hcd hbc hbd.symm
+        hac had hab hcd hbc.symm hbd.symm
         hA hC
         (by simpa [EuclideanGeometry.angle_comm] using hD)
         hB)
