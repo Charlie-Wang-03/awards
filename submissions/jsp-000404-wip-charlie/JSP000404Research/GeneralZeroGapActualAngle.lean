@@ -248,6 +248,7 @@ theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
   have hgpost : gpost = [] :=
     List.length_eq_zero_iff.mp (by simpa using hpostLen)
   subst gpost
+  rw [hgaps] at halign
   have hgeEq :=
     centre_gap_eq_wrap_cut
       C first rest hrays
@@ -281,9 +282,11 @@ theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
     (first :: rest).getLast (by simp)
   have horder :
       rayThetaAt hp i first ≤ rayThetaAt hp i last := by
-    dsimp [last]
-    exact C.theta_sorted.rel_getLast
-      (by rw [hrays]; simp)
+    have hfirstMem : first ∈ C.rays := by
+      rw [hrays]
+      simp
+    have h := C.theta_sorted.rel_getLast hfirstMem
+    simpa [last, hrays] using h
   have hfloor0 :
       Nat.floor
         (t * ((rayThetaAt hp i first + Real.pi -
@@ -367,7 +370,6 @@ theorem ordinary_zero_gap_actual_angle_le_delta_lam
     rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
     simp only [List.map_cons, List.map_append]
     rw [normalizedProjectiveGaps_append_cons]
-    rfl
   let qpre := gpre.map (fun g => Nat.floor (t * g))
   let qpost := gpost.map (fun g => Nat.floor (t * g))
   have hge :
@@ -382,11 +384,8 @@ theorem ordinary_zero_gap_actual_angle_le_delta_lam
             (rayThetaAt hp i first) =
           rayThetaAt hp i
             ((first :: before).getLast (by simp)) := by
-      cases before with
-      | nil =>
-          simp
-      | cons b bs =>
-          simp [List.getLast_cons]
+      rw [List.getLastD_map]
+      rw [List.getLast_eq_getLastD]
     rw [hlast]
   have hqdec :
       quotientList t C.gaps =
@@ -460,11 +459,8 @@ theorem wrap_zero_gap_actual_angle_le_delta_lam
             (rayThetaAt hp i first) =
           rayThetaAt hp i
             ((first :: rest).getLast (by simp)) := by
-      cases rest with
-      | nil =>
-          exact False.elim (hrest rfl)
-      | cons b bs =>
-          simp [List.getLast_cons]
+      rw [List.getLastD_map]
+      rw [List.getLast_eq_getLastD]
     rw [hlast]
   have hqdec :
       quotientList t C.gaps = qpre ++ [0] := by
