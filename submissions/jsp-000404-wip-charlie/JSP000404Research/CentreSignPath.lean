@@ -1,6 +1,7 @@
 import JSP000404Research.CanonicalSignGap
 import JSP000404Research.SignPathAppend
 import JSP000404Research.CentreExponent
+import JSP000404Research.CentreQuotientRayData
 import Mathlib.Tactic
 
 /-!
@@ -29,18 +30,6 @@ namespace JSP000404Research
 
 open Real
 
-/-- Mapping commutes with getLastD. -/
-theorem map_getLastD
-    {α β : Type*} (f : α → β) (d : α) (xs : List α) :
-    (xs.map f).getLastD (f d) = f (xs.getLastD d) := by
-  induction xs with
-  | nil => rfl
-  | cons x xs ih =>
-      cases xs with
-      | nil => simp
-      | cons y ys =>
-          exact ih
-
 /-- getLastD of a nonempty list is a member of that list. -/
 theorem getLastD_mem_of_ne_nil
     {α : Type*} (d : α) (xs : List α)
@@ -67,119 +56,6 @@ theorem boolLastFrom_eq_getLastD
       | cons c cs =>
           simp only [boolLastFrom]
           simpa [boolLastFrom] using ih a
-
-/-- Quotients of the ordinary non-wrap gaps along a ray list. -/
-noncomputable def consecutiveRayQuotients
-    {V : Type*} {p : V → Plane}
-    (hp : Function.Injective p)
-    (i : V) (t : ℝ) :
-    OtherVertex i → List (OtherVertex i) → List ℕ
-  | _, [] => []
-  | prev, r :: rs =>
-      Nat.floor
-          (t * ((rayThetaAt hp i r - rayThetaAt hp i prev) / Real.pi))
-        :: consecutiveRayQuotients hp i t r rs
-
-/-- The ordinary consecutive quotients are exactly quotientList applied to the
-normalized successive-difference gaps. -/
-theorem consecutiveRayQuotients_eq_quotientList
-    {V : Type*} {p : V → Plane}
-    (hp : Function.Injective p)
-    (i : V) (t : ℝ)
-    (prev : OtherVertex i) (rs : List (OtherVertex i)) :
-    consecutiveRayQuotients hp i t prev rs =
-      quotientList t
-        ((successiveDiffsFrom
-            (rayThetaAt hp i prev)
-            (rs.map (rayThetaAt hp i))).map
-          (fun d => d / Real.pi)) := by
-  induction rs generalizing prev with
-  | nil =>
-      simp [consecutiveRayQuotients, successiveDiffsFrom, quotientList]
-  | cons r rs ih =>
-      simp [consecutiveRayQuotients, successiveDiffsFrom,
-        quotientList, ih]
-
-/-- Every sign change across an ordinary sorted adjacent gap has positive
-quotient. -/
-theorem consecutive_changesOnlyOnPositive
-    {V : Type*} {p : V → Plane}
-    {lam t : ℝ}
-    (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
-    (ht : 0 < t)
-    (hlam : lam = Real.pi / t)
-    (i : V)
-    (prev : OtherVertex i) (rs : List (OtherVertex i))
-    (hnodup : (prev :: rs).Nodup)
-    (hsorted :
-      (prev :: rs).Pairwise
-        (fun a b =>
-          rayThetaAt hp i a ≤ rayThetaAt hp i b)) :
-    ChangesOnlyOnPositive
-      (raySignAt hp i prev)
-      (rs.map (raySignAt hp i))
-      (consecutiveRayQuotients hp i t prev rs) := by
-  induction rs generalizing prev with
-  | nil =>
-      simp [ChangesOnlyOnPositive, consecutiveRayQuotients]
-  | cons r rs ih =>
-      have hnod := List.nodup_cons.mp hnodup
-      have hpair := List.pairwise_cons.mp hsorted
-      have hprevR : prev ≠ r := by
-        intro h
-        subst r
-        exact hnod.1 (by simp)
-      have horder :
-          rayThetaAt hp i prev ≤ rayThetaAt hp i r :=
-        hpair.1 r (by simp)
-      constructor
-      · intro hsign
-        exact floor_t_mul_gap_ne_zero_of_canonical_sign_ne
-          hp hcap ht hlam i hprevR horder hsign
-      · exact ih r hnod.2 hpair.2
-
-/-- The normalized wrap quotient from the last ray back to the lifted first
-ray. -/
-noncomputable def wrapRayQuotient
-    {V : Type*} {p : V → Plane}
-    (hp : Function.Injective p)
-    (i : V) (t : ℝ)
-    (first last : OtherVertex i) : ℕ :=
-  Nat.floor
-    (t * ((rayThetaAt hp i first + Real.pi -
-      rayThetaAt hp i last) / Real.pi))
-
-/-- Decomposition of the concrete quotient list into ordinary consecutive
-quotients and the final wrap quotient. -/
-theorem centreQuotientList_decompose
-    {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} {hp : Function.Injective p} {i : V}
-    (C : CentreProjectiveCycle hp i)
-    (t : ℝ)
-    (first : OtherVertex i) (rest : List (OtherVertex i))
-    (hrays : C.rays = first :: rest) :
-    quotientList t C.gaps =
-      consecutiveRayQuotients hp i t first rest ++
-        [wrapRayQuotient hp i t first (rest.getLastD first)] := by
-  rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
-  change
-    quotientList t
-        ((successiveDiffsFrom
-            (rayThetaAt hp i first)
-            (rest.map (rayThetaAt hp i))).map
-          (fun d => d / Real.pi))
-      ++
-      [Nat.floor
-        (t * ((rayThetaAt hp i first + Real.pi -
-          (rest.map (rayThetaAt hp i)).getLastD
-            (rayThetaAt hp i first)) / Real.pi))]
-      =
-    consecutiveRayQuotients hp i t first rest ++
-      [wrapRayQuotient hp i t first (rest.getLastD first)]
-  rw [← consecutiveRayQuotients_eq_quotientList]
-  congr 1
-  simp [wrapRayQuotient, map_getLastD]
 
 /-- The concrete lifted cyclic sign path. -/
 noncomputable def liftedCentreSignPath
