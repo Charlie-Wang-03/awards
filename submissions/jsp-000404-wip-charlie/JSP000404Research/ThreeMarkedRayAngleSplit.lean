@@ -1,5 +1,5 @@
 import JSP000404Research.CyclicActualAngles
-import JSP000404Research.AnglePath
+import Mathlib.Geometry.Euclidean.Angle.Unoriented.TriangleInequality
 import Mathlib.Tactic
 
 /-!
@@ -56,6 +56,28 @@ theorem cyclicRayAngles_three_marked_split
   simp only [consecutiveRayAngles]
   simp [List.append_assoc]
 
+/-- The angle between the endpoints of an OtherVertex path is bounded
+by the sum of its successive actual angles.  Unlike the older generic
+AnglePath wrapper, this formulation never introduces a degenerate singleton
+path goal. -/
+theorem angle_endpoints_le_consecutiveRayAngles_sum
+    {V : Type*} {p : V → Plane}
+    (i : V)
+    (first last : OtherVertex i)
+    (mid : List (OtherVertex i)) :
+    EuclideanGeometry.angle (p first.1) (p i) (p last.1) ≤
+      (consecutiveRayAngles (p := p) i first (mid ++ [last])).sum := by
+  induction mid generalizing first with
+  | nil =>
+      simp [consecutiveRayAngles]
+  | cons r rs ih =>
+      have htri :=
+        EuclideanGeometry.angle_le_angle_add_angle
+          (p i) (p first.1) (p r.1) (p last.1)
+      have htail := ih r
+      simp only [List.cons_append, consecutiveRayAngles, List.sum_cons]
+      linarith
+
 /-- Each of the three angle blocks controls its marked endpoint pair. -/
 theorem three_marked_path_endpoint_bounds
     {V : Type*} {p : V → Plane}
@@ -70,22 +92,17 @@ theorem three_marked_path_endpoint_bounds
     ∧
     EuclideanGeometry.angle (p c.1) (p i) (p a.1) ≤
         (consecutiveRayAngles (p := p) i c (Z ++ [a])).sum := by
-  constructor
-  · apply angle_mem_otherVertex_path_le_consecutive_sum
-      (p := p) i a (X ++ [b])
-    · simp
-    · simp
-  · constructor
-    · apply angle_mem_otherVertex_path_le_consecutive_sum
-        (p := p) i b (Y ++ [c])
-      · simp
-      · simp
-    · apply angle_mem_otherVertex_path_le_consecutive_sum
-        (p := p) i c (Z ++ [a])
-      · simp
-      · simp
+  exact ⟨
+    angle_endpoints_le_consecutiveRayAngles_sum
+      (p := p) i a b X,
+    angle_endpoints_le_consecutiveRayAngles_sum
+      (p := p) i b c Y,
+    angle_endpoints_le_consecutiveRayAngles_sum
+      (p := p) i c a Z
+  ⟩
 
 #print axioms consecutiveRayAngles_append_cons
+#print axioms angle_endpoints_le_consecutiveRayAngles_sum
 #print axioms cyclicRayAngles_three_marked_split
 #print axioms three_marked_path_endpoint_bounds
 
