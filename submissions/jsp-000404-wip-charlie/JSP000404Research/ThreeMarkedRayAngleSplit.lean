@@ -10,9 +10,9 @@ namespace JSP000404Research
 
 private theorem getLastD_append_cons
     {α : Type*}
-    (prefix : List α) (y : α) (tail : List α) (d : α) :
-    (prefix ++ y :: tail).getLastD d = tail.getLastD y := by
-  induction prefix generalizing d with
+    (pre : List α) (y : α) (tail : List α) (d : α) :
+    (pre ++ y :: tail).getLastD d = tail.getLastD y := by
+  induction pre generalizing d with
   | nil =>
       exact List.getLastD_cons
   | cons x xs ih =>
@@ -73,10 +73,14 @@ theorem cyclicRayAngles_three_marked_split
   rw [consecutiveRayAngles_append_cons
       (p := p) i c Z a []]
   have hlastFinal :
-      (b :: (Y ++ c :: Z)).getLastD (X.getLastD a) =
+      (X ++ b :: (Y ++ c :: Z)).getLastD a =
         Z.getLastD c := by
-    rw [List.getLastD_cons]
-    exact getLastD_append_cons Y c Z b
+    calc
+      (X ++ b :: (Y ++ c :: Z)).getLastD a =
+          (Y ++ c :: Z).getLastD b :=
+        getLastD_append_cons X b (Y ++ c :: Z) a
+      _ = Z.getLastD c :=
+        getLastD_append_cons Y c Z b
   simp only [consecutiveRayAngles]
   rw [hlastFinal]
   simp [List.append_assoc]
