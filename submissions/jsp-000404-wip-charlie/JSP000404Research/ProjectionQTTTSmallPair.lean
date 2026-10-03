@@ -74,26 +74,30 @@ theorem secondLayer_supportTwo_member_has_small_pair
       b ≠ c ∧ b ≠ d ∧ c ≠ d ∧
       SmallPairAmongOtherThree p delta lam a b c d := by
   simp only [Finset.mem_insert, Finset.mem_singleton] at haMem
-  rcases haMem with rfl | rfl | rfl | rfl
-  · refine ⟨x,y,z,by simp,by simp,by simp,
+  rcases haMem with has | hax | hay | haz
+  · subst a
+    refine ⟨x,y,z,by simp,by simp,by simp,
       hsx,hsy,hsz,hxy,hxz,hyz,?_⟩
     exact secondLayer_supportTwo_first_has_small_pair_among_three
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       hsx hsy hsz hxy hxz hyz
       (C s) hsSecond haSupport
-  · refine ⟨s,y,z,by simp,by simp,by simp,
+  · subst a
+    refine ⟨s,y,z,by simp,by simp,by simp,
       hsx.symm,hxy,hxz,hsy,hsz,hyz,?_⟩
     exact secondLayer_supportTwo_first_has_small_pair_among_three
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       hsx.symm hxy hxz hsy hsz hyz
       (C x) hxSecond haSupport
-  · refine ⟨s,x,z,by simp,by simp,by simp,
+  · subst a
+    refine ⟨s,x,z,by simp,by simp,by simp,
       hsy.symm,hxy.symm,hyz,hsx,hsz,hxz,?_⟩
     exact secondLayer_supportTwo_first_has_small_pair_among_three
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       hsy.symm hxy.symm hyz hsx hsz hxz
       (C y) hySecond haSupport
-  · refine ⟨s,x,y,by simp,by simp,by simp,
+  · subst a
+    refine ⟨s,x,y,by simp,by simp,by simp,
       hsz.symm,hxz.symm,hyz.symm,hsx,hsy,hxy,?_⟩
     exact secondLayer_supportTwo_first_has_small_pair_among_three
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
