@@ -77,6 +77,7 @@ jobs:
           lake build JSP000404Research.ProjectionOppositeSideRetainedAngle
           lake build JSP000404Research.FourSupportTwoOrderedAdjacent
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
+          lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
 
       - name: Check isolated four-choice core
         working-directory: submissions/jsp-000404-wip-charlie
