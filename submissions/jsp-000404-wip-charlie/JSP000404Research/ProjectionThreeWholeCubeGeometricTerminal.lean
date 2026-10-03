@@ -6,19 +6,19 @@ import Mathlib.Tactic
 /-!
 # Geometric terminal for the saturated four-vertex whole-cube core
 
-Combine the sharp support terminal with the new palette-free four-support-two
+Combine the sharp support terminal with the palette-free four-support-two
 derangement reduction.
 
 For n >= 4 a saturated three-whole-cube star has exactly two possible forms:
 
 1. all four vertices are support-two, in which case their four forced
-   delta-small pairs form one of the nine K4 derangement patterns;
+   delta-small pairs reduce to one of the three double-transposition patterns;
 2. there is one support-one global order extreme, the other three vertices are
    support-two, all four retained palettes are one common consecutive triple,
    and every support-two vertex has a unit transition certificate.
 
 Thus the unresolved four-vertex obstruction is reduced to one finite
-palette-free nine-state branch and one highly rigid unique-support-one branch.
+palette-free three-state branch and one highly rigid unique-support-one branch.
 -/
 
 namespace JSP000404Research
@@ -123,7 +123,7 @@ theorem planar_threeWholeCubePartners_geometric_support_terminal
           q ∈ ({v,s₁,s₂,s₃} : Finset (ProjectionOrdered V)) →
           positiveSupport (centreQuotient (Cfam q) t) = 2)
         ∧
-        FourSupportTwoDerangementPattern9
+        FourSupportTwoDerangementPattern3
           (reindexedPoint p) delta lam v s₁ s₂ s₃
       )
       ∨
@@ -195,7 +195,7 @@ theorem planar_threeWholeCubePartners_geometric_support_terminal
           apply hbc
           exact ProjectionOrdered.toOriginal_injective h)
 
-    exact four_supportTwo_secondLayer_reduce_to_derangement_nine
+    exact four_supportTwo_secondLayer_reduce_to_derangement_three
       (reindexedPoint_injective hp)
       hcapR (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hlam Cfam
