@@ -43,6 +43,27 @@ def FourSupportTwoMatchingPattern3
   EuclideanGeometry.angle (p a) (p c) (p b) ≤ delta * lam ∧
   EuclideanGeometry.angle (p a) (p d) (p b) ≤ delta * lam
 
+def FourSupportTwoCrossingTwoPatternTerminal
+    {V : Type*} (p : V → Plane) (delta lam : ℝ)
+    (a b c d : V) : Prop :=
+  (
+    (segment ℝ (p a) (p b) ∩ segment ℝ (p c) (p d)).Nonempty ∧
+    (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
+     FourSupportTwoMatchingPattern2 p delta lam a b c d)
+  )
+  ∨
+  (
+    (segment ℝ (p a) (p c) ∩ segment ℝ (p b) (p d)).Nonempty ∧
+    (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
+     FourSupportTwoMatchingPattern3 p delta lam a b c d)
+  )
+  ∨
+  (
+    (segment ℝ (p a) (p d) ∩ segment ℝ (p b) (p c)).Nonempty ∧
+    (FourSupportTwoMatchingPattern2 p delta lam a b c d ∨
+     FourSupportTwoMatchingPattern3 p delta lam a b c d)
+  )
+
 theorem four_supportTwo_pattern3_reduce_to_two_of_convex_position
     {V : Type*} {p : V → Plane}
     {delta lam : ℝ}
@@ -62,23 +83,9 @@ theorem four_supportTwo_pattern3_reduce_to_two_of_convex_position
     (hd :
       p d ∉ convexHull ℝ ({p a,p b,p c} : Set Plane))
     (hpat : FourSupportTwoDerangementPattern3 p delta lam a b c d) :
-    (
-      (segment ℝ (p a) (p b) ∩ segment ℝ (p c) (p d)).Nonempty ∧
-      (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern2 p delta lam a b c d)
-    )
-    ∨
-    (
-      (segment ℝ (p a) (p c) ∩ segment ℝ (p b) (p d)).Nonempty ∧
-      (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern3 p delta lam a b c d)
-    )
-    ∨
-    (
-      (segment ℝ (p a) (p d) ∩ segment ℝ (p b) (p c)).Nonempty ∧
-      (FourSupportTwoMatchingPattern2 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern3 p delta lam a b c d)
-    ) := by
+    FourSupportTwoCrossingTwoPatternTerminal
+      p delta lam a b c d := by
+  unfold FourSupportTwoCrossingTwoPatternTerminal
   have hcross :=
     four_convex_position_has_crossing_pairing
       (hp.ne hab) (hp.ne hac) (hp.ne had)
