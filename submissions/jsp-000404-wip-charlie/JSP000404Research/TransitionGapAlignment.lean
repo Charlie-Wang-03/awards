@@ -1,5 +1,3 @@
-import JSP000404Research.TransitionRotation
-import JSP000404Research.LinearizedTransitionExposure
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic
 
@@ -95,8 +93,12 @@ theorem aligned_transition_gap_pos
     (ht : 0 < t)
     (hqe : qe ≠ 0)
     (halign : (qe : ℝ) ≤ t * ge) :
-    0 < ge :=
-  gap_pos_of_positive_quotient ht hqe halign
+    0 < ge := by
+  have hqe1 : (1 : ℝ) ≤ qe := by
+    exact_mod_cast (Nat.one_le_iff_ne_zero.mpr hqe)
+  have hprod : 0 < t * ge := lt_of_lt_of_le (by norm_num) (hqe1.trans halign)
+  exact (mul_pos_iff.mp hprod).resolve_left (by
+    exact not_lt_of_ge ht.le)
 
 /-- Rotating a list at the distinguished decomposition moves that entry to the
 last position. -/
