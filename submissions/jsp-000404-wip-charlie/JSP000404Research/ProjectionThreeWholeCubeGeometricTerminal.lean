@@ -1,6 +1,7 @@
 import JSP000404Research.ProjectionThreeWholeCubeSharpSupportTerminal
 import JSP000404Research.ProjectionThreeWholeCubeUnitTransitions
 import JSP000404Research.FourSupportTwoSecondLayerBridge
+import JSP000404Research.FourSupportTwoExposureTwoPatternBridge
 import Mathlib.Tactic
 
 /-!
@@ -11,14 +12,16 @@ derangement reduction.
 
 For n >= 4 a saturated three-whole-cube star has exactly two possible forms:
 
-1. all four vertices are support-two, in which case their four forced
-   delta-small pairs reduce to one of the three double-transposition patterns;
+1. all four vertices are support-two; their four forced delta-small pairs
+   first reduce to three double-transposition patterns, and strict exposure
+   plus the actual crossing pairing removes one more pattern, leaving two;
 2. there is one support-one global order extreme, the other three vertices are
    support-two, all four retained palettes are one common consecutive triple,
    and every support-two vertex has a unit transition certificate.
 
 Thus the unresolved four-vertex obstruction is reduced to one finite
-palette-free three-state branch and one highly rigid unique-support-one branch.
+palette-free two-state branch indexed by the actual crossing pairing and one
+highly rigid unique-support-one branch.
 -/
 
 namespace JSP000404Research
@@ -123,7 +126,7 @@ theorem planar_threeWholeCubePartners_geometric_support_terminal
           q ∈ ({v,s₁,s₂,s₃} : Finset (ProjectionOrdered V)) →
           positiveSupport (centreQuotient (Cfam q) t) = 2)
         ∧
-        FourSupportTwoDerangementPattern3
+        FourSupportTwoCrossingTwoPatternTerminal
           (reindexedPoint p) delta lam v s₁ s₂ s₃
       )
       ∨
@@ -195,13 +198,22 @@ theorem planar_threeWholeCubePartners_geometric_support_terminal
           apply hbc
           exact ProjectionOrdered.toOriginal_injective h)
 
-    exact four_supportTwo_secondLayer_reduce_to_derangement_three
+    have hpat3 :=
+      four_supportTwo_secondLayer_reduce_to_derangement_three
+        (reindexedPoint_injective hp)
+        hcapR (by omega : 3 ≤ n)
+        hdelta0 hdeltaHalf ht hlam Cfam
+        hvs1 hvs2 hvs3 hs12 hs13 hs23
+        hvSecond hs1Second hs2Second hs3Second
+        hvSupport hs1Support hs2Support hs3Support
+
+    exact four_supportLeTwo_secondLayer_reduce_to_two
       (reindexedPoint_injective hp)
       hcapR (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hlam Cfam
       hvs1 hvs2 hvs3 hs12 hs13 hs23
-      hvSecond hs1Second hs2Second hs3Second
-      hvSupport hs1Support hs2Support hs3Support
+      (by omega) (by omega) (by omega) (by omega)
+      hpat3
 
   · right
     obtain ⟨o,hoMem,hoOne,hoExtreme,hothers,
