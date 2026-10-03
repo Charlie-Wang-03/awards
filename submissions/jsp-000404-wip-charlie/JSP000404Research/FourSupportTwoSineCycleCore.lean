@@ -274,14 +274,14 @@ theorem four_cycle_small_angles_impossible_core
         <
       Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
           Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) := by
-    exact mul_lt_mul hsA hsB hB0 (hsA.le.trans' hA0)
+    exact mul_lt_mul hsA hsB.le hB0 (lt_of_le_of_lt hA0 hsA)
   have hpairCD :
       Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
           Real.sin (EuclideanGeometry.angle (p a) (p d) (p c))
         <
       Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
           Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
-    exact mul_lt_mul hsC hsD hD0 (hsC.le.trans' hC0)
+    exact mul_lt_mul hsC hsD.le hD0 (lt_of_le_of_lt hC0 hsC)
   have hprodLt :
       Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
         Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
@@ -292,18 +292,20 @@ theorem four_cycle_small_angles_impossible_core
         Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
         Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
         Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
-    have hrightAB0 :
-        0 ≤
+    have hrightABpos :
+        0 <
           Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
           Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) := by
-      exact mul_nonneg (hA0.trans hsA.le) (hB0.trans hsB.le)
+      exact mul_pos
+        (lt_of_le_of_lt hA0 hsA)
+        (lt_of_le_of_lt hB0 hsB)
     have hCD0 :
         0 ≤
           Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
           Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) :=
       mul_nonneg hC0 hD0
     have h :=
-      mul_lt_mul hpairAB hpairCD hCD0 hrightAB0
+      mul_lt_mul hpairAB hpairCD.le hCD0 hrightABpos
     simpa [mul_assoc] using h
   have hprodEq :=
     four_cycle_sine_product_eq_core hp
