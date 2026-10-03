@@ -37,13 +37,15 @@ theorem finite_disjoint_measurable_length_sum_le
     (hambient : mu Set.univ = ENNReal.ofReal T)
     (hT0 : 0 ≤ T) :
     (∑ i, len i) ≤ T := by
+  have hdisj' :
+      (↑(Finset.univ : Finset I) : Set I).PairwiseDisjoint S := by
+    simpa using hdisj
   have hunion :
       mu (⋃ i : I, S i) = ∑ i : I, mu (S i) := by
     simpa using
       (measure_biUnion_finset
-        (mu := mu)
-        (s := (Finset.univ : Finset I))
-        hdisj
+        (μ := mu)
+        hdisj'
         (fun i _ => hmeas i))
   have hsumMeasure :
       (∑ i : I, mu (S i)) ≤ mu Set.univ := by
