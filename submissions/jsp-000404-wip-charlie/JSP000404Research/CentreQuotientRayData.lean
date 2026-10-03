@@ -80,23 +80,9 @@ theorem centreQuotientList_decompose
       consecutiveRayQuotients hp i t first rest ++
         [wrapRayQuotient hp i t first (rest.getLastD first)] := by
   rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
-  change
-    quotientList t
-        ((successiveDiffsFrom
-            (rayThetaAt hp i first)
-            (rest.map (rayThetaAt hp i))).map
-          (fun d => d / Real.pi))
-      ++
-      [Nat.floor
-        (t * ((rayThetaAt hp i first + Real.pi -
-          (rest.map (rayThetaAt hp i)).getLastD
-            (rayThetaAt hp i first)) / Real.pi))]
-      =
-    consecutiveRayQuotients hp i t first rest ++
-      [wrapRayQuotient hp i t first (rest.getLastD first)]
-  rw [← consecutiveRayQuotients_eq_quotientList]
-  congr 1
-  simp [wrapRayQuotient, map_getLastD]
+  simp [normalizedProjectiveGaps, projectiveGaps, quotientList,
+    consecutiveRayQuotients_eq_quotientList,
+    wrapRayQuotient, map_getLastD, List.map_append]
 
 #print axioms consecutiveRayQuotients_eq_quotientList
 #print axioms centreQuotientList_decompose
