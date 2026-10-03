@@ -76,6 +76,13 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.FourSupportTwoSineCycleCore
 
+      - name: Check isolated crossing-matching obstruction
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.FourPointRadonPairing
+          lake build JSP000404Research.CrossingDiagonalsQuadrilateralAngleSum
+          lake build JSP000404Research.FourSupportTwoCrossingCore
+
       - name: Check isolated support-two small-pair bridge
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
