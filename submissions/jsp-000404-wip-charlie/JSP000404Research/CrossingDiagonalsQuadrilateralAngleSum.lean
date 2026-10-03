@@ -24,6 +24,7 @@ namespace JSP000404Research
 
 open Real
 
+set_option maxHeartbeats 800000 in
 theorem crossing_diagonals_four_angles_sum_two_pi
     {a b c d : Plane}
     (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
