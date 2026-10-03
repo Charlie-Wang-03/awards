@@ -70,7 +70,7 @@ structure ForwardAngleLift
 
 namespace ForwardAngleLift
 
-def value
+noncomputable def value
     {V : Type*} [LinearOrder V]
     {p : V → Plane} {base lam : ℝ}
     (F : ForwardAngleLift p base) :
@@ -265,7 +265,7 @@ noncomputable def toDirectionData
     rw [F.angle_first_eq_abs hij hjk] at hcapFirst
     rw [F.abs_value_sub_value hlam]
     apply (div_le_iff₀ hlam).2
-    rw [hscale] at hcapFirst ⊢
+    rw [hscale] at hcapFirst
     nlinarith
   lastGap := by
     intro i j k hij hjk
@@ -280,7 +280,7 @@ noncomputable def toDirectionData
     rw [F.angle_last_eq_abs hij hjk] at hcapLast
     rw [F.abs_value_sub_value hlam]
     apply (div_le_iff₀ hlam).2
-    rw [hscale] at hcapLast ⊢
+    rw [hscale] at hcapLast
     nlinarith
 
 /-- Sendov-normalized wrapper. -/
