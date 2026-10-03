@@ -40,7 +40,6 @@ theorem successiveDiffsFrom_append_cons
       simp only [List.cons_append, successiveDiffsFrom]
       rw [ih]
       rw [List.getLastD_cons]
-      rfl
 
 /-- Last element after appending a nonempty block is the last element of that
 block. -/
@@ -65,7 +64,7 @@ theorem projectiveGaps_append_cons
             [a + Real.pi - bs.getLastD b]) := by
   rw [projectiveGaps, successiveDiffsFrom_append_cons]
   rw [getLastD_append_cons a xs b bs]
-  rfl
+  simp only [List.append_assoc]
 
 /-- Normalized version of the ordinary cut decomposition. -/
 theorem normalizedProjectiveGaps_append_cons
