@@ -1,5 +1,5 @@
 import JSP000404Research.SupportTwoThreeMarkedSmallPair
-import JSP000404Research.ProjectionQTTTAllNSupport
+import JSP000404Research.SmallPairAmongOtherThree
 import Mathlib.Tactic
 
 /-!
@@ -11,14 +11,6 @@ delta*lambda-small pair among the other three centres.
 -/
 
 namespace JSP000404Research
-
-def SmallPairAmongOtherThree
-    {V : Type*}
-    (p : V → Plane) (delta lam : ℝ)
-    (a b c d : V) : Prop :=
-  EuclideanGeometry.angle (p b) (p a) (p c) ≤ delta * lam
-  ∨ EuclideanGeometry.angle (p b) (p a) (p d) ≤ delta * lam
-  ∨ EuclideanGeometry.angle (p c) (p a) (p d) ≤ delta * lam
 
 theorem secondLayer_supportTwo_first_has_small_pair_among_three
     {V : Type*} [LinearOrder V] [Fintype V]
