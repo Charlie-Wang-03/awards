@@ -8,6 +8,17 @@ import Mathlib.Tactic
 
 namespace JSP000404Research
 
+private theorem getLastD_append_cons
+    {α : Type*}
+    (prefix : List α) (y : α) (tail : List α) (d : α) :
+    (prefix ++ y :: tail).getLastD d = tail.getLastD y := by
+  induction prefix generalizing d with
+  | nil =>
+      exact List.getLastD_cons
+  | cons x xs ih =>
+      rw [List.cons_append, List.getLastD_cons]
+      exact ih x
+
 theorem consecutiveRayAngles_append_cons
     {V : Type*} {p : V → Plane}
     (i : V)
@@ -28,10 +39,9 @@ theorem consecutiveRayAngles_append_cons
       simp only [List.cons_append, consecutiveRayAngles]
       rw [ih x]
       have hlast :
-          (x :: xs).getLastD prev = xs.getLastD x := by
-        cases xs <;> simp
+          (x :: xs).getLastD prev = xs.getLastD x :=
+        List.getLastD_cons
       rw [hlast]
-      simp [List.append_assoc]
 
 /-- Three marked rays split the cyclic actual-angle list into the three
 ordinary paths joining consecutive marked rays around the cycle. -/
@@ -62,7 +72,13 @@ theorem cyclicRayAngles_three_marked_split
       (p := p) i b Y c []]
   rw [consecutiveRayAngles_append_cons
       (p := p) i c Z a []]
+  have hlastFinal :
+      (b :: (Y ++ c :: Z)).getLastD (X.getLastD a) =
+        Z.getLastD c := by
+    rw [List.getLastD_cons]
+    exact getLastD_append_cons Y c Z b
   simp only [consecutiveRayAngles]
+  rw [hlastFinal]
   simp [List.append_assoc]
 
 /-- The angle between the endpoints of an OtherVertex path is bounded
