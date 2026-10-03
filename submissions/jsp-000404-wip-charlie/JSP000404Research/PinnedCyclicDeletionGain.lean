@@ -74,9 +74,16 @@ theorem pinned_cyclic_merge_doubles_weight
     (hLast : 1 ≤ qLast) :
     2 * 2 ^ listExponent (qFirst :: qmid ++ [qLast]) ≤
       2 ^ listExponent (qmid ++ [qLast + qFirst + carry]) := by
-  exact two_mul_pow_le_pow_of_succ_le
-    (pinned_cyclic_merge_gain_of_end_positive
-      qFirst qLast carry qmid hFirst hLast)
+  have hExp :
+      listExponent (qFirst :: qmid ++ [qLast]) + 1 ≤
+        listExponent (qmid ++ [qLast + qFirst + carry]) :=
+    pinned_cyclic_merge_gain_of_end_positive
+      qFirst qLast carry qmid hFirst hLast
+  have hPow :
+      2 ^ (listExponent (qFirst :: qmid ++ [qLast]) + 1) ≤
+        2 ^ listExponent (qmid ++ [qLast + qFirst + carry]) :=
+    Nat.pow_le_pow_right (by norm_num : 0 < 2) hExp
+  simpa [pow_succ, mul_comm] using hPow
 
 #print axioms pinned_cyclic_merge_gain_of_end_positive
 #print axioms pinned_cyclic_merge_doubles_weight
