@@ -40,7 +40,7 @@ theorem listRemainderMass_eq
       t * gs.sum - (qs.sum : ℝ) := by
   induction qs generalizing gs with
   | nil =>
-      cases gs <;> simp [listRemainderMass]
+      cases gs <;> simp [listRemainderMass] at hlen ⊢
   | cons q qs ih =>
       cases gs with
       | nil =>
@@ -56,18 +56,29 @@ theorem listZeroGapMass_scaled_le_remainder
     t * listZeroGapMass qs gs ≤
       listRemainderMass t qs gs := by
   unfold QuotientGapAligned at halign
-  induction halign with
+  induction qs generalizing gs with
   | nil =>
-      simp [listZeroGapMass, listRemainderMass]
-  | @cons q g qs gs hqg htail ih =>
-      have hrem : 0 ≤ t * g - (q : ℝ) := by
-        linarith
-      by_cases hq0 : q = 0
-      · subst q
-        simp [listZeroGapMass, listRemainderMass] at ih ⊢
-        linarith
-      · simp [listZeroGapMass, listRemainderMass, hq0] at ih ⊢
-        linarith
+      cases gs with
+      | nil =>
+          simp [listZeroGapMass, listRemainderMass]
+      | cons g gs =>
+          cases halign
+  | cons q qs ih =>
+      cases gs with
+      | nil =>
+          cases halign
+      | cons g gs =>
+          cases halign with
+          | cons hqg htail =>
+              have hrem : 0 ≤ t * g - (q : ℝ) := by
+                linarith
+              have ihtail := ih htail
+              by_cases hq0 : q = 0
+              · subst q
+                simp [listZeroGapMass, listRemainderMass] at ihtail ⊢
+                linarith
+              · simp [listZeroGapMass, listRemainderMass, hq0] at ihtail ⊢
+                linarith
 
 theorem listZeroGapMass_scaled_le_delta
     (qs : List ℕ) (gs : List ℝ)
@@ -82,9 +93,9 @@ theorem listZeroGapMass_scaled_le_delta
   have hmass :=
     listZeroGapMass_scaled_le_remainder halign
   rw [listRemainderMass_eq t qs gs hlen,
-      hgapsum, hqsum, ht] at hmass
+      hgapsum, hqsum] at hmass
   norm_num at hmass
-  exact hmass
+  nlinarith [ht]
 
 theorem listZeroGapMass_nonneg
     (qs : List ℕ) (gs : List ℝ)
@@ -105,8 +116,11 @@ theorem listZeroGapMass_nonneg
             intro x hx
             exact hg0 x (by simp [hx])
           have hi := ih gs hlen htail
-          by_cases hq : q = 0 <;>
-            simp [listZeroGapMass, hq, hg, hi]
+          by_cases hq : q = 0
+          · subst q
+            simp only [listZeroGapMass, if_pos rfl]
+            exact add_nonneg hg hi
+          · simp [listZeroGapMass, hq, hi]
 
 theorem listZeroGapMass_append
     (qs₁ qs₂ : List ℕ) (gs₁ gs₂ : List ℝ)
