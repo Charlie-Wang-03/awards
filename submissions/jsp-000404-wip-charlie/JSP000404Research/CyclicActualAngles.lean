@@ -1,4 +1,5 @@
 import JSP000404Research.GeneralZeroGapActualAngle
+import JSP000404Research.CentreQuotientRayData
 import Mathlib.Tactic
 
 /-!
@@ -28,6 +29,17 @@ namespace JSP000404Research
 
 open Real
 
+private theorem cyclic_sendov_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) :
+    0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by
+    exact_mod_cast hn
+  linarith
+
 private theorem pi_mul_zero_gap_width_le_delta_lam
     {G t delta lam : ℝ}
     (ht : 0 < t)
@@ -51,14 +63,14 @@ def consecutiveRayAngles
   | _, [] => []
   | prev, r :: rs =>
       EuclideanGeometry.angle (p prev.1) (p i) (p r.1) ::
-        consecutiveRayAngles i r rs
+        consecutiveRayAngles (p := p) i r rs
 
 def cyclicRayAngles
     {V : Type*} {p : V → Plane}
     (i : V)
     (first : OtherVertex i)
     (rest : List (OtherVertex i)) : List ℝ :=
-  consecutiveRayAngles i first rest ++
+  consecutiveRayAngles (p := p) i first rest ++
     [EuclideanGeometry.angle
       (p (rest.getLastD first).1) (p i) (p first.1)]
 
@@ -68,7 +80,8 @@ theorem consecutiveRayAngles_length
     (rs : List (OtherVertex i)) :
     (consecutiveRayAngles (p := p) i prev rs).length = rs.length := by
   induction rs generalizing prev with
-  | nil => rfl
+  | nil =>
+      simp [consecutiveRayAngles]
   | cons r rs ih =>
       simp [consecutiveRayAngles, ih]
 
@@ -101,7 +114,7 @@ theorem zeroQuotientAngleAligned_length_q_gap
   | cons q qs ih =>
       cases gs <;> cases As <;>
         simp [ZeroQuotientAngleAligned] at h ⊢
-      exact congrArg Nat.succ (ih h.2)
+      exact ih h.2
 
 theorem zeroQuotientAngleAligned_length_q_angle
     {qs : List ℕ} {gs As : List ℝ}
@@ -114,15 +127,15 @@ theorem zeroQuotientAngleAligned_length_q_angle
   | cons q qs ih =>
       cases gs <;> cases As <;>
         simp [ZeroQuotientAngleAligned] at h ⊢
-      exact congrArg Nat.succ (ih h.2)
+      exact ih h.2
 
 /-- On an ordinary sorted ray chain, zero quotients have exact actual-angle
 cost pi*g. -/
 theorem consecutive_zeroQuotientAngleAligned
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -187,9 +200,9 @@ theorem consecutive_zeroQuotientAngleAligned
 /-- Wrap zero quotient has the same exact actual-angle cost. -/
 theorem wrap_zero_actual_angle_eq_pi_mul_gap
     {V : Type*} {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -241,9 +254,9 @@ implication is vacuous. -/
 theorem centre_zeroQuotientAngleAligned
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t : ℝ}
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -389,17 +402,19 @@ theorem listZeroAngleMass_nonneg
             intro x hx
             exact hA0 x (by simp [hx])
           have ht := ih As htail0
-          by_cases hq : q = 0 <;>
-            simp [listZeroAngleMass, hq, h0, ht]
+          by_cases hq : q = 0
+          · subst q
+            simpa [listZeroAngleMass] using add_nonneg h0 ht
+          · simp [listZeroAngleMass, hq, ht]
 
 /-- Concrete deficit-two/support-two centre: the total actual angle mass over
 all zero quotient positions is at most delta*lambda. -/
 theorem centre_zeroAngleMass_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -419,7 +434,7 @@ theorem centre_zeroAngleMass_le_delta_lam
       ≤ delta * lam := by
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    cyclic_sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have htone : 1 ≤ t := by
     rw [ht]
     have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
@@ -527,7 +542,7 @@ theorem listZeroAngleMass_decompose_at_zero
   induction qpre generalizing Apre with
   | nil =>
       have hnil : Apre = [] :=
-        List.length_eq_zero.mp (by simpa using hpre.symm)
+        List.length_eq_zero_iff.mp (by simpa using hpre.symm)
       subst Apre
       simp [listZeroAngleMass]
   | cons q qs ih =>
@@ -616,7 +631,7 @@ theorem listZeroAngleMass_pinned_eq_middle_sum
   induction qmid generalizing Amid with
   | nil =>
       have hnil : Amid = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
+        List.length_eq_zero_iff.mp (by simpa using hlen.symm)
       subst Amid
       simp [listZeroAngleMass, hLast]
   | cons q qs ih =>
