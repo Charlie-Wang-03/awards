@@ -1,6 +1,6 @@
 import JSP000404Research.ProjectionThreeWholeCubeSharpSupportTerminal
 import JSP000404Research.ProjectionThreeWholeCubeUnitTransitions
-import JSP000404Research.FourSupportTwoDerangement
+import JSP000404Research.FourSupportTwoSecondLayerBridge
 import Mathlib.Tactic
 
 /-!
@@ -29,9 +29,9 @@ open OrderedEdgeColoring
 theorem planar_threeWholeCubePartners_geometric_support_terminal
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
