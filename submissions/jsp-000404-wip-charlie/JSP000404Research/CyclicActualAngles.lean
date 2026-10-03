@@ -1,7 +1,4 @@
-import JSP000404Research.CentreSignPath
-import JSP000404Research.SmallSameSignGapAngle
-import JSP000404Research.CanonicalSignGap
-import JSP000404Research.ZeroClusterAngle
+import JSP000404Research.GeneralZeroGapActualAngle
 import Mathlib.Tactic
 
 /-!
@@ -30,6 +27,22 @@ angular path length without constructing a common signed interval.
 namespace JSP000404Research
 
 open Real
+
+private theorem pi_mul_zero_gap_width_le_delta_lam
+    {G t delta lam : ℝ}
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (hG : t * G ≤ delta) :
+    Real.pi * G ≤ delta * lam := by
+  rw [hlam]
+  have hdiv : G ≤ delta / t := by
+    rw [le_div_iff₀ ht]
+    simpa [mul_comm] using hG
+  have hpi :=
+    mul_le_mul_of_nonneg_left hdiv Real.pi_pos.le
+  calc
+    Real.pi * G ≤ Real.pi * (delta / t) := hpi
+    _ = delta * (Real.pi / t) := by ring
 
 def consecutiveRayAngles
     {V : Type*} {p : V → Plane}
@@ -432,7 +445,7 @@ theorem centre_zeroAngleMass_le_delta_lam
       Real.pi * listZeroGapMass
           (quotientList t C.gaps) C.gaps
         ≤ delta * lam :=
-    pi_mul_width_le_delta_lam_of_scaled_width
+    pi_mul_zero_gap_width_le_delta_lam
       htpos hlam hmass
   rw [hzeroEq]
   exact hpiMass
