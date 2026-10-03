@@ -44,9 +44,9 @@ def FourSupportTwoAnglePattern9Core
 vertices of one nondegenerate triangle when delta < 1/2. -/
 theorem two_delta_small_angles_same_triangle_impossible_core
     {V : Type*} {p : V → Plane}
+    {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {delta lam : ℝ}
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {a b c : V}
@@ -77,9 +77,9 @@ among the other three vertices; the angle-cap collision lemma removes all
 assignments that reuse a triangle. -/
 theorem four_small_pair_choices_reduce_to_angle_derangement_nine_core
     {V : Type*} {p : V → Plane}
+    {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {delta lam : ℝ}
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {a b c d : V}
