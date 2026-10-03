@@ -27,7 +27,11 @@ theorem consecutiveRayAngles_append_cons
   | cons x xs ih =>
       simp only [List.cons_append, consecutiveRayAngles]
       rw [ih x]
-      simp [List.getLastD_cons]
+      have hlast :
+          (x :: xs).getLastD prev = xs.getLastD x := by
+        cases xs <;> simp
+      rw [hlast]
+      simp [List.append_assoc]
 
 /-- Three marked rays split the cyclic actual-angle list into the three
 ordinary paths joining consecutive marked rays around the cycle. -/
@@ -43,6 +47,11 @@ theorem cyclicRayAngles_three_marked_split
       consecutiveRayAngles (p := p) i b (Y ++ [c]) ++
       consecutiveRayAngles (p := p) i c (Z ++ [a]) := by
   unfold cyclicRayAngles
+  have hrest :
+      X ++ b :: Y ++ c :: Z =
+        X ++ b :: (Y ++ c :: Z) := by
+    simp [List.append_assoc]
+  rw [hrest]
   rw [consecutiveRayAngles_append_cons
       (p := p) i a X b (Y ++ c :: Z)]
   rw [consecutiveRayAngles_append_cons
