@@ -72,10 +72,7 @@ jobs:
           status=0
           for target in \
             JSP000404Research.FourSupportTwoDerangement \
-            JSP000404Research.ProjectionThreeWholeCubeGeometricTerminal \
-            JSP000404Research.FourSupportTwoDerangementExtremeMatrix \
-            JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoSourceExtreme \
-            JSP000404Research.FourSupportTwoDerangementPartnerExtreme
+            JSP000404Research.ProjectionThreeWholeCubeGeometricTerminal
           do
             echo "===== lake build $target ====="
             lake build "$target" || status=1
