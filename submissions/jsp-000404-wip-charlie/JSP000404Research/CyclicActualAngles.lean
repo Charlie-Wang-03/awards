@@ -56,7 +56,7 @@ private theorem pi_mul_zero_gap_width_le_delta_lam
     Real.pi * G ≤ Real.pi * (delta / t) := hpi
     _ = delta * (Real.pi / t) := by ring
 
-def consecutiveRayAngles
+noncomputable def consecutiveRayAngles
     {V : Type*} {p : V → Plane}
     (i : V) :
     OtherVertex i → List (OtherVertex i) → List ℝ
@@ -65,7 +65,7 @@ def consecutiveRayAngles
       EuclideanGeometry.angle (p prev.1) (p i) (p r.1) ::
         consecutiveRayAngles (p := p) i r rs
 
-def cyclicRayAngles
+noncomputable def cyclicRayAngles
     {V : Type*} {p : V → Plane}
     (i : V)
     (first : OtherVertex i)
@@ -286,22 +286,12 @@ theorem centre_zeroQuotientAngleAligned
   simp only [List.map_cons, normalizedProjectiveGaps,
     projectiveGaps, List.map_append, List.map_singleton]
   unfold cyclicRayAngles
-  have hgapOrd :
-      ((successiveDiffsFrom
-          (rayThetaAt hp i first)
-          (rest.map (rayThetaAt hp i))).map
-        (fun d => d / Real.pi)) =
-      ((successiveDiffsFrom
-          (rayThetaAt hp i first)
-          (rest.map (rayThetaAt hp i))).map
-        (fun d => d / Real.pi)) := rfl
+  rw [map_getLastD]
+  apply zeroQuotientAngleAligned_append_singleton hord
   cases hrest : rest with
   | nil =>
       subst rest
-      simp only [consecutiveRayQuotients,
-        consecutiveRayAngles, List.map_nil,
-        successiveDiffsFrom, List.append_nil,
-        List.getLastD_nil]
+      intro hq0
       have hwrapNonzero :
           wrapRayQuotient hp i t first first ≠ 0 := by
         unfold wrapRayQuotient
@@ -309,47 +299,35 @@ theorem centre_zeroQuotientAngleAligned
             t * ((rayThetaAt hp i first + Real.pi -
               rayThetaAt hp i first) / Real.pi) = t := by
           field_simp [Real.pi_ne_zero]
+          ring
         rw [harg]
         have hfloor : 1 ≤ Nat.floor t := by
-          apply Nat.le_floor ht.le
-          exact_mod_cast htone
+          exact Nat.le_floor (by exact_mod_cast htone)
         omega
-      simp [ZeroQuotientAngleAligned, hwrapNonzero,
-        wrapRayQuotient]
+      exact False.elim (hwrapNonzero hq0)
   | cons r rs =>
+      subst rest
+      intro hq0
       have hlastMem :
           (r :: rs).getLastD first ∈ r :: rs :=
-        List.getLastD_mem (by simp)
+        getLastD_mem_of_ne_nil first (r :: rs) (by simp)
       have hfl :
           first ≠ (r :: rs).getLastD first := by
         intro h
-        have htailNo := (List.nodup_cons.mp hnodup).1
+        have htailNo : first ∉ r :: rs :=
+          (List.nodup_cons.mp hnodup).1
         apply htailNo
-        simpa [h] using hlastMem
+        rw [h]
+        exact hlastMem
       have horder :
           rayThetaAt hp i first ≤
             rayThetaAt hp i ((r :: rs).getLastD first) := by
         exact (List.pairwise_cons.mp hsorted).1 _
           hlastMem
-      have hwrap :
-          wrapRayQuotient hp i t first
-              ((r :: rs).getLastD first) = 0 →
-            EuclideanGeometry.angle
-                (p ((r :: rs).getLastD first).1)
-                (p i) (p first.1)
-              =
-            Real.pi *
-              ((rayThetaAt hp i first + Real.pi -
-                rayThetaAt hp i ((r :: rs).getLastD first)) /
-                Real.pi) :=
-        wrap_zero_actual_angle_eq_pi_mul_gap
-          hp hcap ht hlam i first
-          ((r :: rs).getLastD first)
-          hfl horder
-      simpa [ZeroQuotientAngleAligned,
-        wrapRayQuotient, List.getLastD_cons] using
-        zeroQuotientAngleAligned_append_singleton
-          hord hwrap
+      exact wrap_zero_actual_angle_eq_pi_mul_gap
+        hp hcap ht hlam i first
+        ((r :: rs).getLastD first)
+        hfl horder hq0
 
 
 def listZeroAngleMass : List ℕ → List ℝ → ℝ
@@ -588,6 +566,22 @@ theorem displayed_zero_angle_le_listZeroAngleMass
     listZeroAngleMass_nonneg qpost Apost hpost0
   linarith
 
+theorem all_consecutiveRayAngles_nonneg
+    {V : Type*} {p : V → Plane}
+    (i : V)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i)) :
+    ∀ A ∈ consecutiveRayAngles (p := p) i first rest, 0 ≤ A := by
+  intro A hA
+  induction rest generalizing first with
+  | nil =>
+      simp [consecutiveRayAngles] at hA
+  | cons r rs ih =>
+      simp only [consecutiveRayAngles, List.mem_cons] at hA
+      rcases hA with rfl | hA
+      · exact EuclideanGeometry.angle_nonneg _ _ _
+      · exact ih r hA
+
 theorem all_cyclicRayAngles_nonneg
     {V : Type*} {p : V → Plane}
     (i : V)
@@ -597,14 +591,8 @@ theorem all_cyclicRayAngles_nonneg
   intro A hA
   unfold cyclicRayAngles at hA
   rcases List.mem_append.mp hA with hOrd | hWrap
-  · induction rest generalizing first with
-    | nil =>
-        simp [consecutiveRayAngles] at hOrd
-    | cons r rs ih =>
-        simp only [consecutiveRayAngles, List.mem_cons] at hOrd
-        rcases hOrd with rfl | hOrd
-        · exact EuclideanGeometry.angle_nonneg _ _ _
-        · exact ih r hOrd
+  · exact all_consecutiveRayAngles_nonneg
+      (p := p) i first rest A hOrd
   · simp only [List.mem_singleton] at hWrap
     subst A
     exact EuclideanGeometry.angle_nonneg _ _ _
