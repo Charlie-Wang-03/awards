@@ -102,7 +102,7 @@ theorem projectionValue_ne_of_slope_ne_bad
       linarith
     apply hij
     apply hp
-    funext c
+    ext c
     fin_cases c
     · exact hx
     · exact hy
