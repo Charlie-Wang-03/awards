@@ -37,7 +37,10 @@ theorem successiveDiffsFrom_append_cons
   | nil =>
       simp [successiveDiffsFrom]
   | cons x xs ih =>
-      simp [successiveDiffsFrom, ih, List.append_assoc]
+      simp only [List.cons_append, successiveDiffsFrom]
+      rw [ih]
+      rw [List.getLastD_cons]
+      rfl
 
 /-- Last element after appending a nonempty block is the last element of that
 block. -/
@@ -46,9 +49,11 @@ theorem getLastD_append_cons
     (xs ++ b :: bs).getLastD d = bs.getLastD b := by
   induction xs generalizing d with
   | nil =>
-      simp
+      exact List.getLastD_cons
   | cons x xs ih =>
-      simp [ih]
+      simp only [List.cons_append]
+      rw [List.getLastD_cons]
+      exact ih x
 
 /-- Physical projective gaps split at an ordinary ray cut. -/
 theorem projectiveGaps_append_cons
@@ -59,7 +64,8 @@ theorem projectiveGaps_append_cons
           (successiveDiffsFrom b bs ++
             [a + Real.pi - bs.getLastD b]) := by
   rw [projectiveGaps, successiveDiffsFrom_append_cons]
-  simp [getLastD_append_cons, List.append_assoc]
+  rw [getLastD_append_cons a xs b bs]
+  rfl
 
 /-- Normalized version of the ordinary cut decomposition. -/
 theorem normalizedProjectiveGaps_append_cons
@@ -92,7 +98,7 @@ theorem distinguished_entry_eq_of_decompositions
     simp
   rw [hlen] at hdrop₁
   rw [hdrop₂] at hdrop₁
-  exact List.cons.inj hdrop₁ |>.1
+  exact (List.cons.inj hdrop₁).1.symm
 
 
 /-- Two decompositions of the same list with equally long prefixes agree in
@@ -179,7 +185,6 @@ theorem centre_gap_blocks_eq_ordinary_cut
     rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
     simp only [List.map_cons, List.map_append]
     rw [normalizedProjectiveGaps_append_cons]
-    rfl
   have hstdLen : stdPre.length = before.length := by
     simp [stdPre, successiveDiffsFrom_length]
   have hlen' : gpre.length = stdPre.length := by
@@ -219,9 +224,8 @@ theorem centre_gap_blocks_eq_wrap_cut
   have hstd :
       C.gaps = stdPre ++ stdGap :: [] := by
     rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
-    simp only [List.map_cons]
-    rw [normalizedProjectiveGaps]
-    simp [projectiveGaps, stdPre, stdGap]
+    dsimp [stdPre, stdGap, theta]
+    simp [normalizedProjectiveGaps, projectiveGaps, List.map_append]
   have hstdLen : stdPre.length = rest.length := by
     simp [stdPre, successiveDiffsFrom_length]
   have hlen' : gpre.length = stdPre.length := by
@@ -278,11 +282,8 @@ theorem centre_gap_eq_ordinary_cut
   have hlast :
       (before.map theta).getLastD (theta first) =
         theta ((first :: before).getLast (by simp)) := by
-    cases before with
-    | nil =>
-        simp [theta]
-    | cons b bs =>
-        simp [theta, List.getLast_cons]
+    rw [List.getLastD_map]
+    rw [List.getLast_eq_getLastD]
   rw [heq, hlast]
 
 /-- Wrap analogue: if the distinguished entry occurs after all ordinary
@@ -310,6 +311,7 @@ theorem centre_gap_eq_wrap_cut
           [((theta first + Real.pi -
             (rest.map theta).getLastD (theta first)) / Real.pi)] := by
     rw [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles, hrays]
+    dsimp [theta]
     simp [normalizedProjectiveGaps, projectiveGaps, List.map_append]
   have hpref :
       ((successiveDiffsFrom (theta first)
@@ -321,17 +323,13 @@ theorem centre_gap_eq_wrap_cut
     distinguished_entry_eq_of_decompositions
       hgaps
       (by
-        rw [hstd]
-        rfl)
+        exact hstd)
       (by simpa [hpref] using hlen)
   have hlast :
       (rest.map theta).getLastD (theta first) =
         theta ((first :: rest).getLast (by simp)) := by
-    cases rest with
-    | nil =>
-        simp [theta]
-    | cons b bs =>
-        simp [theta, List.getLast_cons]
+    rw [List.getLastD_map]
+    rw [List.getLast_eq_getLastD]
   rw [heq, hlast]
 
 #print axioms successiveDiffsFrom_append_cons
