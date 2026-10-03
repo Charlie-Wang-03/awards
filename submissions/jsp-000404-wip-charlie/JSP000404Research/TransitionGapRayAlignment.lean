@@ -1,5 +1,4 @@
 import JSP000404Research.CentreProjectiveCycle
-import JSP000404Research.CentreSignPath
 import Mathlib.Tactic
 
 /-!
