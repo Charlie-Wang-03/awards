@@ -342,9 +342,106 @@ theorem four_cycle_small_angles_impossible_core
   rw [hprodEq] at hprodLt
   exact (lt_irrefl _ hprodLt)
 
+/-- The three surviving derangements are exactly the three double
+transpositions. -/
+def FourSupportTwoAnglePattern3Core
+    {V : Type*}
+    (p : V → Plane) (delta lam : ℝ)
+    (a b c d : V) : Prop :=
+  (
+    EuclideanGeometry.angle (p b) (p a) (p c) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p b) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p c) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p b) (p d) (p c) ≤ delta * lam
+  )
+  ∨
+  (
+    EuclideanGeometry.angle (p b) (p a) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p b) (p c) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p b) (p c) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p d) (p c) ≤ delta * lam
+  )
+  ∨
+  (
+    EuclideanGeometry.angle (p c) (p a) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p c) (p b) (p d) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p c) (p b) ≤ delta * lam ∧
+    EuclideanGeometry.angle (p a) (p d) (p b) ≤ delta * lam
+  )
+
+/-- The nine angle derangements reduce to the three double transpositions.
+The six discarded cases are all relabelings of the kernel-checked standard
+four-cycle obstruction. -/
+theorem four_supportTwo_angle_derangement_nine_reduce_to_three_core
+    {V : Type*} {p : V → Plane}
+    {delta lam : ℝ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlampos : 0 < lam)
+    (hlamHalf : lam ≤ Real.pi / 2)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (h9 : FourSupportTwoAnglePattern9Core p delta lam a b c d) :
+    FourSupportTwoAnglePattern3Core p delta lam a b c d := by
+  unfold FourSupportTwoAnglePattern9Core at h9
+  unfold FourChoiceDerangement9 at h9
+  unfold FourSupportTwoAnglePattern3Core
+  rcases h9 with h1 | h2 | h3 | h4 | h5 | h6 | h7 | h8 | h9
+  · exact Or.inl h1
+  · obtain ⟨hA,hB,hC,hD⟩ := h2
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        hab hac had hbc hbd hcd
+        hA hB hC hD)
+  · obtain ⟨hA,hB,hC,hD⟩ := h3
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        hac hab had hbc.symm hcd hbd
+        (by simpa [EuclideanGeometry.angle_comm] using hA)
+        hC hB hD)
+  · obtain ⟨hA,hB,hC,hD⟩ := h4
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        hab had hac hbd hbc hcd.symm
+        hA hB hD hC)
+  · exact Or.inr (Or.inl h5)
+  · obtain ⟨hA,hB,hC,hD⟩ := h6
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        had hab hac hbd.symm hcd.symm hbc
+        (by simpa [EuclideanGeometry.angle_comm] using hA)
+        hD
+        (by simpa [EuclideanGeometry.angle_comm] using hB)
+        hC)
+  · obtain ⟨hA,hB,hC,hD⟩ := h7
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        had hac hab hcd.symm hbd.symm hbc.symm
+        (by simpa [EuclideanGeometry.angle_comm] using hA)
+        hD
+        (by simpa [EuclideanGeometry.angle_comm] using hC)
+        hB)
+  · obtain ⟨hA,hB,hC,hD⟩ := h8
+    exact False.elim
+      (four_cycle_small_angles_impossible_core
+        (p := p) hp hcap hdeltaHalf hlampos hlamHalf
+        hac had hab hcd hbc hbd.symm
+        hA hC
+        (by simpa [EuclideanGeometry.angle_comm] using hD)
+        hB)
+  · exact Or.inr (Or.inr h9)
+
 #print axioms sin_lt_sin_of_small_large_cap_core
 #print axioms small_triangle_angle_sine_lt_other_core
 #print axioms four_cycle_sine_product_eq_core
 #print axioms four_cycle_small_angles_impossible_core
+#print axioms four_supportTwo_angle_derangement_nine_reduce_to_three_core
 
 end JSP000404Research
