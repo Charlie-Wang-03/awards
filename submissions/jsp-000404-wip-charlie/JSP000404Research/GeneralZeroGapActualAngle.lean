@@ -2,6 +2,7 @@ import JSP000404Research.ListZeroGapMass
 import JSP000404Research.SmallSameSignGapAngle
 import JSP000404Research.CanonicalSignGap
 import JSP000404Research.DeficitTwo
+import JSP000404Research.TransitionGapRayAlignment
 import Mathlib.Tactic
 
 /-!
@@ -28,6 +29,17 @@ has genuine Euclidean angle at most delta*lambda.
 namespace JSP000404Research
 
 open Real
+
+private theorem zeroGap_sendov_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) :
+    0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by
+    exact_mod_cast hn
+  linarith
 
 theorem centre_quotientList_sum_eq_n_of_deficit_two_support_two
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -65,9 +77,9 @@ theorem centre_quotientList_sum_eq_n_of_deficit_two_support_two
 theorem displayed_ordinary_zero_gap_actual_angle_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -94,7 +106,7 @@ theorem displayed_ordinary_zero_gap_actual_angle_le_delta_lam
       ≤ delta * lam := by
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    zeroGap_sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have halign0 :=
     centreQuotient_aligned C htpos.le
   have halign :
@@ -194,9 +206,9 @@ theorem displayed_ordinary_zero_gap_actual_angle_le_delta_lam
 theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -223,7 +235,7 @@ theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
       ≤ delta * lam := by
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    zeroGap_sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have halign :
       QuotientGapAligned t (qpre ++ 0 :: []) C.gaps := by
     have h0 := centreQuotient_aligned C htpos.le
@@ -234,7 +246,7 @@ theorem displayed_wrap_zero_gap_actual_angle_le_delta_lam
       _hzeroAlign, _hpreAlign, _hpostAlign⟩ :=
     aligned_gap_decomposition halign
   have hgpost : gpost = [] :=
-    List.length_eq_zero.mp (by simpa using hpostLen)
+    List.length_eq_zero_iff.mp (by simpa using hpostLen)
   subst gpost
   have hgeEq :=
     centre_gap_eq_wrap_cut
@@ -309,9 +321,9 @@ automatically from the concrete gap decomposition. -/
 theorem ordinary_zero_gap_actual_angle_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -394,9 +406,9 @@ theorem ordinary_zero_gap_actual_angle_le_delta_lam
 theorem wrap_zero_gap_actual_angle_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
