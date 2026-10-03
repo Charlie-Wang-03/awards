@@ -1,4 +1,4 @@
-import JSP000404Research.StrictExposureConvexHull
+import JSP000404Research.SharpCentre
 import Mathlib.Analysis.Convex.Radon
 import Mathlib.Analysis.Convex.Hull
 import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
