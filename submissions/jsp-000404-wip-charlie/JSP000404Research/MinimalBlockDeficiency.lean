@@ -1,4 +1,5 @@
-import Mathlib.Data.Finset.Lattice
+import Mathlib.Data.Finset.Union
+import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
 /-!
