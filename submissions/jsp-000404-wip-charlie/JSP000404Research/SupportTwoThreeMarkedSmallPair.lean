@@ -153,7 +153,7 @@ theorem supportTwo_three_marked_small_pair_of_rotated_decomposition
       ∃ first rest, C.rays = first :: rest := by
     cases hR : C.rays with
     | nil => exact False.elim (C.nonempty hR)
-    | cons first rest => exact ⟨first,rest,hR⟩
+    | cons first rest => exact ⟨first,rest,rfl⟩
 
   let qs := quotientList t C.gaps
   let As :=
@@ -299,9 +299,9 @@ theorem supportTwo_three_other_vertices_has_small_pair
     ∨ EuclideanGeometry.angle (p c) (p i) (p a)
         ≤ delta * lam := by
   classical
-  let ao : OtherVertex i := ⟨a,hia⟩
-  let bo : OtherVertex i := ⟨b,hib⟩
-  let co : OtherVertex i := ⟨c,hic⟩
+  let ao : OtherVertex i := ⟨a,hia.symm⟩
+  let bo : OtherVertex i := ⟨b,hib.symm⟩
+  let co : OtherVertex i := ⟨c,hic.symm⟩
   have hao : ao ∈ C.rays := C.mem_rays_iff ao
   have hbo : bo ∈ C.rays := C.mem_rays_iff bo
   have hco : co ∈ C.rays := C.mem_rays_iff co
