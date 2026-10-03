@@ -98,6 +98,7 @@ theorem three_marked_cyclic_decomposition
       exists_append_cons_eq_of_mem hcV
     refine ⟨U,Y,Z,?_⟩
     rw [hrot,hTailB,hV]
+    simp [List.append_assoc]
 
 #print axioms three_marked_cyclic_decomposition
 
