@@ -27,13 +27,22 @@ private theorem positiveCount_zero_forall
       intro q hq
       by_cases ha : a = 0
       · subst a
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hzero
+        simp [listPositiveCount] at hzero
         simp only [List.mem_cons] at hq
         rcases hq with rfl | hq
         · rfl
         · exact ih hzero q hq
-      · simp only [listPositiveCount, if_neg ha] at hzero
-        omega
+      · simp [listPositiveCount, ha] at hzero
+
+private theorem positiveCount_append
+    (xs ys : List ℕ) :
+    listPositiveCount (xs ++ ys) =
+      listPositiveCount xs + listPositiveCount ys := by
+  induction xs with
+  | nil =>
+      simp [listPositiveCount]
+  | cons x xs ih =>
+      simp [listPositiveCount, ih, add_assoc]
 
 private theorem zeroAngleMass_append
     (q₁ q₂ : List ℕ) (A₁ A₂ : List ℝ)
@@ -82,6 +91,28 @@ private theorem zeroAngleMass_eq_sum_of_all_zero
           simp [listZeroAngleMass, ih As hlen htail]
 
 
+private theorem zeroAngleMass_append_three
+    (q₁ q₂ q₃ : List ℕ)
+    (A₁ A₂ A₃ : List ℝ)
+    (hlen₁ : q₁.length = A₁.length)
+    (hlen₂ : q₂.length = A₂.length)
+    (hlen₃ : q₃.length = A₃.length) :
+    listZeroAngleMass
+        (q₁ ++ q₂ ++ q₃)
+        (A₁ ++ A₂ ++ A₃)
+      =
+    listZeroAngleMass q₁ A₁ +
+      listZeroAngleMass q₂ A₂ +
+      listZeroAngleMass q₃ A₃ := by
+  have hlen₁₂ :
+      (q₁ ++ q₂).length = (A₁ ++ A₂).length := by
+    simp [hlen₁, hlen₂]
+  rw [zeroAngleMass_append
+      (q₁ ++ q₂) q₃ (A₁ ++ A₂) A₃ hlen₁₂]
+  rw [zeroAngleMass_append q₁ q₂ A₁ A₂ hlen₁]
+  ring
+
+
 theorem three_blocks_positiveCount_two_has_zero_block
     (q₁ q₂ q₃ : List ℕ)
     (hsupport :
@@ -89,8 +120,7 @@ theorem three_blocks_positiveCount_two_has_zero_block
     listPositiveCount q₁ = 0 ∨
       listPositiveCount q₂ = 0 ∨
       listPositiveCount q₃ = 0 := by
-  rw [listPositiveCount_append,
-      listPositiveCount_append] at hsupport
+  simp only [positiveCount_append] at hsupport
   omega
 
 theorem zero_block_angle_sum_le_global_zero_mass
@@ -114,30 +144,19 @@ theorem zero_block_angle_sum_le_global_zero_mass
     zeroAngleMass_eq_sum_of_all_zero
       q₁ A₁ hlen₁ hq₁
   have hA₂0 : ∀ A ∈ A₂, 0 ≤ A := by
-    intro A hA
-    exact hA0 A (by
-      apply List.mem_append_right A₁
-      apply List.mem_append_left
-      exact hA)
+    intro A hmem
+    exact hA0 A (by simp [hmem])
   have hA₃0 : ∀ A ∈ A₃, 0 ≤ A := by
-    intro A hA
-    exact hA0 A (by
-      apply List.mem_append_right A₁
-      apply List.mem_append_right A₂
-      exact hA)
+    intro A hmem
+    exact hA0 A (by simp [hmem])
   have hmass₂0 :
       0 ≤ listZeroAngleMass q₂ A₂ :=
     listZeroAngleMass_nonneg q₂ A₂ hA₂0
   have hmass₃0 :
       0 ≤ listZeroAngleMass q₃ A₃ :=
     listZeroAngleMass_nonneg q₃ A₃ hA₃0
-  rw [zeroAngleMass_append
-      q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
-  have hlen₂₃ :
-      (q₂ ++ q₃).length = (A₂ ++ A₃).length := by
-    simp [hlen₂,hlen₃]
-  rw [zeroAngleMass_append
-      q₂ q₃ A₂ A₃ hlen₂]
+  rw [zeroAngleMass_append_three
+      q₁ q₂ q₃ A₁ A₂ A₃ hlen₁ hlen₂ hlen₃]
   rw [hmass₁]
   linarith
 
@@ -179,10 +198,7 @@ theorem three_blocks_support_two_has_small_zero_arc
   · right; left
     have hrotateSupport :
         listPositiveCount (q₂ ++ q₃ ++ q₁) = 2 := by
-      rw [listPositiveCount_append,
-          listPositiveCount_append,
-          listPositiveCount_append,
-          listPositiveCount_append] at hsupport ⊢
+      simp only [positiveCount_append] at hsupport ⊢
       omega
     have hrotateMass :
         listZeroAngleMass
@@ -192,23 +208,17 @@ theorem three_blocks_support_two_has_small_zero_arc
         listZeroAngleMass
             (q₁ ++ q₂ ++ q₃)
             (A₁ ++ A₂ ++ A₃) := by
-      rw [zeroAngleMass_append
-          q₂ (q₃ ++ q₁) A₂ (A₃ ++ A₁) hlen₂]
-      rw [zeroAngleMass_append
-          q₃ q₁ A₃ A₁ hlen₃]
-      rw [zeroAngleMass_append
-          q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
-      rw [zeroAngleMass_append
-          q₂ q₃ A₂ A₃ hlen₂]
+      rw [zeroAngleMass_append_three
+          q₂ q₃ q₁ A₂ A₃ A₁ hlen₂ hlen₃ hlen₁]
+      rw [zeroAngleMass_append_three
+          q₁ q₂ q₃ A₁ A₂ A₃ hlen₁ hlen₂ hlen₃]
       ring
     have hArot :
         ∀ A ∈ A₂ ++ A₃ ++ A₁, 0 ≤ A := by
-      intro A hA
-      simp only [List.mem_append] at hA ⊢
-      rcases hA with hA | hA | hA
-      · exact hA0 A (by simp [hA])
-      · exact hA0 A (by simp [hA])
-      · exact hA0 A (by simp [hA])
+      intro A hmem
+      apply hA0 A
+      simp only [List.mem_append] at hmem ⊢
+      aesop
     refine ⟨h₂,?_⟩
     have hle :=
       zero_block_angle_sum_le_global_zero_mass
@@ -225,23 +235,17 @@ theorem three_blocks_support_two_has_small_zero_arc
         listZeroAngleMass
             (q₁ ++ q₂ ++ q₃)
             (A₁ ++ A₂ ++ A₃) := by
-      rw [zeroAngleMass_append
-          q₃ (q₁ ++ q₂) A₃ (A₁ ++ A₂) hlen₃]
-      rw [zeroAngleMass_append
-          q₁ q₂ A₁ A₂ hlen₁]
-      rw [zeroAngleMass_append
-          q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
-      rw [zeroAngleMass_append
-          q₂ q₃ A₂ A₃ hlen₂]
+      rw [zeroAngleMass_append_three
+          q₃ q₁ q₂ A₃ A₁ A₂ hlen₃ hlen₁ hlen₂]
+      rw [zeroAngleMass_append_three
+          q₁ q₂ q₃ A₁ A₂ A₃ hlen₁ hlen₂ hlen₃]
       ring
     have hArot :
         ∀ A ∈ A₃ ++ A₁ ++ A₂, 0 ≤ A := by
-      intro A hA
-      simp only [List.mem_append] at hA ⊢
-      rcases hA with hA | hA | hA
-      · exact hA0 A (by simp [hA])
-      · exact hA0 A (by simp [hA])
-      · exact hA0 A (by simp [hA])
+      intro A hmem
+      apply hA0 A
+      simp only [List.mem_append] at hmem ⊢
+      aesop
     refine ⟨h₃,?_⟩
     have hle :=
       zero_block_angle_sum_le_global_zero_mass
