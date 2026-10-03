@@ -86,7 +86,7 @@ theorem commonSignedIntervalRepr_of_common_sign_cons
         (fun a b =>
           rayThetaAt hp i a ≤ rayThetaAt hp i b)) :
     let last := (first :: rest).getLast (by simp)
-    ∀ j, j ≠ i →
+    ∀ j : V, j ≠ i →
       ∃ rho : ℝ, ∃ theta : ℝ,
         0 < rho ∧
         rayThetaAt hp i first ≤ theta ∧
