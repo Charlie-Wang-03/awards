@@ -94,6 +94,15 @@ jobs:
           lake build JSP000404Research.CrossingDiagonalsQuadrilateralAngleSum
           lake build JSP000404Research.FourSupportTwoCrossingCore
 
+      - name: Check convex two-pattern terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.FourPointRadonPairing
+          lake build JSP000404Research.CrossingDiagonalsQuadrilateralAngleSum
+          lake build JSP000404Research.FourSupportTwoCrossingCore
+          lake build JSP000404Research.FourSupportTwoConvexTwoPattern
+          lake build JSP000404Research.FourSupportTwoExposureTwoPatternBridge
+
       - name: Check current four-centre terminal
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
