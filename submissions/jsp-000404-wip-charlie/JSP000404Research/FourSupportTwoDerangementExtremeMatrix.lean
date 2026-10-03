@@ -218,7 +218,7 @@ theorem fourSupportTwo_derangement_impossible_of_sourceMax_matrix
   · exact killABD_A_B h4.1
   · exact killABD_A_B h5.1
   · exact killABC_C_B h6.2.2.1
-  · exact killABD_D_B h7.2.2.2.2
+  · exact killABD_D_B h7.2.2.2
   · exact killABC_C_B h8.2.2.1
   · exact killABC_C_B h9.2.2.1
 
