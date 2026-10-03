@@ -73,4 +73,60 @@ theorem four_supportTwo_secondLayer_reduce_to_derangement_nine
 
 #print axioms four_supportTwo_secondLayer_reduce_to_derangement_nine
 
+/-- Four second-layer support-two centres reduce all the way to the three
+surviving double-transposition patterns. -/
+theorem four_supportTwo_secondLayer_reduce_to_derangement_three
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (hn3 : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ v : V, CentreProjectiveCycle hp v)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (haSecond : centreExponent (C a) t = n - 2)
+    (hbSecond : centreExponent (C b) t = n - 2)
+    (hcSecond : centreExponent (C c) t = n - 2)
+    (hdSecond : centreExponent (C d) t = n - 2)
+    (haSupport : positiveSupport (centreQuotient (C a) t) = 2)
+    (hbSupport : positiveSupport (centreQuotient (C b) t) = 2)
+    (hcSupport : positiveSupport (centreQuotient (C c) t) = 2)
+    (hdSupport : positiveSupport (centreQuotient (C d) t) = 2) :
+    FourSupportTwoDerangementPattern3 p delta lam a b c d := by
+  have h9 :=
+    four_supportTwo_secondLayer_reduce_to_derangement_nine
+      hp hcap hn3 hdelta0 hdeltaHalf ht hlam C
+      hab hac had hbc hbd hcd
+      haSecond hbSecond hcSecond hdSecond
+      haSupport hbSupport hcSupport hdSupport
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by
+      exact_mod_cast hn3
+    linarith
+  have ht2 : (2 : ℝ) ≤ t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by
+      exact_mod_cast hn3
+    linarith
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  have hlamHalf : lam ≤ Real.pi / 2 := by
+    rw [hlam]
+    rw [div_le_iff₀ htpos]
+    nlinarith [Real.pi_pos]
+  exact
+    four_supportTwo_angle_derangement_nine_reduce_to_three_core
+      hp hcap hdeltaHalf hlampos hlamHalf
+      hab hac had hbc hbd hcd h9
+
+#print axioms four_supportTwo_secondLayer_reduce_to_derangement_three
+
 end JSP000404Research
