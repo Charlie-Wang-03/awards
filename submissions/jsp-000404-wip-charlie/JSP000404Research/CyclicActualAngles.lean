@@ -627,7 +627,11 @@ theorem listZeroAngleMass_pinned_eq_middle_sum
         (AFirst :: Amid ++ [ALast])
       =
     Amid.sum := by
-  simp only [listZeroAngleMass, hFirst, if_false, zero_add]
+  change
+    (if qFirst = 0 then AFirst else 0) +
+        listZeroAngleMass (qmid ++ [qLast]) (Amid ++ [ALast]) =
+      Amid.sum
+  rw [if_neg hFirst, zero_add]
   induction qmid generalizing Amid with
   | nil =>
       have hnil : Amid = [] :=
