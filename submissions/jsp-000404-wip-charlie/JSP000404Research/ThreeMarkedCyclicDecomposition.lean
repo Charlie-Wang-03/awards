@@ -1,4 +1,3 @@
-import JSP000404Research.PinnedCycleRotation
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic
 
@@ -39,7 +38,8 @@ theorem three_marked_cyclic_decomposition
       l.rotate k = a :: tail := by
     dsimp [k,tail]
     rw [hl]
-    exact rotate_displayed_element_to_front pre post a
+    simpa using
+      (List.rotate_append_length_eq pre (a :: post))
 
   have hbTail : b ∈ tail := by
     have hb' : b ∈ pre ++ a :: post := by
