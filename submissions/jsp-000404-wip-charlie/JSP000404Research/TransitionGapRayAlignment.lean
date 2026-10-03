@@ -64,7 +64,7 @@ theorem projectiveGaps_append_cons
             [a + Real.pi - bs.getLastD b]) := by
   rw [projectiveGaps, successiveDiffsFrom_append_cons]
   rw [getLastD_append_cons a xs b bs]
-  simp only [List.append_assoc]
+  simp only [List.cons_append]
 
 /-- Normalized version of the ordinary cut decomposition. -/
 theorem normalizedProjectiveGaps_append_cons
