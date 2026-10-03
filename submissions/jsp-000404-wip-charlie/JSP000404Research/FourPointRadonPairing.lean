@@ -51,10 +51,10 @@ theorem four_convex_position_has_crossing_pairing
   all_goals
     have hIeq : I =
         {x : Fin 4 |
-          (x = 0 ∧ h0) ∨
-          (x = 1 ∧ h1) ∨
-          (x = 2 ∧ h2) ∨
-          (x = 3 ∧ h3)} := by
+          (x = 0 ∧ (0 : Fin 4) ∈ I) ∨
+          (x = 1 ∧ (1 : Fin 4) ∈ I) ∨
+          (x = 2 ∧ (2 : Fin 4) ∈ I) ∨
+          (x = 3 ∧ (3 : Fin 4) ∈ I)} := by
       ext x
       fin_cases x <;> simp_all
     rw [hIeq] at hI
