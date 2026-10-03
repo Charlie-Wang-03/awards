@@ -59,6 +59,23 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check current four-centre terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          set +e
+          status=0
+          for target in \
+            JSP000404Research.FourSupportTwoDerangement \
+            JSP000404Research.ProjectionThreeWholeCubeGeometricTerminal \
+            JSP000404Research.FourSupportTwoDerangementExtremeMatrix \
+            JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoSourceExtreme \
+            JSP000404Research.FourSupportTwoDerangementPartnerExtreme
+          do
+            echo "===== lake build $target ====="
+            lake build "$target" || status=1
+          done
+          exit "$status"
+
       - name: Check current recursive triangle frontier
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
