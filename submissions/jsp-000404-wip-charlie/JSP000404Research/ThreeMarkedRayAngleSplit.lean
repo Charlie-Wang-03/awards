@@ -8,7 +8,7 @@ import Mathlib.Tactic
 
 namespace JSP000404Research
 
-private theorem getLastD_append_cons
+private theorem marked_getLastD_append_cons
     {α : Type*}
     (pre : List α) (y : α) (tail : List α) (d : α) :
     (pre ++ y :: tail).getLastD d = tail.getLastD y := by
@@ -78,9 +78,9 @@ theorem cyclicRayAngles_three_marked_split
     calc
       (X ++ b :: (Y ++ c :: Z)).getLastD a =
           (Y ++ c :: Z).getLastD b :=
-        getLastD_append_cons X b (Y ++ c :: Z) a
+        marked_getLastD_append_cons X b (Y ++ c :: Z) a
       _ = Z.getLastD c :=
-        getLastD_append_cons Y c Z b
+        marked_getLastD_append_cons Y c Z b
   simp only [consecutiveRayAngles]
   rw [hlastFinal]
   simp [List.append_assoc]
