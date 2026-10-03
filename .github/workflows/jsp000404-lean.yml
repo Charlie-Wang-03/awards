@@ -59,6 +59,18 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check isolated support-two small-pair bridge
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.CentreQuotientRayData
+          lake build JSP000404Research.ThreeMarkedCyclicDecomposition
+          lake build JSP000404Research.CyclicActualAngles
+          lake build JSP000404Research.ThreeMarkedRayAngleSplit
+          lake build JSP000404Research.SupportTwoThreeMarkedArcs
+          lake build JSP000404Research.SupportTwoThreeMarkedSmallPair
+          lake build JSP000404Research.ProjectionQTTTSmallPair
+          lake build JSP000404Research.FourSupportTwoSecondLayerBridge
+
       - name: Check isolated four-choice core
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
@@ -75,18 +87,6 @@ jobs:
       - name: Check isolated four-cycle sine obstruction
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.FourSupportTwoSineCycleCore
-
-      - name: Check isolated support-two small-pair bridge
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: |
-          lake build JSP000404Research.CentreQuotientRayData
-          lake build JSP000404Research.ThreeMarkedCyclicDecomposition
-          lake build JSP000404Research.CyclicActualAngles
-          lake build JSP000404Research.ThreeMarkedRayAngleSplit
-          lake build JSP000404Research.SupportTwoThreeMarkedArcs
-          lake build JSP000404Research.SupportTwoThreeMarkedSmallPair
-          lake build JSP000404Research.ProjectionQTTTSmallPair
-          lake build JSP000404Research.FourSupportTwoSecondLayerBridge
 
       - name: Check isolated crossing-matching obstruction
         working-directory: submissions/jsp-000404-wip-charlie
