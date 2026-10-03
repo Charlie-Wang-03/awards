@@ -55,6 +55,7 @@ theorem listZeroGapMass_scaled_le_remainder
     (halign : QuotientGapAligned t qs gs) :
     t * listZeroGapMass qs gs ≤
       listRemainderMass t qs gs := by
+  unfold QuotientGapAligned at halign
   induction halign with
   | nil =>
       simp [listZeroGapMass, listRemainderMass]
@@ -77,7 +78,7 @@ theorem listZeroGapMass_scaled_le_delta
     (halign : QuotientGapAligned t qs gs) :
     t * listZeroGapMass qs gs ≤ delta := by
   have hlen : qs.length = gs.length :=
-    List.Forall₂.length_eq halign
+    quotientGapAligned_length halign
   have hmass :=
     listZeroGapMass_scaled_le_remainder halign
   rw [listRemainderMass_eq t qs gs hlen,
@@ -115,7 +116,7 @@ theorem listZeroGapMass_append
         listZeroGapMass qs₂ gs₂ := by
   induction qs₁ generalizing gs₁ with
   | nil =>
-      have hnil : gs₁ = [] := List.length_eq_zero.mp (by simpa using hlen.symm)
+      have hnil : gs₁ = [] := List.length_eq_zero_iff.mp (by simpa using hlen.symm)
       subst gs₁
       simp [listZeroGapMass]
   | cons q qs ih =>
