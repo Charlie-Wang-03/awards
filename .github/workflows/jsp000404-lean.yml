@@ -72,6 +72,10 @@ jobs:
           lake build JSP000404Research.ListZeroGapMass
           lake build JSP000404Research.GeneralZeroGapActualAngle
 
+      - name: Check isolated four-cycle sine obstruction
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.FourSupportTwoSineCycleCore
+
       - name: Check current four-centre terminal
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
