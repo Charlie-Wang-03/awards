@@ -24,6 +24,20 @@ theorem map_getLastD
       | cons y ys =>
           exact ih
 
+/-- getLastD of a nonempty list belongs to that list. -/
+theorem getLastD_mem_of_ne_nil
+    {α : Type*} (d : α) (xs : List α)
+    (hne : xs ≠ []) :
+    xs.getLastD d ∈ xs := by
+  induction xs with
+  | nil => exact False.elim (hne rfl)
+  | cons x xs ih =>
+      cases xs with
+      | nil => simp
+      | cons y ys =>
+          right
+          exact ih (by simp)
+
 /-- Quotients of the ordinary non-wrap gaps along a ray list. -/
 noncomputable def consecutiveRayQuotients
     {V : Type*} {p : V → Plane}
