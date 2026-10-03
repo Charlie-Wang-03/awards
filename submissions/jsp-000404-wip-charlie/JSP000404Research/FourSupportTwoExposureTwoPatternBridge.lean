@@ -35,23 +35,8 @@ theorem four_supportLeTwo_secondLayer_reduce_to_two
     (hcSupport : positiveSupport (centreQuotient (C c) t) ≤ 2)
     (hdSupport : positiveSupport (centreQuotient (C d) t) ≤ 2)
     (hpat : FourSupportTwoDerangementPattern3 p delta lam a b c d) :
-    (
-      (segment ℝ (p a) (p b) ∩ segment ℝ (p c) (p d)).Nonempty ∧
-      (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern2 p delta lam a b c d)
-    )
-    ∨
-    (
-      (segment ℝ (p a) (p c) ∩ segment ℝ (p b) (p d)).Nonempty ∧
-      (FourSupportTwoMatchingPattern1 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern3 p delta lam a b c d)
-    )
-    ∨
-    (
-      (segment ℝ (p a) (p d) ∩ segment ℝ (p b) (p c)).Nonempty ∧
-      (FourSupportTwoMatchingPattern2 p delta lam a b c d ∨
-       FourSupportTwoMatchingPattern3 p delta lam a b c d)
-    ) := by
+    FourSupportTwoCrossingTwoPatternTerminal
+      p delta lam a b c d := by
   have htpos : 0 < t := by
     rw [ht]
     have hnR : (3 : ℝ) ≤ n := by
