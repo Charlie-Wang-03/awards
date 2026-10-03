@@ -49,23 +49,28 @@ theorem deficit_two_structure
     (positiveSupport q = 1 ∧ (∑ i, q i) = n - 1) ∨
     (positiveSupport q = 2 ∧ (∑ i, q i) = n) := by
   have hdec := deficit_eq_floorDefect_add_support q n hQ
+  have hsumdec :
+      (n - ∑ i, q i) + positiveSupport q = 2 := by
+    calc
+      (n - ∑ i, q i) + positiveSupport q =
+          n - floorExcess q := hdec.symm
+      _ = 2 := hell
   have hp_le : positiveSupport q ≤ 2 := by
-    rw [← hell, hdec]
     omega
   have hp_pos := positiveSupport_pos_of_deficit_two q n hn hQ hell
   have hp_cases : positiveSupport q = 1 ∨ positiveSupport q = 2 := by
     omega
   rcases hp_cases with hp1 | hp2
   · left
-    constructor
-    · exact hp1
-    · rw [hell, hdec, hp1] at *
+    refine ⟨hp1, ?_⟩
+    have hdef : n - ∑ i, q i = 1 := by
       omega
+    omega
   · right
-    constructor
-    · exact hp2
-    · rw [hell, hdec, hp2] at *
+    refine ⟨hp2, ?_⟩
+    have hdef : n - ∑ i, q i = 0 := by
       omega
+    omega
 
 /-- Width-budget form of the two ell=2 cases. -/
 theorem deficit_two_zero_gap_budget
@@ -89,7 +94,7 @@ theorem deficit_two_zero_gap_budget
     refine ⟨h1.1, h1.2, ?_⟩
     have hb :=
       zeroGapMass_scaled_le_delta_add_deficit_sub_support
-        gap q n 2 delta t ht hgap hQ rfl hfloor
+        gap q n 2 delta t ht hgap hQ hell.symm hfloor
     rw [h1.1] at hb
     norm_num at hb ⊢
     exact hb
@@ -115,7 +120,7 @@ theorem deficit_two_one_support_width_lt_three_halves
     t * zeroGapMass gap q < (3 : ℝ) / 2 := by
   have hb :=
     zeroGapMass_scaled_le_delta_add_deficit_sub_support
-      gap q n 2 delta t ht hgap hQ rfl hfloor
+      gap q n 2 delta t ht hgap hQ hell.symm hfloor
   rw [hp] at hb
   norm_num at hb
   linarith
