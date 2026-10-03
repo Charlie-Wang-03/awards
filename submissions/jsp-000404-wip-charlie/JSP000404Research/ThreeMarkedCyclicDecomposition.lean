@@ -10,6 +10,21 @@ cyclic order after rotating the first marked element to the head.
 
 namespace JSP000404Research
 
+private theorem exists_append_cons_eq_of_mem
+    {α : Type*} {a : α} {l : List α}
+    (ha : a ∈ l) :
+    ∃ pre post : List α, l = pre ++ a :: post := by
+  induction l with
+  | nil =>
+      simp at ha
+  | cons x xs ih =>
+      simp only [List.mem_cons] at ha
+      rcases ha with hxa | ha
+      · subst x
+        exact ⟨[], xs, by simp⟩
+      · obtain ⟨pre, post, hxs⟩ := ih ha
+        exact ⟨x :: pre, post, by simp [hxs]⟩
+
 theorem three_marked_cyclic_decomposition
     {α : Type*} [DecidableEq α]
     (l : List α)
@@ -31,7 +46,7 @@ theorem three_marked_cyclic_decomposition
           l.rotate k = a :: (X ++ c :: Y ++ b :: Z)
       ) := by
   obtain ⟨pre,post,hl⟩ :=
-    exists_append_cons_of_mem ha
+    exists_append_cons_eq_of_mem ha
   let k := pre.length
   let tail := post ++ pre
   have hrot :
@@ -63,7 +78,7 @@ theorem three_marked_cyclic_decomposition
       exact List.mem_append_left pre hcPost
 
   obtain ⟨U,V,hTailB⟩ :=
-    exists_append_cons_of_mem hbTail
+    exists_append_cons_eq_of_mem hbTail
   have hcSplit : c ∈ U ∨ c ∈ V := by
     rw [hTailB] at hcTail
     simp only [List.mem_append, List.mem_cons] at hcTail
@@ -75,13 +90,13 @@ theorem three_marked_cyclic_decomposition
   rcases hcSplit with hcU | hcV
   · right
     obtain ⟨X,Y,hU⟩ :=
-      exists_append_cons_of_mem hcU
+      exists_append_cons_eq_of_mem hcU
     refine ⟨X,Y,V,?_⟩
     rw [hrot,hTailB,hU]
     simp [List.append_assoc]
   · left
     obtain ⟨Y,Z,hV⟩ :=
-      exists_append_cons_of_mem hcV
+      exists_append_cons_eq_of_mem hcV
     refine ⟨U,Y,Z,?_⟩
     rw [hrot,hTailB,hV]
     simp [List.append_assoc]
