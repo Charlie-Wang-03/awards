@@ -30,20 +30,6 @@ namespace JSP000404Research
 
 open Real
 
-/-- getLastD of a nonempty list is a member of that list. -/
-theorem getLastD_mem_of_ne_nil
-    {α : Type*} (d : α) (xs : List α)
-    (hne : xs ≠ []) :
-    xs.getLastD d ∈ xs := by
-  induction xs with
-  | nil => exact False.elim (hne rfl)
-  | cons x xs ih =>
-      cases xs with
-      | nil => simp
-      | cons y ys =>
-          right
-          exact ih (by simp)
-
 /-- boolLastFrom is just getLastD with the initial sign as default. -/
 theorem boolLastFrom_eq_getLastD
     (a : Bool) (xs : List Bool) :
