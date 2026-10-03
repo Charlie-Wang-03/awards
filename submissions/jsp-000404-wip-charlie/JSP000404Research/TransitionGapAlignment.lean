@@ -96,9 +96,11 @@ theorem aligned_transition_gap_pos
     0 < ge := by
   have hqe1 : (1 : ℝ) ≤ qe := by
     exact_mod_cast (Nat.one_le_iff_ne_zero.mpr hqe)
-  have hprod : 0 < t * ge := lt_of_lt_of_le (by norm_num) (hqe1.trans halign)
-  exact (mul_pos_iff.mp hprod).resolve_left (by
-    exact not_lt_of_ge ht.le)
+  have hprod : 0 < t * ge :=
+    lt_of_lt_of_le (by norm_num) (hqe1.trans halign)
+  rcases (mul_pos_iff.mp hprod) with hpos | hneg
+  · exact hpos.2
+  · exact False.elim ((not_lt_of_ge ht.le) hneg.1)
 
 /-- Rotating a list at the distinguished decomposition moves that entry to the
 last position. -/
