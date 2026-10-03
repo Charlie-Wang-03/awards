@@ -1,5 +1,3 @@
-import JSP000404Research.SupportThreeZeroAngleBlocks
-import JSP000404Research.SupportTwoNarrowClusters
 import JSP000404Research.CyclicActualAngles
 import JSP000404Research.ThreeMarkedRayAngleSplit
 import Mathlib.Tactic
@@ -17,6 +15,72 @@ three marked rays into a delta-small marked pair.
 -/
 
 namespace JSP000404Research
+
+private theorem positiveCount_zero_forall
+    (qs : List ℕ)
+    (hzero : listPositiveCount qs = 0) :
+    ∀ q ∈ qs, q = 0 := by
+  induction qs with
+  | nil =>
+      simp
+  | cons a as ih =>
+      intro q hq
+      by_cases ha : a = 0
+      · subst a
+        simp only [listPositiveCount, if_pos rfl, zero_add] at hzero
+        simp only [List.mem_cons] at hq
+        rcases hq with rfl | hq
+        · rfl
+        · exact ih hzero q hq
+      · simp only [listPositiveCount, if_neg ha] at hzero
+        omega
+
+private theorem zeroAngleMass_append
+    (q₁ q₂ : List ℕ) (A₁ A₂ : List ℝ)
+    (hlen : q₁.length = A₁.length) :
+    listZeroAngleMass (q₁ ++ q₂) (A₁ ++ A₂) =
+      listZeroAngleMass q₁ A₁ +
+        listZeroAngleMass q₂ A₂ := by
+  induction q₁ generalizing A₁ with
+  | nil =>
+      have hnil : A₁ = [] :=
+        List.length_eq_zero_iff.mp (by simpa using hlen.symm)
+      subst A₁
+      simp [listZeroAngleMass]
+  | cons q qs ih =>
+      cases A₁ with
+      | nil =>
+          simp at hlen
+      | cons A As =>
+          simp at hlen
+          simp only [List.cons_append, listZeroAngleMass]
+          rw [ih As hlen]
+          ring
+
+private theorem zeroAngleMass_eq_sum_of_all_zero
+    (qs : List ℕ) (As : List ℝ)
+    (hlen : qs.length = As.length)
+    (hzero : ∀ q ∈ qs, q = 0) :
+    listZeroAngleMass qs As = As.sum := by
+  induction qs generalizing As with
+  | nil =>
+      have hnil : As = [] :=
+        List.length_eq_zero_iff.mp (by simpa using hlen.symm)
+      subst As
+      simp [listZeroAngleMass]
+  | cons q qs ih =>
+      cases As with
+      | nil =>
+          simp at hlen
+      | cons A As =>
+          simp at hlen
+          have hq : q = 0 := hzero q (by simp)
+          have htail : ∀ x ∈ qs, x = 0 := by
+            intro x hx
+            exact hzero x (by simp [hx])
+          subst q
+          simp [listZeroAngleMass, ih As hlen htail]
+
 
 theorem three_blocks_positiveCount_two_has_zero_block
     (q₁ q₂ q₃ : List ℕ)
@@ -44,10 +108,10 @@ theorem zero_block_angle_sum_le_global_zero_mass
         (A₁ ++ A₂ ++ A₃) := by
   have hq₁ :
       ∀ q ∈ q₁, q = 0 :=
-    listPositiveCount_eq_zero_forall q₁ hzero₁
+    positiveCount_zero_forall q₁ hzero₁
   have hmass₁ :
       listZeroAngleMass q₁ A₁ = A₁.sum :=
-    listZeroAngleMass_eq_angle_sum_of_all_zero
+    zeroAngleMass_eq_sum_of_all_zero
       q₁ A₁ hlen₁ hq₁
   have hA₂0 : ∀ A ∈ A₂, 0 ≤ A := by
     intro A hA
@@ -67,12 +131,12 @@ theorem zero_block_angle_sum_le_global_zero_mass
   have hmass₃0 :
       0 ≤ listZeroAngleMass q₃ A₃ :=
     listZeroAngleMass_nonneg q₃ A₃ hA₃0
-  rw [listZeroAngleMass_append
+  rw [zeroAngleMass_append
       q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
   have hlen₂₃ :
       (q₂ ++ q₃).length = (A₂ ++ A₃).length := by
     simp [hlen₂,hlen₃]
-  rw [listZeroAngleMass_append
+  rw [zeroAngleMass_append
       q₂ q₃ A₂ A₃ hlen₂]
   rw [hmass₁]
   linarith
@@ -128,13 +192,13 @@ theorem three_blocks_support_two_has_small_zero_arc
         listZeroAngleMass
             (q₁ ++ q₂ ++ q₃)
             (A₁ ++ A₂ ++ A₃) := by
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₂ (q₃ ++ q₁) A₂ (A₃ ++ A₁) hlen₂]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₃ q₁ A₃ A₁ hlen₃]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₂ q₃ A₂ A₃ hlen₂]
       ring
     have hArot :
@@ -161,13 +225,13 @@ theorem three_blocks_support_two_has_small_zero_arc
         listZeroAngleMass
             (q₁ ++ q₂ ++ q₃)
             (A₁ ++ A₂ ++ A₃) := by
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₃ (q₁ ++ q₂) A₃ (A₁ ++ A₂) hlen₃]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₁ q₂ A₁ A₂ hlen₁]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₁ (q₂ ++ q₃) A₁ (A₂ ++ A₃) hlen₁]
-      rw [listZeroAngleMass_append
+      rw [zeroAngleMass_append
           q₂ q₃ A₂ A₃ hlen₂]
       ring
     have hArot :
