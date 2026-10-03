@@ -1,0 +1,319 @@
+import JSP000404Research.FourSupportTwoAngleCore
+import Mathlib.Geometry.Euclidean.Triangle
+import Mathlib.Tactic
+
+/-!
+# Sine-product obstruction for four-cycle angle patterns
+
+The six 4-cycle derangements in the four-support-two angle terminal admit a
+pure four-point obstruction.
+
+For the standard cycle, the four selected angles are
+
+* A: angle BAC in ABC,
+* B: angle ABD in ABD,
+* C: angle BCD in BCD,
+* D: angle ADC in ACD.
+
+The inverse cycle selects the other endpoint angle in each of these four
+triangles.  The law of sines in the four triangles gives equality of the two
+four-sine products: all side-length factors cancel.
+
+Under the global angle cap, if a selected angle is at most delta*lam then the
+paired inverse-cycle angle is at least lam minus that selected angle and at
+most pi-lam.  For delta < 1/2 and lam <= pi/2 its sine is strictly larger.
+Thus the two equal sine products would be strictly ordered, a contradiction.
+
+This module is deliberately independent of the whole-cube / residual chain.
+-/
+
+namespace JSP000404Research
+
+open Real
+
+/-- A scalar sine comparison used by the four-cycle obstruction. -/
+theorem sin_lt_sin_of_small_large_cap_core
+    {x y delta lam : ℝ}
+    (hx0 : 0 ≤ x)
+    (hxSmall : x ≤ delta * lam)
+    (hyLow : lam - x ≤ y)
+    (hyCap : y ≤ Real.pi - lam)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlampos : 0 < lam)
+    (hlamHalf : lam ≤ Real.pi / 2) :
+    Real.sin x < Real.sin y := by
+  have hxHalf : x < lam / 2 := by
+    nlinarith
+  have hxLam : x < lam := by
+    nlinarith
+  have hxPiHalf : x ≤ Real.pi / 2 := by
+    linarith
+  by_cases hyHalf : y ≤ Real.pi / 2
+  · have hxy : x < y := by
+      nlinarith
+    exact Real.sin_lt_sin_of_lt_of_le_pi_div_two
+      (by linarith [Real.pi_pos]) hyHalf hxy
+  · have hmirrorLow : lam ≤ Real.pi - y := by
+      linarith
+    have hxMirror : x < Real.pi - y := by
+      linarith
+    have hmirrorHalf : Real.pi - y ≤ Real.pi / 2 := by
+      linarith
+    have hsin :=
+      Real.sin_lt_sin_of_lt_of_le_pi_div_two
+        (by linarith [Real.pi_pos]) hmirrorHalf hxMirror
+    simpa using hsin
+
+/-- In one triangle, a delta*lam-small angle has strictly smaller sine than
+either other angle under the global cap. -/
+theorem small_triangle_angle_sine_lt_other_core
+    {V : Type*} {p : V → Plane}
+    {delta lam : ℝ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlampos : 0 < lam)
+    (hlamHalf : lam ≤ Real.pi / 2)
+    {i j k : V}
+    (hij : i ≠ j) (hik : i ≠ k) (hjk : j ≠ k)
+    (hsmall :
+      EuclideanGeometry.angle (p j) (p i) (p k) ≤ delta * lam) :
+    Real.sin (EuclideanGeometry.angle (p j) (p i) (p k)) <
+      Real.sin (EuclideanGeometry.angle (p i) (p j) (p k)) := by
+  let x := EuclideanGeometry.angle (p j) (p i) (p k)
+  let y := EuclideanGeometry.angle (p i) (p j) (p k)
+  let z := EuclideanGeometry.angle (p i) (p k) (p j)
+  have hx0 : 0 ≤ x := by
+    exact EuclideanGeometry.angle_nonneg _ _ _
+  have hyCap : y ≤ Real.pi - lam :=
+    hcap i j k hij hik hjk
+  have hzCap : z ≤ Real.pi - lam :=
+    hcap i k j hik hij hjk.symm
+  have hsum : x + y + z = Real.pi := by
+    simpa [x, y, z, EuclideanGeometry.angle_comm,
+      add_assoc, add_left_comm, add_comm] using
+      (EuclideanGeometry.angle_add_angle_add_angle_eq_pi
+        (p₁ := p j) (p₂ := p i) (p k) (hp.ne hij))
+  have hyLow : lam - x ≤ y := by
+    linarith
+  exact sin_lt_sin_of_small_large_cap_core
+    hx0 (by simpa [x] using hsmall) hyLow hyCap
+    hdeltaHalf hlampos hlamHalf
+
+/-- The standard four-cycle and its inverse have exactly the same product of
+the four sines. -/
+theorem four_cycle_sine_product_eq_core
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d) :
+    Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+      Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
+      Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+      Real.sin (EuclideanGeometry.angle (p a) (p d) (p c))
+    =
+    Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+      Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
+      Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+      Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
+  have hABC :
+      Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+          dist (p a) (p c)
+        =
+      Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+          dist (p b) (p c) := by
+    simpa [EuclideanGeometry.angle_comm, dist_comm] using
+      (EuclideanGeometry.sin_angle_mul_dist_eq_sin_angle_mul_dist
+        (p b) (p a) (p c))
+  have hABD :
+      Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
+          dist (p b) (p d)
+        =
+      Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
+          dist (p a) (p d) := by
+    simpa [EuclideanGeometry.angle_comm, dist_comm] using
+      (EuclideanGeometry.sin_angle_mul_dist_eq_sin_angle_mul_dist
+        (p a) (p b) (p d))
+  have hBCD :
+      Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+          dist (p b) (p c)
+        =
+      Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+          dist (p b) (p d) := by
+    simpa [EuclideanGeometry.angle_comm, dist_comm] using
+      (EuclideanGeometry.sin_angle_mul_dist_eq_sin_angle_mul_dist
+        (p c) (p d) (p b)).symm
+  have hACD :
+      Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) *
+          dist (p a) (p d)
+        =
+      Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) *
+          dist (p a) (p c) := by
+    simpa [EuclideanGeometry.angle_comm, dist_comm] using
+      (EuclideanGeometry.sin_angle_mul_dist_eq_sin_angle_mul_dist
+        (p d) (p c) (p a)).symm
+  let L :=
+    dist (p a) (p c) * dist (p b) (p d) *
+      dist (p b) (p c) * dist (p a) (p d)
+  have hLne : L ≠ 0 := by
+    dsimp [L]
+    exact mul_ne_zero
+      (mul_ne_zero
+        (mul_ne_zero
+          (dist_ne_zero.mpr (hp.ne hac))
+          (dist_ne_zero.mpr (hp.ne hbd)))
+        (dist_ne_zero.mpr (hp.ne hbc)))
+      (dist_ne_zero.mpr (hp.ne had))
+  apply mul_right_cancel₀ hLne
+  dsimp [L]
+  calc
+    (Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p d) (p c))) *
+        (dist (p a) (p c) * dist (p b) (p d) *
+          dist (p b) (p c) * dist (p a) (p d))
+      =
+      (Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+          dist (p a) (p c)) *
+      (Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
+          dist (p b) (p d)) *
+      (Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+          dist (p b) (p c)) *
+      (Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) *
+          dist (p a) (p d)) := by ring
+    _ =
+      (Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+          dist (p b) (p c)) *
+      (Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
+          dist (p a) (p d)) *
+      (Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+          dist (p b) (p d)) *
+      (Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) *
+          dist (p a) (p c)) := by
+        rw [hABC, hABD, hBCD, hACD]
+    _ =
+      (Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p c) (p d))) *
+        (dist (p a) (p c) * dist (p b) (p d) *
+          dist (p b) (p c) * dist (p a) (p d)) := by ring
+
+/-- A standard 4-cycle of delta*lam-small angles is impossible. -/
+theorem four_cycle_small_angles_impossible_core
+    {V : Type*} {p : V → Plane}
+    {delta lam : ℝ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hlampos : 0 < lam)
+    (hlamHalf : lam ≤ Real.pi / 2)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (hA :
+      EuclideanGeometry.angle (p b) (p a) (p c) ≤ delta * lam)
+    (hB :
+      EuclideanGeometry.angle (p a) (p b) (p d) ≤ delta * lam)
+    (hC :
+      EuclideanGeometry.angle (p b) (p c) (p d) ≤ delta * lam)
+    (hD :
+      EuclideanGeometry.angle (p a) (p d) (p c) ≤ delta * lam) :
+    False := by
+  have hsA :=
+    small_triangle_angle_sine_lt_other_core
+      hp hcap hdeltaHalf hlampos hlamHalf
+      hab hac hbc hA
+  have hsB :=
+    small_triangle_angle_sine_lt_other_core
+      hp hcap hdeltaHalf hlampos hlamHalf
+      hab.symm hbd had hB
+  have hsC :
+      Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) <
+        Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) := by
+    have h :=
+      small_triangle_angle_sine_lt_other_core
+        hp hcap hdeltaHalf hlampos hlamHalf
+        hcd hbc.symm hbd.symm
+        (by simpa [EuclideanGeometry.angle_comm] using hC)
+    simpa [EuclideanGeometry.angle_comm] using h
+  have hsD :
+      Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) <
+        Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
+    have h :=
+      small_triangle_angle_sine_lt_other_core
+        hp hcap hdeltaHalf hlampos hlamHalf
+        hcd.symm had.symm hac.symm
+        (by simpa [EuclideanGeometry.angle_comm] using hD)
+    simpa [EuclideanGeometry.angle_comm] using h
+  have hA0 :
+      0 ≤ Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi
+      (EuclideanGeometry.angle_nonneg _ _ _)
+      (EuclideanGeometry.angle_le_pi _ _ _)
+  have hB0 :
+      0 ≤ Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi
+      (EuclideanGeometry.angle_nonneg _ _ _)
+      (EuclideanGeometry.angle_le_pi _ _ _)
+  have hC0 :
+      0 ≤ Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi
+      (EuclideanGeometry.angle_nonneg _ _ _)
+      (EuclideanGeometry.angle_le_pi _ _ _)
+  have hD0 :
+      0 ≤ Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi
+      (EuclideanGeometry.angle_nonneg _ _ _)
+      (EuclideanGeometry.angle_le_pi _ _ _)
+  have hpairAB :
+      Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+          Real.sin (EuclideanGeometry.angle (p a) (p b) (p d))
+        <
+      Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+          Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) := by
+    exact mul_lt_mul hsA hsB hB0 (hsA.le.trans' hA0)
+  have hpairCD :
+      Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+          Real.sin (EuclideanGeometry.angle (p a) (p d) (p c))
+        <
+      Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+          Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
+    exact mul_lt_mul hsC hsD hD0 (hsC.le.trans' hC0)
+  have hprodLt :
+      Real.sin (EuclideanGeometry.angle (p b) (p a) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p b) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p d) (p c))
+      <
+      Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) *
+        Real.sin (EuclideanGeometry.angle (p b) (p d) (p c)) *
+        Real.sin (EuclideanGeometry.angle (p a) (p c) (p d)) := by
+    have hrightAB0 :
+        0 ≤
+          Real.sin (EuclideanGeometry.angle (p a) (p b) (p c)) *
+          Real.sin (EuclideanGeometry.angle (p b) (p a) (p d)) := by
+      exact mul_nonneg (hA0.trans hsA.le) (hB0.trans hsB.le)
+    have hCD0 :
+        0 ≤
+          Real.sin (EuclideanGeometry.angle (p b) (p c) (p d)) *
+          Real.sin (EuclideanGeometry.angle (p a) (p d) (p c)) :=
+      mul_nonneg hC0 hD0
+    have h :=
+      mul_lt_mul hpairAB hpairCD hCD0 hrightAB0
+    simpa [mul_assoc] using h
+  have hprodEq :=
+    four_cycle_sine_product_eq_core hp
+      hab hac had hbc hbd hcd
+  rw [hprodEq] at hprodLt
+  exact (lt_irrefl _ hprodLt)
+
+#print axioms sin_lt_sin_of_small_large_cap_core
+#print axioms small_triangle_angle_sine_lt_other_core
+#print axioms four_cycle_sine_product_eq_core
+#print axioms four_cycle_small_angles_impossible_core
+
+end JSP000404Research
