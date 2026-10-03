@@ -49,41 +49,6 @@ theorem cyclicEdgeValues_rotate
   congr 2
   omega
 
-/-- Recursive consecutive edge values coincide with zipWith against the
-one-step shifted list, before closing the cycle. -/
-theorem zipWith_shift_eq_consecutive_append_last
-    {α β : Type*}
-    (w : α → α → β)
-    (first : α) (rest : List α) :
-    List.zipWith w (first :: rest)
-        ((first :: rest).rotate 1)
-      =
-    let last := rest.getLastD first
-    (match rest with
-      | [] => [w first first]
-      | _ =>
-          (let rec go : α → List α → List β
-            | _, [] => []
-            | prev, x :: xs => w prev x :: go x xs
-           go first rest) ++ [w last first]) := by
-  cases rest with
-  | nil =>
-      simp
-  | cons r rs =>
-      simp only [List.zipWith_rotate_one]
-      let rec go : α → List α → List β
-        | _, [] => []
-        | prev, x :: xs => w prev x :: go x xs
-      have htail :
-          List.zipWith w (r :: rs) (rs ++ [first]) =
-            go r rs ++ [w ((r :: rs).getLastD first) first] := by
-        induction rs generalizing r with
-        | nil =>
-            simp [go]
-        | cons x xs ih =>
-            simp [go, ih]
-      simp [go, htail]
-
 /-- Concrete actual cyclic angles are generic cyclic edge values. -/
 theorem cyclicRayAngles_eq_cyclicEdgeValues
     {V : Type*} {p : V → Plane}
@@ -132,13 +97,13 @@ theorem cyclicRayAngles_rotate
         (fun a b : OtherVertex i =>
           EuclideanGeometry.angle (p a.1) (p i) (p b.1))
         rays).rotate k := by
+  dsimp
   have hrot : rays.rotate k ≠ [] := by
     simpa using hne
-  let first := (rays.rotate k).head hrot
-  let rest := (rays.rotate k).tail
-  have hrebuild : first :: rest = rays.rotate k := by
-    dsimp [first, rest]
-    exact List.cons_head_tail hrot
+  have hrebuild :
+      (rays.rotate k).head hrot :: (rays.rotate k).tail =
+        rays.rotate k :=
+    List.cons_head_tail hrot
   rw [cyclicRayAngles_eq_cyclicEdgeValues]
   rw [hrebuild]
   exact cyclicEdgeValues_rotate _ rays k
