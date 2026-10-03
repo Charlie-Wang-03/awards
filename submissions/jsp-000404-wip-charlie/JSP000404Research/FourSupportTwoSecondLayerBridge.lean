@@ -60,9 +60,11 @@ theorem four_supportTwo_secondLayer_reduce_to_derangement_nine
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       had.symm hbd.symm hcd.symm hab hac hbc
       (C d) hdSecond hdSupport
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by
+      exact_mod_cast hn3
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
