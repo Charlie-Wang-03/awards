@@ -3,7 +3,6 @@ import JSP000404Research.ProjectionOrderedVertices
 import JSP000404Research.CanonicalProjectiveRay
 import JSP000404Research.PlanarDirectionBridge
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
-import Mathlib.Analysis.SpecialFunctions.Complex.Trigonometric
 import Mathlib.Tactic
 
 /-!
