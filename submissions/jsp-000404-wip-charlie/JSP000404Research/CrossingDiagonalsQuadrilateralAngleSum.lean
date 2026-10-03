@@ -162,7 +162,11 @@ theorem crossing_diagonals_four_angles_sum_two_pi
         EuclideanGeometry.angle d q a = Real.pi := by
     simpa [EuclideanGeometry.angle_comm] using hDAQ
 
-  nlinarith
+  linarith only [
+    hA', hB', hC', hD',
+    hABQ', hBCQ', hCDQ', hDAQ',
+    hQ1, hQ2
+  ]
 
 #print axioms crossing_diagonals_four_angles_sum_two_pi
 
