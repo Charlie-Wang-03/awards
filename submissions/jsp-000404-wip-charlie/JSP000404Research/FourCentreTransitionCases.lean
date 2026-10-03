@@ -1,7 +1,7 @@
 import JSP000404Research.HighExponentTransitionPacking
 import JSP000404Research.DeficitTwo
 import JSP000404Research.SharpDeficit
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Fin.VecNotation
 import Mathlib.Tactic
 
 /-!
