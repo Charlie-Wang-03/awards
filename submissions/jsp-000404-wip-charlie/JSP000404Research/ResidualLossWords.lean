@@ -1,6 +1,6 @@
 
 import JSP000404Research.ResidualOverlapWitness
-import JSP000404Research.WeightedOneLayerCharge
+import JSP000404Research.ResidualProjectedLossCore
 import Mathlib.Tactic
 
 /-!
@@ -35,37 +35,6 @@ namespace JSP000404Research
 namespace OrderedEdgeColoring
 
 open scoped BigOperators
-
-noncomputable def projectedLossVertices
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ) : Finset V :=
-  oneLayerLossVertices exponent (projectedFree C)
-
-@[simp] theorem mem_projectedLossVertices
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ) (v : V) :
-    v ∈ projectedLossVertices C exponent ↔
-      exponent v = projectedFree C v + 1 := by
-  simp [projectedLossVertices]
-
-theorem residual_inactive_of_mem_projectedLossVertices
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (hexp : ∀ v, exponent v ≤ n)
-    (honeLoss :
-      ∀ v, (active C v).card ≤ n - exponent v + 1)
-    {v : V}
-    (hv : v ∈ projectedLossVertices C exponent) :
-    residualCoord n ∉ active C v := by
-  have hexact :
-      exponent v = projectedFree C v + 1 :=
-    (mem_projectedLossVertices C exponent v).1 hv
-  exact (exact_projected_loss_rigidity
-    C exponent hexp honeLoss
-    hexact rfl).1
 
 /-- A projected-loss completion cube is disjoint from every other completion
 cube. -/
