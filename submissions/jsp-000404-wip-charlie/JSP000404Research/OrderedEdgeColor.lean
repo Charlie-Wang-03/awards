@@ -232,7 +232,7 @@ theorem card_le_two_pow
     _ ≤ ∑ v, 2 ^ (k - (active C v).card) := by
       apply Finset.sum_le_sum
       intro v _
-      exact (Nat.zero_lt_two.pow _).one_le
+      exact Nat.one_le_pow _ 2 Nat.two_pos
     _ ≤ 2 ^ k := weighted_capacity C
 
 #print axioms bit_eq_true_iff
