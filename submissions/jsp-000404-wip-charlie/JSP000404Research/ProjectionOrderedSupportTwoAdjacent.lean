@@ -1,6 +1,7 @@
 import JSP000404Research.FourSupportTwoOrderedAdjacent
 import JSP000404Research.ResidualLossDirectionalWitness
 import JSP000404Research.PlanarCentreExponent
+import JSP000404Research.PlanarStandardResidualBudget
 import Mathlib.Tactic
 
 /-!
@@ -32,6 +33,8 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {a b c d : ProjectionOrdered V}
