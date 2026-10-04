@@ -1,5 +1,6 @@
 import JSP000404Research.FourSupportTwoOrderedAdjacent
 import JSP000404Research.ResidualLossDirectionalWitness
+import JSP000404Research.PlanarCentreExponent
 import Mathlib.Tactic
 
 /-!
@@ -63,16 +64,15 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
       hp hcap hn1 hdelta0 hdelta1 ht hlam
   let exponent := planarCentreExponent hp Cfam
 
-  have hprof :=
-    genericProjection_lowerBranch_profile_hypotheses
-      hp hcap hn1 hdelta0 hdelta1 ht hlam Cfam
   have hexp : ∀ q, exponent q ≤ n := by
-    intro q
-    exact Nat.le_of_lt (by simpa [exponent] using hprof.1 q)
+    exact planarCentreExponent_le_n_light
+      hp hn1 hdelta0 hdelta1 ht Cfam
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R, exponent] using hprof.2 q
+    simpa [R, exponent, planarCentreExponent] using
+      (planarStandardResidual_active_card_le_oneLayer
+        hp hcap hn1 hdelta0 hdelta1 ht hlam q (Cfam q))
 
   have hretAB : (R.color a b).val < n :=
     projectedLoss_edge_left_retained
