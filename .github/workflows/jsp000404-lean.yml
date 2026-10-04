@@ -62,6 +62,7 @@ jobs:
       - name: Check local same-band zero-floor core
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
+          lake build JSP000404Research.CyclicBandBudget
           lake build JSP000404Research.SameFloorIntervalZero
           lake build JSP000404Research.LocalZeroFloorMass
           lake build JSP000404Research.ZeroFloorBlockMass
