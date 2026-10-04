@@ -81,6 +81,7 @@ theorem successiveDiffsFrom_all_floor_zero_of_same_floor
         (x - a) :: successiveDiffsFrom x (xs ++ [b]),
         Nat.floor d = 0
       intro d hd
+      simp only [List.mem_cons] at hd
       rcases hd with rfl | hd
       · exact hhead
       · exact htail d hd
