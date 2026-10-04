@@ -49,7 +49,10 @@ theorem standardResidual_iff_high
     have hnfloor : n ≤ Nat.floor (D.value u v) := by omega
     have hfloorx : ((Nat.floor (D.value u v) : ℕ) : ℝ) ≤ D.value u v :=
       Nat.floor_le hx0
-    exact (by exact_mod_cast hnfloor).trans hfloorx
+    have hnfloorR :
+        (n : ℝ) ≤ (Nat.floor (D.value u v) : ℕ) := by
+      exact_mod_cast hnfloor
+    exact hnfloorR.trans hfloorx
   · intro hnx hlt
     have hfloorlt : Nat.floor (D.value u v) < n := hlt
     have hxlt : D.value u v < (n : ℝ) :=
