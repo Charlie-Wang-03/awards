@@ -67,8 +67,10 @@ theorem separator_eq_castSucc_of_only_retained_difference
           apply Fin.ext
           rfl
         by_cases hec : e = c
-        · subst e
-          exact hecast.symm
+        · calc
+            d = e.castSucc := hecast.symm
+            _ = c.castSucc :=
+              congrArg (fun x : Fin n => x.castSucc) hec
         · have heq := hsame e hec
           have heq' : bit C u d = bit C w d := by
             simpa [retainedBit, hecast] using heq
@@ -99,8 +101,10 @@ theorem separator_eq_castSucc_of_only_retained_difference
           apply Fin.ext
           rfl
         by_cases hec : e = c
-        · subst e
-          exact hecast.symm
+        · calc
+            d = e.castSucc := hecast.symm
+            _ = c.castSucc :=
+              congrArg (fun x : Fin n => x.castSucc) hec
         · have heq := hsame e hec
           have heq' : bit C u d = bit C w d := by
             simpa [retainedBit, hecast] using heq
