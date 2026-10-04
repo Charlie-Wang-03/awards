@@ -21,8 +21,9 @@ namespace OrderedEdgeColoring
 /-- Source/sink bit of the residual colour class. -/
 noncomputable def residualBit
     {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V (k + 1)) (v : V) : Bool :=
-  if ∃ w, v < w ∧ IsResidual C v w then true else false
+    (C : OrderedEdgeColoring V (k + 1)) (v : V) : Bool := by
+  classical
+  exact if ∃ w, v < w ∧ IsResidual C v w then true else false
 
 /-- A residual edge always runs from residual-bit true to residual-bit false. -/
 theorem residualBit_ne_of_residual
@@ -34,7 +35,8 @@ theorem residualBit_ne_of_residual
     ⟨v, huv, hres⟩
   have hv : ¬ ∃ w, v < w ∧ IsResidual C v w := by
     rintro ⟨w, hvw, hvwRes⟩
-    exact no_two_residual_on_path C huv hvw hres hvwRes
+    exact no_two_residual_on_path
+      (C := C) huv hvw hres hvwRes
   simp [residualBit, hu, hv]
 
 #print axioms residualBit_ne_of_residual
