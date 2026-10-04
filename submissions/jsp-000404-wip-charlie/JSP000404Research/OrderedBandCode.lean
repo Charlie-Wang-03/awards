@@ -40,8 +40,9 @@ noncomputable def incidentBands {V : Type*} [LinearOrder V]
 /-- Canonical incoming/outgoing bit attached to a unit band. -/
 noncomputable def bandBit {V : Type*} [LinearOrder V]
     {width : ℝ} (D : DirectionData V width) (k : ℕ) :
-    V → Fin k → Bool :=
-  fun v m ↦ decide (incomingBand D m v)
+    V → Fin k → Bool := by
+  classical
+  exact fun v m ↦ if incomingBand D m v then true else false
 
 private theorem floor_band
     {x : ℝ} {k : ℕ} (hx0 : 0 ≤ x) (hxk : x < k) :
