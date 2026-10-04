@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualCommonInactive
+import JSP000404Research.ResidualRetainedActiveBridge
 import Mathlib.Tactic
 
 /-!
@@ -96,14 +97,6 @@ theorem retainedBit_eq_off_of_flippedCode_eq
     retainedBit C x e = retainedBit C y e := by
   have he := congrFun hflip e
   simpa [flippedRetainedCode, hec, hed] using he
-
-theorem castSucc_mem_active_iff_mem_retainedActive
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) (c : Fin n) :
-    c.castSucc ∈ active C v ↔ c ∈ retainedActive C v := by
-  classical
-  simp [active, retainedActive]
 
 /-- The projected colour of a retained increasing edge is retained-active at
 its lower endpoint. -/
