@@ -47,7 +47,7 @@ noncomputable def active {V : Type*} [LinearOrder V] {k : ℕ}
 noncomputable def bit {V : Type*} [LinearOrder V] {k : ℕ}
     (C : OrderedEdgeColoring V k) : V → Fin k → Bool := by
   classical
-  exact fun v c ↦ decide (incoming C c v)
+  exact fun v c ↦ if incoming C c v then true else false
 
 /-- Exact characterization of the canonical incoming bit. -/
 theorem bit_eq_true_iff
@@ -214,6 +214,7 @@ theorem cluster_capacity_of_active_le
           apply Finset.sum_congr rfl
           intro v _
           rw [hell v]
+          have hv := hexponent v
           have hsub :
               k - (k - exponent v) = exponent v := by
             omega
@@ -229,9 +230,9 @@ theorem card_le_two_pow
   have hcap := weighted_capacity C
   have hone :
       Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
-    simpa using
-      (Finset.sum_le_sum (s := (Finset.univ : Finset V))
-        (fun v _ => Nat.one_le_pow _ (by norm_num : 0 < 2)))
+    apply Finset.sum_le_sum
+    intro v _
+    positivity
   exact hone.trans hcap
 
 #print axioms bit_eq_true_iff
