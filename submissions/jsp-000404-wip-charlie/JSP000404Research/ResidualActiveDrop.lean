@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualRetainedActiveBridge
+import JSP000404Research.ResidualVerticalPairs
 import Mathlib.Tactic
 
 /-!
@@ -49,7 +50,7 @@ theorem retainedActive_card_add_one_le_active_of_residual_mem
   have hcardS :
       S.card = (retainedActive C v).card + 1 := by
     dsimp [S]
-    rw [Finset.card_insert_of_not_mem hresNotR]
+    rw [Finset.card_insert_of_notMem hresNotR]
     simp [R]
     omega
   have hcard := Finset.card_le_card hSsub
