@@ -59,6 +59,15 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check ordered projection foundations
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ProjectionOrderedVertices
+          lake build JSP000404Research.ProjectiveBandSignRigidity
+          lake build JSP000404Research.LinearBandGapCapacity
+          lake build JSP000404Research.PlanarStandardResidualColoring
+          lake build JSP000404Research.ProjectionOppositeSideRetainedAngle
+
       - name: Check isolated support-two small-pair bridge
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
