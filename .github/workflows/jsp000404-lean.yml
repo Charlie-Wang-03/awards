@@ -66,6 +66,14 @@ jobs:
           lake build JSP000404Research.PlanarStandardResidualColoring
           lake build JSP000404Research.ProjectionOppositeSideRetainedAngle
 
+      - name: Check residual Boolean repair foundations
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualBitMerge
+          lake build JSP000404Research.ResidualVerticalPairs
+          lake build JSP000404Research.ResidualFreeNeighbour
+          lake build JSP000404Research.ResidualCommonInactive
+
       - name: Check isolated support-two small-pair bridge
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
