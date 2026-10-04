@@ -50,31 +50,71 @@ theorem separator_eq_castSucc_of_only_retained_difference
         bit C w (residualCoord n)) :
     ∃ hcu : c.castSucc ∈ active C u,
       c.castSucc ∈ active C w := by
-  obtain ⟨d, hdu, hdw, hbit⟩ := separates C u w huw
-  have hd : d = c.castSucc := by
-    by_cases hlt : d.val < n
-    · let e : Fin n := ⟨d.val, hlt⟩
-      have hecast : e.castSucc = d := by
-        apply Fin.ext
-        rfl
-      by_cases hec : e = c
-      · subst e
-        exact hecast.symm
-      · have heq := hsame e hec
-        have : bit C u d = bit C w d := by
-          simpa [retainedBit, hecast] using heq
-        exact False.elim (hbit this)
-    · have hdval : d.val = n := by
-        have hdlt := d.isLt
-        omega
-      have hdres : d = residualCoord n := by
-        apply Fin.ext
-        simpa [residualCoord] using hdval
-      have : bit C u d = bit C w d := by
-        simpa [hdres] using hres
-      exact False.elim (hbit this)
-  subst d
-  exact ⟨hdu, hdw⟩
+  rcases lt_or_gt_of_ne huw with huwlt | hwult
+  · let d : Fin (n + 1) := C.color u w
+    have hdu : d ∈ active C u := by
+      simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact Or.inr ⟨w, huwlt, rfl⟩
+    have hdw : d ∈ active C w := by
+      simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact Or.inl ⟨u, huwlt, rfl⟩
+    have hbit : bit C u d ≠ bit C w d := by
+      simpa [d] using edgeColor_bit_ne C huwlt
+    have hd : d = c.castSucc := by
+      by_cases hlt : d.val < n
+      · let e : Fin n := ⟨d.val, hlt⟩
+        have hecast : e.castSucc = d := by
+          apply Fin.ext
+          rfl
+        by_cases hec : e = c
+        · subst e
+          exact hecast.symm
+        · have heq := hsame e hec
+          have heq' : bit C u d = bit C w d := by
+            simpa [retainedBit, hecast] using heq
+          exact False.elim (hbit heq')
+      · have hdval : d.val = n := by
+          have hdlt := d.isLt
+          omega
+        have hdres : d = residualCoord n := by
+          apply Fin.ext
+          simpa [residualCoord] using hdval
+        have heq : bit C u d = bit C w d := by
+          simpa [hdres] using hres
+        exact False.elim (hbit heq)
+    exact ⟨by simpa [hd] using hdu, by simpa [hd] using hdw⟩
+  · let d : Fin (n + 1) := C.color w u
+    have hdu : d ∈ active C u := by
+      simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact Or.inl ⟨w, hwult, rfl⟩
+    have hdw : d ∈ active C w := by
+      simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact Or.inr ⟨u, hwult, rfl⟩
+    have hbit : bit C u d ≠ bit C w d := by
+      simpa [d] using (edgeColor_bit_ne C hwult).symm
+    have hd : d = c.castSucc := by
+      by_cases hlt : d.val < n
+      · let e : Fin n := ⟨d.val, hlt⟩
+        have hecast : e.castSucc = d := by
+          apply Fin.ext
+          rfl
+        by_cases hec : e = c
+        · subst e
+          exact hecast.symm
+        · have heq := hsame e hec
+          have heq' : bit C u d = bit C w d := by
+            simpa [retainedBit, hecast] using heq
+          exact False.elim (hbit heq')
+      · have hdval : d.val = n := by
+          have hdlt := d.isLt
+          omega
+        have hdres : d = residualCoord n := by
+          apply Fin.ext
+          simpa [residualCoord] using hdval
+        have heq : bit C u d = bit C w d := by
+          simpa [hdres] using hres
+        exact False.elim (hbit heq)
+    exact ⟨by simpa [hd] using hdu, by simpa [hd] using hdw⟩
 
 /-- A common inactive coordinate of a vertical pair cannot be occupied by a
 third vertex after flipping that coordinate in the retained code. -/
@@ -103,9 +143,9 @@ theorem flipped_common_inactive_code_is_free
   · have hsep :=
       separator_eq_castSucc_of_only_retained_difference
         C hwu c
-        (fun d hdc => (hsame d hdc).symm)
-        hreswu.symm
-    exact False.elim (hcu hsep.1)
+        (fun d hdc => hsame d hdc)
+        hreswu
+    exact False.elim (hcu hsep.2)
   · have hreswv :
         bit C w (residualCoord n) =
           bit C v (residualCoord n) := by
@@ -120,7 +160,7 @@ theorem flipped_common_inactive_code_is_free
       exact (hret d).symm.trans (hsame d hdc).symm
     have hsep :=
       separator_eq_castSucc_of_only_retained_difference
-        C hwv.symm c hsameVW hreswv.symm
+        C (Ne.symm hwv) c hsameVW hreswv.symm
     exact False.elim (hcv hsep.1)
 
 /-- The target flipped code is genuinely different from both members of the
@@ -142,11 +182,11 @@ theorem no_vertex_realizes_flipped_common_inactive_code
   have hw :=
     flipped_common_inactive_code_is_free
       C c huv hret hcu hcv hflip hsame
-  rcases hw with rfl | rfl
-  · exact hflip rfl
-  · have hcEq : retainedBit C v c = retainedBit C u c :=
-      (hret c).symm
-    exact hflip hcEq
+  rcases hw with hwu | hwv
+  · exact hflip (by simpa [hwu])
+  · apply hflip
+    rw [hwv]
+    exact (hret c).symm
 
 #print axioms residualBit_ne_of_same_retained
 #print axioms separator_eq_castSucc_of_only_retained_difference
