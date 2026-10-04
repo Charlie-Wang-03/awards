@@ -57,18 +57,27 @@ open OrderedEdgeColoring
 theorem retained_ordered_pattern3_reduce_to_adjacent
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {a b c d : ProjectionOrdered V}
-    (hab : a < b)
-    (hbc : b < c)
-    (hcd : c < d)
+    (hab :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      a < b)
+    (hbc :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      b < c)
+    (hcd :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      c < d)
     (hretAB :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -95,6 +104,8 @@ theorem retained_ordered_pattern3_reduce_to_adjacent
         (reindexedPoint p) delta lam a b c d) :
     FourSupportTwoOrderedAdjacentPattern
       (reindexedPoint p) delta lam a b c d := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
   have hac : a < c := hab.trans hbc
   have hbd : b < d := hbc.trans hcd
   have hbadABD :=
