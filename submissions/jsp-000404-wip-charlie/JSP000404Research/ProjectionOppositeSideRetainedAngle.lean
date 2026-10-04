@@ -25,17 +25,23 @@ open DirectionData
 theorem opposite_side_retained_angle_gt_delta
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {a i b : ProjectionOrdered V}
-    (hai : a < i)
-    (hib : i < b)
+    (hai :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      a < i)
+    (hib :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      i < b)
     (hretA :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -57,8 +63,11 @@ theorem opposite_side_retained_angle_gt_delta
         (reindexedPoint p b) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
-  have htpos : 0 < t :=
-    sendov_scale_pos hn1 hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (1 : ℝ) ≤ n := by
+      exact_mod_cast hn1
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -166,8 +175,14 @@ theorem opposite_side_retained_not_delta_small
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {a i b : ProjectionOrdered V}
-    (hai : a < i)
-    (hib : i < b)
+    (hai :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      a < i)
+    (hib :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      i < b)
     (hretA :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
