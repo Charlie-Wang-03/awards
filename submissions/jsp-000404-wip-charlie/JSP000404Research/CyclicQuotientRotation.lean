@@ -39,7 +39,7 @@ theorem list_sum_rotate
     {α : Type*} [AddCommMonoid α]
     (xs : List α) (k : ℕ) :
     (xs.rotate k).sum = xs.sum := by
-  exact List.sum_rotate xs k
+  exact (List.rotate_perm xs k).sum_eq
 
 theorem listExponent_rotate
     (qs : List ℕ) (k : ℕ) :
