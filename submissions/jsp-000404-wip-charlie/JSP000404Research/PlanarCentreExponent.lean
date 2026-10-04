@@ -13,10 +13,17 @@ importing the full recursive residual machinery.
 namespace JSP000404Research
 namespace ProjectionOrdered
 
+section
+
+variable {V : Type*} [Fintype V]
+variable {p : V → Plane}
+variable (hp : Function.Injective p)
+
+local instance projectionOrder :
+    LinearOrder (ProjectionOrdered V) :=
+  projectionLinearOrder hp
+
 def planarCentreExponent
-    {V : Type*} [Fintype V]
-    {p : V → Plane}
-    (hp : Function.Injective p)
     {t : ℝ}
     (C : ∀ i : ProjectionOrdered V,
       CentreProjectiveCycle
@@ -25,9 +32,6 @@ def planarCentreExponent
   fun i => centreExponent (C i) t
 
 theorem planarCentreExponent_le_n_light
-    {V : Type*} [Fintype V]
-    {p : V → Plane}
-    (hp : Function.Injective p)
     {t delta : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -44,6 +48,8 @@ theorem planarCentreExponent_le_n_light
       (C i) n delta t hn hdelta0 hdelta1 ht)
 
 #print axioms planarCentreExponent_le_n_light
+
+end
 
 end ProjectionOrdered
 end JSP000404Research
