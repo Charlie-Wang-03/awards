@@ -33,8 +33,11 @@ noncomputable def planarStandardResidualColoring
     OrderedEdgeColoring (ProjectionOrdered V) (n + 1) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
-  have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (1 : ℝ) ≤ n := by
+      exact_mod_cast hn
+    linarith
   let D :=
     genericDirectionData_sendov hp hcap htpos hlam
   have hwidth : t < (n + 1 : ℕ) := by
