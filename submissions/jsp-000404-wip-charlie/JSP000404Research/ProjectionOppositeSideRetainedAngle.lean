@@ -79,14 +79,14 @@ theorem opposite_side_retained_angle_gt_delta
     exact_mod_cast hwidthR
 
   let D := genericDirectionData_sendov hp hcap htpos hlam
-  let R := planarStandardResidualColoring
-    hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let R : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
+    DirectionData.standardResidualColoring D n hwidth
   let F := genericForwardAngleLift hp
 
   have hretA' : (R.color a i).val < n := by
-    simpa [R] using hretA
+    simpa [R, D, planarStandardResidualColoring] using hretA
   have hretB' : (R.color i b).val < n := by
-    simpa [R] using hretB
+    simpa [R, D, planarStandardResidualColoring] using hretB
 
   let cA : Fin n := retainedColor R a i hretA'
   let cB : Fin n := retainedColor R i b hretB'
@@ -98,22 +98,31 @@ theorem opposite_side_retained_angle_gt_delta
     apply Fin.ext
     rfl
 
+  have hfullA' :
+      DirectionData.standardBandColor
+          D (n + 1) (Nat.succ_pos n)
+          (by exact_mod_cast hwidth) a i
+        = cA.castSucc := by
+    simpa [R, DirectionData.standardResidualColoring,
+      DirectionData.standardBandColoring] using hfullA
+  have hfullB' :
+      DirectionData.standardBandColor
+          D (n + 1) (Nat.succ_pos n)
+          (by exact_mod_cast hwidth) i b
+        = cB.castSucc := by
+    simpa [R, DirectionData.standardResidualColoring,
+      DirectionData.standardBandColoring] using hfullB
+
   have hAraw :=
     (DirectionData.standardBandColor_eq_iff
       D (n + 1) (Nat.succ_pos n)
       (by exact_mod_cast hwidth)
-      hai cA.castSucc).1
-      (by
-        simpa [R, planarStandardResidualColoring, D,
-          DirectionData.standardResidualColoring] using hfullA)
+      hai cA.castSucc).1 hfullA'
   have hBraw :=
     (DirectionData.standardBandColor_eq_iff
       D (n + 1) (Nat.succ_pos n)
       (by exact_mod_cast hwidth)
-      hib cB.castSucc).1
-      (by
-        simpa [R, planarStandardResidualColoring, D,
-          DirectionData.standardResidualColoring] using hfullB)
+      hib cB.castSucc).1 hfullB'
 
   have hAval :
       (cA.val : ℝ) ≤ D.value a i ∧
@@ -146,12 +155,23 @@ theorem opposite_side_retained_angle_gt_delta
     rw [abs_lt]
     constructor <;> linarith
 
+  have hvalA :
+      F.value (lam := lam) a i = D.value a i := by
+    unfold ForwardAngleLift.value
+    rw [genericDirectionData_sendov_value hp hcap htpos hlam a i]
+    rfl
+  have hvalB :
+      F.value (lam := lam) i b = D.value i b := by
+    unfold ForwardAngleLift.value
+    rw [genericDirectionData_sendov_value hp hcap htpos hlam i b]
+    rfl
   have habs :=
     F.abs_value_sub_value hlampos a i i b
+  rw [hvalA, hvalB] at habs
   have hdiffTheta :
       |F.theta a i - F.theta i b| / lam < (n : ℝ) := by
     rw [← habs]
-    simpa [D, F] using hdiffVal
+    exact hdiffVal
   have htheta :
       |F.theta a i - F.theta i b| < (n : ℝ) * lam := by
     exact (div_lt_iff₀ hlampos).mp hdiffTheta
@@ -166,9 +186,9 @@ theorem opposite_side_retained_angle_gt_delta
 theorem opposite_side_retained_not_delta_small
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
