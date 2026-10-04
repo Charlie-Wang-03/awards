@@ -1,4 +1,4 @@
-import JSP000404Research.ProjectionSameRetainedColourSmallAngle
+import JSP000404Research.PlanarStandardResidualColoring
 import Mathlib.Tactic
 
 /-!
@@ -63,6 +63,12 @@ theorem opposite_side_retained_angle_gt_delta
     rw [hlam]
     exact div_pos Real.pi_pos htpos
 
+  have hwidthR : t < (n : ℝ) + 1 := by
+    rw [ht]
+    linarith
+  have hwidth : t < (n + 1 : ℕ) := by
+    exact_mod_cast hwidthR
+
   let D := genericDirectionData_sendov hp hcap htpos hlam
   let R := planarStandardResidualColoring
     hp hcap hn1 hdelta0 hdelta1 ht hlam
@@ -76,33 +82,38 @@ theorem opposite_side_retained_angle_gt_delta
   let cA : Fin n := retainedColor R a i hretA'
   let cB : Fin n := retainedColor R i b hretB'
 
-  have hIncA : IncidentRetainedColour R i a cA := by
-    right
-    exact ⟨hai, hretA', rfl⟩
-  have hIncB : IncidentRetainedColour R i b cB := by
-    left
-    exact ⟨hib, hretB', rfl⟩
+  have hfullA : R.color a i = cA.castSucc := by
+    apply Fin.ext
+    rfl
+  have hfullB : R.color i b = cB.castSucc := by
+    apply Fin.ext
+    rfl
 
   have hAraw :=
-    incidentRetainedColour_local_band
-      hp hcap hn1 hdelta0 hdelta1 ht hlam
-      (i := i) (x := a) (c := cA)
-      (ne_of_gt hai) (by simpa [R] using hIncA)
+    (DirectionData.standardBandColor_eq_iff
+      D (n + 1) (Nat.succ_pos n)
+      (by exact_mod_cast hwidth)
+      hai cA.castSucc).1
+      (by
+        simpa [R, planarStandardResidualColoring, D,
+          DirectionData.standardResidualColoring] using hfullA)
   have hBraw :=
-    incidentRetainedColour_local_band
-      hp hcap hn1 hdelta0 hdelta1 ht hlam
-      (i := i) (x := b) (c := cB)
-      (ne_of_lt hib) (by simpa [R] using hIncB)
+    (DirectionData.standardBandColor_eq_iff
+      D (n + 1) (Nat.succ_pos n)
+      (by exact_mod_cast hwidth)
+      hib cB.castSucc).1
+      (by
+        simpa [R, planarStandardResidualColoring, D,
+          DirectionData.standardResidualColoring] using hfullB)
 
   have hAval :
       (cA.val : ℝ) ≤ D.value a i ∧
       D.value a i < (cA.val : ℝ) + 1 := by
-    simpa [D, DirectionData.localDirectionValue, hai] using hAraw
+    simpa using hAraw
   have hBval :
       (cB.val : ℝ) ≤ D.value i b ∧
       D.value i b < (cB.val : ℝ) + 1 := by
-    have hnot : ¬ b < i := not_lt_of_ge hib.le
-    simpa [D, DirectionData.localDirectionValue, hnot] using hBraw
+    simpa using hBraw
 
   have hcAhi : cA.val + 1 ≤ n := Nat.succ_le_iff.mpr cA.isLt
   have hcBhi : cB.val + 1 ≤ n := Nat.succ_le_iff.mpr cB.isLt
