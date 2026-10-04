@@ -56,8 +56,13 @@ theorem four_cycle_oneStep_card_three_consecutive
       ({m,m+1,m+2} : Finset ℕ).card = 3 := by
     simp
 
-  apply Finset.eq_of_subset_of_card_le hsub
-  rw [hcard, htargetCard]
+  have hcardS : S.card = 3 := by
+    simpa [S] using hcard
+  have heq :
+      S = {m,m+1,m+2} :=
+    Finset.eq_of_subset_of_card_le hsub (by
+      rw [hcardS, htargetCard])
+  simpa [S] using heq
 
 #print axioms four_cycle_oneStep_card_three_consecutive
 
