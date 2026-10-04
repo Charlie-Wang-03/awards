@@ -56,7 +56,9 @@ theorem bit_eq_true_iff
     (v : V) (c : Fin k) :
     bit C v c = true ↔
       ∃ a, a < v ∧ C.color a v = c := by
-  simp [bit, incoming]
+  classical
+  change (if incoming C c v then true else false) = true ↔ incoming C c v
+  by_cases h : incoming C c v <;> simp [h]
 
 /-- Dually, false means that no incoming edge of that colour exists. -/
 theorem bit_eq_false_iff
@@ -65,7 +67,9 @@ theorem bit_eq_false_iff
     (v : V) (c : Fin k) :
     bit C v c = false ↔
       ¬ ∃ a, a < v ∧ C.color a v = c := by
-  simp [bit, incoming]
+  classical
+  change (if incoming C c v then true else false) = false ↔ ¬ incoming C c v
+  by_cases h : incoming C c v <;> simp [h]
 
 /-- The canonical incoming bit of an increasing edge's own colour is false
 at its lower endpoint. -/
@@ -78,7 +82,7 @@ theorem edgeColor_bit_lower_eq_false
     rintro ⟨a, hav, hac⟩
     apply C.noMonoTwoPath hav hvw
     simpa using hac
-  simp [bit, hnotin_v]
+  exact (bit_eq_false_iff C v (C.color v w)).2 hnotin_v
 
 /-- The canonical incoming bit of an increasing edge's own colour is true
 at its upper endpoint. -/
@@ -88,7 +92,7 @@ theorem edgeColor_bit_upper_eq_true
     {v w : V} (hvw : v < w) :
     bit C w (C.color v w) = true := by
   have hin_w : incoming C (C.color v w) w := ⟨v, hvw, rfl⟩
-  simp [bit, hin_w]
+  exact (bit_eq_true_iff C w (C.color v w)).2 hin_w
 
 /-- Hence an increasing edge's own colour separates its endpoint bits. -/
 theorem edgeColor_bit_ne
@@ -112,7 +116,7 @@ theorem bit_eq_false_of_not_mem_active
     apply hc
     simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
     exact Or.inl hin
-  simp [bit, hnotin]
+  exact (bit_eq_false_iff C v c).2 hnotin
 
 /-- The colour of an edge separates its two endpoint partial words. -/
 theorem separates
@@ -142,7 +146,7 @@ theorem separates
     simpa [c] using hac
 
   refine ⟨c, hcv, hcw, ?_⟩
-  simp [bit, hnotin_v, hin_w]
+  simpa [c] using edgeColor_bit_ne C hvwlt
 
 /-- Weighted Hansel capacity for an arbitrary admissible ordered edge colouring. -/
 theorem weighted_capacity
@@ -214,11 +218,7 @@ theorem cluster_capacity_of_active_le
           apply Finset.sum_congr rfl
           intro v _
           rw [hell v]
-          have hv := hexponent v
-          have hsub :
-              k - (k - exponent v) = exponent v := by
-            omega
-          rw [hsub]
+          rw [tsub_tsub_cancel_of_le (hexponent v)]
     _ ≤ 2 ^ k := capacity_of_active_le C ell hactive
 
 /-- Any admissible colouring by `k` ordered edge colours gives the
@@ -232,7 +232,7 @@ theorem card_le_two_pow
       Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
     apply Finset.sum_le_sum
     intro v _
-    positivity
+    exact (Nat.zero_lt_two.pow _).one_le
   exact hone.trans hcap
 
 #print axioms bit_eq_true_iff
