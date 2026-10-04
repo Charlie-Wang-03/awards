@@ -40,6 +40,7 @@ theorem retainedActive_card_add_one_le_active_of_residual_mem
     rcases Finset.mem_map.mp h with ⟨d, _hd, heq⟩
     have hval := congrArg Fin.val heq
     simp [residualCoord] at hval
+    omega
   let S : Finset (Fin (k + 1)) := insert (residualCoord k) R
   have hSsub : S ⊆ active C v := by
     intro c hc
@@ -52,7 +53,6 @@ theorem retainedActive_card_add_one_le_active_of_residual_mem
     dsimp [S]
     rw [Finset.card_insert_of_notMem hresNotR]
     simp [R]
-    omega
   have hcard := Finset.card_le_card hSsub
   rw [hcardS] at hcard
   exact hcard
