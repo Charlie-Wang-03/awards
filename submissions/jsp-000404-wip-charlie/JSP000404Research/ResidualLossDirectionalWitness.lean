@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualProjectedLossCore
+import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
 
 /-!
@@ -83,12 +84,12 @@ theorem projectedLoss_outgoing_witness_of_lt
     refine ⟨w,hvw,?_⟩
     apply Fin.ext
     rfl
-  · exact outgoingRetained_subset_retainedActive C v
-      (by
-        apply (mem_outgoingRetained_iff C v c).2
-        refine ⟨w,hvw,?_⟩
-        apply Fin.ext
-        rfl)
+  · rw [retainedActive_eq_incoming_union_outgoing C v]
+    apply Finset.mem_union_right
+    apply (mem_outgoingRetained_iff C v c).2
+    refine ⟨w,hvw,?_⟩
+    apply Fin.ext
+    rfl
 
 theorem projectedLoss_incoming_witness_of_lt
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -112,12 +113,12 @@ theorem projectedLoss_incoming_witness_of_lt
     refine ⟨u,huv,?_⟩
     apply Fin.ext
     rfl
-  · exact incomingRetained_subset_retainedActive C v
-      (by
-        apply (mem_incomingRetained_iff C v c).2
-        refine ⟨u,huv,?_⟩
-        apply Fin.ext
-        rfl)
+  · rw [retainedActive_eq_incoming_union_outgoing C v]
+    apply Finset.mem_union_left
+    apply (mem_incomingRetained_iff C v c).2
+    refine ⟨u,huv,?_⟩
+    apply Fin.ext
+    rfl
 
 theorem projectedLoss_has_outgoing_of_exists_greater
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
