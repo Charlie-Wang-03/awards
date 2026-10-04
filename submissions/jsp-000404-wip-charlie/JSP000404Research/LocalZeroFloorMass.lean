@@ -63,8 +63,8 @@ theorem cyclicRealGaps_nonneg_of_sorted
   · exact successiveDiffsFrom_nonneg_of_pairwise
       a xs hsorted g hinner
   · subst g
-    have hlastMem : xs.getLastD a ∈ a :: xs :=
-      List.getLastD_mem_cons a xs
+    have hlastMem : xs.getLastD a ∈ a :: xs := by
+      exact List.getLastD_mem_cons
     have hlastt : xs.getLastD a < t :=
       hallt _ hlastMem
     linarith
@@ -123,7 +123,6 @@ theorem cyclic_floor_zero_mass_le_delta
   rw [listRemainderMass_eq 1 qs gs hlen,
       hgsum, hqsum'] at hmass
   norm_num at hmass
-  dsimp [qs,gs]
   linarith [ht]
 
 #print axioms successiveDiffsFrom_sum_eq_getLastD_sub
