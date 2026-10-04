@@ -39,6 +39,18 @@ def RetainedSeparated
     (C : OrderedEdgeColoring V (n + 1)) (u v : V) : Prop :=
   ∃ c : Fin n, retainedBit C u c ≠ retainedBit C v c
 
+/-- Unpack retained separation through a stable public theorem boundary.
+This avoids relying on reducibility of the proposition inside dependent
+choice expressions. -/
+theorem exists_retained_separator_of_retainedSeparated
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V}
+    (h : RetainedSeparated C u v) :
+    ∃ c : Fin n, retainedBit C u c ≠ retainedBit C v c := by
+  change ∃ c : Fin n, retainedBit C u c ≠ retainedBit C v c at h
+  exact h
+
 /-- The old colour of a retained increasing edge separates its endpoints on
 the corresponding retained bit. -/
 theorem retainedBit_ne_of_retained_edge
@@ -69,9 +81,8 @@ noncomputable def binaryPartitionOfResidualSeparated
   let target : V → V → Fin n := fun u v =>
     if h : u < v ∧ IsResidual C u v then
       Classical.choose
-        (show ∃ c : Fin n,
-            retainedBit C u c ≠ retainedBit C v c by
-          simpa [RetainedSeparated] using hsep h.1 h.2)
+        (exists_retained_separator_of_retainedSeparated
+          C (hsep h.1 h.2))
     else
       ⟨0, hn⟩
   refine
@@ -93,9 +104,8 @@ noncomputable def binaryPartitionOfResidualSeparated
       unfold target
       simp only [dif_pos ⟨huv, hres⟩]
       exact Classical.choose_spec
-        (show ∃ c : Fin n,
-            retainedBit C u c ≠ retainedBit C v c by
-          simpa [RetainedSeparated] using hsep huv hres)
+        (exists_retained_separator_of_retainedSeparated
+          C (hsep huv hres))
     exact ht
 
 /-- Ordinary 2^n capacity follows immediately once all residual edges are
