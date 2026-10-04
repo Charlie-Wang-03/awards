@@ -1,7 +1,7 @@
 
 import JSP000404Research.GenericForwardAngleLift
 import JSP000404Research.ProjectionCanonicalRayBridge
-import JSP000404Research.LocalDirectionCycle
+import JSP000404Research.LocalDirectionValueCore
 import Mathlib.Tactic
 
 /-!
