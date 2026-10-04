@@ -33,7 +33,7 @@ namespace JSP000404Research
 
 open Real
 
-def affineAngleValue
+noncomputable def affineAngleValue
     (shift lam theta : ℝ) : ℝ :=
   (theta - shift) / lam
 
@@ -61,14 +61,11 @@ theorem getLastD_map_affineAngleValue
     affineAngleValue shift lam (xs.getLastD a) := by
   induction xs generalizing a with
   | nil =>
-      simp
+      rfl
   | cons b bs ih =>
+      simp only [List.map_cons]
       rw [List.getLastD_cons, List.getLastD_cons]
-      cases bs with
-      | nil =>
-          simp
-      | cons c cs =>
-          simpa using ih b (c :: cs)
+      exact ih b
 
 theorem linearCyclicGapQuotients_affine_eq_projectiveGap_floors
     (shift lam a : ℝ) (xs : List ℝ) :
@@ -138,7 +135,6 @@ theorem linearCyclicGapQuotients_affine_eq_quotientList
       rw [linearCyclicGapQuotients_affine_eq_projectiveGap_floors]
       rw [projectiveGap_floor_map_eq_quotientList
         t lam ht hlam]
-      rw [← htCirc]
 
 /-- Exponent form. -/
 theorem linearExponent_affine_eq_projectiveExponent
