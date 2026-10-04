@@ -1,5 +1,6 @@
 
 import JSP000404Research.CyclicProjectiveGaps
+import JSP000404Research.LinearCyclicGapQuotientsCore
 import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Tactic
@@ -41,12 +42,6 @@ open Real
 
 noncomputable def occupiedNatBands (xs : List ℝ) : Finset ℕ :=
   (xs.map Nat.floor).toFinset
-
-noncomputable def linearCyclicGapQuotients (t : ℝ) : List ℝ → List ℕ
-  | [] => []
-  | a :: xs =>
-      (successiveDiffsFrom a xs).map Nat.floor ++
-        [Nat.floor (a + t - xs.getLastD a)]
 
 @[simp] theorem occupiedNatBands_nil :
     occupiedNatBands [] = ∅ := by
