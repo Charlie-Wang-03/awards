@@ -127,9 +127,25 @@ theorem linearCyclicGapQuotients_affine_eq_quotientList
       simp [linearCyclicGapQuotients, quotientList,
         normalizedProjectiveGaps, projectiveGaps]
   | cons a xs =>
-      rw [linearCyclicGapQuotients_affine_eq_projectiveGap_floors]
-      rw [projectiveGap_floor_map_eq_quotientList
-        t lam ht hlam]
+      have htCirc : t = Real.pi / lam := by
+        rw [hlam]
+        field_simp [Real.pi_ne_zero, ne_of_gt ht]
+      calc
+        linearCyclicGapQuotients t
+            ((a :: xs).map (affineAngleValue shift lam))
+          =
+        linearCyclicGapQuotients (Real.pi / lam)
+            ((a :: xs).map (affineAngleValue shift lam)) := by
+              rw [htCirc]
+        _ =
+        (projectiveGaps (a :: xs)).map
+            (fun g => Nat.floor (g / lam)) :=
+          linearCyclicGapQuotients_affine_eq_projectiveGap_floors
+            shift lam a xs
+        _ =
+        quotientList t (normalizedProjectiveGaps (a :: xs)) :=
+          projectiveGap_floor_map_eq_quotientList
+            t lam ht hlam (a :: xs)
 
 /-- Exponent form. -/
 theorem linearExponent_affine_eq_projectiveExponent
