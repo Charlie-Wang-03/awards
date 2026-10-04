@@ -38,7 +38,12 @@ theorem standardResidual_iff_high
     ¬((standardResidualColoring D n hwidth).color u v).val < n ↔
       (n : ℝ) ≤ D.value u v := by
   have hx0 := D.nonnegative huv
-  change ¬(Nat.floor (D.value u v) < n) ↔ (n : ℝ) ≤ D.value u v
+  have hval :
+      ((standardResidualColoring D n hwidth).color u v).val =
+        Nat.floor (D.value u v) := by
+    simp [standardResidualColoring, standardBandColoring,
+      standardBandColor, huv]
+  rw [hval]
   constructor
   · intro hnot
     have hnfloor : n ≤ Nat.floor (D.value u v) := by omega
@@ -68,19 +73,15 @@ theorem standardResidual_retainedActive_eq_incidentBands
   · intro h
     rcases h with ⟨a, hav, hcol⟩ | ⟨w, hvw, hcol⟩
     · left
-      refine ⟨a, hav, ?_, ?_⟩
       have hb :=
         (standardBandColor_eq_iff D (n + 1) (Nat.succ_pos n)
           (by exact_mod_cast hwidth) hav c.castSucc).1 hcol
-      · simpa using hb.1
-      · simpa using hb.2
+      exact ⟨a, hav, by simpa using hb.1, by simpa using hb.2⟩
     · right
-      refine ⟨w, hvw, ?_, ?_⟩
       have hb :=
         (standardBandColor_eq_iff D (n + 1) (Nat.succ_pos n)
           (by exact_mod_cast hwidth) hvw c.castSucc).1 hcol
-      · simpa using hb.1
-      · simpa using hb.2
+      exact ⟨w, hvw, by simpa using hb.1, by simpa using hb.2⟩
   · intro h
     rcases h with ⟨a, hav, hlo, hhi⟩ | ⟨w, hvw, hlo, hhi⟩
     · left
