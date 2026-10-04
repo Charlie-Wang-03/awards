@@ -37,7 +37,7 @@ theorem planarCentreExponent_le_n_light
     (C : ∀ i : ProjectionOrdered V,
       CentreProjectiveCycle
         (reindexedPoint_injective hp) i) :
-    ∀ i, planarCentreExponent hp C i ≤ n := by
+    ∀ i, planarCentreExponent (t := t) hp C i ≤ n := by
   intro i
   unfold planarCentreExponent
   exact Nat.le_of_lt
