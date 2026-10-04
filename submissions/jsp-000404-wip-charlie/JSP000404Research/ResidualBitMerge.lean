@@ -54,14 +54,7 @@ theorem retainedBit_ne_of_retained_edge
     apply Fin.ext
     simp [retainedColor]
   rw [hcu]
-  -- The canonical incoming bit of an edge colour is false at its lower
-  -- endpoint and true at its upper endpoint.
-  have hin_v : incoming C (C.color u v) v := ⟨u, huv, rfl⟩
-  have hnotin_u : ¬ incoming C (C.color u v) u := by
-    rintro ⟨a, hau, hac⟩
-    apply C.noMonoTwoPath hau huv
-    simpa using hac
-  simp [bit, hnotin_u, hin_v]
+  exact edgeColor_bit_ne C huv
 
 /-- If every residual increasing edge is separated by some retained bit, the
 residual colour can be eliminated at the weaker BinaryEdgePartition level. -/
@@ -75,7 +68,10 @@ noncomputable def binaryPartitionOfResidualSeparated
   classical
   let target : V → V → Fin n := fun u v =>
     if h : u < v ∧ IsResidual C u v then
-      Classical.choose (hsep h.1 h.2)
+      Classical.choose
+        (show ∃ c : Fin n,
+            retainedBit C u c ≠ retainedBit C v c by
+          simpa [RetainedSeparated] using hsep h.1 h.2)
     else
       ⟨0, hn⟩
   refine
@@ -96,7 +92,10 @@ noncomputable def binaryPartitionOfResidualSeparated
         retainedBit C u (target u v) ≠ retainedBit C v (target u v) := by
       unfold target
       simp only [dif_pos ⟨huv, hres⟩]
-      exact Classical.choose_spec (hsep huv hres)
+      exact Classical.choose_spec
+        (show ∃ c : Fin n,
+            retainedBit C u c ≠ retainedBit C v c by
+          simpa [RetainedSeparated] using hsep huv hres)
     exact ht
 
 /-- Ordinary 2^n capacity follows immediately once all residual edges are
