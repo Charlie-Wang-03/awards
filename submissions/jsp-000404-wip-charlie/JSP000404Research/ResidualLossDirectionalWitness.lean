@@ -1,4 +1,4 @@
-import JSP000404Research.ResidualProjectionLoss
+import JSP000404Research.ResidualProjectedLossCore
 import Mathlib.Tactic
 
 /-!
