@@ -124,6 +124,8 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {v s₁ s₂ s₃ : ProjectionOrdered V}
