@@ -60,16 +60,16 @@ theorem zero_floor_block_sum_le_global_mass
         gblock.sum :=
     listZeroGapMass_map_floor_eq_sum_of_all_zero
       gblock hzero
-  rw [List.map_append, List.map_append]
-  rw [listZeroGapMass_append
-      (gpre.map Nat.floor)
-      ((gblock ++ gpost).map Nat.floor)
-      gpre (gblock ++ gpost) hpreLen]
   rw [List.map_append]
   rw [listZeroGapMass_append
-      (gblock.map Nat.floor)
+      ((gpre ++ gblock).map Nat.floor)
       (gpost.map Nat.floor)
-      gblock gpost hblockLen]
+      (gpre ++ gblock) gpost (by simp)]
+  rw [List.map_append]
+  rw [listZeroGapMass_append
+      (gpre.map Nat.floor)
+      (gblock.map Nat.floor)
+      gpre gblock hpreLen]
   rw [hblockMass]
   linarith
 
