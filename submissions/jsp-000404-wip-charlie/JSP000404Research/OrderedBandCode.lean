@@ -62,6 +62,7 @@ theorem bandBit_ne_of_edge_mem_band
     (hmlo : (m : ℝ) ≤ D.value i j)
     (hmhi : D.value i j < (m : ℝ) + 1) :
     bandBit D k i m ≠ bandBit D k j m := by
+  classical
   have hin_j : incomingBand D m j := ⟨i, hij, hmlo, hmhi⟩
   have hnotin_i : ¬ incomingBand D m i := by
     rintro ⟨a, hai, halo, hahi⟩
@@ -70,7 +71,10 @@ theorem bandBit_ne_of_edge_mem_band
       rw [abs_lt]
       constructor <;> linarith
     exact (not_lt_of_ge hlarge) hsmall
-  simp [bandBit, hnotin_i, hin_j]
+  change
+    (if incomingBand D m i then true else false) ≠
+      (if incomingBand D m j then true else false)
+  simp [hnotin_i, hin_j]
 
 /-- Every ordered edge supplies a coordinate specified at both endpoints and
 with opposite canonical bits. -/
