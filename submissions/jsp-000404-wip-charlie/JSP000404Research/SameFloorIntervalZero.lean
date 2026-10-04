@@ -19,16 +19,14 @@ private theorem sameFloor_natFloor_sub_eq_zero
     (hab : a ≤ b)
     (hfloor : Nat.floor a = Nat.floor b) :
     Nat.floor (b - a) = 0 := by
-  have hgap0 : 0 ≤ b - a := sub_nonneg.mpr hab
   have hfa : ((Nat.floor a : ℕ) : ℝ) ≤ a :=
     Nat.floor_le ha0
-  have hb0 : 0 ≤ b := ha0.trans hab
   have hfb : b < ((Nat.floor b : ℕ) : ℝ) + 1 :=
     Nat.lt_floor_add_one b
   have hgaplt : b - a < 1 := by
     rw [← hfloor] at hfb
     linarith
-  exact Nat.floor_eq_zero.mpr ⟨hgap0,hgaplt⟩
+  exact Nat.floor_eq_zero.mpr hgaplt
 
 theorem floor_eq_of_between_floor_eq
     {a b x : ℝ}
@@ -79,7 +77,9 @@ theorem successiveDiffsFrom_all_floor_zero_of_same_floor
         rw [hfloorX,hfloor]
       have htail :=
         ih x hx0 htailSorted hfloorXB
-      simp only [successiveDiffsFrom, List.mem_cons]
+      change ∀ d ∈
+        (x - a) :: successiveDiffsFrom x (xs ++ [b]),
+        Nat.floor d = 0
       intro d hd
       rcases hd with rfl | hd
       · exact hhead
@@ -93,7 +93,6 @@ theorem successiveDiffsFrom_sum_eq_endpoint_sub
       simp [successiveDiffsFrom]
   | cons x xs ih =>
       simp [successiveDiffsFrom, ih]
-      ring
 
 #print axioms floor_eq_of_between_floor_eq
 #print axioms successiveDiffsFrom_all_floor_zero_of_same_floor
