@@ -129,9 +129,14 @@ theorem card_le_two_pow
   have hcap := weighted_capacity C
   have hone :
       Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
-    simpa using
-      (Finset.sum_le_sum (s := (Finset.univ : Finset V))
-        (fun v _ => by positivity))
+    calc
+      Fintype.card V = ∑ _v : V, 1 := by simp
+      _ ≤ ∑ v, 2 ^ (k - (active C v).card) := by
+        apply Finset.sum_le_sum
+        intro v _
+        have hpos : 0 < 2 ^ (k - (active C v).card) := by
+          positivity
+        omega
   exact hone.trans hcap
 
 #print axioms separates
