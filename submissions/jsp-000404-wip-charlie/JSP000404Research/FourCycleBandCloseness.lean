@@ -62,7 +62,7 @@ theorem four_cycle_oneStep_card_three_consecutive
       S = {m,m+1,m+2} :=
     Finset.eq_of_subset_of_card_le hsub (by
       rw [hcardS, htargetCard])
-  simpa [S] using heq
+  exact ⟨m, by simpa [S] using heq⟩
 
 #print axioms four_cycle_oneStep_card_three_consecutive
 
