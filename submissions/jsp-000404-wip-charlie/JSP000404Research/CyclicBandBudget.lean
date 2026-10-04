@@ -2,7 +2,7 @@
 import JSP000404Research.CyclicProjectiveGaps
 import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Algebra.Order.Floor.Semiring
-import Mathlib.Data.List.ToFinset
+import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
 /-!
