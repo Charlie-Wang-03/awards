@@ -165,10 +165,7 @@ theorem raySignAt_eq_of_same_projective_band
     InnerProductGeometry.angle
         (p j.1 - p i) (p k.1 - p i)
       ≤ Real.pi - lam at hcapJK
-  rw [rayRepAt_eq hp i j, rayRepAt_eq hp i k,
-      angle_positive_smul_signedRay
-        (rayRhoAt_pos hp i j)
-        (rayRhoAt_pos hp i k)] at hcapJK
+  rw [rayRepAt_eq hp i j, rayRepAt_eq hp i k] at hcapJK
   rcases le_total (rayThetaAt hp i j) (rayThetaAt hp i k) with horder | horder
   · have hgap :=
       lam_le_parameter_gap_of_opposite_signs
