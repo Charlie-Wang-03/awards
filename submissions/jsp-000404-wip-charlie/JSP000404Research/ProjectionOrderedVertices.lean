@@ -24,7 +24,13 @@ This is the first half of the remaining Planar -> ForwardAngleLift bridge.
 namespace JSP000404Research
 
 def ProjectionOrdered (V : Type*) := V
-deriving Fintype
+
+instance {V : Type*} [Fintype V] : Fintype (ProjectionOrdered V) :=
+  Fintype.ofEquiv V
+    { toFun := fun v => v
+      invFun := fun v => v
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl }
 
 namespace ProjectionOrdered
 
@@ -78,9 +84,10 @@ theorem lt_iff_projectionCoord_lt
     {p : V → Plane}
     (hp : Function.Injective p)
     (u v : ProjectionOrdered V) :
-    @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v
-      ↔
-    projectionCoord p u < projectionCoord p v := by
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    u < v ↔
+      projectionCoord p u < projectionCoord p v := by
   rfl
 
 /-- Hence every increasing wrapper edge has positive generic projection
@@ -91,11 +98,15 @@ theorem projection_increment_pos
     (hp : Function.Injective p)
     {u v : ProjectionOrdered V}
     (huv :
-      @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v) :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      u < v) :
     0 <
       (p v.toOriginal 0 - p u.toOriginal 0) +
         genericProjectionSlope p *
           (p v.toOriginal 1 - p u.toOriginal 1) := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
   apply projection_difference_pos_of_value_lt
   exact (lt_iff_projectionCoord_lt hp u v).1 huv
 
