@@ -43,19 +43,27 @@ theorem interior_source_owner_choices_force_two_colour_staircase
     (hVZ : NatOneStepClose v z)
     (hUV : NatOneStepClose u v) :
     u = y ∧ v = z := by
-  rcases hu with rfl | rfl
-  · rcases hv with rfl | rfl
-    · exact False.elim
+  rcases hu with hux | huy
+  · rcases hv with hvx | hvz
+    · have hXY : NatOneStepClose x y := by simpa [hux] using hUY
+      have hXZ : NatOneStepClose x z := by simpa [hvx] using hVZ
+      exact False.elim
         (three_distinct_pairwise_oneStep_impossible
-          x y z hxy hxz hyz hUY hVZ hYZ)
-    · exact False.elim
+          x y z hxy hxz hyz hXY hXZ hYZ)
+    · have hXY : NatOneStepClose x y := by simpa [hux] using hUY
+      have hXZ : NatOneStepClose x z := by simpa [hux, hvz] using hUV
+      exact False.elim
         (three_distinct_pairwise_oneStep_impossible
-          x y z hxy hxz hyz hUY hUV hYZ)
-  · rcases hv with rfl | rfl
-    · exact False.elim
+          x y z hxy hxz hyz hXY hXZ hYZ)
+  · rcases hv with hvx | hvz
+    · have hYX : NatOneStepClose y x := by
+        simpa [huy, hvx] using hUV
+      have hXZ : NatOneStepClose x z := by simpa [hvx] using hVZ
+      exact False.elim
         (three_distinct_pairwise_oneStep_impossible
-          x y z hxy hxz hyz (natOneStepClose_symm hUV) hVZ hYZ)
-    · exact ⟨rfl,rfl⟩
+          x y z hxy hxz hyz
+          (natOneStepClose_symm hYX) hXZ hYZ)
+    · exact ⟨huy, hvz⟩
 
 #print axioms three_distinct_pairwise_oneStep_impossible
 #print axioms interior_source_owner_choices_force_two_colour_staircase
