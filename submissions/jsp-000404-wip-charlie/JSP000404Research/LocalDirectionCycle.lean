@@ -226,11 +226,7 @@ theorem exists_localDirectionCycle
     simp
   · dsimp [rays]
     exact Finset.sort_nodup _ _
-  · have hpair :
-        rays.Pairwise
-          (fun a b : OtherVertex i =>
-            @LE.le (OtherVertex i)
-              (D.localDirectionOrder i).toLE a b) := by
+  · have hpair : rays.Pairwise (fun a b : OtherVertex i => a ≤ b) := by
       dsimp [rays]
       exact Finset.pairwise_sort _ _
     apply hpair.imp
@@ -283,9 +279,12 @@ theorem mem_incidentBands_iff_exists_local_floor
           D.localDirectionValue i j = D.value j.1 i := by
         simp [localDirectionValue, hji]
       rw [hloc] at hjfloor
-      constructor
-      · simpa [hjfloor] using hlo
-      · simpa [hjfloor] using hhi
+      have hcast :
+          ((Nat.floor (D.value j.1 i) : ℕ) : ℝ) = (c.val : ℝ) := by
+        exact_mod_cast hjfloor
+      rw [hcast] at hlo hhi
+      · exact hlo
+      · exact hhi
     · have hij : i < j.1 := by
         have hle : i ≤ j.1 := le_of_not_gt hji
         exact lt_of_le_of_ne hle j.2.symm
@@ -298,9 +297,12 @@ theorem mem_incidentBands_iff_exists_local_floor
           D.localDirectionValue i j = D.value i j.1 := by
         simp [localDirectionValue, hji]
       rw [hloc] at hjfloor
-      constructor
-      · simpa [hjfloor] using hlo
-      · simpa [hjfloor] using hhi
+      have hcast :
+          ((Nat.floor (D.value i j.1) : ℕ) : ℝ) = (c.val : ℝ) := by
+        exact_mod_cast hjfloor
+      rw [hcast] at hlo hhi
+      · exact hlo
+      · exact hhi
 
 /-- The natural floors appearing in a complete local direction cycle are
 exactly the values of the incident Fin k band set. -/
