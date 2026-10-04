@@ -48,10 +48,12 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
         projectionLinearOrder hp
       c < d)
     (hbLoss :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       b ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn1 hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hpat :
       FourSupportTwoDerangementPattern3
         (reindexedPoint p) delta lam a b c d) :
@@ -62,7 +64,7 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp Cfam
+  let exponent := planarCentreExponent (t := t) hp Cfam
 
   have hexp : ∀ q, exponent q ≤ n := by
     exact planarCentreExponent_le_n_light
