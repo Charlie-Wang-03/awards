@@ -82,7 +82,7 @@ theorem retained_pair_ne
   intro heq
   apply C.noMonoTwoPath hav hvw
   apply Fin.ext
-  exact congrArg Fin.val heq
+  simpa [retainedColor] using congrArg Fin.val heq
 
 /-- Eliminate the residual colour and obtain an admissible k-colouring. -/
 noncomputable def toOrderedEdgeColoring
