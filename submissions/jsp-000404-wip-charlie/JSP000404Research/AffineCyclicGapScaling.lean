@@ -95,7 +95,6 @@ theorem scaled_projectiveGap_floor_eq_quotient
   rw [hlam]
   congr 1
   field_simp [hpi, ht0]
-  ring
 
 theorem projectiveGap_floor_map_eq_quotientList
     (t lam : ℝ)
@@ -128,10 +127,6 @@ theorem linearCyclicGapQuotients_affine_eq_quotientList
       simp [linearCyclicGapQuotients, quotientList,
         normalizedProjectiveGaps, projectiveGaps]
   | cons a xs =>
-      have htCirc : t = Real.pi / lam := by
-        rw [hlam]
-        field_simp [Real.pi_ne_zero, ne_of_gt ht]
-      rw [htCirc]
       rw [linearCyclicGapQuotients_affine_eq_projectiveGap_floors]
       rw [projectiveGap_floor_map_eq_quotientList
         t lam ht hlam]
