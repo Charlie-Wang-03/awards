@@ -43,28 +43,32 @@ noncomputable def canonicalizeProjectiveAngle (theta : ℝ) : ℝ :=
 theorem projectionAngleBase_gt_neg_pi
     (a : ℝ) :
     -Real.pi < projectionAngleBase a := by
-  have harg :
-      -(Real.pi / 2) < (projectionRotator a).arg := by
-    have habs :
-        |(projectionRotator a).arg| < Real.pi / 2 := by
-      exact Complex.abs_arg_lt_pi_div_two_iff.mpr
-        (Or.inl (by simp [projectionRotator]))
-    exact (by simpa [abs_lt] using habs).1
+  have habs :
+      |(projectionRotator a).arg| < Real.pi / 2 := by
+    exact Complex.abs_arg_lt_pi_div_two_iff.mpr
+      (Or.inl (by simp [projectionRotator]))
+  have hpair :
+      -(Real.pi / 2) < (projectionRotator a).arg ∧
+        (projectionRotator a).arg < Real.pi / 2 := by
+    simpa [abs_lt] using habs
+  have harg := hpair.2
   unfold projectionAngleBase
-  linarith
+  linarith [Real.pi_pos]
 
 theorem projectionAngleBase_lt_zero
     (a : ℝ) :
     projectionAngleBase a < 0 := by
-  have harg :
-      (projectionRotator a).arg < Real.pi / 2 := by
-    have habs :
-        |(projectionRotator a).arg| < Real.pi / 2 := by
-      exact Complex.abs_arg_lt_pi_div_two_iff.mpr
-        (Or.inl (by simp [projectionRotator]))
-    exact (by simpa [abs_lt] using habs).2
+  have habs :
+      |(projectionRotator a).arg| < Real.pi / 2 := by
+    exact Complex.abs_arg_lt_pi_div_two_iff.mpr
+      (Or.inl (by simp [projectionRotator]))
+  have hpair :
+      -(Real.pi / 2) < (projectionRotator a).arg ∧
+        (projectionRotator a).arg < Real.pi / 2 := by
+    simpa [abs_lt] using habs
+  have harg := hpair.1
   unfold projectionAngleBase
-  linarith
+  linarith [Real.pi_pos]
 
 theorem generic_edge_liftedAngle_window
     {V : Type*} [Fintype V]
@@ -72,8 +76,9 @@ theorem generic_edge_liftedAngle_window
     (hp : Function.Injective p)
     {u v : ProjectionOrdered V}
     (huv :
-      @LT.lt (ProjectionOrdered V)
-        (ProjectionOrdered.projectionLinearOrder hp) u v) :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        ProjectionOrdered.projectionLinearOrder hp
+      u < v) :
     -Real.pi <
       projectionLiftedAngle
         (genericProjectionSlope p)
@@ -83,6 +88,8 @@ theorem generic_edge_liftedAngle_window
         (genericProjectionSlope p)
         (p v.toOriginal - p u.toOriginal)
       < Real.pi := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    ProjectionOrdered.projectionLinearOrder hp
   have hmem := generic_edge_liftedAngle_mem hp huv
   have hbaseLo :=
     projectionAngleBase_gt_neg_pi
@@ -141,7 +148,7 @@ theorem canonicalRayRep_theta_eq_canonicalize_of_polar_window
       rw [canonicalizeProjectiveAngle]
       simp only [if_pos hneg, signedRayDirection,
         Bool.false_eq_true, if_false]
-      have hshift := rayDirection_add_pi theta
+      have hshift := rayDirection_add_pi_base theta
       rw [hshift]
       simp
     have heq :
@@ -259,7 +266,7 @@ theorem rayThetaAt_eq_canonicalize_centreForwardLiftedAngle
       exact lt_of_le_of_ne
         (not_lt.mp hij)
         j.2
-    let ji : OtherVertex j.1 := ⟨i, j.2⟩
+    let ji : OtherVertex j.1 := ⟨i, j.2.symm⟩
     have hwindow :=
       generic_edge_liftedAngle_window hp hji
     have hrho :=
@@ -373,8 +380,11 @@ theorem rayTheta_lt_projectionCut_iff_forward_nonneg
           theta + Real.pi := by
       simpa [theta, canonicalizeProjectiveAngle, hneg]
         using hrepr
+    have hbaseLt :
+        projectionAngleBase (genericProjectionSlope p) < theta := by
+      simpa [theta] using hbranch.1
     unfold projectionProjectiveCut at hcanon
-    dsimp [theta] at hneg hcan
+    rw [hcan] at hcanon
     linarith
   · intro hnonneg
     have hnotneg : ¬ theta < 0 :=
@@ -384,9 +394,8 @@ theorem rayTheta_lt_projectionCut_iff_forward_nonneg
           theta := by
       simpa [theta, canonicalizeProjectiveAngle, hnotneg]
         using hrepr
-    unfold projectionProjectiveCut
-    dsimp [theta] at hcan
-    linarith
+    rw [hcan]
+    simpa [theta] using hbranch.2
 
 /-- Complementary upper-block characterization. -/
 theorem projectionCut_le_rayTheta_iff_forward_neg
