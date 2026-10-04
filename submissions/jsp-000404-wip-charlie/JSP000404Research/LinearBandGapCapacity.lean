@@ -39,10 +39,10 @@ namespace JSP000404Research
 
 open Real
 
-def occupiedNatBands (xs : List ℝ) : Finset ℕ :=
+noncomputable def occupiedNatBands (xs : List ℝ) : Finset ℕ :=
   (xs.map Nat.floor).toFinset
 
-def linearCyclicGapQuotients (t : ℝ) : List ℝ → List ℕ
+noncomputable def linearCyclicGapQuotients (t : ℝ) : List ℝ → List ℕ
   | [] => []
   | a :: xs =>
       (successiveDiffsFrom a xs).map Nat.floor ++
@@ -111,8 +111,7 @@ theorem natFloor_sub_eq_zero_of_floor_eq
   have hq :=
     natFloor_sub_le_floor_sub ha0 hab
   rw [hfloor] at hq
-  simp at hq
-  exact Nat.eq_zero_of_le_zero hq
+  omega
 
 theorem head_floor_le_of_mem_sorted
     {a x : ℝ} {xs : List ℝ}
@@ -136,12 +135,11 @@ theorem head_le_getLastD_of_pairwise
       simp
   | cons b bs =>
       have hmem :
-          (b :: bs).getLastD a ∈ a :: b :: bs := by
-        exact List.getLastD_mem_cons a (b :: bs)
+          (b :: bs).getLastD a ∈ b :: bs := by
+        exact List.getLastD_mem_cons
       exact
         (List.pairwise_cons.mp hsorted).1
-          ((b :: bs).getLastD a)
-          (by simpa using hmem)
+          ((b :: bs).getLastD a) hmem
 
 theorem floor_head_le_floor_getLastD_of_pairwise
     (a : ℝ) (xs : List ℝ)
@@ -172,6 +170,9 @@ theorem interior_gapExponent_add_occupied_le_span
         hpair.2
       have hih :=
         ih b hb0 htail
+      have hlastEq :
+          (b :: bs).getLastD a = bs.getLastD b := by
+        cases bs <;> simp
       have hAB :
           Nat.floor a ≤ Nat.floor b :=
         Nat.floor_mono hab
@@ -188,7 +189,7 @@ theorem interior_gapExponent_add_occupied_le_span
         rw [hbands]
         simp only [successiveDiffsFrom, List.map_cons,
           listExponent, List.map_cons, List.sum_cons]
-        rw [hq0]
+        rw [hq0, hlastEq]
         simp [excess, hEq] at hih ⊢
         exact hih
       · have hLt :
@@ -204,13 +205,13 @@ theorem interior_gapExponent_add_occupied_le_span
               Nat.floor b ≤ Nat.floor x :=
             head_floor_le_of_mem_sorted
               htail hx
-          rw [← hxFloor] at hBx
+          rw [hxFloor] at hBx
           omega
         have hbands :
             (occupiedNatBands (a :: b :: bs)).card =
               (occupiedNatBands (b :: bs)).card + 1 := by
           rw [occupiedNatBands_cons,
-              Finset.card_insert_of_not_mem hnotmem]
+              Finset.card_insert_of_notMem hnotmem]
           omega
         have hgap :
             excess (Nat.floor (b - a)) + 1 ≤
@@ -222,13 +223,20 @@ theorem interior_gapExponent_add_occupied_le_span
               Nat.floor (bs.getLastD b) :=
           floor_head_le_floor_getLastD_of_pairwise
             b bs htail
+        have hih' :
+            (List.map (excess ∘ Nat.floor)
+                (successiveDiffsFrom b bs)).sum +
+                (occupiedNatBands (b :: bs)).card ≤
+              Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
+          simpa [listExponent, List.map_map, Function.comp_def] using hih
         simp only [successiveDiffsFrom, List.map_cons,
-          listExponent, List.map_cons, List.sum_cons]
-        rw [hbands]
+          listExponent, List.sum_cons]
+        rw [hbands, hlastEq]
+        simp only [List.map_map]
         change
           excess (Nat.floor (b - a)) +
-              listExponent
-                ((successiveDiffsFrom b bs).map Nat.floor) +
+              (List.map (excess ∘ Nat.floor)
+                (successiveDiffsFrom b bs)).sum +
               ((occupiedNatBands (b :: bs)).card + 1)
             ≤
           Nat.floor (bs.getLastD b) - Nat.floor a + 1
@@ -301,7 +309,7 @@ theorem linear_cyclic_gapExponent_add_occupied_le
     n + 1 := by
   have hlast :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ List.getLastD_mem_cons
   have haz :
       a ≤ xs.getLastD a :=
     head_le_getLastD_of_pairwise a xs hsorted
