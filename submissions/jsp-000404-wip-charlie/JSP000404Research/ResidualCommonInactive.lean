@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualFreeNeighbour
+import JSP000404Research.ResidualLists
 import Mathlib.Tactic
 
 /-!
@@ -96,8 +97,16 @@ theorem hard_pair_has_free_neighbour_of_deficit_sum_lt
   refine ⟨c, hcu, hcv, ?_⟩
   exact no_vertex_realizes_flipped_common_inactive_code
     C c huv hret
-    (by simpa [retainedActive] using hcu)
-    (by simpa [retainedActive] using hcv)
+    (by
+      intro hc
+      apply hcu
+      classical
+      simpa [active, retainedActive] using hc)
+    (by
+      intro hc
+      apply hcv
+      classical
+      simpa [active, retainedActive] using hc)
 
 #print axioms exists_common_not_mem_of_card_add_lt
 #print axioms exists_common_inactive_of_retained_card_add_lt
