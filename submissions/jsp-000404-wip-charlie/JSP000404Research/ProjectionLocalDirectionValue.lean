@@ -54,12 +54,14 @@ theorem genericLocalDirectionValue_eq_forward
   unfold DirectionData.localDirectionValue
   unfold centreForwardLiftedAngle
   by_cases hji : j.1 < i
-  · simp only [hji, if_pos]
+  · have hnij : ¬ i < j.1 :=
+      not_lt_of_ge hji.le
+    simp only [hji, if_pos, hnij, if_neg]
     rw [genericDirectionData_sendov_value]
   · have hij : i < j.1 := by
       have hle : i ≤ j.1 := le_of_not_gt hji
       exact lt_of_le_of_ne hle j.2.symm
-    simp only [hji, if_false]
+    simp only [hji, if_neg, hij, if_pos]
     rw [genericDirectionData_sendov_value]
 
 /-- Below the projective cut, the canonical angle is the forward lifted angle,
