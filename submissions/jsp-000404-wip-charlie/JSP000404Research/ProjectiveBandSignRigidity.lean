@@ -124,9 +124,9 @@ theorem rayTheta_abs_sub_lt_lam_of_same_band
 /-- Main sign-rigidity theorem for one projective unit band. -/
 theorem raySignAt_eq_of_same_projective_band
     {V : Type*} {p : V → Plane}
+    {t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {t lam : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V) (j k : OtherVertex i)
