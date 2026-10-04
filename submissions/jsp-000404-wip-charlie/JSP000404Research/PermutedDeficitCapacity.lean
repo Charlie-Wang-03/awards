@@ -71,7 +71,9 @@ theorem permuted_deficit_capacity
     (∑ v, 2 ^ exponent v) ≤ 2 ^ n := by
   apply permuted_exponent_capacity C exponent sigma
   intro v
-  rw [hell v]
+  have hv := hpalette v
+  rw [hell v] at hv
+  have hev := hexp v
   omega
 
 /-- Exact multiset realization: if free-coordinate counts are exactly the
