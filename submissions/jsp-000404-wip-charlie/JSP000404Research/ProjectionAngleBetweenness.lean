@@ -79,11 +79,13 @@ theorem generic_projection_liftedAngle_between
     (hp : Function.Injective p)
     {i j k : ProjectionOrdered V}
     (hij :
-      @LT.lt (ProjectionOrdered V)
-        (ProjectionOrdered.projectionLinearOrder hp) i j)
+      letI : LinearOrder (ProjectionOrdered V) :=
+        ProjectionOrdered.projectionLinearOrder hp
+      i < j)
     (hjk :
-      @LT.lt (ProjectionOrdered V)
-        (ProjectionOrdered.projectionLinearOrder hp) j k) :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        ProjectionOrdered.projectionLinearOrder hp
+      j < k) :
     (projectionLiftedAngle
         (genericProjectionSlope p)
         (p j.toOriginal - p i.toOriginal)
@@ -115,6 +117,8 @@ theorem generic_projection_liftedAngle_between
       projectionLiftedAngle
         (genericProjectionSlope p)
         (p j.toOriginal - p i.toOriginal)) := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    ProjectionOrdered.projectionLinearOrder hp
   let a := genericProjectionSlope p
   let x := p j.toOriginal - p i.toOriginal
   let y := p k.toOriginal - p j.toOriginal
