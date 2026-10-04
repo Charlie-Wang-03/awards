@@ -1,6 +1,7 @@
 
 import JSP000404Research.PlanarStandardResidualBudget
 import JSP000404Research.PlanarStandardResidualColoring
+import JSP000404Research.PlanarCentreExponent
 import JSP000404Research.ResidualHardRemainder
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.GenericTopExponentMultiplicity
@@ -52,14 +53,6 @@ variable (hp : Function.Injective p)
 local instance projectionOrder :
     LinearOrder (ProjectionOrdered V) :=
   projectionLinearOrder hp
-
-def planarCentreExponent
-    {t : ℝ}
-    (C : ∀ i : ProjectionOrdered V,
-      CentreProjectiveCycle
-        (reindexedPoint_injective hp) i) :
-    ProjectionOrdered V → ℕ :=
-  fun i => centreExponent (C i) t
 
 theorem planarCentreExponent_le_n
     {t delta : ℝ} {n : ℕ}
