@@ -37,6 +37,7 @@ theorem getLastD_append_cons
   | nil =>
       exact List.getLastD_cons
   | cons x xs ih =>
+      rw [List.cons_append]
       rw [List.getLastD_cons]
       exact ih x
 
@@ -181,7 +182,7 @@ theorem projectiveGaps_cut_rotate
       | cons b bs =>
           simp only [List.nil_append, List.length_nil,
             List.rotate_zero]
-          exact projectiveGaps_map_sub b Real.pi bs
+          simpa using projectiveGaps_map_sub b Real.pi bs
   | cons a as =>
       cases high with
       | nil =>
