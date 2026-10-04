@@ -132,8 +132,9 @@ theorem generic_edge_liftedAngle_mem
     (hp : Function.Injective p)
     {u v : ProjectionOrdered V}
     (huv :
-      @LT.lt (ProjectionOrdered V)
-        (ProjectionOrdered.projectionLinearOrder hp) u v) :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        ProjectionOrdered.projectionLinearOrder hp
+      u < v) :
     projectionAngleBase (genericProjectionSlope p) <
       projectionLiftedAngle
         (genericProjectionSlope p)
@@ -144,6 +145,8 @@ theorem generic_edge_liftedAngle_mem
         (p v.toOriginal - p u.toOriginal)
       <
       projectionAngleBase (genericProjectionSlope p) + Real.pi := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    ProjectionOrdered.projectionLinearOrder hp
   have hproj :=
     ProjectionOrdered.projection_increment_pos hp huv
   have hre :
