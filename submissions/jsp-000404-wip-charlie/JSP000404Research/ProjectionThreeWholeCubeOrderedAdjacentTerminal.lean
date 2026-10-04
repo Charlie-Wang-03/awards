@@ -138,29 +138,33 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
         hdelta0 (by linarith : delta < 1) ht hlam
       retainedActive R v = {c₁,c₂,c₃})
     (hvLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       v ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hs1Loss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       s₁ ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hs2Loss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       s₂ ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hs3Loss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       s₃ ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hvSecond : centreExponent (Cfam v) t = n - 2)
     (hs1Second : centreExponent (Cfam s₁) t = n - 2)
     (hs2Second : centreExponent (Cfam s₂) t = n - 2)
@@ -198,7 +202,7 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
   have hdelta1 : delta < 1 := by linarith
   let R := planarStandardResidualColoring
     hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp Cfam
+  let exponent := planarCentreExponent (t := t) hp Cfam
   let S : Finset (ProjectionOrdered V) := {v,s₁,s₂,s₃}
 
   have hprof :=
