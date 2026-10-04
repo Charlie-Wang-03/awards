@@ -115,9 +115,9 @@ open OrderedEdgeColoring
 theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -187,6 +187,7 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R s₃ v c₃) :
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
     ∃ a b c d : ProjectionOrdered V,
       ({a,b,c,d} : Finset (ProjectionOrdered V)) = {v,s₁,s₂,s₃} ∧
       a < b ∧ b < c ∧ c < d ∧
