@@ -35,9 +35,10 @@ theorem getLastD_append_cons
       ys.getLastD b := by
   induction xs generalizing a with
   | nil =>
-      simp [List.getLastD_cons]
+      exact List.getLastD_cons
   | cons x xs ih =>
-      simp [List.getLastD_cons, ih]
+      rw [List.getLastD_cons]
+      exact ih x
 
 theorem getLastD_map_sub
     (a c : ℝ) (xs : List ℝ) :
@@ -45,9 +46,11 @@ theorem getLastD_map_sub
       xs.getLastD a - c := by
   induction xs generalizing a with
   | nil =>
-      simp
+      rfl
   | cons x xs ih =>
-      simp [List.getLastD_cons, ih]
+      simp only [List.map_cons]
+      rw [List.getLastD_cons, List.getLastD_cons]
+      exact ih x
 
 theorem successiveDiffsFrom_map_sub
     (a c : ℝ) (xs : List ℝ) :
@@ -56,9 +59,11 @@ theorem successiveDiffsFrom_map_sub
       successiveDiffsFrom a xs := by
   induction xs generalizing a with
   | nil =>
-      simp [successiveDiffsFrom]
+      rfl
   | cons x xs ih =>
-      simp [successiveDiffsFrom, ih]
+      simp only [List.map_cons, successiveDiffsFrom]
+      rw [ih x]
+      congr 1
       ring
 
 /-- Successive differences through an appended nonempty block. -/
@@ -70,9 +75,10 @@ theorem successiveDiffsFrom_append_cons
           successiveDiffsFrom b ys := by
   induction xs generalizing a with
   | nil =>
-      simp [successiveDiffsFrom]
+      rfl
   | cons x xs ih =>
-      simp [successiveDiffsFrom, ih, List.getLastD_cons]
+      simp only [List.cons_append, successiveDiffsFrom]
+      rw [ih x, List.getLastD_cons]
 
 /-- Translation of one whole nonempty angle list leaves all cyclic projective
 gaps unchanged. -/
@@ -85,7 +91,7 @@ theorem projectiveGaps_map_sub
   rw [successiveDiffsFrom_map_sub,
       getLastD_map_sub]
   congr 1
-  ring
+  ring_nf
 
 /-- Explicit cyclic gaps for two consecutive nonempty blocks. -/
 theorem projectiveGaps_two_nonempty_blocks
@@ -113,6 +119,7 @@ theorem projectiveGaps_shifted_two_blocks
         [a + Real.pi - bs.getLastD b]) ++
       (successiveDiffsFrom a as ++
         [b - as.getLastD a]) := by
+  simp only [List.map_cons]
   rw [projectiveGaps_two_nonempty_blocks
       (b - Real.pi) a
       (bs.map (fun x => x - Real.pi)) as]
