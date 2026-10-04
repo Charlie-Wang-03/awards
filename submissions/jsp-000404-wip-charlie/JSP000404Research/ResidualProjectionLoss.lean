@@ -36,7 +36,7 @@ palette realizes the unique one-unit phase loss.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
-def projectedFree
+noncomputable def projectedFree
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (v : V) : ℕ :=
