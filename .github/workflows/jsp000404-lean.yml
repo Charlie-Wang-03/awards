@@ -59,6 +59,12 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check local same-band zero-floor core
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.SameFloorIntervalZero
+          lake build JSP000404Research.LocalZeroFloorMass
+
       - name: Check ordered projection foundations
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
