@@ -1,5 +1,5 @@
 
-import JSP000404Research.LinearBandGapCapacity
+import JSP000404Research.LinearCyclicGapQuotientsCore
 import JSP000404Research.CentreQuotientData
 import JSP000404Research.CyclicQuotientRotation
 import Mathlib.Tactic
