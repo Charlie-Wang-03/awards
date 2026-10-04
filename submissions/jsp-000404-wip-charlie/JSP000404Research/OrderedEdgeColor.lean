@@ -45,8 +45,9 @@ noncomputable def active {V : Type*} [LinearOrder V] {k : ℕ}
 
 /-- Canonical source/sink bit of an active colour. -/
 noncomputable def bit {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V k) : V → Fin k → Bool :=
-  fun v c ↦ decide (incoming C c v)
+    (C : OrderedEdgeColoring V k) : V → Fin k → Bool := by
+  classical
+  exact fun v c ↦ decide (incoming C c v)
 
 /-- Exact characterization of the canonical incoming bit. -/
 theorem bit_eq_true_iff
@@ -188,7 +189,7 @@ theorem expected_weight_le
   intro v _
   apply Nat.pow_le_pow_right
   · norm_num
-  · omega
+  · exact Nat.sub_le_sub_left (hactive v) k
 
 /-- Local active-colour bounds imply the weighted Kraft inequality. -/
 theorem capacity_of_active_le
@@ -212,7 +213,11 @@ theorem cluster_capacity_of_active_le
         ∑ v, 2 ^ (k - ell v) := by
           apply Finset.sum_congr rfl
           intro v _
-          rw [hell v, Nat.sub_sub_cancel (hexponent v)]
+          rw [hell v]
+          have hsub :
+              k - (k - exponent v) = exponent v := by
+            omega
+          rw [hsub]
     _ ≤ 2 ^ k := capacity_of_active_le C ell hactive
 
 /-- Any admissible colouring by `k` ordered edge colours gives the
@@ -226,7 +231,7 @@ theorem card_le_two_pow
       Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
     simpa using
       (Finset.sum_le_sum (s := (Finset.univ : Finset V))
-        (fun v _ => Nat.one_le_pow _ _))
+        (fun v _ => Nat.one_le_pow _ (by norm_num : 0 < 2)))
   exact hone.trans hcap
 
 #print axioms bit_eq_true_iff
