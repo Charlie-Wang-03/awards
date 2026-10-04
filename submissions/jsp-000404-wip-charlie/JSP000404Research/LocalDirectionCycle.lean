@@ -358,7 +358,7 @@ theorem occupiedNatBands_values_eq_incident_val_map
       exact ⟨j, hj, rfl⟩
     · have hval :
           c.val = m := by
-        simpa using congrArg Fin.val hcm
+        simpa using hcm
       rw [hjfloor, hval]
 
 theorem occupiedNatBands_values_card_eq_incidentBands_card
