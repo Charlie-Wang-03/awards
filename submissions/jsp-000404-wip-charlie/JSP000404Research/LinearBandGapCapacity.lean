@@ -110,8 +110,8 @@ theorem natFloor_sub_eq_zero_of_floor_eq
     Nat.floor (b - a) = 0 := by
   have hq :=
     natFloor_sub_le_floor_sub ha0 hab
-  rw [hfloor] at hq
-  omega
+  rw [hfloor, Nat.sub_self] at hq
+  exact Nat.eq_zero_of_le_zero hq
 
 theorem head_floor_le_of_mem_sorted
     {a x : ℝ} {xs : List ℝ}
@@ -205,7 +205,9 @@ theorem interior_gapExponent_add_occupied_le_span
               Nat.floor b ≤ Nat.floor x :=
             head_floor_le_of_mem_sorted
               htail hx
-          rw [hxFloor] at hBx
+          have hxa : Nat.floor x = Nat.floor a := by
+            simpa using hxFloor
+          rw [hxa] at hBx
           omega
         have hbands :
             (occupiedNatBands (a :: b :: bs)).card =
