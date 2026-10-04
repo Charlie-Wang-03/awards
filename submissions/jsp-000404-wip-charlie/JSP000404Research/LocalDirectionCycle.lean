@@ -150,14 +150,14 @@ def values
     (C : LocalDirectionCycle D i) : List ℝ :=
   C.rays.map (D.localDirectionValue i)
 
-def gapQuotients
+noncomputable def gapQuotients
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ}
     {D : DirectionData V t} {i : V}
     (C : LocalDirectionCycle D i) : List ℕ :=
   linearCyclicGapQuotients t C.values
 
-def exponent
+noncomputable def exponent
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ}
     {D : DirectionData V t} {i : V}
@@ -228,7 +228,9 @@ theorem exists_localDirectionCycle
     exact Finset.sort_nodup _ _
   · have hpair :
         rays.Pairwise
-          (fun a b : OtherVertex i => a ≤ b) := by
+          (fun a b : OtherVertex i =>
+            @LE.le (OtherVertex i)
+              (D.localDirectionOrder i).toLE a b) := by
       dsimp [rays]
       exact Finset.pairwise_sort _ _
     apply hpair.imp
@@ -281,9 +283,9 @@ theorem mem_incidentBands_iff_exists_local_floor
           D.localDirectionValue i j = D.value j.1 i := by
         simp [localDirectionValue, hji]
       rw [hloc] at hjfloor
-      rw [hjfloor] at hlo hhi
-      · simpa using hlo
-      · simpa using hhi
+      constructor
+      · simpa [hjfloor] using hlo
+      · simpa [hjfloor] using hhi
     · have hij : i < j.1 := by
         have hle : i ≤ j.1 := le_of_not_gt hji
         exact lt_of_le_of_ne hle j.2.symm
@@ -296,9 +298,9 @@ theorem mem_incidentBands_iff_exists_local_floor
           D.localDirectionValue i j = D.value i j.1 := by
         simp [localDirectionValue, hji]
       rw [hloc] at hjfloor
-      rw [hjfloor] at hlo hhi
-      · simpa using hlo
-      · simpa using hhi
+      constructor
+      · simpa [hjfloor] using hlo
+      · simpa [hjfloor] using hhi
 
 /-- The natural floors appearing in a complete local direction cycle are
 exactly the values of the incident Fin k band set. -/
@@ -336,7 +338,7 @@ theorem occupiedNatBands_values_eq_incident_val_map
       exact ⟨j, rfl⟩
     apply Finset.mem_map.mpr
     refine ⟨c, hc, ?_⟩
-    simpa [c] using hfloor.symm
+    simpa [c] using hfloor
   · intro hm
     obtain ⟨c, hc, hcm⟩ := Finset.mem_map.mp hm
     have hex :=
@@ -386,7 +388,7 @@ theorem exponent_add_incidentBands_card_le
     | nil =>
         exact False.elim (C.values_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ C.values := by
     rw [hvalues]
     simp
@@ -410,9 +412,8 @@ theorem exponent_add_incidentBands_card_le
     C.occupiedNatBands_values_card_eq_incidentBands_card
       (n + 1) hwidth
   unfold exponent gapQuotients
-  rw [hvalues] at hlin
-  rw [hcard] at hlin
-  simpa using hlin
+  rw [hvalues, ← hcard, hvalues]
+  exact hlin
 
 #print axioms localDirectionValue_nonneg
 #print axioms exists_localDirectionCycle
