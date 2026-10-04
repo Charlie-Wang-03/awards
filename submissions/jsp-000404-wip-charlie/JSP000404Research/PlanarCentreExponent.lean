@@ -16,14 +16,11 @@ namespace ProjectionOrdered
 section
 
 variable {V : Type*} [Fintype V]
+variable [LinearOrder (ProjectionOrdered V)]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-local instance projectionOrder :
-    LinearOrder (ProjectionOrdered V) :=
-  projectionLinearOrder hp
-
-def planarCentreExponent
+noncomputable def planarCentreExponent
     {t : ℝ}
     (C : ∀ i : ProjectionOrdered V,
       CentreProjectiveCycle
