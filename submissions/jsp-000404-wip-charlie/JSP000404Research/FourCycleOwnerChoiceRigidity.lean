@@ -17,6 +17,12 @@ same-side owner colours, leaving the two-colour staircase pattern.
 
 namespace JSP000404Research
 
+theorem natOneStepClose_symm
+    {x y : ℕ}
+    (h : NatOneStepClose x y) :
+    NatOneStepClose y x := by
+  exact ⟨h.2,h.1⟩
+
 theorem three_distinct_pairwise_oneStep_impossible
     (x y z : ℕ)
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
@@ -48,7 +54,7 @@ theorem interior_source_owner_choices_force_two_colour_staircase
   · rcases hv with rfl | rfl
     · exact False.elim
         (three_distinct_pairwise_oneStep_impossible
-          x y z hxy hxz hyz hUV.symm hVZ hYZ)
+          x y z hxy hxz hyz (natOneStepClose_symm hUV) hVZ hYZ)
     · exact ⟨rfl,rfl⟩
 
 #print axioms three_distinct_pairwise_oneStep_impossible
