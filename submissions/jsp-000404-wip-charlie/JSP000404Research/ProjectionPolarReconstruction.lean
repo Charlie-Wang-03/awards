@@ -55,8 +55,16 @@ theorem complex_div_eq_norm_div_mul_exp_arg_sub
             have hnorm :
                 (‖w‖ / ‖q‖) * ‖q‖ = ‖w‖ :=
               div_mul_cancel₀ ‖w‖ hnormq
-            push_cast [hnorm]
-            ring
+            have hnormC :
+                (((‖w‖ / ‖q‖ : ℝ) : ℂ) * (‖q‖ : ℂ)) =
+                  (‖w‖ : ℂ) := by
+              exact_mod_cast hnorm
+            calc
+              _ =
+                ((((‖w‖ / ‖q‖ : ℝ) : ℂ) * (‖q‖ : ℂ)) *
+                  (Complex.exp ((w.arg - q.arg) * Complex.I) *
+                    Complex.exp (q.arg * Complex.I))) := by ring
+              _ = _ := by rw [hnormC]
     _ =
       (‖w‖ : ℂ) *
         Complex.exp (w.arg * Complex.I) := by
@@ -97,7 +105,7 @@ theorem planeToComplex_eq_projection_polar
     simp [w, q, rotatedPlane, mul_comm]
   rw [hz,
       complex_div_eq_norm_div_mul_exp_arg_sub w q hq]
-  rfl
+  simp [projectionLiftedRho, projectionLiftedAngle, q, w]
 
 theorem planeToComplex_smul_rayDirection
     (rho theta : ℝ) :
@@ -106,7 +114,7 @@ theorem planeToComplex_smul_rayDirection
         Complex.exp (theta * Complex.I) := by
   rw [map_smul, planeToComplex_rayDirection,
       Complex.exp_mul_I]
-  simp [smul_eq_mul]
+  ring
 
 /-- Exact planar reconstruction from the lifted polar data. -/
 theorem projection_polar_repr
@@ -125,12 +133,15 @@ theorem generic_edge_liftedRho_pos
     (hp : Function.Injective p)
     {u v : ProjectionOrdered V}
     (huv :
-      @LT.lt (ProjectionOrdered V)
-        (ProjectionOrdered.projectionLinearOrder hp) u v) :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        ProjectionOrdered.projectionLinearOrder hp
+      u < v) :
     0 <
       projectionLiftedRho
         (genericProjectionSlope p)
         (p v.toOriginal - p u.toOriginal) := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    ProjectionOrdered.projectionLinearOrder hp
   apply projectionLiftedRho_pos
   rw [rotatedPlane_re]
   have hproj :=
