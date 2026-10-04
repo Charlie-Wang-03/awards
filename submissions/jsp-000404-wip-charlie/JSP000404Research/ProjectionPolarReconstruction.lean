@@ -115,7 +115,6 @@ theorem planeToComplex_smul_rayDirection
   rw [map_smul, planeToComplex_rayDirection,
       Complex.exp_mul_I, Complex.real_smul,
       Complex.ofReal_cos, Complex.ofReal_sin]
-  ring
 
 /-- Exact planar reconstruction from the lifted polar data. -/
 theorem projection_polar_repr
