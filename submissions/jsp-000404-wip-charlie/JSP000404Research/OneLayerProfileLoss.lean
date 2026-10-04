@@ -47,15 +47,17 @@ def aboveSet
     (aboveSet f r).card = tailCount f r := by
   rfl
 
-def layerLossSet
+noncomputable def layerLossSet
     {V : Type*} [Fintype V]
-    (k nu : V → ℕ) (r : ℕ) : Finset V :=
-  aboveSet k r \ aboveSet nu r
+    (k nu : V → ℕ) (r : ℕ) : Finset V := by
+  classical
+  exact aboveSet k r \ aboveSet nu r
 
-def layerSurplusSet
+noncomputable def layerSurplusSet
     {V : Type*} [Fintype V]
-    (k nu : V → ℕ) (r : ℕ) : Finset V :=
-  aboveSet nu r \ aboveSet k r
+    (k nu : V → ℕ) (r : ℕ) : Finset V := by
+  classical
+  exact aboveSet nu r \ aboveSet k r
 
 theorem tailCount_le_iff_loss_le_surplus
     {V : Type*} [Fintype V]
@@ -83,9 +85,9 @@ theorem mem_layerLossSet_iff_exact_one_loss
     have hk := hone v
     constructor <;> omega
   · rintro ⟨hk, hnu⟩
-    subst hk
-    subst hnu
-    omega
+    constructor
+    · simpa [aboveSet, layerLossSet, hk, hnu]
+    · simpa [aboveSet, layerLossSet, hk, hnu]
 
 theorem mem_layerSurplusSet_iff
     {V : Type*} [Fintype V]
@@ -110,7 +112,11 @@ theorem tailCount_le_of_loss_injection
     (hinj : Function.Injective repair) :
     tailCount k r ≤ tailCount nu r := by
   rw [tailCount_le_iff_loss_le_surplus]
-  exact Fintype.card_le_of_injective repair hinj
+  have hcard :
+      Fintype.card {v // v ∈ layerLossSet k nu r} ≤
+        Fintype.card {v // v ∈ layerSurplusSet k nu r} :=
+    Fintype.card_le_of_injective repair hinj
+  simpa using hcard
 
 /-- All thresholds at once yield the dyadic profile inequality. -/
 theorem dyadic_sum_le_of_one_layer_repairs
