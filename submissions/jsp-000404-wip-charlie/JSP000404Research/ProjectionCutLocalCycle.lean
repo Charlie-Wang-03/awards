@@ -1,8 +1,8 @@
 
 import JSP000404Research.ProjectionLocalDirectionValue
+import JSP000404Research.LocalDirectionCycleCore
 import JSP000404Research.AffineCyclicGapScaling
 import JSP000404Research.ProjectiveGapCutRotation
-import JSP000404Research.CentreStandardBandBudget
 import Mathlib.Tactic
 
 /-!
