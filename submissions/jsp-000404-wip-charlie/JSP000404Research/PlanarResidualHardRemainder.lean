@@ -1,5 +1,6 @@
 
 import JSP000404Research.PlanarStandardResidualBudget
+import JSP000404Research.PlanarStandardResidualColoring
 import JSP000404Research.ResidualHardRemainder
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.GenericTopExponentMultiplicity
@@ -51,25 +52,6 @@ variable (hp : Function.Injective p)
 local instance projectionOrder :
     LinearOrder (ProjectionOrdered V) :=
   projectionLinearOrder hp
-
-noncomputable def planarStandardResidualColoring
-    {lam t delta : ℝ} {n : ℕ}
-    (hcap : AngleCap p lam)
-    (hn : 1 ≤ n)
-    (hdelta0 : 0 ≤ delta)
-    (hdelta1 : delta < 1)
-    (ht : t = (n : ℝ) + delta)
-    (hlam : lam = Real.pi / t) :
-    OrderedEdgeColoring (ProjectionOrdered V) (n + 1) := by
-  let htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
-  let D :=
-    genericDirectionData_sendov hp hcap htpos hlam
-  have hwidth : t < (n + 1 : ℕ) := by
-    rw [ht]
-    exact_mod_cast (show
-      (n : ℝ) + delta < (n : ℝ) + 1 by linarith)
-  exact standardResidualColoring D n hwidth
 
 def planarCentreExponent
     {t : ℝ}
