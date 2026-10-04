@@ -226,9 +226,17 @@ theorem exists_localDirectionCycle
     simp
   · dsimp [rays]
     exact Finset.sort_nodup _ _
-  · have hpair : rays.Pairwise (fun a b : OtherVertex i => a ≤ b) := by
+  · have hpair :
+        rays.Pairwise
+          (fun a b : OtherVertex i =>
+            @LE.le (OtherVertex i)
+              (D.localDirectionOrder i).toLE a b) := by
       dsimp [rays]
-      exact Finset.pairwise_sort _ _
+      exact Finset.pairwise_sort
+        (s := (Finset.univ : Finset (OtherVertex i)))
+        (r := fun a b : OtherVertex i =>
+          @LE.le (OtherVertex i)
+            (D.localDirectionOrder i).toLE a b)
     apply hpair.imp
     intro a b hab
     exact D.localDirectionValue_le_of_order_le i hab
@@ -270,9 +278,7 @@ theorem mem_incidentBands_iff_exists_local_floor
       simpa [localDirectionValue, j, hnwi] using hf
   · rintro ⟨j, hjfloor⟩
     by_cases hji : j.1 < i
-    · left
-      refine ⟨j.1, hji, ?_, ?_⟩
-      have hx0 := D.nonnegative hji
+    · have hx0 := D.nonnegative hji
       have hlo := Nat.floor_le hx0
       have hhi := Nat.lt_floor_add_one (D.value j.1 i)
       have hloc :
@@ -283,13 +289,10 @@ theorem mem_incidentBands_iff_exists_local_floor
           ((Nat.floor (D.value j.1 i) : ℕ) : ℝ) = (c.val : ℝ) := by
         exact_mod_cast hjfloor
       rw [hcast] at hlo hhi
-      · exact hlo
-      · exact hhi
+      exact Or.inl ⟨j.1, hji, hlo, hhi⟩
     · have hij : i < j.1 := by
         have hle : i ≤ j.1 := le_of_not_gt hji
         exact lt_of_le_of_ne hle j.2.symm
-      right
-      refine ⟨j.1, hij, ?_, ?_⟩
       have hx0 := D.nonnegative hij
       have hlo := Nat.floor_le hx0
       have hhi := Nat.lt_floor_add_one (D.value i j.1)
@@ -301,8 +304,7 @@ theorem mem_incidentBands_iff_exists_local_floor
           ((Nat.floor (D.value i j.1) : ℕ) : ℝ) = (c.val : ℝ) := by
         exact_mod_cast hjfloor
       rw [hcast] at hlo hhi
-      · exact hlo
-      · exact hhi
+      exact Or.inr ⟨j.1, hij, hlo, hhi⟩
 
 /-- The natural floors appearing in a complete local direction cycle are
 exactly the values of the incident Fin k band set. -/
