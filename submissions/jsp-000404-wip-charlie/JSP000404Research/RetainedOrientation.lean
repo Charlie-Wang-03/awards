@@ -75,6 +75,7 @@ theorem common_forward_colour_not_forbidden
     c ∉ residualForbidden C u v := by
   classical
   intro hforbid
+  unfold residualForbidden at hforbid
   rw [Finset.mem_union] at hforbid
   rcases hforbid with hincu | houtv
   · exact Finset.disjoint_left.mp
