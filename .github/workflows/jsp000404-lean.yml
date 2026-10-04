@@ -67,6 +67,7 @@ jobs:
           lake build JSP000404Research.LocalZeroFloorMass
           lake build JSP000404Research.ZeroFloorBlockMass
           lake build JSP000404Research.FourCycleBandCloseness
+          lake build JSP000404Research.FourCycleOwnerChoiceRigidity
 
       - name: Check ordered projection foundations
         working-directory: submissions/jsp-000404-wip-charlie
