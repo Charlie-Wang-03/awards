@@ -188,7 +188,9 @@ theorem totalDyadicProfileLoss_eq_oneLayerLossWeight
   apply Finset.sum_congr rfl
   intro v _
   by_cases hloss : k v = nu v + 1
-  · simp [dyadicProfileLoss, hloss, pow_succ]
+  · simp only [if_pos hloss]
+    exact dyadicProfileLoss_eq_of_exact_one_loss
+      k nu v hloss
   · have hle : k v ≤ nu v := by
       have h := hone v
       omega
