@@ -136,6 +136,7 @@ theorem head_le_getLastD_of_pairwise
   | cons b bs =>
       have hmem :
           (b :: bs).getLastD a ∈ b :: bs := by
+        rw [List.getLastD_cons]
         exact List.getLastD_mem_cons
       exact
         (List.pairwise_cons.mp hsorted).1
@@ -172,7 +173,7 @@ theorem interior_gapExponent_add_occupied_le_span
         ih b hb0 htail
       have hlastEq :
           (b :: bs).getLastD a = bs.getLastD b := by
-        cases bs <;> simp
+        rw [List.getLastD_cons]
       have hAB :
           Nat.floor a ≤ Nat.floor b :=
         Nat.floor_mono hab
@@ -214,7 +215,6 @@ theorem interior_gapExponent_add_occupied_le_span
               (occupiedNatBands (b :: bs)).card + 1 := by
           rw [occupiedNatBands_cons,
               Finset.card_insert_of_notMem hnotmem]
-          omega
         have hgap :
             excess (Nat.floor (b - a)) + 1 ≤
               Nat.floor b - Nat.floor a :=
@@ -230,7 +230,7 @@ theorem interior_gapExponent_add_occupied_le_span
                 (successiveDiffsFrom b bs)).sum +
                 (occupiedNatBands (b :: bs)).card ≤
               Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
-          simpa [listExponent, List.map_map, Function.comp_def] using hih
+          simpa only [listExponent, List.map_map] using hih
         simp only [successiveDiffsFrom, List.map_cons,
           listExponent, List.sum_cons]
         rw [hbands, hlastEq]
