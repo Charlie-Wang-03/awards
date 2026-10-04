@@ -65,6 +65,7 @@ theorem tailCount_le_iff_loss_le_surplus
     tailCount k r ≤ tailCount nu r ↔
       (layerLossSet k nu r).card ≤
         (layerSurplusSet k nu r).card := by
+  classical
   simpa [layerLossSet, layerSurplusSet, aboveSet, tailCount] using
     (Finset.card_sdiff_le_card_sdiff_iff
       (s := aboveSet k r) (t := aboveSet nu r))
@@ -94,7 +95,7 @@ theorem mem_layerSurplusSet_iff
     v ∈ layerSurplusSet k nu r ↔
       k v ≤ r ∧ r < nu v := by
   classical
-  simp [layerSurplusSet, aboveSet]
+  simpa [layerSurplusSet, aboveSet, and_comm]
 
 /-- A threshold-wise injection from exact one-layer losses to surplus vertices
 is sufficient for tail domination. -/
