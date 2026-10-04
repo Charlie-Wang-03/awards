@@ -192,7 +192,7 @@ theorem interior_gapExponent_add_occupied_le_span
           listExponent, List.map_cons, List.sum_cons]
         rw [hq0, hlastEq]
         simp [excess, hEq] at hih ⊢
-        exact hih
+        simpa only [listExponent, List.map_map] using hih
       · have hLt :
             Nat.floor a < Nat.floor b := by
           omega
