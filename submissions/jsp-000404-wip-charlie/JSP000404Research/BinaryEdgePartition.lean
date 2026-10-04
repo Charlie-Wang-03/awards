@@ -89,7 +89,8 @@ theorem expected_weight_le
   intro v _
   apply Nat.pow_le_pow_right
   · norm_num
-  · omega
+  · have hv := hactive v
+    omega
 
 /-- Local incidence bounds imply the Kraft inequality. -/
 theorem capacity_of_active_le
@@ -113,7 +114,10 @@ theorem cluster_capacity_of_active_le
         ∑ v, 2 ^ (k - ell v) := by
           apply Finset.sum_congr rfl
           intro v _
-          rw [hell v, Nat.sub_sub_cancel (hexponent v)]
+          rw [hell v]
+          congr 1
+          have hv := hexponent v
+          omega
     _ ≤ 2 ^ k := capacity_of_active_le C ell hactive
 
 /-- Any proper partition of all complete-graph edges into `k` binary
@@ -127,7 +131,7 @@ theorem card_le_two_pow
       Fintype.card V ≤ ∑ v, 2 ^ (k - (active C v).card) := by
     simpa using
       (Finset.sum_le_sum (s := (Finset.univ : Finset V))
-        (fun v _ => Nat.one_le_pow _ _))
+        (fun v _ => by positivity))
   exact hone.trans hcap
 
 #print axioms separates
