@@ -102,7 +102,8 @@ noncomputable def binaryPartitionOfResidualSeparated
     have ht :
         retainedBit C u (target u v) ≠ retainedBit C v (target u v) := by
       unfold target
-      simp only [dif_pos ⟨huv, hres⟩]
+      have hcond : u < v ∧ IsResidual C u v := ⟨huv, hres⟩
+      rw [dif_pos hcond]
       exact Classical.choose_spec
         (exists_retained_separator_of_retainedSeparated
           C (hsep huv hres))
