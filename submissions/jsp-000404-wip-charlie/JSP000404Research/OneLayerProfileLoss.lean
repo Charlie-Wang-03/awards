@@ -68,7 +68,7 @@ theorem tailCount_le_iff_loss_le_surplus
   classical
   simpa [layerLossSet, layerSurplusSet, aboveSet, tailCount] using
     (Finset.card_sdiff_le_card_sdiff_iff
-      (s := aboveSet k r) (t := aboveSet nu r))
+      (s := aboveSet k r) (t := aboveSet nu r)).symm
 
 theorem mem_layerLossSet_iff_exact_one_loss
     {V : Type*} [Fintype V]
