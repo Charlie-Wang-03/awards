@@ -1,5 +1,6 @@
 
 import JSP000404Research.CyclicProjectiveGaps
+import JSP000404Research.CyclicRealGapsCore
 import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Data.Finset.Card
@@ -352,13 +353,6 @@ theorem internal_gap_exponent_le_skipped
         skippedBandCountFrom]
       unfold listExponent at hrec
       omega
-
-/-- Cyclic real gaps at circumference t. -/
-def cyclicRealGaps (t : ℝ) : List ℝ → List ℝ
-  | [] => []
-  | a :: xs =>
-      successiveDiffsFrom a xs ++
-        [t + a - xs.getLastD a]
 
 def cyclicBandQuotients
     (t : ℝ) (angles : List ℝ) : List ℕ :=
