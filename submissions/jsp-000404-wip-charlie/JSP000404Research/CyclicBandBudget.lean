@@ -261,7 +261,7 @@ theorem excess_floor_sub_le_skipped
       linarith
     have hzero :
         Nat.floor (y - x) = 0 :=
-      Nat.floor_eq_zero.mpr ⟨hgap0, hgapLt⟩
+      Nat.floor_eq_zero.mpr hgapLt
     simp [excess, hzero]
 
 /-- Cyclic wrap-gap excess is paid by the bands skipped from the final
