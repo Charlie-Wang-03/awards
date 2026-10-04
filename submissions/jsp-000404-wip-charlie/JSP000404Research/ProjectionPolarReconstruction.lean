@@ -113,7 +113,8 @@ theorem planeToComplex_smul_rayDirection
       (rho : ℂ) *
         Complex.exp (theta * Complex.I) := by
   rw [map_smul, planeToComplex_rayDirection,
-      Complex.exp_mul_I]
+      Complex.exp_mul_I, Complex.real_smul,
+      Complex.ofReal_cos, Complex.ofReal_sin]
   ring
 
 /-- Exact planar reconstruction from the lifted polar data. -/
