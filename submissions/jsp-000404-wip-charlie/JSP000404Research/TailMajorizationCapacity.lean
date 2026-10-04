@@ -48,7 +48,7 @@ def tailCount
 theorem two_pow_eq_one_add_layers (a : ℕ) :
     2 ^ a = 1 + ∑ r ∈ Finset.range a, 2 ^ r := by
   have h := geom_sum_mul_add (R := ℕ) 1 a
-  simpa [Nat.one_add_one_eq_two, Nat.mul_one, add_comm] using h.symm
+  simpa [one_add_one_eq_two, Nat.mul_one, add_comm] using h.symm
 
 theorem layers_to_bound
     {a n : ℕ} (ha : a ≤ n) :
