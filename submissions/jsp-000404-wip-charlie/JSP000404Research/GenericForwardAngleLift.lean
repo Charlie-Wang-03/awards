@@ -127,6 +127,8 @@ theorem genericDirectionData_sendov_value
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i j : ProjectionOrdered V) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     (genericDirectionData_sendov
       hp hcap ht hlam).value i j
       =
@@ -135,6 +137,8 @@ theorem genericDirectionData_sendov_value
         (p j.toOriginal - p i.toOriginal)
       -
       projectionAngleBase (genericProjectionSlope p)) / lam := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
   rfl
 
 #print axioms angleCap_reindexed
