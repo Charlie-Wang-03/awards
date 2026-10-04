@@ -85,9 +85,7 @@ theorem mem_layerLossSet_iff_exact_one_loss
     have hk := hone v
     constructor <;> omega
   · rintro ⟨hk, hnu⟩
-    constructor
-    · simpa [aboveSet, layerLossSet, hk, hnu]
-    · simpa [aboveSet, layerLossSet, hk, hnu]
+    simp [layerLossSet, aboveSet, hk, hnu]
 
 theorem mem_layerSurplusSet_iff
     {V : Type*} [Fintype V]
@@ -97,7 +95,6 @@ theorem mem_layerSurplusSet_iff
       k v ≤ r ∧ r < nu v := by
   classical
   simp [layerSurplusSet, aboveSet]
-  omega
 
 /-- A threshold-wise injection from exact one-layer losses to surplus vertices
 is sufficient for tail domination. -/
