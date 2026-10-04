@@ -43,10 +43,19 @@ theorem fullBitCode_injective
     Function.Injective (fullBitCode C) := by
   intro u v huvbits
   by_contra huv
-  obtain ⟨c, _hcu, _hcv, hbit⟩ := separates C u v huv
-  have heq : bit C u c = bit C v c := by
-    exact congrFun huvbits c
-  exact hbit heq
+  rcases lt_or_gt_of_ne huv with huvlt | hvult
+  · have hne := edgeColor_bit_ne C huvlt
+    have heq :
+        bit C u (C.color u v) =
+          bit C v (C.color u v) := by
+      exact congrFun huvbits (C.color u v)
+    exact hne heq
+  · have hne := edgeColor_bit_ne C hvult
+    have heq :
+        bit C v (C.color v u) =
+          bit C u (C.color v u) := by
+      exact (congrFun huvbits (C.color v u)).symm
+    exact hne heq
 
 /-- Agreement on all retained bits plus agreement on the residual bit forces
 the vertices to be equal. -/
@@ -67,6 +76,7 @@ theorem eq_of_retainedBits_eq_of_residualBit_eq
       apply Fin.ext
       rfl
     have hd := hret d
+    change bit C u c = bit C v c
     simpa [retainedBit, hcast] using hd
   · have hcval : c.val = n := by
       have hlt := c.isLt
@@ -74,6 +84,7 @@ theorem eq_of_retainedBits_eq_of_residualBit_eq
     have hcoord : c = residualCoord n := by
       apply Fin.ext
       simpa [residualCoord] using hcval
+    change bit C u c = bit C v c
     simpa [hcoord] using hres
 
 /-- In a fixed retained-code fibre, two vertices distinct from the same base
