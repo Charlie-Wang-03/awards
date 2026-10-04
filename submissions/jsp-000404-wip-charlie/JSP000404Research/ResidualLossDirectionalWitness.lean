@@ -1,5 +1,4 @@
 import JSP000404Research.ResidualProjectionLoss
-import JSP000404Research.ResidualSameCodeOrientation
 import Mathlib.Tactic
 
 /-!
