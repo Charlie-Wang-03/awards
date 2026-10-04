@@ -22,9 +22,9 @@ open OrderedEdgeColoring
 theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -34,9 +34,18 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {a b c d : ProjectionOrdered V}
-    (hab : a < b)
-    (hbc : b < c)
-    (hcd : c < d)
+    (hab :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      a < b)
+    (hbc :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      b < c)
+    (hcd :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      c < d)
     (hbLoss :
       b ∈ projectedLossVertices
         (planarStandardResidualColoring
