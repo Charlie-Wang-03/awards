@@ -227,16 +227,11 @@ theorem exists_localDirectionCycle
   · dsimp [rays]
     exact Finset.sort_nodup _ _
   · have hpair :
-        rays.Pairwise
-          (fun a b : OtherVertex i =>
-            @LE.le (OtherVertex i)
-              (D.localDirectionOrder i).toLE a b) := by
+        rays.Pairwise (fun a b : OtherVertex i => a ≤ b) := by
       dsimp [rays]
       exact Finset.pairwise_sort
         (s := (Finset.univ : Finset (OtherVertex i)))
-        (r := fun a b : OtherVertex i =>
-          @LE.le (OtherVertex i)
-            (D.localDirectionOrder i).toLE a b)
+        (r := fun a b : OtherVertex i => a ≤ b)
     apply hpair.imp
     intro a b hab
     exact D.localDirectionValue_le_of_order_le i hab
