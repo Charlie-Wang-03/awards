@@ -1,4 +1,5 @@
-import JSP000404Research.LinearBandGapCapacity
+import JSP000404Research.CyclicProjectiveGaps
+import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Tactic
 
 /-!
@@ -11,6 +12,23 @@ difference.
 -/
 
 namespace JSP000404Research
+
+private theorem sameFloor_natFloor_sub_eq_zero
+    {a b : ℝ}
+    (ha0 : 0 ≤ a)
+    (hab : a ≤ b)
+    (hfloor : Nat.floor a = Nat.floor b) :
+    Nat.floor (b - a) = 0 := by
+  have hgap0 : 0 ≤ b - a := sub_nonneg.mpr hab
+  have hfa : ((Nat.floor a : ℕ) : ℝ) ≤ a :=
+    Nat.floor_le ha0
+  have hb0 : 0 ≤ b := ha0.trans hab
+  have hfb : b < ((Nat.floor b : ℕ) : ℝ) + 1 :=
+    Nat.lt_floor_add_one b
+  have hgaplt : b - a < 1 := by
+    rw [← hfloor] at hfb
+    linarith
+  exact Nat.floor_eq_zero.mpr ⟨hgap0,hgaplt⟩
 
 theorem floor_eq_of_between_floor_eq
     {a b x : ℝ}
@@ -39,7 +57,7 @@ theorem successiveDiffsFrom_all_floor_zero_of_same_floor
       subst d
       have hab : a ≤ b :=
         (List.pairwise_cons.mp hsorted).1 b (by simp)
-      exact natFloor_sub_eq_zero_of_floor_eq ha0 hab hfloor
+      exact sameFloor_natFloor_sub_eq_zero ha0 hab hfloor
   | cons x xs ih =>
       have hpair := List.pairwise_cons.mp hsorted
       have hax : a ≤ x := hpair.1 x (by simp)
@@ -54,7 +72,7 @@ theorem successiveDiffsFrom_all_floor_zero_of_same_floor
         floor_eq_of_between_floor_eq hax hxb hfloor
       have hhead :
           Nat.floor (x - a) = 0 :=
-        natFloor_sub_eq_zero_of_floor_eq ha0 hax
+        sameFloor_natFloor_sub_eq_zero ha0 hax
           hfloorX.symm
       have hfloorXB :
           Nat.floor x = Nat.floor b := by
