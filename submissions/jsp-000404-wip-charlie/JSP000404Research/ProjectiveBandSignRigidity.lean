@@ -31,7 +31,7 @@ namespace JSP000404Research
 
 open Real
 
-def normalizedRayTheta
+noncomputable def normalizedRayTheta
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (t : ℝ) (i : V) (j : OtherVertex i) : ℝ :=
@@ -49,7 +49,6 @@ theorem normalizedRayTheta_eq_div_lam
   unfold normalizedRayTheta
   rw [hlam]
   field_simp [ne_of_gt ht, Real.pi_ne_zero]
-  ring
 
 theorem normalizedRayTheta_nonneg
     {V : Type*} {p : V → Plane}
@@ -58,7 +57,9 @@ theorem normalizedRayTheta_nonneg
     (i : V) (j : OtherVertex i) :
     0 ≤ normalizedRayTheta hp t i j := by
   unfold normalizedRayTheta
-  positivity
+  exact div_nonneg
+    (mul_nonneg ht (rayThetaAt_nonneg hp i j))
+    Real.pi_pos.le
 
 theorem normalizedRayTheta_lt_t
     {V : Type*} {p : V → Plane}
@@ -67,9 +68,9 @@ theorem normalizedRayTheta_lt_t
     (i : V) (j : OtherVertex i) :
     normalizedRayTheta hp t i j < t := by
   unfold normalizedRayTheta
+  rw [div_lt_iff₀ Real.pi_pos]
   have hj := rayThetaAt_lt_pi hp i j
-  have hpi := Real.pi_pos
-  nlinarith [rayThetaAt_nonneg hp i j]
+  nlinarith
 
 /-- Two normalized coordinates in the same unit band differ by less than one. -/
 theorem abs_sub_lt_one_of_same_unit_band
