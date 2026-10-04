@@ -1,4 +1,5 @@
-import JSP000404Research.PlanarStandardResidualBudget
+import JSP000404Research.ProjectionOrderedVertices
+import JSP000404Research.CentreExponentBounds
 
 /-!
 # Lightweight planar centre exponent family
