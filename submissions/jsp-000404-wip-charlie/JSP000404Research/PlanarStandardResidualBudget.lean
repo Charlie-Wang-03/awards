@@ -64,8 +64,11 @@ theorem planarStandardResidual_active_card_le_oneLayer
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle
-      (reindexedPoint_injective hp) i) :
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      CentreProjectiveCycle
+        (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
@@ -81,6 +84,7 @@ theorem planarStandardResidual_active_card_le_oneLayer
     n - centreExponent C t + 1 := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
+  dsimp
   let htpos : 0 < t :=
     planarScalePos hn hdelta0 ht
   let D :=
@@ -116,9 +120,12 @@ theorem planarStandardResidual_oneLayer_family
     (hdelta1 : delta < 1)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
-    (C : ∀ i : ProjectionOrdered V,
-      CentreProjectiveCycle
-        (reindexedPoint_injective hp) i) :
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle
+          (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
