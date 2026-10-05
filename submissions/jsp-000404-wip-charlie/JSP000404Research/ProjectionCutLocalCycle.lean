@@ -83,6 +83,7 @@ theorem filter_lt_append_filter_ge_eq_of_pairwise
 namespace ProjectionOrdered
 
 open Real
+open DirectionData
 
 section
 
