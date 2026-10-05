@@ -75,7 +75,8 @@ theorem projectedLoss_ordered_pattern3_reduce_to_adjacent
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R, exponent, planarCentreExponent] using
+    simpa [R, exponent, planarCentreExponent,
+      planarStandardResidualColoring] using
       (planarStandardResidual_active_card_le_oneLayer
         hp hcap hn1 hdelta0 hdelta1 ht hlam q (Cfam q))
 
