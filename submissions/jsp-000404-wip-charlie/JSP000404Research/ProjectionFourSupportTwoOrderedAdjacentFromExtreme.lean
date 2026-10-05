@@ -260,32 +260,38 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
         exact four_with_global_max_has_sorted_permutation_light
           hvs1 hvs2 hvs3 hs12 hs13 hs23 hmax
     · rcases hs1 with hmin | hmax
-      · apply sorted_to_S
+      · exact sorted_to_S
+          (o := s₁) (x := v) (y := s₂) (z := s₃)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_min_has_sorted_permutation_light
-          hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmin
-      · apply sorted_to_S
+          (four_with_global_min_has_sorted_permutation_light
+            hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmin)
+      · exact sorted_to_S
+          (o := s₁) (x := v) (y := s₂) (z := s₃)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_max_has_sorted_permutation_light
-          hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmax
+          (four_with_global_max_has_sorted_permutation_light
+            hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmax)
     · rcases hs2 with hmin | hmax
-      · apply sorted_to_S
+      · exact sorted_to_S
+          (o := s₂) (x := v) (y := s₁) (z := s₃)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_min_has_sorted_permutation_light
-          hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmin
-      · apply sorted_to_S
+          (four_with_global_min_has_sorted_permutation_light
+            hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmin)
+      · exact sorted_to_S
+          (o := s₂) (x := v) (y := s₁) (z := s₃)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_max_has_sorted_permutation_light
-          hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmax
+          (four_with_global_max_has_sorted_permutation_light
+            hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmax)
     · rcases hs3 with hmin | hmax
-      · apply sorted_to_S
+      · exact sorted_to_S
+          (o := s₃) (x := v) (y := s₁) (z := s₂)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_min_has_sorted_permutation_light
-          hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin
-      · apply sorted_to_S
+          (four_with_global_min_has_sorted_permutation_light
+            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin)
+      · exact sorted_to_S
+          (o := s₃) (x := v) (y := s₁) (z := s₂)
           (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
-        exact four_with_global_max_has_sorted_permutation_light
-          hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax
+          (four_with_global_max_has_sorted_permutation_light
+            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax)
 
   obtain ⟨a,b,c,d,hset,hab,hbc,hcd⟩ := sorted_of_extreme
   have haS : a ∈ S := by rw [← hset]; simp
