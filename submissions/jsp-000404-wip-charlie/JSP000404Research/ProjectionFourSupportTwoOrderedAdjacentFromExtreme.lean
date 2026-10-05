@@ -160,14 +160,30 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
         (planarCentreExponent (t := t) hp Cfam))
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hs1Second : centreExponent (Cfam s₁) t = n - 2)
-    (hs2Second : centreExponent (Cfam s₂) t = n - 2)
-    (hs3Second : centreExponent (Cfam s₃) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hs1Support : positiveSupport (centreQuotient (Cfam s₁) t) = 2)
-    (hs2Support : positiveSupport (centreQuotient (Cfam s₂) t) = 2)
-    (hs3Support : positiveSupport (centreQuotient (Cfam s₃) t) = 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hs1Second :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      centreExponent (Cfam s₁) t = n - 2)
+    (hs2Second :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      centreExponent (Cfam s₂) t = n - 2)
+    (hs3Second :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      centreExponent (Cfam s₃) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hs1Support :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₁) t) = 2)
+    (hs2Support :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₂) t) = 2)
+    (hs3Support :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₃) t) = 2)
     (hextreme :
       letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       FourPointGlobalExtreme v s₁ s₂ s₃) :
@@ -218,39 +234,58 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
     · exact hs2Support
     · exact hs3Support
 
+  have sorted_to_S
+      {o x y z : ProjectionOrdered V}
+      (hS : ({o,x,y,z} : Finset (ProjectionOrdered V)) = S)
+      (h :
+        ∃ a b c d : ProjectionOrdered V,
+          ({a,b,c,d} : Finset (ProjectionOrdered V)) = {o,x,y,z} ∧
+          a < b ∧ b < c ∧ c < d) :
+      ∃ a b c d : ProjectionOrdered V,
+        ({a,b,c,d} : Finset (ProjectionOrdered V)) = S ∧
+        a < b ∧ b < c ∧ c < d := by
+    obtain ⟨a,b,c,d,hset,hab,hbc,hcd⟩ := h
+    exact ⟨a,b,c,d,hset.trans hS,hab,hbc,hcd⟩
+
   have sorted_of_extreme :
       ∃ a b c d : ProjectionOrdered V,
         ({a,b,c,d} : Finset (ProjectionOrdered V)) = S ∧
         a < b ∧ b < c ∧ c < d := by
     rcases hextreme with hv | hs1 | hs2 | hs3
     · rcases hv with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation_light
-            hvs1 hvs2 hvs3 hs12 hs13 hs23 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation_light
-            hvs1 hvs2 hvs3 hs12 hs13 hs23 hmax)
+      · apply sorted_to_S (by rfl)
+        exact four_with_global_min_has_sorted_permutation_light
+          hvs1 hvs2 hvs3 hs12 hs13 hs23 hmin
+      · apply sorted_to_S (by rfl)
+        exact four_with_global_max_has_sorted_permutation_light
+          hvs1 hvs2 hvs3 hs12 hs13 hs23 hmax
     · rcases hs1 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation_light
-            hvs1.symm hs12 hs13 hvs2 hs23 hvs3 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation_light
-            hvs1.symm hs12 hs13 hvs2 hs23 hvs3 hmax)
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_min_has_sorted_permutation_light
+          hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmin
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_max_has_sorted_permutation_light
+          hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmax
     · rcases hs2 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation_light
-            hvs2.symm hs12.symm hs23 hvs1 hs13 hvs3 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation_light
-            hvs2.symm hs12.symm hs23 hvs1 hs13 hvs3 hmax)
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_min_has_sorted_permutation_light
+          hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmin
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_max_has_sorted_permutation_light
+          hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmax
     · rcases hs3 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation_light
-            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation_light
-            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax)
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_min_has_sorted_permutation_light
+          hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin
+      · apply sorted_to_S
+          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+        exact four_with_global_max_has_sorted_permutation_light
+          hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax
 
   obtain ⟨a,b,c,d,hset,hab,hbc,hcd⟩ := sorted_of_extreme
   have haS : a ∈ S := by rw [← hset]; simp
