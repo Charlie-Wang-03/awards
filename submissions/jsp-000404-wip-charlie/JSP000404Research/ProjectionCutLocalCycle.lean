@@ -97,9 +97,36 @@ abbrev ReindexedInjective :
     Function.Injective (ReindexedPoint (p := p)) :=
   reindexedPoint_injective hp
 
+/-- Centre cycle with the generic projection order fixed explicitly in its
+type, avoiding an uninferable section-level LinearOrder instance. -/
+abbrev ProjectionCentreCycle
+    (i : ProjectionOrdered V) : Type :=
+  @CentreProjectiveCycle
+    (ProjectionOrdered V)
+    (projectionLinearOrder hp)
+    inferInstance
+    (reindexedPoint p)
+    (reindexedPoint_injective hp)
+    i
+
+/-- Local direction cycle with the same explicit projection order. -/
+abbrev ProjectionLocalDirectionCycle
+    {lam t : ℝ}
+    (hcap : AngleCap p lam)
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (i : ProjectionOrdered V) : Type :=
+  @DirectionData.LocalDirectionCycle
+    (ProjectionOrdered V)
+    (projectionLinearOrder hp)
+    inferInstance
+    t
+    (genericDirectionData_sendov hp hcap ht hlam)
+    i
+
 def projectionCutLowRays
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     List (OtherVertex i) :=
   C.rays.filter fun j =>
     decide
@@ -108,7 +135,7 @@ def projectionCutLowRays
 
 def projectionCutHighRays
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     List (OtherVertex i) :=
   C.rays.filter fun j =>
     decide
@@ -117,7 +144,7 @@ def projectionCutHighRays
 
 theorem projectionCut_low_append_high
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     projectionCutLowRays hp i C ++
       projectionCutHighRays hp i C =
     C.rays := by
@@ -129,7 +156,7 @@ theorem projectionCut_low_append_high
 
 theorem mem_projectionCutLowRays_iff
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C : ProjectionCentreCycle hp i)
     (j : OtherVertex i) :
     j ∈ projectionCutLowRays hp i C ↔
       j ∈ C.rays ∧
@@ -139,7 +166,7 @@ theorem mem_projectionCutLowRays_iff
 
 theorem mem_projectionCutHighRays_iff
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C : ProjectionCentreCycle hp i)
     (j : OtherVertex i) :
     j ∈ projectionCutHighRays hp i C ↔
       j ∈ C.rays ∧
@@ -153,7 +180,7 @@ theorem projectionCutHigh_local_pairwise
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     (projectionCutHighRays hp i C).Pairwise
       (fun a b =>
         (genericDirectionData_sendov hp hcap ht hlam).localDirectionValue i a ≤
@@ -192,7 +219,7 @@ theorem projectionCutLow_local_pairwise
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     (projectionCutLowRays hp i C).Pairwise
       (fun a b =>
         (genericDirectionData_sendov hp hcap ht hlam).localDirectionValue i a ≤
@@ -231,7 +258,7 @@ theorem projectionCut_cross_local_le
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C : ProjectionCentreCycle hp i)
     {a b : OtherVertex i}
     (ha : a ∈ projectionCutHighRays hp i C)
     (hb : b ∈ projectionCutLowRays hp i C) :
@@ -267,7 +294,7 @@ theorem projectionCut_rotated_local_pairwise
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     (projectionCutHighRays hp i C ++
       projectionCutLowRays hp i C).Pairwise
       (fun a b =>
@@ -290,9 +317,8 @@ noncomputable def projectionCutLocalCycle
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
-    LocalDirectionCycle
-      (genericDirectionData_sendov hp hcap ht hlam) i := by
+    (C : ProjectionCentreCycle hp i) :
+    ProjectionLocalDirectionCycle hp hcap ht hlam i := by
   let low := projectionCutLowRays hp i C
   let high := projectionCutHighRays hp i C
   have hcanon : low ++ high = C.rays := by
@@ -333,21 +359,21 @@ noncomputable def projectionCutLocalCycle
 
 def projectionCutLowAngles
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     List ℝ :=
   (projectionCutLowRays hp i C).map
     (rayThetaAt (reindexedPoint_injective hp) i)
 
 def projectionCutHighAngles
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     List ℝ :=
   (projectionCutHighRays hp i C).map
     (rayThetaAt (reindexedPoint_injective hp) i)
 
 theorem centreAngles_eq_cutLow_append_cutHigh
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     C.angles =
       projectionCutLowAngles hp i C ++
         projectionCutHighAngles hp i C := by
@@ -361,7 +387,7 @@ theorem projectionCutLocalCycle_values_eq_affine_unwrapped
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     (projectionCutLocalCycle hp hcap ht hlam i C).values
       =
     ((projectionCutHighAngles hp i C).map
@@ -408,7 +434,7 @@ theorem projectionCutLocalCycle_exponent_eq_centreExponent
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C : ProjectionCentreCycle hp i) :
     (projectionCutLocalCycle hp hcap ht hlam i C).exponent =
       centreExponent C t := by
   let low := projectionCutLowAngles hp i C
