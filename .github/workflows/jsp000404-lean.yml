@@ -102,8 +102,12 @@ jobs:
           lake build JSP000404Research.FourSupportTwoOrderedAdjacent
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacentCore
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
-          lake build JSP000404Research.ProjectionInteriorSourceStaircase
           lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
+
+      - name: Check interior-source staircase frontier
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ProjectionInteriorSourceStaircase
 
       - name: Check isolated support-two small-pair bridge
         working-directory: submissions/jsp-000404-wip-charlie
