@@ -95,6 +95,11 @@ jobs:
           lake build JSP000404Research.ResidualFreeNeighbour
           lake build JSP000404Research.ResidualCommonInactive
 
+      - name: Check ordered-adjacent terminal from global extreme
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ProjectionFourSupportTwoOrderedAdjacentFromExtreme
+
       - name: Check ordered retained-angle reduction
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
