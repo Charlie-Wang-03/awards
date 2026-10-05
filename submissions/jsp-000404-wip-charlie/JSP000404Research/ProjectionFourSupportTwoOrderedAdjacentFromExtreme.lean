@@ -262,34 +262,52 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
     · rcases hs1 with hmin | hmax
       · exact sorted_to_S
           (o := s₁) (x := v) (y := s₂) (z := s₃)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_min_has_sorted_permutation_light
             hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmin)
       · exact sorted_to_S
           (o := s₁) (x := v) (y := s₂) (z := s₃)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_max_has_sorted_permutation_light
             hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmax)
     · rcases hs2 with hmin | hmax
       · exact sorted_to_S
           (o := s₂) (x := v) (y := s₁) (z := s₃)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_min_has_sorted_permutation_light
             hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmin)
       · exact sorted_to_S
           (o := s₂) (x := v) (y := s₁) (z := s₃)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_max_has_sorted_permutation_light
             hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmax)
     · rcases hs3 with hmin | hmax
       · exact sorted_to_S
           (o := s₃) (x := v) (y := s₁) (z := s₂)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_min_has_sorted_permutation_light
             hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin)
       · exact sorted_to_S
           (o := s₃) (x := v) (y := s₁) (z := s₂)
-          (by ext q; simp [S, or_assoc, or_left_comm, or_comm])
+          (by
+            ext q
+            simp only [S, Finset.mem_insert, Finset.mem_singleton]
+            tauto)
           (four_with_global_max_has_sorted_permutation_light
             hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax)
 
