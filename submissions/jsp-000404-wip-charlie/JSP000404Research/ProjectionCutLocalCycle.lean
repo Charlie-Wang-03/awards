@@ -90,10 +90,6 @@ variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-local instance projectionOrder :
-    LinearOrder (ProjectionOrdered V) :=
-  projectionLinearOrder hp
-
 abbrev ReindexedPoint :=
   reindexedPoint p
 
