@@ -44,9 +44,16 @@ variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-local instance projectionOrder :
-    LinearOrder (ProjectionOrdered V) :=
-  projectionLinearOrder hp
+private theorem planarScalePos
+    {delta t : ℝ} {n : ℕ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) :
+    0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by
+    exact_mod_cast hn
+  linarith
 
 theorem planarStandardResidual_active_card_le_oneLayer
     {lam t delta : ℝ} {n : ℕ}
@@ -59,9 +66,12 @@ theorem planarStandardResidual_active_card_le_oneLayer
     (i : ProjectionOrdered V)
     (C : CentreProjectiveCycle
       (reindexedPoint_injective hp) i) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let htpos : 0 < t :=
+      planarScalePos hn hdelta0 ht
     let D :=
-      genericDirectionData_sendov hp hcap
-        (sendov_scale_pos hn hdelta0 ht) hlam
+      genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
       rw [ht]
       exact_mod_cast (show
@@ -69,8 +79,10 @@ theorem planarStandardResidual_active_card_le_oneLayer
     (active (standardResidualColoring D n hwidth) i).card
       ≤
     n - centreExponent C t + 1 := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
   let htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    planarScalePos hn hdelta0 ht
   let D :=
     genericDirectionData_sendov hp hcap htpos hlam
   have hwidthR : t < (n : ℝ) + 1 := by
@@ -107,8 +119,10 @@ theorem planarStandardResidual_oneLayer_family
     (C : ∀ i : ProjectionOrdered V,
       CentreProjectiveCycle
         (reindexedPoint_injective hp) i) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      planarScalePos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
@@ -119,6 +133,8 @@ theorem planarStandardResidual_oneLayer_family
       (active (standardResidualColoring D n hwidth) i).card
         ≤
       n - centreExponent (C i) t + 1 := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
   dsimp
   intro i
   exact planarStandardResidual_active_card_le_oneLayer
