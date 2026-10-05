@@ -105,6 +105,8 @@ theorem mem_incidentBands_iff_exists_local_floor
       rw [hcast] at hlo hhi
       exact Or.inr ⟨j.1, hij, hlo, hhi⟩
 
+namespace LocalDirectionCycle
+
 /-- The natural floors appearing in a complete local direction cycle are
 exactly the values of the incident Fin k band set. -/
 theorem occupiedNatBands_values_eq_incident_val_map
