@@ -435,7 +435,8 @@ theorem projectionCutLocalCycle_values_eq_affine_unwrapped
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   unfold LocalDirectionCycle.values projectionCutLocalCycle
-  simp only [List.map_append, List.map_map]
+  simp only [projectionCutHighAngles, projectionCutLowAngles,
+    List.map_append, List.map_map]
   apply congrArg₂ (· ++ ·)
   · apply List.map_congr_left
     intro j hj
@@ -498,7 +499,7 @@ theorem projectionCutLocalCycle_exponent_eq_centreExponent
     simpa [low, high, unwrapped] using
       projectionCutLocalCycle_values_eq_affine_unwrapped
         hp hcap ht hlam i C
-  unfold LocalDirectionCycle.exponent
+  unfold LocalDirectionCycle.exponent LocalDirectionCycle.gapQuotients
   rw [hvalues]
   rw [linearExponent_affine_eq_projectiveExponent
       (projectionAngleBase (genericProjectionSlope p))
