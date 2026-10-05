@@ -1,5 +1,6 @@
 
 import JSP000404Research.ProjectionCutLocalCycle
+import JSP000404Research.CentreStandardBandBudget
 import JSP000404Research.CentreExponentBounds
 import JSP000404Research.StandardResidual
 import Mathlib.Tactic
@@ -106,16 +107,10 @@ theorem planarStandardResidual_active_card_le_oneLayer
       centreExponent_lt_n C n delta t
         hn hdelta0 hdelta1 ht
     omega
-  have hbudget :
-      L.exponent + (D.incidentBands (n + 1) i).card ≤ n + 1 :=
-    L.exponent_add_incidentBands_card_le hwidthR
-  have hactive :
-      active (standardResidualColoring D n hwidthN) i =
-        D.incidentBands (n + 1) i :=
-    standardResidual_active_eq_incidentBands_succ D n hwidthN i
-  rw [hactive]
-  rw [hagree] at hbudget
-  omega
+  have hbudget :=
+    standardActive_card_le_centreDeficit_add_one_of_local_agreement
+      D L C hwidthR hexp hagree
+  simpa [D, DirectionData.standardResidualColoring] using hbudget
 
 /-- Family form used directly by residual projection modules. -/
 theorem planarStandardResidual_oneLayer_family
