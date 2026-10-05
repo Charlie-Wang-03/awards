@@ -43,7 +43,7 @@ theorem successiveDiffsFrom_append_cons
 
 /-- Last element after appending a nonempty block is the last element of that
 block. -/
-theorem getLastD_append_cons
+theorem gapRay_getLastD_append_cons
     {α : Type*} (d : α) (xs : List α) (b : α) (bs : List α) :
     (xs ++ b :: bs).getLastD d = bs.getLastD b := by
   induction xs generalizing d with
@@ -63,7 +63,7 @@ theorem projectiveGaps_append_cons
           (successiveDiffsFrom b bs ++
             [a + Real.pi - bs.getLastD b]) := by
   rw [projectiveGaps, successiveDiffsFrom_append_cons]
-  rw [getLastD_append_cons a xs b bs]
+  rw [gapRay_getLastD_append_cons a xs b bs]
   simpa [List.append_assoc]
 
 /-- Normalized version of the ordinary cut decomposition. -/
