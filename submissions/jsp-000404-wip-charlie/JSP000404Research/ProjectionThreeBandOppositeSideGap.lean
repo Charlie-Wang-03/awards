@@ -1,5 +1,6 @@
 import JSP000404Research.ProjectionFiveBandDirectionWindow
 import JSP000404Research.ProjectionSupportOneConsecutivePalette
+import JSP000404Research.StandardResidualRetainedBandBounds
 import JSP000404Research.PlanarDirectionBridge
 import Mathlib.Tactic
 
@@ -31,35 +32,6 @@ namespace ProjectionOrdered
 
 open OrderedEdgeColoring
 open DirectionData
-
-theorem standardResidual_retained_edge_exact_band_bounds
-    {V : Type*} [LinearOrder V]
-    {width : ℝ}
-    (D : DirectionData V width)
-    {n : ℕ}
-    (hwidth : width < (n + 1 : ℕ))
-    {u v : V}
-    (huv : u < v)
-    (hret :
-      ((standardResidualColoring D n hwidth).color u v).val < n) :
-    let c :=
-      retainedColor
-        (standardResidualColoring D n hwidth) u v hret
-    (c.val : ℝ) ≤ D.value u v ∧
-      D.value u v < (c.val : ℝ) + 1 := by
-  let R := standardResidualColoring D n hwidth
-  let c : Fin n := retainedColor R u v hret
-  have hfull :
-      R.color u v = c.castSucc := by
-    apply Fin.ext
-    simp [R,c,retainedColor]
-  have hband :=
-    (standardBandColor_eq_iff
-      D (n + 1) (Nat.succ_pos n)
-      (by exact_mod_cast hwidth)
-      huv c.castSucc).1
-      (by simpa [R,standardResidualColoring] using hfull)
-  simpa [c] using hband
 
 theorem opposite_side_three_band_angle_gt_delta
     {V : Type*} [Fintype V]
@@ -213,7 +185,6 @@ theorem opposite_side_three_band_angle_gt_delta
     exact_mod_cast hn3
   nlinarith
 
-#print axioms standardResidual_retained_edge_exact_band_bounds
 #print axioms opposite_side_three_band_angle_gt_delta
 
 end ProjectionOrdered
