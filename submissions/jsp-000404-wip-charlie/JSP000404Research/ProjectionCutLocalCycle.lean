@@ -450,7 +450,7 @@ theorem projectionCutLocalCycle_values_eq_affine_unwrapped
     rw [genericLocalDirectionValue_eq_above_cut
           hp hcap ht hlam i j hjCut]
     unfold affineAngleValue projectionProjectiveCut
-    ring
+    ring_nf
   · apply List.map_congr_left
     intro j hj
     have hjLow :
@@ -463,7 +463,7 @@ theorem projectionCutLocalCycle_values_eq_affine_unwrapped
     rw [genericLocalDirectionValue_eq_below_cut
           hp hcap ht hlam i j hjCut]
     unfold affineAngleValue projectionProjectiveCut
-    ring
+    ring_nf
 
 /-- Main representation theorem: the explicitly cut local cycle has exactly
 the genuine Sendov centre exponent. -/
