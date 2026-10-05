@@ -247,6 +247,60 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
     obtain ⟨a,b,c,d,hset,hab,hbc,hcd⟩ := h
     exact ⟨a,b,c,d,hset.trans hS,hab,hbc,hcd⟩
 
+  have hS1 :
+      ({s₁,v,s₂,s₃} : Finset (ProjectionOrdered V)) = S := by
+    ext q
+    simp only [S, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inl h
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr h))
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inl h
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr h))
+
+  have hS2 :
+      ({s₂,v,s₁,s₃} : Finset (ProjectionOrdered V)) = S := by
+    ext q
+    simp only [S, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inr h))
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inl h
+      · exact Or.inr (Or.inr (Or.inr h))
+
+  have hS3 :
+      ({s₃,v,s₁,s₂} : Finset (ProjectionOrdered V)) = S := by
+    ext q
+    simp only [S, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inr (Or.inr h))
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl h))
+    · intro h
+      rcases h with h | h | h | h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr h))
+      · exact Or.inl h
+
   have sorted_of_extreme :
       ∃ a b c d : ProjectionOrdered V,
         ({a,b,c,d} : Finset (ProjectionOrdered V)) = S ∧
@@ -262,52 +316,34 @@ theorem planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
     · rcases hs1 with hmin | hmax
       · exact sorted_to_S
           (o := s₁) (x := v) (y := s₂) (z := s₃)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS1
           (four_with_global_min_has_sorted_permutation_light
             hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmin)
       · exact sorted_to_S
           (o := s₁) (x := v) (y := s₂) (z := s₃)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS1
           (four_with_global_max_has_sorted_permutation_light
             hvs1.symm hs12 hs13 hvs2 hvs3 hs23 hmax)
     · rcases hs2 with hmin | hmax
       · exact sorted_to_S
           (o := s₂) (x := v) (y := s₁) (z := s₃)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS2
           (four_with_global_min_has_sorted_permutation_light
             hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmin)
       · exact sorted_to_S
           (o := s₂) (x := v) (y := s₁) (z := s₃)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS2
           (four_with_global_max_has_sorted_permutation_light
             hvs2.symm hs12.symm hs23 hvs1 hvs3 hs13 hmax)
     · rcases hs3 with hmin | hmax
       · exact sorted_to_S
           (o := s₃) (x := v) (y := s₁) (z := s₂)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS3
           (four_with_global_min_has_sorted_permutation_light
             hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin)
       · exact sorted_to_S
           (o := s₃) (x := v) (y := s₁) (z := s₂)
-          (by
-            ext q
-            simp only [S, Finset.mem_insert, Finset.mem_singleton]
-            tauto)
+          hS3
           (four_with_global_max_has_sorted_permutation_light
             hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax)
 
