@@ -58,13 +58,13 @@ theorem genericLocalDirectionValue_eq_forward
       not_lt_of_ge hji.le
     rw [dif_pos hji]
     rw [genericDirectionData_sendov_value]
-    simp only [hnij, if_false]
+    simp
   · have hij : i < j.1 := by
       have hle : i ≤ j.1 := le_of_not_gt hji
       exact lt_of_le_of_ne hle j.2.symm
     rw [dif_neg hji]
     rw [genericDirectionData_sendov_value]
-    simp only [hij, if_true]
+    simp
 
 /-- Below the projective cut, the canonical angle is the forward lifted angle,
 so the local normalized coordinate is the lower cut-rotated branch. -/
