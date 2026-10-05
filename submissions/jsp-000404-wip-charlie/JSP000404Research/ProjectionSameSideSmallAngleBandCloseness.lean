@@ -1,5 +1,5 @@
-import JSP000404Research.ProjectionThreeBandOppositeSideGap
-import JSP000404Research.PlanarDirectionBridge
+import JSP000404Research.StandardResidualRetainedBandBounds
+import JSP000404Research.PlanarStandardResidualColoring
 import Mathlib.Tactic
 
 /-!
