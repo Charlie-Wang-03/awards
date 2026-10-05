@@ -92,9 +92,12 @@ theorem genericProjection_standardActive_card_le_centreDeficit_add_one
       L.exponent = centreExponent C t := by
     exact projectionCutLocalCycle_exponent_eq_centreExponent
       hp hcap htPos hlam i C
+  have hwidthR : t < (n : ℝ) + 1 := by
+    have hcast : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by norm_num
+    simpa [hcast] using hwidth
   have hbudget :=
     standardActive_card_le_centreDeficit_add_one_of_local_agreement
-      D L C hwidth hexp hagree
+      D L C hwidthR hexp hagree
   simpa [D, standardResidualColoring] using hbudget
 
 /-- Lower-branch specialization: the concrete centre exponent is automatically
