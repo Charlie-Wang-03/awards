@@ -124,7 +124,7 @@ abbrev ProjectionLocalDirectionCycle
     (genericDirectionData_sendov hp hcap ht hlam)
     i
 
-def projectionCutLowRays
+noncomputable def projectionCutLowRays
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i) :
     List (OtherVertex i) :=
@@ -133,7 +133,7 @@ def projectionCutLowRays
       (rayThetaAt (reindexedPoint_injective hp) i j <
         projectionProjectiveCut p)
 
-def projectionCutHighRays
+noncomputable def projectionCutHighRays
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i) :
     List (OtherVertex i) :=
@@ -357,14 +357,14 @@ noncomputable def projectionCutLocalCycle
     rw [hcanon] at hleftNil
     exact C.nonempty hleftNil
 
-def projectionCutLowAngles
+noncomputable def projectionCutLowAngles
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i) :
     List ℝ :=
   (projectionCutLowRays hp i C).map
     (rayThetaAt (reindexedPoint_injective hp) i)
 
-def projectionCutHighAngles
+noncomputable def projectionCutHighAngles
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i) :
     List ℝ :=
