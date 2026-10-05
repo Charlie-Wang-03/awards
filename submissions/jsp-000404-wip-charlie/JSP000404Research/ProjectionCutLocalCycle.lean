@@ -100,14 +100,11 @@ abbrev ReindexedInjective :
 /-- Centre cycle with the generic projection order fixed explicitly in its
 type, avoiding an uninferable section-level LinearOrder instance. -/
 abbrev ProjectionCentreCycle
-    (i : ProjectionOrdered V) : Type :=
-  @CentreProjectiveCycle
-    (ProjectionOrdered V)
-    (projectionLinearOrder hp)
-    inferInstance
-    (reindexedPoint p)
-    (reindexedPoint_injective hp)
-    i
+    (i : ProjectionOrdered V) : Type := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
+  exact CentreProjectiveCycle
+    (reindexedPoint_injective hp) i
 
 /-- Local direction cycle with the same explicit projection order. -/
 abbrev ProjectionLocalDirectionCycle
@@ -115,14 +112,11 @@ abbrev ProjectionLocalDirectionCycle
     (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
-    (i : ProjectionOrdered V) : Type :=
-  @DirectionData.LocalDirectionCycle
-    (ProjectionOrdered V)
-    (projectionLinearOrder hp)
-    inferInstance
-    t
-    (genericDirectionData_sendov hp hcap ht hlam)
-    i
+    (i : ProjectionOrdered V) : Type := by
+  letI : LinearOrder (ProjectionOrdered V) :=
+    projectionLinearOrder hp
+  exact DirectionData.LocalDirectionCycle
+    (genericDirectionData_sendov hp hcap ht hlam) i
 
 def projectionCutLowRays
     (i : ProjectionOrdered V)
