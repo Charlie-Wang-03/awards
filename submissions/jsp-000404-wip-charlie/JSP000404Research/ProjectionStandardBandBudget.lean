@@ -37,6 +37,25 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+private theorem projectionBudget_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (htEq : t = (n : ℝ) + delta) :
+    0 < t := by
+  rw [htEq]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
+private theorem projectionBudget_width_lt_succ
+    {n : ℕ} {delta t : ℝ}
+    (hdelta1 : delta < 1)
+    (htEq : t = (n : ℝ) + delta) :
+    t < (n + 1 : ℕ) := by
+  rw [htEq]
+  exact_mod_cast
+    (show (n : ℝ) + delta < (n : ℝ) + 1 by linarith)
+
 /-- Direct generic-projection specialization of the one-layer standard-band
 budget. -/
 theorem genericProjection_standardActive_card_le_centreDeficit_add_one
@@ -47,9 +66,12 @@ theorem genericProjection_standardActive_card_le_centreDeficit_add_one
     (hcap : AngleCap p lam)
     (htPos : 0 < t)
     (hlam : lam = Real.pi / t)
-    (hwidth : t < (n : ℝ) + 1)
+    (hwidth : t < (n + 1 : ℕ))
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hexp : centreExponent C t ≤ n) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
@@ -89,14 +111,17 @@ theorem genericProjection_lowerBranch_oneLayerBudget
     (htEq : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     centreExponent C t < n ∧
     (active
       (standardResidualColoring
         (genericDirectionData_sendov hp hcap
-          (sendov_scale_pos hn hdelta0 htEq) hlam)
+          (projectionBudget_scale_pos hn hdelta0 htEq) hlam)
         n
         (by
           rw [htEq]
@@ -108,11 +133,10 @@ theorem genericProjection_lowerBranch_oneLayerBudget
     projectionLinearOrder hp
   have htPos :
       0 < t :=
-    sendov_scale_pos hn hdelta0 htEq
+    projectionBudget_scale_pos hn hdelta0 htEq
   have hwidth :
-      t < (n : ℝ) + 1 := by
-    rw [htEq]
-    linarith
+      t < (n + 1 : ℕ) :=
+    projectionBudget_width_lt_succ hdelta1 htEq
   have hexpLt :
       centreExponent C t < n :=
     centreExponent_lt_n
@@ -138,6 +162,8 @@ theorem genericProjection_lowerBranch_profile_hypotheses
     (htEq : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
@@ -147,11 +173,9 @@ theorem genericProjection_lowerBranch_profile_hypotheses
       (active
         (standardResidualColoring
           (genericDirectionData_sendov hp hcap
-            (sendov_scale_pos hn hdelta0 htEq) hlam)
+            (projectionBudget_scale_pos hn hdelta0 htEq) hlam)
           n
-          (by
-            rw [htEq]
-            linarith))
+          (projectionBudget_width_lt_succ hdelta1 htEq))
         i).card
         ≤
       n - centreExponent (C i) t + 1) := by
