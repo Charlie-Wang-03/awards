@@ -59,6 +59,15 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check isolated whole-cube Boolean core
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.RetainedCompletionCore
+          lake build JSP000404Research.BooleanFlipCore
+          lake build JSP000404Research.TranslatedCompletionCore
+          lake build JSP000404Research.WholeCubeQTPairCore
+          lake build JSP000404Research.ThreeWholeCubeRetainedCodeStar
+
       - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
