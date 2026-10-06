@@ -1,5 +1,4 @@
 import JSP000404Research.ResidualPairLocalFlip
-import JSP000404Research.ResidualCompletionWords
 import Mathlib.Tactic
 
 /-!
