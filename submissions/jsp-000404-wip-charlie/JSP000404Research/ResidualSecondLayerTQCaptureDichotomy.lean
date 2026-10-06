@@ -108,11 +108,11 @@ theorem secondLayer_TQ_wholeCube_or_halfCapture
       ≤ (retainedCompletionWords C w).card := by
   have hvCard :
       (retainedActive C v).card = 3 :=
-    secondLayer_projectedLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three_core
       C exponent hvLoss hvSecond
   have hwCard :
       (retainedActive C w).card = 3 :=
-    secondLayer_projectedLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three_core
       C exponent hwLoss hwSecond
 
   by_cases hEq :
