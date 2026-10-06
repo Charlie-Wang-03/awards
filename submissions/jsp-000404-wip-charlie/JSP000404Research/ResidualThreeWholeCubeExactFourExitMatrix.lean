@@ -119,5 +119,181 @@ theorem threeWholeCube_exactFour_offOwner_exit_first
 
 #print axioms threeWholeCube_exactFour_offOwner_exit_first
 
+theorem threeWholeCube_exactFour_offOwner_exit_second
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hn3 : 3 ≤ n)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun q => 2 ^ exponent q)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun q => 2 ^ exponent q)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v s₁ s₂ s₃ : V}
+    {c₁ c₂ c₃ : Fin n}
+    (hvT : v ∈ T)
+    (hs1T : s₁ ∈ T)
+    (hs2T : s₂ ∈ T)
+    (hs3T : s₃ ∈ T)
+    (hc12 : c₁ ≠ c₂)
+    (hc13 : c₁ ≠ c₃)
+    (hc23 : c₂ ≠ c₃)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hs1Loss : s₁ ∈ projectedLossVertices C exponent)
+    (hs2Loss : s₂ ∈ projectedLossVertices C exponent)
+    (hs3Loss : s₃ ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = n - 2)
+    (hs1Second : exponent s₁ = n - 2)
+    (hs2Second : exponent s₂ = n - 2)
+    (hs3Second : exponent s₃ = n - 2)
+    (hactive : retainedActive C v = {c₁,c₂,c₃})
+    (h₁ : WholeCubeQTPair C s₁ v c₁)
+    (h₂ : WholeCubeQTPair C s₂ v c₂)
+    (h₃ : WholeCubeQTPair C s₃ v c₃) :
+    ExactFourOffOwnerExitAt C exponent v s₁ s₃ c₁ c₃ := by
+  have hactive' :
+      retainedActive C v = {c₂,c₁,c₃} := by
+    rw [hactive]
+    ext q
+    simp [or_assoc, or_left_comm, or_comm]
+  exact threeWholeCube_exactFour_offOwner_exit_first
+    C exponent hn3 hdef hmin
+    hvT hs2T hs1T hs3T
+    hc12.symm hc23 hc13
+    hvLoss hs2Loss hs1Loss hs3Loss
+    hvSecond hs2Second hs1Second hs3Second
+    hactive' h₂ h₁ h₃
+
+theorem threeWholeCube_exactFour_offOwner_exit_third
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hn3 : 3 ≤ n)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun q => 2 ^ exponent q)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun q => 2 ^ exponent q)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v s₁ s₂ s₃ : V}
+    {c₁ c₂ c₃ : Fin n}
+    (hvT : v ∈ T)
+    (hs1T : s₁ ∈ T)
+    (hs2T : s₂ ∈ T)
+    (hs3T : s₃ ∈ T)
+    (hc12 : c₁ ≠ c₂)
+    (hc13 : c₁ ≠ c₃)
+    (hc23 : c₂ ≠ c₃)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hs1Loss : s₁ ∈ projectedLossVertices C exponent)
+    (hs2Loss : s₂ ∈ projectedLossVertices C exponent)
+    (hs3Loss : s₃ ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = n - 2)
+    (hs1Second : exponent s₁ = n - 2)
+    (hs2Second : exponent s₂ = n - 2)
+    (hs3Second : exponent s₃ = n - 2)
+    (hactive : retainedActive C v = {c₁,c₂,c₃})
+    (h₁ : WholeCubeQTPair C s₁ v c₁)
+    (h₂ : WholeCubeQTPair C s₂ v c₂)
+    (h₃ : WholeCubeQTPair C s₃ v c₃) :
+    ExactFourOffOwnerExitAt C exponent v s₁ s₂ c₁ c₂ := by
+  have hactive' :
+      retainedActive C v = {c₃,c₁,c₂} := by
+    rw [hactive]
+    ext q
+    simp [or_assoc, or_left_comm, or_comm]
+  exact threeWholeCube_exactFour_offOwner_exit_first
+    C exponent hn3 hdef hmin
+    hvT hs3T hs1T hs2T
+    hc13.symm hc23.symm hc12
+    hvLoss hs3Loss hs1Loss hs2Loss
+    hvSecond hs3Second hs1Second hs2Second
+    hactive' h₃ h₁ h₂
+
+theorem threeWholeCube_exactFour_offOwner_exit_matrix
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hn3 : 3 ≤ n)
+    {T : Finset V}
+    (hdef :
+      BlockDeficient
+        (fun q => 2 ^ exponent q)
+        (enlargedProjectedCandidateBlock C exponent)
+        T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun q => 2 ^ exponent q)
+          (enlargedProjectedCandidateBlock C exponent)
+          U)
+    {v s₁ s₂ s₃ : V}
+    {c₁ c₂ c₃ : Fin n}
+    (hvT : v ∈ T)
+    (hs1T : s₁ ∈ T)
+    (hs2T : s₂ ∈ T)
+    (hs3T : s₃ ∈ T)
+    (hc12 : c₁ ≠ c₂)
+    (hc13 : c₁ ≠ c₃)
+    (hc23 : c₂ ≠ c₃)
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hs1Loss : s₁ ∈ projectedLossVertices C exponent)
+    (hs2Loss : s₂ ∈ projectedLossVertices C exponent)
+    (hs3Loss : s₃ ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = n - 2)
+    (hs1Second : exponent s₁ = n - 2)
+    (hs2Second : exponent s₂ = n - 2)
+    (hs3Second : exponent s₃ = n - 2)
+    (hactive : retainedActive C v = {c₁,c₂,c₃})
+    (h₁ : WholeCubeQTPair C s₁ v c₁)
+    (h₂ : WholeCubeQTPair C s₂ v c₂)
+    (h₃ : WholeCubeQTPair C s₃ v c₃) :
+    ExactFourOffOwnerExitAt C exponent v s₂ s₃ c₂ c₃ ∧
+    ExactFourOffOwnerExitAt C exponent v s₁ s₃ c₁ c₃ ∧
+    ExactFourOffOwnerExitAt C exponent v s₁ s₂ c₁ c₂ := by
+  constructor
+  · exact threeWholeCube_exactFour_offOwner_exit_first
+      C exponent hn3 hdef hmin
+      hvT hs1T hs2T hs3T
+      hc12 hc13 hc23
+      hvLoss hs1Loss hs2Loss hs3Loss
+      hvSecond hs1Second hs2Second hs3Second
+      hactive h₁ h₂ h₃
+  · constructor
+    · exact threeWholeCube_exactFour_offOwner_exit_second
+        C exponent hn3 hdef hmin
+        hvT hs1T hs2T hs3T
+        hc12 hc13 hc23
+        hvLoss hs1Loss hs2Loss hs3Loss
+        hvSecond hs1Second hs2Second hs3Second
+        hactive h₁ h₂ h₃
+    · exact threeWholeCube_exactFour_offOwner_exit_third
+        C exponent hn3 hdef hmin
+        hvT hs1T hs2T hs3T
+        hc12 hc13 hc23
+        hvLoss hs1Loss hs2Loss hs3Loss
+        hvSecond hs1Second hs2Second hs3Second
+        hactive h₁ h₂ h₃
+
+#print axioms threeWholeCube_exactFour_offOwner_exit_second
+#print axioms threeWholeCube_exactFour_offOwner_exit_third
+#print axioms threeWholeCube_exactFour_offOwner_exit_matrix
+
 end OrderedEdgeColoring
 end JSP000404Research
