@@ -45,7 +45,10 @@ theorem planar_secondLayer_discovered_coordinates_card_le_two
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       v ∈ projectedLossVertices R (planarCentreExponent hp Cfam))
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
     (coords : Finset (Fin n))
     (hcoords :
       letI : LinearOrder (ProjectionOrdered V) :=
@@ -131,7 +134,10 @@ theorem planar_secondLayer_wholeCubeDiscoveryRank_pos
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       v ∈ projectedLossVertices R (planarCentreExponent hp Cfam))
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
     (coords : Finset (Fin n))
     (hcoords :
       letI : LinearOrder (ProjectionOrdered V) :=
