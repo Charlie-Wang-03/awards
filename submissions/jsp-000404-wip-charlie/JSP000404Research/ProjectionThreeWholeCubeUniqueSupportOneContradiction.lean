@@ -82,10 +82,22 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R s₃ v c₃)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hs1Second : centreExponent (Cfam s₁) t = n - 2)
-    (hs2Second : centreExponent (Cfam s₂) t = n - 2)
-    (hs3Second : centreExponent (Cfam s₃) t = n - 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hs1Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₁) t = n - 2)
+    (hs2Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₂) t = n - 2)
+    (hs3Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₃) t = n - 2)
     (hoMem :
       o ∈ ({v,s₁,s₂,s₃} : Finset (ProjectionOrdered V)))
     (hoExtreme :
