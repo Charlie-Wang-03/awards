@@ -40,7 +40,10 @@ theorem mem_translatedCompletionWords_iff_translatedRetainedBit
     by_cases hqd : q = d
     · subst q
       rw [flipBoolWordAt_at] at h
-      simp [translatedRetainedBit, h]
+      simp only [translatedRetainedBit, if_pos rfl]
+      cases hb : retainedBit C v d <;>
+        cases hw : word d <;>
+        simp_all
     · rw [flipBoolWordAt_off word hqd] at h
       simpa [translatedRetainedBit, hqd] using h
   · intro hbits
@@ -68,8 +71,13 @@ theorem translatedCompletionWords_eq_of_same_palette_nonempty_inter
         translatedCompletionWords C w e).Nonempty) :
     translatedCompletionWords C v d =
       translatedCompletionWords C w e := by
-  obtain ⟨base,hbaseV,hbaseW⟩ :=
-    Finset.nonempty_inter.mp hinter
+  obtain ⟨base,hbase⟩ := hinter
+  have hbaseV :
+      base ∈ translatedCompletionWords C v d :=
+    (Finset.mem_inter.mp hbase).1
+  have hbaseW :
+      base ∈ translatedCompletionWords C w e :=
+    (Finset.mem_inter.mp hbase).2
   have hvBase :=
     (mem_translatedCompletionWords_iff_translatedRetainedBit
       C v d base).1 hbaseV
@@ -196,7 +204,7 @@ theorem translatedTranslatedCapture_half_of_missing_source_active
     · exact hsubF hf
   have hcard := Finset.card_le_card hunionSub
   rw [Finset.card_union_of_disjoint hdisj,hFcard] at hcard
-  omega
+  simpa [two_mul] using hcard
 
 theorem secondLayer_TT_fullRematch_or_halfCapture
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -248,9 +256,15 @@ theorem secondLayer_TT_fullRematch_or_halfCapture
     have hhalf :=
       translatedTranslatedCapture_half_of_missing_source_active
         C hdV heW hfV hfW
-    rw [translatedCompletionWords_card,
-        translatedCompletionWords_card] at hhalf ⊢
-    exact hhalf
+    calc
+      2 * (translatedTranslatedCapture C v w d e).card
+          ≤ (translatedCompletionWords C w e).card := hhalf
+      _ = 2 ^ (n - 3) := by
+        rw [translatedCompletionWords_card,
+          retainedCompletionWords_card, hwCard]
+      _ = (translatedCompletionWords C v d).card := by
+        rw [translatedCompletionWords_card,
+          retainedCompletionWords_card, hvCard]
 
 #print axioms mem_translatedCompletionWords_iff_translatedRetainedBit
 #print axioms translatedCompletionWords_eq_of_same_palette_nonempty_inter
