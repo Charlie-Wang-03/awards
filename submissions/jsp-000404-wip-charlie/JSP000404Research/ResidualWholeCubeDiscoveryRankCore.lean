@@ -50,8 +50,8 @@ theorem discovered_coordinates_card_le_three_of_subset_secondLayerActive
     coords.card ≤ 3 := by
   have hactive :
       (retainedActive C v).card = 3 :=
-    secondLayer_projectedLoss_retainedActive_card_eq_three
-      C exponent (by omega) hvLoss hvSecond
+    secondLayer_projectedLoss_retainedActive_card_eq_three_core
+      C exponent hvLoss hvSecond
   exact (Finset.card_le_card hsub).trans_eq hactive
 
 theorem profiled_TQ_rematch_repeat_or_discovery_progress
