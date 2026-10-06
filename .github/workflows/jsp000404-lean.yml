@@ -68,6 +68,8 @@ jobs:
           lake build JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
           lake build JSP000404Research.ThreeWholeCubeSourceMixedProfileContradiction
           lake build JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoProfileExhaustion
+          lake build JSP000404Research.ProjectionThreeWholeCubeUniqueSupportOneContradiction
+          lake build JSP000404Research.ProjectionThreeWholeCubeSaturatedContradiction
           lake build JSP000404Research.ProjectionThreeWholeCubeUniqueSupportOneTerminal
 
       - name: Check legacy extreme-profile assembly
