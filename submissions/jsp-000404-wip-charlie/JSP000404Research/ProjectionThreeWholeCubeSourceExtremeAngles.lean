@@ -42,9 +42,9 @@ theorem retainedCompletionWords_nonempty
 theorem threeWholeCube_source_globalMin_sameBand_angles
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
