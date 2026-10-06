@@ -1,5 +1,4 @@
 import JSP000404Research.ResidualProjectionLoss
-import JSP000404Research.WeightedOneLayerCharge
 import JSP000404Research.ResidualVerticalPairs
 import Mathlib.Tactic
 
@@ -18,7 +17,8 @@ noncomputable def projectedLossVertices
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) : Finset V :=
-  oneLayerLossVertices exponent (projectedFree C)
+  (Finset.univ : Finset V).filter fun v =>
+    exponent v = projectedFree C v + 1
 
 @[simp] theorem mem_projectedLossVertices
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -26,6 +26,7 @@ noncomputable def projectedLossVertices
     (exponent : V → ℕ) (v : V) :
     v ∈ projectedLossVertices C exponent ↔
       exponent v = projectedFree C v + 1 := by
+  classical
   simp [projectedLossVertices]
 
 /-- A residual increasing edge makes the residual coordinate active at both
