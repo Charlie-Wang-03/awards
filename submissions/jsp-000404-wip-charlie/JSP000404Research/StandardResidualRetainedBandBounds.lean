@@ -34,16 +34,19 @@ theorem standardResidual_retained_edge_exact_band_bounds
       D.value u v < (c.val : ℝ) + 1 := by
   let R := standardResidualColoring D n hwidth
   let c : Fin n := retainedColor R u v hret
-  have hfull :
-      R.color u v = c.castSucc := by
+  have hstd :
+      standardBandColor
+          D (n + 1) (Nat.succ_pos n)
+          (by exact_mod_cast hwidth) u v =
+        c.castSucc := by
     apply Fin.ext
-    simp [R,c,retainedColor]
+    simp [R,c,retainedColor,standardResidualColoring,
+      standardBandColoring,standardBandColor,huv]
   have hband :=
     (standardBandColor_eq_iff
       D (n + 1) (Nat.succ_pos n)
       (by exact_mod_cast hwidth)
-      huv c.castSucc).1
-      (by simpa [R,standardResidualColoring] using hfull)
+      huv c.castSucc).1 hstd
   simpa [c] using hband
 
 #print axioms standardResidual_retained_edge_exact_band_bounds
