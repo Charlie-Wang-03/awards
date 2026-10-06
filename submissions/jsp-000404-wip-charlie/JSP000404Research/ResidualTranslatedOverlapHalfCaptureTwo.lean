@@ -86,11 +86,11 @@ theorem two_mul_twoFlipCaptured_le_overlap_of_commonInactive_active
       have huFlip :
           flipBoolWordAt word.1 e ∈
             retainedCompletionWords C u :=
-        (mem_completion_iff_flip_of_inactive C heU).2 hu
+        (mem_retainedCompletionWords_flip_iff_of_inactive C heU).2 hu
       have hvFlip :
           flipBoolWordAt word.1 e ∈
             retainedCompletionWords C v :=
-        (mem_completion_iff_flip_of_inactive C heV).2 hv
+        (mem_retainedCompletionWords_flip_iff_of_inactive C heV).2 hv
       have hsourceFlip :
           flipBoolWordAt word.1 e ∈ source := by
         exact Finset.mem_inter.mpr ⟨huFlip,hvFlip⟩
