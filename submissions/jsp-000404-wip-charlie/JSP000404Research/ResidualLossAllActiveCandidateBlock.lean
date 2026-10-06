@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossAllActiveSlices
+import JSP000404Research.ResidualEnlargedCandidateCore
 import JSP000404Research.ResidualLocalCandidateCapacity
 import Mathlib.Tactic
 
@@ -24,21 +25,6 @@ the target mass 2^exponent(v).
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-noncomputable def allActiveTranslatedWords
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) : Finset (Fin n → Bool) := by
-  classical
-  exact (retainedActive C v).biUnion
-    (fun c => translatedCompletionWords C v c)
-
-noncomputable def allActiveLossCandidateBlock
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) : Finset (Fin n → Bool) :=
-  retainedCompletionWords C v ∪
-    allActiveTranslatedWords C v
 
 theorem allActiveTranslatedWords_card
     {V : Type*} [LinearOrder V] {n : ℕ}
