@@ -51,7 +51,10 @@ theorem supportTwo_two_incoming_one_outgoing_labels_oneStep
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {i : ProjectionOrdered V}
-    (Ci : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (Ci :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hiSecond : centreExponent Ci t = n - 2)
     (hiSupport : positiveSupport (centreQuotient Ci t) = 2)
     {x y z : Fin n}
@@ -122,10 +125,9 @@ theorem supportTwo_two_incoming_one_outgoing_labels_oneStep
     intro h
     subst uy
     apply hxy
-    apply Fin.ext
     have hcast : x.castSucc = y.castSucc :=
       hfullX.symm.trans hfullY
-    exact congrArg Fin.val hcast
+    exact Fin.castSucc_injective _ hcast
 
   have hcapR : AngleCap (reindexedPoint p) lam :=
     angleCap_reindexed hcap
@@ -198,7 +200,10 @@ theorem supportTwo_two_outgoing_one_incoming_labels_oneStep
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {i : ProjectionOrdered V}
-    (Ci : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (Ci :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hiSecond : centreExponent Ci t = n - 2)
     (hiSupport : positiveSupport (centreQuotient Ci t) = 2)
     {x y z : Fin n}
@@ -269,10 +274,9 @@ theorem supportTwo_two_outgoing_one_incoming_labels_oneStep
     intro h
     subst wy
     apply hxy
-    apply Fin.ext
     have hcast : x.castSucc = y.castSucc :=
       hfullX.symm.trans hfullY
-    exact congrArg Fin.val hcast
+    exact Fin.castSucc_injective _ hcast
 
   have hcapR : AngleCap (reindexedPoint p) lam :=
     angleCap_reindexed hcap
