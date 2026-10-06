@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualWholeCubeTQTwoFlip
+import JSP000404Research.WholeCubeQTPairCore
 import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
 
@@ -22,41 +23,6 @@ Boolean value explicitly:
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-theorem wholeCube_off_owner_retainedBit_eq
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {s v : V} {c d : Fin n}
-    (hwhole : WholeCubeQTPair C s v c)
-    (hdV : d ∈ retainedActive C v)
-    (hdc : d ≠ c) :
-    retainedBit C s d = retainedBit C v d := by
-  rcases hwhole with ⟨hactiveEq,htransEq⟩
-  have hdS : d ∈ retainedActive C s := by
-    rw [← hactiveEq]
-    exact hdV
-  -- Any base word of Q_v witnesses equality off the flipped owner coordinate.
-  have hnonempty :
-      (retainedCompletionWords C v).Nonempty := by
-    rw [retainedCompletionWords_nonempty_iff]
-  obtain ⟨base,hbase⟩ := hnonempty
-  have htrans :
-      flipBoolWordAt base c ∈ translatedCompletionWords C v c := by
-    apply (mem_translatedCompletionWords C v c _).2
-    simpa [flipBoolWordAt_involutive] using hbase
-  have hsQ :
-      flipBoolWordAt base c ∈ retainedCompletionWords C s := by
-    rw [← htransEq]
-    exact htrans
-  have hvComp :=
-    (mem_retainedCompletionWords C v base).1 hbase
-  have hsComp :=
-    (mem_retainedCompletionWords C s
-      (flipBoolWordAt base c)).1 hsQ
-  have hvAt := hvComp d hdV
-  have hsAt := hsComp d hdS
-  rw [flipBoolWordAt_off base hdc] at hsAt
-  exact hsAt.symm.trans hvAt
 
 theorem wholeCube_TQ_three_vertex_bit_profile
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
