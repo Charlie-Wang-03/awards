@@ -46,12 +46,10 @@ theorem flipBoolWordAt_injective
       (fun word : Fin n → Bool =>
         flipBoolWordAt word c) := by
   intro x y hxy
-  calc
-    x = flipBoolWordAt (flipBoolWordAt x c) c :=
-      (flipBoolWordAt_involutive c x).symm
-    _ = flipBoolWordAt (flipBoolWordAt y c) c := by
-      rw [hxy]
-    _ = y := flipBoolWordAt_involutive c y
+  have h :=
+    congrArg (fun word : Fin n → Bool =>
+      flipBoolWordAt word c) hxy
+  simpa only [flipBoolWordAt_involutive] using h
 
 /-- Flipping an active retained coordinate exits that completion cube. -/
 theorem flip_active_not_mem_completion
