@@ -55,8 +55,14 @@ theorem supportTwo_two_incoming_one_outgoing_labels_oneStep
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hiSecond : centreExponent Ci t = n - 2)
-    (hiSupport : positiveSupport (centreQuotient Ci t) = 2)
+    (hiSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent Ci t = n - 2)
+    (hiSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient Ci t) = 2)
     {x y z : Fin n}
     (hxy : x ≠ y)
     (hxIn :
@@ -204,8 +210,14 @@ theorem supportTwo_two_outgoing_one_incoming_labels_oneStep
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hiSecond : centreExponent Ci t = n - 2)
-    (hiSupport : positiveSupport (centreQuotient Ci t) = 2)
+    (hiSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent Ci t = n - 2)
+    (hiSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient Ci t) = 2)
     {x y z : Fin n}
     (hxy : x ≠ y)
     (hxOut :
