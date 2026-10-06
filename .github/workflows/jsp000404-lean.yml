@@ -63,7 +63,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.FourSupportTwoOrderedAdjacent
-          lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacentCore
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
           lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
 
