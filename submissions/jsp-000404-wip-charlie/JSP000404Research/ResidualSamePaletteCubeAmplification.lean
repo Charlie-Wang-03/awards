@@ -83,15 +83,15 @@ theorem translatedCompletionWords_eq_completion_of_same_palette_nonempty_inter
   have hcV : c ∈ retainedActive C v := by
     rw [← hactive]
     exact hcU
+  have hbaseSrc :
+      flipBoolWordAt base c ∈ retainedCompletionWords C u :=
+    (mem_translatedCompletionWords C u c base).1 hbaseT
   ext word
   constructor
   · intro hwordT
     have hwordSrc :
         flipBoolWordAt word c ∈ retainedCompletionWords C u :=
       (mem_translatedCompletionWords C u c word).1 hwordT
-    have hbaseSrc :
-        flipBoolWordAt base c ∈ retainedCompletionWords C u :=
-      (mem_translatedCompletionWords C u c base).1 hbaseT
     apply (mem_retainedCompletionWords C v word).2
     intro d hdV
     have hdU : d ∈ retainedActive C u := by
@@ -119,8 +119,8 @@ theorem translatedCompletionWords_eq_completion_of_same_palette_nonempty_inter
           (flipBoolWordAt base c)).1 hbaseSrc d hdU
       have hbV :=
         (mem_retainedCompletionWords C v base).1 hbaseV d hdV
-      rw [flipBoolWordAt_off word hdc,
-          flipBoolWordAt_off base hdc] at hw hbU
+      rw [flipBoolWordAt_off word hdc] at hw
+      rw [flipBoolWordAt_off base hdc] at hbU
       exact hw.trans (hbU.symm.trans hbV)
   · intro hwordV
     apply (mem_translatedCompletionWords C u c word).2
