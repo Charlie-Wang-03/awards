@@ -72,7 +72,7 @@ theorem threeWholeCube_exactFour_offOwner_exit_first
     (h₁ : WholeCubeQTPair C s₁ v c₁)
     (h₂ : WholeCubeQTPair C s₂ v c₂)
     (h₃ : WholeCubeQTPair C s₃ v c₃) :
-    ExactFourOffOwnerExitAt C exponent s₁ s₂ s₃ c₂ c₃ := by
+    ExactFourOffOwnerExitAt C exponent v s₂ s₃ c₂ c₃ := by
   have hc1V : c₁ ∈ retainedActive C v := by
     rw [hactive]
     simp
@@ -91,11 +91,8 @@ theorem threeWholeCube_exactFour_offOwner_exit_first
       _hnot1,_hnotV,hwT,hwNe1,hwNeV⟩ :=
     minimal_core_wholeCubeQTPair_has_off_owner_third_exit
       C exponent hn3 hdef hmin
-      hs1T hs1v hs1Loss hvLoss hs1Second
-      (by
-        rw [h₁.1]
-        exact hc1V)
-      h₁
+      hvT hs1v hs1Loss hvLoss hvSecond
+      hc1V h₁
   have hdV : d ∈ retainedActive C v := by
     rw [← h₁.1]
     exact hdActive
@@ -105,7 +102,7 @@ theorem threeWholeCube_exactFour_offOwner_exit_first
   have hdAlt : d = c₂ ∨ d = c₃ := by
     simp only [Finset.mem_insert, Finset.mem_singleton] at hdSet
     rcases hdSet with h | h | h
-    · exact False.elim (hdc (by simpa [h] using rfl))
+    · exact False.elim (hdc h)
     · exact Or.inl h
     · exact Or.inr h
   have hwSet : w ∈ ({v,s₁,s₂,s₃} : Finset V) := by
