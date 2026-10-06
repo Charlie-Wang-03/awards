@@ -1,3 +1,4 @@
+import JSP000404Research.GlobalOrderExtremeCore
 import JSP000404Research.ProjectionThreeBandOppositeSideGap
 import JSP000404Research.ProjectionSupportOneConsecutivePalette
 import JSP000404Research.SupportOneNarrowCone
@@ -32,12 +33,6 @@ namespace ProjectionOrdered
 
 open OrderedEdgeColoring
 open DirectionData
-
-def GlobalOrderExtreme
-    {V : Type*} [LinearOrder V]
-    (i : V) : Prop :=
-  (∀ w : V, w ≠ i → i < w) ∨
-  (∀ w : V, w ≠ i → w < i)
 
 theorem planar_projectedLoss_secondLayer_supportOne_globalExtreme
     {V : Type*} [Fintype V]
