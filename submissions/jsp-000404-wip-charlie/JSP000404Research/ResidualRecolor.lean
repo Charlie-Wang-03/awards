@@ -55,6 +55,39 @@ noncomputable def retainedActive
     (∃ a, a < v ∧ C.color a v = c.castSucc) ∨
     (∃ w, v < w ∧ C.color v w = c.castSucc)
 
+/-- A retained increasing edge colour is active at its left endpoint. -/
+theorem retainedColor_mem_retainedActive_left
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V (k + 1))
+    {u v : V}
+    (huv : u < v)
+    (hret : (C.color u v).val < k) :
+    retainedColor C u v hret ∈ retainedActive C u := by
+  classical
+  simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
+  right
+  refine ⟨v,huv,?_⟩
+  apply Fin.ext
+  rfl
+
+/-- A retained increasing edge colour is active at its right endpoint. -/
+theorem retainedColor_mem_retainedActive_right
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V (k + 1))
+    {u v : V}
+    (huv : u < v)
+    (hret : (C.color u v).val < k) :
+    retainedColor C u v hret ∈ retainedActive C v := by
+  classical
+  simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
+  left
+  refine ⟨u,huv,?_⟩
+  apply Fin.ext
+  rfl
+
+#print axioms retainedColor_mem_retainedActive_left
+#print axioms retainedColor_mem_retainedActive_right
+
 /-- Data sufficient to eliminate the residual colour. -/
 structure ResidualRecoloring
     {V : Type*} [LinearOrder V] {k : ℕ}
