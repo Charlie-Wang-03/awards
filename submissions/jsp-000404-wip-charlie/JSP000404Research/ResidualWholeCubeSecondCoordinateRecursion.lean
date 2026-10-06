@@ -1,7 +1,6 @@
 import JSP000404Research.ResidualWholeCubeTQRecursionStep
 import JSP000404Research.ResidualSecondLayerTTCaptureDichotomy
-import JSP000404Research.ResidualWholeCubeSecondCoordinateCollision
-import JSP000404Research.ResidualWeightedRecursionRank
+import JSP000404Research.ResidualWholeCubeSecondCoordinateCollisionCore
 import Mathlib.Tactic
 
 /-!
@@ -96,7 +95,7 @@ theorem wholeCubeSecondCoordinate_secondLayer_recursionStep
         C exponent T s v c) :
     WholeCubeSecondCoordinateRecursionStep
       C exponent T s v c := by
-  rcases wholeCubeSecondCoordinate_secondLayer_TQ_or_TT
+  rcases wholeCubeSecondCoordinate_secondLayer_TQ_or_TT_core
       C exponent hexp honeLoss hvLoss hwit
     with hTQ | hTT
   · rcases wholeCubeSecondCoordinateTQ_rematch_or_halfCapture
@@ -142,13 +141,7 @@ theorem wholeCubeSecondCoordinate_halfStep_payload_lt
         ≤ (retainedCompletionWords C v).card) :
     (translatedBaseCapture C v w d).card <
       (retainedCompletionWords C v).card := by
-  exact payload_strictly_decreases_of_half_capture
-    (payload := (retainedCompletionWords C v).card)
-    (captured := (translatedBaseCapture C v w d).card)
-    (by
-      rw [retainedCompletionWords_card]
-      exact Nat.two_pow_pos _)
-    hTQ.2 hTQ.1
+  omega
 
 theorem wholeCubeSecondCoordinate_TTHalf_payload_lt
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -161,14 +154,7 @@ theorem wholeCubeSecondCoordinate_TTHalf_payload_lt
         ≤ (translatedCompletionWords C v d).card) :
     (translatedTranslatedCapture C v w d e).card <
       (translatedCompletionWords C v d).card := by
-  exact payload_strictly_decreases_of_half_capture
-    (payload := (translatedCompletionWords C v d).card)
-    (captured := (translatedTranslatedCapture C v w d e).card)
-    (by
-      rw [translatedCompletionWords_card,
-          retainedCompletionWords_card]
-      exact Nat.two_pow_pos _)
-    hhalf hpos
+  omega
 
 #print axioms wholeCubeSecondCoordinate_secondLayer_recursionStep
 #print axioms wholeCubeSecondCoordinate_TTHalf_payload_lt
