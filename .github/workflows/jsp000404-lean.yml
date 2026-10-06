@@ -73,6 +73,11 @@ jobs:
         run: |
           lake build JSP000404Research.ResidualWholeCubeProfiledProgress
 
+      - name: Check complete profiled second-coordinate outcome
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualWholeCubeSecondCoordinateProfiledOutcome
+
       - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
