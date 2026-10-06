@@ -99,7 +99,7 @@ theorem localDirection_last_floor_eq_top_of_topBand_mem
   have hlastMem :
       xs.getLastD a ∈ L.values := by
     rw [hvalues]
-    exact List.getLastD_mem_cons a xs
+    exact List.getLastD_mem_cons
   have hlastBounds :=
     L.value_mem_bounds hlastMem
   have hlastTop :
