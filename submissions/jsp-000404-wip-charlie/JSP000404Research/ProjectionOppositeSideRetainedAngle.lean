@@ -343,21 +343,27 @@ theorem opposite_side_oneStep_retained_angle_gt_pi_sub_two_lam
       (by exact_mod_cast hwidth)
       hib cB.castSucc).1 hcolB
 
-  have hlabel :
-      |(cA.val : ℝ) - (cB.val : ℝ)| ≤ 1 := by
-    unfold NatOneStepClose at hclose'
-    rw [abs_le]
-    constructor <;> exact_mod_cast (show
-      cA.val ≤ cB.val + 1 ∧ cB.val ≤ cA.val + 1 from hclose') <;>
-      omega
+  have hA' :
+      (cA.val : ℝ) ≤ D.value a i ∧
+      D.value a i < (cA.val : ℝ) + 1 := by
+    simpa using hA
+  have hB' :
+      (cB.val : ℝ) ≤ D.value i b ∧
+      D.value i b < (cB.val : ℝ) + 1 := by
+    simpa using hB
+  have hABclose :
+      (cA.val : ℝ) ≤ (cB.val : ℝ) + 1 := by
+    exact_mod_cast hclose'.1
+  have hBAclose :
+      (cB.val : ℝ) ≤ (cA.val : ℝ) + 1 := by
+    exact_mod_cast hclose'.2
 
   have hdiffVal :
       |D.value a i - D.value i b| < 2 := by
     rw [abs_lt]
-    unfold NatOneStepClose at hclose'
-    constructor <;> nlinarith [hA.1,hA.2,hB.1,hB.2,
-      (show (cA.val : ℝ) ≤ (cB.val : ℝ) + 1 by exact_mod_cast hclose'.1),
-      (show (cB.val : ℝ) ≤ (cA.val : ℝ) + 1 by exact_mod_cast hclose'.2)]
+    constructor
+    · linarith [hA'.1,hA'.2,hB'.1,hB'.2,hABclose,hBAclose]
+    · linarith [hA'.1,hA'.2,hB'.1,hB'.2,hABclose,hBAclose]
 
   have hvalA : F.value (lam := lam) a i = D.value a i := by
     unfold ForwardAngleLift.value
