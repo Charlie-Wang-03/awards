@@ -1,7 +1,6 @@
 
 import JSP000404Research.ProjectionOrderedVertices
-import JSP000404Research.CanonicalProjectiveRay
-import JSP000404Research.PlanarDirectionBridge
+import JSP000404Research.ProjectiveInterval
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Tactic
 
