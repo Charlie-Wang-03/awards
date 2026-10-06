@@ -36,6 +36,52 @@ def AllRetainedBitsTrue
     c ∈ retainedActive C v →
     retainedBit C v c = true
 
+
+/-- A global minimum has only outgoing incident retained edges, hence every
+retained-active bit is false. -/
+theorem global_min_allRetainedBitsFalse
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V}
+    (hmin : ∀ w : V, w ≠ v → v < w) :
+    AllRetainedBitsFalse C v := by
+  intro c hc
+  classical
+  simp only [retainedActive, Finset.mem_filter,
+    Finset.mem_univ, true_and] at hc
+  rcases hc with hIn | hOut
+  · obtain ⟨a,hav,hcol⟩ := hIn
+    have hva : v < a := hmin a (ne_of_lt hav)
+    exact False.elim ((lt_asymm hav hva) rfl)
+  · obtain ⟨w,hvw,hcol⟩ := hOut
+    change bit C v c.castSucc = false
+    have hbit := edgeColor_bit_lower_eq_false C hvw
+    simpa [hcol] using hbit
+
+/-- A global maximum has only incoming incident retained edges, hence every
+retained-active bit is true. -/
+theorem global_max_allRetainedBitsTrue
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V}
+    (hmax : ∀ w : V, w ≠ v → w < v) :
+    AllRetainedBitsTrue C v := by
+  intro c hc
+  classical
+  simp only [retainedActive, Finset.mem_filter,
+    Finset.mem_univ, true_and] at hc
+  rcases hc with hIn | hOut
+  · obtain ⟨a,hav,hcol⟩ := hIn
+    change bit C v c.castSucc = true
+    have hbit := edgeColor_bit_upper_eq_true C hav
+    simpa [hcol] using hbit
+  · obtain ⟨w,hvw,hcol⟩ := hOut
+    have hwv : w < v := hmax w (ne_of_gt hvw)
+    exact False.elim ((lt_asymm hvw hwv) rfl)
+
+#print axioms global_min_allRetainedBitsFalse
+#print axioms global_max_allRetainedBitsTrue
+
 theorem projectedLoss_allFalse_is_global_min
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
