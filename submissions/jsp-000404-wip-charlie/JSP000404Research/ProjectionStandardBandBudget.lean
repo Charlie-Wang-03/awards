@@ -72,7 +72,10 @@ theorem genericProjection_standardActive_card_le_centreDeficit_add_one
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hexp : centreExponent C t ≤ n) :
+    (hexp :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent C t ≤ n) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     (active
@@ -126,9 +129,7 @@ theorem genericProjection_lowerBranch_oneLayerBudget
         (genericDirectionData_sendov hp hcap
           (projectionBudget_scale_pos hn hdelta0 htEq) hlam)
         n
-        (by
-          rw [htEq]
-          linarith))
+        (projectionBudget_width_lt_succ hdelta1 htEq))
       i).card
       ≤
     n - centreExponent C t + 1 := by
