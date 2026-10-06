@@ -1,5 +1,6 @@
 
 import JSP000404Research.ResidualSameCodeOrientation
+import JSP000404Research.RetainedCompletionCore
 import JSP000404Research.WeightedHansel
 import Mathlib.Tactic
 
@@ -26,30 +27,6 @@ common base word.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-def RetainedCompletes
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V)
-    (word : Fin n → Bool) : Prop :=
-  ∀ c, c ∈ retainedActive C v →
-    word c = retainedBit C v c
-
-noncomputable def retainedCompletionWords
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) : Finset (Fin n → Bool) := by
-  classical
-  exact Finset.univ.filter (RetainedCompletes C v)
-
-@[simp] theorem mem_retainedCompletionWords
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (v : V) (word : Fin n → Bool) :
-    word ∈ retainedCompletionWords C v ↔
-      RetainedCompletes C v word := by
-  classical
-  simp [retainedCompletionWords]
 
 /-- No common inactive coordinate means the two retained active sets cover all
 retained coordinates. -/
