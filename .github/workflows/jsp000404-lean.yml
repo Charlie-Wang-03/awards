@@ -66,6 +66,11 @@ jobs:
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
           lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
 
+      - name: Check interior-source extreme profile
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ThreeWholeCubeInteriorExtremeProfile
+
       - name: Check projection-cut representation bridge
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
