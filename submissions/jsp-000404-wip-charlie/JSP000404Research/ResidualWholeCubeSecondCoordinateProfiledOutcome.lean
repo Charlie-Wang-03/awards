@@ -138,7 +138,7 @@ theorem wholeCubeSecondCoordinate_profiled_outcome
     (hcoords : coords ⊆ retainedActive C v) :
     WholeCubeSecondCoordinateProfiledOutcome
       C exponent T s v c coords := by
-  rcases wholeCubeSecondCoordinate_secondLayer_TQ_or_TT
+  rcases wholeCubeSecondCoordinate_secondLayer_TQ_or_TT_core
       C exponent hexp honeLoss hvLoss hwit
     with hTQ | hTT
   · rcases wholeCubeSecondCoordinateTQ_profiled_repeat_or_rank_progress
