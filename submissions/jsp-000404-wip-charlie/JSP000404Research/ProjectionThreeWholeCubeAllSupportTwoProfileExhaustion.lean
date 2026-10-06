@@ -204,8 +204,11 @@ theorem planar_threeWholeCube_allSupportTwo_profile_exhaustion
 
   · have hactive₂ :
       retainedActive R v = {c₂,c₁,c₃} := by
-      simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-        using hactive'
+      calc
+        retainedActive R v = {c₁,c₂,c₃} := hactive'
+        _ = {c₂,c₁,c₃} := by
+          ext x
+          simp [or_comm, or_left_comm, or_assoc]
     exact source_011_profile_supportTwo_impossible
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
       hc12.symm hc23 hc13
@@ -219,8 +222,11 @@ theorem planar_threeWholeCube_allSupportTwo_profile_exhaustion
 
   · have hactive₃ :
       retainedActive R v = {c₃,c₁,c₂} := by
-      simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-        using hactive'
+      calc
+        retainedActive R v = {c₁,c₂,c₃} := hactive'
+        _ = {c₃,c₁,c₂} := by
+          ext x
+          simp [or_comm, or_left_comm, or_assoc]
     exact source_011_profile_supportTwo_impossible
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
       hc13.symm hc23.symm hc12
