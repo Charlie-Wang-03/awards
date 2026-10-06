@@ -78,14 +78,38 @@ theorem planar_threeWholeCube_allSupportTwo_profile_exhaustion
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R s₃ v c₃)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hs1Second : centreExponent (Cfam s₁) t = n - 2)
-    (hs2Second : centreExponent (Cfam s₂) t = n - 2)
-    (hs3Second : centreExponent (Cfam s₃) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hs1Support : positiveSupport (centreQuotient (Cfam s₁) t) = 2)
-    (hs2Support : positiveSupport (centreQuotient (Cfam s₂) t) = 2)
-    (hs3Support : positiveSupport (centreQuotient (Cfam s₃) t) = 2) :
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hs1Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₁) t = n - 2)
+    (hs2Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₂) t = n - 2)
+    (hs3Second :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam s₃) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hs1Support :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₁) t) = 2)
+    (hs2Support :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₂) t) = 2)
+    (hs3Support :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam s₃) t) = 2) :
     False := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
