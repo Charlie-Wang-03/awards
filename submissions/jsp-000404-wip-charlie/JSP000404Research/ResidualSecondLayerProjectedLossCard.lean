@@ -16,11 +16,10 @@ whole-cube augmenting machinery.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
-theorem secondLayer_projectedLoss_retainedActive_card_eq_three
+theorem secondLayer_projectedLoss_retainedActive_card_eq_three_core
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
-    (hn3 : 3 ≤ n)
     {v : V}
     (hvLoss : v ∈ projectedLossVertices C exponent)
     (hvSecond : exponent v = n - 2) :
@@ -34,6 +33,19 @@ theorem secondLayer_projectedLoss_retainedActive_card_eq_three
     simpa using Finset.card_le_univ (retainedActive C v)
   omega
 
+theorem secondLayer_projectedLoss_retainedActive_card_eq_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (_hn3 : 3 ≤ n)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvSecond : exponent v = n - 2) :
+    (retainedActive C v).card = 3 :=
+  secondLayer_projectedLoss_retainedActive_card_eq_three_core
+    C exponent hvLoss hvSecond
+
+#print axioms secondLayer_projectedLoss_retainedActive_card_eq_three_core
 #print axioms secondLayer_projectedLoss_retainedActive_card_eq_three
 
 end OrderedEdgeColoring
