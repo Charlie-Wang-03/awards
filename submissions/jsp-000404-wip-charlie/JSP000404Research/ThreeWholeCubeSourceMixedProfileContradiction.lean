@@ -71,12 +71,30 @@ theorem source_100_profile_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R sz v z)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hsySecond : centreExponent (Cfam sy) t = n - 2)
-    (hszSecond : centreExponent (Cfam sz) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hsySupport : positiveSupport (centreQuotient (Cfam sy) t) = 2)
-    (hszSupport : positiveSupport (centreQuotient (Cfam sz) t) = 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hsySecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sy) t = n - 2)
+    (hszSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sz) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hsySupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sy) t) = 2)
+    (hszSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sz) t) = 2)
     (hxTrue :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -192,12 +210,30 @@ theorem source_011_profile_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R sz v z)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hsySecond : centreExponent (Cfam sy) t = n - 2)
-    (hszSecond : centreExponent (Cfam sz) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hsySupport : positiveSupport (centreQuotient (Cfam sy) t) = 2)
-    (hszSupport : positiveSupport (centreQuotient (Cfam sz) t) = 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hsySecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sy) t = n - 2)
+    (hszSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sz) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hsySupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sy) t) = 2)
+    (hszSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sz) t) = 2)
     (hxFalse :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -263,8 +299,20 @@ theorem source_011_profile_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       retainedActive R' v = {y,z,x} := by
-    simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-      using hactive
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let R' :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    have hbase : retainedActive R' v = {x,y,z} := by
+      simpa [R'] using hactive
+    calc
+      retainedActive R' v = {x,y,z} := hbase
+      _ = {y,z,x} := by
+        ext q
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
 
   exact source_third_110_profile_supportTwo_impossible
     hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
