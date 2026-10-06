@@ -24,9 +24,9 @@ open OrderedEdgeColoring
 theorem ordered_threeWholeCube_supportOne_source_four_state_terminal
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
