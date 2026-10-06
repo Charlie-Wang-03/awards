@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualRecolor
+import JSP000404Research.WeightedHansel
 import Mathlib.Tactic
 
 /-!
@@ -48,6 +49,51 @@ noncomputable def retainedCompletionWords
   simp [retainedCompletionWords]
 
 #print axioms mem_retainedCompletionWords
+
+/-- Free-coordinate completions are equivalent to the retained completion
+words of one vertex. -/
+noncomputable def retainedCompletionEquivFree
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) :
+    FreeCoordinates (retainedActive C v) ≃
+      {word : Fin n → Bool //
+        word ∈ retainedCompletionWords C v} where
+  toFun free := ⟨
+    completeWord (retainedBit C) (retainedActive C) v free,
+    by
+      apply (mem_retainedCompletionWords C v _).2
+      intro d hd
+      simp [completeWord, hd]⟩
+  invFun word :=
+    fun d => word.1 d.1
+  left_inv free := by
+    funext d
+    simp [completeWord, d.2]
+  right_inv word := by
+    apply Subtype.ext
+    funext d
+    by_cases hd : d ∈ retainedActive C v
+    · have hcomp :=
+        (mem_retainedCompletionWords C v word.1).1 word.2
+      simp [completeWord, hd, hcomp d hd]
+    · simp [completeWord, hd]
+
+/-- Exact cardinality of one retained partial-code completion cube. -/
+theorem retainedCompletionWords_card
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) :
+    (retainedCompletionWords C v).card =
+      2 ^ (n - (retainedActive C v).card) := by
+  classical
+  have hcard :=
+    Fintype.card_congr
+      (retainedCompletionEquivFree C v)
+  rw [card_freeCoordinates] at hcard
+  simpa using hcard.symm
+
+#print axioms retainedCompletionWords_card
 
 end OrderedEdgeColoring
 end JSP000404Research
