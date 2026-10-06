@@ -32,9 +32,10 @@ theorem pair_intersection_bounds_starts
     (h :
       (threeNatInterval m ∩ threeNatInterval n).Nonempty) :
     m ≤ n + 2 ∧ n ≤ m + 2 := by
-  obtain ⟨k,hkm,hkn⟩ := h
-  have hm := (mem_threeNatInterval_iff_bounds.mp hkm)
-  have hn := (mem_threeNatInterval_iff_bounds.mp hkn)
+  obtain ⟨k,hk⟩ := h
+  have hk' := Finset.mem_inter.mp hk
+  have hm := mem_threeNatInterval_iff_bounds.mp hk'.1
+  have hn := mem_threeNatInterval_iff_bounds.mp hk'.2
   omega
 
 theorem four_threeNatIntervals_pairwise_intersect_common
