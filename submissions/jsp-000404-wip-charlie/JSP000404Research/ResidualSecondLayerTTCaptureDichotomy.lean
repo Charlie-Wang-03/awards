@@ -118,7 +118,7 @@ theorem mem_translated_iff_flip_of_inactive
   rw [mem_translatedCompletionWords,
       mem_translatedCompletionWords]
   rw [flipBoolWordAt_commute word hfe]
-  exact mem_completion_iff_flip_of_inactive C hfW
+  exact mem_retainedCompletionWords_flip_iff_of_inactive C hfW
 
 theorem flip_active_not_mem_same_translated
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -223,11 +223,11 @@ theorem secondLayer_TT_fullRematch_or_halfCapture
       ≤ (translatedCompletionWords C v d).card := by
   have hvCard :
       (retainedActive C v).card = 3 :=
-    secondLayerLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three_core
       C exponent hvLoss hvSecond
   have hwCard :
       (retainedActive C w).card = 3 :=
-    secondLayerLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three_core
       C exponent hwLoss hwSecond
   by_cases hEq :
       retainedActive C v = retainedActive C w
