@@ -166,21 +166,16 @@ theorem secondLayer_TQ_wholeCube_or_half_source_cube
     with hwhole | hhalf
   · exact Or.inl hwhole
   · right
-    have hvFree :
-        projectedFree C v = n - 3 := by
-      have hloss :=
-        (mem_projectedLossVertices C exponent v).1 hvLoss
-      rw [hvSecond] at hloss
-      omega
-    have hwFree :
-        projectedFree C w = n - 3 := by
-      have hloss :=
-        (mem_projectedLossVertices C exponent w).1 hwLoss
-      rw [hwSecond] at hloss
-      omega
-    rw [retainedCompletionWords_card,
-        retainedCompletionWords_card,
-        hvFree,hwFree] at hhalf ⊢
+    have hvCard :
+        (retainedActive C v).card = 3 :=
+      secondLayer_projectedLoss_retainedActive_card_eq_three_core
+        C exponent hvLoss hvSecond
+    have hwCard :
+        (retainedActive C w).card = 3 :=
+      secondLayer_projectedLoss_retainedActive_card_eq_three_core
+        C exponent hwLoss hwSecond
+    rw [retainedCompletionWords_card, hwCard] at hhalf
+    rw [retainedCompletionWords_card, hvCard]
     exact hhalf
 
 #print axioms translatedBaseCapture_half_of_missing_source_active
