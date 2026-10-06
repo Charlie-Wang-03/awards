@@ -165,11 +165,15 @@ theorem left_same_side_small_angle_labels_one_step_close
         projectionLinearOrder hp
       k < i)
     (hretJ :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       let R :=
         planarStandardResidualColoring
           hp hcap hn1 hdelta0 (by linarith : delta < 1) ht hlam
       (R.color j i).val < n)
     (hretK :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       let R :=
         planarStandardResidualColoring
           hp hcap hn1 hdelta0 (by linarith : delta < 1) ht hlam
@@ -180,6 +184,8 @@ theorem left_same_side_small_angle_labels_one_step_close
         (reindexedPoint p i)
         (reindexedPoint p k)
         ≤ delta * lam) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     let R :=
       planarStandardResidualColoring
         hp hcap hn1 hdelta0 (by linarith : delta < 1) ht hlam
