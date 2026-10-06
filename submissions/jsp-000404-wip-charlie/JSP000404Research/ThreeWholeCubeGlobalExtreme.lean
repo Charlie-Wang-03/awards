@@ -52,7 +52,7 @@ theorem global_min_allRetainedBitsFalse
   rcases hc with hIn | hOut
   · obtain ⟨a,hav,hcol⟩ := hIn
     have hva : v < a := hmin a (ne_of_lt hav)
-    exact False.elim ((lt_asymm hav hva) rfl)
+    exact False.elim (lt_asymm hav hva)
   · obtain ⟨w,hvw,hcol⟩ := hOut
     change bit C v c.castSucc = false
     have hbit := edgeColor_bit_lower_eq_false C hvw
@@ -77,7 +77,7 @@ theorem global_max_allRetainedBitsTrue
     simpa [hcol] using hbit
   · obtain ⟨w,hvw,hcol⟩ := hOut
     have hwv : w < v := hmax w (ne_of_gt hvw)
-    exact False.elim ((lt_asymm hvw hwv) rfl)
+    exact False.elim (lt_asymm hvw hwv)
 
 #print axioms global_min_allRetainedBitsFalse
 #print axioms global_max_allRetainedBitsTrue
