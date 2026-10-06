@@ -1,5 +1,5 @@
 
-import JSP000404Research.ResidualPairLocalHall
+import JSP000404Research.ResidualPairLocalHoles
 import JSP000404Research.BooleanFlipCore
 import Mathlib.Tactic
 
