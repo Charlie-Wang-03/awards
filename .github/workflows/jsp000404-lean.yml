@@ -59,6 +59,14 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check ordered retained-angle frontier first
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.FourSupportTwoOrderedAdjacent
+          lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacentCore
+          lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
+          lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
+
       - name: Check projection-cut representation bridge
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
