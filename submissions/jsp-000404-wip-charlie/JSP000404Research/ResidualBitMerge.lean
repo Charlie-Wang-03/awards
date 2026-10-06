@@ -1,5 +1,6 @@
 import JSP000404Research.BinaryEdgePartition
 import JSP000404Research.ResidualBipartite
+import JSP000404Research.RetainedCompletionCore
 import Mathlib.Tactic
 
 /-!
@@ -25,13 +26,6 @@ endpoints agree on every retained bit.  They are "vertical pairs" in the
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-/-- Canonical Boolean bit of a retained old colour. -/
-noncomputable def retainedBit
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1)) :
-    V → Fin n → Bool :=
-  fun v c => bit C v c.castSucc
 
 /-- Two vertices are separated by at least one retained old bit. -/
 def RetainedSeparated
