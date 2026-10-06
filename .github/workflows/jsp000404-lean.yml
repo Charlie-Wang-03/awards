@@ -68,6 +68,11 @@ jobs:
           lake build JSP000404Research.WholeCubeQTPairCore
           lake build JSP000404Research.ThreeWholeCubeRetainedCodeStar
 
+      - name: Check profiled whole-cube recursion progress
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualWholeCubeProfiledProgress
+
       - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
