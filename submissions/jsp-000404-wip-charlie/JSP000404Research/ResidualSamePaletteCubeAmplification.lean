@@ -31,8 +31,10 @@ theorem retainedCompletionWords_eq_of_same_palette_nonempty_inter
         retainedCompletionWords C v).Nonempty) :
     retainedCompletionWords C u =
       retainedCompletionWords C v := by
-  obtain ⟨base,hbaseU,hbaseV⟩ :=
-    Finset.nonempty_inter.mp hinter
+  obtain ⟨base,hbase⟩ := hinter
+  have hparts := Finset.mem_inter.mp hbase
+  have hbaseU := hparts.1
+  have hbaseV := hparts.2
   ext word
   constructor
   · intro hwordU
@@ -74,8 +76,10 @@ theorem translatedCompletionWords_eq_completion_of_same_palette_nonempty_inter
         retainedCompletionWords C v).Nonempty) :
     translatedCompletionWords C u c =
       retainedCompletionWords C v := by
-  obtain ⟨base,hbaseT,hbaseV⟩ :=
-    Finset.nonempty_inter.mp hinter
+  obtain ⟨base,hbase⟩ := hinter
+  have hparts := Finset.mem_inter.mp hbase
+  have hbaseT := hparts.1
+  have hbaseV := hparts.2
   have hcV : c ∈ retainedActive C v := by
     rw [← hactive]
     exact hcU
