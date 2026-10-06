@@ -1,4 +1,4 @@
-import JSP000404Research.ThreeWholeCubeInternalEdgeMatrix
+import JSP000404Research.ThreeWholeCubePartnerEdgeBitMatrix
 import JSP000404Research.ThreeWholeCubeExtremeUniqueness
 import Mathlib.Tactic
 
