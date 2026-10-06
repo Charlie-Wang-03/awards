@@ -1,113 +1,26 @@
-import JSP000404Research.ProjectionOrderedSupportTwoAdjacent
-import JSP000404Research.FourSupportTwoSecondLayerBridge
+import JSP000404Research.ProjectionFourSupportTwoOrderedAdjacentFromExtreme
 import JSP000404Research.ThreeWholeCubeGlobalExtreme
 import Mathlib.Tactic
 
 /-!
 # Ordered adjacent terminal for the all-support-two whole-cube star
 
-The whole-cube code star supplies a global order extreme among its four
-vertices.  Sorting the other three vertices therefore produces a strictly
-increasing ordering a<b<c<d of the same four-point star.
+The whole-cube retained-code star is used only to produce a global order
+extreme among the four vertices.  Once that extreme is known, the checked
+lightweight terminal
 
-All four centres are second-layer support-two and projected-loss.  Re-running
-the checked four-support-two terminal in that sorted order gives the
-three double-transposition patterns.  Since b is projected-loss, all three
-incident star edges at b are retained; opposite-side retained rays cannot be
-delta-small.  Hence only the adjacent matching {a,b}|{c,d} survives.
+  global extreme
+  + four projected-loss second-layer support-two centres
+  -> sorted a<b<c<d
+  -> unique ordered-adjacent support-two pattern
 
-This bypasses the crossing/Radon terminal entirely.
+does the remaining geometry.
+
+This file therefore isolates the genuinely whole-cube-specific bridge from
+the already kernel-checked ordered-adjacent terminal.
 -/
 
 namespace JSP000404Research
-
-theorem three_distinct_strict_order_cases
-    {V : Type*} [LinearOrder V]
-    {x y z : V}
-    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
-    (x < y ∧ y < z) ∨
-    (x < z ∧ z < y) ∨
-    (y < x ∧ x < z) ∨
-    (y < z ∧ z < x) ∨
-    (z < x ∧ x < y) ∨
-    (z < y ∧ y < x) := by
-  rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
-  · rcases lt_or_gt_of_ne hyz with hyzlt | hzylt
-    · exact Or.inl ⟨hxylt, hyzlt⟩
-    · rcases lt_or_gt_of_ne hxz with hxzlt | hzxlt
-      · exact Or.inr (Or.inl ⟨hxzlt, hzylt⟩)
-      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨hzxlt, hxylt⟩))))
-  · rcases lt_or_gt_of_ne hxz with hxzlt | hzxlt
-    · exact Or.inr (Or.inr (Or.inl ⟨hyxlt, hxzlt⟩))
-    · rcases lt_or_gt_of_ne hyz with hyzlt | hzylt
-      · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hyzlt, hzxlt⟩)))
-      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨hzylt, hyxlt⟩))))
-
-theorem four_with_global_min_has_sorted_permutation
-    {V : Type*} [LinearOrder V]
-    {o x y z : V}
-    (hox : o ≠ x) (hoy : o ≠ y) (hoz : o ≠ z)
-    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
-    (hmin : ∀ w : V, w ≠ o → o < w) :
-    ∃ a b c d : V,
-      ({a,b,c,d} : Finset V) = {o,x,y,z} ∧
-      a < b ∧ b < c ∧ c < d := by
-  have hoxlt := hmin x hox.symm
-  have hoylt := hmin y hoy.symm
-  have hozlt := hmin z hoz.symm
-  rcases three_distinct_strict_order_cases hxy hxz hyz with
-    hxyz | hxzy | hyxz | hyzx | hzxy | hzyx
-  · refine ⟨o,x,y,z,?_,hoxlt,hxyz.1,hxyz.2⟩
-    rfl
-  · refine ⟨o,x,z,y,?_,hoxlt,hxzy.1,hxzy.2⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨o,y,x,z,?_,hoylt,hyxz.1,hyxz.2⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨o,y,z,x,?_,hoylt,hyzx.1,hyzx.2⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨o,z,x,y,?_,hozlt,hzxy.1,hzxy.2⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨o,z,y,x,?_,hozlt,hzyx.1,hzyx.2⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-
-theorem four_with_global_max_has_sorted_permutation
-    {V : Type*} [LinearOrder V]
-    {o x y z : V}
-    (hox : o ≠ x) (hoy : o ≠ y) (hoz : o ≠ z)
-    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
-    (hmax : ∀ w : V, w ≠ o → w < o) :
-    ∃ a b c d : V,
-      ({a,b,c,d} : Finset V) = {o,x,y,z} ∧
-      a < b ∧ b < c ∧ c < d := by
-  have hxolt := hmax x hox.symm
-  have hyolt := hmax y hoy.symm
-  have hzolt := hmax z hoz.symm
-  rcases three_distinct_strict_order_cases hxy hxz hyz with
-    hxyz | hxzy | hyxz | hyzx | hzxy | hzyx
-  · refine ⟨x,y,z,o,?_,hxyz.1,hxyz.2,hzolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨x,z,y,o,?_,hxzy.1,hxzy.2,hyolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨y,x,z,o,?_,hyxz.1,hyxz.2,hzolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨y,z,x,o,?_,hyzx.1,hyzx.2,hxolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨z,x,y,o,?_,hzxy.1,hzxy.2,hyolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-  · refine ⟨z,y,x,o,?_,hzyx.1,hzyx.2,hxolt⟩
-    ext q
-    simp [or_assoc, or_left_comm, or_comm]
-
 namespace ProjectionOrdered
 
 open OrderedEdgeColoring
@@ -202,54 +115,23 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   have hn1 : 1 ≤ n := by omega
   have hdelta1 : delta < 1 := by linarith
-  let R := planarStandardResidualColoring
-    hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent (t := t) hp Cfam
-  let S : Finset (ProjectionOrdered V) := {v,s₁,s₂,s₃}
 
-  have hprof :=
-    genericProjection_lowerBranch_profile_hypotheses
-      hp hcap hn1 hdelta0 hdelta1 ht hlam Cfam
+  let R :=
+    planarStandardResidualColoring
+      hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent (t := t) hp Cfam
+
   have hexp : ∀ q, exponent q ≤ n := by
-    intro q
-    exact Nat.le_of_lt (by simpa [exponent] using hprof.1 q)
+    exact planarCentreExponent_le_n_light
+      hp hn1 hdelta0 hdelta1 ht Cfam
+
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R, exponent] using hprof.2 q
-
-  have loss_of_mem :
-      ∀ {q : ProjectionOrdered V}, q ∈ S →
-        q ∈ projectedLossVertices R exponent := by
-    intro q hq
-    simp only [S, Finset.mem_insert, Finset.mem_singleton] at hq
-    rcases hq with rfl | rfl | rfl | rfl
-    · simpa [R, exponent] using hvLoss
-    · simpa [R, exponent] using hs1Loss
-    · simpa [R, exponent] using hs2Loss
-    · simpa [R, exponent] using hs3Loss
-
-  have second_of_mem :
-      ∀ {q : ProjectionOrdered V}, q ∈ S →
-        centreExponent (Cfam q) t = n - 2 := by
-    intro q hq
-    simp only [S, Finset.mem_insert, Finset.mem_singleton] at hq
-    rcases hq with rfl | rfl | rfl | rfl
-    · exact hvSecond
-    · exact hs1Second
-    · exact hs2Second
-    · exact hs3Second
-
-  have support_of_mem :
-      ∀ {q : ProjectionOrdered V}, q ∈ S →
-        positiveSupport (centreQuotient (Cfam q) t) = 2 := by
-    intro q hq
-    simp only [S, Finset.mem_insert, Finset.mem_singleton] at hq
-    rcases hq with rfl | rfl | rfl | rfl
-    · exact hvSupport
-    · exact hs1Support
-    · exact hs2Support
-    · exact hs3Support
+    simpa [R, exponent, planarCentreExponent,
+      planarStandardResidualColoring] using
+      (planarStandardResidual_active_card_le_oneLayer
+        hp hcap hn1 hdelta0 hdelta1 ht hlam q (Cfam q))
 
   have hc1V : c₁ ∈ retainedActive R v := by
     rw [hactive]
@@ -274,87 +156,15 @@ theorem planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
       (by simpa [R] using h₂)
       (by simpa [R] using h₃)
 
-  have sorted_of_extreme :
-      ∃ a b c d : ProjectionOrdered V,
-        ({a,b,c,d} : Finset (ProjectionOrdered V)) = S ∧
-        a < b ∧ b < c ∧ c < d := by
-    rcases hextreme with hv | hs1 | hs2 | hs3
-    · rcases hv with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation
-            hvs1 hvs2 hvs3 hs12 hs13 hs23 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation
-            hvs1 hvs2 hvs3 hs12 hs13 hs23 hmax)
-    · rcases hs1 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation
-            hvs1.symm hs12 hs13 hvs2 hs23 hvs3 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation
-            hvs1.symm hs12 hs13 hvs2 hs23 hvs3 hmax)
-    · rcases hs2 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation
-            hvs2.symm hs12.symm hs23 hvs1 hs13 hvs3 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation
-            hvs2.symm hs12.symm hs23 hvs1 hs13 hvs3 hmax)
-    · rcases hs3 with hmin | hmax
-      · simpa [S] using
-          (four_with_global_min_has_sorted_permutation
-            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmin)
-      · simpa [S] using
-          (four_with_global_max_has_sorted_permutation
-            hvs3.symm hs13.symm hs23.symm hvs1 hvs2 hs12 hmax)
+  exact
+    planar_fourSupportTwo_of_globalExtreme_ordered_adjacent_terminal
+      hp hcap hn4 hdelta0 hdeltaHalf ht hlam Cfam
+      hvs1 hvs2 hvs3 hs12 hs13 hs23
+      hvLoss hs1Loss hs2Loss hs3Loss
+      hvSecond hs1Second hs2Second hs3Second
+      hvSupport hs1Support hs2Support hs3Support
+      (by simpa [FourPointGlobalExtreme] using hextreme)
 
-  obtain ⟨a,b,c,d,hset,hab,hbc,hcd⟩ := sorted_of_extreme
-  have haS : a ∈ S := by
-    rw [← hset]
-    simp
-  have hbS : b ∈ S := by
-    rw [← hset]
-    simp
-  have hcS : c ∈ S := by
-    rw [← hset]
-    simp
-  have hdS : d ∈ S := by
-    rw [← hset]
-    simp
-
-  have hac : a ≠ c := ne_of_lt (hab.trans hbc)
-  have had : a ≠ d := ne_of_lt (hab.trans (hbc.trans hcd))
-  have hbd : b ≠ d := ne_of_lt (hbc.trans hcd)
-
-  have hpat3 :=
-    four_supportTwo_secondLayer_reduce_to_derangement_three
-      (reindexedPoint_injective hp)
-      (angleCap_reindexed hcap)
-      (by omega : 3 ≤ n)
-      hdelta0 hdeltaHalf ht hlam Cfam
-      (ne_of_lt hab) hac had
-      (ne_of_lt hbc) hbd (ne_of_lt hcd)
-      (second_of_mem haS)
-      (second_of_mem hbS)
-      (second_of_mem hcS)
-      (second_of_mem hdS)
-      (support_of_mem haS)
-      (support_of_mem hbS)
-      (support_of_mem hcS)
-      (support_of_mem hdS)
-
-  have hadj :=
-    projectedLoss_ordered_pattern3_reduce_to_adjacent
-      hp hcap hn1 hdelta0 hdelta1 ht hlam Cfam
-      hab hbc hcd
-      (by simpa [R, exponent] using loss_of_mem hbS)
-      hpat3
-
-  exact ⟨a,b,c,d,by simpa [S] using hset,hab,hbc,hcd,hadj⟩
-
-#print axioms three_distinct_strict_order_cases
-#print axioms four_with_global_min_has_sorted_permutation
-#print axioms four_with_global_max_has_sorted_permutation
 #print axioms planar_threeWholeCube_allSupportTwo_ordered_adjacent_terminal
 
 end ProjectionOrdered
