@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualWholeCubeSecondCoordinate
+import JSP000404Research.ResidualWholeCubeSecondCoordinateCore
 import JSP000404Research.ProjectionEnlargedCandidateHall
 import Mathlib.Tactic
 
@@ -18,25 +19,6 @@ carrying the second-coordinate translated collision.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-def WholeCubeSecondCoordinateSecondLayerWitness
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (T : Finset V)
-    (s v : V) (c : Fin n) : Prop :=
-  ∃ word : Fin n → Bool,
-  ∃ w : V,
-  ∃ d : Fin n,
-    d ∈ retainedActive C v ∧
-    d ≠ c ∧
-    word ∈ translatedCompletionWords C v d ∧
-    word ∈ enlargedProjectedCandidateBlock C exponent w ∧
-    w ∈ T ∧
-    w ≠ v ∧
-    w ≠ s ∧
-    w ∈ projectedLossVertices C exponent ∧
-    exponent w = n - 2
 
 theorem wholeCubeThirdSource_profile_reduction
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
