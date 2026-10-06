@@ -4,6 +4,7 @@ import JSP000404Research.ResidualWholeCubeWellFounded
 import JSP000404Research.ResidualTranslatedCubeRematchQuotient
 import JSP000404Research.ResidualWholeCubePartnerSaturation
 import JSP000404Research.ResidualThreeWholeCubeMinimalCoreCollapse
+import JSP000404Research.ProjectionWholeCubeDiscoveryRankPositive
 
 /-!
 # Whole-cube finite-state recursion closure surface
@@ -20,13 +21,15 @@ The assembled facts are:
 * exact T/T full rematches are identified in a translated-cube quotient;
 * after all three projected-loss whole-cube coordinates are populated, every
   further projected-loss rematch repeats an existing state;
-* the saturated three-partner state is a 7-of-8 four-vertex deficient
-  obstruction, and inside an inclusion-minimal deficient core it collapses the
-  core exactly to those four vertices.
+* the saturated three-partner state is impossible in the genuine planar
+  second layer;
+* consequently every genuinely discovered coordinate registry has cardinality
+  at most two, so the planar discovery rank is always positive.
 
-This is still a research terminal, not the final arbitrary-cardinality
-capacity theorem: the exact four-vertex terminal must still be discharged or
-absorbed by the global Hall argument.
+This closes the finite-state whole-cube terminal itself.  It is still not the
+final arbitrary-cardinality capacity theorem: the remaining task is to connect
+this well-founded/quotiented recursion surface to the global Hall-capacity
+assembly.
 -/
 
 namespace JSP000404Research
