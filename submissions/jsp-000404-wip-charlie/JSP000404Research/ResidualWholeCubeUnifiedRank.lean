@@ -1,6 +1,4 @@
-import JSP000404Research.ResidualWholeCubeDiscoveryRank
-import JSP000404Research.ResidualTranslatedCubeRematchQuotient
-import JSP000404Research.ResidualWeightedRecursionRank
+import JSP000404Research.ResidualWholeCubeDiscoveryRankCore
 import Mathlib.Tactic
 
 /-!
