@@ -16,7 +16,7 @@ three marked rays into a delta-small marked pair.
 
 namespace JSP000404Research
 
-private theorem positiveCount_zero_forall
+theorem positiveCount_zero_forall
     (qs : List ℕ)
     (hzero : listPositiveCount qs = 0) :
     ∀ q ∈ qs, q = 0 := by
@@ -34,7 +34,7 @@ private theorem positiveCount_zero_forall
         · exact ih hzero q hq
       · simp [listPositiveCount, ha] at hzero
 
-private theorem positiveCount_append
+theorem positiveCount_append
     (xs ys : List ℕ) :
     listPositiveCount (xs ++ ys) =
       listPositiveCount xs + listPositiveCount ys := by
@@ -44,7 +44,7 @@ private theorem positiveCount_append
   | cons x xs ih =>
       simp [listPositiveCount, ih, add_assoc]
 
-private theorem zeroAngleMass_append
+theorem zeroAngleMass_append
     (q₁ q₂ : List ℕ) (A₁ A₂ : List ℝ)
     (hlen : q₁.length = A₁.length) :
     listZeroAngleMass (q₁ ++ q₂) (A₁ ++ A₂) =
@@ -66,7 +66,7 @@ private theorem zeroAngleMass_append
           rw [ih As hlen]
           ring
 
-private theorem zeroAngleMass_eq_sum_of_all_zero
+theorem zeroAngleMass_eq_sum_of_all_zero
     (qs : List ℕ) (As : List ℝ)
     (hlen : qs.length = As.length)
     (hzero : ∀ q ∈ qs, q = 0) :
@@ -91,7 +91,7 @@ private theorem zeroAngleMass_eq_sum_of_all_zero
           simp [listZeroAngleMass, ih As hlen htail]
 
 
-private theorem zeroAngleMass_append_three
+theorem zeroAngleMass_append_three
     (q₁ q₂ q₃ : List ℕ)
     (A₁ A₂ A₃ : List ℝ)
     (hlen₁ : q₁.length = A₁.length)
