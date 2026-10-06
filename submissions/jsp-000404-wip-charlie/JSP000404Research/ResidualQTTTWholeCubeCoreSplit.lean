@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualQTTTConsecutivePaletteTerminal
+import JSP000404Research.WholeCubeQTPairCore
 import Mathlib.Tactic
 
 /-!
@@ -16,14 +17,6 @@ This preserves the provenance required by minimal-core arguments.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-def WholeCubeQTPair
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (s v : V) (c : Fin n) : Prop :=
-  retainedActive C v = retainedActive C s ∧
-  translatedCompletionWords C v c =
-    retainedCompletionWords C s
 
 theorem QTTT_wholeCube_partner_core_or_fresh
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
