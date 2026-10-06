@@ -1,6 +1,5 @@
-import JSP000404Research.ResidualWholeCubeSecondCoordinateCollision
-import JSP000404Research.ResidualSecondLayerTQCaptureDichotomy
-import JSP000404Research.ResidualTranslatedOverlapFreeInheritance
+import JSP000404Research.ResidualSecondLayerProjectedLossCard
+import JSP000404Research.ResidualTranslatedFlipExclusion
 import Mathlib.Tactic
 
 /-!
