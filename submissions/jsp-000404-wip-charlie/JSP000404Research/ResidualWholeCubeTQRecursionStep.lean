@@ -1,4 +1,4 @@
-import JSP000404Research.ResidualWholeCubeSecondCoordinateCollision
+import JSP000404Research.ResidualWholeCubeSecondCoordinateCore
 import JSP000404Research.ResidualSecondLayerTQCaptureDichotomy
 import Mathlib.Tactic
 
