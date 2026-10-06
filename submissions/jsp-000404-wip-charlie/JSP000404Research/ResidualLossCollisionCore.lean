@@ -98,7 +98,13 @@ theorem loss_translated_intersection_forces_edge_colour_core
         ∃ hret : (C.color w v).val < n,
           retainedColor C w v hret = c
     ) := by
-  obtain ⟨word,hvT,hwQ⟩ := Finset.nonempty_inter.mp hinter
+  obtain ⟨word,hword⟩ := hinter
+  have hvT :
+      word ∈ translatedCompletionWords C v c :=
+    (Finset.mem_inter.mp hword).1
+  have hwQ :
+      word ∈ retainedCompletionWords C w :=
+    (Finset.mem_inter.mp hword).2
   have hvInactive :=
     residual_inactive_of_mem_projectedLossVertices
       C exponent hexp honeLoss hvLoss
