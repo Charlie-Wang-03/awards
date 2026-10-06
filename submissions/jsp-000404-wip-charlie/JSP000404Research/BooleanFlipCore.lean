@@ -30,6 +30,24 @@ theorem flipBoolWordAt_off
     flipBoolWordAt word c d = word d := by
   simp [flipBoolWordAt, hdc]
 
+theorem flipBoolWordAt_commute
+    {n : ℕ}
+    (word : Fin n → Bool)
+    {c d : Fin n}
+    (hcd : c ≠ d) :
+    flipBoolWordAt (flipBoolWordAt word c) d =
+      flipBoolWordAt (flipBoolWordAt word d) c := by
+  funext e
+  by_cases hec : e = c
+  · subst e
+    have hcd' : c ≠ d := hcd
+    simp [flipBoolWordAt, hcd, hcd']
+  · by_cases hed : e = d
+    · subst e
+      have hdc : d ≠ c := hcd.symm
+      simp [flipBoolWordAt, hcd, hdc]
+    · simp [flipBoolWordAt, hec, hed]
+
 theorem flipBoolWordAt_involutive
     {n : ℕ} (c : Fin n)
     (word : Fin n → Bool) :
@@ -71,6 +89,7 @@ theorem flip_active_not_mem_completion
   rw [flipBoolWordAt_at, hfixOrig] at hfixFlip
   cases h : retainedBit C v c <;> simp [h] at hfixFlip
 
+#print axioms flipBoolWordAt_commute
 #print axioms flipBoolWordAt_involutive
 #print axioms flipBoolWordAt_injective
 #print axioms flip_active_not_mem_completion
