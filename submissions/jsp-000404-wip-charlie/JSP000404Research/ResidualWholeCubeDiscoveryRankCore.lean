@@ -35,7 +35,7 @@ theorem wholeCubeDiscoveryRank_lt_of_insert_new
     wholeCubeDiscoveryRank (insert d coords) <
       wholeCubeDiscoveryRank coords := by
   unfold wholeCubeDiscoveryRank
-  rw [Finset.card_insert_of_not_mem hd]
+  rw [Finset.card_insert_of_notMem hd]
   omega
 
 theorem discovered_coordinates_card_le_three_of_subset_secondLayerActive
@@ -86,8 +86,8 @@ theorem profiled_TQ_rematch_repeat_or_discovery_progress
       have heq : coords.card = 3 := by omega
       have hactiveCard :
           (retainedActive C v).card = 3 :=
-        secondLayer_projectedLoss_retainedActive_card_eq_three
-          C exponent (by omega) hvLoss hvSecond
+        secondLayer_projectedLoss_retainedActive_card_eq_three_core
+          C exponent hvLoss hvSecond
       have hEq :
           coords = retainedActive C v :=
         Finset.eq_of_subset_of_card_le
