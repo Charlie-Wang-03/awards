@@ -66,12 +66,13 @@ jobs:
           lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
           lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
 
-      - name: Check final interior-profile contradiction core
+      - name: Check final profile contradiction cores
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.RetainedBitOrientationLight
           lake build JSP000404Research.ProjectionSupportTwoOrientationCloseness
           lake build JSP000404Research.ThreeWholeCubeInteriorProfileContradictionCore
+          lake build JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
 
       - name: Check interior-source extreme profile
         working-directory: submissions/jsp-000404-wip-charlie
