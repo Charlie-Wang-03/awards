@@ -55,7 +55,7 @@ theorem linear_cyclic_gapEquality_splits
     ) := by
   have hlast :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ (List.getLastD_mem_cons)
   have haz :
       a ≤ xs.getLastD a :=
     head_le_getLastD_of_pairwise a xs hsorted
