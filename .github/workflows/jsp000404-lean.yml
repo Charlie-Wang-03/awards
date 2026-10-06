@@ -68,6 +68,7 @@ jobs:
           lake build JSP000404Research.ThreeWholeCubeInteriorProfileContradictionCore
           lake build JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
           lake build JSP000404Research.ThreeWholeCubePartnerExtremeProfileContradiction
+          lake build JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoContradiction
 
       - name: Check ordered retained-angle frontier
         working-directory: submissions/jsp-000404-wip-charlie
