@@ -1,3 +1,5 @@
+import Mathlib
+
 /-!
 # Lightweight global-order extreme predicate
 
