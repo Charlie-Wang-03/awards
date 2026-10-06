@@ -1,4 +1,3 @@
-import JSP000404Research.ResidualWholeCubeCoordinateUniqueness
 import JSP000404Research.ResidualLossDirectionalWitness
 import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
