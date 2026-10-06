@@ -1,5 +1,4 @@
-import JSP000404Research.ResidualWholeCubeTQOrientation
-import JSP000404Research.ResidualQTTWholeCubeEquality
+import JSP000404Research.WholeCubeQTPairCore
 import Mathlib.Tactic
 
 /-!
@@ -18,54 +17,6 @@ whole-cube terminal.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-theorem wholeCube_owner_retainedBit_flip
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {s v : V} {c : Fin n}
-    (hcV : c ∈ retainedActive C v)
-    (hwhole : WholeCubeQTPair C s v c) :
-    retainedBit C s c = !(retainedBit C v c) := by
-  obtain ⟨hactive,hcube⟩ := hwhole
-  have hnon :
-      (retainedCompletionWords C s).Nonempty := by
-    rw [retainedCompletionWords_nonempty_iff]
-  obtain ⟨word,hsQ⟩ := hnon
-  have hvT :
-      word ∈ translatedCompletionWords C v c := by
-    rw [hcube]
-    exact hsQ
-  have hcode :=
-    QTT_equal_palette_oneBit_code
-      C hactive hcV hsQ hvT
-  cases hv : retainedBit C v c <;>
-    cases hs : retainedBit C s c <;>
-    simp_all
-
-theorem wholeCube_retainedCode_single_flip
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {s v : V} {c : Fin n}
-    (hcV : c ∈ retainedActive C v)
-    (hwhole : WholeCubeQTPair C s v c) :
-    retainedActive C s = retainedActive C v ∧
-    retainedBit C s c = !(retainedBit C v c) ∧
-    ∀ d : Fin n,
-      d ∈ retainedActive C v →
-      d ≠ c →
-      retainedBit C s d = retainedBit C v d := by
-  obtain ⟨hactive,hcube⟩ := hwhole
-  have hoff :
-      ∀ d : Fin n,
-        d ∈ retainedActive C v →
-        d ≠ c →
-        retainedBit C s d = retainedBit C v d := by
-    intro d hd hdc
-    exact wholeCube_off_owner_retainedBit_eq
-      C ⟨hactive,hcube⟩ hd hdc
-  exact ⟨hactive.symm,
-    wholeCube_owner_retainedBit_flip C hcV ⟨hactive,hcube⟩,
-    hoff⟩
 
 theorem threeWholeCubePartners_retainedCode_star
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -110,8 +61,6 @@ theorem threeWholeCubePartners_retainedCode_star
     wholeCube_retainedCode_single_flip C hc3V h₃
   ⟩
 
-#print axioms wholeCube_owner_retainedBit_flip
-#print axioms wholeCube_retainedCode_single_flip
 #print axioms threeWholeCubePartners_retainedCode_star
 
 end OrderedEdgeColoring
