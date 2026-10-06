@@ -1,6 +1,6 @@
 import JSP000404Research.ThreeWholeCubePartnerExtremeProfileContradiction
 import JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
-import JSP000404Research.ProjectionSupportOneGlobalExtreme
+import JSP000404Research.GlobalOrderExtremeCore
 import Mathlib.Tactic
 
 /-!
