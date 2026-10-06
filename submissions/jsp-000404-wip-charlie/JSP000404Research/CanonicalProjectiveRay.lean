@@ -1,4 +1,4 @@
-import JSP000404Research.ProjectiveInterval
+import JSP000404Research.PlanarComplexCoordinates
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Tactic
 
@@ -25,33 +25,6 @@ This is the first genuine geometric input for the cyclic-gap bridge.
 namespace JSP000404Research
 
 open Real
-
-/-- Canonical real-linear isometry from our Euclidean plane to the complex
-plane. -/
-noncomputable def planeToComplex : Plane ≃ₗᵢ[ℝ] ℂ :=
-  Complex.orthonormalBasisOneI.repr.symm
-
-@[simp] theorem planeToComplex_apply (x : Plane) :
-    planeToComplex x = x 0 + x 1 * Complex.I := by
-  rfl
-
-@[simp] theorem planeToComplex_rayDirection (theta : ℝ) :
-    planeToComplex (rayDirection theta) =
-      Real.cos theta + Real.sin theta * Complex.I := by
-  simp [planeToComplex, rayDirection]
-
-@[simp] theorem planeToComplex_signedRayDirection
-    (sigma : Bool) (theta : ℝ) :
-    planeToComplex (signedRayDirection sigma theta) =
-      if sigma then
-        Real.cos theta + Real.sin theta * Complex.I
-      else
-        -(Real.cos theta + Real.sin theta * Complex.I) := by
-  cases sigma
-  · simp only [signedRayDirection, Bool.false_eq_true, ite_false]
-    rw [map_neg, planeToComplex_rayDirection]
-  · simp only [signedRayDirection, ite_true]
-    exact planeToComplex_rayDirection theta
 
 /-- Basic half-turn identity, kept here to avoid a dependency cycle with the
 later monodromy module. -/
