@@ -69,6 +69,40 @@ theorem flipBoolWordAt_injective
       flipBoolWordAt word c) hxy
   simpa only [flipBoolWordAt_involutive] using h
 
+/-- Flipping a retained-inactive coordinate preserves completion-cube
+membership. -/
+theorem mem_retainedCompletionWords_flip_iff_of_inactive
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {v : V} {word : Fin n → Bool} {c : Fin n}
+    (hc : c ∉ retainedActive C v) :
+    flipBoolWordAt word c ∈ retainedCompletionWords C v ↔
+      word ∈ retainedCompletionWords C v := by
+  constructor
+  · intro hflip
+    apply (mem_retainedCompletionWords C v word).2
+    intro d hd
+    have hdc : d ≠ c := by
+      intro h
+      subst d
+      exact hc hd
+    have hcomp :=
+      (mem_retainedCompletionWords C v
+        (flipBoolWordAt word c)).1 hflip
+    simpa [flipBoolWordAt_off word hdc] using hcomp d hd
+  · intro hword
+    apply (mem_retainedCompletionWords C v
+      (flipBoolWordAt word c)).2
+    intro d hd
+    have hdc : d ≠ c := by
+      intro h
+      subst d
+      exact hc hd
+    rw [flipBoolWordAt_off word hdc]
+    exact (mem_retainedCompletionWords C v word).1 hword d hd
+
+#print axioms mem_retainedCompletionWords_flip_iff_of_inactive
+
 /-- Flipping an active retained coordinate exits that completion cube. -/
 theorem flip_active_not_mem_completion
     {V : Type*} [LinearOrder V] {n : ℕ}
