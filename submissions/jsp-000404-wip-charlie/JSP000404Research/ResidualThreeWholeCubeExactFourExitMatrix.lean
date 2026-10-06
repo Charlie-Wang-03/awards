@@ -93,9 +93,7 @@ theorem threeWholeCube_exactFour_offOwner_exit_first
       C exponent hn3 hdef hmin
       hvT hs1v hs1Loss hvLoss hvSecond
       hc1V h₁
-  have hdV : d ∈ retainedActive C v := by
-    rw [← h₁.1]
-    exact hdActive
+  have hdV : d ∈ retainedActive C v := hdActive
   have hdSet : d ∈ ({c₁,c₂,c₃} : Finset (Fin n)) := by
     rw [← hactive]
     exact hdV
