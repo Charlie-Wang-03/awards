@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossAllActiveCandidateBlock
+import JSP000404Research.ResidualEnlargedCandidateCore
 import JSP000404Research.ResidualProjectionLoss
 import Mathlib.Tactic
 
@@ -23,39 +24,6 @@ size at a loss vertex.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-noncomputable def enlargedProjectedCandidateBlock
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (v : V) : Finset (Fin n → Bool) := by
-  classical
-  exact if v ∈ projectedLossVertices C exponent then
-    allActiveLossCandidateBlock C v
-  else
-    retainedCompletionWords C v
-
-theorem enlargedProjectedCandidateBlock_loss
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hv : v ∈ projectedLossVertices C exponent) :
-    enlargedProjectedCandidateBlock C exponent v =
-      allActiveLossCandidateBlock C v := by
-  classical
-  simp [enlargedProjectedCandidateBlock, hv]
-
-theorem enlargedProjectedCandidateBlock_nonloss
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hv : v ∉ projectedLossVertices C exponent) :
-    enlargedProjectedCandidateBlock C exponent v =
-      retainedCompletionWords C v := by
-  classical
-  simp [enlargedProjectedCandidateBlock, hv]
 
 theorem enlargedProjectedCandidateBlock_local_capacity
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
