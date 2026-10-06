@@ -89,11 +89,17 @@ theorem interior_gapEquality_implies_stepwise_tight
       have htailLe :=
         interior_gapExponent_add_occupied_le_span
           b bs hb0 htail
+      have hlastEq :
+          (b :: bs).getLastD a = bs.getLastD b := by
+        rw [List.getLastD_cons]
       have hAB :
           Nat.floor a ≤ Nat.floor b :=
         Nat.floor_mono hab
-      by_cases hEq :
-          Nat.floor a = Nat.floor b
+      have hBLast :
+          Nat.floor b ≤ Nat.floor (bs.getLastD b) :=
+        floor_head_le_floor_getLastD_of_pairwise
+          b bs htail
+      by_cases hEq : Nat.floor a = Nat.floor b
       · have hq0 :
             Nat.floor (b - a) = 0 :=
           natFloor_sub_eq_zero_of_floor_eq
@@ -102,17 +108,18 @@ theorem interior_gapEquality_implies_stepwise_tight
             occupiedNatBands (a :: b :: bs) =
               occupiedNatBands (b :: bs) := by
           simp [occupiedNatBands, hEq]
+        have heq' := heq
+        simp only [successiveDiffsFrom, List.map_cons,
+          listExponent, List.sum_cons] at heq'
+        rw [hq0, hbands, hlastEq, hEq] at heq'
+        simp [excess] at heq'
         have htailEq :
             listExponent
                 ((successiveDiffsFrom b bs).map Nat.floor) +
                 (occupiedNatBands (b :: bs)).card
               =
             Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
-          simp only [successiveDiffsFrom, List.map_cons,
-            listExponent, List.map_cons, List.sum_cons] at heq
-          rw [hq0, hbands, hEq] at heq
-          simp [excess] at heq
-          exact heq
+          simpa only [listExponent, List.map_map] using heq'
         rw [InteriorBandGapTight]
         refine ⟨?_, ih b hb0 htail htailEq⟩
         simp [hEq, hq0]
@@ -124,35 +131,45 @@ theorem interior_gapEquality_implies_stepwise_tight
           intro hmem
           rw [occupiedNatBands, List.mem_toFinset,
             List.mem_map] at hmem
-          obtain ⟨x, hx, hxFloor⟩ := hmem
+          obtain ⟨x,hx,hxFloor⟩ := hmem
           have hBx :
               Nat.floor b ≤ Nat.floor x :=
-            head_floor_le_of_mem_sorted
-              htail hx
-          rw [← hxFloor] at hBx
+            head_floor_le_of_mem_sorted htail hx
+          have hxa : Nat.floor x = Nat.floor a := by
+            simpa using hxFloor
+          rw [hxa] at hBx
           omega
         have hbands :
             (occupiedNatBands (a :: b :: bs)).card =
               (occupiedNatBands (b :: bs)).card + 1 := by
           rw [occupiedNatBands_cons,
-              Finset.card_insert_of_not_mem hnotmem]
-          omega
+            Finset.card_insert_of_notMem hnotmem]
         have hgapLe :
             excess (Nat.floor (b - a)) + 1 ≤
               Nat.floor b - Nat.floor a :=
           excess_natFloor_sub_add_one_le_floor_sub_of_floor_lt
             ha0 hab hLt
-        have hBLast :
-            Nat.floor b ≤
-              Nat.floor (bs.getLastD b) :=
-          floor_head_le_floor_getLastD_of_pairwise
-            b bs htail
+        have hspan :
+            Nat.floor (bs.getLastD b) - Nat.floor a + 1 =
+              (Nat.floor b - Nat.floor a) +
+                (Nat.floor (bs.getLastD b) - Nat.floor b + 1) := by
+          omega
+        have heq' := heq
+        simp only [successiveDiffsFrom, List.map_cons,
+          listExponent, List.sum_cons] at heq'
+        rw [hbands, hlastEq] at heq'
+        have htotal :
+            (excess (Nat.floor (b - a)) + 1) +
+                (listExponent
+                    ((successiveDiffsFrom b bs).map Nat.floor) +
+                  (occupiedNatBands (b :: bs)).card)
+              =
+            Nat.floor (bs.getLastD b) - Nat.floor a + 1 := by
+          simpa only [listExponent, List.map_map,
+            Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using heq'
         have hgapEq :
             excess (Nat.floor (b - a)) + 1 =
               Nat.floor b - Nat.floor a := by
-          simp only [successiveDiffsFrom, List.map_cons,
-            listExponent, List.map_cons, List.sum_cons] at heq
-          rw [hbands] at heq
           omega
         have htailEq :
             listExponent
@@ -160,9 +177,6 @@ theorem interior_gapEquality_implies_stepwise_tight
                 (occupiedNatBands (b :: bs)).card
               =
             Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
-          simp only [successiveDiffsFrom, List.map_cons,
-            listExponent, List.map_cons, List.sum_cons] at heq
-          rw [hbands] at heq
           omega
         rw [InteriorBandGapTight]
         refine ⟨?_, ih b hb0 htail htailEq⟩
