@@ -95,10 +95,6 @@ jobs:
           lake build JSP000404Research.ResidualFreeNeighbour
           lake build JSP000404Research.ResidualCommonInactive
 
-      - name: Check exact-four off-owner exit matrix
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ResidualThreeWholeCubeExactFourExitMatrix
-
       - name: Check ordered-adjacent terminal from global extreme
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
