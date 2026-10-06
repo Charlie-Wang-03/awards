@@ -77,7 +77,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.ResidualWholeCubeSecondCoordinateProfiledOutcome
-          lake build JSP000404Research.ResidualWholeCubeMinimalCoreProgress
 
       - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
@@ -93,6 +92,11 @@ jobs:
           lake build JSP000404Research.ProjectionThreeWholeCubeUniqueSupportOneTerminal
           lake build JSP000404Research.ProjectionWholeCubeFullDiscoveryContradiction
           lake build JSP000404Research.ProjectionWholeCubeDiscoveryRankPositive
+
+      - name: Check minimal-core profiled assembly
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualWholeCubeMinimalCoreProgress
 
       - name: Check legacy extreme-profile assembly
         working-directory: submissions/jsp-000404-wip-charlie
