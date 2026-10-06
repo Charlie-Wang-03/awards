@@ -37,6 +37,8 @@ theorem planar_secondLayer_full_wholeCube_discovery_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {v : ProjectionOrdered V}
