@@ -1,5 +1,6 @@
 import JSP000404Research.ThreeWholeCubePartnerExtremeProfileContradiction
 import JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
+import JSP000404Research.ProjectionSupportOneGlobalExtreme
 import Mathlib.Tactic
 
 /-!
@@ -99,6 +100,8 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
         projectionLinearOrder hp
       centreExponent (Cfam s₃) t = n - 2)
     (hoMem :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       o ∈ ({v,s₁,s₂,s₃} : Finset (ProjectionOrdered V)))
     (hoExtreme :
       letI : LinearOrder (ProjectionOrdered V) :=
