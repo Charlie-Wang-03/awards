@@ -173,7 +173,7 @@ theorem QTTT_wholeCube_hole_or_paid_or_recursive_fibre_with_provenance
           ext q
           simp [or_left_comm,or_comm,or_assoc]]
         rw [← hsActive]
-        exact hdActive
+        exact hdS
       have hdAlt : d = cx ∨ d = cy :=
         offOwner_mem_two_of_three hdSet hdc
       rcases hout with hhole | hpaid | hfibre
@@ -215,43 +215,37 @@ theorem QTTT_wholeCube_hole_or_paid_or_recursive_fibre_with_provenance
         exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
           ⟨d,yy,hdAlt,hdActive,hyT',hne,hcard,hprof⟩))))
 
-theorem recursiveHardFibre_loss_blocker_collision
+/-- Every projected-loss blocker in the packaged recursive fibre gives the
+actual translated/base collision carried by that fibre.  The blocker is
+quantified over the packaged word itself; no identification with an unrelated
+external fibre witness is made. -/
+theorem recursiveHardFibre_packaged_loss_blockers_collide
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     {source : V} {owner alt₁ alt₂ : Fin n}
     (hfibre :
       QTTTWholeCubeRecursiveHardFibreWithProvenance
-        C exponent source owner alt₁ alt₂)
-    {w : V}
-    (hwFibre :
-      ∃ d : Fin n,
-      ∃ y : Fin n → Bool,
-        (d = alt₁ ∨ d = alt₂) ∧
-        w ∈ completionFibre C y)
-    (hwLoss : w ∈ projectedLossVertices C exponent) :
+        C exponent source owner alt₁ alt₂) :
     ∃ d : Fin n,
     ∃ y : Fin n → Bool,
       (d = alt₁ ∨ d = alt₂) ∧
       d ∈ retainedActive C source ∧
       y ∈ translatedCompletionWords C source d ∧
-      y ∈ retainedCompletionWords C w ∧
-      w ≠ source := by
-  obtain ⟨d0,y0,hdAlt,hdActive,hyT,_hne,_hcard,hprof⟩ := hfibre
-  -- A usable blocker must refer to the packaged fibre word.  Expose the
-  -- canonical packaged blocker form rather than silently identifying words.
-  have hnonempty :
-      (completionFibre C y0).Nonempty := _hne
-  obtain ⟨w0,hw0⟩ := hnonempty
-  by_cases hww : w = w0
-  · subst w
-    exact ⟨d0,y0,hdAlt,hdActive,hyT,
-      (mem_completionFibre C y0 w0).1 hw0,
-      (hprof w0 hw0).1⟩
-  · -- The external witness may select another blocker.  Since the fibre has
-    -- cardinality at most two, do not guess that it is w0; the stronger
-    -- direct blocker theorem below should be used with membership in y0.
-    exact False.elim (hww rfl)
+      (completionFibre C y).Nonempty ∧
+      (completionFibre C y).card ≤ 2 ∧
+      ∀ w : V,
+        w ∈ completionFibre C y →
+        w ∈ projectedLossVertices C exponent →
+        y ∈ retainedCompletionWords C w ∧
+        w ≠ source := by
+  obtain ⟨d,y,hdAlt,hdActive,hyT,hne,hcard,hprof⟩ := hfibre
+  refine ⟨d,y,hdAlt,hdActive,hyT,hne,hcard,?_⟩
+  intro w hw hwLoss
+  have hp := hprof w hw
+  exact ⟨(mem_completionFibre C y w).1 hw,hp.1⟩
+
+#print axioms recursiveHardFibre_packaged_loss_blockers_collide
 
 #print axioms QTTT_wholeCube_hole_or_paid_or_recursive_fibre_with_provenance
 
