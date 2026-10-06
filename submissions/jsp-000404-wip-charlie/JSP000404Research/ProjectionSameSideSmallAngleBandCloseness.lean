@@ -23,17 +23,23 @@ open DirectionData
 theorem right_same_side_small_angle_labels_one_step_close
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {i j k : ProjectionOrdered V}
-    (hij : i < j)
-    (hjk : j < k)
+    (hij :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      i < j)
+    (hjk :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      j < k)
     (hretJ :
       let R :=
         planarStandardResidualColoring
@@ -135,17 +141,23 @@ theorem right_same_side_small_angle_labels_one_step_close
 theorem left_same_side_small_angle_labels_one_step_close
     {V : Type*} [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn1 : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     {i j k : ProjectionOrdered V}
-    (hjk : j < k)
-    (hki : k < i)
+    (hjk :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      j < k)
+    (hki :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      k < i)
     (hretJ :
       let R :=
         planarStandardResidualColoring
