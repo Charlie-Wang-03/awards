@@ -49,6 +49,8 @@ theorem source_second_100_profile_supportTwo_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {a b c d : ProjectionOrdered V}
@@ -86,10 +88,22 @@ theorem source_second_100_profile_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R d b z)
-    (hcSecond : centreExponent (Cfam c) t = n - 2)
-    (hdSecond : centreExponent (Cfam d) t = n - 2)
-    (hcSupport : positiveSupport (centreQuotient (Cfam c) t) = 2)
-    (hdSupport : positiveSupport (centreQuotient (Cfam d) t) = 2)
+    (hcSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam c) t = n - 2)
+    (hdSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam d) t = n - 2)
+    (hcSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam c) t) = 2)
+    (hdSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam d) t) = 2)
     (hxBTrue :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -228,6 +242,8 @@ theorem source_third_110_profile_supportTwo_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {a b c d : ProjectionOrdered V}
@@ -265,10 +281,22 @@ theorem source_third_110_profile_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R d c z)
-    (haSecond : centreExponent (Cfam a) t = n - 2)
-    (hbSecond : centreExponent (Cfam b) t = n - 2)
-    (haSupport : positiveSupport (centreQuotient (Cfam a) t) = 2)
-    (hbSupport : positiveSupport (centreQuotient (Cfam b) t) = 2)
+    (haSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam a) t = n - 2)
+    (hbSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam b) t = n - 2)
+    (haSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam a) t) = 2)
+    (hbSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam b) t) = 2)
     (hxCTrue :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
