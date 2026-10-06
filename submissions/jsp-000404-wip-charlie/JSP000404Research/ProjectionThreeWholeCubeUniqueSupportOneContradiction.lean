@@ -35,6 +35,8 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {v s₁ s₂ s₃ o : ProjectionOrdered V}
