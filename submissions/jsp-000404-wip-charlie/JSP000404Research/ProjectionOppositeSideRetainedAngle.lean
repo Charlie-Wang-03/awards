@@ -315,12 +315,33 @@ theorem opposite_side_oneStep_retained_angle_gt_pi_sub_two_lam
   have hclose' : NatOneStepClose cA.val cB.val := by
     simpa [R, D, cA, cB, planarStandardResidualColoring] using hclose
 
+  have hcolA :
+      DirectionData.standardBandColor
+          D (n + 1) (Nat.succ_pos n)
+          (by exact_mod_cast hwidth) a i
+        =
+      cA.castSucc := by
+    apply Fin.ext
+    rfl
+  have hcolB :
+      DirectionData.standardBandColor
+          D (n + 1) (Nat.succ_pos n)
+          (by exact_mod_cast hwidth) i b
+        =
+      cB.castSucc := by
+    apply Fin.ext
+    rfl
+
   have hA :=
-    DirectionData.standardResidual_retained_edge_exact_band_bounds
-      D hwidth hai hretA'
+    (DirectionData.standardBandColor_eq_iff
+      D (n + 1) (Nat.succ_pos n)
+      (by exact_mod_cast hwidth)
+      hai cA.castSucc).1 hcolA
   have hB :=
-    DirectionData.standardResidual_retained_edge_exact_band_bounds
-      D hwidth hib hretB'
+    (DirectionData.standardBandColor_eq_iff
+      D (n + 1) (Nat.succ_pos n)
+      (by exact_mod_cast hwidth)
+      hib cB.castSucc).1 hcolB
 
   have hlabel :
       |(cA.val : ℝ) - (cB.val : ℝ)| ≤ 1 := by
