@@ -165,11 +165,15 @@ theorem isResidual_of_flippedCode_collision_lt
       retainedBit C a e ≠ retainedBit C b e :=
     retainedBit_ne_of_retained_edge C hab hret
   by_cases hec : e = c
-  · subst e
-    exact hc (retainedColor_mem_retainedActive_left C hab hret)
+  · apply hc
+    rw [← hec]
+    simpa [e] using
+      (retainedColor_mem_retainedActive_left C hab hret)
   · by_cases hed : e = d
-    · subst e
-      exact hd (retainedColor_mem_retainedActive_right C hab hret)
+    · apply hd
+      rw [← hed]
+      simpa [e] using
+        (retainedColor_mem_retainedActive_right C hab hret)
     · have hxy :
           retainedBit C x e = retainedBit C y e :=
         retainedBit_eq_off_of_flippedCode_eq
@@ -362,12 +366,33 @@ noncomputable def repairedRetainedCode
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (hrepair : DuplicateCommonInactive C) :
-    V → (Fin n → Bool) :=
-  fun v =>
+    V → (Fin n → Bool) := by
+  classical
+  exact fun v =>
     if h : HasEarlierSame C v then
       flippedRetainedCode C v (repairCoord C hrepair v h)
     else
       fun c => retainedBit C v c
+
+theorem repairedRetainedCode_eq_flipped
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (hrepair : DuplicateCommonInactive C)
+    (v : V) (h : HasEarlierSame C v) :
+    repairedRetainedCode C hrepair v =
+      flippedRetainedCode C v (repairCoord C hrepair v h) := by
+  classical
+  simp [repairedRetainedCode, h]
+
+theorem repairedRetainedCode_eq_base
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (hrepair : DuplicateCommonInactive C)
+    (v : V) (h : ¬ HasEarlierSame C v) :
+    repairedRetainedCode C hrepair v =
+      (fun c => retainedBit C v c) := by
+  classical
+  simp [repairedRetainedCode, h]
 
 /-- A moved duplicate lands outside the complete original retained-code image. -/
 theorem repairedRetainedCode_of_duplicate_is_hole
@@ -390,7 +415,8 @@ theorem repairedRetainedCode_of_duplicate_is_hole
   have hhole :=
     no_vertex_retainedCode_eq_flipped_common_inactive
       C c huv.symm hsameVU hcv hcu
-  simpa [repairedRetainedCode, h, u, c] using hhole
+  rw [repairedRetainedCode_eq_flipped C hrepair v h]
+  simpa [u, c] using hhole
 
 /-- Two vertices which both have earlier representatives cannot be distinct
 members of the same retained-code fibre. -/
@@ -418,8 +444,8 @@ theorem sameRetained_of_two_hasEarlierSame
     have huwNe : u ≠ w := ne_of_lt huw
     have hUW := earlierSameVertex_same C w hw
     have hUV := sameRetained_trans hUW (sameRetained_symm hsame)
-    exact hvw.symm
-      (retainedFiber_other_unique C huwNe huv hUW hUV)
+    exact hvw
+      (retainedFiber_other_unique C huwNe huv hUW hUV).symm
 
 /-- Repairs attached to two distinct duplicated fibres are distinct. -/
 theorem repaired_flips_ne_of_distinct_duplicates
@@ -458,14 +484,18 @@ theorem repairedRetainedCode_injective
         repaired_flips_ne_of_distinct_duplicates
           C hrepair hv hw hvw
       apply hne
-      simpa [repairedRetainedCode, hv, hw] using heq
+      rw [repairedRetainedCode_eq_flipped C hrepair v hv,
+          repairedRetainedCode_eq_flipped C hrepair w hw] at heq
+      exact heq
     · exfalso
       have hhole :=
         repairedRetainedCode_of_duplicate_is_hole
           C hrepair v hv
       apply hhole
       refine ⟨w, ?_⟩
-      simpa [repairedRetainedCode, hv, hw] using heq.symm
+      rw [repairedRetainedCode_eq_flipped C hrepair v hv,
+          repairedRetainedCode_eq_base C hrepair w hw] at heq
+      exact heq.symm
   · by_cases hw : HasEarlierSame C w
     · exfalso
       have hhole :=
@@ -473,11 +503,18 @@ theorem repairedRetainedCode_injective
           C hrepair w hw
       apply hhole
       refine ⟨v, ?_⟩
-      simpa [repairedRetainedCode, hv, hw] using heq
-    · have hsame : SameRetained C v w := by
+      rw [repairedRetainedCode_eq_base C hrepair v hv,
+          repairedRetainedCode_eq_flipped C hrepair w hw] at heq
+      exact heq
+    · have hbaseEq :
+          (fun c => retainedBit C v c) =
+            (fun c => retainedBit C w c) := by
+        rw [← repairedRetainedCode_eq_base C hrepair v hv,
+            ← repairedRetainedCode_eq_base C hrepair w hw]
+        exact heq
+      have hsame : SameRetained C v w := by
         intro c
-        have hc := congrFun heq c
-        simpa [repairedRetainedCode, hv, hw] using hc
+        exact congrFun hbaseEq c
       by_contra hvw
       rcases lt_or_gt_of_ne hvw with hvwlt | hwvlt
       · exact hw ⟨v, hvwlt, hsame⟩
@@ -510,6 +547,8 @@ theorem card_le_two_pow_of_duplicate_active_sum_lt
   exact exists_common_inactive_of_retained_card_add_lt
     C (hcard huv hsame)
 
+#print axioms repairedRetainedCode_eq_flipped
+#print axioms repairedRetainedCode_eq_base
 #print axioms castSucc_mem_active_iff_mem_retainedActive
 #print axioms isResidual_of_flippedCode_collision_lt
 #print axioms no_vertex_retainedCode_eq_flipped_common_inactive
