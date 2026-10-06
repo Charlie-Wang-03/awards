@@ -247,8 +247,8 @@ theorem translated_loss_conflict_edge_colour_core
         (flipBoolWordAt word d)).1 hwOrig e heW
     have hec : e ≠ c := by simpa [e] using hne.1
     have hed : e ≠ d := by simpa [e] using hne.2
-    rw [flipBoolWordAt_off word hec,
-        flipBoolWordAt_off word hed] at hvAt hwAt
+    rw [flipBoolWordAt_off word hec] at hvAt
+    rw [flipBoolWordAt_off word hed] at hwAt
     exact (retainedBit_ne_of_retained_edge C hvwlt hret)
       (hvAt.symm.trans hwAt)
   · right
@@ -273,8 +273,8 @@ theorem translated_loss_conflict_edge_colour_core
         (flipBoolWordAt word d)).1 hwOrig e heW
     have hec : e ≠ c := by simpa [e] using hne.1
     have hed : e ≠ d := by simpa [e] using hne.2
-    rw [flipBoolWordAt_off word hec,
-        flipBoolWordAt_off word hed] at hvAt hwAt
+    rw [flipBoolWordAt_off word hec] at hvAt
+    rw [flipBoolWordAt_off word hed] at hwAt
     exact (retainedBit_ne_of_retained_edge C hwvlt hret)
       (hwAt.symm.trans hvAt)
 
@@ -296,7 +296,13 @@ theorem translated_loss_conflict_distinct_coordinates_core
     c ≠ d := by
   intro hcd
   subst d
-  obtain ⟨word,hvT,hwT⟩ := Finset.nonempty_inter.mp hoverlap
+  obtain ⟨word,hword⟩ := hoverlap
+  have hvT :
+      word ∈ translatedCompletionWords C v c :=
+    (Finset.mem_inter.mp hword).1
+  have hwT :
+      word ∈ translatedCompletionWords C w c :=
+    (Finset.mem_inter.mp hword).2
   exact Finset.disjoint_left.mp
     (translated_loss_blocks_disjoint_same_coordinate_core
       C exponent hexp honeLoss hvLoss hwLoss hvw c)
