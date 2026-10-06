@@ -1,4 +1,5 @@
-import JSP000404Research.ResidualSafeCommonInactiveReducedZeroOutlet
+import JSP000404Research.ResidualTranslatedOverlapFullPair
+import JSP000404Research.ResidualOverlapCube
 import Mathlib.Tactic
 
 /-!
