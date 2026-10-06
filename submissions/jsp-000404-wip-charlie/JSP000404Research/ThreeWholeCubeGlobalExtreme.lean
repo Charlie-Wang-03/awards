@@ -1,6 +1,5 @@
 import JSP000404Research.ThreeWholeCubeRetainedCodeStar
-import JSP000404Research.ResidualLossDirectionalWitness
-import JSP000404Research.RetainedOrientation
+import JSP000404Research.ResidualProjectedLossCore
 import Mathlib.Tactic
 
 /-!
@@ -50,20 +49,27 @@ theorem projectedLoss_allFalse_is_global_min
     ∀ w : V, w ≠ v → v < w := by
   intro w hwv
   rcases lt_or_gt_of_ne hwv with hwvlt | hvwlt
-  · have hret :
-        (C.color w v).val < n :=
-      projectedLoss_edge_right_retained
-        C exponent hexp honeLoss hvLoss hwvlt
+  · have hret : (C.color w v).val < n := by
+      by_contra hnot
+      have hres : IsResidual C w v := hnot
+      have hactive :=
+        (residualCoord_mem_active_of_isResidual C hwvlt hres).2
+      exact
+        (residual_inactive_of_mem_projectedLossVertices
+          C exponent hexp honeLoss hvLoss) hactive
     let e : Fin n := retainedColor C w v hret
-    have heV :
-        e ∈ retainedActive C v :=
-      retainedColor_mem_retainedActive_right C hwvlt hret
-    have heIn :
-        e ∈ incomingRetained C v :=
-      retainedColor_mem_incomingRetained_right C hwvlt hret
-    have htrue :
-        retainedBit C v e = true :=
-      (mem_incomingRetained_iff_retainedBit_true C v e).1 heIn
+    have hcast : e.castSucc = C.color w v := by
+      apply Fin.ext
+      rfl
+    have heV : e ∈ retainedActive C v := by
+      classical
+      simp only [retainedActive, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      exact Or.inl ⟨w, hwvlt, hcast.symm⟩
+    have htrue : retainedBit C v e = true := by
+      unfold retainedBit
+      rw [hcast]
+      exact edgeColor_bit_upper_eq_true C hwvlt
     have hzero := hfalse e heV
     rw [hzero] at htrue
     simp at htrue
@@ -83,20 +89,27 @@ theorem projectedLoss_allTrue_is_global_max
   intro w hwv
   rcases lt_or_gt_of_ne hwv with hwvlt | hvwlt
   · exact hwvlt
-  · have hret :
-        (C.color v w).val < n :=
-      projectedLoss_edge_right_retained
-        C exponent hexp honeLoss hvLoss hvwlt
+  · have hret : (C.color v w).val < n := by
+      by_contra hnot
+      have hres : IsResidual C v w := hnot
+      have hactive :=
+        (residualCoord_mem_active_of_isResidual C hvwlt hres).1
+      exact
+        (residual_inactive_of_mem_projectedLossVertices
+          C exponent hexp honeLoss hvLoss) hactive
     let e : Fin n := retainedColor C v w hret
-    have heV :
-        e ∈ retainedActive C v :=
-      retainedColor_mem_retainedActive_left C hvwlt hret
-    have heOut :
-        e ∈ outgoingRetained C v :=
-      retainedColor_mem_outgoingRetained_left C hvwlt hret
-    have hfalse :
-        retainedBit C v e = false :=
-      retainedBit_false_of_outgoingRetained C heOut
+    have hcast : e.castSucc = C.color v w := by
+      apply Fin.ext
+      rfl
+    have heV : e ∈ retainedActive C v := by
+      classical
+      simp only [retainedActive, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      exact Or.inr ⟨w, hvwlt, hcast.symm⟩
+    have hfalse : retainedBit C v e = false := by
+      unfold retainedBit
+      rw [hcast]
+      exact edgeColor_bit_lower_eq_false C hvwlt
     have hone := htrue e heV
     rw [hone] at hfalse
     simp at hfalse
