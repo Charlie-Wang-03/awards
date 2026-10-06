@@ -1,4 +1,4 @@
-import JSP000404Research.ResidualLossTranslatedBlock
+import JSP000404Research.TranslatedCompletionCore
 import Mathlib.Tactic
 
 /-!
