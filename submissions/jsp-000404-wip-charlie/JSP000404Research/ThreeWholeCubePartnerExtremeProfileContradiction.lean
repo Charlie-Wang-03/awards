@@ -142,7 +142,7 @@ theorem owner_partner_globalMin_supportTwo_impossible
     | false =>
         simp [h] at hflip
     | true =>
-        exact h
+        rfl
   have hyVFalse : retainedBit R v y = false := by
     have heq := hstar.1.2.2 y hyV hxy.symm
     exact heq.symm.trans hySFalse
@@ -294,7 +294,7 @@ theorem owner_partner_globalMax_supportTwo_impossible
     rw [hxSTrue] at hflip
     cases h : retainedBit R v x with
     | false =>
-        exact h
+        rfl
     | true =>
         simp [h] at hflip
   have hyVTrue : retainedBit R v y = true := by
