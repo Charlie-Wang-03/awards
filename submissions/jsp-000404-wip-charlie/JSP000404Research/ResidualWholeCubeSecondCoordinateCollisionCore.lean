@@ -33,7 +33,7 @@ theorem wholeCubeSecondCoordinate_secondLayer_TQ_or_TT_core
   have hsem :=
     loss_translated_collision_with_enlarged_block_edge_semantics_core
       C exponent hexp honeLoss
-      hvLoss hwNeV hdActive hdWord hwBlock
+      hvLoss hwNeV.symm hdActive hdWord hwBlock
   rcases hsem with hnon | hloss
   · exact False.elim (hnon.1 hwLoss)
   · rcases hloss.2 with hQ | hT
@@ -53,8 +53,8 @@ theorem wholeCubeSecondCoordinate_secondLayer_TQ_or_TT_core
         exact
           (translated_loss_conflict_distinct_coordinates_core
             C exponent hexp honeLoss
-            hvLoss hwLoss hwNeV hinter) rfl
-      exact Or.inr
+            hvLoss hwLoss hwNeV.symm hinter) rfl
+      exact
         ⟨word,w,d,e,
           hdActive,hdc,heActive,hde,
           hdWord,heWord,
