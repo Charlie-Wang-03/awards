@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualWholeCubePairSharedMass
 import JSP000404Research.MinimalBlockSharedDeficit
+import JSP000404Research.ResidualSecondLayerProjectedLossCard
 import Mathlib.Tactic
 
 /-!
@@ -24,24 +25,6 @@ genuine augmenting witness beyond the whole-cube collision.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-theorem secondLayer_projectedLoss_retainedActive_card_eq_three
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (hn3 : 3 ≤ n)
-    {v : V}
-    (hvLoss : v ∈ projectedLossVertices C exponent)
-    (hvSecond : exponent v = n - 2) :
-    (retainedActive C v).card = 3 := by
-  have hloss :=
-    (mem_projectedLossVertices C exponent v).1 hvLoss
-  unfold projectedFree at hloss
-  rw [hvSecond] at hloss
-  have hcardLe :
-      (retainedActive C v).card ≤ n := by
-    simpa using Finset.card_le_univ (retainedActive C v)
-  omega
 
 theorem secondLayer_projectedLoss_completion_card_eq
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -249,7 +232,6 @@ theorem minimal_core_wholeCubeQTPair_has_extra_shared_word
   rw [htwoCard] at hcardUpper
   omega
 
-#print axioms secondLayer_projectedLoss_retainedActive_card_eq_three
 #print axioms secondLayer_projectedLoss_enlargedBlock_card_eq
 #print axioms secondLayer_projectedLoss_enlargedBlock_slack_eq
 #print axioms minimal_core_wholeCubeQTPair_has_extra_shared_word
