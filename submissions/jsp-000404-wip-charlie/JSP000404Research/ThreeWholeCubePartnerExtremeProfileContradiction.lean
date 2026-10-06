@@ -35,6 +35,8 @@ theorem owner_partner_globalMin_supportTwo_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {v sx sy sz : ProjectionOrdered V}
@@ -165,6 +167,8 @@ theorem owner_partner_globalMax_supportTwo_impossible
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) q)
     {v sx sy sz : ProjectionOrdered V}
