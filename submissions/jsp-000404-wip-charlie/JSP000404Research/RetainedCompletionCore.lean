@@ -91,7 +91,15 @@ theorem retainedCompletionWords_card
     Fintype.card_congr
       (retainedCompletionEquivFree C v)
   rw [card_freeCoordinates] at hcard
-  simpa using hcard.symm
+  calc
+    (retainedCompletionWords C v).card =
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ retainedCompletionWords C v} := by
+      symm
+      exact Fintype.card_coe _
+    _ = 2 ^ (n - (retainedActive C v).card) :=
+      hcard.symm
 
 #print axioms retainedCompletionWords_card
 
