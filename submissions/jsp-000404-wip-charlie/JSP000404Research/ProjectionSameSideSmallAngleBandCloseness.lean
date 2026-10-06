@@ -71,8 +71,11 @@ theorem right_same_side_small_angle_labels_one_step_close
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
-  have htpos : 0 < t :=
-    sendov_scale_pos hn1 hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (1 : ℝ) ≤ n := by
+      exact_mod_cast hn1
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -121,7 +124,8 @@ theorem right_same_side_small_angle_labels_one_step_close
       exact (div_le_iff₀ hlampos).2 (by
         simpa [mul_comm] using hangle)
     rw [← habs] at hdiv
-    simpa [D,F] using hdiv
+    rw [hFD.1, hFD.2]
+    exact hdiv
 
   have hCJlo : (cj.val : ℝ) ≤ D.value i j := by
     simpa [cj] using hJ.1
@@ -138,9 +142,13 @@ theorem right_same_side_small_angle_labels_one_step_close
     rw [abs_le] at hdiff
     constructor <;> linarith
 
+  have hCJnat : cj.val < ck.val + 2 := by
+    exact_mod_cast hcloseR.1
+  have hCKnat : ck.val < cj.val + 2 := by
+    exact_mod_cast hcloseR.2
   have hcloseN :
       cj.val ≤ ck.val + 1 ∧ ck.val ≤ cj.val + 1 := by
-    constructor <;> omega
+    omega
 
   simpa [R,D,cj,ck,planarStandardResidualColoring] using hcloseN
 
@@ -195,8 +203,11 @@ theorem left_same_side_small_angle_labels_one_step_close
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
-  have htpos : 0 < t :=
-    sendov_scale_pos hn1 hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (1 : ℝ) ≤ n := by
+      exact_mod_cast hn1
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -229,6 +240,10 @@ theorem left_same_side_small_angle_labels_one_step_close
     F.angle_last_eq_abs hjk hki
   have habs :=
     F.abs_value_sub_value hlampos j i k i
+  have hFD :
+      D.value j i = F.value (lam := lam) j i ∧
+      D.value k i = F.value (lam := lam) k i := by
+    exact ⟨rfl,rfl⟩
 
   have hdiff :
       |D.value j i - D.value k i| ≤ delta := by
@@ -241,7 +256,8 @@ theorem left_same_side_small_angle_labels_one_step_close
       exact (div_le_iff₀ hlampos).2 (by
         simpa [mul_comm] using hangle)
     rw [← habs] at hdiv
-    simpa [D,F] using hdiv
+    rw [hFD.1, hFD.2]
+    exact hdiv
 
   have hCJlo : (cj.val : ℝ) ≤ D.value j i := by
     simpa [cj] using hJ.1
@@ -258,9 +274,13 @@ theorem left_same_side_small_angle_labels_one_step_close
     rw [abs_le] at hdiff
     constructor <;> linarith
 
+  have hCJnat : cj.val < ck.val + 2 := by
+    exact_mod_cast hcloseR.1
+  have hCKnat : ck.val < cj.val + 2 := by
+    exact_mod_cast hcloseR.2
   have hcloseN :
       cj.val ≤ ck.val + 1 ∧ ck.val ≤ cj.val + 1 := by
-    constructor <;> omega
+    omega
 
   simpa [R,D,cj,ck,planarStandardResidualColoring] using hcloseN
 
