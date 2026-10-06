@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualWholeCubeTQActiveOrOutward
 import JSP000404Research.ResidualPairLocalFlip
+import JSP000404Research.ResidualTranslatedFlipExclusion
 import Mathlib.Tactic
 
 /-!
@@ -26,33 +27,6 @@ bound relative to a completion cube of size 2^(n-3).
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-theorem flip_other_active_not_mem_translated
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {v : V} {word : Fin n → Bool}
-    {c d : Fin n}
-    (hc : c ∈ retainedActive C v)
-    (hcd : c ≠ d)
-    (hword :
-      word ∈ translatedCompletionWords C v d) :
-    flipBoolWordAt word c ∉
-      translatedCompletionWords C v d := by
-  intro hflipT
-  have hbase :
-      flipBoolWordAt word d ∈ retainedCompletionWords C v :=
-    (mem_translatedCompletionWords C v d word).1 hword
-  have hflipBase :
-      flipBoolWordAt (flipBoolWordAt word c) d ∈
-        retainedCompletionWords C v :=
-    (mem_translatedCompletionWords C v d
-      (flipBoolWordAt word c)).1 hflipT
-  have hcomm :
-      flipBoolWordAt (flipBoolWordAt word c) d =
-        flipBoolWordAt (flipBoolWordAt word d) c := by
-    exact flipBoolWordAt_commute word hcd
-  rw [hcomm] at hflipBase
-  exact flip_active_not_mem_completion C hbase hc hflipBase
 
 noncomputable def wholeCubeTQCapturedWords
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -173,7 +147,6 @@ theorem wholeCubeTQ_inactive_secondLayer_capture_half
   rw [retainedCompletionWords_card,hfree] at hbase
   exact hbase
 
-#print axioms flip_other_active_not_mem_translated
 #print axioms wholeCubeTQ_inactive_owner_two_mul_capture_le_completion
 #print axioms wholeCubeTQ_inactive_secondLayer_capture_half
 
