@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualLossDirectionalWitness
 import JSP000404Research.RetainedOrientation
+import JSP000404Research.WholeCubeQTPairCore
 import Mathlib.Tactic
 
 /-!
@@ -40,15 +41,15 @@ theorem projectedLoss_wholeCube_partner_unique_at_coordinate
   by_contra hne
   have hQeq :
       retainedCompletionWords C s₁ =
-        retainedCompletionWords C s₂ := by
-    rcases h₁ with ⟨_,hEq1⟩
-    rcases h₂ with ⟨_,hEq2⟩
-    exact hEq1.symm.trans hEq2
+        retainedCompletionWords C s₂ :=
+    h₁.2.symm.trans h₂.2
 
-  have hnonempty :
-      (retainedCompletionWords C s₁).Nonempty := by
-    rw [retainedCompletionWords_nonempty_iff]
-  obtain ⟨word,hword1⟩ := hnonempty
+  let word : Fin n → Bool := fun e => retainedBit C s₁ e
+  have hword1 :
+      word ∈ retainedCompletionWords C s₁ := by
+    apply (mem_retainedCompletionWords C s₁ word).2
+    intro e he
+    rfl
   have hword2 :
       word ∈ retainedCompletionWords C s₂ := by
     rw [← hQeq]
@@ -60,67 +61,81 @@ theorem projectedLoss_wholeCube_partner_unique_at_coordinate
       projectedLoss_edge_right_retained
         C exponent hexp honeLoss hs1Loss hlt
     let e : Fin n := retainedColor C s₁ s₂ hret
-    have he1 :
-        e ∈ retainedActive C s₁ :=
-      retainedColor_mem_retainedActive_left C hlt hret
-    have he2 :
-        e ∈ retainedActive C s₂ :=
-      retainedColor_mem_retainedActive_right C hlt hret
-    have hbit1 :=
-      (mem_retainedCompletionWords C s₁ word).1
-        hword1 e he1
-    have hbit2 :=
-      (mem_retainedCompletionWords C s₂ word).1
-        hword2 e he2
     have hOut1 : e ∈ outgoingRetained C s₁ := by
       apply (mem_outgoingRetained_iff C s₁ e).2
       refine ⟨s₂,hlt,?_⟩
+      apply Fin.ext
       rfl
     have hIn2 : e ∈ incomingRetained C s₂ := by
       apply (mem_incomingRetained_iff C s₂ e).2
       refine ⟨s₁,hlt,?_⟩
+      apply Fin.ext
+      rfl
+    have hactive :=
+      common_forward_colour_absorbed C hOut1 hIn2
+    have hbit1 :=
+      (mem_retainedCompletionWords C s₁ word).1
+        hword1 e hactive.1
+    have hbit2 :=
+      (mem_retainedCompletionWords C s₂ word).1
+        hword2 e hactive.2
+    have heq :
+        e.castSucc = C.color s₁ s₂ := by
+      apply Fin.ext
       rfl
     have hb1 :
-        retainedBit C s₁ e = false :=
-      retainedBit_false_of_outgoingRetained C hOut1
+        retainedBit C s₁ e = false := by
+      simpa [retainedBit, heq] using
+        (edgeColor_bit_lower_eq_false C hlt)
     have hb2 :
-        retainedBit C s₂ e = true :=
-      (mem_incomingRetained_iff_retainedBit_true C s₂ e).1 hIn2
-    rw [hbit1,hbit2] at hb1 hb2
-    simp_all
+        retainedBit C s₂ e = true := by
+      simpa [retainedBit, heq] using
+        (edgeColor_bit_upper_eq_true C hlt)
+    have hsame :
+        retainedBit C s₁ e = retainedBit C s₂ e :=
+      hbit1.symm.trans hbit2
+    rw [hb1,hb2] at hsame
+    contradiction
   · have hret :
         (C.color s₂ s₁).val < n :=
       projectedLoss_edge_right_retained
         C exponent hexp honeLoss hs2Loss hgt
     let e : Fin n := retainedColor C s₂ s₁ hret
-    have he2 :
-        e ∈ retainedActive C s₂ :=
-      retainedColor_mem_retainedActive_left C hgt hret
-    have he1 :
-        e ∈ retainedActive C s₁ :=
-      retainedColor_mem_retainedActive_right C hgt hret
-    have hbit1 :=
-      (mem_retainedCompletionWords C s₁ word).1
-        hword1 e he1
-    have hbit2 :=
-      (mem_retainedCompletionWords C s₂ word).1
-        hword2 e he2
     have hOut2 : e ∈ outgoingRetained C s₂ := by
       apply (mem_outgoingRetained_iff C s₂ e).2
       refine ⟨s₁,hgt,?_⟩
+      apply Fin.ext
       rfl
     have hIn1 : e ∈ incomingRetained C s₁ := by
       apply (mem_incomingRetained_iff C s₁ e).2
       refine ⟨s₂,hgt,?_⟩
+      apply Fin.ext
+      rfl
+    have hactive :=
+      common_forward_colour_absorbed C hOut2 hIn1
+    have hbit1 :=
+      (mem_retainedCompletionWords C s₁ word).1
+        hword1 e hactive.2
+    have hbit2 :=
+      (mem_retainedCompletionWords C s₂ word).1
+        hword2 e hactive.1
+    have heq :
+        e.castSucc = C.color s₂ s₁ := by
+      apply Fin.ext
       rfl
     have hb2 :
-        retainedBit C s₂ e = false :=
-      retainedBit_false_of_outgoingRetained C hOut2
+        retainedBit C s₂ e = false := by
+      simpa [retainedBit, heq] using
+        (edgeColor_bit_lower_eq_false C hgt)
     have hb1 :
-        retainedBit C s₁ e = true :=
-      (mem_incomingRetained_iff_retainedBit_true C s₁ e).1 hIn1
-    rw [hbit1,hbit2] at hb1 hb2
-    simp_all
+        retainedBit C s₁ e = true := by
+      simpa [retainedBit, heq] using
+        (edgeColor_bit_upper_eq_true C hgt)
+    have hsame :
+        retainedBit C s₁ e = retainedBit C s₂ e :=
+      hbit1.symm.trans hbit2
+    rw [hb1,hb2] at hsame
+    contradiction
 
 #print axioms projectedLoss_wholeCube_partner_unique_at_coordinate
 
