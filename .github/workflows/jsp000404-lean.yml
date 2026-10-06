@@ -59,14 +59,20 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
-      - name: Check final profile contradiction cores first
+      - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ThreeWholeCubeGlobalExtreme
           lake build JSP000404Research.RetainedBitOrientationLight
           lake build JSP000404Research.ProjectionSupportTwoOrientationCloseness
           lake build JSP000404Research.ThreeWholeCubeInteriorProfileContradictionCore
           lake build JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
+          lake build JSP000404Research.ThreeWholeCubeSourceMixedProfileContradiction
+          lake build JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoProfileExhaustion
+
+      - name: Check legacy extreme-profile assembly
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ThreeWholeCubeGlobalExtreme
           lake build JSP000404Research.ThreeWholeCubePartnerExtremeProfileContradiction
           lake build JSP000404Research.ProjectionThreeWholeCubeAllSupportTwoContradiction
 
