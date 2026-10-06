@@ -74,12 +74,30 @@ theorem owner_partner_globalMin_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R sz v z)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hsySecond : centreExponent (Cfam sy) t = n - 2)
-    (hszSecond : centreExponent (Cfam sz) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hsySupport : positiveSupport (centreQuotient (Cfam sy) t) = 2)
-    (hszSupport : positiveSupport (centreQuotient (Cfam sz) t) = 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hsySecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sy) t = n - 2)
+    (hszSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sz) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hsySupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sy) t) = 2)
+    (hszSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sz) t) = 2)
     (hmin :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -206,12 +224,30 @@ theorem owner_partner_globalMax_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       WholeCubeQTPair R sz v z)
-    (hvSecond : centreExponent (Cfam v) t = n - 2)
-    (hsySecond : centreExponent (Cfam sy) t = n - 2)
-    (hszSecond : centreExponent (Cfam sz) t = n - 2)
-    (hvSupport : positiveSupport (centreQuotient (Cfam v) t) = 2)
-    (hsySupport : positiveSupport (centreQuotient (Cfam sy) t) = 2)
-    (hszSupport : positiveSupport (centreQuotient (Cfam sz) t) = 2)
+    (hvSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam v) t = n - 2)
+    (hsySecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sy) t = n - 2)
+    (hszSecond :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      centreExponent (Cfam sz) t = n - 2)
+    (hvSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam v) t) = 2)
+    (hsySupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sy) t) = 2)
+    (hszSupport :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      positiveSupport (centreQuotient (Cfam sz) t) = 2)
     (hmax :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
