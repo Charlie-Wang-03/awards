@@ -105,6 +105,8 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
         projectionLinearOrder hp
       GlobalOrderExtreme o)
     (hothers :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ q : ProjectionOrdered V,
         q ∈ ({v,s₁,s₂,s₃} : Finset (ProjectionOrdered V)) →
         q ≠ o →
@@ -184,12 +186,13 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
     have hs3Support :=
       hothers s₃ (by simp) hs23
     have hactive₂ :
-        let R' :=
-          planarStandardResidualColoring
-            hp hcap hn1 hdelta0 hdelta1 ht hlam
-        retainedActive R' v = {c₂,c₁,c₃} := by
-      simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-        using hactive'
+        retainedActive R v = {c₂,c₁,c₃} := by
+      calc
+        retainedActive R v = {c₁,c₂,c₃} := hactive'
+        _ = {c₂,c₁,c₃} := by
+          ext q
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          tauto
     rcases hoExtreme with hmin | hmax
     · exact owner_partner_globalMin_supportTwo_impossible
         hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
@@ -213,12 +216,13 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
     have hs2Support :=
       hothers s₂ (by simp) hs23.symm
     have hactive₃ :
-        let R' :=
-          planarStandardResidualColoring
-            hp hcap hn1 hdelta0 hdelta1 ht hlam
-        retainedActive R' v = {c₃,c₁,c₂} := by
-      simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-        using hactive'
+        retainedActive R v = {c₃,c₁,c₂} := by
+      calc
+        retainedActive R v = {c₁,c₂,c₃} := hactive'
+        _ = {c₃,c₁,c₂} := by
+          ext q
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          tauto
     rcases hoExtreme with hmin | hmax
     · exact owner_partner_globalMin_supportTwo_impossible
         hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
