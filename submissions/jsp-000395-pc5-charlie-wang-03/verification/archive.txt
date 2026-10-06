@@ -1,0 +1,15 @@
+Permanent external archive
+
+Service: OSF Registries
+Registration ID: gtzra
+Registration URL: https://osf.io/gtzra/
+DOI: 10.17605/OSF.IO/GTZRA
+DOI URL: https://doi.org/10.17605/OSF.IO/GTZRA
+Archived file: awards-ce0daafbebf78ca1559bd8955837cd2d4c85f94c.zip
+Archived source snapshot commit: ce0daafbebf78ca1559bd8955837cd2d4c85f94c
+Exact byte count: 329586 bytes
+SHA-256: 5ab30ed8102e5d20c07686bf2505b361e8908713eb7964354c90cb4d121bb22e
+
+The SHA-256 and byte count above were computed from the file downloaded back from the public OSF registration after DOI assignment. The ZIP root directory is `awards-ce0daafbebf78ca1559bd8955837cd2d4c85f94c/`, matching the archived GitHub source snapshot identifier.
+
+This OSF registration is the permanent external archive for the submission artifact. The separate GitHub Actions artifact recorded in `artifact.txt` remains reproducibility evidence subject to GitHub retention and is not used as the permanent archive identifier.
