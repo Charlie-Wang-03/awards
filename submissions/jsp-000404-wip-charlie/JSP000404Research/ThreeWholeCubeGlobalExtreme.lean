@@ -263,10 +263,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · simpa [b₁] using hstar.1.2.1.trans hbits.1
-    · exact (hstar.1.2.2 c₂ hc2V hc12.symm).trans hbits.2.1
-    · exact (hstar.1.2.2 c₃ hc3V hc13.symm).trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      simpa [b₁] using hstar.1.2.1.trans hbits.1
+    · subst c
+      exact (hstar.1.2.2 c₂ hc2V hc12.symm).trans hbits.2.1
+    · subst c
+      exact (hstar.1.2.2 c₃ hc3V hc13.symm).trans hbits.2.2
 
   have partner1True
       (hbits : (!b₁) = true ∧ b₂ = true ∧ b₃ = true) :
@@ -277,10 +280,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · simpa [b₁] using hstar.1.2.1.trans hbits.1
-    · exact (hstar.1.2.2 c₂ hc2V hc12.symm).trans hbits.2.1
-    · exact (hstar.1.2.2 c₃ hc3V hc13.symm).trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      simpa [b₁] using hstar.1.2.1.trans hbits.1
+    · subst c
+      exact (hstar.1.2.2 c₂ hc2V hc12.symm).trans hbits.2.1
+    · subst c
+      exact (hstar.1.2.2 c₃ hc3V hc13.symm).trans hbits.2.2
 
   have partner2False
       (hbits : b₁ = false ∧ (!b₂) = false ∧ b₃ = false) :
@@ -291,10 +297,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · exact (hstar.2.1.2.2 c₁ hc1V hc12).trans hbits.1
-    · simpa [b₂] using hstar.2.1.2.1.trans hbits.2.1
-    · exact (hstar.2.1.2.2 c₃ hc3V hc23.symm).trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      exact (hstar.2.1.2.2 c₁ hc1V hc12).trans hbits.1
+    · subst c
+      simpa [b₂] using hstar.2.1.2.1.trans hbits.2.1
+    · subst c
+      exact (hstar.2.1.2.2 c₃ hc3V hc23.symm).trans hbits.2.2
 
   have partner2True
       (hbits : b₁ = true ∧ (!b₂) = true ∧ b₃ = true) :
@@ -305,10 +314,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · exact (hstar.2.1.2.2 c₁ hc1V hc12).trans hbits.1
-    · simpa [b₂] using hstar.2.1.2.1.trans hbits.2.1
-    · exact (hstar.2.1.2.2 c₃ hc3V hc23.symm).trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      exact (hstar.2.1.2.2 c₁ hc1V hc12).trans hbits.1
+    · subst c
+      simpa [b₂] using hstar.2.1.2.1.trans hbits.2.1
+    · subst c
+      exact (hstar.2.1.2.2 c₃ hc3V hc23.symm).trans hbits.2.2
 
   have partner3False
       (hbits : b₁ = false ∧ b₂ = false ∧ (!b₃) = false) :
@@ -319,10 +331,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · exact (hstar.2.2.2.2 c₁ hc1V hc13).trans hbits.1
-    · exact (hstar.2.2.2.2 c₂ hc2V hc23).trans hbits.2.1
-    · simpa [b₃] using hstar.2.2.2.1.trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      exact (hstar.2.2.2.2 c₁ hc1V hc13).trans hbits.1
+    · subst c
+      exact (hstar.2.2.2.2 c₂ hc2V hc23).trans hbits.2.1
+    · subst c
+      simpa [b₃] using hstar.2.2.2.1.trans hbits.2.2
 
   have partner3True
       (hbits : b₁ = true ∧ b₂ = true ∧ (!b₃) = true) :
@@ -333,10 +348,13 @@ theorem threeWholeCubePartners_has_global_extreme
       exact hc
     rw [hactive] at hcV
     simp only [Finset.mem_insert, Finset.mem_singleton] at hcV
-    rcases hcV with rfl | rfl | rfl
-    · exact (hstar.2.2.2.2 c₁ hc1V hc13).trans hbits.1
-    · exact (hstar.2.2.2.2 c₂ hc2V hc23).trans hbits.2.1
-    · simpa [b₃] using hstar.2.2.2.1.trans hbits.2.2
+    rcases hcV with hcEq | hcEq | hcEq
+    · subst c
+      exact (hstar.2.2.2.2 c₁ hc1V hc13).trans hbits.1
+    · subst c
+      exact (hstar.2.2.2.2 c₂ hc2V hc23).trans hbits.2.1
+    · subst c
+      simpa [b₃] using hstar.2.2.2.1.trans hbits.2.2
 
   rcases hconst with h | h | h | h | h | h | h | h
   · exact Or.inl (Or.inl
