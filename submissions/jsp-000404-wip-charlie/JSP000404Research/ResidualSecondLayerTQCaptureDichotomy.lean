@@ -1,6 +1,6 @@
 import JSP000404Research.ResidualSamePaletteCubeAmplification
-import JSP000404Research.ResidualWholeCubeTQHalfCapture
-import JSP000404Research.ResidualLossAllActiveCandidateBlock
+import JSP000404Research.ResidualTranslatedFlipExclusion
+import JSP000404Research.ResidualSecondLayerProjectedLossCard
 import Mathlib.Tactic
 
 /-!
@@ -108,11 +108,11 @@ theorem secondLayer_TQ_wholeCube_or_halfCapture
       ≤ (retainedCompletionWords C w).card := by
   have hvCard :
       (retainedActive C v).card = 3 :=
-    secondLayerLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three
       C exponent hvLoss hvSecond
   have hwCard :
       (retainedActive C w).card = 3 :=
-    secondLayerLoss_retainedActive_card_eq_three
+    secondLayer_projectedLoss_retainedActive_card_eq_three
       C exponent hwLoss hwSecond
 
   by_cases hEq :
