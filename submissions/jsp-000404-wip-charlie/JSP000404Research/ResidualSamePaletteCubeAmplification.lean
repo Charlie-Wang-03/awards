@@ -1,5 +1,4 @@
-import JSP000404Research.ResidualQTTWholeCubeEquality
-import JSP000404Research.ResidualLossTranslatedBlock
+import JSP000404Research.WholeCubeQTPairCore
 import Mathlib.Tactic
 
 /-!
