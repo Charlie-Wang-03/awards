@@ -138,7 +138,11 @@ theorem owner_partner_globalMin_supportTwo_impossible
   have hxVTrue : retainedBit R v x = true := by
     have hflip := hstar.1.2.1
     rw [hxSFalse] at hflip
-    cases h : retainedBit R v x <;> simp_all
+    cases h : retainedBit R v x with
+    | false =>
+        simp [h] at hflip
+    | true =>
+        exact h
   have hyVFalse : retainedBit R v y = false := by
     have heq := hstar.1.2.2 y hyV hxy.symm
     exact heq.symm.trans hySFalse
@@ -288,7 +292,11 @@ theorem owner_partner_globalMax_supportTwo_impossible
   have hxVFalse : retainedBit R v x = false := by
     have hflip := hstar.1.2.1
     rw [hxSTrue] at hflip
-    cases h : retainedBit R v x <;> simp_all
+    cases h : retainedBit R v x with
+    | false =>
+        exact h
+    | true =>
+        simp [h] at hflip
   have hyVTrue : retainedBit R v y = true := by
     have heq := hstar.1.2.2 y hyV hxy.symm
     exact heq.symm.trans hySTrue
@@ -320,8 +328,20 @@ theorem owner_partner_globalMax_supportTwo_impossible
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       retainedActive R' v = {y,z,x} := by
-    simpa [Finset.insert_comm, Finset.insert_left_comm, Finset.insert_assoc]
-      using hactive
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let R' :=
+      planarStandardResidualColoring
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    have hbase : retainedActive R' v = {x,y,z} := by
+      simpa [R'] using hactive
+    calc
+      retainedActive R' v = {x,y,z} := hbase
+      _ = {y,z,x} := by
+        ext q
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
 
   exact source_third_110_profile_supportTwo_impossible
     hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
