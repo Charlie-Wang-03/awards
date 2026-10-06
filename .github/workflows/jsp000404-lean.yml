@@ -80,6 +80,7 @@ jobs:
           lake build JSP000404Research.ProjectionThreeWholeCubeUniqueSupportOneContradiction
           lake build JSP000404Research.ProjectionThreeWholeCubeSaturatedContradiction
           lake build JSP000404Research.ProjectionThreeWholeCubeUniqueSupportOneTerminal
+          lake build JSP000404Research.ProjectionWholeCubeFullDiscoveryContradiction
 
       - name: Check legacy extreme-profile assembly
         working-directory: submissions/jsp-000404-wip-charlie
