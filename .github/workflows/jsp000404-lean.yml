@@ -59,20 +59,20 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
-      - name: Check ordered retained-angle frontier first
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: |
-          lake build JSP000404Research.FourSupportTwoOrderedAdjacent
-          lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
-          lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
-
-      - name: Check final profile contradiction cores
+      - name: Check final profile contradiction cores first
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.RetainedBitOrientationLight
           lake build JSP000404Research.ProjectionSupportTwoOrientationCloseness
           lake build JSP000404Research.ThreeWholeCubeInteriorProfileContradictionCore
           lake build JSP000404Research.ThreeWholeCubeSourceExtremeProfileContradiction
+
+      - name: Check ordered retained-angle frontier
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.FourSupportTwoOrderedAdjacent
+          lake build JSP000404Research.ProjectionOrderedSupportTwoAdjacent
+          lake build JSP000404Research.ProjectionThreeWholeCubeOrderedAdjacentTerminal
 
       - name: Check interior-source extreme profile
         working-directory: submissions/jsp-000404-wip-charlie
