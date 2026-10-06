@@ -110,16 +110,7 @@ theorem wholeCubeSecondCoordinateTQ_halfCapture_payload_lt
     (translatedBaseCapture C v w d).card <
       (retainedCompletionWords C v).card := by
   rcases hhalf with ⟨hpos,hbound⟩
-  exact payload_strictly_decreases_of_half_capture
-    (payload := (retainedCompletionWords C v).card)
-    (captured := (translatedBaseCapture C v w d).card)
-    (by
-      by_contra hzero
-      have hz :
-          (retainedCompletionWords C v).card = 0 := by omega
-      rw [retainedCompletionWords_card] at hz
-      exact Nat.two_pow_ne_zero _ hz)
-    hbound hpos
+  omega
 
 #print axioms wholeCubeSecondCoordinateTQ_rematch_or_halfCapture
 #print axioms wholeCubeSecondCoordinateTQ_halfCapture_payload_lt
