@@ -61,7 +61,7 @@ theorem translatedBaseCapture_half_of_missing_source_active
     intro z hz
     obtain ⟨word,hwordS,rfl⟩ := Finset.mem_image.mp hz
     have hwQ := (Finset.mem_inter.mp hwordS).2
-    exact (mem_completion_iff_flip_of_inactive C heW).2 hwQ
+    exact (mem_retainedCompletionWords_flip_iff_of_inactive C heW).2 hwQ
 
   have hdisj : Disjoint S F := by
     rw [Finset.disjoint_left]
@@ -85,7 +85,7 @@ theorem translatedBaseCapture_half_of_missing_source_active
 
   have hcard := Finset.card_le_card hunionSub
   rw [Finset.card_union_of_disjoint hdisj,hFcard] at hcard
-  omega
+  simpa [S, two_mul] using hcard
 
 theorem secondLayer_TQ_wholeCube_or_halfCapture
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
