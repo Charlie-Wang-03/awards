@@ -55,9 +55,10 @@ theorem outgoing_inter_incoming_eq_empty_of_completion_overlap
     (hvWord : word ∈ retainedCompletionWords C v) :
     outgoingRetained C u ∩ incomingRetained C v = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c hc
-  have hcData := Finset.mem_inter.mp hc
+  ext c
+  simp only [Finset.mem_inter, Finset.not_mem_empty, iff_false]
+  intro hc
+  have hcData := hc
   have huComp :=
     (mem_retainedCompletionWords C u word).1 huWord
   have hvComp :=
@@ -72,15 +73,17 @@ theorem outgoing_inter_incoming_eq_empty_of_completion_overlap
     exact Finset.mem_union_left _ hcData.2
   have huFalse :
       retainedBit C u c = false := by
-    unfold retainedBit
-    apply bit_eq_false_iff.mpr
-    intro hin
-    have hinc :
-        c ∈ incomingRetained C u :=
-      (mem_incomingRetained_iff C u c).2 hin
-    exact Finset.disjoint_left.mp
-      (incomingRetained_disjoint_outgoingRetained C u)
-      hinc hcData.1
+    cases hbit : retainedBit C u c with
+    | false =>
+        rfl
+    | true =>
+        have hinc :
+            c ∈ incomingRetained C u :=
+          (mem_incomingRetained_iff_retainedBit_true C u c).2 hbit
+        exact False.elim
+          (Finset.disjoint_left.mp
+            (incomingRetained_disjoint_outgoingRetained C u)
+            hinc hcData.1)
   have hvTrue :
       retainedBit C v c = true :=
     (mem_incomingRetained_iff_retainedBit_true
