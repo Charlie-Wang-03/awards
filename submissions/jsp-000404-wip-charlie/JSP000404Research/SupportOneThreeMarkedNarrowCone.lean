@@ -75,8 +75,8 @@ theorem two_zero_arc_sums_le_global_zero_mass
   have hA₁0 : ∀ A ∈ A₁, 0 ≤ A := by
     intro A hA
     exact hA0 A (by
-      apply List.mem_append_left
-      exact hA)
+      simp only [List.mem_append]
+      exact Or.inl (Or.inl hA))
   have hm₁0 :
       0 ≤ listZeroAngleMass q₁ A₁ :=
     listZeroAngleMass_nonneg q₁ A₁ hA₁0
