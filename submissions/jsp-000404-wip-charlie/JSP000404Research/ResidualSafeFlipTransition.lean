@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualOverlapFlip
 import JSP000404Research.ResidualUniqueBlocker
+import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
 
 /-!
@@ -56,8 +57,9 @@ theorem safe_left_active_flip_blocker_incoming
       have hcomp :=
         (mem_retainedCompletionWords C w
           (flipRetainedWord word c)).1 hw
-      rw [flipRetainedWord_off word hdc] at hcomp
-      exact hcomp d hd
+      have hcompD := hcomp d hd
+      rw [flipRetainedWord_off word hdc] at hcompD
+      exact hcompD
     exact no_three_distinct_share_retained_completion
       C (ne_of_lt huv) hwu.symm hwv.symm hu hv hwOrig
   have hcNotInU : c ∉ incomingRetained C u := by
@@ -202,8 +204,9 @@ theorem safe_right_active_flip_blocker_outgoing
       have hcomp :=
         (mem_retainedCompletionWords C w
           (flipRetainedWord word c)).1 hw
-      rw [flipRetainedWord_off word hdc] at hcomp
-      exact hcomp d hd
+      have hcompD := hcomp d hd
+      rw [flipRetainedWord_off word hdc] at hcompD
+      exact hcompD
     exact no_three_distinct_share_retained_completion
       C (ne_of_lt huv) hwu.symm hwv.symm hu hv hwOrig
   have hcNotOutV : c ∉ outgoingRetained C v := by
