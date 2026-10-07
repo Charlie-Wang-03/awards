@@ -62,7 +62,7 @@ theorem matching_orderedPairs_two_mul_card_le
       rfl
   have hcard :=
     Fintype.card_le_of_injective endpoint hinj
-  simpa [Fintype.card_prod, Fintype.card_coe] using hcard
+  simpa [Fintype.card_prod, Fintype.card_coe, mul_comm] using hcard
 
 namespace OrderedEdgeColoring
 
