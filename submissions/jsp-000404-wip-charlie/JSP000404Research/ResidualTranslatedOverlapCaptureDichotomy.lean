@@ -34,8 +34,8 @@ theorem oneFlip_blocker_fullFree_or_halfCapture
       commonInactiveRetained C u v ⊆ retainedInactive C w
   · exact Or.inl hsub
   · right
-    push_neg at hsub
-    obtain ⟨e,heCommon,heNotInactive⟩ := hsub
+    obtain ⟨e,heCommon,heNotInactive⟩ :=
+      Finset.not_subset.1 hsub
     have heW : e ∈ retainedActive C w := by
       by_contra heInactive
       exact heNotInactive
@@ -60,8 +60,8 @@ theorem twoFlip_blocker_fullFree_or_halfCapture
       commonInactiveRetained C u v ⊆ retainedInactive C w
   · exact Or.inl hsub
   · right
-    push_neg at hsub
-    obtain ⟨e,heCommon,heNotInactive⟩ := hsub
+    obtain ⟨e,heCommon,heNotInactive⟩ :=
+      Finset.not_subset.1 hsub
     have heW : e ∈ retainedActive C w := by
       by_contra heInactive
       exact heNotInactive
@@ -92,15 +92,28 @@ theorem overlap_card_le_blockerCompletion_of_fullFree
     (retainedCompletionWords C u ∩
       retainedCompletionWords C v).card ≤
       (retainedCompletionWords C w).card := by
-  have hcard :=
-    Finset.card_le_card hsub
-  have hpow :=
-    Nat.pow_le_pow_right
-      (by norm_num : 0 < 2) hcard
-  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
-      retainedCompletionWords_card]
-  rw [retainedInactive_card] at hpow
-  exact hpow
+  classical
+  by_cases hempty :
+      retainedCompletionWords C u ∩
+        retainedCompletionWords C v = ∅
+  · rw [hempty]
+    simp
+  · have hnonempty :
+        (retainedCompletionWords C u ∩
+          retainedCompletionWords C v).Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr hempty
+    obtain ⟨base,hbase⟩ := hnonempty
+    have hbaseParts := Finset.mem_inter.mp hbase
+    have hcard :=
+      Finset.card_le_card hsub
+    have hpow :=
+      Nat.pow_le_pow_right
+        (by norm_num : 0 < 2) hcard
+    rw [retainedCompletionWords_inter_card_eq_pow_commonInactive
+          C hbaseParts.1 hbaseParts.2,
+        retainedCompletionWords_card]
+    rw [retainedInactive_card] at hpow
+    exact hpow
 
 theorem oneFlip_blocker_halfCapture_or_fullCapacity
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
