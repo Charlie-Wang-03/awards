@@ -214,23 +214,31 @@ theorem zero_zero_carrier_card_ge_n_add_two_of_no_oneFlip_hole
 
   have hf : Function.Injective f := by
     intro x y hxy
-    rcases x with c | i <;> rcases y with d | j
-    · exact congrArg Sum.inl (hinj hxy)
-    · exfalso
-      fin_cases i
-      · exact hneU c (by simpa [f] using hxy)
-      · exact hneV c (by simpa [f] using hxy)
-    · exfalso
-      fin_cases j
-      · exact hneU d (by simpa [f] using hxy.symm)
-      · exact hneV d (by simpa [f] using hxy.symm)
-    · fin_cases i <;> fin_cases j
-      · rfl
-      · exfalso
-        exact huv (by simpa [f] using hxy)
-      · exfalso
-        exact huv (by simpa [f] using hxy.symm)
-      · rfl
+    cases x with
+    | inl c =>
+      cases y with
+      | inl d =>
+        exact congrArg Sum.inl (hinj hxy)
+      | inr j =>
+        exfalso
+        fin_cases j
+        · exact hneU c (by simpa [f] using hxy)
+        · exact hneV c (by simpa [f] using hxy)
+    | inr i =>
+      cases y with
+      | inl d =>
+        exfalso
+        fin_cases i
+        · exact hneU d (by simpa [f] using hxy.symm)
+        · exact hneV d (by simpa [f] using hxy.symm)
+      | inr j =>
+        fin_cases i <;> fin_cases j
+        · rfl
+        · exfalso
+          exact huv (by simpa [f] using hxy)
+        · exfalso
+          exact huv (by simpa [f] using hxy.symm)
+        · rfl
 
   have hcard :=
     Fintype.card_le_of_injective f hf
