@@ -88,7 +88,8 @@ theorem exists_leftReducedZero_sharp_oneFlip_outlet
     oneFlip_fullBlockers_card_le_two
       C (Finset.mem_inter.mpr ⟨huBase,hvBase⟩),?_,?_,?_⟩
   · intro w hwNotFull
-    rcases oneFlip_capture_zero_full_or_half C hcu
+    rcases oneFlip_capture_zero_full_or_half
+      (C := C) (u := u) (v := v) (w := w) (c := c) hcu
       with hzero | hfull | hhalf
     · simpa [hzero]
     · exfalso
@@ -165,7 +166,8 @@ theorem exists_rightReducedZero_sharp_oneFlip_outlet
     oneFlip_fullBlockers_card_le_two
       C (Finset.mem_inter.mpr ⟨huBase,hvBase⟩),?_,?_,?_⟩
   · intro w hwNotFull
-    rcases oneFlip_capture_zero_full_or_half C hcu
+    rcases oneFlip_capture_zero_full_or_half
+      (C := C) (u := u) (v := v) (w := w) (c := c) hcu
       with hzero | hfull | hhalf
     · simpa [hzero]
     · exfalso
