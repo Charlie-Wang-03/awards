@@ -312,10 +312,8 @@ theorem mixed_unpaid_strict_endpoint_carrier_unique
       (carrierOverlapWords C (u₁,v))
       (carrierOverlapWords C (u₂,v)) at hdisj
   rw [hEq₁, hEq₂] at hdisj
-  have hnonempty :
-      (retainedCompletionWords C v).Nonempty :=
-    ⟨base₁, hbase₁V⟩
-  exact hnonempty.not_disjoint hdisj
+  exact (Finset.disjoint_left.mp hdisj)
+    hbase₁V hbase₁V
 
 /-- Symmetric uniqueness when the strict endpoint is the lower endpoint. -/
 theorem mixed_unpaid_strict_lower_carrier_unique
@@ -424,10 +422,8 @@ theorem mixed_unpaid_strict_lower_carrier_unique
       (carrierOverlapWords C (u,v₁))
       (carrierOverlapWords C (u,v₂)) at hdisj
   rw [hEq₁, hEq₂] at hdisj
-  have hnonempty :
-      (retainedCompletionWords C u).Nonempty :=
-    ⟨base₁, hbase₁U⟩
-  exact hnonempty.not_disjoint hdisj
+  exact (Finset.disjoint_left.mp hdisj)
+    hbase₁U hbase₁U
 
 #print axioms projectedFree_right_le_left_of_mixed_unpaid
 #print axioms exponent_strictly_descends_on_mixed_unpaid
