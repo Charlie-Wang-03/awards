@@ -59,6 +59,12 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check overlap varying-coordinate invariant
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.OverlapVaryingCoordinatesCore
+          lake build JSP000404Research.ResidualOverlapVaryingSupport
+
       - name: Check reduced-zero rematch quotient
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
