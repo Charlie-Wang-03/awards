@@ -99,6 +99,7 @@ theorem carrierOverlapWords_pairwiseDisjoint
       (carrierOverlapWords C) := by
   classical
   intro p hp q hq hpq
+  change Disjoint (carrierOverlapWords C p) (carrierOverlapWords C q)
   rw [Finset.disjoint_left]
   intro word hpWord hqWord
   have hpData :=
