@@ -51,11 +51,12 @@ namespace JSP000404Research
 open scoped BigOperators
 
 /-- Old dyadic survivor mass with r removed. -/
-def oldDeletionWeight
+noncomputable def oldDeletionWeight
     {V : Type*} [Fintype V]
     (exponent : V → ℕ)
-    (r : V) : ℕ :=
-  ∑ i ∈ Finset.univ.erase r, 2 ^ exponent i
+    (r : V) : ℕ := by
+  classical
+  exact ∑ i ∈ Finset.univ.erase r, 2 ^ exponent i
 
 /-- Split the full old weight into the deleted term and the old survivor
 mass. -/
