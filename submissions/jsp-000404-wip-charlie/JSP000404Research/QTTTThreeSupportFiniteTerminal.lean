@@ -30,17 +30,29 @@ theorem four_distinct_choose_fourth_of_three_members
     ∃ d : V,
       d ∈ ({s,x,y,z} : Finset V) ∧
       a ≠ d ∧ b ≠ d ∧ c ≠ d := by
-  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc
-  rcases ha with rfl | rfl | rfl | rfl <;>
-    rcases hb with rfl | rfl | rfl | rfl <;>
-    rcases hc with rfl | rfl | rfl | rfl <;>
-    simp_all
-  all_goals
-    first
-    | exact ⟨s,by simp,by simp_all,by simp_all,by simp_all⟩
-    | exact ⟨x,by simp,by simp_all,by simp_all,by simp_all⟩
-    | exact ⟨y,by simp,by simp_all,by simp_all,by simp_all⟩
-    | exact ⟨z,by simp,by simp_all,by simp_all,by simp_all⟩
+  let S : Finset V := {s,x,y,z}
+  let A : Finset V := {a,b,c}
+  have hScard : S.card = 4 := by
+    simp [S, hsx, hsy, hsz, hxy, hxz, hyz]
+  have hAcard : A.card = 3 := by
+    simp [A, hab, hac, hbc]
+  have hcard : A.card < S.card := by
+    omega
+  obtain ⟨d,hdS,hdA⟩ :=
+    Finset.exists_mem_not_mem_of_card_lt hcard
+  have had : a ≠ d := by
+    intro h
+    apply hdA
+    simp [A, h]
+  have hbd : b ≠ d := by
+    intro h
+    apply hdA
+    simp [A, h]
+  have hcd : c ≠ d := by
+    intro h
+    apply hdA
+    simp [A, h]
+  exact ⟨d, by simpa [S] using hdS, had, hbd, hcd⟩
 
 theorem four_secondLayer_threeSupport_reduce_to_eleven
     {V : Type*} [LinearOrder V] [Fintype V]
