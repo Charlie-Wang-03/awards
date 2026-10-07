@@ -61,6 +61,17 @@ noncomputable def overlapTranslationCard
       = S.card := by
   rfl
 
+theorem overlapTranslationCard_le_two_pow
+    {n : ℕ}
+    (q : OverlapTranslationQuotient n) :
+    overlapTranslationCard q ≤ 2 ^ n := by
+  refine Quotient.inductionOn q ?_
+  intro S
+  rw [overlapTranslationCard_mk]
+  have h := Finset.card_le_univ S
+  simpa only [Fintype.card_fun, Fintype.card_bool,
+    Fintype.card_fin] using h
+
 theorem oneFlip_two_fullBlockers_overlap_rank_strict_or_same_quotient
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -130,6 +141,7 @@ theorem oneFlip_two_fullBlockers_overlap_rank_strict_or_same_quotient
 #print axioms oneFlipOverlapRel_card_eq
 #print axioms overlapTranslationEquivalent_card_eq
 #print axioms overlapTranslationCard
+#print axioms overlapTranslationCard_le_two_pow
 #print axioms
   oneFlip_two_fullBlockers_overlap_rank_strict_or_same_quotient
 
