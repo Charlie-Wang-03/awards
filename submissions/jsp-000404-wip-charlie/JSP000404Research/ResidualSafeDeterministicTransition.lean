@@ -103,7 +103,7 @@ theorem safe_noCommonInactive_deterministic_transition
                z ≠ u →
                flipRetainedWord word c ∈ retainedCompletionWords C z →
                z = w)
-      ) := by
+      )) := by
   obtain ⟨c, hcSafe, hactive⟩ :=
     safe_noCommonInactive_has_active_only_coordinate
       C hu hv hsafe hnoCommon
