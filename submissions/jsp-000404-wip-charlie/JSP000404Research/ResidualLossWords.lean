@@ -1,6 +1,7 @@
 
 import JSP000404Research.ResidualOverlapWitness
 import JSP000404Research.ResidualProjectedLossCore
+import JSP000404Research.WeightedOneLayerCharge
 import Mathlib.Tactic
 
 /-!
@@ -186,7 +187,6 @@ theorem badProjectionWords_card
         C exponent hexp honeLoss),
       lossCompletionWords_card_eq_totalDyadicProfileLoss
         C exponent hexp honeLoss]
-  omega
 
 #print axioms residual_inactive_of_mem_projectedLossVertices
 #print axioms projectedLoss_completion_disjoint
