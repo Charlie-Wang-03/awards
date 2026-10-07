@@ -215,7 +215,7 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
           (quotientList t C.gaps) C.gaps
         ≤ 1 + delta := by
     rw [ht] at hmass0 ⊢
-    simpa [add_comm, add_left_comm, add_assoc] using hmass0
+    convert hmass0 using 1 <;> ring
   have hpiMass :
       Real.pi * listZeroGapMass
           (quotientList t C.gaps) C.gaps
