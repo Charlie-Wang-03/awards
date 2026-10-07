@@ -38,6 +38,7 @@ theorem deficientCore_secondLayer_commonWord_or_recursiveOverload
     (
       ∃ word : Fin n → Bool,
       ∃ u v w : {x : V // x ∈ T},
+        u ≠ v ∧ u ≠ w ∧ v ≠ w ∧
         CommonWordTriangleSecondLayerOutlet
           C exponent T word u v w
     )
@@ -65,7 +66,7 @@ theorem deficientCore_secondLayer_commonWord_or_recursiveOverload
       C exponent hexpLt hexp honeLoss hdef
     with htriple | hexact | htopShared
   · obtain ⟨word,hthree⟩ := htriple
-    obtain ⟨u,v,w,_huv,_huw,_hvw,
+    obtain ⟨u,v,w,huv,huw,hvw,
       huWord,hvWord,hwWord,hUV,hUW,hVW⟩ :=
       tripleFibre_has_common_word_collision_triangle
         C exponent hthree
@@ -73,7 +74,7 @@ theorem deficientCore_secondLayer_commonWord_or_recursiveOverload
       enlargedCollisionGraph_commonWord_triangle_secondLayer_outlet
         C exponent hexpLt hexp honeLoss htop T
         hUV hUW hVW huWord hvWord hwWord
-    exact Or.inl ⟨word,u,v,w,hout⟩
+    exact Or.inl ⟨word,u,v,w,huv,huw,hvw,hout⟩
   · exact Or.inr (Or.inl hexact)
   · exact Or.inr (Or.inr htopShared)
 
