@@ -1,5 +1,6 @@
 
 import JSP000404Research.ResidualDuplicateBudget
+import JSP000404Research.ResidualProjectedLossCore
 import JSP000404Research.ResidualLists
 import JSP000404Research.ResidualLightFibreDyadic
 import Mathlib.Tactic
