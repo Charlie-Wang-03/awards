@@ -139,9 +139,8 @@ theorem commonInactive_eq_retainedInactive_right_of_card_eq
         projectedFree C v := by
     rw [retainedInactive_card]
     rfl
-  apply Finset.Subset.antisymm hsub
-  apply Finset.eq_of_subset_of_card_le hsub
-  rw [hcard, hcardInactive]
+  exact Finset.eq_of_subset_of_card_le hsub (by
+    rw [hcard, hcardInactive])
 
 /-- Set-inclusion form: every free coordinate of the strict endpoint is also
 free at the other endpoint. -/
