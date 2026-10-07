@@ -222,6 +222,8 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_deficit_three_support_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
