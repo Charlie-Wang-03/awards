@@ -80,14 +80,14 @@ theorem oneFlip_fullBlocker_pair_intersection_eq_image_of_commonInactive_card_eq
       S.card =
         2 ^ (commonInactiveRetained C u v).card := by
     dsimp [S]
-    exact retainedCompletionWords_inter_card
+    exact retainedCompletionWords_inter_card_eq_pow_commonInactive
       C hbaseParts.1 hbaseParts.2
 
   have hcardT :
       T.card =
         2 ^ (commonInactiveRetained C w z).card := by
     dsimp [T]
-    exact retainedCompletionWords_inter_card
+    exact retainedCompletionWords_inter_card_eq_pow_commonInactive
       C hflipW hflipZ
 
   have hcardEq : (S.image f).card = T.card := by
