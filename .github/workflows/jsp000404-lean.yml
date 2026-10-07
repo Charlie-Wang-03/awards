@@ -69,6 +69,8 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.ResidualReducedZeroFullRematchQuotient
+          lake build JSP000404Research.ResidualReducedZeroOverlapTranslationQuotient
+          lake build JSP000404Research.ResidualSafeCommonInactiveReducedZeroQuotientOutlet
 
       - name: Check partner-extreme profile first
         working-directory: submissions/jsp-000404-wip-charlie
