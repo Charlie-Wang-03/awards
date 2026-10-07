@@ -165,9 +165,23 @@ theorem retainedCompletionWords_inter_card
   have hleft :
       Fintype.card (commonRetainedInactive C u v → Bool) =
         2 ^ (commonRetainedInactive C u v).card := by
-    simp [Fintype.card_fun]
-  rw [hleft] at hcard
-  simpa using hcard.symm
+    rw [Fintype.card_fun]
+    simp only [Fintype.card_bool]
+    rw [Fintype.card_coe]
+  calc
+    (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card =
+      Fintype.card
+        {word : Fin n → Bool //
+          word ∈ retainedCompletionWords C u ∩
+            retainedCompletionWords C v} := by
+        symm
+        exact Fintype.card_coe _
+    _ = Fintype.card
+        (commonRetainedInactive C u v → Bool) :=
+      hcard.symm
+    _ = 2 ^ (commonRetainedInactive C u v).card :=
+      hleft
 
 /-- Equivalent active-union dimension formula. -/
 theorem retainedCompletionWords_inter_card_eq_pow_union_complement
