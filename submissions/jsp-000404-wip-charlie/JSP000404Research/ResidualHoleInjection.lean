@@ -463,8 +463,7 @@ theorem repairedRetainedCode_injective
           C hrepair v hv
       apply hhole
       refine ⟨w, ?_⟩
-      rw [repairedRetainedCode_eq_flipped C hrepair v hv]
-      rw [repairedRetainedCode_eq_base C hrepair w hw] at heq
+      rw [← repairedRetainedCode_eq_base C hrepair w hw]
       exact heq.symm
   · by_cases hw : HasEarlierSame C w
     · exfalso
@@ -473,8 +472,7 @@ theorem repairedRetainedCode_injective
           C hrepair w hw
       apply hhole
       refine ⟨v, ?_⟩
-      rw [repairedRetainedCode_eq_flipped C hrepair w hw]
-      rw [repairedRetainedCode_eq_base C hrepair v hv] at heq
+      rw [← repairedRetainedCode_eq_base C hrepair v hv]
       exact heq
     · have hbaseEq :
           (fun c => retainedBit C v c) =
