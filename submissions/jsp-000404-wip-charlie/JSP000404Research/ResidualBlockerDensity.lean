@@ -1,6 +1,6 @@
 import JSP000404Research.ResidualBlocker
+import JSP000404Research.ResidualBlockerFlipCode
 import JSP000404Research.ResidualRetainedInactive
-import JSP000404Research.ResidualHoleInjection
 import Mathlib.Tactic
 
 /-!
