@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualBlocker
+import JSP000404Research.ResidualRetainedInactive
 import JSP000404Research.ResidualHoleInjection
 import Mathlib.Tactic
 
@@ -31,103 +32,6 @@ growth to the right.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-/-- Retained coordinates inactive at a vertex. -/
-noncomputable def retainedInactive
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (u : V) : Finset (Fin n) := by
-  classical
-  exact Finset.univ.filter fun c => c ∉ retainedActive C u
-
-@[simp] theorem mem_retainedInactive
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (u : V) (c : Fin n) :
-    c ∈ retainedInactive C u ↔
-      c ∉ retainedActive C u := by
-  classical
-  simp [retainedInactive]
-
-/-- Vertices strictly to the right of v. -/
-noncomputable def strictRightVertices
-    {V : Type*} [LinearOrder V] [Fintype V]
-    (v : V) : Finset V := by
-  classical
-  exact Finset.univ.filter fun w => v < w
-
-@[simp] theorem mem_strictRightVertices
-    {V : Type*} [LinearOrder V] [Fintype V]
-    (v w : V) :
-    w ∈ strictRightVertices v ↔ v < w := by
-  classical
-  simp [strictRightVertices]
-
-/-- A blocker is exactly a vertex realizing the one-coordinate flipped
-retained code. -/
-theorem retainedCode_eq_flipped_iff_blocker
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (u w : V) (c : Fin n) :
-    (fun d => retainedBit C w d) =
-        flippedRetainedCode C u c ↔
-      RetainedNeighbourBlocker C u c w := by
-  constructor
-  · intro h
-    constructor
-    · have hc := congrFun h c
-      have hne := flippedRetainedCode_at_ne C u c
-      intro heq
-      apply hne
-      calc
-        flippedRetainedCode C u c c
-            = retainedBit C w c := hc.symm
-        _ = retainedBit C u c := heq
-    · intro d hdc
-      have hd := congrFun h d
-      rw [flippedRetainedCode_off C u c d hdc] at hd
-      exact hd.symm
-  · intro hblock
-    funext d
-    by_cases hdc : d = c
-    · subst d
-      have hne := hblock.1
-      cases hw : retainedBit C w c <;>
-        cases hu : retainedBit C u c <;>
-        simp_all [flippedRetainedCode]
-    · have heq := hblock.2 d hdc
-      rw [flippedRetainedCode_off C u c d hdc]
-      exact heq.symm
-
-/-- One vertex cannot block two different one-coordinate neighbours of the
-same base retained code. -/
-theorem blocker_coordinate_unique
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u w : V} {c d : Fin n}
-    (hc : RetainedNeighbourBlocker C u c w)
-    (hd : RetainedNeighbourBlocker C u d w) :
-    c = d := by
-  by_contra hcd
-  have heq : retainedBit C u c = retainedBit C w c :=
-    hd.2 c hcd
-  exact hc.1 heq.symm
-
-/-- Exact complement count for inactive retained coordinates. -/
-theorem retainedInactive_card
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (u : V) :
-    (retainedInactive C u).card =
-      n - (retainedActive C u).card := by
-  classical
-  have hsub :
-      retainedInactive C u =
-        (Finset.univ : Finset (Fin n)) \ retainedActive C u := by
-    ext c
-    simp [retainedInactive]
-  rw [hsub, Finset.card_sdiff_of_subset (Finset.subset_univ _)]
-  simp
 
 /-- A local retained-activity budget already gives the inactive-coordinate
 lower bound; no global exact budget is needed. -/
