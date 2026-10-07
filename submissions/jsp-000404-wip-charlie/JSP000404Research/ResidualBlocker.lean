@@ -49,8 +49,11 @@ theorem blocker_coordinate_unique
     (hd : RetainedNeighbourBlocker C u d w) :
     c = d := by
   by_contra hcd
+  have hdc : d ≠ c := by
+    intro hdcEq
+    exact hcd hdcEq.symm
   have heq : retainedBit C u d = retainedBit C w d :=
-    hc.2 d hcd.symm
+    hc.2 d hdc
   exact hd.1 heq.symm
 
 theorem blocker_ne_base
