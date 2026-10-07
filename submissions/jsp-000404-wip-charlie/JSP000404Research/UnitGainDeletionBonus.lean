@@ -1,5 +1,6 @@
 
 import JSP000404Research.OverweightStableMax
+import JSP000404Research.DeletionPostWeight
 import JSP000404Research.CompensatedDeletion
 import Mathlib.Tactic
 
@@ -41,12 +42,6 @@ def unitGainDeletionBonus
     2 ^ exponent i
   else
     0
-
-def deletionPostWeight
-    {V : Type*} [Fintype V]
-    (after : V → V → ℕ)
-    (r : V) : ℕ :=
-  ∑ i ∈ Finset.univ.erase r, 2 ^ after r i
 
 theorem unitGainDeletionBonus_self_zero
     {V : Type*}
