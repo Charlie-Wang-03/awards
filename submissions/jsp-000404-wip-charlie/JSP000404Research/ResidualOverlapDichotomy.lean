@@ -68,11 +68,13 @@ theorem safe_colour_inactive_one_endpoint_of_completion_overlap
     · exact False.elim (hnotOutV hOut)
   have huFalse :
       retainedBit C u c = false := by
-    unfold retainedBit
-    apply bit_eq_false_iff.mpr
-    intro hex
-    exact hnotInU
-      ((mem_incomingRetained_iff C u c).2 hex)
+    cases hbit : retainedBit C u c with
+    | false =>
+        rfl
+    | true =>
+        exact False.elim
+          (hnotInU
+            ((mem_incomingRetained_iff_retainedBit_true C u c).2 hbit))
   have hvTrue :
       retainedBit C v c = true :=
     (mem_incomingRetained_iff_retainedBit_true
@@ -85,8 +87,7 @@ theorem safe_colour_inactive_one_endpoint_of_completion_overlap
   have hwv := hvComp c h.2
   rw [huFalse] at hwu
   rw [hvTrue] at hwv
-  rw [hwu] at hwv
-  simp at hwv
+  simp_all
 
 /-- Safe overlap carriers expose a coordinate which can be changed at one
 endpoint without violating that endpoint's retained partial word. -/
