@@ -47,10 +47,11 @@ theorem exactProjectedBudget_iff_retainedActive_card
     (hexp : exponent v ≤ n) :
     ExactProjectedBudget C exponent v ↔
       (retainedActive C v).card = n - exponent v := by
+  have hcard :
+      (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
   unfold ExactProjectedBudget projectedFree
-  constructor <;> intro h
-  · omega
-  · omega
+  constructor <;> intro h <;> omega
 
 theorem exactProjectedBudget_iff_not_loss_not_surplus
     {V : Type*} [LinearOrder V] {n : ℕ}
