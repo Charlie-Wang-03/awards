@@ -170,6 +170,9 @@ theorem mixedUnpaidChildren_pairwiseDisjoint
       (retainedCompletionWords C) := by
   intro a ha b hb hab
   classical
+  change Disjoint
+    (retainedCompletionWords C a)
+    (retainedCompletionWords C b)
   rw [Finset.disjoint_left]
   intro word hwa hwb
   have haRel :
@@ -226,6 +229,9 @@ theorem two_mul_child_weight_le_completion_card
     (by
       have hs :=
         mixedUnpaidChild_child_strict h
+      change
+        exponent child <
+          n - (retainedActive C child).card at hs
       omega)
 
 /-- Total completion mass of the children fits inside the parent completion
@@ -292,7 +298,10 @@ theorem mixedUnpaidChildren_kraft_branch
   have hparentCard :
       (retainedCompletionWords C parent).card =
         2 ^ exponent parent := by
-    rw [retainedCompletionWords_card, hsat]
+    unfold ExactProjectedBudget at hsat
+    rw [retainedCompletionWords_card]
+    change 2 ^ projectedFree C parent = 2 ^ exponent parent
+    rw [← hsat]
   rw [hparentCard] at hmass
   exact hsum.trans hmass
 
