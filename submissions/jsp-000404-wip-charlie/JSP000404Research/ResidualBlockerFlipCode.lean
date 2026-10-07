@@ -36,6 +36,7 @@ theorem retainedCode_eq_flipped_iff_blocker
     funext d
     by_cases hdc : d = c
     · subst d
+      have hne := h.1
       cases hu : retainedBit C u c <;>
         cases hw : retainedBit C w c <;>
         simp_all [flippedRetainedCode]
