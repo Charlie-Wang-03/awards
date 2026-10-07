@@ -101,7 +101,7 @@ theorem completionFibre_card_le_two
       exact hne huvBit.symm
   have hcard :=
     Fintype.card_le_of_injective f hf
-  simpa [f] using hcard
+  simpa only [Fintype.card_coe, Fintype.card_bool] using hcard
 
 noncomputable def coveredCompletionWords
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -174,7 +174,20 @@ theorem coveredCompletionWords_eq_biUnion
         (retainedCompletionWords C) := by
   classical
   ext word
-  simp [coveredCompletionWords, completionFibre]
+  constructor
+  · intro hword
+    have hfib :
+        (completionFibre C word).Nonempty :=
+      (mem_coveredCompletionWords C word).1 hword
+    obtain ⟨v,hv⟩ := hfib
+    exact Finset.mem_biUnion.mpr
+      ⟨v,Finset.mem_univ v,
+        (mem_completionFibre C word v).1 hv⟩
+  · intro hword
+    obtain ⟨v,_hvU,hv⟩ :=
+      Finset.mem_biUnion.mp hword
+    apply (mem_coveredCompletionWords C word).2
+    exact ⟨v,(mem_completionFibre C word v).2 hv⟩
 
 /-- Standard finite double counting of the incidence relation
 word ∈ retainedCompletionWords(C,v). -/
@@ -184,12 +197,31 @@ theorem sum_retainedCompletionWords_card_eq_sum_completionFibre_card
     (∑ v, (retainedCompletionWords C v).card) =
       ∑ word, (completionFibre C word).card := by
   classical
-  have h :=
-    Finset.sum_card_eq_sum_biUnion_card
-      (fun v : V => retainedCompletionWords C v)
-      (Finset.univ : Finset V)
-  rw [← coveredCompletionWords_eq_biUnion C] at h
-  simpa [completionFibre] using h
+  calc
+    (∑ v, (retainedCompletionWords C v).card)
+        =
+      ∑ v, ∑ word : Fin n → Bool,
+        if word ∈ retainedCompletionWords C v then 1 else 0 := by
+          apply Finset.sum_congr rfl
+          intro v _
+          symm
+          simpa using
+            (Finset.card_eq_sum_ite
+              (s := retainedCompletionWords C v)
+              (t := (Finset.univ : Finset (Fin n → Bool)))
+              (Finset.subset_univ _))
+    _ =
+      ∑ word : Fin n → Bool, ∑ v : V,
+        if word ∈ retainedCompletionWords C v then 1 else 0 := by
+          rw [Fintype.sum_comm]
+    _ = ∑ word, (completionFibre C word).card := by
+          apply Finset.sum_congr rfl
+          intro word _
+          simpa [completionFibre] using
+            (Finset.card_eq_sum_ite
+              (s := completionFibre C word)
+              (t := (Finset.univ : Finset V))
+              (Finset.subset_univ _)).symm
 
 /-- Multiplicity <=2 turns the incidence sum into union plus overlap count. -/
 theorem sum_completionFibre_card_eq_covered_add_overlap
@@ -219,7 +251,27 @@ theorem sum_completionFibre_card_eq_covered_add_overlap
     _ =
       (coveredCompletionWords C).card +
         (overlapCompletionWords C).card := by
-          simp
+          have hcovered :
+              (∑ word : Fin n → Bool,
+                if word ∈ coveredCompletionWords C then 1 else 0)
+                =
+              (coveredCompletionWords C).card := by
+            simpa using
+              (Finset.card_eq_sum_ite
+                (s := coveredCompletionWords C)
+                (t := (Finset.univ : Finset (Fin n → Bool)))
+                (Finset.subset_univ _)).symm
+          have hoverlap :
+              (∑ word : Fin n → Bool,
+                if word ∈ overlapCompletionWords C then 1 else 0)
+                =
+              (overlapCompletionWords C).card := by
+            simpa using
+              (Finset.card_eq_sum_ite
+                (s := overlapCompletionWords C)
+                (t := (Finset.univ : Finset (Fin n → Bool)))
+                (Finset.subset_univ _)).symm
+          rw [hcovered, hoverlap]
 
 /-- Exact retained projected-mass decomposition. -/
 theorem projectedFree_mass_eq_covered_add_overlap
