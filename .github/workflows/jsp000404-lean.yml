@@ -473,3 +473,8 @@ jobs:
       - name: Check support-unsafe carrier matching
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeSupportMatching
+
+
+      - name: Check QTTT Hall-recursive terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ProjectionQTTTHallRecursiveTerminal
