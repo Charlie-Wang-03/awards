@@ -64,6 +64,7 @@ theorem positive_light_fibre_dyadic_capacity
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (hret :
       ∀ x,
         (retainedActive C x).card ≤ n - exponent x)
@@ -79,7 +80,7 @@ theorem positive_light_fibre_dyadic_capacity
       2 ^ (n - (incomingRetained C u).card) := by
   have hlight :=
     exponent_sum_add_commonIncoming_le_of_no_common_inactive
-      C exponent hret hsame hno
+      C exponent hexp hret hsame hno
   have hsum :
       exponent u + exponent v ≤
         n - (incomingRetained C u).card := by
