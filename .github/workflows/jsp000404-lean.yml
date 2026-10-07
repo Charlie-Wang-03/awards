@@ -59,6 +59,12 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Check lightweight unique-support geometry
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.SupportOneThreeMarkedNarrowCone
+          lake build JSP000404Research.ProjectionOppositeSideRetainedAngle
+
       - name: Check reduced-zero rematch quotient
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
@@ -87,12 +93,6 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           lake build JSP000404Research.ResidualWholeCubeSecondCoordinateProfiledOutcome
-
-      - name: Check lightweight unique-support geometry
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: |
-          lake build JSP000404Research.SupportOneThreeMarkedNarrowCone
-          lake build JSP000404Research.ProjectionOppositeSideRetainedAngle
 
       - name: Check all-support-two profile exhaustion first
         working-directory: submissions/jsp-000404-wip-charlie
