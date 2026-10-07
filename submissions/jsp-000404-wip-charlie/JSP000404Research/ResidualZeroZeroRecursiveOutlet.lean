@@ -45,7 +45,7 @@ theorem one_le_surplus_of_projected_strict
       exponent (projectedFree C) w
       (by omega)
   have hone : 1 ≤ 2 ^ exponent w := by
-    exact Nat.one_le_pow _ _
+    positivity
   exact hone.trans hcredit
 
 theorem zero_zero_hole_or_injective_profile_blockers
@@ -181,7 +181,8 @@ theorem zero_zero_hole_or_strict_paid_or_exact_loss_star
       refine ⟨blocker,hinj,hneU,hneV,hblock,?_⟩
       intro c
       rcases hprofile c with hsur | hexact | hloss
-      · exact False.elim (hstrictPaid c hsur)
+      · have hlt := hstrictPaid c
+        omega
       · exact Or.inl hexact
       · exact Or.inr hloss
 
