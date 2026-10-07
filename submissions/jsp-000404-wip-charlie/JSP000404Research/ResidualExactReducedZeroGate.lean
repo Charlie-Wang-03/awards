@@ -57,7 +57,7 @@ theorem exact_noActiveSafe_paid_or_reducedZero
           retainedInactive C u := by
       intro c hc
       apply (mem_retainedInactive C u c).2
-      exact (mem_commonInactiveRetained C u v c).1 hc |>.1
+      exact ((mem_commonInactiveRetained C u v c).1 hc).1
     have hcard := Finset.card_le_card hsub
     rw [retainedInactive_card] at hcard
     exact hcard
@@ -69,7 +69,7 @@ theorem exact_noActiveSafe_paid_or_reducedZero
           retainedInactive C v := by
       intro c hc
       apply (mem_retainedInactive C v c).2
-      exact (mem_commonInactiveRetained C u v c).1 hc |>.2
+      exact ((mem_commonInactiveRetained C u v c).1 hc).2
     have hcard := Finset.card_le_card hsub
     rw [retainedInactive_card] at hcard
     exact hcard
