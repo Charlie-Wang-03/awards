@@ -77,6 +77,16 @@ jobs:
           lake build JSP000404Research.ResidualSafeCommonInactiveReducedZeroQuotientOutlet
           lake build JSP000404Research.ResidualSafeCommonInactiveReducedZeroOverlapQuotientOutlet
 
+      - name: Check global overlap payment frontier
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualMixedOverlapPayment
+          lake build JSP000404Research.ResidualMixedOverlapForest
+          lake build JSP000404Research.ResidualMixedOverlapGlobal
+          lake build JSP000404Research.ResidualUnsafeOverlapGlobalCard
+          lake build JSP000404Research.ResidualUnsafeSaturatedWordClassification
+          lake build JSP000404Research.RefinedResidualHardRemainder
+
       - name: Check lightweight unique-support geometry
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
