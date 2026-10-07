@@ -39,37 +39,6 @@ def RetainedNeighbourBlocker
   ∀ d : Fin n, d ≠ c →
     retainedBit C u d = retainedBit C w d
 
-/-- Function-valued equality with the one-coordinate flipped retained
-code is exactly the blocker predicate. -/
-theorem retainedCode_eq_flipped_iff_blocker
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (u w : V) (c : Fin n) :
-    (fun d => retainedBit C w d) =
-        flippedRetainedCode C u c
-      ↔
-    RetainedNeighbourBlocker C u c w := by
-  constructor
-  · intro h
-    constructor
-    · have hc := congrFun h c
-      intro heq
-      apply flippedRetainedCode_at_ne C u c
-      rw [← hc, heq]
-    · intro d hdc
-      have hd := congrFun h d
-      rw [flippedRetainedCode_off C u c d hdc] at hd
-      exact hd.symm
-  · intro h
-    funext d
-    by_cases hdc : d = c
-    · subst d
-      cases hu : retainedBit C u c <;>
-        cases hw : retainedBit C w c <;>
-        simp_all [flippedRetainedCode]
-    · rw [flippedRetainedCode_off C u c d hdc]
-      exact (h.2 d hdc).symm
-
 /-- One vertex cannot block two different retained coordinates of the same
 base code. -/
 theorem blocker_coordinate_unique
@@ -221,7 +190,6 @@ theorem blocker_after_other_of_lower_inactive
     contradiction
   · exact hvw
 
-#print axioms retainedCode_eq_flipped_iff_blocker
 #print axioms blocker_coordinate_unique
 #print axioms blocker_ne_base
 #print axioms blocker_residualBit_ne_base_of_inactive
