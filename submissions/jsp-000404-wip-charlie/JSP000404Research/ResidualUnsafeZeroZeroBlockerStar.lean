@@ -217,44 +217,20 @@ theorem zero_zero_carrier_card_ge_n_add_two_of_no_oneFlip_hole
     rcases x with c | i <;> rcases y with d | j
     · exact congrArg Sum.inl (hinj hxy)
     · exfalso
-      cases hi : i.val with
-      | zero =>
-          have : blocker c = u := by simpa [f, hi] using hxy
-          exact hneU c this
-      | succ k =>
-          have hik : i.val = 1 := by omega
-          have : blocker c = v := by simpa [f, hik] using hxy
-          exact hneV c this
+      fin_cases i
+      · exact hneU c (by simpa [f] using hxy)
+      · exact hneV c (by simpa [f] using hxy)
     · exfalso
-      cases hj : j.val with
-      | zero =>
-          have : u = blocker d := by simpa [f, hj] using hxy
-          exact hneU d this.symm
-      | succ k =>
-          have hjk : j.val = 1 := by omega
-          have : v = blocker d := by simpa [f, hjk] using hxy
-          exact hneV d this.symm
-    · apply Sum.inr.inj
-      apply Fin.ext
-      by_cases hi0 : i.val = 0
-      · have hj0 : j.val = 0 := by
-          by_contra hj0
-          have hi : f (Sum.inr i) = u := by simp [f, hi0]
-          have hj : f (Sum.inr j) = v := by
-            have hj1 : j.val = 1 := by omega
-            simp [f, hj1]
-          rw [hi, hj] at hxy
-          exact huv hxy
-        omega
-      · have hi1 : i.val = 1 := by omega
-        have hj1 : j.val = 1 := by
-          by_contra hj1
-          have hj0 : j.val = 0 := by omega
-          have hi : f (Sum.inr i) = v := by simp [f, hi1]
-          have hj : f (Sum.inr j) = u := by simp [f, hj0]
-          rw [hi, hj] at hxy
-          exact huv hxy.symm
-        omega
+      fin_cases j
+      · exact hneU d (by simpa [f] using hxy.symm)
+      · exact hneV d (by simpa [f] using hxy.symm)
+    · fin_cases i <;> fin_cases j
+      · rfl
+      · exfalso
+        exact huv (by simpa [f] using hxy)
+      · exfalso
+        exact huv (by simpa [f] using hxy.symm)
+      · rfl
 
   have hcard :=
     Fintype.card_le_of_injective f hf
