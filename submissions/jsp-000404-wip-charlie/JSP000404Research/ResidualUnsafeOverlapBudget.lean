@@ -67,8 +67,7 @@ theorem unsafe_overlap_union_card_add_one
   rw [hinter,
       retainedCompletionWords_card,
       retainedCompletionWords_card] at hcard
-  rfl at hcard ⊢
-  omega
+  simpa [projectedFree] using hcard
 
 /-- A residual endpoint is exactly budgeted after projection. -/
 theorem exponent_le_projectedFree_of_residual_endpoint
