@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualSafeCommonInactiveRigidity
+import JSP000404Research.ResidualOverlapRigidity
 import JSP000404Research.ResidualExactBudget
 import Mathlib.Tactic
 
@@ -80,7 +81,7 @@ theorem retainedInactive_left_eq_commonInactive_union_outDiff_of_noActiveSafe
       rw [retainedActive_eq_incoming_union_outgoing C u] at hcActiveU
       rcases Finset.mem_union.mp hcActiveU with hcInU | hcOutU
       · exact Finset.disjoint_left.mp
-          (incoming_left_disjoint_outgoing_right_of_overlap
+          (no_throughColour_of_retainedCompletion_overlap
             C huWord hvWord)
           hcInU hcOutV
       · exact hNotOutU hcOutU
@@ -129,7 +130,7 @@ theorem retainedInactive_right_eq_commonInactive_union_inDiff_of_noActiveSafe
       rcases Finset.mem_union.mp hcActiveV with hcInV | hcOutV
       · exact hNotInV hcInV
       · exact Finset.disjoint_left.mp
-          (incoming_left_disjoint_outgoing_right_of_overlap
+          (no_throughColour_of_retainedCompletion_overlap
             C huWord hvWord)
           hcInU hcOutV
 
@@ -236,12 +237,12 @@ theorem noActiveSafe_saturated_orientation_identity
     have hcard :=
       Finset.card_union_of_disjoint hforbidDisj
     rw [hforbidUnion] at hcard
-    simpa using hcard
+    simpa using hcard.symm
   have hcrossDisj :
       Disjoint
         (incomingRetained C u)
         (outgoingRetained C v) :=
-    incoming_left_disjoint_outgoing_right_of_overlap
+    no_throughColour_of_retainedCompletion_overlap
       C huWord hvWord
   have hforbidCard :
       (residualForbidden C u v).card =
