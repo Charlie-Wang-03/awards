@@ -1,5 +1,6 @@
 import JSP000404Research.ZeroMinimumOverweightArithmetic
 import JSP000404Research.ResidualHardRemainder
+import JSP000404Research.PlanarLowerBranchHardWordInjection
 import Mathlib.Tactic
 
 /-!
