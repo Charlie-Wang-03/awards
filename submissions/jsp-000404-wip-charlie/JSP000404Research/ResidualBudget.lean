@@ -83,8 +83,10 @@ theorem union_budget_of_slack_or_absorbed
         by_cases hdc : d = c
         · subst d
           simp
-        · have : ({c, d} : Finset (Fin k)).card = 2 := by
-            simp [hdc]
+        · have hcdne : c ≠ d := by
+            exact Ne.symm hdc
+          have : ({c, d} : Finset (Fin k)).card = 2 := by
+            simp [hcdne]
           rw [this] at hpair
           omega
       calc
