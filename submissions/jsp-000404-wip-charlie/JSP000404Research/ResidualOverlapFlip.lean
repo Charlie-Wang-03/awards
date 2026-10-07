@@ -85,11 +85,14 @@ theorem safe_overlap_not_active_both
   have hvComp :=
     (mem_retainedCompletionWords C v word).1 hv
   have hbitUFalse : retainedBit C u c = false := by
-    unfold retainedBit
-    apply bit_eq_false_iff.mpr
-    intro hex
-    exact hnotInU
-      ((mem_incomingRetained_iff C u c).2 hex)
+    cases hbit : retainedBit C u c with
+    | false =>
+        rfl
+    | true =>
+        exact False.elim
+          (hnotInU
+            ((mem_incomingRetained_iff_retainedBit_true C u c).2
+              hbit))
   have hbitVTrue :
       retainedBit C v c = true :=
     (mem_incomingRetained_iff_retainedBit_true C v c).1 hInV
@@ -97,8 +100,8 @@ theorem safe_overlap_not_active_both
   have hwV := hvComp c hboth.2
   rw [hbitUFalse] at hwU
   rw [hbitVTrue] at hwV
-  rw [hwU] at hwV
-  decide
+  have hfalse : false = true := hwU.symm.trans hwV
+  simpa using hfalse
 
 /-- Safe coordinate active only at u transports overlap to Q_v \ Q_u. -/
 theorem flip_overlap_to_right_single
