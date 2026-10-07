@@ -61,13 +61,12 @@ theorem hardProjectionWord_not_loss_of_mixed
     have hs :=
       ((mem_mixedHardOverlapWords C exponent x).1 hmixed).1
     exact (Finset.mem_sdiff.mp hs).1
+  intro hloss
   exact
     Finset.disjoint_left.mp
       (lossCompletionWords_disjoint_overlapCompletionWords
         C exponent hexp honeLoss)
-      · intro hloss
-        exact hloss
-      · exact hover
+      hloss hover
 
 theorem hardProjectionWord_not_loss_of_saturatedSaturated
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
