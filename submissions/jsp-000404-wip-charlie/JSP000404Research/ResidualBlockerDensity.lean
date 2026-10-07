@@ -33,6 +33,20 @@ growth to the right.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+/-- Vertices strictly to the right of a fixed ordered vertex. -/
+noncomputable def strictRightVertices
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (v : V) : Finset V := by
+  classical
+  exact Finset.univ.filter fun w => v < w
+
+@[simp] theorem mem_strictRightVertices
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (v w : V) :
+    w ∈ strictRightVertices v ↔ v < w := by
+  classical
+  simp [strictRightVertices]
+
 /-- A local retained-activity budget already gives the inactive-coordinate
 lower bound; no global exact budget is needed. -/
 theorem exponent_le_retainedInactive_card_of_local_bound
