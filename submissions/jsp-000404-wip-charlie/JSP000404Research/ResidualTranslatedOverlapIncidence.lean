@@ -92,7 +92,7 @@ theorem oneFlip_blocker_incidence_injective
           subst wy
           apply Sigma.ext
           · rfl
-          · exact HEq.of_eq (Subtype.ext hword)
+          · exact heq_of_eq (Subtype.ext hword)
 
 theorem twoFlip_blocker_incidence_injective
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -149,7 +149,7 @@ theorem twoFlip_blocker_incidence_injective
           subst wy
           apply Sigma.ext
           · rfl
-          · exact HEq.of_eq (Subtype.ext hword)
+          · exact heq_of_eq (Subtype.ext hword)
 
 theorem sum_oneFlip_blocker_capture_le_two_mul_overlap
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
