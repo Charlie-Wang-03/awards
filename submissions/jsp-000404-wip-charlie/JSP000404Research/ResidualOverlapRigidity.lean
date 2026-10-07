@@ -98,13 +98,16 @@ theorem residualThroughColours_eq_empty_of_overlap
     residualThroughColours C u v = ∅ := by
   classical
   ext c
-  simp only [Finset.mem_empty, iff_false]
-  intro hc
-  have hc' :=
-    (mem_residualThroughColours C u v c).1 hc
-  exact Finset.disjoint_left.mp
-    (no_throughColour_of_retainedCompletion_overlap C hu hv)
-    hc'.1 hc'.2
+  constructor
+  · intro hc
+    have hc' :=
+      (mem_residualThroughColours C u v c).1 hc
+    exact False.elim
+      (Finset.disjoint_left.mp
+        (no_throughColour_of_retainedCompletion_overlap C hu hv)
+        hc'.1 hc'.2)
+  · intro hc
+    simpa using hc
 
 /-- On an unsafe overlap pair, the two retained active sets cover all retained
 coordinates. -/
