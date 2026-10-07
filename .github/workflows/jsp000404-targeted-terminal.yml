@@ -6,6 +6,8 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionQTTTHallRecursiveTerminal.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTSmallPairMatching.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectiveBandPartition.lean"
       - ".github/workflows/jsp000404-targeted-terminal.yml"
   workflow_dispatch:
 
