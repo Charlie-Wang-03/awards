@@ -204,7 +204,6 @@ theorem sum_retainedCompletionWords_card_eq_sum_completionFibre_card
         if word ∈ retainedCompletionWords C v then 1 else 0 := by
           apply Finset.sum_congr rfl
           intro v _
-          symm
           simpa using
             (Finset.card_eq_sum_ite
               (s := retainedCompletionWords C v)
@@ -213,7 +212,7 @@ theorem sum_retainedCompletionWords_card_eq_sum_completionFibre_card
     _ =
       ∑ word : Fin n → Bool, ∑ v : V,
         if word ∈ retainedCompletionWords C v then 1 else 0 := by
-          rw [Fintype.sum_comm]
+          rw [Finset.sum_comm]
     _ = ∑ word, (completionFibre C word).card := by
           apply Finset.sum_congr rfl
           intro word _
