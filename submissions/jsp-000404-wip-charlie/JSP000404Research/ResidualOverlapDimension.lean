@@ -161,8 +161,20 @@ theorem retainedCompletionWords_inter_card_eq_pow_commonInactive
     Fintype.card_congr
       (retainedPairIntersectionEquivFree C base hu hv)
   rw [card_freeCoordinates] at hcard
-  rw [commonInactiveRetained_card C u v]
-  simpa using hcard.symm
+  calc
+    (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card =
+      Fintype.card
+        {x : Fin n → Bool //
+          x ∈ retainedCompletionWords C u ∩
+            retainedCompletionWords C v} := by
+        symm
+        exact Fintype.card_coe _
+    _ = 2 ^ (n - (retainedActive C u ∪
+        retainedActive C v).card) :=
+      hcard.symm
+    _ = 2 ^ (commonInactiveRetained C u v).card := by
+      rw [commonInactiveRetained_card C u v]
 
 /-- More than one overlap word is equivalent to the existence of a common
 inactive retained coordinate. -/
