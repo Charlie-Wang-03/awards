@@ -1,4 +1,4 @@
-import JSP000404Research.ZeroExponentMinimalDeletionRigidity
+import JSP000404Research.ZeroMinimumOverweightArithmetic
 import JSP000404Research.ResidualHardRemainder
 import Mathlib.Tactic
 
@@ -133,7 +133,7 @@ theorem zero_minimum_child_bound_forces_unit_hard_defect
     (projectionHoleWords C).card + 1 ≤
       (hardProjectionWords C exponent).card := by
   have htarget :=
-    zero_minimum_overweight_excess_eq_one_of_child_bound
+    zero_minimum_overweight_excess_eq_one_of_child_bound_arith
       exponent after n r hexp hmonoR hover hchildR hrZero
   exact ⟨
     residual_net_defect_eq_one_of_target_eq_bound_add_one
