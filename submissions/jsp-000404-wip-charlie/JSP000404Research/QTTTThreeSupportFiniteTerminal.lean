@@ -30,29 +30,32 @@ theorem four_distinct_choose_fourth_of_three_members
     ∃ d : V,
       d ∈ ({s,x,y,z} : Finset V) ∧
       a ≠ d ∧ b ≠ d ∧ c ≠ d := by
-  let S : Finset V := {s,x,y,z}
-  let A : Finset V := {a,b,c}
-  have hScard : S.card = 4 := by
-    simp [S, hsx, hsy, hsz, hxy, hxz, hyz]
-  have hAcard : A.card = 3 := by
-    simp [A, hab, hac, hbc]
-  have hcard : A.card < S.card := by
-    omega
-  obtain ⟨d,hdS,hdA⟩ :=
-    Finset.exists_mem_not_mem_of_card_lt hcard
-  have had : a ≠ d := by
-    intro h
-    apply hdA
-    simp [A, h]
-  have hbd : b ≠ d := by
-    intro h
-    apply hdA
-    simp [A, h]
-  have hcd : c ≠ d := by
-    intro h
-    apply hdA
-    simp [A, h]
-  exact ⟨d, by simpa [S] using hdS, had, hbd, hcd⟩
+  classical
+  by_contra hno
+  have hsub :
+      ({s,x,y,z} : Finset V) ⊆ ({a,b,c} : Finset V) := by
+    intro d hd
+    by_contra hmem
+    have had : a ≠ d := by
+      intro h
+      subst d
+      exact hmem (by simp)
+    have hbd : b ≠ d := by
+      intro h
+      subst d
+      exact hmem (by simp)
+    have hcd : c ≠ d := by
+      intro h
+      subst d
+      exact hmem (by simp)
+    exact hno ⟨d,hd,had,hbd,hcd⟩
+  have hcard := Finset.card_le_card hsub
+  have hScard : ({s,x,y,z} : Finset V).card = 4 := by
+    simp [hsx, hsy, hsz, hxy, hxz, hyz]
+  have hAcard : ({a,b,c} : Finset V).card = 3 := by
+    simp [hab, hac, hbc]
+  rw [hScard, hAcard] at hcard
+  omega
 
 theorem four_secondLayer_threeSupport_reduce_to_eleven
     {V : Type*} [LinearOrder V] [Fintype V]
