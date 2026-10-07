@@ -68,6 +68,10 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualDeficientCoreSecondLayerOutlet
 
+      - name: Check planar deficient-core to QTTT bridge
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ProjectionDeficientCoreCommonWordQTTT
+
       - name: Probe exact-two whole-cube terminal
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ProjectionQTTTSupportOrWholeCube
