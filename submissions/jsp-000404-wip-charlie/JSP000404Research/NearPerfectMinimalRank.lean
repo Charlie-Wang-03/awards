@@ -49,6 +49,44 @@ theorem exists_minRank_hardProjectionWord
   have hmin := Finset.min'_le rset (rank x.1) hxRank
   simpa [X0,m,hrank] using hmin
 
+
+/-- Exact-one overweight automatically makes the hard-word set nonempty. -/
+theorem hardProjectionWords_nonempty_of_target_eq_bound_add_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (htarget :
+      (∑ v, 2 ^ exponent v) = 2 ^ n + 1) :
+    (hardProjectionWords C exponent).Nonempty := by
+  have hcard :=
+    hardProjectionWords_card_eq_holes_add_remainingSurplus_add_one
+      C exponent hexp honeLoss htarget
+  apply Finset.card_pos.mp
+  omega
+
+/-- Exact-one overweight therefore has a rank-minimal hard word for every
+natural-valued rank. -/
+theorem exists_minRank_hardProjectionWord_of_target_eq_bound_add_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (htarget :
+      (∑ v, 2 ^ exponent v) = 2 ^ n + 1)
+    (rank : (Fin n → Bool) → ℕ) :
+    ∃ x0 : HardProjectionWord C exponent,
+      ∀ x : HardProjectionWord C exponent,
+        rank x0.1 ≤ rank x.1 := by
+  exact exists_minRank_hardProjectionWord
+    C exponent rank
+    (hardProjectionWords_nonempty_of_target_eq_bound_add_one
+      C exponent hexp honeLoss htarget)
+
 /-- Minimal-rank near-perfect contradiction.
 
 After deleting a rank-minimal hard word x0, any refined credit is occupied by
@@ -97,7 +135,6 @@ theorem false_of_exists_minRank_descending_credit
     (htarget :
       (∑ v, 2 ^ exponent v) = 2 ^ n + 1)
     (rank : (Fin n → Bool) → ℕ)
-    (hne : (hardProjectionWords C exponent).Nonempty)
     (hcredit :
       ∀ x0 : HardProjectionWord C exponent,
         (∀ x : HardProjectionWord C exponent,
@@ -109,12 +146,15 @@ theorem false_of_exists_minRank_descending_credit
             < rank x0.1) :
     False := by
   obtain ⟨x0,hmin⟩ :=
-    exists_minRank_hardProjectionWord C exponent rank hne
+    exists_minRank_hardProjectionWord_of_target_eq_bound_add_one
+      C exponent hexp honeLoss htarget rank
   obtain ⟨credit,hdesc⟩ := hcredit x0 hmin
   exact false_of_minRank_nearPerfect_credit_descent
     C exponent hexp honeLoss htarget rank x0 hmin credit hdesc
 
 #print axioms exists_minRank_hardProjectionWord
+#print axioms hardProjectionWords_nonempty_of_target_eq_bound_add_one
+#print axioms exists_minRank_hardProjectionWord_of_target_eq_bound_add_one
 #print axioms false_of_minRank_nearPerfect_credit_descent
 #print axioms false_of_exists_minRank_descending_credit
 
