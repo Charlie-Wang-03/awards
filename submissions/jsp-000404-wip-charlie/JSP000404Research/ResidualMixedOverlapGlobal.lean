@@ -47,6 +47,9 @@ theorem mixedUnpaidChildren_family_pairwiseDisjoint
       (mixedUnpaidChildren C exponent) := by
   intro p _hp q _hq hpq
   classical
+  change Disjoint
+    (mixedUnpaidChildren C exponent p)
+    (mixedUnpaidChildren C exponent q)
   rw [Finset.disjoint_left]
   intro child hpc hqc
   have hpRel :
