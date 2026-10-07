@@ -42,6 +42,25 @@ theorem incomingRetained_disjoint_outgoingRetained
   apply C.noMonoTwoPath hav hvw
   rw [hca, hcw]
 
+/-- An outgoing retained colour has canonical retained bit false. -/
+theorem retainedBit_false_of_outgoingRetained
+    {V : Type*} [LinearOrder V] {k : ℕ}
+    (C : OrderedEdgeColoring V (k + 1))
+    {v : V} {c : Fin k}
+    (hcout : c ∈ outgoingRetained C v) :
+    retainedBit C v c = false := by
+  cases hbit : retainedBit C v c with
+  | false =>
+      rfl
+  | true =>
+      have hcin :
+          c ∈ incomingRetained C v :=
+        (mem_incomingRetained_iff_retainedBit_true C v c).2 hbit
+      exact False.elim
+        (Finset.disjoint_left.mp
+          (incomingRetained_disjoint_outgoingRetained C v)
+          hcin hcout)
+
 /-- The retained active set is exactly the union of incoming and outgoing
 retained colours. -/
 theorem retainedActive_eq_incoming_union_outgoing
@@ -115,6 +134,7 @@ theorem common_forward_colour_absorbed
   exact ⟨Finset.mem_union_right _ hcu, Finset.mem_union_left _ hcv⟩
 
 #print axioms incomingRetained_disjoint_outgoingRetained
+#print axioms retainedBit_false_of_outgoingRetained
 #print axioms retainedActive_eq_incoming_union_outgoing
 #print axioms card_retainedActive_eq_add
 #print axioms common_forward_colour_not_forbidden
