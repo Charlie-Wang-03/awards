@@ -166,7 +166,7 @@ theorem zero_minimum_child_bound_refined_deficiency_eq_one
     (projectionHoleWords C).card +
       remainingStrictPaymentSurplus C exponent + 1 := by
   have htarget :=
-    zero_minimum_overweight_excess_eq_one_of_child_bound
+    zero_minimum_overweight_excess_eq_one_of_child_bound_arith
       exponent after n r hexp hmonoR hover hchildR hrZero
   exact
     hardProjectionWords_card_eq_holes_add_remainingSurplus_add_one
