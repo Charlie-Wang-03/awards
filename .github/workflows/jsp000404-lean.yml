@@ -72,6 +72,7 @@ jobs:
           lake build JSP000404Research.ResidualReducedZeroOverlapTranslationQuotient
           lake build JSP000404Research.ResidualReducedZeroOverlapQuotientRank
           lake build JSP000404Research.ResidualOverlapTranslationSupport
+          lake build JSP000404Research.ResidualExactReducedZeroGate
           lake build JSP000404Research.ResidualReducedZeroProfiledStationaryOutlet
           lake build JSP000404Research.ResidualSafeCommonInactiveReducedZeroQuotientOutlet
           lake build JSP000404Research.ResidualSafeCommonInactiveReducedZeroOverlapQuotientOutlet
