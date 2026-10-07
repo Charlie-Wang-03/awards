@@ -45,9 +45,9 @@ def ThreeSupportTwoCrossedPattern11
 theorem three_smallPairAmongOtherThree_reduce_to_eleven
     {V : Type*}
     {p : V → Plane}
+    {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {delta lam : ℝ}
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {a b c d : V}
@@ -165,9 +165,9 @@ distinct vertices force one of the eleven crossed small-pair patterns. -/
 theorem three_supportTwo_secondLayer_four_reduce_to_eleven
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -205,9 +205,12 @@ theorem three_supportTwo_secondLayer_four_reduce_to_eleven
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       hac.symm hbc.symm hcd hab had hbd
       (C c) hcSecond hcSupport
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    have hnposNat : 0 < n := by omega
+    have hnposReal : (0 : ℝ) < (n : ℝ) := by
+      exact_mod_cast hnposNat
+    rw [ht]
+    nlinarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
