@@ -194,19 +194,21 @@ theorem commonRetainedInactive_eq_empty_of_unsafe
       ¬ ∃ c : Fin n, c ∉ residualForbidden C u v) :
     commonRetainedInactive C u v = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c _
-  have hcover :=
-    retainedActive_union_eq_univ_of_unsafe C hunsafe
-  intro hc
-  have hcmissing :=
-    (mem_commonRetainedInactive C u v c).1 hc
-  have hcUnion :
-      c ∈ retainedActive C u ∪ retainedActive C v := by
-    rw [hcover]
-    simp
-  rw [Finset.mem_union] at hcUnion
-  exact hcUnion.elim hcmissing.1 hcmissing.2
+  ext c
+  constructor
+  · intro hc
+    have hcover :=
+      retainedActive_union_eq_univ_of_unsafe C hunsafe
+    have hcmissing :=
+      (mem_commonRetainedInactive C u v c).1 hc
+    have hcUnion :
+        c ∈ retainedActive C u ∪ retainedActive C v := by
+      rw [hcover]
+      simp
+    rw [Finset.mem_union] at hcUnion
+    exact False.elim (hcUnion.elim hcmissing.1 hcmissing.2)
+  · intro hc
+    simpa using hc
 
 #print axioms mem_completion_inter_iff_eq_base_on_active_union
 #print axioms retainedCompletionWords_inter_card
