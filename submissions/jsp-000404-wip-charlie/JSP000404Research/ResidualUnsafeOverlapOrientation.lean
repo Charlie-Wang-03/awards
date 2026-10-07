@@ -60,7 +60,7 @@ theorem outgoing_inter_incoming_eq_empty_of_completion_overlap
   · intro hc
     have hcData := Finset.mem_inter.mp hc
     exfalso
-      have huComp :=
+    have huComp :=
       (mem_retainedCompletionWords C u word).1 huWord
     have hvComp :=
       (mem_retainedCompletionWords C v word).1 hvWord
