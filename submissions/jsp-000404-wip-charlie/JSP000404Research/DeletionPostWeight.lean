@@ -12,10 +12,11 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-def deletionPostWeight
+noncomputable def deletionPostWeight
     {V : Type*} [Fintype V]
     (after : V → V → ℕ)
-    (r : V) : ℕ :=
-  ∑ i ∈ Finset.univ.erase r, 2 ^ after r i
+    (r : V) : ℕ := by
+  classical
+  exact ∑ i ∈ Finset.univ.erase r, 2 ^ after r i
 
 end JSP000404Research
