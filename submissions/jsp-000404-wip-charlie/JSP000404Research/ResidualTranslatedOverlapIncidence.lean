@@ -90,9 +90,9 @@ theorem oneFlip_blocker_incidence_injective
             completion_carriers_eq_of_residualBit_eq
               C hxData.2 hyComp hbit
           subst wy
-          apply Sigma.ext rfl
-          apply Subtype.ext
-          exact hword
+          apply Sigma.ext
+          · rfl
+          · exact HEq.of_eq (Subtype.ext hword)
 
 theorem twoFlip_blocker_incidence_injective
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -147,9 +147,9 @@ theorem twoFlip_blocker_incidence_injective
             completion_carriers_eq_of_residualBit_eq
               C hxData.2 hyComp hbit
           subst wy
-          apply Sigma.ext rfl
-          apply Subtype.ext
-          exact hword
+          apply Sigma.ext
+          · rfl
+          · exact HEq.of_eq (Subtype.ext hword)
 
 theorem sum_oneFlip_blocker_capture_le_two_mul_overlap
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -177,7 +177,36 @@ theorem sum_oneFlip_blocker_capture_le_two_mul_overlap
   have hcard :=
     Fintype.card_le_of_injective f hf
   rw [Fintype.card_sigma] at hcard
-  simpa [Fintype.card_prod, Fintype.card_coe, Nat.mul_comm] using hcard
+  have hsum :
+      (∑ w : V,
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ oneFlipCapturedSourceWords C u v w c}) =
+      ∑ w : V, (oneFlipCapturedSourceWords C u v w c).card := by
+    apply Finset.sum_congr rfl
+    intro w _
+    exact Fintype.card_coe _
+  have hoverlap :
+      Fintype.card
+        {word : Fin n → Bool //
+          word ∈ retainedCompletionWords C u ∩
+            retainedCompletionWords C v} =
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card :=
+    Fintype.card_coe _
+  have hcard' :
+      (∑ w : V,
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ oneFlipCapturedSourceWords C u v w c}) ≤
+      2 *
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ retainedCompletionWords C u ∩
+              retainedCompletionWords C v} := by
+    simpa [Fintype.card_prod, Nat.mul_comm] using hcard
+  rw [hsum, hoverlap] at hcard'
+  exact hcard'
 
 theorem sum_twoFlip_blocker_capture_le_two_mul_overlap
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -205,7 +234,36 @@ theorem sum_twoFlip_blocker_capture_le_two_mul_overlap
   have hcard :=
     Fintype.card_le_of_injective f hf
   rw [Fintype.card_sigma] at hcard
-  simpa [Fintype.card_prod, Fintype.card_coe, Nat.mul_comm] using hcard
+  have hsum :
+      (∑ w : V,
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ twoFlipCapturedSourceWords C u v w c d}) =
+      ∑ w : V, (twoFlipCapturedSourceWords C u v w c d).card := by
+    apply Finset.sum_congr rfl
+    intro w _
+    exact Fintype.card_coe _
+  have hoverlap :
+      Fintype.card
+        {word : Fin n → Bool //
+          word ∈ retainedCompletionWords C u ∩
+            retainedCompletionWords C v} =
+      (retainedCompletionWords C u ∩
+        retainedCompletionWords C v).card :=
+    Fintype.card_coe _
+  have hcard' :
+      (∑ w : V,
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ twoFlipCapturedSourceWords C u v w c d}) ≤
+      2 *
+        Fintype.card
+          {word : Fin n → Bool //
+            word ∈ retainedCompletionWords C u ∩
+              retainedCompletionWords C v} := by
+    simpa [Fintype.card_prod, Nat.mul_comm] using hcard
+  rw [hsum, hoverlap] at hcard'
+  exact hcard'
 
 #print axioms sum_oneFlip_blocker_capture_le_two_mul_overlap
 #print axioms sum_twoFlip_blocker_capture_le_two_mul_overlap
