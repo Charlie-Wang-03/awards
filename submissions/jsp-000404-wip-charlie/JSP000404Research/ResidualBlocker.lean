@@ -50,7 +50,7 @@ theorem blocker_coordinate_unique
     c = d := by
   by_contra hcd
   have heq : retainedBit C u d = retainedBit C w d :=
-    hc.2 d hcd
+    hc.2 d hcd.symm
   exact hd.1 heq.symm
 
 theorem blocker_ne_base
