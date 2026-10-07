@@ -56,44 +56,47 @@ theorem outgoing_inter_incoming_eq_empty_of_completion_overlap
     outgoingRetained C u ∩ incomingRetained C v = ∅ := by
   classical
   ext c
-  simp only [Finset.mem_inter, Finset.not_mem_empty, iff_false]
-  intro hc
-  have hcData := hc
-  have huComp :=
-    (mem_retainedCompletionWords C u word).1 huWord
-  have hvComp :=
-    (mem_retainedCompletionWords C v word).1 hvWord
-  have hcuActive :
-      c ∈ retainedActive C u := by
-    rw [retainedActive_eq_incoming_union_outgoing C u]
-    exact Finset.mem_union_right _ hcData.1
-  have hcvActive :
-      c ∈ retainedActive C v := by
-    rw [retainedActive_eq_incoming_union_outgoing C v]
-    exact Finset.mem_union_left _ hcData.2
-  have huFalse :
-      retainedBit C u c = false := by
-    cases hbit : retainedBit C u c with
-    | false =>
-        rfl
-    | true =>
-        have hinc :
-            c ∈ incomingRetained C u :=
-          (mem_incomingRetained_iff_retainedBit_true C u c).2 hbit
-        exact False.elim
-          (Finset.disjoint_left.mp
-            (incomingRetained_disjoint_outgoingRetained C u)
-            hinc hcData.1)
-  have hvTrue :
-      retainedBit C v c = true :=
-    (mem_incomingRetained_iff_retainedBit_true
-      C v c).1 hcData.2
-  have hwu := huComp c hcuActive
-  have hwv := hvComp c hcvActive
-  rw [huFalse] at hwu
-  rw [hvTrue] at hwv
-  rw [hwu] at hwv
-  simp at hwv
+  constructor
+  · intro hc
+    have hcData := Finset.mem_inter.mp hc
+    exfalso
+      have huComp :=
+      (mem_retainedCompletionWords C u word).1 huWord
+    have hvComp :=
+      (mem_retainedCompletionWords C v word).1 hvWord
+    have hcuActive :
+        c ∈ retainedActive C u := by
+      rw [retainedActive_eq_incoming_union_outgoing C u]
+      exact Finset.mem_union_right _ hcData.1
+    have hcvActive :
+        c ∈ retainedActive C v := by
+      rw [retainedActive_eq_incoming_union_outgoing C v]
+      exact Finset.mem_union_left _ hcData.2
+    have huFalse :
+        retainedBit C u c = false := by
+      cases hbit : retainedBit C u c with
+      | false =>
+          rfl
+      | true =>
+          have hinc :
+              c ∈ incomingRetained C u :=
+            (mem_incomingRetained_iff_retainedBit_true C u c).2 hbit
+          exact False.elim
+            (Finset.disjoint_left.mp
+              (incomingRetained_disjoint_outgoingRetained C u)
+              hinc hcData.1)
+    have hvTrue :
+        retainedBit C v c = true :=
+      (mem_incomingRetained_iff_retainedBit_true
+        C v c).1 hcData.2
+    have hwu := huComp c hcuActive
+    have hwv := hvComp c hcvActive
+    rw [huFalse] at hwu
+    rw [hvTrue] at hwv
+    have hfalse : false = true := hwu.symm.trans hwv
+    simpa using hfalse
+  · intro hc
+    simp at hc
 
 /-- Unsafe overlap forces every outgoing colour of u to remain outgoing at v. -/
 theorem outgoingRetained_subset_outgoingRetained_of_unsafe_overlap
