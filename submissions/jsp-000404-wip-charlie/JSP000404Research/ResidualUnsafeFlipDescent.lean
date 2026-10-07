@@ -230,13 +230,13 @@ theorem lower_inactive_flip_blocker_safe_or_upper_descends
       rw [Finset.mem_union]
       push_neg
       exact ⟨hcNotInU, hcNotOutW⟩
-    exact Or.inl ⟨huw, hres, hcSafe⟩
+    exact ⟨huw, hres, hcSafe⟩
   · right
     have hres :
         IsResidual C w u :=
       isResidual_of_retainedCompletion_overlap_lt
         C hwu hwFlip hflip.1
-    exact Or.inr ⟨hwu, hres⟩
+    exact ⟨hwu, hres⟩
 
 /-- Main one-step displacement package for a positive exact lower endpoint of
 an unsafe overlap.
@@ -293,7 +293,7 @@ theorem exists_lower_inactive_flip_hole_or_safe_or_upper_descends
     obtain ⟨w, huw, hw⟩ := hblock
     exact ⟨w, huw, hw,
       lower_inactive_flip_blocker_safe_or_upper_descends
-        C huv hunsafe huBase hvBase hc huw hw⟩
+        C huv hunsafe huBase hvBase hc huw.symm hw⟩
   · left
     intro w hw
     by_contra huw
@@ -379,7 +379,7 @@ theorem exists_lower_inactive_flip_single_or_safe_overlap
     obtain ⟨w, huw, hw⟩ := hblock
     have hsafe :=
       lower_inactive_flip_blocker_is_safe_to_right
-        C huv hunsafe huBase hvBase hc huw hw
+        C huv hunsafe huBase hvBase hc huw.symm hw
     exact ⟨w, huw, hw, hsafe.1, hsafe.2.1, hsafe.2.2⟩
   · left
     intro w hw
