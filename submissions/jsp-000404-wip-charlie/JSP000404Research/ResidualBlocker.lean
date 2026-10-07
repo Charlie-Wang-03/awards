@@ -39,6 +39,54 @@ def RetainedNeighbourBlocker
   ∀ d : Fin n, d ≠ c →
     retainedBit C u d = retainedBit C w d
 
+/-- Function-valued equality with the one-coordinate flipped retained
+code is exactly the blocker predicate. -/
+theorem retainedCode_eq_flipped_iff_blocker
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (u w : V) (c : Fin n) :
+    (fun d => retainedBit C w d) =
+        flippedRetainedCode C u c
+      ↔
+    RetainedNeighbourBlocker C u c w := by
+  constructor
+  · intro h
+    constructor
+    · have hc := congrFun h c
+      simpa [flippedRetainedCode] using
+        (show retainedBit C w c ≠ retainedBit C u c by
+          cases hu : retainedBit C u c <;>
+            cases hw : retainedBit C w c <;>
+            simp_all [flippedRetainedCode])
+    · intro d hdc
+      have hd := congrFun h d
+      rw [flippedRetainedCode_off C u c d hdc] at hd
+      exact hd.symm
+  · intro h
+    funext d
+    by_cases hdc : d = c
+    · subst d
+      have hne := h.1
+      cases hu : retainedBit C u c <;>
+        cases hw : retainedBit C w c <;>
+        simp_all [flippedRetainedCode]
+    · rw [flippedRetainedCode_off C u c d hdc]
+      exact (h.2 d hdc).symm
+
+/-- One vertex cannot block two different retained coordinates of the same
+base code. -/
+theorem blocker_coordinate_unique
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u w : V} {c d : Fin n}
+    (hc : RetainedNeighbourBlocker C u c w)
+    (hd : RetainedNeighbourBlocker C u d w) :
+    c = d := by
+  by_contra hcd
+  have heq : retainedBit C u d = retainedBit C w d :=
+    hc.2 d hcd
+  exact hd.1 heq.symm
+
 theorem blocker_ne_base
     {V : Type*} [LinearOrder V] {n : ℕ}
     {C : OrderedEdgeColoring V (n + 1)}
@@ -176,6 +224,8 @@ theorem blocker_after_other_of_lower_inactive
     contradiction
   · exact hvw
 
+#print axioms retainedCode_eq_flipped_iff_blocker
+#print axioms blocker_coordinate_unique
 #print axioms blocker_ne_base
 #print axioms blocker_residualBit_ne_base_of_inactive
 #print axioms blocker_residualBit_eq_other_of_inactive
