@@ -92,10 +92,13 @@ theorem retainedInactive_left_eq_outgoing_difference_of_unsafe_overlap
     rw [retainedActive_eq_incoming_union_outgoing C u] at hActive
     rw [Finset.mem_union] at hActive
     rcases hActive with hInU | hOutU
-    · exact Finset.disjoint_left.mp
-        (incoming_left_disjoint_outgoing_right_of_overlap
-          C huWord hvWord)
-        hInU hOutV
+    · have hthrough :
+          c ∈ residualThroughColours C u v :=
+        (mem_residualThroughColours C u v c).2
+          ⟨hInU, hOutV⟩
+      exact False.elim
+        (not_mem_throughColours_of_completion_overlap
+          C huWord hvWord hthrough)
     · exact hNotOutU hOutU
 
 /-- Symmetrically, the upper endpoint's inactive coordinates are exactly the
@@ -140,10 +143,13 @@ theorem retainedInactive_right_eq_incoming_difference_of_unsafe_overlap
     rw [Finset.mem_union] at hActive
     rcases hActive with hInV | hOutV
     · exact hNotInV hInV
-    · exact Finset.disjoint_left.mp
-        (incoming_left_disjoint_outgoing_right_of_overlap
-          C huWord hvWord)
-        hInU hOutV
+    · have hthrough :
+          c ∈ residualThroughColours C u v :=
+        (mem_residualThroughColours C u v c).2
+          ⟨hInU, hOutV⟩
+      exact False.elim
+        (not_mem_throughColours_of_completion_overlap
+          C huWord hvWord hthrough)
 
 /-- Exact lower-endpoint exponent as an outgoing-orientation difference. -/
 theorem exponent_eq_outgoing_difference_card_of_unsafe_overlap_saturated
@@ -201,10 +207,12 @@ theorem unsafe_saturated_overlap_orientation_identity
     n := by
   have hInSub :
       incomingRetained C v ⊆ incomingRetained C u :=
-    incomingRetained_subset_left_of_unsafe C hunsafe
+    incomingRetained_subset_incomingRetained_of_unsafe_overlap
+      C hunsafe huWord hvWord
   have hOutSub :
       outgoingRetained C u ⊆ outgoingRetained C v :=
-    outgoingRetained_subset_right_of_unsafe C hunsafe
+    outgoingRetained_subset_outgoingRetained_of_unsafe_overlap
+      C hunsafe huWord hvWord
   have hInCard :
       (incomingRetained C u \ incomingRetained C v).card +
           (incomingRetained C v).card
