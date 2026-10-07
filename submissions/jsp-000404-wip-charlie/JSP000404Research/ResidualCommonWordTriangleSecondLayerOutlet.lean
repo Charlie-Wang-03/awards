@@ -69,6 +69,12 @@ inductive CommonWordTriangleSecondLayerOutlet
       (huSecond : exponent u.1 = n - 2)
       (hvSecond : exponent v.1 = n - 2)
       (hwSecond : exponent w.1 = n - 2)
+      (huWord :
+        word ∈ enlargedProjectedCandidateBlock C exponent u.1)
+      (hvWord :
+        word ∈ enlargedProjectedCandidateBlock C exponent v.1)
+      (hwWord :
+        word ∈ enlargedProjectedCandidateBlock C exponent w.1)
 
 theorem enlargedCollisionGraph_commonWord_triangle_secondLayer_outlet
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -177,6 +183,7 @@ theorem enlargedCollisionGraph_commonWord_triangle_secondLayer_outlet
         · exact CommonWordTriangleSecondLayerOutlet.threeSecond
             hUV.huLoss hUV.hvLoss hwLoss
             huvSecond.1 huvSecond.2 hwSecond
+            huWord hvWord hwWord
         · exact CommonWordTriangleSecondLayerOutlet.deep
             w.1 hwLoss hwDeep
 
@@ -214,6 +221,7 @@ theorem enlargedCollisionGraph_commonWord_triangle_secondLayer_outlet
         · exact CommonWordTriangleSecondLayerOutlet.threeSecond
             hUW.huLoss hvLoss hUW.hwLoss
             huwSecond.1 hvSecond huwSecond.2
+            huWord hvWord hwWord
         · exact CommonWordTriangleSecondLayerOutlet.deep
             v.1 hvLoss hvDeep
 
@@ -251,6 +259,7 @@ theorem enlargedCollisionGraph_commonWord_triangle_secondLayer_outlet
         · exact CommonWordTriangleSecondLayerOutlet.threeSecond
             huLoss hVW.hvLoss hVW.hwLoss
             huSecond hvwSecond.1 hvwSecond.2
+            huWord hvWord hwWord
         · exact CommonWordTriangleSecondLayerOutlet.deep
             u.1 huLoss huDeep
 
