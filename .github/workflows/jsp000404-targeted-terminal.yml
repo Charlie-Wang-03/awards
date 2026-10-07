@@ -1,13 +1,15 @@
-name: JSP-000404 Targeted Terminal
+name: JSP-000404 Targeted Bridge
 
 on:
   push:
     branches:
       - research/jsp-000404-sharp-centre
     paths:
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionQTTTHallRecursiveTerminal.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTSmallPairMatching.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectiveBandPartition.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTThreeSupportSmallPairMatching.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTThreeSupportFiniteTerminal.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualCommonWordTriangleSecondLayerOutlet.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualDeficientCoreSecondLayerOutlet.lean"
       - ".github/workflows/jsp000404-targeted-terminal.yml"
   workflow_dispatch:
 
@@ -15,12 +17,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: jsp000404-targeted-terminal-${{ github.ref }}
+  group: jsp000404-targeted-bridge-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Check QTTT Hall-recursive terminal
+    name: Check targeted bridge
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -54,6 +56,14 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
-      - name: Check terminal
+      - name: Check three-support finite terminal
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ProjectionQTTTHallRecursiveTerminal
+        run: lake build JSP000404Research.QTTTThreeSupportFiniteTerminal
+
+      - name: Check common-word triangle outlet
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualCommonWordTriangleSecondLayerOutlet
+
+      - name: Check deficient-core second-layer outlet
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualDeficientCoreSecondLayerOutlet
