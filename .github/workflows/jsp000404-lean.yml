@@ -85,6 +85,7 @@ jobs:
           lake build JSP000404Research.ResidualMixedOverlapGlobal
           lake build JSP000404Research.ResidualUnsafeOverlapGlobalCard
           lake build JSP000404Research.ResidualUnsafeSaturatedWordClassification
+          lake build JSP000404Research.ResidualUnsafeSaturatedRecursiveOutlet
           lake build JSP000404Research.RefinedResidualHardRemainder
 
       - name: Check lightweight unique-support geometry
