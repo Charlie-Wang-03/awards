@@ -36,8 +36,8 @@ theorem matching_orderedPairs_two_mul_card_le
   have hinj : Function.Injective endpoint := by
     intro x y hxy
     rcases x with ⟨⟨e, he⟩, bx⟩
-    rcases y with ⟨⟨f, hf⟩, by⟩
-    cases bx <;> cases by
+    rcases y with ⟨⟨f, hf⟩, byFlag⟩
+    cases bx <;> cases byFlag
     · simp only [endpoint, Bool.false_eq_true, if_false] at hxy
       have hef : e = f :=
         hmatch e he f hf (Or.inl hxy)
