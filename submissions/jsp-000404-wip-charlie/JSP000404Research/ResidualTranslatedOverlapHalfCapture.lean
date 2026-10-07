@@ -67,7 +67,7 @@ theorem two_mul_oneFlipCaptured_le_overlap_of_commonInactive_active
       (mem_oneFlipCapturedSourceWords
         C u v w c word).1 hword
     exact hdata.1
-  let target := source  captured
+  let target := source \ captured
 
   have heData :=
     (mem_commonInactiveRetained C u v e).1 heCommon
