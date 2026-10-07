@@ -83,6 +83,8 @@ theorem pow_le_sum_dyadic_surplus_of_both_lt
           (by norm_num : 0 < 2) hdTop
       omega
     · have hdbEq : d = b := by omega
+      subst a
+      subst b
       have hdPos : 1 ≤ d := by
         omega
       have hdouble :
@@ -93,8 +95,6 @@ theorem pow_le_sum_dyadic_surplus_of_both_lt
               = 2 ^ (d - 1) * 2 := by omega
           _ = 2 ^ (d - 1 + 1) := by rw [pow_succ]
           _ = 2 ^ d := by rw [hsucc]
-      rw [← hdaEq] at hsurA
-      rw [← hdbEq] at hsurB
       omega
 
 namespace OrderedEdgeColoring
