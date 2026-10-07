@@ -60,7 +60,13 @@ theorem oneFlip_capture_zero_full_or_half
           ⟨
             by
               intro x y hxy
-              exact Subtype.ext (congrArg Subtype.val hxy),
+              apply Subtype.ext
+              exact congrArg
+                (fun q :
+                  {word : Fin n → Bool //
+                    word ∈ retainedCompletionWords C u ∩
+                      retainedCompletionWords C v} => q.1)
+                hxy,
             by
               intro word
               have hfullCapture :=
@@ -116,7 +122,13 @@ theorem twoFlip_capture_zero_full_or_half
           ⟨
             by
               intro x y hxy
-              exact Subtype.ext (congrArg Subtype.val hxy),
+              apply Subtype.ext
+              exact congrArg
+                (fun q :
+                  {word : Fin n → Bool //
+                    word ∈ retainedCompletionWords C u ∩
+                      retainedCompletionWords C v} => q.1)
+                hxy,
             by
               intro word
               have hfullCapture :=
