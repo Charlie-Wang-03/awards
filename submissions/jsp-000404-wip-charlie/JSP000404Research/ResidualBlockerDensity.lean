@@ -188,9 +188,10 @@ theorem retainedInactive_card_le_right_of_blocked
       apply blocker_after_other_of_lower_inactive
         C huv hsame
       · intro hc
-        exact c.2
-          ((castSucc_mem_active_iff_mem_retainedActive
-            C u c.1).1 hc)
+        exact
+          ((mem_retainedInactive C u c.1).1 c.2)
+            ((castSucc_mem_active_iff_mem_retainedActive
+              C u c.1).1 hc)
       · exact hchoose c⟩
   have hf : Function.Injective f := by
     intro c d hcd
