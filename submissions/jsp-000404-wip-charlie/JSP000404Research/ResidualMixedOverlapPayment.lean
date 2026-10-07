@@ -307,6 +307,10 @@ theorem mixed_unpaid_strict_endpoint_carrier_unique
   have hEq₂ :=
     carrierOverlapWords_eq_strict_cube_of_mixed_unpaid
       C exponent hbase₂U hbase₂V hvStrict hunpaid₂
+  change
+    Disjoint
+      (carrierOverlapWords C (u₁,v))
+      (carrierOverlapWords C (u₂,v)) at hdisj
   rw [hEq₁, hEq₂] at hdisj
   have hnonempty :
       (retainedCompletionWords C v).Nonempty :=
@@ -364,33 +368,28 @@ theorem mixed_unpaid_strict_lower_carrier_unique
     apply Finset.Subset.antisymm
     · exact Finset.inter_subset_left
     · intro word hw
-      have hsub :
-          retainedCompletionWords C u ⊆
-            retainedCompletionWords C v₁ := by
-        -- apply the right-endpoint theorem after swapping the two cube roles
-        have hcard :
-            (retainedCompletionWords C v₁ ∩
-                retainedCompletionWords C u).card =
-              (retainedCompletionWords C u).card := by
-          have h :=
-            mixed_unpaid_overlap_card_eq_strict_cube_card
-              C exponent hbase₁V hbase₁U huStrict
-              (by simpa [Finset.inter_comm] using hunpaid₁)
-          exact h
-        have hinter :
-            retainedCompletionWords C v₁ ∩
-                retainedCompletionWords C u =
-              retainedCompletionWords C u := by
-          apply Finset.eq_of_subset_of_card_le
-            Finset.inter_subset_right
-          exact le_of_eq hcard.symm
-        have hw' :
-            word ∈ retainedCompletionWords C v₁ ∩
-              retainedCompletionWords C u := by
-          rw [hinter]
-          exact hw
-        exact (Finset.mem_inter.mp hw').1
-      exact Finset.mem_inter.mpr ⟨hw, hsub hw⟩
+      have hcard :
+          (retainedCompletionWords C v₁ ∩
+              retainedCompletionWords C u).card =
+            (retainedCompletionWords C u).card := by
+        exact
+          mixed_unpaid_overlap_card_eq_strict_cube_card
+            C exponent hbase₁V hbase₁U huStrict
+            (by simpa [Finset.inter_comm] using hunpaid₁)
+      have hinter :
+          retainedCompletionWords C v₁ ∩
+              retainedCompletionWords C u =
+            retainedCompletionWords C u := by
+        apply Finset.eq_of_subset_of_card_le
+          Finset.inter_subset_right
+        exact le_of_eq hcard.symm
+      have hw' :
+          word ∈ retainedCompletionWords C v₁ ∩
+            retainedCompletionWords C u := by
+        rw [hinter]
+        exact hw
+      exact Finset.mem_inter.mpr
+        ⟨hw, (Finset.mem_inter.mp hw').1⟩
   have hEq₂ :
       carrierOverlapWords C (u,v₂) =
         retainedCompletionWords C u := by
@@ -398,31 +397,32 @@ theorem mixed_unpaid_strict_lower_carrier_unique
     apply Finset.Subset.antisymm
     · exact Finset.inter_subset_left
     · intro word hw
-      have hsub :
-          retainedCompletionWords C u ⊆
-            retainedCompletionWords C v₂ := by
-        have hcard :
-            (retainedCompletionWords C v₂ ∩
-                retainedCompletionWords C u).card =
-              (retainedCompletionWords C u).card := by
-          exact
-            mixed_unpaid_overlap_card_eq_strict_cube_card
-              C exponent hbase₂V hbase₂U huStrict
-              (by simpa [Finset.inter_comm] using hunpaid₂)
-        have hinter :
-            retainedCompletionWords C v₂ ∩
-                retainedCompletionWords C u =
-              retainedCompletionWords C u := by
-          apply Finset.eq_of_subset_of_card_le
-            Finset.inter_subset_right
-          exact le_of_eq hcard.symm
-        have hw' :
-            word ∈ retainedCompletionWords C v₂ ∩
-              retainedCompletionWords C u := by
-          rw [hinter]
-          exact hw
-        exact (Finset.mem_inter.mp hw').1
-      exact Finset.mem_inter.mpr ⟨hw, hsub hw⟩
+      have hcard :
+          (retainedCompletionWords C v₂ ∩
+              retainedCompletionWords C u).card =
+            (retainedCompletionWords C u).card := by
+        exact
+          mixed_unpaid_overlap_card_eq_strict_cube_card
+            C exponent hbase₂V hbase₂U huStrict
+            (by simpa [Finset.inter_comm] using hunpaid₂)
+      have hinter :
+          retainedCompletionWords C v₂ ∩
+              retainedCompletionWords C u =
+            retainedCompletionWords C u := by
+        apply Finset.eq_of_subset_of_card_le
+          Finset.inter_subset_right
+        exact le_of_eq hcard.symm
+      have hw' :
+          word ∈ retainedCompletionWords C v₂ ∩
+            retainedCompletionWords C u := by
+        rw [hinter]
+        exact hw
+      exact Finset.mem_inter.mpr
+        ⟨hw, (Finset.mem_inter.mp hw').1⟩
+  change
+    Disjoint
+      (carrierOverlapWords C (u,v₁))
+      (carrierOverlapWords C (u,v₂)) at hdisj
   rw [hEq₁, hEq₂] at hdisj
   have hnonempty :
       (retainedCompletionWords C u).Nonempty :=
