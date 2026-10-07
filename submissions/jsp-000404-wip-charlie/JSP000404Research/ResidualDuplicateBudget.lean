@@ -44,7 +44,16 @@ theorem residual_mem_active_both_of_sameRetained_lt
     residualCoord n ∈ active C u ∧
       residualCoord n ∈ active C v := by
   have hres := isResidual_of_sameRetained_lt C huv hsame
-  exact residualCoord_mem_active_of_isResidual C huv hres
+  have hval : (C.color u v).val = n :=
+    residual_val_eq C hres
+  have hcolor : C.color u v = residualCoord n := by
+    apply Fin.ext
+    simpa [residualCoord] using hval
+  constructor
+  · simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact Or.inr ⟨v,huv,hcolor⟩
+  · simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact Or.inl ⟨u,huv,hcolor⟩
 
 /-- The one-layer active bound upgrades to an exact retained bound at the
 lower endpoint of every duplicated retained-code fibre. -/
@@ -161,6 +170,7 @@ theorem duplicate_exponent_sum_add_commonIncoming_le
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -178,6 +188,8 @@ theorem duplicate_exponent_sum_add_commonIncoming_le
   have hcard :=
     retained_card_sum_ge_n_add_commonIncoming
       C hsame hno
+  have hu := hexp u
+  have hv := hexp v
   omega
 
 /-- Direct positive-light-fibre dyadic bound from the one-layer phase budget. -/
@@ -185,6 +197,7 @@ theorem duplicate_positive_light_fibre_dyadic_capacity
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (honeLoss :
       ∀ x, (active C x).card ≤ n - exponent x + 1)
     {u v : V}
@@ -200,7 +213,7 @@ theorem duplicate_positive_light_fibre_dyadic_capacity
       2 ^ (n - (incomingRetained C u).card) := by
   have hlight :=
     duplicate_exponent_sum_add_commonIncoming_le
-      C exponent honeLoss huv hsame hno
+      C exponent hexp honeLoss huv hsame hno
   have hsum :
       exponent u + exponent v ≤
         n - (incomingRetained C u).card := by
