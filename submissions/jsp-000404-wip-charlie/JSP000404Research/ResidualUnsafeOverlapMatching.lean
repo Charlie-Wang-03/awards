@@ -78,19 +78,9 @@ theorem unsafe_overlap_word_eq_incomingCharacteristic
     have hactive :
         c ∈ retainedActive C v :=
       outgoingRetained_subset_retainedActive C v hout
-    have hnotIncoming :
-        c ∉ incomingRetained C v := by
-      intro hvin
-      exact Finset.disjoint_left.mp
-        (incomingRetained_disjoint_outgoingRetained C v)
-        hvin hout
     have hfalse :
-        retainedBit C v c = false := by
-      unfold retainedBit
-      apply bit_eq_false_iff.mpr
-      intro hex
-      exact hnotIncoming
-        ((mem_incomingRetained_iff C v c).2 hex)
+        retainedBit C v c = false :=
+      retainedBit_false_of_outgoingRetained C hout
     have hcomp :=
       (mem_retainedCompletionWords C v word).1 hvWord c hactive
     simp [incomingCharacteristic, hinc, hcomp, hfalse]
@@ -165,11 +155,14 @@ theorem unsafe_overlap_upper_unique
       C hunsafeW huW hw
   have hwords : wordV = wordW :=
     hwordV.trans hwordW.symm
-  subst wordW
+  have hw' :
+      wordV ∈ retainedCompletionWords C w := by
+    rw [hwords]
+    exact hw
   by_contra hvw
   exact no_three_distinct_share_retained_completion
     C (ne_of_lt huv) (ne_of_lt huw) hvw
-    huV hv hw
+    huV hv hw'
 
 /-- One upper endpoint has at most one unsafe-overlap partner. -/
 theorem unsafe_overlap_lower_unique
@@ -196,11 +189,14 @@ theorem unsafe_overlap_lower_unique
       C hunsafeW hw hvW
   have hwords : wordU = wordW :=
     hwordU.trans hwordW.symm
-  subst wordW
+  have hw' :
+      wordU ∈ retainedCompletionWords C w := by
+    rw [hwords]
+    exact hw
   by_contra huw
   exact no_three_distinct_share_retained_completion
     C huw (ne_of_lt huv) (ne_of_lt hwv)
-    hu hw hvU
+    hu hw' hvU
 
 /-- Edge-level matching statement: two unsafe overlapping residual edges that
 share an endpoint are the same ordered pair. -/
