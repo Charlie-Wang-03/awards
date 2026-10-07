@@ -68,22 +68,24 @@ theorem no_throughColour_of_retainedCompletion_overlap
     (mem_incomingRetained_iff_retainedBit_true C u c).1 hInU
   have hnotInV :
       c ∉ incomingRetained C v := by
+    intro hInV
     exact Finset.disjoint_left.mp
       (incomingRetained_disjoint_outgoingRetained C v)
-      hOutV
+      hInV hOutV
   have hbitV :
       retainedBit C v c = false := by
-    unfold retainedBit
-    apply bit_eq_false_iff.mpr
-    intro hex
-    exact hnotInV
-      ((mem_incomingRetained_iff C v c).2 hex)
+    cases hbit : retainedBit C v c with
+    | false =>
+        rfl
+    | true =>
+        exact False.elim
+          (hnotInV
+            ((mem_incomingRetained_iff_retainedBit_true C v c).2 hbit))
   have hwU := huComp c hcActiveU
   have hwV := hvComp c hcActiveV
   rw [hbitU] at hwU
   rw [hbitV] at hwV
-  rw [hwU] at hwV
-  decide
+  simp_all
 
 /-- Set form: the through-colour set is empty on every actual overlap pair. -/
 theorem residualThroughColours_eq_empty_of_overlap
@@ -95,8 +97,9 @@ theorem residualThroughColours_eq_empty_of_overlap
     (hv : word ∈ retainedCompletionWords C v) :
     residualThroughColours C u v = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c hc
+  ext c
+  simp only [Finset.mem_empty, iff_false]
+  intro hc
   have hc' :=
     (mem_residualThroughColours C u v c).1 hc
   exact Finset.disjoint_left.mp
