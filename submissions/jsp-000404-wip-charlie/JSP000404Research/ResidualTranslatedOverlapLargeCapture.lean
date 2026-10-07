@@ -151,7 +151,21 @@ theorem overlap_card_le_blockerCompletion_of_large_oneFlip_capture
   have hfree :=
     commonInactive_card_le_blockerInactive_of_large_oneFlip_capture
       C hc hlarge
-  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
+  have hcapPos :
+      0 < (oneFlipCapturedSourceWords C u v w c).card := by
+    by_contra hzero
+    have hz :
+        (oneFlipCapturedSourceWords C u v w c).card = 0 := by
+      omega
+    rw [hz] at hlarge
+    omega
+  obtain ⟨base,hbase⟩ :=
+    Finset.card_pos.mp hcapPos
+  have hbaseData :=
+    (mem_oneFlipCapturedSourceWords C u v w c base).1 hbase
+  have hu := (Finset.mem_inter.mp hbaseData.1).1
+  have hv := (Finset.mem_inter.mp hbaseData.1).2
+  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C hu hv,
       retainedCompletionWords_card]
   have hpow :=
     Nat.pow_le_pow_right
@@ -176,12 +190,26 @@ theorem overlap_card_le_blockerCompletion_of_large_twoFlip_capture
   have hfree :=
     commonInactive_card_le_blockerInactive_of_large_twoFlip_capture
       C hc hd hlarge
-  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C u v,
+  have hcapPos :
+      0 < (twoFlipCapturedSourceWords C u v w c d).card := by
+    by_contra hzero
+    have hz :
+        (twoFlipCapturedSourceWords C u v w c d).card = 0 := by
+      omega
+    rw [hz] at hlarge
+    omega
+  obtain ⟨base,hbase⟩ :=
+    Finset.card_pos.mp hcapPos
+  have hbaseData :=
+    (mem_twoFlipCapturedSourceWords C u v w c d base).1 hbase
+  have hu := (Finset.mem_inter.mp hbaseData.1).1
+  have hv := (Finset.mem_inter.mp hbaseData.1).2
+  rw [retainedCompletionWords_inter_card_eq_pow_commonInactive C hu hv,
       retainedCompletionWords_card]
   have hpow :=
     Nat.pow_le_pow_right
       (by norm_num : 0 < 2) hfree
-  rw [retainedInactive_card] at hfree
+  rw [retainedInactive_card] at hpow
   exact hpow
 
 #print axioms commonInactive_subset_blockerInactive_of_large_oneFlip_capture
