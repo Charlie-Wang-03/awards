@@ -55,14 +55,14 @@ theorem unsafe_pairOverlapWords_card_eq_one
   obtain ⟨word, hu, hv⟩ := hdata.2.2
   unfold pairOverlapWords
   exact
-    retainedCompletionWords_inter_card_one_of_unsafe_overlap
+    retainedCompletionWords_inter_card_eq_one_of_unsafe_overlap
       C hdata.2.1 hu hv
 
 theorem unsafe_pairOverlapWords_pairwiseDisjoint
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1)) :
-    ((unsafeOverlapCarrierPairs C : Finset (V × V)) : Set (V × V)).
-      PairwiseDisjoint (pairOverlapWords C) := by
+    ((unsafeOverlapCarrierPairs C : Finset (V × V)) : Set (V × V)).PairwiseDisjoint
+      (pairOverlapWords C) := by
   intro e he f hf hef
   apply pairOverlapWords_pairwiseDisjoint C
   · exact unsafeOverlapCarrierPairs_subset_overlapResidualPairs C
