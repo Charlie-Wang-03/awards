@@ -1,6 +1,7 @@
 
 import JSP000404Research.ResidualMixedOverlapRigidity
 import JSP000404Research.ResidualExactBudget
+import JSP000404Research.ResidualOverlapPairDecomposition
 import Mathlib.Tactic
 
 /-!
@@ -124,6 +125,7 @@ theorem mixed_unpaid_overlap_card_eq_strict_cube_card
       C hbaseU hbaseV,
       retainedCompletionWords_card,
       hfull]
+  simp [projectedFree]
 
 /-- Exact arithmetic decomposition: strict surplus plus one strict target
 weight equals the whole mixed overlap cube. -/
@@ -153,6 +155,7 @@ theorem mixed_unpaid_overlap_card_eq_surplus_add_target
     Nat.pow_le_pow_right
       (by norm_num : 0 < 2)
       (Nat.le_of_lt hvStrict)
+  unfold projectedFree at hp ⊢
   omega
 
 /-- Symmetric orientation: if v is saturated and u strict, the strict lower
