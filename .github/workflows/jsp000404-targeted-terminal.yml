@@ -67,3 +67,7 @@ jobs:
       - name: Check deficient-core second-layer outlet
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualDeficientCoreSecondLayerOutlet
+
+      - name: Probe exact-two whole-cube terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ProjectionQTTTSupportOrWholeCube
