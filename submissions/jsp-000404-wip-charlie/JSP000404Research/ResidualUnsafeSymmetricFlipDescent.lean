@@ -278,7 +278,7 @@ theorem exists_upper_inactive_flip_single_or_safe_overlap
     obtain ⟨w, hwv, hw⟩ := hblock
     have hsafe :=
       upper_inactive_flip_blocker_is_safe_to_left
-        C huv hunsafe huBase hvBase hc hwv hw
+        C huv hunsafe huBase hvBase hc hwv.symm hw
     exact ⟨w, hwv, hw, hsafe.1, hsafe.2.1, hsafe.2.2⟩
   · left
     intro w hw
