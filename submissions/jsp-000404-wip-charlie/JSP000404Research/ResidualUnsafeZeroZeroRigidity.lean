@@ -122,7 +122,10 @@ theorem zero_zero_overlap_completion_cubes_eq_singleton
       C exponent hvSat hvZero
   have huBase :
       (fun c => retainedBit C u c) = word := by
-    have hmem : word ∈ {fun c => retainedBit C u c} := by
+    have hmem :
+        word ∈
+          ({(fun c : Fin n => retainedBit C u c)} :
+            Finset (Fin n → Bool)) := by
       rw [← huSingleton]
       exact huWord
     have heq :
@@ -131,7 +134,10 @@ theorem zero_zero_overlap_completion_cubes_eq_singleton
     exact heq.symm
   have hvBase :
       (fun c => retainedBit C v c) = word := by
-    have hmem : word ∈ {fun c => retainedBit C v c} := by
+    have hmem :
+        word ∈
+          ({(fun c : Fin n => retainedBit C v c)} :
+            Finset (Fin n → Bool)) := by
       rw [← hvSingleton]
       exact hvWord
     have heq :
