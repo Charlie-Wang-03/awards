@@ -88,6 +88,7 @@ jobs:
           lake build JSP000404Research.ResidualUnsafeSaturatedRecursiveOutlet
           lake build JSP000404Research.RefinedResidualHardRemainder
           lake build JSP000404Research.NearPerfectRankDescent
+          lake build JSP000404Research.NearPerfectMinimalRank
 
       - name: Check lightweight unique-support geometry
         working-directory: submissions/jsp-000404-wip-charlie
