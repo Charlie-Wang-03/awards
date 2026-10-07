@@ -72,7 +72,9 @@ theorem safe_left_active_flip_blocker_incoming
     · exact hout
   have hbitU :
       retainedBit C u c = false :=
-    retainedBit_false_of_outgoingRetained C hcOutU
+    by
+      simpa [retainedBit] using
+        (bit_false_of_outgoingRetained C hcOutU)
   have hwordC :
       word c = false := by
     exact ((mem_retainedCompletionWords C u word).1 hu c hcu).trans hbitU
