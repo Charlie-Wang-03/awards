@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualOverlapVaryingSupport
+import JSP000404Research.ResidualOverlapDimension
 import JSP000404Research.ResidualReducedZeroOverlapTranslationQuotient
 import Mathlib.Tactic
 
@@ -43,6 +44,17 @@ theorem overlapTranslationEquivalent_varyingCoordinates_eq
   | trans _ _ _ _ _ ih₁ ih₂ =>
       exact ih₁.trans ih₂
 
+theorem commonRetainedInactive_eq_commonInactiveRetained
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (u v : V) :
+    commonRetainedInactive C u v =
+      commonInactiveRetained C u v := by
+  classical
+  ext c
+  simp [mem_commonRetainedInactive,
+    mem_commonInactiveRetained]
+
 theorem overlap_same_translation_quotient_commonRetainedInactive_eq
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -66,8 +78,8 @@ theorem overlap_same_translation_quotient_commonRetainedInactive_eq
           (overlapTranslationSetoid n)
           (retainedCompletionWords C w ∩
             retainedCompletionWords C z)) :
-    commonRetainedInactive C u v =
-      commonRetainedInactive C w z := by
+    commonInactiveRetained C u v =
+      commonInactiveRetained C w z := by
   have heqv :
       OverlapTranslationEquivalent
         (retainedCompletionWords C u ∩
@@ -83,8 +95,16 @@ theorem overlap_same_translation_quotient_commonRetainedInactive_eq
     overlapVaryingCoordinates_eq_commonRetainedInactive
       C hwBase hzBase
   ] at hvary
-  exact hvary
+  calc
+    commonInactiveRetained C u v =
+        commonRetainedInactive C u v := by
+      symm
+      exact commonRetainedInactive_eq_commonInactiveRetained C u v
+    _ = commonRetainedInactive C w z := hvary
+    _ = commonInactiveRetained C w z :=
+      commonRetainedInactive_eq_commonInactiveRetained C w z
 
+#print axioms commonRetainedInactive_eq_commonInactiveRetained
 #print axioms oneFlipOverlapRel_varyingCoordinates_eq
 #print axioms overlapTranslationEquivalent_varyingCoordinates_eq
 #print axioms
