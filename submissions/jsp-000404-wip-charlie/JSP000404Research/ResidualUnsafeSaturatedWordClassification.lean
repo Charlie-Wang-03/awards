@@ -85,8 +85,12 @@ theorem unsafeSaturatedSaturatedWord_zero_zero_or_safe_descent
   have hunsafeWord :
       word ∈ unsafeOverlapWords C :=
     (Finset.mem_inter.mp hword).2
-  obtain ⟨e, heUnsafe, heWord⟩ := by
+  have hunsafeWord' :
+      word ∈ (unsafeOverlapCarrierPairs C).biUnion
+        (pairOverlapWords C) := by
     simpa [unsafeOverlapWords] using hunsafeWord
+  obtain ⟨e, heUnsafe, heWord⟩ :=
+    Finset.mem_biUnion.mp hunsafeWord'
   have heData :=
     (mem_unsafeOverlapCarrierPairs C e.1 e.2).1 heUnsafe
   have heParts := Finset.mem_inter.mp heWord
