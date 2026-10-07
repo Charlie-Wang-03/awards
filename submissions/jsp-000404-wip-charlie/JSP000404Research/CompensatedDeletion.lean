@@ -26,7 +26,7 @@ open scoped BigOperators
 
 /-- Direct abstract compensated-deletion step. -/
 theorem compensated_deletion
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after : V → ℕ) (r : V) (bound : ℕ)
     (hpay :
       2 ^ exponent r +
@@ -42,7 +42,6 @@ theorem compensated_deletion
           ∑ i ∈ (Finset.univ.erase r), 2 ^ exponent i := by
     rw [← Finset.add_sum_erase (Finset.univ : Finset V)
       (fun i => 2 ^ exponent i) (Finset.mem_univ r)]
-    simp
   rw [hsplit]
   exact hpay.trans hind
 
@@ -58,7 +57,7 @@ theorem two_mul_pow_le_pow_of_succ_le
 its old weight plus a chosen bonus, and the bonuses pay the deleted weight,
 then the whole deletion is compensated. -/
 theorem deletion_payment_of_bonus
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after bonus : V → ℕ) (r : V)
     (hpoint : ∀ i ∈ Finset.univ.erase r,
       2 ^ exponent i + bonus i ≤ 2 ^ after i)
@@ -77,7 +76,7 @@ theorem deletion_payment_of_bonus
 
 /-- Ready-to-use induction rule with an arbitrary pointwise bonus. -/
 theorem compensated_deletion_of_bonus
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after bonus : V → ℕ) (r : V) (bound : ℕ)
     (hpoint : ∀ i ∈ Finset.univ.erase r,
       2 ^ exponent i + bonus i ≤ 2 ^ after i)
@@ -92,7 +91,7 @@ theorem compensated_deletion_of_bonus
 /-- A single survivor gaining one exponent unit can pay a deleted centre whose
 old exponent is no larger. -/
 theorem deletion_payment_of_single_gain
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after : V → ℕ) {r i : V}
     (hri : r ≠ i)
     (hmono : ∀ j ∈ Finset.univ.erase r, exponent j ≤ after j)
@@ -113,7 +112,7 @@ theorem deletion_payment_of_single_gain
         Nat.pow_le_pow_right (by norm_num) (hmono j hj)
       simp [bonus, hji, hp]
   · have hi : i ∈ Finset.univ.erase r := by
-      simp [hri]
+      simpa [Finset.mem_erase] using And.intro hri.symm (Finset.mem_univ i)
     have hpow : 2 ^ exponent r ≤ 2 ^ exponent i :=
       Nat.pow_le_pow_right (by norm_num) hweight
     have hterm :
@@ -128,7 +127,7 @@ theorem deletion_payment_of_single_gain
 
 /-- Single-gain version of the induction step. -/
 theorem compensated_deletion_of_single_gain
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after : V → ℕ) {r i : V} (bound : ℕ)
     (hri : r ≠ i)
     (hmono : ∀ j ∈ Finset.univ.erase r, exponent j ≤ after j)
