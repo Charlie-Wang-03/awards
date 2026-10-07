@@ -128,6 +128,8 @@ theorem retainedCompletionWords_card_le_two_mul_surplus_of_strict
     (retainedCompletionWords C v).card ≤
       2 * dyadicProfileSurplus exponent (projectedFree C) v := by
   rw [retainedCompletionWords_card]
+  change 2 ^ projectedFree C v ≤
+    2 * dyadicProfileSurplus exponent (projectedFree C) v
   unfold dyadicProfileSurplus
   have hhalf :=
     half_pow_le_dyadic_surplus_of_lt hstrict
