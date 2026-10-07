@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualBlocker
+import JSP000404Research.ResidualBlockerFlipCode
 import JSP000404Research.StandardResidualSafeHardDescent
 import Mathlib.Tactic
 
