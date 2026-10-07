@@ -80,7 +80,9 @@ theorem unsafe_overlap_word_eq_incomingCharacteristic
       outgoingRetained_subset_retainedActive C v hout
     have hfalse :
         retainedBit C v c = false :=
-      retainedBit_false_of_outgoingRetained C hout
+      by
+      simpa [retainedBit] using
+        (bit_false_of_outgoingRetained C hout)
     have hcomp :=
       (mem_retainedCompletionWords C v word).1 hvWord c hactive
     simp [incomingCharacteristic, hinc, hcomp, hfalse]
