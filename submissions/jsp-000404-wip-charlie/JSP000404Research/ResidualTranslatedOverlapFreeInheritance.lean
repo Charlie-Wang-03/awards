@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualBlockerFreeInheritance
 import JSP000404Research.ResidualOverlapDimension
+import JSP000404Research.BooleanFlipCore
 import Mathlib.Tactic
 
 /-!
@@ -19,31 +20,6 @@ coordinate is forced to remain inactive at that blocker.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-theorem flipBoolWordAt_commute
-    {n : ℕ}
-    (word : Fin n → Bool)
-    {c e : Fin n}
-    (hce : c ≠ e) :
-    flipBoolWordAt (flipBoolWordAt word c) e =
-      flipBoolWordAt (flipBoolWordAt word e) c := by
-  funext d
-  by_cases hdc : d = c
-  · subst d
-    rw [flipBoolWordAt_off _ hce]
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off _ hce.symm]
-  · by_cases hde : d = e
-    · subst d
-      rw [flipBoolWordAt_at]
-      rw [flipBoolWordAt_off _ hce.symm]
-      rw [flipBoolWordAt_off _ hce]
-      rw [flipBoolWordAt_at]
-    · rw [flipBoolWordAt_off _ hde,
-          flipBoolWordAt_off _ hdc,
-          flipBoolWordAt_off _ hdc,
-          flipBoolWordAt_off _ hde]
 
 theorem commonInactive_ne_active_left
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -99,8 +75,21 @@ theorem two_flip_translation_preserves_commonInactive_edge
     commonInactive_ne_active_left C he hc
   have hde : d ≠ e :=
     commonInactive_ne_active_right C he hd
-  rw [flipBoolWordAt_commute word hce]
-  rw [flipBoolWordAt_commute (flipBoolWordAt word c) hde]
+  calc
+    flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word e) c) d
+      =
+    flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word c) e) d := by
+      exact congrArg
+        (fun x => flipBoolWordAt x d)
+        (flipBoolWordAt_commute word hce).symm
+    _ =
+    flipBoolWordAt
+        (flipBoolWordAt (flipBoolWordAt word c) d) e := by
+      exact
+        (flipBoolWordAt_commute
+          (flipBoolWordAt word c) hde).symm
 
 theorem blocker_inherits_commonInactive_of_one_flip_pair
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -119,7 +108,7 @@ theorem blocker_inherits_commonInactive_of_one_flip_pair
     e ∉ retainedActive C w := by
   have hcomm :=
     one_flip_translation_preserves_commonInactive_edge
-      C he hc
+      (word := word) C he hc
   rw [hcomm] at hyEdge
   exact inactive_of_word_and_flip_mem_completion
     C hy hyEdge
@@ -143,12 +132,11 @@ theorem blocker_inherits_commonInactive_of_two_flip_pair
     e ∉ retainedActive C w := by
   have hcomm :=
     two_flip_translation_preserves_commonInactive_edge
-      C he hc hd
+      (word := word) C he hc hd
   rw [hcomm] at hyEdge
   exact inactive_of_word_and_flip_mem_completion
     C hy hyEdge
 
-#print axioms flipBoolWordAt_commute
 #print axioms blocker_inherits_commonInactive_of_one_flip_pair
 #print axioms blocker_inherits_commonInactive_of_two_flip_pair
 
