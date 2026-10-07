@@ -201,19 +201,27 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
     listZeroGapMass_scaled_le_remainder halignQ
   rw [listRemainderMass_eq t
         (quotientList t C.gaps) C.gaps hlen,
-      C.gaps_sum, hqsum, ht] at hmass0
+      C.gaps_sum, hqsum] at hmass0
+  have hncastAdd :
+      (((n - 1 : ℕ) : ℝ)) + 1 = (n : ℝ) := by
+    exact_mod_cast (Nat.sub_add_cancel hn)
   have hncast :
       (((n - 1 : ℕ) : ℝ)) = (n : ℝ) - 1 := by
-    exact_mod_cast (Nat.sub_add_cancel hn)
+    linarith
   rw [hncast] at hmass0
   norm_num at hmass0
+  have hscaled :
+      t * listZeroGapMass
+          (quotientList t C.gaps) C.gaps
+        ≤ 1 + delta := by
+    rw [ht] at hmass0 ⊢
+    simpa [add_comm, add_left_comm, add_assoc] using hmass0
   have hpiMass :
       Real.pi * listZeroGapMass
           (quotientList t C.gaps) C.gaps
         ≤ (1 + delta) * lam :=
     pi_mul_width_le_scaled_lam
-      htpos hlam (by
-        simpa [add_comm, add_left_comm, add_assoc] using hmass0)
+      htpos hlam hscaled
   rw [hzeroEq]
   exact hpiMass
 
