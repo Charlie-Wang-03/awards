@@ -90,7 +90,7 @@ theorem exists_leftReducedZero_sharp_oneFlip_outlet
   · intro w hwNotFull
     rcases oneFlip_capture_zero_full_or_half C hcu
       with hzero | hfull | hhalf
-    · omega
+    · simpa [hzero]
     · exfalso
       exact hwNotFull
         ((mem_oneFlipFullBlockers C u v c w).2 hfull)
@@ -167,7 +167,7 @@ theorem exists_rightReducedZero_sharp_oneFlip_outlet
   · intro w hwNotFull
     rcases oneFlip_capture_zero_full_or_half C hcu
       with hzero | hfull | hhalf
-    · omega
+    · simpa [hzero]
     · exfalso
       exact hwNotFull
         ((mem_oneFlipFullBlockers C u v c w).2 hfull)
