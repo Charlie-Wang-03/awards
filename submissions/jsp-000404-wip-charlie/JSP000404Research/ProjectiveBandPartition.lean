@@ -57,9 +57,9 @@ theorem rayInProjectiveBand_floor
 
 noncomputable def projectiveBandBit
     {V : Type*} {p : V → Plane}
+    {t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {t lam : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
@@ -71,9 +71,9 @@ noncomputable def projectiveBandBit
 /-- The band bit equals the sign of every ray in that band. -/
 theorem projectiveBandBit_eq_raySignAt
     {V : Type*} {p : V → Plane}
+    {t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {t lam : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
@@ -119,7 +119,7 @@ noncomputable def projectiveBandColor
   intro u v
   by_cases huv : u = v
   · exact ⟨0, Nat.succ_pos n⟩
-  · let j : OtherVertex u := ⟨v, huv.symm⟩
+  · let j : OtherVertex u := ⟨v, Ne.symm huv⟩
     let q := Nat.floor (normalizedRayTheta hp t u j)
     have hx0 :
         0 ≤ normalizedRayTheta hp t u j :=
@@ -143,7 +143,7 @@ theorem projectiveBandColor_val
     {u v : V} (huv : u ≠ v) :
     (projectiveBandColor hp ht n htop u v).val =
       Nat.floor
-        (normalizedRayTheta hp t u ⟨v, huv.symm⟩) := by
+        (normalizedRayTheta hp t u ⟨v, Ne.symm huv⟩) := by
   unfold projectiveBandColor
   simp [huv]
 
@@ -155,11 +155,11 @@ theorem projectiveBandColor_mem_lower
     (n : ℕ)
     (htop : t < (n + 1 : ℕ))
     {u v : V} (huv : u ≠ v) :
-    RayInProjectiveBand hp t u ⟨v, huv.symm⟩
+    RayInProjectiveBand hp t u ⟨v, Ne.symm huv⟩
       (projectiveBandColor hp ht n htop u v) := by
   have hband :=
     rayInProjectiveBand_floor
-      hp ht.le u ⟨v, huv.symm⟩
+      hp ht.le u ⟨v, Ne.symm huv⟩
   rw [projectiveBandColor_val hp ht n htop huv]
   exact hband
 
@@ -178,20 +178,24 @@ theorem projectiveBandColor_mem_upper
       hp ht n htop huv
   have htheta :
       rayThetaAt hp v ⟨u, huv⟩ =
-        rayThetaAt hp u ⟨v, huv.symm⟩ :=
+        rayThetaAt hp u ⟨v, Ne.symm huv⟩ :=
     (rayThetaAt_reverse_eq hp huv).symm
   unfold RayInProjectiveBand at hlower ⊢
-  unfold normalizedRayTheta at hlower ⊢
-  rw [htheta]
+  have hnorm :
+      normalizedRayTheta hp t v ⟨u, huv⟩ =
+        normalizedRayTheta hp t u ⟨v, Ne.symm huv⟩ := by
+    unfold normalizedRayTheta
+    rw [htheta]
+  rw [hnorm]
   exact hlower
 
 /-- Direct n+1-coordinate projective-band binary edge partition. -/
 noncomputable def projectiveBandPartition
     {V : Type*} [LinearOrder V]
     {p : V → Plane}
+    {t lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {t lam : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
@@ -206,7 +210,7 @@ noncomputable def projectiveBandPartition
     have huvNe : u ≠ v := ne_of_lt huv
     let c :=
       projectiveBandColor hp ht n htop u v
-    let uv : OtherVertex u := ⟨v, huvNe.symm⟩
+    let uv : OtherVertex u := ⟨v, Ne.symm huvNe⟩
     let vu : OtherVertex v := ⟨u, huvNe⟩
     have hcU :
         RayInProjectiveBand hp t u uv c := by
