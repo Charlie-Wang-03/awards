@@ -153,7 +153,7 @@ theorem oneFlip_fullBlockers_card_le_two
         C hbase z.2
     · exact hwz
   have hcard := Fintype.card_le_of_injective f hf
-  simpa only [Fintype.card_coe] using hcard
+  simpa only [Fintype.card_coe, Fintype.card_bool] using hcard
 
 theorem twoFlip_fullBlockers_card_le_two
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -178,7 +178,7 @@ theorem twoFlip_fullBlockers_card_le_two
         C hbase z.2
     · exact hwz
   have hcard := Fintype.card_le_of_injective f hf
-  simpa only [Fintype.card_coe] using hcard
+  simpa only [Fintype.card_coe, Fintype.card_bool] using hcard
 
 #print axioms oneFlip_fullBlockers_card_le_two
 #print axioms twoFlip_fullBlockers_card_le_two
