@@ -75,17 +75,18 @@ theorem not_mem_throughColours_of_completion_overlap
       hinc hcData.2
   have hvFalse :
       retainedBit C v c = false := by
-    unfold retainedBit
-    apply bit_eq_false_iff.mpr
-    intro hex
-    exact hvNotIncoming
-      ((mem_incomingRetained_iff C v c).2 hex)
+    cases hbit : retainedBit C v c with
+    | false =>
+        rfl
+    | true =>
+        exact False.elim
+          (hvNotIncoming
+            ((mem_incomingRetained_iff_retainedBit_true C v c).2 hbit))
   have hwu := huComp c hcuActive
   have hwv := hvComp c hcvActive
   rw [huTrue] at hwu
   rw [hvFalse] at hwv
-  rw [hwu] at hwv
-  simp at hwv
+  simp_all
 
 /-- Hence an overlap-carrying pair has no through colours at all. -/
 theorem residualThroughColours_eq_empty_of_completion_overlap
@@ -96,10 +97,14 @@ theorem residualThroughColours_eq_empty_of_completion_overlap
     (hvWord : word ∈ retainedCompletionWords C v) :
     residualThroughColours C u v = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c _
-  exact not_mem_throughColours_of_completion_overlap
-    C huWord hvWord
+  ext c
+  constructor
+  · intro hc
+    exact False.elim
+      (not_mem_throughColours_of_completion_overlap
+        C huWord hvWord hc)
+  · intro hc
+    simpa using hc
 
 /-- Unsafe residual edges cover every retained coordinate by endpoint activity. -/
 theorem retainedActive_union_eq_univ_of_unsafe
