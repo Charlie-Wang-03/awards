@@ -1,5 +1,5 @@
 
-import JSP000404Research.UnitGainDeletionBonus
+import JSP000404Research.DeletionPostWeight
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 
