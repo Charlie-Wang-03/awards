@@ -142,9 +142,21 @@ theorem exponent_capacity_of_saturated_overlap_and_loss_fit_holes
     (∑ v, 2 ^ exponent v) ≤ 2 ^ n := by
   apply exponent_capacity_of_completion_defect_payment
     C exponent
-  have hstrict :=
+  have hstrictRaw :=
     strictStrictOverlap_card_le_total_surplus
       C exponent
+  have hstrict :
+      (strictStrictOverlapWords C exponent).card ≤
+        totalDyadicProfileSurplus exponent
+          (fun v => n - (retainedActive C v).card) := by
+    simpa [projectedFree] using hstrictRaw
+  have hholes' :
+      (saturatedOverlapWords C exponent).card +
+          totalDyadicProfileLoss exponent
+            (fun v => n - (retainedActive C v).card)
+        ≤
+      2 ^ n - (coveredCompletionWords C).card := by
+    simpa [projectedFree] using hholes
   have hsplit :=
     saturatedOverlap_card_add_strict_eq_overlap
       C exponent
