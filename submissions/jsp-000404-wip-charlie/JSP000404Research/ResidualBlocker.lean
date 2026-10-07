@@ -53,11 +53,9 @@ theorem retainedCode_eq_flipped_iff_blocker
   · intro h
     constructor
     · have hc := congrFun h c
-      simpa [flippedRetainedCode] using
-        (show retainedBit C w c ≠ retainedBit C u c by
-          cases hu : retainedBit C u c <;>
-            cases hw : retainedBit C w c <;>
-            simp_all [flippedRetainedCode])
+      intro heq
+      apply flippedRetainedCode_at_ne C u c
+      rw [← hc, heq]
     · intro d hdc
       have hd := congrFun h d
       rw [flippedRetainedCode_off C u c d hdc] at hd
@@ -66,7 +64,6 @@ theorem retainedCode_eq_flipped_iff_blocker
     funext d
     by_cases hdc : d = c
     · subst d
-      have hne := h.1
       cases hu : retainedBit C u c <;>
         cases hw : retainedBit C w c <;>
         simp_all [flippedRetainedCode]
