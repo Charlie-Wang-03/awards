@@ -79,6 +79,7 @@ theorem pairOverlapWords_pairwiseDisjoint
       (pairOverlapWords C) := by
   intro e he f hf hef
   classical
+  change Disjoint (pairOverlapWords C e) (pairOverlapWords C f)
   rw [Finset.disjoint_left]
   intro word hwe hwf
   have heData :=
