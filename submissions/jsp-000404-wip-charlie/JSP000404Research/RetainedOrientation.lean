@@ -49,17 +49,13 @@ theorem retainedBit_false_of_outgoingRetained
     {v : V} {c : Fin k}
     (hcout : c ∈ outgoingRetained C v) :
     retainedBit C v c = false := by
-  cases hbit : retainedBit C v c with
-  | false =>
-      rfl
-  | true =>
-      have hcin :
-          c ∈ incomingRetained C v :=
-        (mem_incomingRetained_iff_retainedBit_true C v c).2 hbit
-      exact False.elim
-        (Finset.disjoint_left.mp
-          (incomingRetained_disjoint_outgoingRetained C v)
-          hcin hcout)
+  obtain ⟨w,hvw,hcw⟩ :=
+    (mem_outgoingRetained_iff C v c).1 hcout
+  unfold retainedBit
+  apply (bit_eq_false_iff C v c.castSucc).2
+  rintro ⟨a,hav,hca⟩
+  apply C.noMonoTwoPath hav hvw
+  rw [hca,hcw]
 
 /-- The retained active set is exactly the union of incoming and outgoing
 retained colours. -/
