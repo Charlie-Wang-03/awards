@@ -153,11 +153,12 @@ theorem lower_inactive_flip_blocker_incoming
       (mem_completion_iff_flip_of_inactive
         C hcInactiveW).1 hwFlip
     exact no_three_distinct_share_retained_completion
-      C (ne_of_lt huv) huw hwv
+      C (ne_of_lt huv) huw hwv.symm
       huBase hvBase hwBase
   have hvFalse :
-      retainedBit C v c = false :=
-    retainedBit_false_of_outgoingRetained C hcOutV
+      retainedBit C v c = false := by
+    simpa [retainedBit] using
+      (bit_false_of_outgoingRetained C hcOutV)
   have hvComp :=
     (mem_retainedCompletionWords C v base).1 hvBase
   have hbaseAt :
