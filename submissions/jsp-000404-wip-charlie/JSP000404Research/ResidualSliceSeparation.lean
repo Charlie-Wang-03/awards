@@ -142,6 +142,9 @@ theorem residualActiveSlice_pairwiseDisjoint
       (retainedCompletionWords C) := by
   intro u hu v hv huv
   classical
+  change Disjoint
+    (retainedCompletionWords C u)
+    (retainedCompletionWords C v)
   rw [Finset.disjoint_left]
   intro word huWord hvWord
   rcases retainedCompletion_overlap_forces_residual
