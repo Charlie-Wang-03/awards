@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualPairLocalFlip
+import JSP000404Research.ResidualRetainedInactive
 import Mathlib.Tactic
 
 /-!
