@@ -82,8 +82,10 @@ theorem dyadicUnitSet_card_le_support_weight
           | mk vy iy =>
             simp only [f, Sigma.mk.inj_iff] at hxy
             rcases hxy with ⟨hvy,hiy⟩
+            have hv : vx = vy :=
+              congrArg (fun z : {v : V // v ∈ S} => z.1) hvy
             subst vy
-            simp only [Sigma.mk.injEq] at hiy
+            have hi : ix = iy := eq_of_heq hiy
             subst iy
             rfl
   have hcard :=
@@ -99,7 +101,8 @@ theorem dyadicUnitSet_card_le_support_weight
         =
       ∑ v ∈ S, 2 ^ exponent v := by
     rw [Fintype.card_sigma]
-    simp
+    simp only [Fintype.card_fin]
+    exact Finset.sum_attach S (fun v => 2 ^ exponent v)
   rw [hdomain,hcodomain] at hcard
   exact hcard
 

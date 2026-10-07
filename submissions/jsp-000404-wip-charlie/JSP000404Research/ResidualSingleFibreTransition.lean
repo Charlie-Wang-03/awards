@@ -72,7 +72,7 @@ theorem single_flip_blocker_active
   by_contra hcW
   have hwOrig :
       word ∈ retainedCompletionWords C w :=
-    (mem_completion_iff_flip_of_inactive C hcW).1 hw
+    (mem_retainedCompletionWords_flip_iff_of_inactive C hcW).1 hw
   have hwv := hsingle.2 w hwOrig
   subst w
   exact flip_active_not_mem_completion

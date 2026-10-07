@@ -75,3 +75,7 @@ jobs:
       - name: Probe exact-two whole-cube terminal
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ProjectionQTTTSupportOrWholeCube
+
+      - name: Check minimal-core QTTT support-recursion terminal
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ProjectionMinimalCoreQTTTTerminal

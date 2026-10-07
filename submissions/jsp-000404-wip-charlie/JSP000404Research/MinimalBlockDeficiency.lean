@@ -82,10 +82,9 @@ theorem minimal_deficient_delete_recovers
   have hproper : T.erase v ⊂ T := by
     constructor
     · exact Finset.erase_subset _ _
-    · intro heq
-      have : v ∉ T.erase v := by simp
-      rw [heq] at this
-      exact this hv
+    · intro hsub
+      have hvErase : v ∈ T.erase v := hsub hv
+      simpa using hvErase
   have hnot := hmin (T.erase v) hproper
   unfold BlockDeficient at hnot
   omega
@@ -133,25 +132,19 @@ theorem minimal_deficient_no_noncross_partition
 
   have hAproper : A ⊂ T := by
     refine ⟨hAsub,?_⟩
-    intro hEq
+    intro hTA
     obtain ⟨b,hbB⟩ := hB
     have hbT : b ∈ T := hBsub hbB
-    have hbA : b ∉ A := by
-      intro hbA
-      exact Finset.disjoint_left.mp hdisjAB hbA hbB
-    rw [← hEq] at hbT
-    exact hbA hbT
+    have hbA : b ∈ A := hTA hbT
+    exact Finset.disjoint_left.mp hdisjAB hbA hbB
 
   have hBproper : B ⊂ T := by
     refine ⟨hBsub,?_⟩
-    intro hEq
+    intro hTB
     obtain ⟨a,haA⟩ := hA
     have haT : a ∈ T := hAsub haA
-    have haB : a ∉ B := by
-      intro haB
-      exact Finset.disjoint_left.mp hdisjAB haA haB
-    rw [← hEq] at haT
-    exact haB haT
+    have haB : a ∈ B := hTB haT
+    exact Finset.disjoint_left.mp hdisjAB haA haB
 
   have hAok := hmin A hAproper
   have hBok := hmin B hBproper
@@ -161,9 +154,22 @@ theorem minimal_deficient_no_noncross_partition
   have hUnionBlocks :
       T.biUnion blocks =
         A.biUnion blocks ∪ B.biUnion blocks := by
-    rw [← hunion]
     ext w
-    simp [or_assoc, or_left_comm, or_comm]
+    simp only [Finset.mem_biUnion, Finset.mem_union]
+    constructor
+    · rintro ⟨v,hvT,hw⟩
+      have hvAB : v ∈ A ∪ B := by
+        rw [hunion]
+        exact hvT
+      rcases Finset.mem_union.mp hvAB with hvA | hvB
+      · exact Or.inl ⟨v,hvA,hw⟩
+      · exact Or.inr ⟨v,hvB,hw⟩
+    · intro hw
+      rcases hw with hAw | hBw
+      · obtain ⟨v,hvA,hvw⟩ := hAw
+        exact ⟨v,hAsub hvA,hvw⟩
+      · obtain ⟨v,hvB,hvw⟩ := hBw
+        exact ⟨v,hBsub hvB,hvw⟩
 
   have hCard :
       (T.biUnion blocks).card =
