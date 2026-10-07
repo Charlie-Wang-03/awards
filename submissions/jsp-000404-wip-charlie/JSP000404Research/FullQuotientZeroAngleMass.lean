@@ -1,5 +1,6 @@
 import JSP000404Research.CyclicActualAngles
-import JSP000404Research.DeficitThree
+import JSP000404Research.ConcreteDeficitThree
+import JSP000404Research.TransitionGapAlignment
 import Mathlib.Tactic
 
 /-!
@@ -25,12 +26,47 @@ namespace JSP000404Research
 
 open Real
 
+private theorem fullQuotient_sendov_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) :
+    0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
+private theorem fullQuotient_sendov_scale_one_le
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) :
+    1 ≤ t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
+private theorem pi_mul_width_le_scaled_lam
+    {G beta t lam : ℝ}
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (hscaled : t * G ≤ beta) :
+    Real.pi * G ≤ beta * lam := by
+  have hG : G ≤ beta / t := by
+    rw [le_div_iff₀ htpos]
+    simpa [mul_comm] using hscaled
+  rw [hlam]
+  calc
+    Real.pi * G ≤ Real.pi * (beta / t) :=
+      mul_le_mul_of_nonneg_left hG Real.pi_pos.le
+    _ = beta * (Real.pi / t) := by ring
+
 theorem centre_zeroAngleMass_le_delta_lam_of_quotient_sum
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (ht : t = (n : ℝ) + delta)
     (htpos : 0 < t)
     (htone : 1 ≤ t)
@@ -63,7 +99,7 @@ theorem centre_zeroAngleMass_le_delta_lam_of_quotient_sum
       Real.pi * listZeroGapMass
           (quotientList t C.gaps) C.gaps
         ≤ delta * lam :=
-    pi_mul_width_le_delta_lam_of_scaled_width
+    pi_mul_width_le_scaled_lam
       htpos hlam hmass
   rw [hzeroEq]
   exact hpiMass
@@ -72,9 +108,9 @@ theorem centre_zeroAngleMass_le_delta_lam_of_quotient_sum
 theorem centre_zeroAngleMass_le_delta_lam_of_deficit_three_support_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -119,7 +155,7 @@ theorem centre_zeroAngleMass_le_delta_lam_of_deficit_three_support_three
     exact hsumFn
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    fullQuotient_sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have htone : 1 ≤ t := by
     rw [ht]
     have hnR : (4 : ℝ) ≤ n := by exact_mod_cast hn
@@ -134,9 +170,9 @@ theorem centre_zeroAngleMass_le_delta_lam_of_deficit_three_support_three
 theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (ht : t = (n : ℝ) + delta)
     (htpos : 0 < t)
@@ -160,7 +196,7 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
   have halignQ :=
     centreQuotient_aligned C htpos.le
   have hlen : (quotientList t C.gaps).length = C.gaps.length :=
-    List.Forall₂.length_eq halignQ
+    quotientGapAligned_length halignQ
   have hmass0 :=
     listZeroGapMass_scaled_le_remainder halignQ
   rw [listRemainderMass_eq t
@@ -175,7 +211,7 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
       Real.pi * listZeroGapMass
           (quotientList t C.gaps) C.gaps
         ≤ (1 + delta) * lam :=
-    pi_mul_width_le_delta_lam_of_scaled_width
+    pi_mul_width_le_scaled_lam
       htpos hlam (by
         simpa [add_comm, add_left_comm, add_assoc] using hmass0)
   rw [hzeroEq]
@@ -185,8 +221,6 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
 theorem centre_zeroAngleMass_le_one_add_delta_lam_of_deficit_three_support_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
-    (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -215,9 +249,9 @@ theorem centre_zeroAngleMass_le_one_add_delta_lam_of_deficit_three_support_two
     exact hsumFn
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    fullQuotient_sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have htone : 1 ≤ t :=
-    sendov_scale_one_le (by omega : 1 ≤ n) hdelta0 ht
+    fullQuotient_sendov_scale_one_le (by omega : 1 ≤ n) hdelta0 ht
   exact
     centre_zeroAngleMass_le_one_add_delta_lam_of_quotient_sum_n_sub_one
       hp hcap (by omega : 1 ≤ n) ht htpos htone hlam
