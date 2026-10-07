@@ -98,36 +98,6 @@ theorem retainedBit_eq_off_of_flippedCode_eq
   have he := congrFun hflip e
   simpa [flippedRetainedCode, hec, hed] using he
 
-/-- The projected colour of a retained increasing edge is retained-active at
-its lower endpoint. -/
-theorem retainedColor_mem_retainedActive_left
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u v : V} (huv : u < v)
-    (hret : (C.color u v).val < n) :
-    retainedColor C u v hret ∈ retainedActive C u := by
-  classical
-  simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
-  right
-  refine ⟨v, huv, ?_⟩
-  apply Fin.ext
-  rfl
-
-/-- The projected colour of a retained increasing edge is retained-active at
-its upper endpoint. -/
-theorem retainedColor_mem_retainedActive_right
-    {V : Type*} [LinearOrder V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    {u v : V} (huv : u < v)
-    (hret : (C.color u v).val < n) :
-    retainedColor C u v hret ∈ retainedActive C v := by
-  classical
-  simp only [retainedActive, Finset.mem_filter, Finset.mem_univ, true_and]
-  left
-  refine ⟨u, huv, ?_⟩
-  apply Fin.ext
-  rfl
-
 /-- Two distinct vertices with the same retained code are joined by the
 residual colour. -/
 theorem isResidual_of_sameRetained_lt
@@ -493,8 +463,8 @@ theorem repairedRetainedCode_injective
           C hrepair v hv
       apply hhole
       refine ⟨w, ?_⟩
-      rw [repairedRetainedCode_eq_flipped C hrepair v hv,
-          repairedRetainedCode_eq_base C hrepair w hw] at heq
+      rw [repairedRetainedCode_eq_flipped C hrepair v hv]
+      rw [repairedRetainedCode_eq_base C hrepair w hw] at heq
       exact heq.symm
   · by_cases hw : HasEarlierSame C w
     · exfalso
@@ -503,8 +473,8 @@ theorem repairedRetainedCode_injective
           C hrepair w hw
       apply hhole
       refine ⟨v, ?_⟩
-      rw [repairedRetainedCode_eq_base C hrepair v hv,
-          repairedRetainedCode_eq_flipped C hrepair w hw] at heq
+      rw [repairedRetainedCode_eq_flipped C hrepair w hw]
+      rw [repairedRetainedCode_eq_base C hrepair v hv] at heq
       exact heq
     · have hbaseEq :
           (fun c => retainedBit C v c) =
