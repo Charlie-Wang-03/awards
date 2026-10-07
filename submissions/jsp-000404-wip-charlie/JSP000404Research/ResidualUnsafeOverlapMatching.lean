@@ -79,8 +79,7 @@ theorem unsafe_overlap_word_eq_incomingCharacteristic
         c ∈ retainedActive C v :=
       outgoingRetained_subset_retainedActive C v hout
     have hfalse :
-        retainedBit C v c = false :=
-      by
+        retainedBit C v c = false := by
       simpa [retainedBit] using
         (bit_false_of_outgoingRetained C hout)
     have hcomp :=
