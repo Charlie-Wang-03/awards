@@ -165,14 +165,14 @@ theorem retained_card_sum_ge_n_add_commonIncoming
   have hIcard :
       I.card ≤ (A ∩ B).card :=
     Finset.card_le_card hIAB
-  have hcard :=
-    Finset.card_union_add_card_inter A B
-  rw [hAB] at hcard
-  have huniv : (Finset.univ : Finset (Fin n)).card = n := by
+  have hcardEq :
+      A.card + B.card = n + (A ∩ B).card := by
+    rw [← Finset.card_union_add_card_inter A B, hAB]
     simp
-  rw [huniv] at hcard
-  dsimp [A, B, I] at hIcard ⊢
-  omega
+  calc
+    n + I.card ≤ n + (A ∩ B).card :=
+      Nat.add_le_add_left hIcard n
+    _ = A.card + B.card := hcardEq.symm
 
 /-- Under Sendov-style retained activity budgets, a same-code pair with no
 common inactive coordinate is lighter by the size of its common incoming set:
@@ -183,6 +183,7 @@ theorem exponent_sum_add_commonIncoming_le_of_no_common_inactive
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
     (hret :
       ∀ x,
         (retainedActive C x).card ≤ n - exponent x)
@@ -199,12 +200,8 @@ theorem exponent_sum_add_commonIncoming_le_of_no_common_inactive
   have hsum :=
     retained_card_sum_ge_n_add_commonIncoming
       C hsame hno
-  have hku :
-      exponent u ≤ n := by
-    omega
-  have hkv :
-      exponent v ≤ n := by
-    omega
+  have hku : exponent u ≤ n := hexp u
+  have hkv : exponent v ≤ n := hexp v
   omega
 
 #print axioms mem_incomingRetained_iff_retainedBit_true
