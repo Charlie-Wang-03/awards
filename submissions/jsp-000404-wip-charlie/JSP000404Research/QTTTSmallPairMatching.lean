@@ -19,9 +19,9 @@ open Real
 theorem two_delta_small_angles_same_triangle_impossible
     {V : Type*}
     {p : V → Plane}
+    {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {delta lam : ℝ}
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {a b c : V}
@@ -49,7 +49,7 @@ theorem two_delta_small_angles_same_triangle_impossible
       EuclideanGeometry.angle_comm (p c) (p b) (p a)] using
       (EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p b) (p₂ := p a) (p c)
-        (hp.ne hab.symm))
+        (hp.ne hab))
   have hb' :
       EuclideanGeometry.angle (p c) (p b) (p a)
         ≤ delta * lam := by
@@ -85,9 +85,9 @@ def CrossedTwoCentreSmallPairPattern
 theorem two_smallPairAmongOtherThree_reduce_to_crossed
     {V : Type*}
     {p : V → Plane}
+    {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {delta lam : ℝ}
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {a b c d : V}
@@ -128,9 +128,9 @@ second-layer centres force one of the seven crossed small-angle patterns. -/
 theorem two_supportTwo_secondLayer_four_crossed
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -159,9 +159,12 @@ theorem two_supportTwo_secondLayer_four_crossed
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
       hab.symm hbc hbd hac had hcd
       (C b) hbSecond hbSupport
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    have hnposNat : 0 < n := by omega
+    have hnposReal : (0 : ℝ) < (n : ℝ) := by
+      exact_mod_cast hnposNat
+    rw [ht]
+    nlinarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
