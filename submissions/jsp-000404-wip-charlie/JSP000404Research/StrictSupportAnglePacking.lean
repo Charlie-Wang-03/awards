@@ -298,7 +298,13 @@ theorem strict_support_arc_width_sum_le_two_pi
   · intro i
     have hw0 := hwidth0 i
     linarith [Real.pi_pos]
-  · simpa [S, supportAngleBall, supportAngleRadius] using hdisj
+  · intro i _ j _ hij
+    exact supportAngleBalls_disjoint_of_ne
+      (hcentre.ne hij)
+      (hwidth0 i) (hwidthpi i)
+      (hwidth0 j) (hwidthpi j)
+      (sigma i) (sigma j)
+      (hrepr i) (hrepr j)
 
 #print axioms angle_norm_eq_abs_toReal
 #print axioms exists_real_parameter_of_mem_angle_ball
