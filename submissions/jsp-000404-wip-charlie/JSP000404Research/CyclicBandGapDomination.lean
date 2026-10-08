@@ -607,9 +607,42 @@ theorem cyclicRealGap_large_forces_unoccupied_band
   unfold excess at h
   omega
 
+
+/-- A gap with floor quotient at least two produces an actual missing
+integer unit band. This is a local direction-band witness, not a
+global hole in the Boolean completion cube. -/
+theorem cyclicRealGap_large_exists_missing_band
+    (a : ℝ) (xs : List ℝ)
+    {width : ℝ} (n : ℕ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall0 : ∀ x ∈ a :: xs, 0 ≤ x)
+    (hallWidth : ∀ x ∈ a :: xs, x < width)
+    (hwidth : width < (n : ℝ) + 1)
+    {gap : ℝ}
+    (hgap : gap ∈ cyclicRealGapsAt width (a :: xs))
+    (hlarge : 2 ≤ Nat.floor gap) :
+    ∃ c : ℕ, c ≤ n ∧
+      c ∉ ((a :: xs).map Nat.floor).toFinset := by
+  classical
+  have hsmall :=
+    cyclicRealGap_large_forces_unoccupied_band
+      a xs n ha0 hsorted hall0 hallWidth hwidth hgap hlarge
+  by_contra hnone
+  push_neg at hnone
+  have hsub :
+      Finset.range (n + 1) ⊆
+        ((a :: xs).map Nat.floor).toFinset := by
+    intro c hc
+    exact hnone c (Nat.lt_succ_iff.mp (Finset.mem_range.mp hc))
+  have hcard := Finset.card_le_card hsub
+  simp only [Finset.card_range] at hcard
+  omega
+
 #print axioms excess_le_listExponent_of_mem
 #print axioms cyclicRealGap_excess_add_usedBands_le
 #print axioms cyclicRealGap_large_forces_unoccupied_band
+#print axioms cyclicRealGap_large_exists_missing_band
 
 #print axioms successiveNatDiffsFrom_sum
 #print axioms cyclicBandJumps_sum
