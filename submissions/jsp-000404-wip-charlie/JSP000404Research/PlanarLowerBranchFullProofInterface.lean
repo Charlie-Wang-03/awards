@@ -45,7 +45,10 @@ theorem planar_lower_branch_dyadic_capacity_of_geometric_gaps
     (hNoLossFreeCore :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
-      let htpos : 0 < t := sendov_scale_pos hn hdelta0 ht
+      let htpos : 0 < t := (by
+        rw [ht]
+        have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        linarith)
       let D := genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n : ℝ) + 1 := by rw [ht]; linarith
       let B := standardResidualColoring D n (by exact_mod_cast hwidth)
@@ -54,7 +57,10 @@ theorem planar_lower_branch_dyadic_capacity_of_geometric_gaps
     (hGlobalGeometry :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
-      let htpos : 0 < t := sendov_scale_pos hn hdelta0 ht
+      let htpos : 0 < t := (by
+        rw [ht]
+        have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        linarith)
       let D := genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n : ℝ) + 1 := by rw [ht]; linarith
       let B := standardResidualColoring D n (by exact_mod_cast hwidth)
@@ -68,7 +74,10 @@ theorem planar_lower_branch_dyadic_capacity_of_geometric_gaps
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    (by
+        rw [ht]
+        have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        linarith)
   have hwidth : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
