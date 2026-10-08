@@ -113,7 +113,8 @@ theorem minimal_loss_neighbour_is_loss_or_two_nonloss
     minimal_enlargedCandidate_loss_shared_card_ge_cube_add_one
       C exponent hdef hmin hvT hvLoss hvLt
   have hpositive : 0 < shared.card := by
-    dsimp [shared]
+    change 0 < (sharedBlockWords
+      (enlargedProjectedCandidateBlock C exponent) T v).card
     omega
   obtain ⟨x, hx⟩ := Finset.card_pos.mp hpositive
   obtain ⟨hxB, hxOther⟩ :=
