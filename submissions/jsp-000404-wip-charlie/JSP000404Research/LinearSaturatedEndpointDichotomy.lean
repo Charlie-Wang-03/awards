@@ -76,7 +76,9 @@ theorem sorted_last_floor_eq_top_of_top_mem
             intro y hy
             exact hall y (List.mem_cons_of_mem a hy)
           have hle :
-              x ≤ bs.getLastD b := ih b hb0 htail hallTail hxtail
+              x ≤ bs.getLastD b := by
+                apply ih b hb0 htail hallTail
+                simpa only [List.mem_cons] using hxtail
           rw [saturatedEndpoint_lastD_cons]
           exact hle
   have hlast0 :
