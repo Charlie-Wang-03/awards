@@ -128,7 +128,7 @@ theorem weighted_capacity_le_baseline_plus_phase_slip_penalty
       2 ^ (n + 1) +
         exceptionalDyadicMass
           (fun i => (cycles i).exponent)
-          (HasCyclicBandPhaseSlip cycles) := by
+          (HasCyclicBandPhaseSlip (n := n) cycles) := by
   classical
   let R : OrderedEdgeColoring V (n + 1) :=
     standardBandColoring D (n + 1) (Nat.succ_pos n)
@@ -144,7 +144,7 @@ theorem weighted_capacity_le_baseline_plus_phase_slip_penalty
     rw [hactive i]
     exact (cycles i).exponent_add_incidentBands_card_le ht
   have hstrict : ∀ i,
-      ¬ HasCyclicBandPhaseSlip cycles i →
+      ¬ HasCyclicBandPhaseSlip (n := n) cycles i →
       (cycles i).exponent + (active R i).card ≤ n := by
     intro i hno
     rw [hactive i]
@@ -152,7 +152,7 @@ theorem weighted_capacity_le_baseline_plus_phase_slip_penalty
       ht hno
   exact weighted_capacity_with_exceptional_penalty
     R (fun i => (cycles i).exponent)
-    (HasCyclicBandPhaseSlip cycles) hfull hstrict
+    (HasCyclicBandPhaseSlip (n := n) cycles) hfull hstrict
 
 #print axioms weighted_capacity_with_exceptional_penalty
 #print axioms weighted_capacity_le_baseline_plus_phase_slip_penalty
