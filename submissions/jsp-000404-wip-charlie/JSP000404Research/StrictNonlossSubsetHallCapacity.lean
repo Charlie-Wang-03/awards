@@ -103,7 +103,6 @@ theorem strict_nonloss_subset_enlarged_hall_expansion
       ∀ v ∈ S, v ∉ projectedLossVertices C exponent := by
     intro v hv hvLoss
     have heq := (mem_projectedLossVertices C exponent v).1 hvLoss
-    dsimp [projectedFree] at heq
     have hlt := hstrict v hv
     omega
   have hunion :
@@ -118,8 +117,10 @@ theorem strict_nonloss_subset_enlarged_hall_expansion
         (retainedCompletionWords C v).card := by
     intro v hv
     rw [retainedCompletionWords_card]
+    change 2 * 2 ^ exponent v ≤ 2 ^ projectedFree C v
     have hle :
         exponent v + 1 ≤ projectedFree C v := by
+      have hlt := hstrict v hv
       omega
     have hpow :
         2 ^ (exponent v + 1) ≤ 2 ^ (projectedFree C v) :=
@@ -154,7 +155,7 @@ theorem deficient_enlarged_core_has_exact_or_loss_profile
     ∃ v ∈ T, projectedFree C v ≤ exponent v := by
   classical
   by_contra hno
-  push_neg at hno
+  push Not at hno
   have hstrict :
       ∀ v ∈ T, exponent v < projectedFree C v := by
     intro v hv
@@ -162,8 +163,10 @@ theorem deficient_enlarged_core_has_exact_or_loss_profile
   have hexpand :=
     strict_nonloss_subset_enlarged_hall_expansion
       C exponent T hstrict
-  unfold BlockDeficient at hdef
-  omega
+  change
+    (T.biUnion (enlargedProjectedCandidateBlock C exponent)).card <
+      (∑ v ∈ T, 2 ^ exponent v) at hdef
+  exact (Nat.not_lt_of_ge hexpand) hdef
 
 #print axioms subset_completion_cube_mass_le_two_mul_union
 #print axioms strict_nonloss_subset_enlarged_hall_expansion
