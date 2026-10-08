@@ -104,9 +104,15 @@ theorem dyadic_capacity_of_minimal_hall_geometric_exclusions
           (enlargedProjectedCandidateBlock B k) T v).card :=
       DirectionData.minimal_true_loss_shared_mass_ge_cube_plus_deficit
         D ht cycles hdef hmin hvT hvLoss
-    have hgeometric :=
-      hGeometry T hdef hmin v hvT hvLoss
-    omega
+    have hgeometric :
+        (sharedBlockWords
+          (enlargedProjectedCandidateBlock B k) T v).card <
+        (retainedCompletionWords B v).card +
+          blockDeficiencyAmount
+            (fun i => 2 ^ k i)
+            (enlargedProjectedCandidateBlock B k) T := by
+      exact hGeometry T hdef hmin v hvT hvLoss
+    exact (Nat.not_lt_of_ge hmass) hgeometric
   exact exponent_capacity_of_enlargedProjectedCandidate_expansion
     B k hExpansion
 
