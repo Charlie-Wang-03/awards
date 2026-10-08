@@ -30,6 +30,17 @@ entire sorted local direction list.
 
 namespace JSP000404Research
 
+/-- A nonempty list has the same last element for the optional and defaulted
+accessors, regardless of the supplied fallback. -/
+private theorem getLastOption_cons_eq_getLastD
+    (x : ℝ) (xs : List ℝ) (d a : ℝ) :
+    (x :: xs).getLast?.getD d = (x :: xs).getLastD a := by
+  induction xs generalizing x d a with
+  | nil => rfl
+  | cons y ys ih =>
+      simpa only [List.getLast?_cons_cons, List.getLastD_cons]
+        using (ih y d x)
+
 def InteriorBandGapTight : ℝ → List ℝ → Prop
   | _, [] => True
   | a, b :: bs =>
@@ -121,12 +132,10 @@ theorem interior_gapEquality_implies_stepwise_tight
             Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
           have hlast :
               bs.getLast?.getD b = bs.getLastD b := by
-            induction bs with
+            cases bs with
             | nil => rfl
-            | cons c cs ihLast =>
-                cases cs with
-                | nil => rfl
-                | cons d ds => exact ihLast
+            | cons c cs =>
+                exact getLastOption_cons_eq_getLastD c cs b b
           rw [occupiedNatBands_cons]
           rw [← hlast]
           simpa only [listExponent, List.map_map] using heq'
