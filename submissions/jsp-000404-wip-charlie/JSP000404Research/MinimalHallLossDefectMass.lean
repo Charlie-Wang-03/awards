@@ -69,6 +69,9 @@ theorem minimal_loss_shared_card_ge_cube_add_deficit
         ≤ (sharedBlockWords B T v).card :=
     minimal_deficient_amount_le_shared_excess
       demand B hdef hmin hvT hlocal
+  change (retainedCompletionWords C v).card +
+      blockDeficiencyAmount demand B T ≤
+    (sharedBlockWords B T v).card
   omega
 
 /-- In a true minimal deficiency, the shared mass at each sub-top
