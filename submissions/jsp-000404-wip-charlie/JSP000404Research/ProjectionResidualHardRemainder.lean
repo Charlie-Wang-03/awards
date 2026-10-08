@@ -49,6 +49,23 @@ open OrderedEdgeColoring
 open DirectionData
 open scoped BigOperators
 
+private theorem residualHard_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n) (hdelta0 : 0 ≤ delta)
+    (htEq : t = (n : ℝ) + delta) : 0 < t := by
+  rw [htEq]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
+private theorem residualHard_width_lt_succ
+    {n : ℕ} {delta t : ℝ}
+    (hdelta1 : delta < 1)
+    (htEq : t = (n : ℝ) + delta) :
+    t < (n + 1 : ℕ) := by
+  rw [htEq]
+  norm_num
+  linarith
+
 noncomputable def genericResidualColoring
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -58,7 +75,7 @@ noncomputable def genericResidualColoring
     (htPos : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
-    (hwidth : t < (n : ℝ) + 1) :
+    (hwidth : t < (n + 1 : ℕ)) :
     @OrderedEdgeColoring
       (ProjectionOrdered V)
       (projectionLinearOrder hp)
@@ -82,17 +99,19 @@ theorem genericProjection_exponent_capacity_of_hard_words_fit_holes
     (htEq : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hholes :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       let B :=
         genericResidualColoring
           hp hcap
-          (sendov_scale_pos hn hdelta0 htEq)
+          (residualHard_scale_pos hn hdelta0 htEq)
           hlam n
-          (by
-            rw [htEq]
-            linarith)
+          (residualHard_width_lt_succ hdelta1 htEq)
       let exponent :=
         fun i : ProjectionOrdered V =>
           centreExponent (C i) t
@@ -106,13 +125,10 @@ theorem genericProjection_exponent_capacity_of_hard_words_fit_holes
     2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
-  have htPos :
-      0 < t :=
-    sendov_scale_pos hn hdelta0 htEq
-  have hwidth :
-      t < (n : ℝ) + 1 := by
-    rw [htEq]
-    linarith
+  have htPos : 0 < t :=
+    residualHard_scale_pos hn hdelta0 htEq
+  have hwidth : t < (n + 1 : ℕ) :=
+    residualHard_width_lt_succ hdelta1 htEq
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
     genericResidualColoring
       hp hcap htPos hlam n hwidth
