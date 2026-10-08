@@ -72,8 +72,8 @@ theorem sum_quotient_le_two_n_of_transition_gap_packing
       (((∑ i, quotient i) : ℕ) : ℝ) <
         (((2 * n + 1 : ℕ) : ℕ) : ℝ) := by
     rw [hcast]
-    exact hsumReal.trans_le hpack |>.trans_lt (by
-      simpa using hupper)
+    exact lt_of_le_of_lt (le_trans hsumReal hpack)
+      (by simpa using hupper)
   have hnat :
       (∑ i, quotient i) < 2 * n + 1 := by
     exact_mod_cast hlt

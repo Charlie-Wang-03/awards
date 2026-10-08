@@ -50,8 +50,8 @@ theorem no_common_strict_support
     (hi : StrictSupportsAt p i u)
     (hj : StrictSupportsAt p j u) :
     False := by
-  have hijPos := hi j hij
-  have hjiPos := hj i hij.symm
+  have hijPos := hi j hij.symm
+  have hjiPos := hj i hij
   have hneg :
       p i - p j = -(p j - p i) := by
     abel
@@ -60,11 +60,11 @@ theorem no_common_strict_support
 
 /-- Left endpoint of the open parameter interval of supporting directions dual
 to a same-sign ray interval. -/
-def supportParamLeft (a width : ℝ) : ℝ :=
+noncomputable def supportParamLeft (a width : ℝ) : ℝ :=
   a + width - Real.pi / 2
 
 /-- Right endpoint of the dual support interval. -/
-def supportParamRight (a : ℝ) : ℝ :=
+noncomputable def supportParamRight (a : ℝ) : ℝ :=
   a + Real.pi / 2
 
 /-- The dual support interval has length exactly pi-width. -/

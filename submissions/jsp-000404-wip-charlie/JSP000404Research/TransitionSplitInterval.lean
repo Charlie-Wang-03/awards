@@ -93,6 +93,7 @@ theorem commonSignedIntervalRepr_of_common_sign_cons
         theta ≤ rayThetaAt hp i last ∧
         p j - p i =
           rho • signedRayDirection sigma theta := by
+  dsimp
   let last := (first :: rest).getLast (by simp)
   intro j hji
   let jo : OtherVertex i := ⟨j, hji⟩
