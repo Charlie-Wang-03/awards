@@ -11,6 +11,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualCommonWordTriangleSecondLayerOutlet.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualDeficientCoreSecondLayerOutlet.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/LinearBandGapStepTight.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SaturatedWrapDescent.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockSharedDeficit.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockTransferCapacityBoundary.lean"
@@ -67,7 +68,7 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           failures=0
-          for module in LinearBandGapStepTight MinimalBlockPrivateDeficit MinimalBlockSharedDeficit MinimalBlockTransferCapacityBoundary ResidualExactPairStateClassification ResidualZeroZeroRecursiveOutlet ProjectionResidualHardRemainder; do
+          for module in LinearBandGapStepTight SaturatedWrapDescent MinimalBlockPrivateDeficit MinimalBlockSharedDeficit MinimalBlockTransferCapacityBoundary ResidualExactPairStateClassification ResidualZeroZeroRecursiveOutlet ProjectionResidualHardRemainder; do
             echo "::group::JSP000404Research.$module"
             lake build "JSP000404Research.$module" || failures=1
             echo "::endgroup::"
