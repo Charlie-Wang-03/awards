@@ -166,7 +166,7 @@ theorem planar_projectedLoss_has_retained_active_flip_coordinate
     (L.value_mem_bounds hyL).2
   have hyTop : Nat.floor y < n + 1 := by
     apply (Nat.floor_lt hy0).2
-    exact hyT.trans hwidthR
+    exact hyT.trans hwidth
 
   have hyBand : Nat.floor y < n := by
     by_contra hnot
@@ -315,7 +315,7 @@ theorem planar_projectedLoss_has_adjacent_retained_active_pair
     (L.value_mem_bounds hyL).2
   have hyTop : Nat.floor y < n + 1 := by
     apply (Nat.floor_lt hy0).2
-    exact hyT.trans hwidthR
+    exact hyT.trans hwidth
   have hyBand : Nat.floor y < n := by
     by_contra hnot
     have hEq : Nat.floor y = n := by omega

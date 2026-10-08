@@ -82,13 +82,12 @@ theorem hardProjectionWord_not_loss_of_saturatedSaturated
       x ∈ overlapCompletionWords C :=
     ((mem_saturatedSaturatedOverlapWords
       C exponent x).1 hss).1
+  intro hloss
   exact
     Finset.disjoint_left.mp
       (lossCompletionWords_disjoint_overlapCompletionWords
         C exponent hexp honeLoss)
-      · intro hloss
-        exact hloss
-      · exact hover
+      hloss hover
 
 #print axioms hardProjectionWord_loss_or_mixed_or_saturatedSaturated
 #print axioms hardProjectionWord_not_loss_of_mixed

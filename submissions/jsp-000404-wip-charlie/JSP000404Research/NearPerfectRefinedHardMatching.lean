@@ -16,10 +16,11 @@ type has exactly the same finite cardinality as
 Hence there is a noncomputable equivalence, and in particular an injection,
 between all hard demands except x0 and the complete refined credit space.
 
-This packages the exact-one deficiency into the strongest possible finite
-matching statement: every hard word except one can be paid perfectly.  The
-remaining proof task is therefore to manufacture one additional credit for a
-suitably chosen distinguished hard word.
+This is an *abstract cardinality equivalence*, not an admissible matching:
+the equivalence need not send a hard word to one of its permitted candidate
+credits.  In particular, it does not establish the geometric Hall expansion
+condition.  A genuine all-cardinality proof must exclude the one-unit overweight
+planar configuration or otherwise discharge the actual candidate constraints.
 -/
 
 namespace JSP000404Research
@@ -114,6 +115,7 @@ theorem hardExcept_equiv_refinedTarget_surjective
 
 #print axioms hardExcept_equiv_refinedTarget_of_target_eq_bound_add_one
 #print axioms exists_hardExcept_injection_to_refinedTarget
+#print axioms hardExcept_equiv_refinedTarget_surjective
 
 end OrderedEdgeColoring
 end JSP000404Research
