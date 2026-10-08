@@ -151,7 +151,7 @@ def prepare():
             raise SystemExit("Manual fast CI requires module names (use full workflow for complete verification).")
         targets = []
         for token in requested:
-            name = token if token.startswith(PREFIX) else PREFIX + token
+            name = token if token == "JSP000404Research" or token.startswith(PREFIX) else PREFIX + token
             if name != "JSP000404Research" and not re.fullmatch(
                     r"JSP000404Research(?:\.[A-Za-z0-9_]+)+", name):
                 raise SystemExit("Invalid module: " + token)
@@ -166,6 +166,11 @@ def prepare():
         else:
             targets = sorted(m for m in modified if m in
                              {module_name(p) for p in files})
+            # A CI/script-only push exercises a small known-good kernel target.
+            if not targets and any(p in {
+                    "scripts/jsp000404_incremental_ci.py",
+                    "scripts/jsp000404_sorry_audit.py"} for p in changed_files):
+                targets = ["JSP000404Research.BooleanFlipCore"]
     targets = sorted(set(targets))
     print("Previously cached source index:", "present" if previous is not None else "absent")
     print("Invalidated project modules:", len(invalidate))

@@ -41,6 +41,7 @@ jobs:
       - name: Audit executable Lean proof holes
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
+          python3 -m py_compile scripts/jsp000404_incremental_ci.py
           python3 scripts/jsp000404_sorry_audit.py --self-test
           python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research
 
