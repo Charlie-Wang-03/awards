@@ -119,6 +119,8 @@ theorem genericProjection_exponent_capacity_of_hard_words_fit_holes
           (lossCompletionWords B exponent).card
         ≤
       2 ^ n - (coveredCompletionWords B).card) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∑ i : ProjectionOrdered V,
         2 ^ centreExponent (C i) t
       ≤
