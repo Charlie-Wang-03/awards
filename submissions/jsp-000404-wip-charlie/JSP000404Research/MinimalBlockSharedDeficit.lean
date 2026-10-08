@@ -39,9 +39,9 @@ theorem private_union_shared_eq_block
       sharedBlockWords blocks T v =
     blocks v := by
   classical
-  ext w
-  simp [privateBlockWords, sharedBlockWords]
-  tauto
+  unfold privateBlockWords sharedBlockWords
+  exact Finset.sdiff_union_inter
+    (blocks v) ((T.erase v).biUnion blocks)
 
 theorem private_disjoint_shared
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
@@ -130,7 +130,8 @@ theorem blockDeficiencyAmount_pos_of_deficient
     {T : Finset V}
     (hdef : BlockDeficient demand blocks T) :
     0 < blockDeficiencyAmount demand blocks T := by
-  unfold blockDeficiencyAmount BlockDeficient
+  unfold BlockDeficient at hdef
+  unfold blockDeficiencyAmount
   omega
 
 theorem minimal_deficient_amount_le_shared_minus_slack
@@ -242,7 +243,7 @@ theorem minimal_deficient_amount_le_shared_excess
   omega
 
 
-def deletedVertexTransfer
+noncomputable def deletedVertexTransfer
     {V W : Type*} [DecidableEq V] [DecidableEq W]
     (demand : V → ℕ)
     (blocks : V → Finset W)
@@ -351,7 +352,7 @@ theorem sum_addDemandAt
         addDemandAt demand w r x =
           demand x + (if x = w then r else 0) := by
     intro x hx
-    simp [addDemandAt]
+    by_cases h : x = w <;> simp [addDemandAt, h]
   calc
     (∑ x ∈ S, addDemandAt demand w r x)
       =
