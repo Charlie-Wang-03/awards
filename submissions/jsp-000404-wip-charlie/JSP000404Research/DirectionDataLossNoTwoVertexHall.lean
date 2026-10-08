@@ -143,6 +143,10 @@ theorem no_two_vertex_deficiency_containing_true_projected_loss
   let B : OrderedEdgeColoring V (n + 1) :=
     standardResidualColoring D n (by exact_mod_cast ht)
   let k : V → ℕ := fun i => (cycles i).exponent
+  change ¬ BlockDeficient
+    (fun i => 2 ^ k i)
+    (enlargedProjectedCandidateBlock B k)
+    ({v, w} : Finset V)
   intro hbad
   unfold BlockDeficient at hbad
   have hbound :=
