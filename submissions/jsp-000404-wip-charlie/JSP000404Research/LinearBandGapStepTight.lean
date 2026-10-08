@@ -123,10 +123,10 @@ theorem interior_gapEquality_implies_stepwise_tight
               bs.getLast?.getD b = bs.getLastD b := by
             induction bs with
             | nil => rfl
-            | cons c cs ih =>
+            | cons c cs ihLast =>
                 cases cs with
                 | nil => rfl
-                | cons d ds => exact ih
+                | cons d ds => exact ihLast
           rw [occupiedNatBands_cons]
           rw [← hlast]
           simpa only [listExponent, List.map_map] using heq'
