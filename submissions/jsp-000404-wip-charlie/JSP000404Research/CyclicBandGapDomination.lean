@@ -395,8 +395,9 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
           (bandWrapJump_pos hlastN')]
       by_cases heq : a = b
       · subst a
-        simpa [cyclicBandJumps, successiveNatDiffsFrom,
-          hconsLast, listPositiveCount] using hih
+        simp only [cyclicBandJumps, successiveNatDiffsFrom]
+        rw [hconsLast]
+        simpa [listPositiveCount, cyclicBandJumps] using hih
       · have hablt : a < b := lt_of_le_of_ne hab heq
         have haNot : a ∉ (b :: bs).toFinset := by
           intro haMem
@@ -427,10 +428,11 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
           simp only [hconsLast]
           rw [listPositiveCount_append,
               listPositiveCount_append]
+          have hwrapB' :
+              1 ≤ (n + 1 - bs.getLastD b) + b := by
+            simpa only [hconsLast] using hwrapB
           rw [listPositiveCount_singleton_of_pos hwrapA',
-              listPositiveCount_singleton_of_pos
-                (bandWrapJump_pos
-                  (hallTail _ (List.getLastD_mem_cons]
+              listPositiveCount_singleton_of_pos hwrapB']
           have hfirstNonzero : b - a ≠ 0 := by omega
           simp [listPositiveCount, hfirstNonzero, add_assoc,
             add_comm, add_left_comm]
@@ -538,7 +540,7 @@ theorem cyclicFloorGapExponent_add_usedBands_le
         (hlabelBound c (List.mem_toFinset.mp hc))
     have h := Finset.card_le_card hsub
     simpa using h
-  simp only [List.map_cons] at hbandCard
+  simp only [List.map_cons] at hbandCard ⊢
   omega
 
 #print axioms successiveNatDiffsFrom_sum
