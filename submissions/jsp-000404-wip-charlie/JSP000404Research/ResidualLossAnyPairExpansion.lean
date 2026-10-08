@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualLossPairExpansion
 import JSP000404Research.ResidualEnlargedCandidateBlock
 import JSP000404Research.ResidualLossAllActiveIntersection
+import JSP000404Research.MinimalBlockDeficiency
 import Mathlib.Tactic
 
 /-!
@@ -76,6 +77,8 @@ theorem projectedLoss_with_nonloss_enlarged_pair_expands
       (allActiveLossCandidateBlock C v ∩
         retainedCompletionWords C w).card := by
     exact Finset.card_union
+      (s := allActiveLossCandidateBlock C v)
+      (t := retainedCompletionWords C w)
   rw [hunion, hvTarget]
   omega
 
