@@ -26,6 +26,15 @@ namespace JSP000404Research
 open scoped BigOperators
 open OrderedEdgeColoring
 
+/-- Total dyadic weight of an explicitly chosen exceptional subset.
+This definition deliberately encapsulates classical decidability, so the
+global theorem does not require DecidablePred in its statement. -/
+noncomputable def exceptionalDyadicMass
+    {V : Type*} [Fintype V]
+    (exponent : V → ℕ) (Bad : V → Prop) : ℕ := by
+  classical
+  exact ∑ v : V, if Bad v then 2 ^ exponent v else 0
+
 /-- The one-bit palette loss can be charged entirely to a designated
 exceptional family: ordinary centres pay twice their dyadic weight,
 exceptional centres at least once. -/
@@ -38,9 +47,12 @@ theorem weighted_capacity_with_exceptional_penalty
     (hstrict : ∀ v, ¬ Bad v →
       exponent v + (active R v).card ≤ n) :
     2 * (∑ v : V, 2 ^ exponent v) ≤
-      2 ^ (n + 1) +
-        ∑ v : V, (if Bad v then 2 ^ exponent v else 0) := by
+      2 ^ (n + 1) + exceptionalDyadicMass exponent Bad := by
   classical
+  change
+    2 * (∑ v : V, 2 ^ exponent v) ≤
+      2 ^ (n + 1) +
+        ∑ v : V, (if Bad v then 2 ^ exponent v else 0)
   have hpoint : ∀ v : V,
       2 * 2 ^ exponent v ≤
         2 ^ (n + 1 - (active R v).card) +
@@ -114,9 +126,9 @@ theorem weighted_capacity_le_baseline_plus_phase_slip_penalty
     (cycles : ∀ i : V, LocalDirectionCycle D i) :
     2 * (∑ i : V, 2 ^ (cycles i).exponent) ≤
       2 ^ (n + 1) +
-        ∑ i : V,
-          (if HasCyclicBandPhaseSlip cycles i then
-            2 ^ (cycles i).exponent else 0) := by
+        exceptionalDyadicMass
+          (fun i => (cycles i).exponent)
+          (HasCyclicBandPhaseSlip cycles) := by
   classical
   let R : OrderedEdgeColoring V (n + 1) :=
     standardBandColoring D (n + 1) (Nat.succ_pos n)
