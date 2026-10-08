@@ -45,7 +45,9 @@ theorem one_le_surplus_of_projected_strict
       exponent (projectedFree C) w
       (by omega)
   have hone : 1 ≤ 2 ^ exponent w := by
-    positivity
+    have hpos : 0 < 2 ^ exponent w :=
+      pow_pos (by decide : (0 : ℕ) < 2) _
+    omega
   exact hone.trans hcredit
 
 theorem zero_zero_hole_or_injective_profile_blockers
