@@ -119,6 +119,16 @@ theorem interior_gapEquality_implies_stepwise_tight
                 (occupiedNatBands (b :: bs)).card
               =
             Nat.floor (bs.getLastD b) - Nat.floor b + 1 := by
+          have hlast :
+              bs.getLast?.getD b = bs.getLastD b := by
+            induction bs with
+            | nil => rfl
+            | cons c cs ih =>
+                cases cs with
+                | nil => rfl
+                | cons d ds => exact ih
+          rw [occupiedNatBands_cons]
+          rw [← hlast]
           simpa only [listExponent, List.map_map] using heq'
         rw [InteriorBandGapTight]
         refine ⟨?_, ih b hb0 htail htailEq⟩
