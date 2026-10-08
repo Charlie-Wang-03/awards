@@ -42,7 +42,7 @@ theorem zero_mem_successive_floor_gaps_of_hasZeroQuotientUnitStep
       rw [hasZeroQuotientUnitStep_cons] at h
       simp only [successiveDiffsFrom, List.map_cons, List.mem_cons]
       rcases h with hhead | htail
-      · exact Or.inl hhead.2
+      · exact Or.inl hhead.2.symm
       · exact Or.inr (ih b htail)
 
 /-- Therefore zero belongs to the whole local cyclic quotient list. -/
@@ -72,7 +72,9 @@ theorem projectionCutLocalCycle_gapQuotients_eq_rotate
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     (projectionCutLocalCycle hp hcap ht hlam i C).gapQuotients
@@ -93,9 +95,7 @@ theorem projectionCutLocalCycle_gapQuotients_eq_rotate
       centreAngles_eq_cutLow_append_cutHigh hp i C
   have hne : low ++ high ≠ [] := by
     intro hnil
-    apply C.angles_nonempty
-    rw [hangles]
-    exact hnil
+    exact C.angles_nonempty (by simpa only [hangles] using hnil)
   have hvalues :
       L.values =
         unwrapped.map
@@ -135,9 +135,12 @@ theorem mem_centreQuotients_of_mem_projectionCutLocalQuotients
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {q : ℕ}
     (hq :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       q ∈
         (projectionCutLocalCycle
           hp hcap ht hlam i C).gapQuotients) :
@@ -159,9 +162,12 @@ theorem centreQuotient_has_zero_of_projection_zeroUnitStep
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {a : ℝ} {xs : List ℝ}
     (hvalues :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       (projectionCutLocalCycle
         hp hcap ht hlam i C).values = a :: xs)
     (hstep : HasZeroQuotientUnitStep a xs) :
