@@ -144,6 +144,7 @@ theorem mem_centreQuotients_of_mem_projectionCutLocalQuotients
       q ∈
         (projectionCutLocalCycle
           hp hcap ht hlam i C).gapQuotients) :
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
     q ∈ quotientList t C.gaps := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -171,6 +172,7 @@ theorem centreQuotient_has_zero_of_projection_zeroUnitStep
       (projectionCutLocalCycle
         hp hcap ht hlam i C).values = a :: xs)
     (hstep : HasZeroQuotientUnitStep a xs) :
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
     0 ∈ quotientList t C.gaps := by
   apply mem_centreQuotients_of_mem_projectionCutLocalQuotients
     hp hcap ht hlam i C

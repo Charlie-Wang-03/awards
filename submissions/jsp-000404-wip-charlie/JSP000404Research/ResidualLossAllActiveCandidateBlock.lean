@@ -88,7 +88,7 @@ theorem allActiveLossCandidateBlock_card
   rw [Finset.card_union_of_disjoint
     (allActiveTranslatedWords_disjoint_original C v).symm]
   rw [allActiveTranslatedWords_card]
-  omega
+  simp [Nat.add_mul, Nat.add_comm]
 
 theorem projectedLoss_active_card_ge_two_of_exponent_lt_n
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}

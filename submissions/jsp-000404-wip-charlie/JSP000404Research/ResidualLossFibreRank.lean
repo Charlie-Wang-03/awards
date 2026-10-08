@@ -93,7 +93,7 @@ theorem true_top_prefix_choice_mapsTo_active
   have hvData :=
     (mem_translatedLossFibrePrefix
       C exponent choice word w v).1 hv
-  rcases lt_or_eq_of_le hvData.2 with hvw | rfl
+  rcases lt_or_eq_of_le hvData.2 with hvw | hEq
   · have hvTrue :=
       translatedLossFibre_true_propagates_left
         C exponent hexp honeLoss choice word hactive
@@ -109,7 +109,8 @@ theorem true_top_prefix_choice_mapsTo_active
     apply Fin.ext
     have hval := congrArg Fin.val hcol
     simpa [retainedColor] using hval
-  · exact hactive w hw
+  · subst v
+    exact hactive w hw
 
 theorem false_bottom_suffix_choice_mapsTo_active
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
