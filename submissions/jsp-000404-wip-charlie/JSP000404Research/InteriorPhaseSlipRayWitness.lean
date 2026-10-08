@@ -24,6 +24,7 @@ theorem adjacent_pair_of_interior_phase_slip
     (f : α → ℝ)
     (first : α)
     (rest : List α)
+    (hsorted : (first :: rest).Pairwise (fun u v => f u ≤ f v))
     (h :
       (0, 1) ∈ List.zip
         ((successiveDiffsFrom (f first) (rest.map f)).map Nat.floor)
@@ -31,6 +32,7 @@ theorem adjacent_pair_of_interior_phase_slip
           (rest.map (Nat.floor ∘ f)))) :
     ∃ (u v : α) (pre post : List α),
       first :: rest = pre ++ u :: v :: post ∧
+        f u ≤ f v ∧
         Nat.floor (f v - f u) = 0 ∧
         Nat.floor (f v) - Nat.floor (f u) = 1 := by
   induction rest generalizing first with
@@ -48,10 +50,12 @@ theorem adjacent_pair_of_interior_phase_slip
             Nat.floor (f next) - Nat.floor (f first) = 1 := by
           have hp := congrArg Prod.snd hhead
           simpa using hp.symm
-        exact ⟨first, next, [], tail, rfl, hq, hb⟩
-      · obtain ⟨u, v, pre, post, hsplit, hq, hb⟩ :=
-          ih next htail
-        refine ⟨u, v, first :: pre, post, ?_, hq, hb⟩
+        have hle : f first ≤ f next :=
+          (List.pairwise_cons.mp hsorted).1 next (by simp)
+        exact ⟨first, next, [], tail, rfl, hle, hq, hb⟩
+      · obtain ⟨u, v, pre, post, hsplit, hle, hq, hb⟩ :=
+          ih next (List.pairwise_cons.mp hsorted).2 htail
+        refine ⟨u, v, first :: pre, post, ?_, hle, hq, hb⟩
         simpa only [List.cons_append] using
           congrArg (List.cons first) hsplit
 
@@ -94,11 +98,7 @@ theorem exists_adjacent_rays_with_short_band_crossing
       ht (D.localDirectionValue i first)
       (rest.map (D.localDirectionValue i))
       hvals htight hres
-  have hmapped :
-      rest.map Nat.floor ∘ (D.localDirectionValue i) =
-      rest.map (Nat.floor ∘ D.localDirectionValue i) := by
-    rfl
-  have hslip' :
+   have hslip' :
       (0, 1) ∈ List.zip
         ((successiveDiffsFrom (D.localDirectionValue i first)
           (rest.map (D.localDirectionValue i))).map Nat.floor)
@@ -106,20 +106,16 @@ theorem exists_adjacent_rays_with_short_band_crossing
           (Nat.floor (D.localDirectionValue i first))
           (rest.map (Nat.floor ∘ D.localDirectionValue i))) := by
     simpa only [List.map_map, Function.comp_def] using hslip
-  obtain ⟨u, v, pre, post, hsplit, hq, hb⟩ :=
+  have hsorted :
+      (first :: rest).Pairwise
+        (fun u v => D.localDirectionValue i u ≤
+          D.localDirectionValue i v) := by
+    simpa only [← hrays] using C.value_sorted
+  obtain ⟨u, v, pre, post, hsplit, hle, hq, hb⟩ :=
     adjacent_pair_of_interior_phase_slip
-      (D.localDirectionValue i) first rest hslip'
+      (D.localDirectionValue i) first rest hsorted hslip'
   have hnonneg :
       0 ≤ D.localDirectionValue i v - D.localDirectionValue i u := by
-    have horder : D.localDirectionValue i u ≤
-        D.localDirectionValue i v := by
-      have hpair := C.value_sorted
-      rw [hrays, hsplit] at hpair
-      have hsuffix : (u :: v :: post).Pairwise
-          (fun a b => D.localDirectionValue i a ≤
-            D.localDirectionValue i b) :=
-        (List.pairwise_append.mp hpair).2
-      exact (List.pairwise_cons.mp hsuffix).1 v (by simp)
     linarith
   have hsmall :
       D.localDirectionValue i v - D.localDirectionValue i u < 1 := by
