@@ -53,7 +53,7 @@ theorem translatedCompletionWords_disjoint_same_owner_distinct_active
   have hdc : c ≠ d := hcd
   rw [flipBoolWordAt_at] at hcAt
   rw [flipBoolWordAt_off word hdc] at hdAt
-  have hcontra : !(word c) = word c :=
+  have hcontra : Bool.not (word c) = word c :=
     hcAt.trans hdAt.symm
   cases h : word c <;> simp [h] at hcontra
 

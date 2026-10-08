@@ -127,8 +127,8 @@ theorem translated_loss_conflict_edge_colour
       simpa [e] using hne.1
     have hed : e ≠ d := by
       simpa [e] using hne.2
-    rw [flipBoolWordAt_off word hec,
-        flipBoolWordAt_off word hed] at hvAt hwAt
+    rw [flipBoolWordAt_off word hec] at hvAt
+    rw [flipBoolWordAt_off word hed] at hwAt
     have hbits :
         retainedBit C v e = retainedBit C w e :=
       hvAt.symm.trans hwAt
@@ -167,8 +167,8 @@ theorem translated_loss_conflict_edge_colour
       simpa [e] using hne.1
     have hed : e ≠ d := by
       simpa [e] using hne.2
-    rw [flipBoolWordAt_off word hec,
-        flipBoolWordAt_off word hed] at hvAt hwAt
+    rw [flipBoolWordAt_off word hec] at hvAt
+    rw [flipBoolWordAt_off word hed] at hwAt
     have hbits :
         retainedBit C w e = retainedBit C v e :=
       hwAt.symm.trans hvAt
@@ -195,7 +195,8 @@ theorem translated_loss_conflict_distinct_coordinates
     c ≠ d := by
   intro hcd
   subst d
-  obtain ⟨word,hvT,hwT⟩ := Finset.nonempty_inter.mp hoverlap
+  obtain ⟨word,hword⟩ := hoverlap
+  obtain ⟨hvT,hwT⟩ := Finset.mem_inter.mp hword
   exact Finset.disjoint_left.mp
     (translated_loss_blocks_disjoint_same_coordinate
       C exponent hexp honeLoss hvLoss hwLoss hvw c)

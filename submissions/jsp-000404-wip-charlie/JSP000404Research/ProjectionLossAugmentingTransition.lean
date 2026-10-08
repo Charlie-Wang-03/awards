@@ -45,7 +45,7 @@ theorem projectedLoss_word_is_singleCompletionWord
   by_contra hvw
   have hdisj :=
     projectedLoss_completion_disjoint
-      C exponent hexp honeLoss hvLoss hvw
+      C exponent hexp honeLoss hvLoss (Ne.symm hvw)
   exact Finset.disjoint_left.mp hdisj hword hw
 
 theorem projectedLoss_flip_hole_or_controlled_blocker
@@ -87,6 +87,15 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+/-- Strict positivity of the Sendov-normalized angular scale. -/
+private theorem projectedLossAugmenting_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n) (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) : 0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  linarith
+
 theorem planar_projectedLoss_uniform_augmenting_coordinate
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -99,6 +108,8 @@ theorem planar_projectedLoss_uniform_augmenting_coordinate
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V)
@@ -106,7 +117,7 @@ theorem planar_projectedLoss_uniform_augmenting_coordinate
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        projectedLossAugmenting_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -121,7 +132,7 @@ theorem planar_projectedLoss_uniform_augmenting_coordinate
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      projectedLossAugmenting_scale_pos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
@@ -150,7 +161,7 @@ theorem planar_projectedLoss_uniform_augmenting_coordinate
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    projectedLossAugmenting_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
@@ -201,6 +212,8 @@ theorem planar_projectedLoss_two_exit_expansion
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V)
@@ -208,7 +221,7 @@ theorem planar_projectedLoss_two_exit_expansion
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        projectedLossAugmenting_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -223,7 +236,7 @@ theorem planar_projectedLoss_two_exit_expansion
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      projectedLossAugmenting_scale_pos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
@@ -254,7 +267,7 @@ theorem planar_projectedLoss_two_exit_expansion
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    projectedLossAugmenting_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
