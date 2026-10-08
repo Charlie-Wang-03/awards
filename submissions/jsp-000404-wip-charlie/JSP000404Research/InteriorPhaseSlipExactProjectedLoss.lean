@@ -52,8 +52,10 @@ theorem active_eq_cast_retained_of_residual_inactive
     exact Finset.mem_map.mpr ⟨d, hd, by simpa [d]⟩
   · intro hc
     obtain ⟨d, hd, hdc⟩ := Finset.mem_map.mp hc
-    have hmem := (castSucc_mem_active_iff_mem_retainedActive R v d).2 hd
-    simpa only [hdc] using hmem
+    have hmem : d.castSucc ∈ active R v :=
+      (castSucc_mem_active_iff_mem_retainedActive R v d).2 hd
+    have hdc' : d.castSucc = c := by simpa using hdc
+    exact hdc' ▸ hmem
 
 /-- Inactive residual means full and retained active palettes have
 the same finite cardinality. -/
