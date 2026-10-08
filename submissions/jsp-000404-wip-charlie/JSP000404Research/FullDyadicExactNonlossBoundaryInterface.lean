@@ -63,7 +63,6 @@ theorem minimal_hall_core_has_loss_of_exact_boundary_exclusion
   let k : V → ℕ := fun i => (cycles i).exponent
   intro T hdef hmin
   by_contra hno
-  push Not at hno
   have hnoLoss : ∀ v ∈ T, v ∉ projectedLossVertices B k := by
     intro v hv hloss
     exact hno ⟨v, hv, hloss⟩
