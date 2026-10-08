@@ -92,9 +92,7 @@ theorem exact_overlap_activeSafe_or_noActiveSafe_reduced_classification
         exact safe_overlap_not_active_both
           C haWord hbWord hcSafe ⟨hca,hcb⟩
       exact ⟨c,hcSafe,Or.inl ⟨hca,hcb⟩⟩
-    · rcases hactive with hca' | hcb
-      · exact False.elim (hca hca')
-      · exact ⟨c,hcSafe,Or.inr ⟨hca,hcb⟩⟩
+    · exact ⟨c, hcSafe, Or.inr ⟨hca, hactive hca⟩⟩
 
 theorem exact_overlap_noActiveSafe_positiveReduced_capacity
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
