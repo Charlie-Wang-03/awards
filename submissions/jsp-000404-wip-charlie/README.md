@@ -9,15 +9,17 @@ Status: **SOURCE_CLOSURE_GATE = OPEN**.
 
 Before promoting this project as a reconstruction/formalization of established
 mathematics, the source chain for the arbitrary-cardinality Sendov classification
-must be closed.  The Russian 1995 long paper has been re-audited and its displayed
-general-`s` induction still does not derive the asserted maximizing exponent
-profiles.  The corresponding 1995 *Acta Mathematica Hungarica* paper has now been
-bibliographically located in the Hungarian Academy of Sciences REAL-J archive but
-its pp. 27–46 must still be inspected directly.
+must be closed.  The Russian 1995 long paper and the 1995 *Acta Mathematica Hungarica*
+article have both been audited.  The latter also does not supply the missing
+arbitrary-`s` derivation from the induction hypothesis to the asserted
+maximizing exponent profiles; its blanket inversion formula additionally
+requires a corrected generalized-inverse interpretation.
 
-See `SOURCE_CLOSURE_GATE_2026-09-28.md` for the gate criteria, evidence, and
-required Acta audit.  Until that gate closes, all Lean in this directory remains
-research-only and no complete-proof claim is made.
+See `SOURCE_CLOSURE_GATE_2026-09-28.md` for the original gate criteria and
+`ACTA_1995_PROOF_DEPENDENCY_AUDIT_2026-09-29.md` for the completed Acta audit.
+The source-closure gate remains open pending a gap-free general-`s` proof or an
+independent proof repair.  All Lean in this directory remains research-only;
+no complete-proof claim is made.
 
 ## Scope frozen in this branch
 
@@ -261,6 +263,7 @@ lake exe cache get
 lake build
 ```
 
-The current ChatGPT execution environment does not have Lean installed, so the
-new commits have not been locally kernel-checked here. Do not treat them as a CI
-pass until an actual Lean build succeeds.
+This environment does not have a local Lean toolchain. GitHub Actions runs
+pinned Lean builds on selected modules; check the workflow status at the exact
+commit before asserting that an edited module is kernel-checked. Passing a
+module build does not establish the still-missing full geometric theorem.

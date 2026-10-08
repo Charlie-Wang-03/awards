@@ -19,6 +19,8 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/RefinedResidualHardRemainder.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarUpperBranchHardDefect.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionLossFlipCoordinate.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossTranslatedBlock.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionThreeWholeCubeUniqueSupportOneTerminal.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/NearPerfectRefinedHardMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/HardProjectionWordClassification.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
