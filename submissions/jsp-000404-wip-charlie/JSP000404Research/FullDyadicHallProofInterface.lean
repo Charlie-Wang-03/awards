@@ -24,6 +24,8 @@ classification and not an unconditional JSP-000404 solution.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+open DirectionData
+
 /-- Geometry gap A: exclude minimal deficient cores made exclusively
 of non-loss centres. -/
 def EveryMinimalHallCoreHasProjectedLoss
