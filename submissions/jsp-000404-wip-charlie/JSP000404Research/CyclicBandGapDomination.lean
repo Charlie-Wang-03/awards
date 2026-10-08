@@ -128,7 +128,8 @@ theorem natFloor_wrap_le_band_wrap
   have hylo :
       ((Nat.floor y : ℕ) : ℝ) ≤ y :=
     Nat.floor_le hy0
-  rw [Nat.cast_add, Nat.cast_sub hyN]
+  rw [Nat.cast_add,
+    Nat.cast_sub (by omega : Nat.floor y ≤ n + 1)]
   push_cast
   linarith
 
@@ -158,6 +159,17 @@ theorem successiveFloorDiffs_le_successiveBandJumps
       · exact natFloor_sub_le_floor_sub ha0 hab
       · exact ih b hb0 htail
 
+private theorem forall₂_append_one_nat
+    {xs ys : List ℕ} {a b : ℕ}
+    (h : List.Forall₂ (· ≤ ·) xs ys)
+    (hab : a ≤ b) :
+    List.Forall₂ (· ≤ ·) (xs ++ [a]) (ys ++ [b]) := by
+  induction h with
+  | nil =>
+      exact List.Forall₂.cons hab List.Forall₂.nil
+  | @cons x y xs ys hxy htail ih =>
+      exact List.Forall₂.cons hxy ih
+
 /-- Full cyclic floor-gap domination by cyclic band jumps. -/
 theorem cyclicFloorGaps_le_cyclicBandJumps
     (a : ℝ) (xs : List ℝ)
@@ -175,7 +187,7 @@ theorem cyclicFloorGaps_le_cyclicBandJumps
       a xs ha0 hsorted
   have hlastMem :
       xs.getLastD a ∈ a :: xs :=
-    (List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)
+    List.getLastD_mem_cons
   have hlastWidth :
       xs.getLastD a < width :=
     hall _ hlastMem
@@ -186,7 +198,7 @@ theorem cyclicFloorGaps_le_cyclicBandJumps
         simp
     | cons b bs =>
         rw [List.pairwise_cons] at hsorted
-        exact hsorted.1 _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))
+        exact hsorted.1 _ (List.getLastD_mem_cons
   have hwrap :=
     natFloor_wrap_le_band_wrap
       ha0 hfirstLast hlastWidth hwidth
@@ -194,11 +206,7 @@ theorem cyclicFloorGaps_le_cyclicBandJumps
     List.map_append, List.map_singleton,
     List.map_cons]
   rw [map_getLastD_eq]
-  induction hord with
-  | nil =>
-      exact List.Forall₂.cons hwrap List.Forall₂.nil
-  | @cons q c qs cs hqc hrest ih =>
-      exact List.Forall₂.cons hqc ih
+  exact forall₂_append_one_nat hord hwrap
 
 /-- List exponent is monotone under pointwise quotient domination. -/
 theorem listExponent_le_of_forall₂_le
@@ -261,7 +269,7 @@ theorem successiveNatDiffsFrom_sum
             have hpair :
                 ∀ x ∈ d :: ds, b ≤ x := by
               exact (List.pairwise_cons.mp htail).1
-            exact hpair _ ((List.getLastD_mem_cons : ds.getLastD d ∈ d :: ds))
+            exact hpair _ (List.getLastD_mem_cons
           omega
 
 /-- Cyclic band jumps telescope to exactly n+1. -/
@@ -274,7 +282,7 @@ theorem cyclicBandJumps_sum
     successiveNatDiffsFrom_sum a xs hsorted
   have hlastMem :
       xs.getLastD a ∈ a :: xs :=
-    (List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)
+    List.getLastD_mem_cons
   have hlastN :
       xs.getLastD a ≤ n :=
     hall _ hlastMem
@@ -285,7 +293,7 @@ theorem cyclicBandJumps_sum
         simp
     | cons b bs =>
         rw [List.pairwise_cons] at hsorted
-        exact hsorted.1 _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))
+        exact hsorted.1 _ (List.getLastD_mem_cons
   simp only [cyclicBandJumps, List.sum_append,
     List.sum_singleton, hsucc]
   omega
@@ -330,7 +338,7 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
         bandWrapJump_pos (a := a) haN
       have hne : (n + 1 - a) + a ≠ 0 := by omega
       simp [cyclicBandJumps, successiveNatDiffsFrom,
-        listPositiveCount, hne]
+        listPositiveCount, hne] <;> omega
   | cons b bs ih =>
       rw [List.pairwise_cons] at hsorted
       have hab : a ≤ b :=
@@ -343,9 +351,14 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
         intro x hx
         exact hall x (by simp [hx])
       have hih := ih b htail hallTail
+      have hconsLast (z : ℕ) :
+          (b :: bs).getLastD z = bs.getLastD b := by
+        cases bs with
+        | nil => rfl
+        | cons d ds => rfl
       have hlastN :
           (b :: bs).getLastD b ≤ n := by
-        exact hallTail _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))
+        exact hallTail _ (List.getLastD_mem_cons
       have hwrapA :
           1 ≤ (n + 1 - (b :: bs).getLastD b) + a :=
         bandWrapJump_pos hlastN
@@ -360,13 +373,13 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
           listPositiveCount (successiveNatDiffsFrom b bs) + 1 := by
         rw [listPositiveCount_append]
         have hlastN' : bs.getLastD b ≤ n := by
-          exact hallTail _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))
+          exact hallTail _ (List.getLastD_mem_cons
         rw [listPositiveCount_singleton_of_pos
           (bandWrapJump_pos hlastN')]
       by_cases heq : a = b
       · subst a
         simpa [cyclicBandJumps, successiveNatDiffsFrom,
-          List.getLastD_cons, listPositiveCount] using hih
+          hconsLast, listPositiveCount] using hih
       · have hablt : a < b := lt_of_le_of_ne hab heq
         have haNot : a ∉ (b :: bs).toFinset := by
           intro haMem
@@ -383,7 +396,7 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
         have hwrapA' :
             1 ≤ (n + 1 - bs.getLastD b) + a := by
           have hlastN' : bs.getLastD b ≤ n := by
-            exact hallTail _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))
+            exact hallTail _ (List.getLastD_mem_cons
           exact bandWrapJump_pos hlastN'
         have hleft :
             listPositiveCount
@@ -392,18 +405,18 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
             listPositiveCount
               (cyclicBandJumps n (b :: bs)) + 1 := by
           simp only [cyclicBandJumps, successiveNatDiffsFrom]
-          simp only [List.getLastD_cons]
+          simp only [hconsLast]
           rw [listPositiveCount_append,
               listPositiveCount_append]
           rw [listPositiveCount_singleton_of_pos hwrapA',
               listPositiveCount_singleton_of_pos
                 (bandWrapJump_pos
-                  (hallTail _ ((List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs))))]
+                  (hallTail _ (List.getLastD_mem_cons]
           have hfirstNonzero : b - a ≠ 0 := by omega
           simp [listPositiveCount, hfirstNonzero, add_assoc,
             add_comm, add_left_comm]
         rw [hleft, hih]
-        simp [List.toFinset_cons, haNot]
+        simp [haNot]
 
 /-- List zero-carry identity. -/
 theorem listExponent_add_listPositiveCount
@@ -413,11 +426,14 @@ theorem listExponent_add_listPositiveCount
   | nil =>
       simp [listExponent, listPositiveCount]
   | cons q qs ih =>
+      have htail :
+          (qs.map excess).sum + listPositiveCount qs = qs.sum := by
+        simpa [listExponent] using ih
       by_cases hq : q = 0
       · subst q
-        simp [listExponent, listPositiveCount, excess, ih]
+        simpa [listExponent, listPositiveCount, excess] using htail
       · have hpos : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr hq
-        simp [listExponent, listPositiveCount, excess, hq, ih]
+        simp [listExponent, listPositiveCount, excess, hq]
         omega
 
 /-- Exact exponent of cyclic band jumps. -/
@@ -492,6 +508,17 @@ theorem cyclicFloorGapExponent_add_usedBands_le
         exact hlabelBound c (by simpa using hc))
   simp only [List.map_cons] at hExp
   rw [hBandExp] at hExp
+  have hbandCard :
+      ((a :: xs).map Nat.floor).toFinset.card ≤ n + 1 := by
+    have hsub :
+        ((a :: xs).map Nat.floor).toFinset ⊆
+          Finset.range (n + 1) := by
+      intro c hc
+      apply Finset.mem_range.mpr
+      exact Nat.lt_succ_of_le
+        (hlabelBound c (List.mem_toFinset.mp hc))
+    have h := Finset.card_le_card hsub
+    simpa using h
   omega
 
 #print axioms successiveNatDiffsFrom_sum
