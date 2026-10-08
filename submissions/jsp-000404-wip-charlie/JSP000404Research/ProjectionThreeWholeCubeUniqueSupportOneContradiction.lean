@@ -130,9 +130,10 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
   have hc3V : c₃ ∈ retainedActive R v := by rw [hactive']; simp
 
   simp only [Finset.mem_insert, Finset.mem_singleton] at hoMem
-  rcases hoMem with rfl | rfl | rfl | rfl
+  rcases hoMem with hv | hs₁ | hs₂ | hs₃
 
-  · have hs1Support :=
+  · subst o
+    have hs1Support :=
       hothers s₁ (by simp) hvs1.symm
     have hs2Support :=
       hothers s₂ (by simp) hvs2.symm
@@ -162,12 +163,13 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
         (by simpa [R] using htrue c₂ hc2V)
         (by simpa [R] using htrue c₃ hc3V)
 
-  · have hvSupport :=
+  · subst o
+    have hvSupport :=
       hothers v (by simp) hvs1
     have hs2Support :=
-      hothers s₂ (by simp) hs12
+      hothers s₂ (by simp) hs12.symm
     have hs3Support :=
-      hothers s₃ (by simp) hs13
+      hothers s₃ (by simp) hs13.symm
     rcases hoExtreme with hmin | hmax
     · exact owner_partner_globalMin_supportTwo_impossible
         hp hcap hn3 hdelta0 hdeltaHalf ht hlam Cfam
@@ -182,12 +184,13 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
         hvSecond hs2Second hs3Second
         hvSupport hs2Support hs3Support hmax
 
-  · have hvSupport :=
+  · subst o
+    have hvSupport :=
       hothers v (by simp) hvs2
     have hs1Support :=
-      hothers s₁ (by simp) hs12.symm
+      hothers s₁ (by simp) hs12
     have hs3Support :=
-      hothers s₃ (by simp) hs23
+      hothers s₃ (by simp) hs23.symm
     have hactive₂ :
         retainedActive R v = {c₂,c₁,c₃} := by
       calc
@@ -212,12 +215,13 @@ theorem planar_threeWholeCube_uniqueSupportOne_impossible
         hvSecond hs1Second hs3Second
         hvSupport hs1Support hs3Support hmax
 
-  · have hvSupport :=
+  · subst o
+    have hvSupport :=
       hothers v (by simp) hvs3
     have hs1Support :=
-      hothers s₁ (by simp) hs13.symm
+      hothers s₁ (by simp) hs13
     have hs2Support :=
-      hothers s₂ (by simp) hs23.symm
+      hothers s₂ (by simp) hs23
     have hactive₃ :
         retainedActive R v = {c₃,c₁,c₂} := by
       calc

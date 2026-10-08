@@ -1,4 +1,5 @@
 import JSP000404Research.ProjectionLossFlipCoordinate
+import JSP000404Research.ResidualPairFlipBlocker
 import JSP000404Research.TranslatedCompletionCore
 import Mathlib.Tactic
 
