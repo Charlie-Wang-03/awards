@@ -38,7 +38,7 @@ theorem projected_strict_surplus_at_least_one
     target_weight_le_dyadicProfileSurplus_of_one_surplus
       exponent projectedFree w hstep
   have hone : 1 ≤ 2 ^ exponent w := by
-    exact Nat.one_le_pow _ _
+    exact Nat.one_le_pow _ _ (by decide : 0 < (2 : ℕ))
   exact hone.trans hcredit
 
 theorem projectedLoss_word_hole_or_strict_paid_or_exact_loss_fibre
@@ -80,7 +80,7 @@ theorem projectedLoss_word_hole_or_strict_paid_or_exact_loss_fibre
   · right
     have hcovered :
         flipBoolWordAt word c ∈ coveredCompletionWords C := by
-      simpa using hhole
+      exact not_not.mp hhole
     have hnonempty :
         (completionFibre C (flipBoolWordAt word c)).Nonempty :=
       (mem_coveredCompletionWords C
