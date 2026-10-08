@@ -39,6 +39,7 @@ theorem exponent_capacity_of_uniform_strict_band_slack
     omega
   have hplus : ∀ v, exponent v + 1 ≤ n + 1 := by
     intro v
+    have hv := hexp v
     omega
   have hell : ∀ v, n - exponent v =
       (n + 1) - (exponent v + 1) := by
