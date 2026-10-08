@@ -63,8 +63,8 @@ private theorem residualHard_width_lt_succ
     (htEq : t = (n : ℝ) + delta) :
     t < (n + 1 : ℕ) := by
   rw [htEq]
-  norm_num
-  linarith
+  exact_mod_cast
+    (show (n : ℝ) + delta < (n : ℝ) + 1 by linarith)
 
 noncomputable def genericResidualColoring
     {V : Type*} [Fintype V]
