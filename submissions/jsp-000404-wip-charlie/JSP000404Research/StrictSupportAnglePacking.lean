@@ -34,6 +34,7 @@ namespace JSP000404Research
 open Real
 open scoped BigOperators
 open Metric
+open Set
 
 noncomputable def angleRayDirection (theta : Real.Angle) : Plane :=
   !₂[Real.Angle.cos theta, Real.Angle.sin theta]
@@ -47,13 +48,16 @@ theorem angleRayDirection_coe (theta : ℝ) :
 
 theorem angle_norm_eq_abs_toReal (theta : Real.Angle) :
     ‖theta‖ = |theta.toReal| := by
-  rw [← Real.Angle.coe_toReal theta]
-  apply (AddCircle.norm_coe_eq_abs_iff
-    (p := 2 * Real.pi)
-    (x := theta.toReal)
-    (by positivity)).2
-  have h := Real.Angle.abs_toReal_le_pi theta
-  simpa [abs_of_pos Real.pi_pos] using h
+  calc
+    ‖theta‖ = ‖(theta.toReal : Real.Angle)‖ := by
+      rw [Real.Angle.coe_toReal]
+    _ = |theta.toReal| :=
+      (AddCircle.norm_coe_eq_abs_iff
+        (p := 2 * Real.pi)
+        (x := theta.toReal)
+        (by positivity)).2 (by
+          have h := Real.Angle.abs_toReal_le_pi theta
+          simpa [abs_of_pos Real.pi_pos] using h)
 
 theorem angle_dist_eq_abs_relative_toReal
     (theta psi : Real.Angle) :
@@ -88,7 +92,8 @@ theorem exists_real_parameter_of_mem_angle_ball
   have hd :
       -(right - left) / 2 < d ∧
         d < (right - left) / 2 := by
-    simpa [abs_lt] using hdabs
+    rcases abs_lt.mp hdabs with ⟨hlo, hhi⟩
+    constructor <;> linarith
   let phi : ℝ := mid + d
   refine ⟨phi, ?_, ?_, ?_⟩
   · dsimp [phi, mid]
@@ -101,7 +106,8 @@ theorem exists_real_parameter_of_mem_angle_ball
       dsimp [d]
       exact Real.Angle.coe_toReal _
     dsimp [phi]
-    rw [Real.Angle.coe_add, hdcoe]
+    change theta = (mid : Real.Angle) + (d : Real.Angle)
+    rw [hdcoe]
     abel
 
 noncomputable def signedSupportAngle
@@ -113,9 +119,14 @@ theorem angleRayDirection_signedSupportAngle
     (sigma : Bool) (phi : ℝ) :
     angleRayDirection (signedSupportAngle sigma phi) =
       signedRayDirection sigma phi := by
-  cases sigma <;>
-    simp [signedSupportAngle, angleRayDirection_coe,
-      signedRayDirection, rayDirection_add_pi]
+  cases sigma with
+  | false =>
+      change angleRayDirection ((phi + Real.pi : ℝ) : Real.Angle) =
+        -rayDirection phi
+      rw [angleRayDirection_coe, rayDirection_add_pi]
+  | true =>
+      change angleRayDirection (phi : Real.Angle) = rayDirection phi
+      exact angleRayDirection_coe phi
 
 noncomputable def supportAngleCenter
     (sigma : Bool) (a width : ℝ) : Real.Angle :=
@@ -123,7 +134,7 @@ noncomputable def supportAngleCenter
   let right := supportParamRight a
   signedSupportAngle sigma ((left + right) / 2)
 
-def supportAngleRadius (width : ℝ) : ℝ :=
+noncomputable def supportAngleRadius (width : ℝ) : ℝ :=
   (Real.pi - width) / 2
 
 def supportAngleBall
@@ -162,9 +173,12 @@ theorem exists_support_parameter_of_mem_supportAngleBall
               ((((left + Real.pi) + (right + Real.pi)) / 2 : ℝ) :
                 Real.Angle)
               (((right + Real.pi) - (left + Real.pi)) / 2) := by
+        have hmidShift :
+            ((left + Real.pi) + (right + Real.pi)) / 2 =
+              (left + right) / 2 + Real.pi := by ring
         simpa [supportAngleBall, supportAngleCenter,
           supportAngleRadius, signedSupportAngle, hsigma,
-          left, right, hspan] using htheta
+          left, right, hspan, hmidShift] using htheta
       obtain ⟨psi, hpsiL, hpsiR, hthetaPsi⟩ :=
         exists_real_parameter_of_mem_angle_ball
           (left := left + Real.pi)
