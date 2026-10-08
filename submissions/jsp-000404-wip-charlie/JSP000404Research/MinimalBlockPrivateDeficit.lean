@@ -39,9 +39,21 @@ theorem biUnion_eq_private_union_erase
       privateBlockWords blocks T v ∪
         (T.erase v).biUnion blocks := by
   classical
+  classical
   ext w
-  simp [privateBlockWords, hv]
-  tauto
+  simp only [privateBlockWords, Finset.mem_union, Finset.mem_sdiff,
+    Finset.mem_biUnion]
+  constructor
+  · rintro ⟨u, huT, hwU⟩
+    by_cases huv : u = v
+    · subst u
+      by_cases hwOther : ∃ x ∈ T.erase v, w ∈ blocks x
+      · exact Or.inr hwOther
+      · exact Or.inl ⟨hwU, hwOther⟩
+    · exact Or.inr ⟨u, Finset.mem_erase.mpr ⟨huv, huT⟩, hwU⟩
+  · rintro (⟨hwV, _⟩ | ⟨u, huErase, hwU⟩)
+    · exact ⟨v, hv, hwV⟩
+    · exact ⟨u, Finset.mem_of_mem_erase huErase, hwU⟩
 
 theorem privateBlockWords_disjoint_eraseUnion
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
@@ -78,7 +90,7 @@ theorem minimal_deficient_private_card_lt_demand
   have hsum :
       (∑ u ∈ T, demand u) =
         demand v + ∑ u ∈ T.erase v, demand u := by
-    rw [hsplitT, Finset.sum_insert]
+    rw [hsplitT]
     simp
   have hunion :
       (T.biUnion blocks).card =
@@ -114,12 +126,12 @@ theorem minimal_deficient_block_has_collision_of_local_capacity
       privateBlockWords blocks T v = blocks v := by
     apply Finset.ext
     intro w
-    simp [privateBlockWords]
+    simp only [privateBlockWords, Finset.mem_sdiff]
     constructor
     · intro hw
       exact hw.1
     · intro hw
-      exact ⟨hw,hnone w hw⟩
+      exact ⟨hw, hnone w hw⟩
   have hlt :=
     minimal_deficient_private_card_lt_demand
       demand blocks hdef hmin hv
