@@ -205,7 +205,7 @@ theorem planar_projectedLoss_forces_zeroUnitStep
     | nil =>
         exact False.elim (L.values_nonempty hv)
     | cons a xs =>
-        exact ⟨a,xs,hv⟩
+        exact ⟨a, xs, rfl⟩
 
   have haMem : a ∈ L.values := by
     rw [hvalues]
