@@ -39,7 +39,6 @@ theorem biUnion_eq_private_union_erase
       privateBlockWords blocks T v ∪
         (T.erase v).biUnion blocks := by
   classical
-  classical
   ext w
   simp only [privateBlockWords, Finset.mem_union, Finset.mem_sdiff,
     Finset.mem_biUnion]
@@ -90,8 +89,12 @@ theorem minimal_deficient_private_card_lt_demand
   have hsum :
       (∑ u ∈ T, demand u) =
         demand v + ∑ u ∈ T.erase v, demand u := by
-    rw [hsplitT]
-    simp
+    calc
+      (∑ u ∈ T, demand u) =
+          ∑ u ∈ insert v (T.erase v), demand u := by
+            rw [Finset.insert_erase hv]
+      _ = demand v + ∑ u ∈ T.erase v, demand u := by
+            rw [Finset.sum_insert (Finset.not_mem_erase v T)]
   have hunion :
       (T.biUnion blocks).card =
         (privateBlockWords blocks T v).card +
@@ -147,7 +150,13 @@ theorem minimal_deficient_local_block_lt_demand_add_shared
       (blocks v).card =
         (privateBlockWords blocks T v).card +
           (blocks v ∩ other).card := by
-    rw [hsplit, Finset.card_union_of_disjoint hdisj]
+    calc
+      (blocks v).card =
+          (privateBlockWords blocks T v ∪ (blocks v ∩ other)).card :=
+            congrArg Finset.card hsplit
+      _ = (privateBlockWords blocks T v).card +
+          (blocks v ∩ other).card :=
+            Finset.card_union_of_disjoint hdisj
   have hprivate :=
     minimal_deficient_private_card_lt_demand
       demand blocks hdef hmin hv
