@@ -31,6 +31,15 @@ namespace JSP000404Research
 /-- In a sorted nonempty value list bounded by t<n+1, occurrence of floor n
 forces the final floor to be exactly n. -/
 /-- Normalize the last element of a nonempty list across fallback conventions. -/
+private theorem saturatedEndpoint_lastOption_cons
+    (x : ℝ) (xs : List ℝ) (d a : ℝ) :
+    (x :: xs).getLast?.getD d = (x :: xs).getLastD a := by
+  induction xs generalizing x d a with
+  | nil => rfl
+  | cons y ys ih =>
+      simpa only [List.getLast?_cons_cons, List.getLastD_cons]
+        using (ih y d x)
+
 private theorem saturatedEndpoint_lastD_cons
     (a b : ℝ) (bs : List ℝ) :
     (b :: bs).getLastD a = bs.getLastD b := by
@@ -38,10 +47,7 @@ private theorem saturatedEndpoint_lastD_cons
   cases bs with
   | nil => rfl
   | cons c cs =>
-      induction cs generalizing c with
-      | nil => rfl
-      | cons d ds ih =>
-          simpa only [List.getLast?_cons_cons, List.getLastD_cons] using ih
+      exact saturatedEndpoint_lastOption_cons c cs b b
 
 theorem sorted_last_floor_eq_top_of_top_mem
     {t : ℝ} {n : ℕ}
