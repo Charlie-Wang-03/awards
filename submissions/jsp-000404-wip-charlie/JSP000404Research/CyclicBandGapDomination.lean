@@ -441,7 +441,6 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
         have haNot' : a ∉ insert b bs.toFinset := by
           simpa only [List.toFinset_cons] using haNot
         rw [Finset.card_insert_of_notMem haNot']
-        omega
 
 /-- List zero-carry identity. -/
 theorem listExponent_add_listPositiveCount
