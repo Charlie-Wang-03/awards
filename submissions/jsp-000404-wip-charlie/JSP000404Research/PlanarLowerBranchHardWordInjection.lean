@@ -52,8 +52,14 @@ theorem hardProjectionWords_card_eq
   classical
   unfold hardProjectionWords
   apply Finset.card_union_of_disjoint
-  exact (lossWords_disjoint_saturatedOverlapWords
-    C exponent hexp honeLoss).symm
+  have hdisj :
+      Disjoint
+        (lossCompletionWords C exponent)
+        (saturatedOverlapWords C exponent) := by
+    apply Finset.disjoint_of_subset_right Finset.sdiff_subset
+    exact lossCompletionWords_disjoint_overlapCompletionWords
+      C exponent hexp honeLoss
+  exact hdisj.symm
 
 theorem projectionHoleWords_card
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
