@@ -1,12 +1,7 @@
 name: JSP-000404 Lean
 
+# Complete chain must be run explicitly before upstream proof submission.
 on:
-  push:
-    branches:
-      - research/jsp-000404-sharp-centre
-    paths:
-      - "submissions/jsp-000404-wip-charlie/**"
-      - ".github/workflows/jsp000404-lean.yml"
   workflow_dispatch:
 
 permissions:
@@ -58,6 +53,20 @@ jobs:
       - name: Restore mathlib cache
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
+
+      - name: Restore source-indexed verified project oleans
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-
+
+      - name: Invalidate stale cached Lean modules
+        working-directory: submissions/jsp-000404-wip-charlie
+        env:
+          INPUT_MODULES: JSP000404Research
+        run: python3 scripts/jsp000404_incremental_ci.py prepare
 
       - name: Audit executable Lean proof holes (exclude comments and strings)
         working-directory: submissions/jsp-000404-wip-charlie
@@ -479,3 +488,12 @@ jobs:
       - name: Check support-unsafe carrier matching
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualSafeSupportMatching
+      - name: Snapshot sources after full chain verification
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: python3 scripts/jsp000404_incremental_ci.py snapshot
+
+      - name: Save fully checked proof artifacts
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}

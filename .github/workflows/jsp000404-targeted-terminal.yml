@@ -1,53 +1,24 @@
-name: JSP-000404 Targeted Bridge
+name: JSP-000404 Fast Incremental Lean
 
 on:
   push:
     branches:
       - research/jsp-000404-sharp-centre
     paths:
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTSmallPairMatching.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTThreeSupportSmallPairMatching.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTThreeSupportFiniteTerminal.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualCommonWordTriangleSecondLayerOutlet.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualDeficientCoreSecondLayerOutlet.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/LinearBandGapStepTight.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/**"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research.lean"
+      - "submissions/jsp-000404-wip-charlie/lakefile.toml"
+      - "submissions/jsp-000404-wip-charlie/lean-toolchain"
+      - "submissions/jsp-000404-wip-charlie/lake-manifest.json"
       - "submissions/jsp-000404-wip-charlie/scripts/jsp000404_sorry_audit.py"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SaturatedWrapDescent.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/LinearSaturatedEndpointDichotomy.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarLowerBranchHardWordInjection.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionLossZeroUnitStep.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/RefinedResidualHardRemainder.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarUpperBranchHardDefect.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionLossFlipCoordinate.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossTranslatedBlock.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossTranslatedConflict.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossAllActiveSlices.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionLossAugmentingTransition.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionThreeWholeCubeUniqueSupportOneContradiction.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionThreeWholeCubeUniqueSupportOneTerminal.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossAllActiveCandidateBlock.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossRecursiveOutlet.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/CentreSignPath.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeWholeCubeExtremeUniqueness.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossFibreRigidity.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FinThreeBooleanAntipode.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/OneSupportTurnPacking.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/StrictSupportCone.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/TransitionSplitInterval.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossFibreGlobal.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ZeroUnitStepQuotient.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossTwoExitRecursiveOutlet.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossAllActiveCandidateBlock.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/NearPerfectRefinedHardMatching.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/HardProjectionWordClassification.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockSharedDeficit.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockTransferCapacityBoundary.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualExactPairStateClassification.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualZeroZeroRecursiveOutlet.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionResidualHardRemainder.lean"
+      - "submissions/jsp-000404-wip-charlie/scripts/jsp000404_incremental_ci.py"
       - ".github/workflows/jsp000404-targeted-terminal.yml"
   workflow_dispatch:
+    inputs:
+      modules:
+        description: "Space/comma-separated Lean modules, e.g. ResidualLossFibreGlobal ZeroUnitStepQuotient"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -57,14 +28,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Check targeted bridge
+  incremental:
+    name: Check changed Lean modules (not the full theorem)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 2
+
+      - name: Audit executable Lean proof holes
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          python3 scripts/jsp000404_sorry_audit.py --self-test
+          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research
 
       - name: Install elan
         run: |
@@ -75,7 +53,7 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Restore Lake package cache
-        id: lake-package-cache
+        id: lake-packages
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: |
@@ -84,57 +62,57 @@ jobs:
           key: jsp000404-lake-v2-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain') }}
 
       - name: Resolve Lake dependencies
-        if: steps.lake-package-cache.outputs.cache-hit != 'true'
+        if: steps.lake-packages.outputs.cache-hit != 'true'
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake update
 
-      - name: Restore mathlib cache
+      - name: Restore pinned mathlib oleans
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
-      - name: Audit executable Lean proof holes (exclude comments and strings)
+      - name: Restore previously compiled project oleans
+        id: project-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-
+
+      - name: Invalidate modified sources and select targets
+        id: select
         working-directory: submissions/jsp-000404-wip-charlie
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          INPUT_MODULES: ${{ inputs.modules }}
+        run: python3 scripts/jsp000404_incremental_ci.py prepare
+
+      - name: Build changed Lean modules with imported dependencies
+        if: steps.select.outputs.targets != ''
+        working-directory: submissions/jsp-000404-wip-charlie
+        env:
+          LEAN_TARGETS: ${{ steps.select.outputs.targets }}
         run: |
-          python3 scripts/jsp000404_sorry_audit.py --self-test
-          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research
+          read -r -a targets <<< "$LEAN_TARGETS"
+          lake build "${targets[@]}"
 
-      - name: Check repaired kernel interfaces (collect all failures)
+      - name: Record successfully checked source versions
+        if: steps.select.outputs.targets != ''
         working-directory: submissions/jsp-000404-wip-charlie
+        run: python3 scripts/jsp000404_incremental_ci.py snapshot
+
+      - name: Save verified incremental project oleans
+        if: steps.select.outputs.targets != ''
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Verification scope
+        if: always()
+        env:
+          LEAN_TARGETS: ${{ steps.select.outputs.targets }}
         run: |
-          failures=0
-          for module in LinearBandGapStepTight SaturatedWrapDescent LinearSaturatedEndpointDichotomy PlanarLowerBranchHardWordInjection ProjectionLossZeroUnitStep ProjectionLossFlipCoordinate RefinedResidualHardRemainder NearPerfectRefinedHardMatching HardProjectionWordClassification PlanarUpperBranchHardDefect MinimalBlockPrivateDeficit MinimalBlockSharedDeficit MinimalBlockTransferCapacityBoundary ResidualExactPairStateClassification ResidualZeroZeroRecursiveOutlet ProjectionResidualHardRemainder; do
-            echo "::group::JSP000404Research.$module"
-            lake build "JSP000404Research.$module" || failures=1
-            echo "::endgroup::"
-          done
-          exit "$failures"
-
-      - name: Check translated-loss stratification and zero-unit bridge
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: |
-          lake build JSP000404Research.ResidualLossFibreGlobal
-          lake build JSP000404Research.ZeroUnitStepQuotient
-
-      - name: Check three-support finite terminal
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.QTTTThreeSupportFiniteTerminal
-
-      - name: Check common-word triangle outlet
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ResidualCommonWordTriangleSecondLayerOutlet
-
-      - name: Check deficient-core second-layer outlet
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ResidualDeficientCoreSecondLayerOutlet
-
-      - name: Check planar deficient-core to QTTT bridge
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ProjectionDeficientCoreCommonWordQTTT
-
-      - name: Probe exact-two whole-cube terminal
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ProjectionQTTTSupportOrWholeCube
-
-      - name: Check minimal-core QTTT support-recursion terminal
-        working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ProjectionMinimalCoreQTTTTerminal
+          echo "Fast workflow: changed/selected Lean modules plus imports."
+          echo "Targets: $LEAN_TARGETS"
+          echo "This is NOT a complete proof or final award acceptance check."
