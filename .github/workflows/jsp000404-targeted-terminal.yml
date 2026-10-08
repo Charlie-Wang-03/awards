@@ -28,6 +28,8 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossAllActiveCandidateBlock.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossRecursiveOutlet.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CentreSignPath.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeWholeCubeExtremeUniqueness.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossFibreRigidity.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/NearPerfectRefinedHardMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/HardProjectionWordClassification.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"

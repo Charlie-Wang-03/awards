@@ -1,4 +1,5 @@
 import JSP000404Research.ThreeWholeCubeGlobalExtreme
+import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
 
 /-!
@@ -169,7 +170,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
     · left
       refine ⟨?_,?_,?_⟩
       · simpa [b₁] using
-          hstar.1.2.1.trans (hF c₁ hc1S)
+          hstar.1.2.1.symm.trans (hF c₁ hc1S)
       · exact
           (hstar.1.2.2 c₂ hc2V hc12.symm).symm.trans
             (hF c₂ hc2S)
@@ -179,7 +180,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
     · right
       refine ⟨?_,?_,?_⟩
       · simpa [b₁] using
-          hstar.1.2.1.trans (hT c₁ hc1S)
+          hstar.1.2.1.symm.trans (hT c₁ hc1S)
       · exact
           (hstar.1.2.2 c₂ hc2V hc12.symm).symm.trans
             (hT c₂ hc2S)
@@ -208,7 +209,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
           (hstar.2.1.2.2 c₁ hc1V hc12).symm.trans
             (hF c₁ hc1S)
       · simpa [b₂] using
-          hstar.2.1.2.1.trans (hF c₂ hc2S)
+          hstar.2.1.2.1.symm.trans (hF c₂ hc2S)
       · exact
           (hstar.2.1.2.2 c₃ hc3V hc23.symm).symm.trans
             (hF c₃ hc3S)
@@ -218,7 +219,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
           (hstar.2.1.2.2 c₁ hc1V hc12).symm.trans
             (hT c₁ hc1S)
       · simpa [b₂] using
-          hstar.2.1.2.1.trans (hT c₂ hc2S)
+          hstar.2.1.2.1.symm.trans (hT c₂ hc2S)
       · exact
           (hstar.2.1.2.2 c₃ hc3V hc23.symm).symm.trans
             (hT c₃ hc3S)
@@ -247,7 +248,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
           (hstar.2.2.2.2 c₂ hc2V hc23).symm.trans
             (hF c₂ hc2S)
       · simpa [b₃] using
-          hstar.2.2.2.1.trans (hF c₃ hc3S)
+          hstar.2.2.2.1.symm.trans (hF c₃ hc3S)
     · right
       refine ⟨?_,?_,?_⟩
       · exact
@@ -257,14 +258,15 @@ theorem threeWholeCubePartners_at_most_one_constantCode
           (hstar.2.2.2.2 c₂ hc2V hc23).symm.trans
             (hT c₂ hc2S)
       · simpa [b₃] using
-          hstar.2.2.2.1.trans (hT c₃ hc3S)
+          hstar.2.2.2.1.symm.trans (hT c₃ hc3S)
 
-  intro a b ha hb hab
-  simp only [Finset.mem_insert,Finset.mem_singleton] at ha hb
+  intro a b ha hb hab hpair
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
   rcases ha with rfl | rfl | rfl | rfl <;>
-    rcases hb with rfl | rfl | rfl | rfl <;>
-    simp_all [ConstantRetainedCode] <;>
-    intro hpair
+    rcases hb with rfl | rfl | rfl | rfl
+  all_goals
+    first
+    | exact (hab rfl).elim
   all_goals
     first
     | have haP := profileV hpair.1

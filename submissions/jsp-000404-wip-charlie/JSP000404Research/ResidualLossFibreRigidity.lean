@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossTranslatedConflict
+import JSP000404Research.RetainedOrientation
 import Mathlib.Tactic
 
 /-!
@@ -53,14 +54,14 @@ theorem translated_loss_conflict_lower_colour_forces_word_true
     (mem_retainedCompletionWords C v
       (flipBoolWordAt word c)).1 hvOrig
   have hvAt := hvComp c hc
-  have hbitLower :=
-    retainedBit_false_of_outgoingRetained C
-      (by
-        apply (mem_outgoingRetained_iff C v c).2
-        refine ⟨w,hvw,?_⟩
-        apply Fin.ext
-        have hval := congrArg Fin.val hcolour
-        simpa [retainedColor] using hval)
+  have hbitLower : retainedBit C v c = false := by
+    unfold retainedBit
+    apply bit_false_of_outgoingRetained C
+    apply (mem_outgoingRetained_iff C v c).2
+    refine ⟨w,hvw,?_⟩
+    apply Fin.ext
+    have hval := congrArg Fin.val hcolour
+    simpa [retainedColor] using hval
   rw [flipBoolWordAt_at, hbitLower] at hvAt
   cases h : word c <;> simp [h] at hvAt ⊢
 
