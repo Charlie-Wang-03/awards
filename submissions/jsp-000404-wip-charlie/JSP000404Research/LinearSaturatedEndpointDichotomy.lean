@@ -30,6 +30,19 @@ namespace JSP000404Research
 
 /-- In a sorted nonempty value list bounded by t<n+1, occurrence of floor n
 forces the final floor to be exactly n. -/
+/-- Normalize the last element of a nonempty list across fallback conventions. -/
+private theorem saturatedEndpoint_lastD_cons
+    (a b : ℝ) (bs : List ℝ) :
+    (b :: bs).getLastD a = bs.getLastD b := by
+  rw [List.getLastD_cons]
+  cases bs with
+  | nil => rfl
+  | cons c cs =>
+      induction cs generalizing c with
+      | nil => rfl
+      | cons d ds ih =>
+          simpa only [List.getLast?_cons_cons, List.getLastD_cons] using ih
+
 theorem sorted_last_floor_eq_top_of_top_mem
     {t : ℝ} {n : ℕ}
     (a : ℝ) (xs : List ℝ)
@@ -56,9 +69,11 @@ theorem sorted_last_floor_eq_top_of_top_mem
           exact head_le_getLastD_of_pairwise a (b :: bs) hsorted
         · have htail :
               (b :: bs).Pairwise (· ≤ ·) := hp.2
+          have hb0 : 0 ≤ b := ha0.trans (hp.1 b (by simp))
           have hle :
-              x ≤ bs.getLastD b := ih b htail hxtail
-          simpa [List.getLastD_cons] using hle
+              x ≤ bs.getLastD b := ih b hb0 htail hxtail
+          rw [saturatedEndpoint_lastD_cons]
+          exact hle
   have hlast0 :
       0 ≤ xs.getLastD a :=
     ha0.trans
@@ -69,7 +84,7 @@ theorem sorted_last_floor_eq_top_of_top_mem
     exact Nat.floor_mono hxle
   have hlastLt :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ (List.getLastD_mem_cons)
   have hlastTop :
       Nat.floor (xs.getLastD a) < n + 1 := by
     apply (Nat.floor_lt hlast0).2
@@ -157,7 +172,7 @@ theorem saturated_boundaryBands_or_zeroUnitStep
       0 ≤ xs.getLastD a := ha0.trans haz
   have hzlt :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ (List.getLastD_mem_cons)
   have hfloorAZ :
       Nat.floor a ≤ Nat.floor (xs.getLastD a) :=
     Nat.floor_mono haz
@@ -221,7 +236,6 @@ theorem saturated_boundaryBands_or_zeroUnitStep
             (Nat.floor a : ℝ) := by
       dsimp [E]
       rw [Nat.cast_add, Nat.cast_sub hlastN]
-      push_cast
       ring
     have hqcast :
         ((Nat.floor (a + t - xs.getLastD a) : ℕ) : ℝ)
