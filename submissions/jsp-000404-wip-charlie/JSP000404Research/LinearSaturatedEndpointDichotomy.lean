@@ -28,9 +28,7 @@ cuts.
 
 namespace JSP000404Research
 
-/-- In a sorted nonempty value list bounded by t<n+1, occurrence of floor n
-forces the final floor to be exactly n. -/
-/-- Normalize the last element of a nonempty list across fallback conventions. -/
+/- A normalization lemma for nonempty lists. -/
 private theorem saturatedEndpoint_lastOption_cons
     (x : ℝ) (xs : List ℝ) (d a : ℝ) :
     (x :: xs).getLast?.getD d = (x :: xs).getLastD a := by
@@ -44,11 +42,9 @@ private theorem saturatedEndpoint_lastD_cons
     (a b : ℝ) (bs : List ℝ) :
     (b :: bs).getLastD a = bs.getLastD b := by
   rw [List.getLastD_cons]
-  cases bs with
-  | nil => rfl
-  | cons c cs =>
-      exact saturatedEndpoint_lastOption_cons c cs b b
 
+/-- In a sorted nonempty value list bounded by t<n+1, occurrence of floor n
+forces the final floor to be exactly n. -/
 theorem sorted_last_floor_eq_top_of_top_mem
     {t : ℝ} {n : ℕ}
     (a : ℝ) (xs : List ℝ)
@@ -76,8 +72,11 @@ theorem sorted_last_floor_eq_top_of_top_mem
         · have htail :
               (b :: bs).Pairwise (· ≤ ·) := hp.2
           have hb0 : 0 ≤ b := ha0.trans (hp.1 b (by simp))
+          have hallTail : ∀ y ∈ b :: bs, y < t := by
+            intro y hy
+            exact hall y (List.mem_cons_of_mem a hy)
           have hle :
-              x ≤ bs.getLastD b := ih b hb0 htail hxtail
+              x ≤ bs.getLastD b := ih b hb0 htail hallTail hxtail
           rw [saturatedEndpoint_lastD_cons]
           exact hle
   have hlast0 :
@@ -242,7 +241,6 @@ theorem saturated_boundaryBands_or_zeroUnitStep
             (Nat.floor a : ℝ) := by
       dsimp [E]
       rw [Nat.cast_add, Nat.cast_sub hlastN]
-      ring
     have hqcast :
         ((Nat.floor (a + t - xs.getLastD a) : ℕ) : ℝ)
           =
