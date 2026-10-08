@@ -10,6 +10,10 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/QTTTThreeSupportFiniteTerminal.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualCommonWordTriangleSecondLayerOutlet.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualDeficientCoreSecondLayerOutlet.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/LinearBandGapStepTight.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualExactPairStateClassification.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualZeroZeroRecursiveOutlet.lean"
       - ".github/workflows/jsp000404-targeted-terminal.yml"
   workflow_dispatch:
 
@@ -55,6 +59,22 @@ jobs:
       - name: Restore mathlib cache
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
+
+      - name: Check LinearBandGapStepTight
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.LinearBandGapStepTight
+
+      - name: Check MinimalBlockPrivateDeficit
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.MinimalBlockPrivateDeficit
+
+      - name: Check ResidualExactPairStateClassification
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualExactPairStateClassification
+
+      - name: Check ResidualZeroZeroRecursiveOutlet
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.ResidualZeroZeroRecursiveOutlet
 
       - name: Check three-support finite terminal
         working-directory: submissions/jsp-000404-wip-charlie
