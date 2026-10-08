@@ -47,7 +47,7 @@ namespace OrderedEdgeColoring
 
 open scoped BigOperators
 
-def remainingStrictPaymentSurplus
+noncomputable def remainingStrictPaymentSurplus
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) : ℕ :=
@@ -87,6 +87,11 @@ theorem exponent_capacity_of_refined_hard_payment
   have hremain :=
     strictStrict_add_remainingSurplus_eq_totalSurplus
       C exponent
+  change
+    (overlapCompletionWords C).card +
+      totalDyadicProfileLoss exponent (projectedFree C) ≤
+    (2 ^ n - (coveredCompletionWords C).card) +
+      totalDyadicProfileSurplus exponent (projectedFree C)
   omega
 
 /-- Concrete one-layer version. -/

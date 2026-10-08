@@ -73,6 +73,14 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+private theorem projectedLoss_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n) (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) : 0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
 theorem planar_projectedLoss_forces_zeroUnitStep
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -85,6 +93,8 @@ theorem planar_projectedLoss_forces_zeroUnitStep
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V)
@@ -92,7 +102,7 @@ theorem planar_projectedLoss_forces_zeroUnitStep
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        projectedLoss_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -107,7 +117,7 @@ theorem planar_projectedLoss_forces_zeroUnitStep
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      projectedLoss_scale_pos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let L :=
@@ -119,7 +129,7 @@ theorem planar_projectedLoss_forces_zeroUnitStep
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    projectedLoss_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
@@ -225,7 +235,7 @@ theorem planar_projectedLoss_forces_zeroUnitStep
     have hnOcc : n ∈ occupiedNatBands (a :: xs) := by
       rw [occupiedNatBands, List.mem_toFinset, List.mem_map]
       exact ⟨xs.getLastD a,
-        List.getLastD_mem_cons a xs,
+        List.getLastD_mem_cons,
         hboundary.2⟩
     have hnOccL : n ∈ occupiedNatBands L.values := by
       simpa [hvalues] using hnOcc
