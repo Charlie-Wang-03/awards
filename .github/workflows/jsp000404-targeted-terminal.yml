@@ -43,7 +43,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/jsp000404_incremental_ci.py
           python3 scripts/jsp000404_sorry_audit.py --self-test
-          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research
+          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research --allowed-wip JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean --wip-max-sorries 2
 
       - name: Install elan
         run: |

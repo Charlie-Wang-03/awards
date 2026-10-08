@@ -86,6 +86,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", type=Path, default=Path("JSP000404Research"))
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--allowed-wip", type=Path, default=None,
+                    help="Exact single Lean source file allowed provisional sorry tokens")
+    ap.add_argument("--wip-max-sorries", type=int, default=0)
     args = ap.parse_args()
     self_test()
     if args.self_test:
@@ -95,18 +98,40 @@ def main() -> int:
         print(f"ERROR: no Lean files found under {args.root}", file=sys.stderr)
         return 2
     failures: list[str] = []
+    provisional: list[str] = []
+    if args.wip_max_sorries < 0:
+        print("ERROR: negative WIP allowance", file=sys.stderr)
+        return 2
+    if args.wip_max_sorries and args.allowed_wip is None:
+        print("ERROR: WIP allowance requires one exact file", file=sys.stderr)
+        return 2
+    if args.allowed_wip is not None and args.allowed_wip not in files:
+        print(f"ERROR: allowed WIP path not found: {args.allowed_wip}", file=sys.stderr)
+        return 2
     for file in files:
         src = file.read_text(encoding="utf-8")
         code = executable_source(src)
         for m in HOLE.finditer(code):
             line = code.count("\n", 0, m.start()) + 1
-            failures.append(f"{file}:{line}: explicit {m.group()}")
+            entry = f"{file}:{line}: explicit {m.group()}"
+            if file == args.allowed_wip and m.group() == "sorry":
+                provisional.append(entry)
+            else:
+                failures.append(entry)
     print(f"Lean source files scanned: {len(files)}")
+    if len(provisional) > args.wip_max_sorries:
+        failures.append(
+            f"WIP budget exceeded: {len(provisional)} > {args.wip_max_sorries}"
+        )
     if failures:
         print("\n".join(failures))
-        print(f"FAILED: {len(failures)} executable sorry/admit tokens")
+        print(f"FAILED: {len(failures)} unauthorised holes or audit violations")
         return 1
-    print("PASS: no explicit sorry or admit tokens in executable Lean source")
+    if provisional:
+        print("PROVISIONAL WIP HOLES (NOT A COMPLETE PROOF):")
+        print("\n".join(provisional))
+        print("WARNING: the WIP root theorem depends on Lean sorryAx.")
+    print("PASS: zero executable sorry/admit outside the exact allowed WIP path")
     return 0
 
 

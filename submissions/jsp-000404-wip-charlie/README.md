@@ -267,3 +267,28 @@ This environment does not have a local Lean toolchain. GitHub Actions runs
 pinned Lean builds on selected modules; check the workflow status at the exact
 commit before asserting that an edited module is kernel-checked. Passing a
 module build does not establish the still-missing full geometric theorem.
+
+
+## Explicit end-to-end proof assembly (2026-10-09)
+
+This section supersedes the earlier statement that no theorem-shaped WIP entry
+has admitted proof holes. The **mathematical source-closure gate remains OPEN**.
+
+- `JSP000404Research/FullDyadicHallProofInterface.lean`: kernel-checked,
+  **conditional**, no proof holes. Separates two outstanding geometric
+  predicates: `EveryMinimalHallCoreHasProjectedLoss` and
+  `MinimalHallLossSharedMassGeometricExclusion`.
+- `JSP000404Research/PlanarLowerBranchFullProofInterface.lean`: kernel-checked,
+  **conditional**, no proof holes. Bridges genuine canonical planar centre
+  exponents to the `2^n` lower-branch capacity under those two predicates.
+- `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`: deliberately
+  contains exactly **two executable `sorry`** at the two geometry gaps.
+  Its final theorem is **not proved**; `#print axioms` includes `sorryAx`.
+  This is a research-only architectural assembly, not a valid award submission.
+- Incremental CI is still strictly hole-free for **all other Lean modules**.
+  Its source audit allows a maximum of two `sorry` only in the exact WIP
+  file, reports them conspicuously, and forbids `admit` everywhere.
+
+Even completion of this lower-branch entry will not alone establish the
+full JSP-000404 / Blumenthal classification: other parameter branches and
+source-closure obligations require separate formal bridges.
