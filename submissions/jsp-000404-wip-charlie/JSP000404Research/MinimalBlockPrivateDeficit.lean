@@ -103,6 +103,57 @@ theorem minimal_deficient_private_card_lt_demand
   rw [hsum,hunion] at hdef
   omega
 
+/--
+A quantitative form of collision pressure in an inclusion-minimal Hall
+obstruction: the full local block is strictly smaller than its demand plus
+the number of words shared with other vertices of the deficient core.
+
+Unlike the existence-of-a-collision corollary, this remains informative
+when the local block has many more words than its demand.
+-/
+theorem minimal_deficient_local_block_lt_demand_add_shared
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T) :
+    (blocks v).card <
+      demand v +
+        (blocks v ∩ (T.erase v).biUnion blocks).card := by
+  classical
+  let other : Finset W := (T.erase v).biUnion blocks
+  have hsplit :
+      blocks v = privateBlockWords blocks T v ∪
+        (blocks v ∩ other) := by
+    ext w
+    simp only [privateBlockWords, Finset.mem_union,
+      Finset.mem_sdiff, Finset.mem_inter]
+    tauto
+  have hdisj :
+      Disjoint (privateBlockWords blocks T v)
+        (blocks v ∩ other) := by
+    apply Finset.disjoint_left.mpr
+    intro w hwPrivate hwShared
+    have hwNotOther : w ∉ other :=
+      (Finset.mem_sdiff.mp hwPrivate).2
+    exact hwNotOther (Finset.mem_inter.mp hwShared).2
+  have hcard :
+      (blocks v).card =
+        (privateBlockWords blocks T v).card +
+          (blocks v ∩ other).card := by
+    rw [hsplit, Finset.card_union_of_disjoint hdisj]
+  have hprivate :=
+    minimal_deficient_private_card_lt_demand
+      demand blocks hdef hmin hv
+  dsimp [other] at hcard ⊢
+  omega
+
 theorem minimal_deficient_block_has_collision_of_local_capacity
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
     (demand : V → ℕ)
@@ -140,6 +191,7 @@ theorem minimal_deficient_block_has_collision_of_local_capacity
 
 #print axioms biUnion_eq_private_union_erase
 #print axioms minimal_deficient_private_card_lt_demand
+#print axioms minimal_deficient_local_block_lt_demand_add_shared
 #print axioms minimal_deficient_block_has_collision_of_local_capacity
 
 end JSP000404Research
