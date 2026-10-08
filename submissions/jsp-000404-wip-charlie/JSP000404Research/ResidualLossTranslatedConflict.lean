@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossTranslatedBlock
+import JSP000404Research.ResidualLossAllActiveSlices
 import JSP000404Research.ResidualInactiveUniqueCode
 import Mathlib.Tactic
 
@@ -201,6 +202,58 @@ theorem translated_loss_conflict_distinct_coordinates
     (translated_loss_blocks_disjoint_same_coordinate
       C exponent hexp honeLoss hvLoss hwLoss hvw c)
     hvT hwT
+
+/-- Off-diagonal overlaps of loss slices are exactly constrained by a
+retained edge at one of the two flipped coordinates. In particular,
+different tagged slices with the same owner or same coordinate cannot overlap. -/
+theorem translated_loss_active_slice_collision_rigidity
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    {v w : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hwLoss : w ∈ projectedLossVertices C exponent)
+    {c d : Fin n}
+    (hc : c ∈ retainedActive C v)
+    (hpair : (v, c) ≠ (w, d))
+    {word : Fin n → Bool}
+    (hvT : word ∈ translatedCompletionWords C v c)
+    (hwT : word ∈ translatedCompletionWords C w d) :
+    v ≠ w ∧ c ≠ d ∧
+      ((∃ hvwlt : v < w,
+        ∃ hret : (C.color v w).val < n,
+          retainedColor C v w hret = c ∨
+          retainedColor C v w hret = d)
+      ∨
+      (∃ hwvlt : w < v,
+        ∃ hret : (C.color w v).val < n,
+          retainedColor C w v hret = c ∨
+          retainedColor C w v hret = d)) := by
+  have hvw : v ≠ w := by
+    intro heq
+    subst w
+    have hcd : c ≠ d := by
+      intro hcd
+      subst d
+      exact hpair rfl
+    exact Finset.disjoint_left.mp
+      (translatedCompletionWords_disjoint_same_owner_distinct_active C hc hcd)
+      hvT hwT
+  have hcd : c ≠ d := by
+    intro h
+    subst d
+    exact Finset.disjoint_left.mp
+      (translated_loss_blocks_disjoint_same_coordinate
+        C exponent hexp honeLoss hvLoss hwLoss hvw c)
+      hvT hwT
+  exact ⟨hvw, hcd,
+    translated_loss_conflict_edge_colour
+      C exponent hexp honeLoss hvLoss hwLoss hvw hvT hwT⟩
+
+#print axioms translated_loss_active_slice_collision_rigidity
 
 #print axioms translated_loss_blocks_disjoint_same_coordinate
 #print axioms translated_loss_conflict_edge_colour
