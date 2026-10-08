@@ -1,5 +1,7 @@
 import JSP000404Research.ProjectionCutLocalCycle
 import JSP000404Research.StandardResidual
+import JSP000404Research.LocalDirectionCycle
+import JSP000404Research.ResidualVerticalPairs
 import Mathlib.Tactic
 
 /-!
@@ -80,7 +82,9 @@ theorem projectionCut_occupiedBands_eq_retainedActive_valMap
       standardResidual_active_eq_incidentBands_succ
         D n hwidth i
 
-  rw [hocc,hret]
+  change occupiedNatBands L.values =
+    (retainedActive R i).map Fin.valEmbedding
+  rw [hocc, hret]
   ext m
   constructor
   · intro hm
