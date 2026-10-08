@@ -74,26 +74,26 @@ theorem planar_projected_loss_two_disjoint_flip_exits_any_width
   let D := genericDirectionData_sendov hp hcap htpos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
     standardResidualColoring D n (by exact_mod_cast htwidth)
-  let local : ∀ j : ProjectionOrdered V, LocalDirectionCycle D j :=
+  let localCycles : ∀ j : ProjectionOrdered V, LocalDirectionCycle D j :=
     fun j => projectionCutLocalCycle hp hcap htpos hlam j (cycles j)
   have heq :
       ∀ j : ProjectionOrdered V,
-        (local j).exponent = centreExponent (cycles j) t := by
+        (localCycles j).exponent = centreExponent (cycles j) t := by
     intro j
     exact projectionCutLocalCycle_exponent_eq_centreExponent
       hp hcap htpos hlam j (cycles j)
   have hfunctions :
-      (fun j => (local j).exponent) =
+      (fun j => (localCycles j).exponent) =
         (fun j => centreExponent (cycles j) t) := by
     funext j
     exact heq j
   have hLoss' :
       i ∈ projectedLossVertices B
-        (fun j => (local j).exponent) := by
+        (fun j => (localCycles j).exponent) := by
     rw [hfunctions]
     exact hloss
   exact projected_loss_two_disjoint_flip_exits
-    D htwidth local i hLoss'
+    D htwidth localCycles i hLoss'
 
 #print axioms planar_projected_loss_two_disjoint_flip_exits_any_width
 
