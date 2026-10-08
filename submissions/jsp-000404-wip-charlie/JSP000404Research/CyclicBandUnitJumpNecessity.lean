@@ -24,7 +24,7 @@ theorem list_eq_of_large_rigid_without_unit
     (hle : List.Forall₂ (· ≤ ·) qs bs)
     (hrigid : List.Forall₂ (fun q b => 2 ≤ b → q = b) qs bs)
     (hno : 1 ∉ bs) : qs = bs := by
-  induction hle generalizing hrigid hno with
+  induction hle with
   | nil =>
       rfl
   | @cons q b qs bs hqb htail ih =>
@@ -120,8 +120,8 @@ theorem cyclicFloorGaps_sum_le_n
   have hlt :
       (((cyclicRealGapsAt width (a :: xs)).map Nat.floor).sum : ℝ) <
         ((n + 1 : ℕ) : ℝ) := by
-    push_cast
-    linarith
+    exact lt_of_le_of_lt hfloor (by
+      simpa only [Nat.cast_add, Nat.cast_one] using hwidth)
   have hnat :
       ((cyclicRealGapsAt width (a :: xs)).map Nat.floor).sum <
         n + 1 := by
@@ -168,19 +168,19 @@ theorem cyclicBandJumps_unit_mem_of_exponent_tight
         ((cyclicRealGapsAt width (a :: xs)).map Nat.floor) =
       listExponent
         (cyclicBandJumps n ((a :: xs).map Nat.floor)) := by
-    simp only [List.map_cons] at hexpBands
+    change listExponent
+      (cyclicBandJumps n ((a :: xs).map Nat.floor)) =
+        n + 1 - ((a :: xs).map Nat.floor).toFinset.card at hexpBands
     omega
   have hfloorSum :=
     cyclicFloorGaps_sum_le_n width a xs n ha0 hsorted hall hwidth
   have hsum :
       ((cyclicRealGapsAt width (a :: xs)).map Nat.floor).sum <
       (cyclicBandJumps n ((a :: xs).map Nat.floor)).sum := by
-    simpa only [List.map_cons] using
-      (show
-        ((cyclicRealGapsAt width (a :: xs)).map Nat.floor).sum <
-          (cyclicBandJumps n ((a :: xs).map Nat.floor)).sum by
-        simpa only [List.map_cons] at hbands ⊢
-        omega)
+    change
+      ((cyclicRealGapsAt width (a :: xs)).map Nat.floor).sum <
+        (cyclicBandJumps n (Nat.floor a :: xs.map Nat.floor)).sum
+    omega
   exact unit_jump_mem_of_equal_exponent_and_sum_lt
     hle heqExp hsum
 
