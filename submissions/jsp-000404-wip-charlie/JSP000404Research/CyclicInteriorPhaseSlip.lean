@@ -104,7 +104,7 @@ theorem interior_phase_slip_of_tight_and_residual_inactive
     have hunit :
         (n + 1 - Nat.floor (xs.getLastD a)) + Nat.floor a = 1 := by
       have h := congrArg Prod.snd hpair
-      simpa using h
+      simpa using h.symm
     exact False.elim
       (hres (C.residual_active_of_wrap_unit_band_jump
         ht a xs hvalues hunit))
