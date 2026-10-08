@@ -50,14 +50,13 @@ theorem hardProjectionWords_card_eq
         (lossCompletionWords C exponent).card := by
   classical
   unfold hardProjectionWords
-  rw [Finset.card_union_of_disjoint]
-  · omega
-  · apply Disjoint.mono
-      (lossCompletionWords_disjoint_overlapCompletionWords
-        C exponent hexp honeLoss).symm
-    · exact Finset.subset_union_right
-    · intro word hword
-      exact (Finset.mem_sdiff.mp hword).1
+  apply Finset.card_union_of_disjoint
+  apply Disjoint.mono
+    (lossCompletionWords_disjoint_overlapCompletionWords
+      C exponent hexp honeLoss).symm
+  · exact Finset.subset_union_right
+  · intro word hword
+    exact (Finset.mem_sdiff.mp hword).1
 
 theorem projectionHoleWords_card
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -103,6 +102,14 @@ open OrderedEdgeColoring
 open DirectionData
 open scoped BigOperators
 
+private theorem planarHard_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n) (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) : 0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
 theorem planar_lowerBranch_capacity_of_hardWordInjection
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -115,13 +122,15 @@ theorem planar_lowerBranch_capacity_of_hardWordInjection
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (f :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        planarHard_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -138,12 +147,14 @@ theorem planar_lowerBranch_capacity_of_hardWordInjection
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       Function.Injective f) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∑ i : ProjectionOrdered V, 2 ^ centreExponent (C i) t
       ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    planarHard_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
