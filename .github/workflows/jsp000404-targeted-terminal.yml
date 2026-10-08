@@ -70,9 +70,9 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           echo 'Explicit sorry/admit occurrences (including comments; audit manually):'
-          rg -n --glob '*.lean' '(^|[[:space:]])(sorry|admit)([[:space:];]|$)' JSP000404Research | head -120 || true
+          (git grep -nE '(^|[^[:alnum:]_])(sorry|admit)($|[^[:alnum:]_])' -- JSP000404Research || true) | head -120
           echo 'Total matching lines:'
-          (rg -n --glob '*.lean' '(^|[[:space:]])(sorry|admit)([[:space:];]|$)' JSP000404Research || true) | wc -l
+          (git grep -nE '(^|[^[:alnum:]_])(sorry|admit)($|[^[:alnum:]_])' -- JSP000404Research || true) | wc -l
 
       - name: Check repaired kernel interfaces (collect all failures)
         working-directory: submissions/jsp-000404-wip-charlie
