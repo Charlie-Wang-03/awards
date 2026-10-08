@@ -26,7 +26,7 @@ The recursive predicate NoUnitBandStep records absence of such steps.
 
 namespace JSP000404Research
 
-def floorRemainder (x : ℝ) : ℝ :=
+noncomputable def floorRemainder (x : ℝ) : ℝ :=
   x - (Nat.floor x : ℝ)
 
 def NoUnitBandStep : ℝ → List ℝ → Prop
@@ -38,7 +38,7 @@ def NoUnitBandStep : ℝ → List ℝ → Prop
 @[simp] theorem noUnitBandStep_nil
     (a : ℝ) :
     NoUnitBandStep a [] := by
-  rfl
+  simp [NoUnitBandStep]
 
 @[simp] theorem noUnitBandStep_cons
     (a b : ℝ) (bs : List ℝ) :
@@ -185,7 +185,11 @@ theorem floorRemainder_head_le_last_of_tight_noUnit
           floorRemainder b ≤
             floorRemainder (bs.getLastD b) :=
         ih b hb0 htail htightHead.2 hnoHead.2
-      simpa [List.getLastD_cons] using hlocal.trans hrec
+      have hlastEq :
+          (b :: bs).getLastD a = bs.getLastD b := by
+        rw [List.getLastD_cons]
+      rw [hlastEq]
+      exact hlocal.trans hrec
 
 /-- A strict drop of fractional remainder in a stepwise-tight list forces at
 least one adjacent unit-band step. -/
@@ -226,7 +230,7 @@ theorem saturated_wrap_positive_first_forces_unit_step
     head_le_getLastD_of_pairwise a xs hsorted
   have hzlt :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ (List.getLastD_mem_cons)
   have hfirstHigh :=
     saturated_wrap_first_remainder_gt_half
       ha0 haz hzlt ht hzFloor hwrap
@@ -392,7 +396,11 @@ theorem floorRemainder_head_le_last_of_tight_no_zeroUnit
           floorRemainder b ≤
             floorRemainder (bs.getLastD b) :=
         ih b hb0 htail htightHead.2 hnoTail
-      simpa [List.getLastD_cons] using hlocal.trans hrec
+      have hlastEq :
+          (b :: bs).getLastD a = bs.getLastD b := by
+        rw [List.getLastD_cons]
+      rw [hlastEq]
+      exact hlocal.trans hrec
 
 /-- Strict overall fractional descent forces a zero-quotient unit-band
 crossing somewhere in a stepwise-tight list. -/
@@ -433,7 +441,7 @@ theorem saturated_wrap_positive_first_has_zeroUnitStep
     head_le_getLastD_of_pairwise a xs hsorted
   have hzlt :
       xs.getLastD a < t :=
-    hall _ (List.getLastD_mem_cons a xs)
+    hall _ (List.getLastD_mem_cons)
   have hfirstHigh :=
     saturated_wrap_first_remainder_gt_half
       ha0 haz hzlt ht hzFloor hwrap
