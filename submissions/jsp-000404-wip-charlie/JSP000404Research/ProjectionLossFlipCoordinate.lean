@@ -1,4 +1,5 @@
 import JSP000404Research.ProjectionLossZeroUnitStep
+import JSP000404Research.BooleanFlipCore
 import Mathlib.Tactic
 
 /-!
@@ -50,6 +51,14 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+private theorem planarFlip_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 1 ≤ n) (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) : 0 < t := by
+  rw [ht]
+  have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
 theorem planar_projectedLoss_has_retained_active_flip_coordinate
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -62,6 +71,8 @@ theorem planar_projectedLoss_has_retained_active_flip_coordinate
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V)
@@ -69,7 +80,7 @@ theorem planar_projectedLoss_has_retained_active_flip_coordinate
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        planarFlip_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -84,7 +95,7 @@ theorem planar_projectedLoss_has_retained_active_flip_coordinate
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      planarFlip_scale_pos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
@@ -102,7 +113,7 @@ theorem planar_projectedLoss_has_retained_active_flip_coordinate
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    planarFlip_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
@@ -210,6 +221,8 @@ theorem planar_projectedLoss_has_adjacent_retained_active_pair
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V)
@@ -217,7 +230,7 @@ theorem planar_projectedLoss_has_adjacent_retained_active_pair
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        planarFlip_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -232,7 +245,7 @@ theorem planar_projectedLoss_has_adjacent_retained_active_pair
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let htpos : 0 < t :=
-      sendov_scale_pos hn hdelta0 ht
+      planarFlip_scale_pos hn hdelta0 ht
     let D :=
       genericDirectionData_sendov hp hcap htpos hlam
     let hwidth : t < (n + 1 : ℕ) := by
@@ -249,7 +262,7 @@ theorem planar_projectedLoss_has_adjacent_retained_active_pair
     projectionLinearOrder hp
   have hdelta1 : delta < 1 := by linarith
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    planarFlip_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith

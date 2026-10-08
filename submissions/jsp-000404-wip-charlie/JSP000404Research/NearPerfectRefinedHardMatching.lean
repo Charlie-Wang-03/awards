@@ -58,10 +58,8 @@ noncomputable def hardExcept_equiv_refinedTarget_of_target_eq_bound_add_one
   have hleft :
       Fintype.card (HardProjectionWordExcept C exponent x0) =
         (hardProjectionWords C exponent).card - 1 := by
-    change
-      ((hardProjectionWords C exponent).erase x0.1).card =
-        (hardProjectionWords C exponent).card - 1
-    rw [Finset.card_erase_of_mem hx0]
+    simpa only [HardProjectionWordExcept, Fintype.card_coe]
+      using (Finset.card_erase_of_mem hx0)
   have hright :
       Fintype.card
           (ProjectionHoleOrRemainingSurplus C exponent)
