@@ -34,6 +34,10 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/OneSupportTurnPacking.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/StrictSupportCone.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TransitionSplitInterval.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossFibreGlobal.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ZeroUnitStepQuotient.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossTwoExitRecursiveOutlet.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossAllActiveCandidateBlock.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/NearPerfectRefinedHardMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/HardProjectionWordClassification.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
@@ -104,6 +108,12 @@ jobs:
             echo "::endgroup::"
           done
           exit "$failures"
+
+      - name: Check translated-loss stratification and zero-unit bridge
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          lake build JSP000404Research.ResidualLossFibreGlobal
+          lake build JSP000404Research.ZeroUnitStepQuotient
 
       - name: Check three-support finite terminal
         working-directory: submissions/jsp-000404-wip-charlie

@@ -167,6 +167,45 @@ theorem translatedLossFibre_true_propagates_left
   | true =>
       rfl
 
+
+/-- A fixed-bit stratum of one translated-loss fibre can use only distinct
+coordinates carrying that same bit in the word. This refines the coarse
+bound by n, without assuming any global hard-word matching. -/
+theorem translatedLossFibre_fixed_bit_card_le
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (choice : V → Fin n)
+    (word : Fin n → Bool)
+    (bit : Bool) :
+    ((translatedLossFibre C exponent choice word).filter
+      (fun v => word (choice v) = bit)).card ≤
+    ((Finset.univ : Finset (Fin n)).filter
+      (fun c => word c = bit)).card := by
+  classical
+  let S := (translatedLossFibre C exponent choice word).filter
+    (fun v => word (choice v) = bit)
+  let T := (Finset.univ : Finset (Fin n)).filter
+    (fun c => word c = bit)
+  have hinj :=
+    translatedLossFibre_choice_injective
+      C exponent hexp honeLoss choice word
+  have hmaps : Set.MapsTo choice (S : Set V) (T : Set (Fin n)) := by
+    intro v hv
+    obtain ⟨_, hvBit⟩ := Finset.mem_filter.mp hv
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hvBit⟩
+  have hinjS : Set.InjOn choice (S : Set V) := by
+    intro v hv w hw heq
+    exact hinj
+      (Finset.mem_filter.mp hv).1
+      (Finset.mem_filter.mp hw).1 heq
+  exact Finset.card_le_card_of_injOn choice hmaps hinjS
+
+#print axioms translatedLossFibre_fixed_bit_card_le
+
 #print axioms translatedLossFibre_choice_injective
 #print axioms translatedLossFibre_card_le_n
 #print axioms translatedLossFibre_false_propagates_right
