@@ -265,8 +265,7 @@ theorem threeWholeCubePartners_at_most_one_constantCode
   rcases ha with rfl | rfl | rfl | rfl <;>
     rcases hb with rfl | rfl | rfl | rfl
   all_goals
-    first
-    | exact (hab rfl).elim
+    try { exact (hab rfl).elim }
   all_goals
     first
     | have haP := profileV hpair.1

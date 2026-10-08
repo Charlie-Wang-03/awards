@@ -17,20 +17,7 @@ theorem flipBoolWordAt_comm
     (hcd : c ≠ d) :
     flipBoolWordAt (flipBoolWordAt word c) d =
       flipBoolWordAt (flipBoolWordAt word d) c := by
-  funext q
-  by_cases hqc : q = c
-  · subst q
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off _ hcd]
-    rw [flipBoolWordAt_off _ hcd.symm]
-    rw [flipBoolWordAt_at]
-  · by_cases hqd : q = d
-    · subst q
-      rw [flipBoolWordAt_at]
-      rw [flipBoolWordAt_off _ hcd.symm]
-      rw [flipBoolWordAt_at]
-      rw [flipBoolWordAt_off _ hcd]
-    · simp [flipBoolWordAt, hqc, hqd]
+  exact flipBoolWordAt_commute word hcd
 
 theorem three_distinct_fin3_exhaust
     {a b c q : Fin 3}
@@ -76,18 +63,9 @@ theorem tripleFlipBoolWord_at
     tripleFlipBoolWord word a b c q = !(word q) := by
   rcases three_distinct_fin3_exhaust hab hac hbc (q := q)
     with rfl | rfl | rfl
-  · unfold tripleFlipBoolWord
-    rw [flipBoolWordAt_off _ hac.symm]
-    rw [flipBoolWordAt_off _ hab.symm]
-    rw [flipBoolWordAt_at]
-  · unfold tripleFlipBoolWord
-    rw [flipBoolWordAt_off _ hbc.symm]
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off _ hab]
-  · unfold tripleFlipBoolWord
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off _ hbc]
-    rw [flipBoolWordAt_off _ hac]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
 
 theorem tripleFlipBoolWord_eq_not
     (word : Fin 3 → Bool)
@@ -193,7 +171,7 @@ theorem tripleFlipBoolWord_ne_flip_singleFlip
   · intro h
     have hbEq := congrFun h b
     rw [tripleFlipBoolWord_at word hab hac hbc] at hbEq
-    rw [flipBoolWordAt_off _ hbc.symm] at hbEq
+    rw [flipBoolWordAt_off _ hbc] at hbEq
     rw [flipBoolWordAt_off word hab.symm] at hbEq
     cases hw : word b <;> simp [hw] at hbEq
 
@@ -231,18 +209,11 @@ theorem tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
         (flipBoolWordAt (flipBoolWordAt word c) a) b := by
   funext q
   rw [tripleFlipBoolWord_at word hab hac hbc]
-  obtain hq : q = a ∨ q = b ∨ q = c :=
-    three_distinct_fin3_exhaust hab hac hbc (q := q)
-  rcases hq with rfl | rfl | rfl
-  · rw [flipBoolWordAt_off _ hab.symm]
-    rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off word hac]
-  · rw [flipBoolWordAt_at]
-    rw [flipBoolWordAt_off _ hab]
-    rw [flipBoolWordAt_off word hbc]
-  · rw [flipBoolWordAt_off _ hbc]
-    rw [flipBoolWordAt_off _ hac]
-    rw [flipBoolWordAt_at]
+  rcases three_distinct_fin3_exhaust hab hac hbc (q := q)
+    with rfl | rfl | rfl
+  · simp [flipBoolWordAt, hab, hac, hbc]
+  · simp [flipBoolWordAt, hab, hac, hbc]
+  · simp [flipBoolWordAt, hab, hac, hbc]
 
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
@@ -278,7 +249,7 @@ theorem fin3_word_base_or_single_or_antipode_or_antipode_single
       omega
     simpa [S] using hdNot
   · right; left
-    obtain ⟨d,hdS,hS⟩ := Finset.card_eq_one.mp h
+    obtain ⟨d,hS⟩ := Finset.card_eq_one.mp h
     refine ⟨d,?_⟩
     funext e
     by_cases hed : e = d
@@ -300,7 +271,7 @@ theorem fin3_word_base_or_single_or_antipode_or_antipode_single
     -- on which q agrees with base.  Flipping that coordinate in the antipode
     -- gives q.
     have hcomp :
-        ((Finset.univ : Finset (Fin 3))  S).card = 1 := by
+        ((Finset.univ : Finset (Fin 3)) \ S).card = 1 := by
       rw [Finset.card_sdiff]
       · simp [h]
       · exact Finset.filter_subset _ _
@@ -311,7 +282,7 @@ theorem fin3_word_base_or_single_or_antipode_or_antipode_single
       tripleFlipBoolWord_at base hab hac hbc (q := e)
     by_cases hed : e = d
     · subst e
-      have hdComp : d ∈ (Finset.univ : Finset (Fin 3))  S := by
+      have hdComp : d ∈ (Finset.univ : Finset (Fin 3)) \ S := by
         rw [hdEq]
         simp
       have hdNotS := (Finset.mem_sdiff.mp hdComp).2
@@ -320,7 +291,7 @@ theorem fin3_word_base_or_single_or_antipode_or_antipode_single
       rw [flipBoolWordAt_at, hanti, hdBase]
       cases hb : base d <;> simp [hb]
     · have heNotComp :
-          e ∉ (Finset.univ : Finset (Fin 3))  S := by
+          e ∉ (Finset.univ : Finset (Fin 3)) \ S := by
         rw [hdEq]
         simp [hed]
       have heS : e ∈ S := by

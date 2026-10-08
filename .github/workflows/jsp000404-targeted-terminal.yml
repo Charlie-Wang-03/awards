@@ -30,6 +30,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CentreSignPath.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeWholeCubeExtremeUniqueness.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossFibreRigidity.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FinThreeBooleanAntipode.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/NearPerfectRefinedHardMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/HardProjectionWordClassification.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
