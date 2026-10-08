@@ -17,6 +17,8 @@ of the retained active palette.
 namespace JSP000404Research
 namespace ProjectionOrdered
 
+open OrderedEdgeColoring DirectionData
+
 theorem projectionCut_occupiedBands_eq_retainedActive_valMap
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -27,7 +29,9 @@ theorem projectionCut_occupiedBands_eq_retainedActive_valMap
     (hlam : lam = Real.pi / t)
     (hwidth : t < (n + 1 : ℕ))
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hresInactive :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp

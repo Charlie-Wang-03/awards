@@ -58,22 +58,24 @@ theorem rayInProjectiveBand_floor
 noncomputable def projectiveBandBit
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
     (i : V) (c : Fin (n + 1)) : Bool :=
-  decide (∃ j : OtherVertex i,
-    RayInProjectiveBand hp t i j c ∧
-      raySignAt hp i j = true)
+  by
+    classical
+    exact decide (∃ j : OtherVertex i,
+      RayInProjectiveBand hp t i j c ∧
+        raySignAt hp i j = true)
 
 /-- The band bit equals the sign of every ray in that band. -/
 theorem projectiveBandBit_eq_raySignAt
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
@@ -119,7 +121,8 @@ noncomputable def projectiveBandColor
   intro u v
   by_cases huv : u = v
   · exact ⟨0, Nat.succ_pos n⟩
-  · let j : OtherVertex u := ⟨v, huv.symm⟩
+  · have hvu : v ≠ u := Ne.symm huv
+    let j : OtherVertex u := ⟨v, hvu⟩
     let q := Nat.floor (normalizedRayTheta hp t u j)
     have hx0 :
         0 ≤ normalizedRayTheta hp t u j :=
@@ -160,8 +163,8 @@ theorem projectiveBandColor_mem_lower
   have hband :=
     rayInProjectiveBand_floor
       hp ht.le u ⟨v, huv.symm⟩
-  rw [projectiveBandColor_val hp ht n htop huv]
-  exact hband
+  unfold RayInProjectiveBand
+  simpa only [projectiveBandColor_val hp ht n htop huv] using hband
 
 /-- The same edge band contains the reversed ray at the other endpoint. -/
 theorem projectiveBandColor_mem_upper
@@ -190,8 +193,8 @@ noncomputable def projectiveBandPartition
     {V : Type*} [LinearOrder V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)

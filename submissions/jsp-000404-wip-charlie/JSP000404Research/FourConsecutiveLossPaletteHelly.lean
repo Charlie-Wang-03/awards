@@ -36,14 +36,14 @@ theorem projectedLoss_pair_retainedActive_inter_nonempty
       projectedLoss_edge_right_retained
         C exponent hexp honeLoss hxLoss hlt
     let e := retainedColor C x y hret
-    refine ⟨e,?_,?_⟩
+    refine ⟨e, Finset.mem_inter.mpr ⟨?_,?_⟩⟩
     · exact retainedColor_mem_retainedActive_left C hlt hret
     · exact retainedColor_mem_retainedActive_right C hlt hret
   · have hret :=
       projectedLoss_edge_right_retained
         C exponent hexp honeLoss hyLoss hgt
     let e := retainedColor C y x hret
-    refine ⟨e,?_,?_⟩
+    refine ⟨e, Finset.mem_inter.mpr ⟨?_,?_⟩⟩
     · exact retainedColor_mem_retainedActive_right C hgt hret
     · exact retainedColor_mem_retainedActive_left C hgt hret
 
@@ -62,7 +62,7 @@ theorem mapped_palette_intersection_of_retained_intersection
     (threeNatInterval mx ∩ threeNatInterval my).Nonempty := by
   obtain ⟨c,hc⟩ := hinter
   have ⟨hcx,hcy⟩ := Finset.mem_inter.mp hc
-  refine ⟨c.val,?_,?_⟩
+  refine ⟨c.val, Finset.mem_inter.mpr ⟨?_,?_⟩⟩
   · rw [← hpx]
     exact Finset.mem_map.mpr ⟨c,hcx,rfl⟩
   · rw [← hpy]
