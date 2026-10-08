@@ -59,6 +59,12 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
 
+      - name: Audit executable Lean proof holes (exclude comments and strings)
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          python3 scripts/jsp000404_sorry_audit.py --self-test
+          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research
+
       - name: Check overlap varying-coordinate invariant
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
