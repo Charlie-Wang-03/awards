@@ -81,7 +81,7 @@ theorem loss_allActive_pair_intersection_subset_edge_slices_of_lt
         have hde :
             d = retainedColor C v w hret := by
           apply Fin.ext
-          simpa [retainedColor] using hvalD
+          simpa [retainedColor] using hvalD.symm
         apply Finset.mem_union_right
         simpa [hde] using hdWord
   · unfold allActiveTranslatedWords at hvT
@@ -102,7 +102,7 @@ theorem loss_allActive_pair_intersection_subset_edge_slices_of_lt
         have hce :
             c = retainedColor C v w hret := by
           apply Fin.ext
-          simpa [retainedColor] using hvalC
+          simpa [retainedColor] using hvalC.symm
         apply Finset.mem_union_left
         simpa [hce] using hcWord
       · exact False.elim ((not_lt_of_ge hvw.le) hleft.1)
@@ -121,14 +121,14 @@ theorem loss_allActive_pair_intersection_subset_edge_slices_of_lt
           have hce :
               c = retainedColor C v w hret := by
             apply Fin.ext
-            simpa [retainedColor] using hvalC
+            simpa [retainedColor] using hvalC.symm
           apply Finset.mem_union_left
           simpa [hce] using hcWord
         · have hvalD := congrArg Fin.val hdEq
           have hde :
               d = retainedColor C v w hret := by
             apply Fin.ext
-            simpa [retainedColor] using hvalD
+            simpa [retainedColor] using hvalD.symm
           apply Finset.mem_union_right
           simpa [hde] using hdWord
       · exact False.elim ((not_lt_of_ge hvw.le) hbackward.1)
