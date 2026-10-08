@@ -40,9 +40,8 @@ theorem adjacent_pair_of_interior_phase_slip
       simp [successiveDiffsFrom, successiveNatDiffsFrom] at h
   | cons next tail ih =>
       simp only [List.map_cons, successiveDiffsFrom,
-        successiveNatDiffsFrom, List.zip,
-        List.mem_cons] at h
-      rcases h with hhead | htail
+        successiveNatDiffsFrom, List.zip] at h
+      rcases List.mem_cons.mp h with hhead | htail
       · have hq : Nat.floor (f next - f first) = 0 := by
           have hp := congrArg Prod.fst hhead
           simpa using hp.symm
@@ -119,8 +118,9 @@ theorem exists_adjacent_rays_with_short_band_crossing
     linarith
   have hsmall :
       D.localDirectionValue i v - D.localDirectionValue i u < 1 := by
-    exact (Nat.floor_lt hnonneg).1 (by omega : Nat.floor
-      (D.localDirectionValue i v - D.localDirectionValue i u) < 1)
+    simpa only [Nat.cast_one] using
+      (Nat.floor_lt hnonneg).1 (by omega : Nat.floor
+        (D.localDirectionValue i v - D.localDirectionValue i u) < 1)
   exact ⟨u, v, pre, post, hrays.trans hsplit,
     hnonneg, hsmall, hb⟩
 
