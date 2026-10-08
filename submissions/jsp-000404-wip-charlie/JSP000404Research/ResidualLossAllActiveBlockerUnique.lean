@@ -89,10 +89,11 @@ theorem loss_fixed_blocker_translated_coordinate_unique
     · rcases hdEdge with hdR | hdL
       · obtain ⟨_,hretC,hcEq⟩ := hcR
         obtain ⟨_,hretD,hdEq⟩ := hdR
-        have hvalC := congrArg Fin.val hcEq
-        have hvalD := congrArg Fin.val hdEq
-        apply Fin.ext
-        simpa [retainedColor] using hvalC.trans hvalD.symm
+        have hvalC : (C.color v w).val = c.val := by
+          simpa [retainedColor] using congrArg Fin.val hcEq
+        have hvalD : (C.color v w).val = d.val := by
+          simpa [retainedColor] using congrArg Fin.val hdEq
+        exact Fin.ext (hvalC.symm.trans hvalD)
       · exact False.elim ((not_lt_of_ge hvwlt.le) hdL.1)
     · exact False.elim ((not_lt_of_ge hvwlt.le) hcL.1)
   · rcases hcEdge with hcR | hcL
@@ -101,10 +102,11 @@ theorem loss_fixed_blocker_translated_coordinate_unique
       · exact False.elim ((not_lt_of_ge hwvlt.le) hdR.1)
       · obtain ⟨_,hretC,hcEq⟩ := hcL
         obtain ⟨_,hretD,hdEq⟩ := hdL
-        have hvalC := congrArg Fin.val hcEq
-        have hvalD := congrArg Fin.val hdEq
-        apply Fin.ext
-        simpa [retainedColor] using hvalC.trans hvalD.symm
+        have hvalC : (C.color w v).val = c.val := by
+          simpa [retainedColor] using congrArg Fin.val hcEq
+        have hvalD : (C.color w v).val = d.val := by
+          simpa [retainedColor] using congrArg Fin.val hdEq
+        exact Fin.ext (hvalC.symm.trans hvalD)
 
 #print axioms loss_translated_intersection_forces_edge_colour
 #print axioms loss_fixed_blocker_translated_coordinate_unique
