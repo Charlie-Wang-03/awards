@@ -283,6 +283,8 @@ has admitted proof holes. The **mathematical source-closure gate remains OPEN**.
   exponents to the `2^n` lower-branch capacity under those two predicates.
 - `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`: deliberately
   contains exactly **two executable `sorry`** at the two geometry gaps.
+  The first gap has now been narrowed to **exact non-loss** boundary
+  configurations, not all non-loss centres.
   Its final theorem is **not proved**; `#print axioms` includes `sorryAx`.
   This is a research-only architectural assembly, not a valid award submission.
 - Incremental CI is still strictly hole-free for **all other Lean modules**.
@@ -292,3 +294,27 @@ has admitted proof holes. The **mathematical source-closure gate remains OPEN**.
 Even completion of this lower-branch entry will not alone establish the
 full JSP-000404 / Blumenthal classification: other parameter branches and
 source-closure obligations require separate formal bridges.
+
+
+### Verified strict non-loss Hall reduction (2026-10-09)
+
+- `StrictNonlossSubsetHallCapacity.lean` proves, WITHOUT sorry, that
+  `exponent v < projectedFree C v` at every vertex of any finite subset
+  implies weighted Hall expansion for that subset. Its key ingredient is
+  the proved retained-completion multiplicity bound of at most two.
+- `DirectionDataHallExactNonlossReduction.lean` proves that any actual
+  direction-data deficient core has either a projected-loss centre
+  (`k=projectedFree+1`) or an exact non-loss centre
+  (`k=projectedFree`). A loss-free deficient core must contain the latter.
+- `FullDyadicExactNonlossBoundaryInterface.lean` and
+  `PlanarLowerBranchExactNonlossBoundaryInterface.lean` are fully checked,
+  conditional, hole-free derivations from the **refined G1 exact-boundary**
+  predicate plus the still-open G2 shared-mass exclusion.
+- The admitted planar lower-branch WIP now imports the refined planar
+  interface. Its first explicit `sorry` concerns only exact non-loss
+  boundary geometry; its second concerns global loss-centre shared mass.
+  `sorryAx` remains present only on the separately identified WIP theorem.
+
+The refined G1 predicate has NOT been established from planar geometry,
+and G2 remains open. Thus the lower-branch bound is still conditional,
+and the full arbitrary-cardinality JSP-000404 problem is unsolved.
