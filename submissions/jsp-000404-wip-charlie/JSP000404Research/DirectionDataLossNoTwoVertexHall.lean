@@ -149,8 +149,11 @@ theorem no_two_vertex_deficiency_containing_true_projected_loss
     ({v, w} : Finset V)
   intro hbad
   unfold BlockDeficient at hbad
-  have hbound :=
-    projected_loss_any_pair_enlarged_expands
+  have hbound :
+      2 ^ k v + 2 ^ k w ≤
+        (enlargedProjectedCandidateBlock B k v ∪
+          enlargedProjectedCandidateBlock B k w).card := by
+    exact projected_loss_any_pair_enlarged_expands
       D ht cycles v w hvw hvloss
   have hsum :
       (∑ x ∈ ({v, w} : Finset V), 2 ^ k x) =
