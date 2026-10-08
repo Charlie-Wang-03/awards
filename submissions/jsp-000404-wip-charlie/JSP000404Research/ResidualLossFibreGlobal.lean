@@ -165,7 +165,7 @@ theorem translatedLossFibre_true_propagates_left
       rw [hwTrue] at hwFalse
       contradiction
   | true =>
-      exact h
+      rfl
 
 #print axioms translatedLossFibre_choice_injective
 #print axioms translatedLossFibre_card_le_n

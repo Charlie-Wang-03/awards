@@ -176,8 +176,7 @@ theorem centre_changesOnlyOnPositive
       exact getLastD_mem_of_ne_nil first rest hrest
     have hfirstLast : first ≠ last := by
       intro h
-      subst last
-      exact (List.nodup_cons.mp hnodup).1 hlastMem
+      exact (List.nodup_cons.mp hnodup).1 (h.symm ▸ hlastMem)
     have hpair := List.pairwise_cons.mp hsorted
     have horder :
         rayThetaAt hp i first ≤ rayThetaAt hp i last :=

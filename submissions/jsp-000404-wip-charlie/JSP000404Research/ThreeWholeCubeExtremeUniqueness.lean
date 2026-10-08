@@ -1,5 +1,5 @@
 import JSP000404Research.ThreeWholeCubeGlobalExtreme
-import JSP000404Research.RetainedOrientation
+import JSP000404Research.RetainedBitOrientationLight
 import Mathlib.Tactic
 
 /-!
@@ -45,7 +45,7 @@ theorem projectedLoss_global_min_allFalse
       (mem_incomingRetained_iff C v c).1 hIn
     have hvw := hmin w (ne_of_lt hwv)
     exact False.elim ((not_lt_of_ge hvw.le) hwv)
-  · exact retainedBit_false_of_outgoingRetained C hOut
+  · simpa [retainedBit] using (bit_false_of_outgoingRetained C hOut)
 
 theorem projectedLoss_global_max_allTrue
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -61,7 +61,7 @@ theorem projectedLoss_global_max_allTrue
   rw [hsplit] at hc
   rcases Finset.mem_union.mp hc with hIn | hOut
   · exact
-      (mem_incomingRetained_iff_retainedBit_true C v c).1 hIn
+      (mem_incomingRetained_iff_retainedBit_true_light C v c).1 hIn
   · obtain ⟨w,hvw,_hcol⟩ :=
       (mem_outgoingRetained_iff C v c).1 hOut
     have hwv := hmax w (ne_of_lt hvw).symm
@@ -262,8 +262,11 @@ theorem threeWholeCubePartners_at_most_one_constantCode
 
   intro a b ha hb hab hpair
   simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
-  rcases ha with rfl | rfl | rfl | rfl <;>
-    rcases hb with rfl | rfl | rfl | rfl
+  rcases ha with ha | ha | ha | ha <;>
+    rcases hb with hb | hb | hb | hb
+  all_goals
+    subst a
+    subst b
   all_goals
     try { exact (hab rfl).elim }
   all_goals

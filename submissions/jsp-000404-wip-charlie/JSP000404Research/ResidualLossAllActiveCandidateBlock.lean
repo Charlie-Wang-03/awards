@@ -86,8 +86,7 @@ theorem allActiveLossCandidateBlock_card
   classical
   unfold allActiveLossCandidateBlock
   rw [Finset.card_union_of_disjoint
-    (Finset.disjoint_comm.mp
-      (allActiveTranslatedWords_disjoint_original C v))]
+    (allActiveTranslatedWords_disjoint_original C v).symm]
   rw [allActiveTranslatedWords_card]
   omega
 

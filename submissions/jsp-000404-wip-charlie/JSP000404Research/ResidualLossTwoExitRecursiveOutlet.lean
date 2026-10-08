@@ -94,10 +94,10 @@ theorem projectedLoss_two_exit_hole_or_paid_or_disjoint_exact_loss_fibres
     · right
       have hcCovered :
           flipBoolWordAt word c ∈ coveredCompletionWords C := by
-        simpa using hcHole
+        exact not_not.mp hcHole
       have hdCovered :
           flipBoolWordAt word d ∈ coveredCompletionWords C := by
-        simpa using hdHole
+        exact not_not.mp hdHole
       have hcNonempty :
           (completionFibre C (flipBoolWordAt word c)).Nonempty :=
         (mem_coveredCompletionWords C

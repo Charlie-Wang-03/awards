@@ -63,9 +63,9 @@ theorem tripleFlipBoolWord_at
     tripleFlipBoolWord word a b c q = !(word q) := by
   rcases three_distinct_fin3_exhaust hab hac hbc (q := q)
     with rfl | rfl | rfl
-  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
-  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
-  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc, eq_comm]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc, eq_comm]
+  · simp [tripleFlipBoolWord, flipBoolWordAt, hab, hac, hbc, eq_comm]
 
 theorem tripleFlipBoolWord_eq_not
     (word : Fin 3 → Bool)
@@ -211,9 +211,9 @@ theorem tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
   rw [tripleFlipBoolWord_at word hab hac hbc]
   rcases three_distinct_fin3_exhaust hab hac hbc (q := q)
     with rfl | rfl | rfl
-  · simp [flipBoolWordAt, hab, hac, hbc]
-  · simp [flipBoolWordAt, hab, hac, hbc]
-  · simp [flipBoolWordAt, hab, hac, hbc]
+  · simp [flipBoolWordAt, hab, hac, hbc, eq_comm]
+  · simp [flipBoolWordAt, hab, hac, hbc, eq_comm]
+  · simp [flipBoolWordAt, hab, hac, hbc, eq_comm]
 
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_secondNeighbour
 #print axioms tripleFlipBoolWord_eq_twoFlip_from_thirdNeighbour
@@ -273,8 +273,7 @@ theorem fin3_word_base_or_single_or_antipode_or_antipode_single
     have hcomp :
         ((Finset.univ : Finset (Fin 3)) \ S).card = 1 := by
       rw [Finset.card_sdiff]
-      · simp [h]
-      · exact Finset.filter_subset _ _
+      simp [h]
     obtain ⟨d,hdEq⟩ := Finset.card_eq_one.mp hcomp
     refine ⟨d,?_⟩
     funext e
