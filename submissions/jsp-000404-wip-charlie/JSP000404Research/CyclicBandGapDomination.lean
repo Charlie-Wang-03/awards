@@ -437,6 +437,7 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
           simp [listPositiveCount, hfirstNonzero, add_assoc,
             add_comm, add_left_comm]
         rw [hleft, hih]
+        simp only [List.toFinset_cons]
         rw [Finset.card_insert_of_notMem haNot]
         omega
 
