@@ -52,6 +52,61 @@ noncomputable def liftedCentreSignPath
     (rest : List (OtherVertex i)) : List Bool :=
   rest.map (raySignAt hp i) ++ [!raySignAt hp i first]
 
+/-- Every sign transition between successive theta-ordered canonical rays
+is carried by a positive normalized Sendov quotient. -/
+theorem consecutive_changesOnlyOnPositive
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {lam t : ℝ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (ht : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (i : V)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hnodup : (first :: rest).Nodup)
+    (hsorted : (first :: rest).Pairwise
+      (fun a b =>
+        rayThetaAt hp i a ≤ rayThetaAt hp i b)) :
+    ChangesOnlyOnPositive
+      (raySignAt hp i first)
+      (rest.map (raySignAt hp i))
+      (consecutiveRayQuotients hp i t first rest) := by
+  induction rest generalizing first with
+  | nil =>
+      simp [ChangesOnlyOnPositive, consecutiveRayQuotients]
+  | cons r rs ih =>
+      have hne : first ≠ r := by
+        intro heq
+        exact (List.nodup_cons.mp hnodup).1 (by simp [heq])
+      have hle : rayThetaAt hp i first ≤ rayThetaAt hp i r :=
+        (List.pairwise_cons.mp hsorted).1 r (by simp)
+      have hstep :
+          raySignAt hp i first ≠ raySignAt hp i r →
+          Nat.floor
+            (t * ((rayThetaAt hp i r -
+              rayThetaAt hp i first) / Real.pi)) ≠ 0 := by
+        intro hsign
+        exact floor_t_mul_gap_ne_zero_of_canonical_sign_ne
+          hp hcap ht hlam i hne hle hsign
+      have hnd : (r :: rs).Nodup :=
+        (List.nodup_cons.mp hnodup).2
+      have hsort : (r :: rs).Pairwise
+          (fun a b =>
+            rayThetaAt hp i a ≤ rayThetaAt hp i b) :=
+        (List.pairwise_cons.mp hsorted).2
+      change
+        (raySignAt hp i first ≠ raySignAt hp i r →
+          Nat.floor
+            (t * ((rayThetaAt hp i r -
+              rayThetaAt hp i first) / Real.pi)) ≠ 0) ∧
+        ChangesOnlyOnPositive
+          (raySignAt hp i r)
+          (rs.map (raySignAt hp i))
+          (consecutiveRayQuotients hp i t r rs)
+      exact ⟨hstep, ih r hnd hsort⟩
+
 /-- The actual cyclic sign path changes only on positive concrete centre
 quotients. -/
 theorem centre_changesOnlyOnPositive
