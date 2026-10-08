@@ -94,7 +94,7 @@ theorem minimal_deficient_private_card_lt_demand
           ∑ u ∈ insert v (T.erase v), demand u := by
             rw [Finset.insert_erase hv]
       _ = demand v + ∑ u ∈ T.erase v, demand u := by
-            rw [Finset.sum_insert (Finset.not_mem_erase v T)]
+            rw [Finset.sum_insert (by simp)]
   have hunion :
       (T.biUnion blocks).card =
         (privateBlockWords blocks T v).card +
