@@ -96,6 +96,8 @@ theorem two_projectedLoss_allActive_blocks_expand
       (allActiveLossCandidateBlock C v ∩
         allActiveLossCandidateBlock C w).card := by
     exact Finset.card_union
+      (s := allActiveLossCandidateBlock C v)
+      (t := allActiveLossCandidateBlock C w)
   have hvTarget :=
     projectedLoss_target_eq_two_mul_completion
       C exponent hvLoss
