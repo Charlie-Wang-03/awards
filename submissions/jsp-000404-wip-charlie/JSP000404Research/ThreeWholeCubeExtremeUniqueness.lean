@@ -301,6 +301,36 @@ theorem threeWholeCubePartners_at_most_one_constantCode
       rcases haP with ha0 | ha1 <;>
         rcases hbP with hb0 | hb1 <;>
         simp_all
+    | have haP := profileS1 hpair.1
+      have hbP := profileV hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
+    | have haP := profileS2 hpair.1
+      have hbP := profileV hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
+    | have haP := profileS3 hpair.1
+      have hbP := profileV hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
+    | have haP := profileS2 hpair.1
+      have hbP := profileS1 hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
+    | have haP := profileS3 hpair.1
+      have hbP := profileS1 hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
+    | have haP := profileS3 hpair.1
+      have hbP := profileS2 hpair.2
+      rcases haP with ha0 | ha1 <;>
+        rcases hbP with hb0 | hb1 <;>
+        simp_all
 
 #print axioms projectedLoss_global_min_allFalse
 #print axioms projectedLoss_global_max_allTrue

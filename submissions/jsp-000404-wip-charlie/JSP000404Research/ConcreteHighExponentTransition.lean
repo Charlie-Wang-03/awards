@@ -46,8 +46,8 @@ theorem concrete_centre_large_exponent_has_positive_transition_gap
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -73,7 +73,7 @@ theorem concrete_centre_large_exponent_has_positive_transition_gap
     | nil =>
         exact False.elim (C.nonempty h)
     | cons first rest =>
-        exact ⟨first, rest, h⟩
+        exact ⟨first, rest, rfl⟩
   have ht1 : 1 ≤ t :=
     sendov_scale_one_le hn hdelta0 ht
   have htpos : 0 < t :=

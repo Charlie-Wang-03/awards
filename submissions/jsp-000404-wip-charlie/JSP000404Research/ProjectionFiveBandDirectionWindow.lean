@@ -14,6 +14,8 @@ label lies in {m,...,m+4}, the edge value lies in [m,m+5).
 namespace JSP000404Research
 namespace DirectionData
 
+open OrderedEdgeColoring
+
 theorem standardResidual_retained_edge_value_mem_five_window
     {V : Type*} [LinearOrder V]
     {width : ℝ}
@@ -49,7 +51,7 @@ theorem standardResidual_retained_edge_value_mem_five_window
         D (n + 1) (Nat.succ_pos n)
         (by exact_mod_cast hwidth)
         huv c.castSucc).1
-    simpa [R,standardResidualColoring] using hfull
+    simpa [R, standardResidualColoring, standardBandColoring] using hfull
 
   have hcLo : m ≤ c.val := hcBounds.1
   have hcHi : c.val ≤ m + 4 := hcBounds.2

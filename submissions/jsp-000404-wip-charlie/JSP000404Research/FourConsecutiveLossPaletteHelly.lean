@@ -1,6 +1,7 @@
 import JSP000404Research.ThreeColourPaletteHelly
 import JSP000404Research.ResidualLossBlockerEdge
 import JSP000404Research.ResidualLossFibreEdgeClassification
+import JSP000404Research.ResidualLossDirectionalWitness
 import Mathlib.Tactic
 
 /-!
@@ -59,7 +60,8 @@ theorem mapped_palette_intersection_of_retained_intersection
     (hinter :
       (retainedActive C x ∩ retainedActive C y).Nonempty) :
     (threeNatInterval mx ∩ threeNatInterval my).Nonempty := by
-  obtain ⟨c,hcx,hcy⟩ := hinter
+  obtain ⟨c,hc⟩ := hinter
+  have ⟨hcx,hcy⟩ := Finset.mem_inter.mp hc
   refine ⟨c.val,?_,?_⟩
   · rw [← hpx]
     exact Finset.mem_map.mpr ⟨c,hcx,rfl⟩
