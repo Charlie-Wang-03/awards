@@ -15,6 +15,9 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SaturatedWrapDescent.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/LinearSaturatedEndpointDichotomy.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarLowerBranchHardWordInjection.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectionLossZeroUnitStep.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/RefinedResidualHardRemainder.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarUpperBranchHardDefect.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockPrivateDeficit.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockSharedDeficit.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/MinimalBlockTransferCapacityBoundary.lean"
@@ -77,7 +80,7 @@ jobs:
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
           failures=0
-          for module in LinearBandGapStepTight SaturatedWrapDescent LinearSaturatedEndpointDichotomy PlanarLowerBranchHardWordInjection MinimalBlockPrivateDeficit MinimalBlockSharedDeficit MinimalBlockTransferCapacityBoundary ResidualExactPairStateClassification ResidualZeroZeroRecursiveOutlet ProjectionResidualHardRemainder; do
+          for module in LinearBandGapStepTight SaturatedWrapDescent LinearSaturatedEndpointDichotomy PlanarLowerBranchHardWordInjection ProjectionLossZeroUnitStep RefinedResidualHardRemainder PlanarUpperBranchHardDefect MinimalBlockPrivateDeficit MinimalBlockSharedDeficit MinimalBlockTransferCapacityBoundary ResidualExactPairStateClassification ResidualZeroZeroRecursiveOutlet ProjectionResidualHardRemainder; do
             echo "::group::JSP000404Research.$module"
             lake build "JSP000404Research.$module" || failures=1
             echo "::endgroup::"

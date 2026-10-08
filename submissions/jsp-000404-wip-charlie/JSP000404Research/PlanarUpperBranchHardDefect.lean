@@ -97,6 +97,14 @@ open scoped BigOperators
 
 /-- Arbitrary-cardinality planar upper-branch capacity, reduced to allowing at
 most 2^(n-2) unmatched hard residual words. -/
+private theorem planarUpperHard_scale_pos
+    {n : ℕ} {delta t : ℝ}
+    (hn : 2 ≤ n) (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta) : 0 < t := by
+  rw [ht]
+  have hnR : (2 : ℝ) ≤ n := by exact_mod_cast hn
+  linarith
+
 theorem planar_upperBranch_capacity_of_quarter_hard_defect
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -109,13 +117,15 @@ theorem planar_upperBranch_capacity_of_quarter_hard_defect
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hpay :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+        planarUpperHard_scale_pos hn hdelta0 ht
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -131,12 +141,14 @@ theorem planar_upperBranch_capacity_of_quarter_hard_defect
         ≤
       (2 ^ n - (coveredCompletionWords B).card) +
         2 ^ (n - 2)) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∑ i : ProjectionOrdered V, 2 ^ centreExponent (C i) t
       ≤ 2 ^ n + 2 ^ (n - 2) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
   have htpos : 0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    planarUpperHard_scale_pos hn hdelta0 ht
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
