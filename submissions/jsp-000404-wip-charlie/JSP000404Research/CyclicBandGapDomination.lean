@@ -87,7 +87,7 @@ private theorem natFloor_le_of_lt_nat_succ
       simpa [Nat.cast_add, Nat.cast_one] using hlt)
   omega
 
-theorem natFloor_sub_le_floor_sub
+theorem natFloor_cyclic_sub_le_floor_sub
     {x y : ℝ}
     (hx0 : 0 ≤ x)
     (hxy : x ≤ y) :
@@ -105,7 +105,6 @@ theorem natFloor_sub_le_floor_sub
       y < ((Nat.floor y : ℕ) : ℝ) + 1 :=
     Nat.lt_floor_add_one y
   rw [Nat.cast_sub hfloor]
-  push_cast
   linarith
 
 /-- Wrap analogue of natFloor_sub_le_floor_sub. -/
@@ -163,7 +162,7 @@ theorem successiveFloorDiffs_le_successiveBandJumps
       simp only [successiveDiffsFrom,
         successiveNatDiffsFrom, List.map_cons]
       apply List.Forall₂.cons
-      · exact natFloor_sub_le_floor_sub ha0 hab
+      · exact natFloor_cyclic_sub_le_floor_sub ha0 hab
       · exact ih b hb0 htail
 
 private theorem forall₂_append_one_nat
@@ -212,8 +211,7 @@ theorem cyclicFloorGaps_le_cyclicBandJumps
     natFloor_wrap_le_band_wrap
       ha0 hfirstLast hlastWidth hwidth
   simp only [cyclicRealGapsAt, cyclicBandJumps,
-    List.map_append, List.map_singleton,
-    List.map_cons]
+    List.map_append, List.map_cons]
   rw [map_getLastD_eq]
   exact forall₂_append_one_nat hord hwrap
 
@@ -351,7 +349,7 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
         bandWrapJump_pos (a := a) haN
       have hne : (n + 1 - a) + a ≠ 0 := by omega
       simp [cyclicBandJumps, successiveNatDiffsFrom,
-        listPositiveCount, hne] <;> omega
+        listPositiveCount] <;> omega
   | cons b bs ih =>
       rw [List.pairwise_cons] at hsorted
       have hab : a ≤ b :=
@@ -434,7 +432,7 @@ theorem cyclicBandJumps_positiveCount_eq_toFinset_card
           rw [listPositiveCount_singleton_of_pos hwrapA',
               listPositiveCount_singleton_of_pos hwrapB']
           have hfirstNonzero : b - a ≠ 0 := by omega
-          simp [listPositiveCount, hfirstNonzero, add_assoc,
+          simp [listPositiveCount, hfirstNonzero,
             add_comm, add_left_comm]
         rw [hleft, hih]
         simp only [List.toFinset_cons]
@@ -546,13 +544,80 @@ theorem cyclicFloorGapExponent_add_usedBands_le
   simp only [List.map_cons] at hbandCard ⊢
   omega
 
+
+/-- Every listed quotient contributes at most the total Sendov exponent. -/
+theorem excess_le_listExponent_of_mem
+    (qs : List ℕ) {q : ℕ} (hq : q ∈ qs) :
+    excess q ≤ listExponent qs := by
+  induction qs with
+  | nil =>
+      simp at hq
+  | cons x xs ih =>
+      simp only [List.mem_cons] at hq
+      rcases hq with rfl | hq
+      · simp [listExponent]
+      · have htail := ih hq
+        simp only [listExponent, List.map_cons, List.sum_cons] at *
+        omega
+
+/-- A single cyclic real gap can use only the bands not already occupied
+by floor labels. This is a per-gap charging consequence of the full cyclic
+band budget, with no geometric disjointness assumption. -/
+theorem cyclicRealGap_excess_add_usedBands_le
+    (a : ℝ) (xs : List ℝ)
+    {width : ℝ} (n : ℕ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall0 : ∀ x ∈ a :: xs, 0 ≤ x)
+    (hallWidth : ∀ x ∈ a :: xs, x < width)
+    (hwidth : width < (n : ℝ) + 1)
+    {gap : ℝ}
+    (hgap : gap ∈ cyclicRealGapsAt width (a :: xs)) :
+    excess (Nat.floor gap) +
+        ((a :: xs).map Nat.floor).toFinset.card ≤ n + 1 := by
+  have hmem :
+      Nat.floor gap ∈
+        (cyclicRealGapsAt width (a :: xs)).map Nat.floor :=
+    List.mem_map.mpr ⟨gap, hgap, rfl⟩
+  have hsingle :=
+    excess_le_listExponent_of_mem
+      ((cyclicRealGapsAt width (a :: xs)).map Nat.floor) hmem
+  have hbudget :=
+    cyclicFloorGapExponent_add_usedBands_le
+      a xs n ha0 hsorted hall0 hallWidth hwidth
+  omega
+
+/-- A cyclic gap of floor size at least two forces at least one
+unoccupied unit band among 0,...,n. -/
+theorem cyclicRealGap_large_forces_unoccupied_band
+    (a : ℝ) (xs : List ℝ)
+    {width : ℝ} (n : ℕ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall0 : ∀ x ∈ a :: xs, 0 ≤ x)
+    (hallWidth : ∀ x ∈ a :: xs, x < width)
+    (hwidth : width < (n : ℝ) + 1)
+    {gap : ℝ}
+    (hgap : gap ∈ cyclicRealGapsAt width (a :: xs))
+    (hlarge : 2 ≤ Nat.floor gap) :
+    ((a :: xs).map Nat.floor).toFinset.card ≤ n := by
+  have h :=
+    cyclicRealGap_excess_add_usedBands_le
+      a xs n ha0 hsorted hall0 hallWidth hwidth hgap
+  unfold excess at h
+  omega
+
+#print axioms excess_le_listExponent_of_mem
+#print axioms cyclicRealGap_excess_add_usedBands_le
+#print axioms cyclicRealGap_large_forces_unoccupied_band
+
 #print axioms successiveNatDiffsFrom_sum
 #print axioms cyclicBandJumps_sum
 #print axioms cyclicBandJumps_positiveCount_eq_toFinset_card
 #print axioms cyclicBandJumps_exponent_eq_total_sub_distinct
 #print axioms cyclicFloorGapExponent_add_usedBands_le
 
-#print axioms natFloor_sub_le_floor_sub
+#print axioms natFloor_cyclic_sub_le_floor_sub
 #print axioms natFloor_wrap_le_band_wrap
 #print axioms cyclicFloorGaps_le_cyclicBandJumps
 #print axioms listExponent_le_of_forall₂_le
