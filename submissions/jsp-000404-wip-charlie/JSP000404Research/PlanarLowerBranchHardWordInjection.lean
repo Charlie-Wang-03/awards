@@ -1,4 +1,5 @@
 import JSP000404Research.ProjectionResidualHardRemainder
+import JSP000404Research.PlanarStandardResidualBudget
 import Mathlib.Tactic
 
 /-!
@@ -51,12 +52,8 @@ theorem hardProjectionWords_card_eq
   classical
   unfold hardProjectionWords
   apply Finset.card_union_of_disjoint
-  apply Disjoint.mono
-    (lossCompletionWords_disjoint_overlapCompletionWords
-      C exponent hexp honeLoss).symm
-  · exact Finset.subset_union_right
-  · intro word hword
-    exact (Finset.mem_sdiff.mp hword).1
+  exact (lossWords_disjoint_saturatedOverlapWords
+    C exponent hexp honeLoss).symm
 
 theorem projectionHoleWords_card
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
