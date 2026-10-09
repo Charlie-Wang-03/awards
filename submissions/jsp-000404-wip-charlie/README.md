@@ -454,3 +454,53 @@ constraints that establish the global overlap/loss versus holes/surplus
 payment, rather than assuming false subset-wise Hall expansion.
 The lower and upper branch global conjectures and the source-closure
 gate remain OPEN.
+
+
+### Exact residual hard-credit and genuine planar carrier (2026-10-09)
+
+**Latest validated mainline at `e8232346ab467f1bb5accbc1534e8aba69989600`.**
+
+The previous "overweight implies a full-band-tight centre" result already
+existed in `OverweightTightLocalBand.lean`. Its newer planar lifting was
+kernel-verified, but should not be counted as an original new local-tightness
+theorem. The following advances sharpen the residual *global* obstruction:
+
+1. `ResidualHardRemainderExactCredit.lean` proves an exact accounting
+   identity for `R = totalDyadicProfileSurplus -
+   card(strictStrictOverlapWords)`, with `R >= 0`:
+   `targetWeight + R + BooleanHoles = 2^n +
+   card(saturatedOverlapWords) + totalDyadicProfileLoss`.
+   In particular the dyadic target is **equivalent** to
+   `card(saturatedOverlapWords) + totalDyadicProfileLoss <=
+   BooleanHoles + R`. This keeps the *unspent* surplus discarded by
+   the older sufficient hard-remainder criterion
+   `card(saturatedOverlapWords) + loss <= BooleanHoles`.
+   New theorems passed incremental CI
+   https://github.com/Charlie-Wang-03/awards/actions/runs/37937184609
+   (3142 jobs; no `sorryAx`).
+2. `DirectionDataOverweightRealResidualCollision.lean` strengthens
+   "there exists a residual-active saturated centre" to the **real
+   carrier** disjunction: overweight implies a projected-loss vertex
+   OR a residual edge `u<v` with a Boolean word simultaneously in
+   both retained completion cubes and at least one exactly saturated
+   endpoint `k(u)=projectedFree(u)` or
+   `k(v)=projectedFree(v)`. This uses global hard-word positivity,
+   and does not assume the refuted subset-wise Hall G1. Incremental
+   CI https://github.com/Charlie-Wang-03/awards/actions/runs/37937588391
+   passed (3354 jobs; no `sorryAx`).
+3. `PlanarOverweightRealResidualCollision.lean` lifts the above
+   necessary condition to **actual injective planar `AngleCap`
+   configurations**, using `projectionCutLocalCycle` and the
+   proved canonical centre exponent identification. The first
+   attempt exposed a Lean rewrite mismatch in a dependent endpoint
+   witness, repaired in `e8232346`; CI
+   https://github.com/Charlie-Wang-03/awards/actions/runs/37938095651
+   passed (3355 jobs; no `sorryAx`).
+
+**Open gap:** Neither the existence of a loss witness nor an actual
+saturated residual collision contradicts genuine planar geometry.
+The weighted global inequality still needs a geometric injection or
+a cancellation/payment mechanism. This is not an independent proof of
+JSP-000404; the active WIP still has ONE `sorry`, and its
+`#print axioms` still contains `sorryAx`. No complete award
+submission should be made on this basis.
