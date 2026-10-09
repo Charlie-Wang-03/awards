@@ -705,3 +705,66 @@ is **not proved**. It is equivalent to the original lower-branch
 dyadic target; the canonical WIP continues to contain ONE executable
 `sorry`. This progress is a local structure lemma, not a complete
 proof or counterexample to JSP-000404.
+
+
+### Crossing hard-carrier high-mass blocker trichotomy (2026-10-09)
+
+**Verified Lean implementation:** `JSP000404Research/StandardResidualCrossingSafeFlipDescent.lean`,
+theorem `DirectionData.crossing_unsafe_hard_high_mass_middle_flip_hole_resolve_or_descend`.
+Its final incremental CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/37954041759
+successfully built **3158 jobs** at commit `7e168bd7ade81d125f08bbfa5863c9dc9d57530e`.
+The theorem's explicit `#print axioms` contains only `propext`,
+`Classical.choice`, `Quot.sound` — **NO `sorryAx`**.
+
+In actual `DirectionData`, assume `u<a<v<b` and two outer
+**unsafe overlapping completion-word carriers** `uv` and `ab`.
+Assume the true local one-layer exponent budget, high middle
+exponent sum `n<=exponent(a)+exponent(v)`, and, crucially, assume
+the middle residual edge `av` is also a **SameRetained** hard pair
+with **no common inactive retained coordinate**. Then there exists
+an outgoing-at-a, inactive-at-v, locally safe retained colour `c`
+such that ONE of the following holds:
+
+1. `flippedRetainedCode(C,a,c)` is absent from the **vertex canonical
+   retained-code image**;
+2. an interior `a<w<v` produces a residual `wv` edge whose
+   endpoints are already `RetainedSeparated`;
+3. an exterior `v<w` realizes the flipped canonical code and
+   the new retained edge `vw` has strict natural band descent
+   `(C.color v w).val < c.val`.
+
+The proof connects the compiled crossing high-mass safe-middle outlet
+to existing blocker geometry and a *quantitative* retained-band
+descent for an external blocker. This establishes a verifiable
+one-step local augmenting-path trichotomy; it **does not** establish
+that repeated transitions globally terminate or that any produced
+word is a globally unused Boolean completion word.
+
+The transitive dependency chain had previously escaped independent
+incremental coverage. This turn repaired and recompiled six modules:
+
+- `StandardResidualOuterSplit.lean`: actual equality of residual
+  colour values plus correct classical double-negation for retained
+  edges;
+- `ResidualHardPairSafe.lean`: correct inactive-to-canonical-bit
+  transfer;
+- `StandardResidualHardPairSplit.lean`: correct logical conjunction
+  association for interior residual filters;
+- `ResidualSameCodeUnsafeZero.lean`: explicit finite-set emptiness
+  argument and reversed cardinal equivalence;
+- `StandardResidualSafeHardDescent.lean`: direct genuine residual
+  band bound, explicit `Fin`/real comparison, true retained-colour
+  equality, and strict descent;
+- `ResidualSafeFlipBlocker.lean`: correctly oriented equalities of
+  vertex retained bits and the correct active endpoint.
+
+All these imported modules and the newly created target compiled in
+the final successful incremental run above.
+
+**Still open:** The canonical admitted lower-branch WIP retains exactly
+ONE executable `sorry` for the globally weighted completion-payment
+inequality. Missing are a completion-*cube*-aware anchored-hole/blocker
+transition and globally injective, non-duplicating charges across ALL
+hard overlap and projected-loss carriers. No full proof or refutation
+of JSP-000404 is established.
