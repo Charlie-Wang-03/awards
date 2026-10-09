@@ -648,3 +648,60 @@ surplus. The lower-branch `PlanarLowerBranchProofAdmittedWIP.lean`
 still contains ONE executable `sorry` for the globally open
 completion-defect payment. Original JSP-000404 remains unproved
 and unrefuted.
+
+
+### Crossing unsafe hard-word compensation: safe flip OR one exponent unit (2026-10-09)
+
+This is the current, kernel-checked progression beyond merely proving
+two flank-angle separations. The following are now compiled and have
+explicit `#print axioms` output free of `sorryAx`:
+
+- Repaired `StandardResidualNestedRepair.lean`: replaced an unavailable
+  `Finset.inter_eq_empty` rewrite with a direct disjointness proof and
+  corrected transport of a shared completion word in the multiplicity-2
+  contradiction. Repaired `StandardResidualCrossingRepair.lean` analogously
+  in its shared-word contradiction. Both compiled in the successful
+  dependency build
+  https://github.com/Charlie-Wang-03/awards/actions/runs/37948511374.
+- `StandardResidualCrossingHardCredit.lean`: for projection-ordered
+  `u<a<v<b` carrying two actual unsafe residual overlap words,
+  the forced central edge `av` is residual and both outer flanks
+  lie `< n-1/2`, one unit below the central direction. There is the
+  **concrete safe-or-credit alternative**:
+
+  `exists c, c notin residualForbidden(B,a,v)` OR
+  `exponent(a)+exponent(v)+1 <= n`.
+
+  Corollary: if `n <= exponent(a)+exponent(v)`, the safe local flip
+  necessarily exists. Both declarations passed CI
+  https://github.com/Charlie-Wang-03/awards/actions/runs/37948511374
+  (3147 jobs; no `sorryAx`).
+- `PlanarCrossingHardCredit.lean`: passes this statement through the
+  genuine injective planar `AngleCap` projection and actual canonical
+  `CentreProjectiveCycle` exponents, deriving the one-layer profile
+  *from the real local cycles*, not assuming an arbitrary profile.
+  For actual unsafe hard overlap edges `uv`, `ab`, it combines
+
+  `phi(ua)+lambda <= phi(av)` and
+  `phi(vb)+lambda <= phi(av)`
+
+  with `safe-flip(a,v) OR k(a)+k(v)+1 <= n`.
+  Run https://github.com/Charlie-Wang-03/awards/actions/runs/37949305249
+  successfully compiled 3343 jobs, clean `#print axioms` on the
+  canonical planar theorem.
+
+**Precisely what remains open:** A locally safe flip coordinate is
+not necessarily a *global* Boolean hole because other completion cubes
+may block it. Likewise, an exponent saving at one middle pair must be
+charged injectively and without duplication across potentially many
+overlap words/edges. Noncrossing/nested hard-carrier configurations
+require their own globally compatible handling. The exact whole-
+configuration weighted payment
+
+`card(saturatedOverlapWords)+totalProfileLoss
+ <= BooleanHoles+unspentSurplus`
+
+is **not proved**. It is equivalent to the original lower-branch
+dyadic target; the canonical WIP continues to contain ONE executable
+`sorry`. This progress is a local structure lemma, not a complete
+proof or counterexample to JSP-000404.
