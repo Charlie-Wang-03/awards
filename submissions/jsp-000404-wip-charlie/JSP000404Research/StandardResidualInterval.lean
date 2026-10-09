@@ -41,8 +41,9 @@ theorem residualBit_eq_true_of_residual
     (huv : u < v)
     (hres : IsResidual C u v) :
     residualBit C u = true := by
-  unfold residualBit
-  simp [⟨v, huv, hres⟩]
+  have hsource : ∃ w, u < w ∧ IsResidual C u w :=
+    ⟨v, huv, hres⟩
+  simp [residualBit, hsource]
 
 /-- The upper endpoint of a residual edge is a residual sink. -/
 theorem residualBit_eq_false_of_residual
@@ -130,7 +131,8 @@ theorem standardResidual_left_child_iff_bit_false
     · have hxTrue :=
         residualBit_eq_true_of_residual
           R hxv hright.2
-      simp [hxFalse] at hxTrue
+      have hcontra : (true : Bool) = false := hxTrue.symm.trans hxFalse
+      cases hcontra
 
 /-- Dually, an intermediate vertex is a source exactly when the right child
 x--v is residual. -/
@@ -158,7 +160,8 @@ theorem standardResidual_right_child_iff_bit_true
     · have hxFalse :=
         residualBit_eq_false_of_residual
           R hux hleft.1
-      simp [hxTrue] at hxFalse
+      have hcontra : (false : Bool) = true := hxFalse.symm.trans hxTrue
+      cases hcontra
     · exact hright.2
 
 /-- Inside one containing residual edge, every source-to-sink ordered pair is
