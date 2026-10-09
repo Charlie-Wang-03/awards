@@ -202,7 +202,72 @@ theorem minimal_loss_free_deficient_core_all_residual_active
   · exact (residualCoord_mem_active_of_isResidual B hvw hr).1
   · exact (residualCoord_mem_active_of_isResidual B hwv hr).2
 
+/--
+A loss-free minimal deficient Hall core must meet BOTH residual bit
+polarities.  Indeed every vertex has a core-internal residual neighbour;
+the lower and upper endpoints of such an edge have residual bits false
+and true, respectively.  This is a structural reduction to a genuine
+two-sided collision problem, not a proof of G1 itself.
+-/
+theorem minimal_loss_free_deficient_core_has_both_residual_polarities
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (ht : t < (n : ℝ) + 1)
+    (cycles : ∀ i : V, LocalDirectionCycle D i)
+    {T : Finset V}
+    (hdef :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      BlockDeficient (fun i => 2 ^ k i)
+        (enlargedProjectedCandidateBlock B k) T)
+    (hmin :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ U : Finset V, U ⊂ T →
+        ¬ BlockDeficient (fun i => 2 ^ k i)
+          (enlargedProjectedCandidateBlock B k) U)
+    (hnoLoss :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ v ∈ T, v ∉ projectedLossVertices B k) :
+    let B := standardResidualColoring D n (by exact_mod_cast ht)
+    ∃ u ∈ T, ∃ v ∈ T,
+      u < v ∧
+      bit B u (residualCoord n) = false ∧
+      bit B v (residualCoord n) = true := by
+  classical
+  let B : OrderedEdgeColoring V (n + 1) :=
+    standardResidualColoring D n (by exact_mod_cast ht)
+  let k : V → ℕ := fun i => (cycles i).exponent
+  have hnonempty : T.Nonempty :=
+    deficient_set_nonempty_of_positive_demands
+      (fun i : V => 2 ^ k i)
+      (enlargedProjectedCandidateBlock B k)
+      (fun i => by positivity)
+      hdef
+  obtain ⟨a, ha⟩ := hnonempty
+  obtain ⟨b, hb, _habNe, horient⟩ :=
+    minimal_loss_free_deficient_core_has_internal_residual_neighbor
+      D ht cycles hdef hmin hnoLoss a ha
+  rcases horient with ⟨hab, hres⟩ | ⟨hba, hres⟩
+  · have hcol : B.color a b = residualCoord n := by
+      apply Fin.ext
+      simpa [residualCoord] using residual_val_eq B hres
+    have hfalse := edgeColor_bit_lower_eq_false B hab
+    have htrue := edgeColor_bit_upper_eq_true B hab
+    rw [hcol] at hfalse htrue
+    exact ⟨a, ha, b, hb, hab, hfalse, htrue⟩
+  · have hcol : B.color b a = residualCoord n := by
+      apply Fin.ext
+      simpa [residualCoord] using residual_val_eq B hres
+    have hfalse := edgeColor_bit_lower_eq_false B hba
+    have htrue := edgeColor_bit_upper_eq_true B hba
+    rw [hcol] at hfalse htrue
+    exact ⟨b, hb, a, ha, hba, hfalse, htrue⟩
+
 #print axioms minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
+#print axioms minimal_loss_free_deficient_core_has_both_residual_polarities
 #print axioms minimal_loss_free_deficient_core_has_internal_residual_neighbor
 #print axioms minimal_loss_free_deficient_core_all_residual_active
 
