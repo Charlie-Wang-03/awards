@@ -56,7 +56,10 @@ theorem planar_overweight_loss_or_hard_carrier_stepwise_top_witness
         2 ^ centreExponent (cycles i) t) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-    let hpos : 0 < t := sendov_scale_pos hn hdelta0 ht
+    let hpos : 0 < t := by
+      rw [ht]
+      have hnR : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+      linarith
     let hwidth : t < (n : ℝ) + 1 := by rw [ht]; linarith
     let D := genericDirectionData_sendov hp hcap hpos hlam
     let B := standardResidualColoring D n (by exact_mod_cast hwidth)
@@ -82,7 +85,10 @@ theorem planar_overweight_loss_or_hard_carrier_stepwise_top_witness
               Nat.floor a) := by
   classical
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
-  have hpos : 0 < t := sendov_scale_pos hn hdelta0 ht
+  have hpos : 0 < t := by
+      rw [ht]
+      have hnR : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+      linarith
   have hwidth : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
