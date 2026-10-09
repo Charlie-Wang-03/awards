@@ -92,7 +92,7 @@ theorem minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
 
 /--
 Every vertex (not only an exact-boundary witness) in a loss-free,
-inclusion-minimal deficient core is incident to a residual edge.
+inclusion-minimal deficient core has an INTERNAL residual-edge neighbour.
 
 Proof: the true one-layer profile supplies local capacity at each non-loss
 vertex; minimal Hall deficiency therefore forces that vertex's candidate
@@ -100,7 +100,7 @@ block to share a word. Since both endpoints are non-loss, the shared word
 belongs to both retained completion cubes. The previously proved
 two-carrier rigidity makes their connecting edge residual.
 -/
-theorem minimal_loss_free_deficient_core_all_residual_active
+theorem minimal_loss_free_deficient_core_has_internal_residual_neighbor
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
@@ -123,7 +123,9 @@ theorem minimal_loss_free_deficient_core_all_residual_active
       let k : V → ℕ := fun i => (cycles i).exponent
       ∀ v ∈ T, v ∉ projectedLossVertices B k) :
     let B := standardResidualColoring D n (by exact_mod_cast ht)
-    ∀ v ∈ T, residualCoord n ∈ active B v := by
+    ∀ v ∈ T, ∃ w ∈ T, w ≠ v ∧
+      ((v < w ∧ IsResidual B v w) ∨
+       (w < v ∧ IsResidual B w v)) := by
   classical
   let B : OrderedEdgeColoring V (n + 1) :=
     standardResidualColoring D n (by exact_mod_cast ht)
@@ -157,13 +159,51 @@ theorem minimal_loss_free_deficient_core_all_residual_active
     hnoLoss w hwT
   rw [enlargedProjectedCandidateBlock_nonloss B k hvNonloss] at hvWord
   rw [enlargedProjectedCandidateBlock_nonloss B k hwNonloss] at hwWord
-  rcases retainedCompletion_overlap_forces_residual
-    B (Ne.symm hwNe) hvWord hwWord with
-    ⟨hvw, hres⟩ | ⟨hwv, hres⟩
-  · exact (residualCoord_mem_active_of_isResidual B hvw hres).1
-  · exact (residualCoord_mem_active_of_isResidual B hwv hres).2
+  obtain hres := retainedCompletion_overlap_forces_residual
+    B (Ne.symm hwNe) hvWord hwWord
+  exact ⟨w, hwT, hwNe, hres⟩
+
+/--
+The core-internal residual neighbour of each vertex also implies that the
+residual coordinate is active there.  No new geometric assumptions.
+-/
+theorem minimal_loss_free_deficient_core_all_residual_active
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (ht : t < (n : ℝ) + 1)
+    (cycles : ∀ i : V, LocalDirectionCycle D i)
+    {T : Finset V}
+    (hdef :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      BlockDeficient (fun i => 2 ^ k i)
+        (enlargedProjectedCandidateBlock B k) T)
+    (hmin :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ U : Finset V, U ⊂ T →
+        ¬ BlockDeficient (fun i => 2 ^ k i)
+          (enlargedProjectedCandidateBlock B k) U)
+    (hnoLoss :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ v ∈ T, v ∉ projectedLossVertices B k) :
+    let B := standardResidualColoring D n (by exact_mod_cast ht)
+    ∀ v ∈ T, residualCoord n ∈ active B v := by
+  classical
+  let B : OrderedEdgeColoring V (n + 1) :=
+    standardResidualColoring D n (by exact_mod_cast ht)
+  intro v hvT
+  obtain ⟨w, _hwT, _hwNe, hres⟩ :=
+    minimal_loss_free_deficient_core_has_internal_residual_neighbor
+      D ht cycles hdef hmin hnoLoss v hvT
+  rcases hres with ⟨hvw, hr⟩ | ⟨hwv, hr⟩
+  · exact (residualCoord_mem_active_of_isResidual B hvw hr).1
+  · exact (residualCoord_mem_active_of_isResidual B hwv hr).2
 
 #print axioms minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
+#print axioms minimal_loss_free_deficient_core_has_internal_residual_neighbor
 #print axioms minimal_loss_free_deficient_core_all_residual_active
 
 end DirectionData
