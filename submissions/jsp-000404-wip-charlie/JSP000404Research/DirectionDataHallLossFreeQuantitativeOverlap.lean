@@ -98,8 +98,7 @@ theorem minimal_loss_free_core_each_cube_overlap_pays_full_deficit
       obtain ⟨w, hw, hwWord⟩ := Finset.mem_biUnion.mp hw
       have hwT := (Finset.mem_erase.mp hw).2
       apply Finset.mem_biUnion.mpr
-      rw [hblocks w hwT]
-      exact ⟨w, hw, hwWord⟩
+      exact ⟨w, hw, (hblocks w hwT).symm ▸ hwWord⟩
   have hshared :
       sharedBlockWords (enlargedProjectedCandidateBlock B k) T v =
         retainedCompletionWords B v ∩
