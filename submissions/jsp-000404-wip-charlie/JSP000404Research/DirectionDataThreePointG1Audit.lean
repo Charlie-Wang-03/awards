@@ -93,6 +93,70 @@ theorem candidateThreePoint_numeric_gap_exponents :
     listExponent, excess]
   simp [hf01inv, hf21, hf11, hf6, hf9, hf7]
 
+
+/-- Explicit increasing-value ray order at vertex 0. -/
+noncomputable def candidateCycleZero :
+    LocalDirectionCycle candidateThreePointData (0 : Fin 3) where
+  rays := [⟨2, by decide⟩, ⟨1, by decide⟩]
+  complete := by decide
+  nodup := by decide
+  nonempty := by decide
+  value_sorted := by
+    norm_num [List.Pairwise, localDirectionValue,
+      candidateThreePointData, candidateVal]
+
+/-- Explicit increasing-value ray order at vertex 1. -/
+noncomputable def candidateCycleOne :
+    LocalDirectionCycle candidateThreePointData (1 : Fin 3) where
+  rays := [⟨2, by decide⟩, ⟨0, by decide⟩]
+  complete := by decide
+  nodup := by decide
+  nonempty := by decide
+  value_sorted := by
+    norm_num [List.Pairwise, localDirectionValue,
+      candidateThreePointData, candidateVal]
+
+/-- Explicit increasing-value ray order at vertex 2. -/
+noncomputable def candidateCycleTwo :
+    LocalDirectionCycle candidateThreePointData (2 : Fin 3) where
+  rays := [⟨1, by decide⟩, ⟨0, by decide⟩]
+  complete := by decide
+  nodup := by decide
+  nonempty := by decide
+  value_sorted := by
+    norm_num [List.Pairwise, localDirectionValue,
+      candidateThreePointData, candidateVal]
+
+noncomputable def candidateThreeCycles (i : Fin 3) :
+    LocalDirectionCycle candidateThreePointData i := by
+  fin_cases i
+  · exact candidateCycleZero
+  · exact candidateCycleOne
+  · exact candidateCycleTwo
+
+theorem candidateThreePoint_cycle_values :
+    (candidateThreeCycles 0).values =
+        [((19 : ℝ) / 10), ((21 : ℝ) / 10)] ∧
+    (candidateThreeCycles 1).values =
+        [(1 : ℝ), ((21 : ℝ) / 10)] ∧
+    (candidateThreeCycles 2).values =
+        [(1 : ℝ), ((19 : ℝ) / 10)] := by
+  norm_num [candidateThreeCycles, candidateCycleZero,
+    candidateCycleOne, candidateCycleTwo,
+    LocalDirectionCycle.values, localDirectionValue,
+    candidateThreePointData, candidateVal]
+
+theorem candidateThreePoint_cycles_exponents :
+    (candidateThreeCycles 0).exponent = 1 ∧
+    (candidateThreeCycles 1).exponent = 0 ∧
+    (candidateThreeCycles 2).exponent = 0 := by
+  have hvals := candidateThreePoint_cycle_values
+  unfold LocalDirectionCycle.exponent LocalDirectionCycle.gapQuotients
+  rw [hvals.1, hvals.2.1, hvals.2.2]
+  exact candidateThreePoint_numeric_gap_exponents
+
+#print axioms candidateThreePoint_cycles_exponents
+
 #print axioms candidateThreePoint_numeric_gap_exponents
 
 end DirectionData
