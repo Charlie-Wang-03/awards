@@ -1,4 +1,5 @@
 import JSP000404Research.PlanarLowerBranchInternalResidualExactBoundaryInterface
+-- Incremental CI sentinel: this WIP theorem still has two explicit geometric sorry gaps.
 import Mathlib.Tactic
 
 /-!
