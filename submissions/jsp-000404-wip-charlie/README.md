@@ -341,13 +341,16 @@ and G2 `sorry` placeholders in `PlanarLowerBranchProofAdmittedWIP.lean`
 remain intact.
 
 **Verification notice:** The GitHub Connector commits that added/edited this
-module have not produced a new GitHub Actions run. Hence the module is
-**not yet kernel-verified at this revision**; only its mathematical/proof-script
-architecture has been reviewed. Verify it with the existing
-`JSP-000404 Fast Incremental Lean` workflow
-(`workflow_dispatch`, module input
-`DirectionDataHallResidualActiveBoundary`). Do not infer a complete proof,
-or a successful build, merely from the connector commit.
+module have not produced a matching Actions run as of 2026-10-09, and hence
+their proofs are **not yet kernel-verified at this revision**. A default-branch
+schedule-based fallback, `.github/workflows/jsp000404-autonomous-targeted.yml`,
+is now installed on `main`. Its scheduled job checks the immutable research
+HEAD by building `PlanarLowerBranchProofAdmittedWIP` (which imports these
+new modules) and records a success/failure commit status named
+`jsp000404/targeted/terminal`. Scheduled checks skip HEADs that already have
+a terminal verdict; a `workflow_dispatch` on the default branch can force a
+recheck. The schedule is best effort and may be delayed. Do not infer a complete
+proof, or a successful build, before the exact SHA has a passing status.
 
 #### Conditional lower-branch interface now uses the internal-residual G1 target
 
