@@ -504,3 +504,56 @@ a cancellation/payment mechanism. This is not an independent proof of
 JSP-000404; the active WIP still has ONE `sorry`, and its
 `#print axioms` still contains `sorryAx`. No complete award
 submission should be made on this basis.
+
+
+### Geometry-facing overweight endgame — verified carrier and phase slip (2026-10-09)
+
+The previous full-band-tight-centre result had already been proved in
+`OverweightTightLocalBand.lean`; it is not newly established here.
+The new verified geometric reduction keeps **actual cross-centre carriers**:
+
+1. `PlanarOverweightHardCarrierPhaseWitness.lean`, theorem
+   `planar_overweight_loss_or_hard_carrier_stepwise_top_witness`:
+   if a genuine planar `AngleCap` lower-branch configuration is
+   overweight, then either a projected-loss centre exists, OR a
+   genuine residual edge `u<v` has a common Boolean completion word,
+   its direction-floor is exactly `n`, and one endpoint is exactly
+   projected-saturated and has a sorted `InteriorBandGapTight` local
+   direction list, last floor `n`, and exact cyclic wrap equality.
+   This builds the shared-word witness from global counting and the
+   stepwise local geometry from `DirectionDataHallExactCycleTight`.
+   GitHub Actions run
+   https://github.com/Charlie-Wang-03/awards/actions/runs/37941357663
+   completed **successfully (3358 jobs)**; axiom audit has no
+   `sorryAx`.
+2. `PlanarOverweightGeometricHardDichotomy.lean`, theorem
+   `planar_overweight_has_concrete_phase_slip_or_rigid_hard_edge`:
+   strengthens the first alternative by producing a centre and two
+   **consecutive rays** whose normalized direction gap is in
+   `[0,1)` yet crosses exactly one integer band. The second
+   alternative is the actual residual carrier and one rigid endpoint
+   above. Run
+   https://github.com/Charlie-Wang-03/awards/actions/runs/37941965289
+   completed **successfully (3359 jobs)**; no `sorryAx`.
+
+The first attempt to import the legacy
+`ProjectionSaturatedEndpointDichotomy` exposed previously unverified
+Lean errors in its transitive dependencies. The
+`ProjectionSaturatedBandEquality.lean` layer has since been
+**repaired and kernel-checked** (including four clean `#print axioms`
+audits). However, the stronger legacy
+`ProjectionSaturatedStepRigidity` /
+`ProjectionSaturatedOverlapRigidity` /
+`ProjectionSaturatedEndpointDichotomy` chain is **NOT** yet accepted
+by the new incremental build; its failures must not be hidden or
+described as verified. The canonical endgame reductions above do
+**not** import that failing chain.
+
+**Remaining mathematical gap:** an injection or non-double-counting
+weighted charge must globally compensate the actual short phase-slip
+and rigid residual-carrier obligations with Boolean holes plus all
+unused profile surplus. Local rigidity and triangular parity do not
+on their own prove this inequality. There remains exactly ONE
+executable `sorry` in the admitted
+`PlanarLowerBranchProofAdmittedWIP.lean`; the original full
+JSP-000404 proof and source closure remain OPEN.
