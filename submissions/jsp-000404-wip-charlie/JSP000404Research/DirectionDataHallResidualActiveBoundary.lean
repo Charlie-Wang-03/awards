@@ -90,7 +90,81 @@ theorem minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
     · exact (residualCoord_mem_active_of_isResidual B hwv hres).2
   exact ⟨v, hvT, hvExact, hvActive⟩
 
+/--
+Every vertex (not only an exact-boundary witness) in a loss-free,
+inclusion-minimal deficient core is incident to a residual edge.
+
+Proof: the true one-layer profile supplies local capacity at each non-loss
+vertex; minimal Hall deficiency therefore forces that vertex's candidate
+block to share a word. Since both endpoints are non-loss, the shared word
+belongs to both retained completion cubes. The previously proved
+two-carrier rigidity makes their connecting edge residual.
+-/
+theorem minimal_loss_free_deficient_core_all_residual_active
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {t : ℝ} {n : ℕ}
+    (D : DirectionData V t)
+    (ht : t < (n : ℝ) + 1)
+    (cycles : ∀ i : V, LocalDirectionCycle D i)
+    {T : Finset V}
+    (hdef :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      BlockDeficient (fun i => 2 ^ k i)
+        (enlargedProjectedCandidateBlock B k) T)
+    (hmin :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ U : Finset V, U ⊂ T →
+        ¬ BlockDeficient (fun i => 2 ^ k i)
+          (enlargedProjectedCandidateBlock B k) U)
+    (hnoLoss :
+      let B := standardResidualColoring D n (by exact_mod_cast ht)
+      let k : V → ℕ := fun i => (cycles i).exponent
+      ∀ v ∈ T, v ∉ projectedLossVertices B k) :
+    let B := standardResidualColoring D n (by exact_mod_cast ht)
+    ∀ v ∈ T, residualCoord n ∈ active B v := by
+  classical
+  let B : OrderedEdgeColoring V (n + 1) :=
+    standardResidualColoring D n (by exact_mod_cast ht)
+  let k : V → ℕ := fun i => (cycles i).exponent
+  have hprofile :=
+    localCycles_standardResidual_oneLayer_profile D ht cycles
+  have hexp : ∀ x, k x ≤ n := hprofile.1
+  have hone : ∀ x, (active B x).card ≤ n - k x + 1 := hprofile.2
+  intro v hvT
+  have hvNonloss : v ∉ projectedLossVertices B k :=
+    hnoLoss v hvT
+  have hvUpper : k v ≤ projectedFree B v + 1 :=
+    exponent_le_projectedFree_add_one B k hexp hone v
+  have hvNotLoss : k v ≠ projectedFree B v + 1 := by
+    intro heq
+    exact hvNonloss ((mem_projectedLossVertices B k v).2 heq)
+  have hvLe : k v ≤ projectedFree B v := by omega
+  have hvLocal :
+      2 ^ k v ≤ (enlargedProjectedCandidateBlock B k v).card := by
+    rw [enlargedProjectedCandidateBlock_nonloss B k hvNonloss]
+    exact nonloss_completionBlock_target_le B k hvLe
+  obtain ⟨word, hvWord, hother⟩ :=
+    minimal_deficient_block_has_collision_of_local_capacity
+      (fun i : V => 2 ^ k i)
+      (enlargedProjectedCandidateBlock B k)
+      hdef hmin hvT hvLocal
+  obtain ⟨w, hwErase, hwWord⟩ := Finset.mem_biUnion.mp hother
+  have hwT : w ∈ T := (Finset.mem_erase.mp hwErase).2
+  have hwNe : w ≠ v := (Finset.mem_erase.mp hwErase).1
+  have hwNonloss : w ∉ projectedLossVertices B k :=
+    hnoLoss w hwT
+  rw [enlargedProjectedCandidateBlock_nonloss B k hvNonloss] at hvWord
+  rw [enlargedProjectedCandidateBlock_nonloss B k hwNonloss] at hwWord
+  rcases retainedCompletion_overlap_forces_residual
+    B (Ne.symm hwNe) hvWord hwWord with
+    ⟨hvw, hres⟩ | ⟨hwv, hres⟩
+  · exact (residualCoord_mem_active_of_isResidual B hvw hres).1
+  · exact (residualCoord_mem_active_of_isResidual B hwv hres).2
+
 #print axioms minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
+#print axioms minimal_loss_free_deficient_core_all_residual_active
 
 end DirectionData
 end JSP000404Research
