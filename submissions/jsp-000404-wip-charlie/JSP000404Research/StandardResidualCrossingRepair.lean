@@ -149,12 +149,15 @@ theorem crossing_middle_unsafe_incoming_ne
   have hwords :
       wordUV = wordAB := by
     rw [hwordUV, hwordAB, hcharEq]
-  subst wordAB
+  have haWordUV :
+      wordUV ∈ retainedCompletionWords C a := by
+    rw [hwords]
+    exact haWord
   exact no_three_distinct_share_retained_completion
     C (ne_of_lt hua)
       (ne_of_lt (hua.trans hav))
       (ne_of_lt hav)
-      huWord haWord hvWord
+      huWord haWordUV hvWord
 
 /-- If the middle crossing edge is unsafe, it has a through colour. -/
 theorem crossing_middle_unsafe_has_through_colour
