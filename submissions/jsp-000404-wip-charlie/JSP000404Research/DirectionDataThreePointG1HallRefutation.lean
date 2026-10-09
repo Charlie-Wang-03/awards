@@ -157,5 +157,35 @@ theorem candidateThreePoint_has_loss_free_deficient_pair :
 
 #print axioms candidateThreePoint_has_loss_free_deficient_pair
 
+/-- Genuine abstract DirectionData contradicts the *universally*
+quantified G1-exclusion predicate. This does NOT refute the target
+dyadic bound, nor establish realizability by a planar point set. -/
+theorem candidateThreePoint_refutes_abstract_G1 :
+    ¬ LossFreeMinimalHallInternalResidualExactExcluded exampleB exampleK := by
+  classical
+  intro hG1
+  obtain ⟨T, hdef, hnoLoss⟩ :=
+    candidateThreePoint_has_loss_free_deficient_pair
+  obtain ⟨U, hUT, hUdef, hUmin⟩ :=
+    exists_minimal_deficient_subset
+      (fun i : Fin 3 => 2 ^ exampleK i)
+      (enlargedProjectedCandidateBlock exampleB exampleK)
+      hdef
+  have hnoLossU :
+      ∀ v ∈ U, v ∉ projectedLossVertices exampleB exampleK := by
+    intro v hv
+    exact hnoLoss v (hUT hv)
+  obtain ⟨v, hvU, _hvNoLoss, hvExact⟩ :=
+    deficient_loss_free_core_has_exact_nonloss
+      candidateThreePointData (by norm_num) candidateThreeCycles
+      hUdef hnoLossU
+  have hNeighbor :=
+    minimal_loss_free_deficient_core_has_internal_residual_neighbor
+      candidateThreePointData (by norm_num) candidateThreeCycles
+      hUdef hUmin hnoLossU v hvU
+  exact (hG1 U hUdef hUmin hnoLossU v hvU hNeighbor) hvExact
+
+#print axioms candidateThreePoint_refutes_abstract_G1
+
 end DirectionData
 end JSP000404Research
