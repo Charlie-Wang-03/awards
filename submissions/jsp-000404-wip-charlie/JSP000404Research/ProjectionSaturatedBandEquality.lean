@@ -2,6 +2,7 @@
 import JSP000404Research.ProjectionResidualHardRemainder
 import JSP000404Research.LinearBandGapEquality
 import JSP000404Research.ResidualSaturationBridge
+import JSP000404Research.ResidualExactBudget
 import Mathlib.Tactic
 
 /-!
@@ -27,6 +28,8 @@ residual overlap.
 namespace JSP000404Research
 namespace DirectionData
 
+open OrderedEdgeColoring
+
 /-- In a sorted nonempty list, every member is at most the final element. -/
 theorem mem_le_getLastD_of_pairwise
     {a x : ℝ} {xs : List ℝ}
@@ -50,7 +53,9 @@ theorem mem_le_getLastD_of_pairwise
         have hle :
             x ≤ bs.getLastD b :=
           ih htail hxTail
-        simpa using hle
+        cases bs with
+        | nil => simpa using hle
+        | cons c cs => simpa [List.getLastD] using hle
 
 /-- If the top band n is incident to a complete local cycle, the last sorted
 local value has floor n. -/
@@ -133,13 +138,17 @@ theorem genericProjection_saturated_local_band_equality
     (hwidth : t < (n : ℝ) + 1)
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C : ProjectionCentreCycle hp i)
     (hexpI : exponent i = centreExponent C t)
     (hsat :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ExactProjectedBudget
         (genericResidualColoring hp hcap htPos hlam n hwidth)
         exponent i)
     (hres :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       residualCoord n ∈
         active
           (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
@@ -194,13 +203,17 @@ theorem genericProjection_saturated_wrap_rigidity
     (hwidth : t < (n : ℝ) + 1)
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C : ProjectionCentreCycle hp i)
     (hexpI : exponent i = centreExponent C t)
     (hsat :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ExactProjectedBudget
         (genericResidualColoring hp hcap htPos hlam n hwidth)
         exponent i)
     (hres :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       residualCoord n ∈
         active
           (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
