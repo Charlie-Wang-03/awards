@@ -46,6 +46,11 @@ theorem exampleB_residual_zero_one :
   norm_num
 
 /-- Both endpoints have no incoming retained-colour edge. -/
+private theorem exampleB_retained_active_pair :
+    retainedActive exampleB 0 = ({(1 : Fin 2)} : Finset (Fin 2)) ∧
+    retainedActive exampleB 1 = ({(1 : Fin 2)} : Finset (Fin 2)) := by
+  simpa only [exampleB] using candidateThreePoint_retainedActive_01
+
 theorem exampleB_retained_bits_both_false (c : Fin 2) :
     retainedBit exampleB 0 c = false ∧
     retainedBit exampleB 1 c = false := by
@@ -58,7 +63,7 @@ theorem exampleB_retained_bits_both_false (c : Fin 2) :
     apply (bit_eq_false_iff exampleB 1 c.castSucc).2
     rintro ⟨w, hw, hcol⟩
     have hw0 : w = (0 : Fin 3) := by
-      fin_cases w <;> norm_num at hw ⊢
+      omega
     subst w
     have hvalEq := congrArg Fin.val hcol
     have hcLt : c.castSucc.val < 2 := c.isLt
@@ -68,7 +73,7 @@ theorem exampleB_retained_bits_both_false (c : Fin 2) :
 theorem exampleB_same_retained_completion_block :
     retainedCompletionWords exampleB 0 =
       retainedCompletionWords exampleB 1 := by
-  have hp := candidateThreePoint_retainedActive_01
+  have hp := exampleB_retained_active_pair
   ext word
   constructor
   · intro hw
@@ -93,14 +98,14 @@ theorem exampleB_same_retained_completion_block :
 theorem exampleB_zero_completion_card :
     (retainedCompletionWords exampleB 0).card = 2 := by
   rw [retainedCompletionWords_card]
-  have hpal := candidateThreePoint_retainedActive_01.1
+  have hpal := exampleB_retained_active_pair.1
   rw [hpal]
   norm_num
 
 theorem exampleB_projectedFree_01 :
     projectedFree exampleB 0 = 1 ∧
     projectedFree exampleB 1 = 1 := by
-  have hp := candidateThreePoint_retainedActive_01
+  have hp := exampleB_retained_active_pair
   simp [projectedFree, hp.1, hp.2]
 
 theorem exampleB_zero_one_nonloss :
