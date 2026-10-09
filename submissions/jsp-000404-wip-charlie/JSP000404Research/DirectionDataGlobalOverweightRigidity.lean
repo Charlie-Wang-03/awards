@@ -139,6 +139,7 @@ theorem overweight_directionData_has_rigid_local_witness
       retainedActive_card_add_one_le_active_of_residual_mem
         B v hvRes
     have hvBound := honeActive v
+    have hvExp : k v ≤ n := hexp v
     have hvCard :
         (retainedActive B v).card ≤ n := by
       simpa using Finset.card_le_univ (retainedActive B v)
