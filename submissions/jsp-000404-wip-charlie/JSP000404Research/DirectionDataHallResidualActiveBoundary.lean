@@ -65,10 +65,17 @@ theorem minimal_loss_free_deficient_core_has_residual_active_exact_nonloss
   obtain ⟨v, hvT, hvNonloss, hvExact⟩ :=
     deficient_loss_free_core_has_exact_nonloss
       D ht cycles hdef hnoLoss
+  have hvExact' : k v = projectedFree B v := hvExact
   have hvBlock :
       (enlargedProjectedCandidateBlock B k v).card = 2 ^ k v := by
-    rw [enlargedProjectedCandidateBlock_nonloss B k hvNonloss,
-      retainedCompletionWords_card, ← hvExact]
+    calc
+      (enlargedProjectedCandidateBlock B k v).card =
+          (retainedCompletionWords B v).card :=
+        congrArg Finset.card
+          (enlargedProjectedCandidateBlock_nonloss B k hvNonloss)
+      _ = 2 ^ projectedFree B v := by
+        simpa only [projectedFree] using retainedCompletionWords_card B v
+      _ = 2 ^ k v := by rw [← hvExact']
   obtain ⟨word, hword⟩ :=
     minimal_deficient_exact_block_has_shared_word
       (fun i : V => 2 ^ k i)
@@ -134,6 +141,9 @@ theorem minimal_loss_free_deficient_core_has_internal_residual_neighbor
     localCycles_standardResidual_oneLayer_profile D ht cycles
   have hexp : ∀ x, k x ≤ n := hprofile.1
   have hone : ∀ x, (active B x).card ≤ n - k x + 1 := hprofile.2
+  change ∀ v ∈ T, ∃ w ∈ T, w ≠ v ∧
+    ((v < w ∧ IsResidual B v w) ∨
+     (w < v ∧ IsResidual B w v))
   intro v hvT
   have hvNonloss : v ∉ projectedLossVertices B k :=
     hnoLoss v hvT
@@ -194,6 +204,7 @@ theorem minimal_loss_free_deficient_core_all_residual_active
   classical
   let B : OrderedEdgeColoring V (n + 1) :=
     standardResidualColoring D n (by exact_mod_cast ht)
+  change ∀ v ∈ T, residualCoord n ∈ active B v
   intro v hvT
   obtain ⟨w, _hwT, _hwNe, hres⟩ :=
     minimal_loss_free_deficient_core_has_internal_residual_neighbor
