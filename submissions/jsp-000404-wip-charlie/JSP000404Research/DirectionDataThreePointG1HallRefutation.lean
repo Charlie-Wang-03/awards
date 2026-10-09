@@ -187,5 +187,45 @@ theorem candidateThreePoint_refutes_abstract_G1 :
 
 #print axioms candidateThreePoint_refutes_abstract_G1
 
+/-- Even the original broad G1 assertion (every minimal Hall core
+has a projected-loss centre) is false for genuine abstract DirectionData. -/
+theorem candidateThreePoint_refutes_broad_G1 :
+    ¬ EveryMinimalHallCoreHasProjectedLoss exampleB exampleK := by
+  classical
+  intro hBroad
+  obtain ⟨T, hdef, hnoLoss⟩ :=
+    candidateThreePoint_has_loss_free_deficient_pair
+  obtain ⟨U, hUT, hUdef, hUmin⟩ :=
+    exists_minimal_deficient_subset
+      (fun i : Fin 3 => 2 ^ exampleK i)
+      (enlargedProjectedCandidateBlock exampleB exampleK)
+      hdef
+  obtain ⟨v, hvU, hvLoss⟩ := hBroad U hUdef hUmin
+  exact hnoLoss v (hUT hvU) hvLoss
+
+/-- Hence the intermediate exact-boundary G1 interface is also false on
+the DirectionData-only abstraction. -/
+theorem candidateThreePoint_refutes_exact_G1 :
+    ¬ LossFreeMinimalHallExactBoundaryExcluded exampleB exampleK := by
+  intro hExact
+  have hBroad :=
+    minimal_hall_core_has_loss_of_exact_boundary_exclusion
+      candidateThreePointData (by norm_num) candidateThreeCycles hExact
+  exact candidateThreePoint_refutes_broad_G1 hBroad
+
+/-- Failure of candidate-block Hall expansion does NOT imply failure of
+the desired dyadic capacity. This example is an exact-equality case. -/
+theorem candidateThreePoint_total_dyadic_eq :
+    (∑ i : Fin 3, 2 ^ exampleK i) = 2 ^ (2 : ℕ) := by
+  have h2 : exampleK 2 = 0 :=
+    candidateThreePoint_cycles_exponents.2.2
+  simp [Fin.sum_univ_succ, exampleK_at_zero,
+    exampleK_at_one, h2]
+
+#print axioms candidateThreePoint_refutes_broad_G1
+#print axioms candidateThreePoint_refutes_exact_G1
+#print axioms candidateThreePoint_total_dyadic_eq
+
+
 end DirectionData
 end JSP000404Research
