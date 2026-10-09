@@ -159,7 +159,7 @@ theorem minimal_loss_free_deficient_core_has_internal_residual_neighbor
     hnoLoss w hwT
   rw [enlargedProjectedCandidateBlock_nonloss B k hvNonloss] at hvWord
   rw [enlargedProjectedCandidateBlock_nonloss B k hwNonloss] at hwWord
-  obtain hres := retainedCompletion_overlap_forces_residual
+  have hres := retainedCompletion_overlap_forces_residual
     B (Ne.symm hwNe) hvWord hwWord
   exact ⟨w, hwT, hwNe, hres⟩
 
