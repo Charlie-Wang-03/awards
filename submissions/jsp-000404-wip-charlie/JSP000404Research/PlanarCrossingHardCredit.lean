@@ -159,8 +159,15 @@ theorem planar_crossing_unsafe_hard_words_angle_or_exponent_credit
       D.value u a + (1 : ℝ) / 2 < (n : ℝ) ∧
       D.value v b + (1 : ℝ) / 2 < (n : ℝ) at hgeom
   obtain ⟨hcross, _, _, hgapUA, hgapVB, _, _, _, _⟩ := hgeom
-  have hprof := localCycles_standardResidual_oneLayer_profile
-    D hwidth L
+  have hwidthR : t < (n : ℝ) + 1 := by
+    rw [ht]
+    linarith
+  have hprof :
+      (∀ i : ProjectionOrdered V, (L i).exponent ≤ n) ∧
+      (∀ i : ProjectionOrdered V,
+        (active B i).card ≤ n - (L i).exponent + 1) := by
+    exact localCycles_standardResidual_oneLayer_profile
+      (n := n) D hwidthR L
   have hExp : ∀ i : ProjectionOrdered V,
       (L i).exponent = k i := by
     intro i
