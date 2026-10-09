@@ -348,3 +348,17 @@ architecture has been reviewed. Verify it with the existing
 (`workflow_dispatch`, module input
 `DirectionDataHallResidualActiveBoundary`). Do not infer a complete proof,
 or a successful build, merely from the connector commit.
+
+#### Conditional lower-branch interface now uses the internal-residual G1 target
+
+Two new hole-free *conditional* proof scripts are present:
+`FullDyadicInternalResidualExactBoundaryInterface.lean` and
+`PlanarLowerBranchInternalResidualExactBoundaryInterface.lean`.
+They formally reduce the previous G1 exclusion to the internal-residual
+witness version and preserve the separate G2 shared-mass obligation.
+
+`PlanarLowerBranchProofAdmittedWIP.lean` now imports the latter interface.
+The number of deliberate executable `sorry` placeholders is STILL TWO:
+G1-INTERNAL and G2. These newly edited modules, including the WIP
+assembly, remain **pending targeted Lean compilation** at this branch head.
+The complete arbitrary-cardinality JSP-000404 theorem remains open.
