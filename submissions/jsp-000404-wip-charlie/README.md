@@ -557,3 +557,41 @@ on their own prove this inequality. There remains exactly ONE
 executable `sorry` in the admitted
 `PlanarLowerBranchProofAdmittedWIP.lean`; the original full
 JSP-000404 proof and source closure remain OPEN.
+
+
+### Residual edges share a sub-half-lambda angular cone (2026-10-09)
+
+New code: `JSP000404Research/PlanarResidualNarrowAngleBand.lean`.
+Two theorems have passed Lean kernel and explicit `#print axioms` auditing:
+
+- `planar_standardResidual_edge_narrow_terminal_angle`: for any
+  genuine generic-projection residual edge `u<v`, writing
+  `phi_e = centreForwardLiftedAngle(u, v)` and
+  `beta = projectionAngleBase(genericProjectionSlope(p))`,
+  lower-branch normalization `t=n+delta`,
+  `0<=delta<1/2`, and `lambda=pi/t` gives
+
+  `0 < pi - (phi_e-beta) <= delta*lambda < lambda/2`.
+
+  This follows from actual planar direction-value representation and
+  the standard residual top-band test `n <= D(u,v) < t`.
+- `planar_standardResidual_edges_common_narrow_cone`: for ANY TWO
+  residual edges `u<v`, `x<y`, their globally oriented lifted
+  physical directions satisfy
+
+  `|phi_uv - phi_xy| <= delta*lambda < lambda/2`.
+
+  Endpoints may differ; all residual carriers lie within ONE
+  common narrow cone adjacent to the projection seam.
+
+Both results compile with no `sorryAx`; GitHub Actions incremental
+Lean CI https://github.com/Charlie-Wang-03/awards/actions/runs/37943504650
+successfully completed 3360 jobs on commit `28f2ae0f`.
+The single-edge intermediate also passed run
+https://github.com/Charlie-Wang-03/awards/actions/runs/37943133299.
+
+**Limit:** near-parallelism does NOT bound the number of overlapping
+Boolean completion words or build an injective hole/credit assignment.
+The hard payment `saturatedOverlap + profileLoss <= holes + unspentSurplus`
+remains the geometrically unproved, equivalent global task.
+The admitted lower-branch WIP still contains one executable `sorry`.
