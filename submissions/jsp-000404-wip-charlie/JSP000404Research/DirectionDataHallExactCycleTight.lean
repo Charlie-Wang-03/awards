@@ -115,9 +115,8 @@ theorem exact_nonloss_residual_active_local_cycle_rigid
           (occupiedNatBands (a :: xs)).card =
         n + 1 := by
     have hb := htight
-    change
-      listExponent (linearCyclicGapQuotients t (a :: xs)) +
-        (D.incidentBands (n + 1) v).card = n + 1 at hb
+    unfold LocalDirectionCycle.exponent LocalDirectionCycle.gapQuotients at hb
+    rw [hvalues] at hb
     rw [← hcard] at hb
     exact hb
   have hStep :=
