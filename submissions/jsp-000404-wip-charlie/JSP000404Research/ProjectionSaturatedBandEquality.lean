@@ -52,7 +52,7 @@ theorem mem_le_getLastD_of_pairwise
         hp.2
         have hle :
             x ≤ bs.getLastD b :=
-          ih htail hxTail
+          ih htail (by simpa using hxTail)
         cases bs with
         | nil => simpa using hle
         | cons c cs => simpa [List.getLastD] using hle
@@ -144,14 +144,14 @@ theorem genericProjection_saturated_local_band_equality
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       ExactProjectedBudget
-        (genericResidualColoring hp hcap htPos hlam n hwidth)
+        (genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth))
         exponent i)
     (hres :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       residualCoord n ∈
         active
-          (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
+          (genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth)) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let D := genericDirectionData_sendov hp hcap htPos hlam
@@ -161,7 +161,7 @@ theorem genericProjection_saturated_local_band_equality
     projectionLinearOrder hp
   let D := genericDirectionData_sendov hp hcap htPos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
-    genericResidualColoring hp hcap htPos hlam n hwidth
+    genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth)
   let L := projectionCutLocalCycle hp hcap htPos hlam i C
   have hsat' : ExactProjectedBudget B exponent i := by
     simpa [B] using hsat
@@ -175,7 +175,7 @@ theorem genericProjection_saturated_local_band_equality
         (D.incidentBands (n + 1) i).card := by
     have h :=
       standardResidual_active_eq_incidentBands_succ
-        D n hwidth i
+        D n (by push_cast; exact hwidth) i
     simpa [B, D, genericResidualColoring] using
       congrArg Finset.card h
   have hagree :
@@ -188,6 +188,7 @@ theorem genericProjection_saturated_local_band_equality
   have hexpLe : exponent i ≤ n := by
     unfold ExactProjectedBudget projectedFree at hsat'
     omega
+  change L.exponent + (D.incidentBands (n + 1) i).card = n + 1
   rw [hagree, ← hactiveBands, ← hexpI]
   omega
 
@@ -209,14 +210,14 @@ theorem genericProjection_saturated_wrap_rigidity
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       ExactProjectedBudget
-        (genericResidualColoring hp hcap htPos hlam n hwidth)
+        (genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth))
         exponent i)
     (hres :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       residualCoord n ∈
         active
-          (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
+          (genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth)) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let D := genericDirectionData_sendov hp hcap htPos hlam
@@ -230,7 +231,7 @@ theorem genericProjection_saturated_wrap_rigidity
     projectionLinearOrder hp
   let D := genericDirectionData_sendov hp hcap htPos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
-    genericResidualColoring hp hcap htPos hlam n hwidth
+    genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth)
   let L := projectionCutLocalCycle hp hcap htPos hlam i C
   have heq :
       L.exponent + (D.incidentBands (n + 1) i).card = n + 1 :=
@@ -241,7 +242,7 @@ theorem genericProjection_saturated_wrap_rigidity
       residualCoord n ∈ D.incidentBands (n + 1) i := by
     have hactiveEq :=
       standardResidual_active_eq_incidentBands_succ
-        D n hwidth i
+        D n (by push_cast; exact hwidth) i
     have hres' : residualCoord n ∈ active B i := by
       simpa [B] using hres
     have hactiveEq' :
@@ -255,7 +256,7 @@ theorem genericProjection_saturated_wrap_rigidity
     | nil =>
         exact False.elim (L.values_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ L.values := by
     rw [hvalues]
     simp
