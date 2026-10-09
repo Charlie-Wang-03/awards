@@ -1,0 +1,169 @@
+name: JSP-000404 Autonomous Targeted Lean
+
+# Default-branch sentinel: GitHub-connector content writes may not emit
+# workflow-triggering push events. Scheduled checks do not need such events.
+on:
+  workflow_dispatch:
+    inputs:
+      modules:
+        description: "Target Lean modules (space/comma-separated). Default checks the WIP terminal."
+        type: string
+        required: true
+        default: PlanarLowerBranchProofAdmittedWIP
+  schedule:
+    - cron: '11,31,51 * * * *'
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: jsp000404-autonomous-targeted
+  cancel-in-progress: false
+
+jobs:
+  targeted:
+    name: Targeted Lean at research SHA (never full project)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Resolve research HEAD and skip previously checked commits
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_MODULES: ${{ inputs.modules }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/research/jsp-000404-sharp-centre" --jq '.object.sha')"
+          echo "sha=${sha}" >> "${GITHUB_OUTPUT}"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            modules="${INPUT_MODULES}"
+          else
+            modules="PlanarLowerBranchProofAdmittedWIP"
+          fi
+          echo "modules=${modules}" >> "${GITHUB_OUTPUT}"
+          context="jsp000404/targeted/terminal"
+          if [[ "${modules}" != "PlanarLowerBranchProofAdmittedWIP" ]]; then
+            context="jsp000404/targeted/manual"
+          fi
+          echo "context=${context}" >> "${GITHUB_OUTPUT}"
+          previous="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${sha}/statuses?per_page=100" \
+            --jq "[.[] | select(.context == \"${context}\")] | .[0].state // \"none\"")"
+          echo "Research HEAD: ${sha}; previous targeted verdict: ${previous}"
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" && ( "${previous}" == "success" || "${previous}" == "failure" ) ]]; then
+            echo "should_run=false" >> "${GITHUB_OUTPUT}"
+            echo "Unchanged research SHA already checked: skip without installing Lean."
+          else
+            echo "should_run=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Check out immutable research commit
+        if: steps.resolve.outputs.should_run == 'true'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ steps.resolve.outputs.sha }}
+          persist-credentials: false
+
+      - name: Audit Lean sorry allowance and selector script
+        if: steps.resolve.outputs.should_run == 'true'
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          python3 -m py_compile scripts/jsp000404_incremental_ci.py
+          python3 scripts/jsp000404_sorry_audit.py --self-test
+          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research --allowed-wip JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean --wip-max-sorries 2
+
+      - name: Install Lean via elan
+        if: steps.resolve.outputs.should_run == 'true'
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh \
+            -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore Lake package cache
+        if: steps.resolve.outputs.should_run == 'true'
+        id: packages
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: |
+            submissions/jsp-000404-wip-charlie/.lake/packages
+            submissions/jsp-000404-wip-charlie/lake-manifest.json
+          key: jsp000404-lake-v2-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain') }}
+
+      - name: Resolve Lake dependencies
+        if: steps.resolve.outputs.should_run == 'true' && steps.packages.outputs.cache-hit != 'true'
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake update
+
+      - name: Restore pinned mathlib oleans
+        if: steps.resolve.outputs.should_run == 'true'
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake exe cache get
+
+      - name: Restore verified project oleans
+        if: steps.resolve.outputs.should_run == 'true'
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-
+
+      - name: Select requested modules with stale-olean invalidation
+        if: steps.resolve.outputs.should_run == 'true'
+        id: select
+        working-directory: submissions/jsp-000404-wip-charlie
+        env:
+          GITHUB_EVENT_NAME: workflow_dispatch
+          INPUT_MODULES: ${{ steps.resolve.outputs.modules }}
+        run: python3 scripts/jsp000404_incremental_ci.py prepare
+
+      - name: Build targets and imported dependencies
+        if: steps.resolve.outputs.should_run == 'true' && steps.select.outputs.targets != ''
+        working-directory: submissions/jsp-000404-wip-charlie
+        env:
+          LEAN_TARGETS: ${{ steps.select.outputs.targets }}
+        shell: bash
+        run: |
+          read -r -a targets <<< "$LEAN_TARGETS"
+          lake build "${targets[@]}"
+
+      - name: Record successfully checked source versions
+        if: steps.resolve.outputs.should_run == 'true' && steps.select.outputs.targets != ''
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: python3 scripts/jsp000404_incremental_ci.py snapshot
+
+      - name: Save compiled project oleans
+        if: steps.resolve.outputs.should_run == 'true' && steps.select.outputs.targets != ''
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: submissions/jsp-000404-wip-charlie/.lake/build
+          key: jsp000404-proof-v1-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain', 'submissions/jsp-000404-wip-charlie/lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Publish precise commit status (success or failure)
+        if: always() && steps.resolve.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.resolve.outputs.sha }}
+          CONTEXT: ${{ steps.resolve.outputs.context }}
+          MODULES: ${{ steps.resolve.outputs.modules }}
+          JOB_VERDICT: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          state=failure
+          if [[ "${JOB_VERDICT}" == "success" ]]; then state=success; fi
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${SHA}" \
+            -f state="${state}" \
+            -f context="${CONTEXT}" \
+            -f description="Incremental Lean ${state}; module(s): ${MODULES:0:75}" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" > /dev/null
+          echo "Research SHA ${SHA}: ${CONTEXT}=${state}"
+
+      - name: Verification scope
+        if: always()
+        run: |
+          echo "This workflow checks selected Lean modules and their imports ONLY."
+          echo "It does not prove JSP-000404 or discharge its admitted geometric gaps."
