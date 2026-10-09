@@ -42,16 +42,17 @@ theorem no_safeTarget_iff_retainedInactive_upper_empty_of_sameRetained
       C hsame
   constructor
   · intro hunsafe
-    apply Finset.eq_empty_iff_forall_not_mem.mpr
-    intro c hc
-    have hcSafeSet :
-        c ∈ Finset.univ \ residualForbidden C u v := by
-      rw [hset]
-      exact hc
-    have hcSafe :
-        c ∉ residualForbidden C u v := by
-      simpa using hcSafeSet
-    exact hunsafe ⟨c, hcSafe⟩
+    apply Finset.Subset.antisymm
+    · intro c hc
+      have hcSafeSet :
+          c ∈ Finset.univ \ residualForbidden C u v := by
+        rw [hset]
+        exact hc
+      have hcSafe :
+          c ∉ residualForbidden C u v := by
+        simpa using hcSafeSet
+      exact hunsafe ⟨c, hcSafe⟩
+    · simp
   · intro hempty
     rintro ⟨c, hcSafe⟩
     have hcSet :
@@ -72,7 +73,7 @@ theorem no_safeTarget_iff_projectedFree_upper_zero_of_sameRetained
       C hsame]
   unfold projectedFree
   rw [← retainedInactive_card C v]
-  exact Finset.card_eq_zero
+  exact Finset.card_eq_zero.symm
 
 theorem exists_safeTarget_of_sameRetained_projectedFree_pos
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
