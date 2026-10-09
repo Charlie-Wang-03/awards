@@ -227,5 +227,40 @@ theorem candidateThreePoint_total_dyadic_eq :
 #print axioms candidateThreePoint_total_dyadic_eq
 
 
+
+/-- Regression certificate for the replacement architecture: the example
+has subset-Hall deficiency but exactly BALANCES global completion payment.
+No local Hall-expansion assumption is used. -/
+theorem candidateThreePoint_global_payment_exact :
+    (overlapCompletionWords exampleB).card +
+        totalDyadicProfileLoss exampleK (projectedFree exampleB) =
+      (2 ^ (2 : ℕ) - (coveredCompletionWords exampleB).card) +
+        totalDyadicProfileSurplus exampleK (projectedFree exampleB) := by
+  have haccount :=
+    residual_projection_accounting_balance
+      exampleK (projectedFree exampleB)
+      (coveredCompletionWords exampleB).card
+      (overlapCompletionWords exampleB).card
+      (projectedFree_mass_eq_covered_add_overlap exampleB)
+  have hcover :
+      (coveredCompletionWords exampleB).card ≤ 2 ^ (2 : ℕ) :=
+    coveredCompletionWords_card_le_two_pow exampleB
+  have htarget := candidateThreePoint_total_dyadic_eq
+  omega
+
+/-- The concrete failure of the *subset* Hall-G1 condition coexists
+with exact success of the *global* completion-payment identity. -/
+theorem candidateThreePoint_refutes_G1_but_pays_globally :
+    (¬ LossFreeMinimalHallInternalResidualExactExcluded exampleB exampleK) ∧
+    (overlapCompletionWords exampleB).card +
+        totalDyadicProfileLoss exampleK (projectedFree exampleB) =
+      (2 ^ (2 : ℕ) - (coveredCompletionWords exampleB).card) +
+        totalDyadicProfileSurplus exampleK (projectedFree exampleB) :=
+  ⟨candidateThreePoint_refutes_abstract_G1,
+    candidateThreePoint_global_payment_exact⟩
+
+#print axioms candidateThreePoint_global_payment_exact
+#print axioms candidateThreePoint_refutes_G1_but_pays_globally
+
 end DirectionData
 end JSP000404Research
