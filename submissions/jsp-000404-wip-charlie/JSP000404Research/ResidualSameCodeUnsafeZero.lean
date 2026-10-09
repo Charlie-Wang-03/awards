@@ -51,7 +51,7 @@ theorem no_safeTarget_iff_retainedInactive_upper_empty_of_sameRetained
       have hcSafe :
           c ∉ residualForbidden C u v := by
         simpa using hcSafeSet
-      exact hunsafe ⟨c, hcSafe⟩
+      exact False.elim (hunsafe ⟨c, hcSafe⟩)
     · simp
   · intro hempty
     rintro ⟨c, hcSafe⟩
