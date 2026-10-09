@@ -21,6 +21,8 @@ finite Boolean-block calculation and a separate Lean check.
 namespace JSP000404Research
 namespace DirectionData
 
+open OrderedEdgeColoring
+
 private noncomputable def candidateVal (i j : Fin 3) : ℝ :=
   if i = 0 ∧ j = 1 then (21 : ℝ) / 10
   else if i = 0 ∧ j = 2 then (19 : ℝ) / 10
