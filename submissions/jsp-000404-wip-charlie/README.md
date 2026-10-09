@@ -340,17 +340,13 @@ They do **not** establish the geometric impossibility of that core; the G1
 and G2 `sorry` placeholders in `PlanarLowerBranchProofAdmittedWIP.lean`
 remain intact.
 
-**Verification notice:** The GitHub Connector commits that added/edited this
-module have not produced a matching Actions run as of 2026-10-09, and hence
-their proofs are **not yet kernel-verified at this revision**. A default-branch
-schedule-based fallback, `.github/workflows/jsp000404-autonomous-targeted.yml`,
-is now installed on `main`. Its scheduled job checks the immutable research
-HEAD by building `PlanarLowerBranchProofAdmittedWIP` (which imports these
-new modules) and records a success/failure commit status named
-`jsp000404/targeted/terminal`. Scheduled checks skip HEADs that already have
-a terminal verdict; a `workflow_dispatch` on the default branch can force a
-recheck. The schedule is best effort and may be delayed. Do not infer a complete
-proof, or a successful build, before the exact SHA has a passing status.
+**Verification update (2026-10-09):** The residual-active,
+internal-neighbour, and refined conditional-interface modules WERE
+successfully kernel-compiled at commit `8345cb43caf2529de08cc2cf34997713d569699c`
+by fast incremental Actions run `37919522605`. Their `#print axioms`
+reports contain no `sorryAx`; the WIP conclusion still does. A separate
+default-branch scheduled CI fallback exists but is not a replacement for
+per-SHA verification.
 
 #### Conditional lower-branch interface now uses the internal-residual G1 target
 
@@ -362,6 +358,59 @@ witness version and preserve the separate G2 shared-mass obligation.
 
 `PlanarLowerBranchProofAdmittedWIP.lean` now imports the latter interface.
 The number of deliberate executable `sorry` placeholders is STILL TWO:
-G1-INTERNAL and G2. These newly edited modules, including the WIP
-assembly, remain **pending targeted Lean compilation** at this branch head.
-The complete arbitrary-cardinality JSP-000404 theorem remains open.
+G1-INTERNAL and G2. These conditional-interface and WIP modules were
+targeted-compiled successfully at `8345cb43caf2529de08cc2cf34997713d569699c`
+(run `37919522605`). Their *conditional* compilation must not be mistaken
+for an unconditional proof. The complete JSP-000404 theorem remains open.
+
+
+### CRITICAL: genuine DirectionData counterexample to unrestricted Hall G1 (2026-10-09)
+
+**Status: FORMALLY REFUTED for the abstract `DirectionData` interface.
+This does NOT refute JSP-000404 or automatically transfer to the planar
+`AngleCap` geometry interface.**
+
+Files:
+- `JSP000404Research/DirectionDataThreePointG1Audit.lean`: explicit
+  `Fin 3` direction data, genuine local cycles, rational gap certificates,
+  and both endpoints' retained palettes.
+- `JSP000404Research/DirectionDataThreePointG1HallRefutation.lean`:
+  exact code/block calculation, a deficient loss-free pair, formal
+  `¬ LossFreeMinimalHallInternalResidualExactExcluded`, formal
+  `¬ LossFreeMinimalHallExactBoundaryExcluded`, and formal
+  `¬ EveryMinimalHallCoreHasProjectedLoss`.
+- `JSP000404Research/DirectionDataHallExactCycleTight.lean`:
+  prior kernel-checked equality/stepwise-rigidity reduction for hypothetical
+  exact-nonloss residual-active minimal Hall cores.
+
+Concrete instance:
+- `V = Fin 3`, `t = 23/10`, `n = 2`;
+- `D(0,1) = 21/10`, `D(0,2) = 19/10`, `D(1,2) = 1`;
+- local cycle exponents `k=(1,0,0)`;
+- true loss-free pair `T={0,1}` with demands `2+1=3`,
+  `Q_0 = Q_1`, and `card(Q_0 union Q_1)=2`;
+- nevertheless `sum_{v in Fin 3} 2^k(v) = 4 = 2^n`.
+
+All DirectionData structure axioms, finite cycle construction, candidate
+block calculations, and refutations are theorem-checked. The relevant
+incremental Actions runs were `37922162135` (local gap rigidity),
+`37924022367` (retained palettes), `37924877907` (internal G1
+refutation), and `37925153278` (broad/exact G1 refutations and
+true global dyadic equality). All `#print axioms` for these new claims
+exclude `sorryAx`.
+
+**Research consequence:** The claim "every inclusion-minimal Hall-deficient
+enlarged projected candidate family must contain a projected-loss
+centre" is FALSE under the current DirectionData axioms, even when
+`t=n+delta` with `0<delta<1/2`. Consequently no proof can discharge
+this G1 obligation using *only* those axioms. The candidate-block Hall
+expansion approach is stronger than the desired total dyadic inequality,
+as demonstrated by the example's exact global equality.
+
+Whether the same obstruction can be realized by genuine planar point
+configurations satisfying the *additional* reindexing/cycle constraints
+has NOT been Lean-proved or Lean-disproved. G1 at the planar-specific
+level still needs a principled re-evaluation, not an attempted proof of
+the now-refuted abstract predicate. G2 shared-mass exclusion is also open.
+The WIP file retains exactly TWO explicit `sorry` placeholders and
+must not be promoted as a complete mathematical proof.
