@@ -62,7 +62,7 @@ theorem safe_hard_colour_outgoing_lower_inactive_upper
   let C := standardResidualColoring D n hwidth
   have hcSet :
       c ∈ (Finset.univ \ residualForbidden C u v) := by
-    simp [hsafe]
+    simpa only [Finset.mem_sdiff, Finset.mem_univ, true_and] using hsafe
   have hset :=
     safeTargetSet_eq_outgoingLower_sdiff_outgoingUpper
       C hsame hnoCommon
@@ -111,7 +111,9 @@ theorem safe_hard_interior_witness_resolves
       (C.color u w).val < n := by
     rw [hcol]
     simp
-  have hnotResUW : ¬ IsResidual C u w := hretUW
+  have hnotResUW : ¬ IsResidual C u w := by
+    intro hr
+    exact hr hretUW
   have hxor :=
     standardResidual_inner_xor
       D n hwidth huw hwv hres
@@ -153,11 +155,15 @@ theorem safe_hard_outer_witness_strict_band_descent
       hwidth huw c.castSucc).1 hcolUW
   have hresLower :
       (n : ℝ) ≤ D.value u v :=
-    standardResidual_value_ge_n
-      D n hwidth huv hres
+    (standardResidual_iff_high D n hwidth huv).1 hres
   have hcN :
       (c : ℝ) + 1 ≤ (n : ℝ) := by
     exact_mod_cast c.isLt
+  have hcastC :
+      ((c.castSucc : Fin (n + 1)) : ℝ) = (c : ℝ) := by
+    norm_cast
+  have hbandUWUpper : D.value u w < (c : ℝ) + 1 := by
+    simpa [hcastC] using hbandUW.2
   have huvStrict :
       D.value u w < D.value u v := by
     linarith
@@ -169,8 +175,8 @@ theorem safe_hard_outer_witness_strict_band_descent
       linarith
     · exact hreverse
   have hvwUpper :
-      D.value v w < (c : ℝ) + 1 := by
-    exact hbetween.1.trans_lt hbandUW.2
+      D.value v w < (c : ℝ) + 1 :=
+    hbetween.1.trans_lt hbandUWUpper
   have hvwBelowN :
       D.value v w < (n : ℝ) := by
     exact hvwUpper.trans_le hcN
@@ -183,18 +189,24 @@ theorem safe_hard_outer_witness_strict_band_descent
         D n hwidth hvw).1 hnot
     linarith
   let d : Fin n := retainedColor C v w hretVW
+  have hcolVW : C.color v w = d.castSucc := by
+    apply Fin.ext
+    rfl
   have hbandVW :=
     (standardBandColor_eq_iff
       D (n + 1) (Nat.succ_pos n)
-      hwidth hvw d.castSucc).1 (by
-        apply Fin.ext
-        simp [d, retainedColor])
+      hwidth hvw d.castSucc).1 hcolVW
+  have hcastD :
+      ((d.castSucc : Fin (n + 1)) : ℝ) = (d : ℝ) := by
+    norm_cast
+  have hbandVWLower : (d : ℝ) ≤ D.value v w := by
+    simpa [hcastD] using hbandVW.1
   have hdle : d.val ≤ c.val := by
     by_contra hnot
     have hge : c.val + 1 ≤ d.val := by omega
     have hgeR : (c : ℝ) + 1 ≤ (d : ℝ) := by
       exact_mod_cast hge
-    linarith
+    linarith [hbandVWLower, hvwUpper, hgeR]
   have hdne : d ≠ c := by
     intro hdc
     subst d
@@ -202,8 +214,7 @@ theorem safe_hard_outer_witness_strict_band_descent
         c ∈ outgoingRetained C v := by
       apply (mem_outgoingRetained_iff C v c).2
       refine ⟨w, hvw, ?_⟩
-      apply Fin.ext
-      simpa [retainedColor] using hretVW
+      simpa [hdc] using hcolVW
     apply hcInactiveV
     rw [retainedActive_eq_incoming_union_outgoing C v]
     exact Finset.mem_union_right _ hcOut
