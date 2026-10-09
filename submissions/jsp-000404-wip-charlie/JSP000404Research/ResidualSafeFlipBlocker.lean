@@ -41,7 +41,7 @@ theorem retainedBit_false_of_outgoing
     (hcOut : c ∈ outgoingRetained C u) :
     retainedBit C u c = false := by
   unfold retainedBit
-  apply bit_eq_false_iff.mpr
+  apply (bit_eq_false_iff C u c.castSucc).2
   intro hex
   have hcIn :
       c ∈ incomingRetained C u :=
@@ -66,17 +66,17 @@ theorem safeFlip_blocker_residualBit_ne_upper
     intro hwv
     subst w
     exact hblock.1 (hsame c).symm
-  have hsameVW :
+  have hsameWV :
       ∀ d : Fin n, d ≠ c →
-        retainedBit C v d = retainedBit C w d := by
+        retainedBit C w d = retainedBit C v d := by
     intro d hdc
-    exact (hsame d).symm.trans (hblock.2 d hdc)
+    exact (hblock.2 d hdc).symm.trans (hsame d)
   have hsep :=
     separator_eq_castSucc_of_only_retained_difference
-      C hwv c hsameVW hresWV.symm
+      C hwv c hsameWV hresWV
   exact hcInactiveV
     ((castSucc_mem_active_iff_mem_retainedActive C v c).1
-      hsep.1)
+      hsep.2)
 
 /-- Since the hard pair has opposite residual bits, the blocker has exactly
 the lower endpoint's residual bit. -/
