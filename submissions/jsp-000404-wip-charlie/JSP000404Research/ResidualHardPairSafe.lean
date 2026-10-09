@@ -43,8 +43,12 @@ theorem safe_colour_common_inactive_of_sameRetained_lower
     c ∉ retainedActive C v := by
   intro hcv
   have huFalse :
-      retainedBit C u c = false :=
-    retainedBit_false_of_retained_inactive C hcu
+      retainedBit C u c = false := by
+    have hcast : c.castSucc ∉ active C u := by
+      intro hc
+      exact hcu ((castSucc_mem_active_iff_mem_retainedActive C u c).1 hc)
+    simpa [retainedBit] using
+      bit_eq_false_of_not_mem_active C u c.castSucc hcast
   have hvFalse :
       retainedBit C v c = false := by
     rw [← hsame c]
