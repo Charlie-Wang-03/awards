@@ -157,6 +157,30 @@ theorem candidateThreePoint_cycles_exponents :
 
 #print axioms candidateThreePoint_cycles_exponents
 
+
+/-- Both endpoints of the high-band edge retain precisely band 1. -/
+theorem candidateThreePoint_retainedActive_01 :
+    retainedActive
+        (standardResidualColoring candidateThreePointData 2 (by norm_num))
+        (0 : Fin 3) = ({(1 : Fin 2)} : Finset (Fin 2)) ∧
+    retainedActive
+        (standardResidualColoring candidateThreePointData 2 (by norm_num))
+        (1 : Fin 3) = ({(1 : Fin 2)} : Finset (Fin 2)) := by
+  classical
+  constructor
+  · rw [standardResidual_retainedActive_eq_incidentBands]
+    ext c
+    fin_cases c <;>
+      norm_num [incidentBands, candidateThreePointData, candidateVal,
+        Fin.exists_fin_succ]
+  · rw [standardResidual_retainedActive_eq_incidentBands]
+    ext c
+    fin_cases c <;>
+      norm_num [incidentBands, candidateThreePointData, candidateVal,
+        Fin.exists_fin_succ]
+
+#print axioms candidateThreePoint_retainedActive_01
+
 #print axioms candidateThreePoint_numeric_gap_exponents
 
 end DirectionData
