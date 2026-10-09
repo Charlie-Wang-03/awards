@@ -72,7 +72,7 @@ noncomputable def rightResidualInterior
       u < x ∧ x < v ∧
       IsResidual (standardResidualColoring D n hwidth) u x := by
   classical
-  simp [leftResidualInterior, openIntervalVertices]
+  simp [leftResidualInterior, openIntervalVertices, and_assoc]
 
 @[simp] theorem mem_rightResidualInterior
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -84,7 +84,7 @@ noncomputable def rightResidualInterior
       u < x ∧ x < v ∧
       IsResidual (standardResidualColoring D n hwidth) x v := by
   classical
-  simp [rightResidualInterior, openIntervalVertices]
+  simp [rightResidualInterior, openIntervalVertices, and_assoc]
 
 /-- The two residual-interior sides are disjoint. -/
 theorem residualInterior_disjoint
