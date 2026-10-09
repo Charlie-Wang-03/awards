@@ -318,3 +318,33 @@ source-closure obligations require separate formal bridges.
 The refined G1 predicate has NOT been established from planar geometry,
 and G2 remains open. Thus the lower-branch bound is still conditional,
 and the full arbitrary-cardinality JSP-000404 problem is unsolved.
+
+### Residual-active loss-free Hall-core reduction (2026-10-09)
+
+The research module `JSP000404Research/DirectionDataHallResidualActiveBoundary.lean`
+now contains three related, explicitly *unconditional-in-their-stated-hypotheses*
+Lean proof scripts (no new `sorry`):
+
+1. An inclusion-minimal deficient, loss-free true DirectionData core has an
+   exact non-loss vertex with active residual colour.
+2. Every vertex of such a core has a **distinct core-internal residual-edge
+   neighbour**. The proof combines the true one-layer local capacity,
+   minimal-deficiency/private-word loss, and the established rigidity of
+   intersecting retained completion cubes.
+3. Such a core contains both residual-bit polarities, witnessed by the
+   increasing endpoints of a residual edge.
+
+These reductions focus G1 on an internally non-isolated, two-sided
+residual-collision core containing at least one exact non-loss vertex.
+They do **not** establish the geometric impossibility of that core; the G1
+and G2 `sorry` placeholders in `PlanarLowerBranchProofAdmittedWIP.lean`
+remain intact.
+
+**Verification notice:** The GitHub Connector commits that added/edited this
+module have not produced a new GitHub Actions run. Hence the module is
+**not yet kernel-verified at this revision**; only its mathematical/proof-script
+architecture has been reviewed. Verify it with the existing
+`JSP-000404 Fast Incremental Lean` workflow
+(`workflow_dispatch`, module input
+`DirectionDataHallResidualActiveBoundary`). Do not infer a complete proof,
+or a successful build, merely from the connector commit.
