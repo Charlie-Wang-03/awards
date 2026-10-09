@@ -21,7 +21,7 @@ finite Boolean-block calculation and a separate Lean check.
 namespace JSP000404Research
 namespace DirectionData
 
-private def candidateVal (i j : Fin 3) : ℝ :=
+private noncomputable def candidateVal (i j : Fin 3) : ℝ :=
   if i = 0 ∧ j = 1 then (21 : ℝ) / 10
   else if i = 0 ∧ j = 2 then (19 : ℝ) / 10
   else if i = 1 ∧ j = 2 then (1 : ℝ)
@@ -69,8 +69,27 @@ theorem candidateThreePoint_numeric_gap_exponents :
     listExponent
         (linearCyclicGapQuotients ((23 : ℝ) / 10)
           [(1 : ℝ), ((19 : ℝ) / 10)]) = 0 := by
+  have hf01 : Nat.floor ((1 : ℝ) / 5) = 0 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
+  have hf21 : Nat.floor ((21 : ℝ) / 10) = 2 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
+  have hf11 : Nat.floor ((11 : ℝ) / 10) = 1 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
+  have hf6 : Nat.floor ((6 : ℝ) / 5) = 1 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
+  have hf9 : Nat.floor ((9 : ℝ) / 10) = 0 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
+  have hf7 : Nat.floor ((7 : ℝ) / 5) = 1 := by
+    apply (Nat.floor_eq_iff (by norm_num)).2
+    norm_num
   norm_num [linearCyclicGapQuotients, successiveDiffsFrom,
     listExponent, excess]
+  simp [hf01, hf21, hf11, hf6, hf9, hf7]
 
 #print axioms candidateThreePoint_numeric_gap_exponents
 
