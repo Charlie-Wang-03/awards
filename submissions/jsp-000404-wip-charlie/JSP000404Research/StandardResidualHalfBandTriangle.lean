@@ -69,13 +69,21 @@ theorem standardResidual_intermediate_forces_subhalf_opposite_child
         ((standardResidual_iff_high D n hwidth hxv).2 hrightHigh))
     · have hsep : 1 ≤ D.value u x - D.value x v :=
         hreverse.2.2.1
-      exact ⟨hleft, hnotRight, by linarith, by rw [ht] at hbound; linarith⟩
+      have hbound' : D.value u x < (n : ℝ) + delta := by
+        calc
+          D.value u x < t := hbound
+          _ = (n : ℝ) + delta := ht
+      exact ⟨hleft, hnotRight, by linarith, by linarith⟩
   · right
     have hbound : D.value x v < t := D.belowWidth hxv
     rcases htri with hforward | hreverse
     · have hsep : 1 ≤ D.value x v - D.value u x :=
         hforward.2.2.1
-      exact ⟨hnotLeft, hright, by linarith, by rw [ht] at hbound; linarith⟩
+      have hbound' : D.value x v < (n : ℝ) + delta := by
+        calc
+          D.value x v < t := hbound
+          _ = (n : ℝ) + delta := ht
+      exact ⟨hnotLeft, hright, by linarith, by linarith⟩
     · have hhigh : (n : ℝ) ≤ D.value x v :=
         (standardResidual_iff_high D n hwidth hxv).1 hright
       have hleftHigh : (n : ℝ) ≤ D.value u x :=
