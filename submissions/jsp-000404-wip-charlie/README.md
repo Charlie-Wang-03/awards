@@ -58,7 +58,7 @@ capacity bound.
 
 ## Deliberately open bridges
 
-The remaining mathematical work is **not** hidden behind an axiom or `sorry`.
+The remaining mathematical work is **not** treated as established: admitted WIP theorems explicitly expose their `sorry` obligations; all non-WIP research proofs must remain axiom-audited and `sorry`-free.
 In particular, this branch does not yet formalize or assume:
 
 1. the final cyclic-order / ray-representation bridge completing
@@ -282,14 +282,14 @@ has admitted proof holes. The **mathematical source-closure gate remains OPEN**.
   **conditional**, no proof holes. Bridges genuine canonical planar centre
   exponents to the `2^n` lower-branch capacity under those two predicates.
 - `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`: deliberately
-  contains exactly **two executable `sorry`** at the two geometry gaps.
-  The first gap has now been narrowed to **exact non-loss** boundary
-  configurations, not all non-loss centres.
-  Its final theorem is **not proved**; `#print axioms` includes `sorryAx`.
+  now contains **one executable `sorry`** for the global completion-defect
+  payment inequality; the historical two-hole Hall-G1/G2 decomposition is
+  retained only in older audit interfaces. The theorem remains admitted and
+  `#print axioms` includes `sorryAx`.
   This is a research-only architectural assembly, not a valid award submission.
 - Incremental CI is still strictly hole-free for **all other Lean modules**.
-  Its source audit allows a maximum of two `sorry` only in the exact WIP
-  file, reports them conspicuously, and forbids `admit` everywhere.
+  Its source audit allows a maximum of two `sorry` in the named WIP
+  file (currently one), reports them conspicuously, and forbids `admit`.
 
 Even completion of this lower-branch entry will not alone establish the
 full JSP-000404 / Blumenthal classification: other parameter branches and
@@ -412,5 +412,45 @@ configurations satisfying the *additional* reindexing/cycle constraints
 has NOT been Lean-proved or Lean-disproved. G1 at the planar-specific
 level still needs a principled re-evaluation, not an attempted proof of
 the now-refuted abstract predicate. G2 shared-mass exclusion is also open.
-The WIP file retains exactly TWO explicit `sorry` placeholders and
-must not be promoted as a complete mathematical proof.
+The WIP has now been re-based to one equivalent global-payment `sorry`;
+it remains admitted and must not be promoted as a complete proof.
+
+
+### Current proof architecture — global completion payment (2026-10-09)
+
+**This section supersedes the earlier historical descriptions of G1/G2
+as the active WIP proof path.**
+
+The formally verified three-point `DirectionData` counterexample
+(`DirectionDataThreePointG1HallRefutation.lean`) has loss-free
+subset-Hall deficiency, yet saturates rather than violates the desired
+global dyadic bound. Therefore universal minimal-core exclusion at the
+bare DirectionData layer is **false**. No planar realizability claim is
+inferred from this abstract model.
+
+`PlanarLowerBranchGlobalPaymentReplacement.lean` defines the sound,
+non-Hall replacement. It proves both the implication and the precise
+equivalence between the planar lower-branch dyadic capacity and
+
+`|overlapCompletionWords| + totalDyadicProfileLoss <=
+ (2^n - |coveredCompletionWords|) + totalDyadicProfileSurplus`.
+
+Both theorems have no `sorryAx`; incremental CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/37931738861
+passed. Importantly, the equivalence proves that this is a **correct
+reformulation**, not an independent proof of the outstanding inequality.
+
+The canonical research entry `PlanarLowerBranchProofAdmittedWIP.lean`
+has been updated to use this payment interface and now contains ONE
+explicit executable `sorry`, audited by incremental CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/37932036537.
+This change does not reduce the unsolved mathematical difficulty, and
+`#print axioms` still includes `sorryAx`. Prior two-hole conditional
+interfaces remain available as historical research artefacts, but are
+not a valid route using only `DirectionData` axioms.
+
+The next genuine mathematical task is to derive nontrivial planar
+constraints that establish the global overlap/loss versus holes/surplus
+payment, rather than assuming false subset-wise Hall expansion.
+The lower and upper branch global conjectures and the source-closure
+gate remain OPEN.
