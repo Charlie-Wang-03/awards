@@ -1,4 +1,4 @@
-import JSP000404Research.PlanarLowerBranchExactNonlossBoundaryInterface
+import JSP000404Research.PlanarLowerBranchInternalResidualExactBoundaryInterface
 import Mathlib.Tactic
 
 /-!
@@ -7,9 +7,11 @@ import Mathlib.Tactic
 Exactly TWO deliberately unresolved geometric obligations are provisionally
 admitted below.  Neither is a theorem: both are Lean sorry placeholders.
 
-Gap 1 (REFINED): exclude EXACT non-loss vertices (k=projectedFree) in
-loss-free minimal deficient Hall cores. Strict non-loss-only subsets already
-satisfy Hall expansion by verified twofold completion multiplicity.
+Gap 1 (REFINED): exclude EXACT non-loss vertices (k=projectedFree)
+WITH A CORE-INTERNAL RESIDUAL-EDGE NEIGHBOUR in loss-free minimal
+Hall deficient cores. The existence of this internal residual neighbour
+is now proved for all vertices of such a core; both residual bit
+polarities necessarily occur. This is not the missing geometric exclusion.
 
 Gap 2: true planar cyclic/triangle geometry supplies a strict upper
 bound on shared words at a minimal deficient projected-loss centre,
@@ -49,10 +51,10 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_exact_nonloss_boundary
+  exact planar_lower_branch_dyadic_capacity_of_internal_residual_exact_boundary
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- OPEN GEOMETRY GAP G1-EXACT: loss-free core forbids exact non-loss.
+      -- OPEN GEOMETRY GAP G1-INTERNAL: exact non-loss with internal residual edge.
       sorry)
     (by
       -- OPEN GEOMETRY GAP G2: strict global collision-mass exclusion.
