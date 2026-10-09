@@ -768,3 +768,48 @@ inequality. Missing are a completion-*cube*-aware anchored-hole/blocker
 transition and globally injective, non-duplicating charges across ALL
 hard overlap and projected-loss carriers. No full proof or refutation
 of JSP-000404 is established.
+
+
+### Planar crossing hard-carrier safe-flip descent (2026-10-10)
+
+New formally verified file:
+`JSP000404Research/PlanarCrossingHardFlipDescent.lean`.
+
+Its theorem
+`planar_crossing_unsafe_high_mass_flip_hole_resolve_or_descend`
+lifts the pre-existing (previously not independently checked in the
+planar canonical exponent setting)
+`StandardResidualCrossingSafeFlipDescent.lean` trichotomy to actual
+injective planar `AngleCap` data. Under lower-branch
+`t=n+delta`, `0<=delta<1/2`, and ordered `u<a<v<b`,
+assume unsafe shared-completion hard carriers `uv,ab`, a matching
+retained canonical code on the central pair `a,v`, no common inactive
+retained coordinate, and high canonical exponent mass
+`n<=k(a)+k(v)`. Then there exists an oriented safe coordinate
+`c` on `a,v` and exactly the certified *inclusive* alternatives:
+
+* no vertex realizes the one-bit-flipped **canonical retained code**;
+* an interior blocker `a<w<v` creates a residual child `w,v`
+  with proven `RetainedSeparated`;
+* a rightward blocker `v<w` has the flipped code and a retained edge
+  whose colour value is **strictly below `c.val`**.
+
+The last alternative supplies a genuine bounded natural-number
+rank descent for future augmenting-path arguments. It does NOT
+establish termination of a globally compatible reassignment process,
+nor an injection into uncovered Boolean completion words: a code
+unoccupied by canonical vertex codes can still be contained in an
+unrelated retained-completion cube.
+
+CI https://github.com/Charlie-Wang-03/awards/actions/runs/37959953766
+successfully built **3353 jobs** on Lean-source commit
+`f5b60ec800b13b1debe8204dd18cdd524974f652`. The
+`#print axioms` output was `[propext, Classical.choice, Quot.sound]`
+with no `sorryAx`. The first attempt was fixed for an explicit
+versus implicit `n` parameter mismatch; the mathematical statement
+was unchanged.
+
+**Outstanding:** globally control blockers lying in completion cubes
+without canonical-code equality, and establish injective
+no-double-charge of hard overlap + projected loss against global
+holes + unspent surplus. The WIP contains one admitted `sorry`.
