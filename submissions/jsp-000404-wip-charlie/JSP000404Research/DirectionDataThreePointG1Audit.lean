@@ -128,11 +128,11 @@ noncomputable def candidateCycleTwo :
       candidateThreePointData, candidateVal]
 
 noncomputable def candidateThreeCycles (i : Fin 3) :
-    LocalDirectionCycle candidateThreePointData i := by
-  fin_cases i
-  · exact candidateCycleZero
-  · exact candidateCycleOne
-  · exact candidateCycleTwo
+    LocalDirectionCycle candidateThreePointData i :=
+  match i with
+  | 0 => candidateCycleZero
+  | 1 => candidateCycleOne
+  | 2 => candidateCycleTwo
 
 theorem candidateThreePoint_cycle_values :
     (candidateThreeCycles 0).values =
