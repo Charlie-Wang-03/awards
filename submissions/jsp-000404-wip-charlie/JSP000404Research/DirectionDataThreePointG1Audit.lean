@@ -87,9 +87,11 @@ theorem candidateThreePoint_numeric_gap_exponents :
   have hf7 : Nat.floor ((7 : ℝ) / 5) = 1 := by
     apply (Nat.floor_eq_iff (by norm_num)).2
     norm_num
+  have hf01inv : Nat.floor ((5 : ℝ)⁻¹) = 0 := by
+    simpa [one_div] using hf01
   norm_num [linearCyclicGapQuotients, successiveDiffsFrom,
     listExponent, excess]
-  simp [hf01, hf21, hf11, hf6, hf9, hf7]
+  simp [hf01inv, hf21, hf11, hf6, hf9, hf7]
 
 #print axioms candidateThreePoint_numeric_gap_exponents
 
