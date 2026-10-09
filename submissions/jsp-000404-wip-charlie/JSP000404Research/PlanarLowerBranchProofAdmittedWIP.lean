@@ -1,31 +1,30 @@
-import JSP000404Research.PlanarLowerBranchInternalResidualExactBoundaryInterface
--- Incremental CI sentinel: this WIP theorem still has two explicit geometric sorry gaps.
+import JSP000404Research.PlanarLowerBranchGlobalPaymentReplacement
 import Mathlib.Tactic
 
 /-!
-# ADMITTED RESEARCH-ONLY ENTRY: lower-branch dyadic capacity
+# ADMITTED RESEARCH-ONLY ENTRY: lower-branch global completion payment
 
-Exactly TWO deliberately unresolved geometric obligations are provisionally
-admitted below.  Neither is a theorem: both are Lean sorry placeholders.
+The earlier Hall-G1 route has been formally REFUTED at the true abstract
+DirectionData layer: see DirectionDataThreePointG1HallRefutation.lean,
+whose axioms have been checked to exclude sorryAx. Its model also
+SATISFIES the sharp dyadic capacity at equality, so the failure is
+a failure of proposed *subset* Hall expansion, not of the target theorem.
 
-Gap 1 (REFINED, **ABSTRACTLY REFUTED**): exclude EXACT non-loss
-vertices (k=projectedFree) with a core-internal residual-edge neighbour
-in loss-free minimal Hall-deficient cores. An explicit 3-point genuine
-DirectionData example shows the unrestricted G1 predicate is FALSE:
-see DirectionDataThreePointG1HallRefutation.lean (verified in incremental
-CI run 37925153278). Thus the first sorry CANNOT be discharged using
-DirectionData axioms alone; a stronger planar-specific mechanism or a
-replacement capacity strategy is necessary. No planar realizability
-conclusion is made by that finite abstract counterexample.
+This historical WIP has accordingly been redirected to the canonical
+GLOBAL completion-mass payment condition:
+  overlap + profileLoss <= BooleanHoles + profileSurplus.
 
-Gap 2: true planar cyclic/triangle geometry supplies a strict upper
-bound on shared words at a minimal deficient projected-loss centre,
-contradicting the verified |Q_v|+Delta(T) lower bound.
+Exactly ONE explicit sorry remains, and it is the entire as-yet-unproved
+global payment inequality for genuine planar point configurations.
+PlanarLowerBranchGlobalPaymentReplacement.lean proves without sorry that
+this payment is equivalent to the desired lower-branch dyadic capacity.
+Thus reducing two false/overstrong Hall-facing holes to one payment hole
+is a proof-ARCHITECTURE correction, NOT a reduction in mathematical
+difficulty and NOT a proof of JSP-000404.
 
-All other derivations are imported from already kernel-checked modules.
-This WIP theorem's #print axioms MUST contain sorryAx until both geometry
-lemmas are proved.  Do NOT submit or describe it as a proof of JSP-000404.
-This covers only the Sendov-normalized LOWER BRANCH, not the full problem.
+All theorem statements in this file remain research-only, admitted and
+ineligible for award proof submission. The general upper branch and
+source-closure obligations remain open as well.
 -/
 
 namespace JSP000404Research
@@ -34,8 +33,8 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
-/-- PROVISIONAL. Complete theorem-shaped lower-branch Lean assembly
-with only two openly admitted geometric obligations. -/
+/-- ADMITTED. The one remaining geometric payment obligation is
+equivalent to the target dyadic lower-branch capacity. -/
 theorem planar_lower_branch_dyadic_capacity_admitted_wip
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -56,15 +55,12 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_internal_residual_exact_boundary
+  exact planar_lower_branch_dyadic_capacity_of_global_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- UNSOLVED planar G1-INTERNAL. The corresponding universal
-      -- DirectionData exclusion is formally FALSE (3-point counterexample).
-      -- Do not fill this hole by assuming the abstract predicate.
-      sorry)
-    (by
-      -- OPEN GEOMETRY GAP G2: strict global collision-mass exclusion.
+      -- OPEN GEOMETRY GAP: GLOBAL WEIGHTED COMPLETION PAYMENT.
+      -- This is equivalent to the original lower-branch dyadic bound.
+      -- Its proof must arise from further genuine planar geometry.
       sorry)
 
 #print axioms planar_lower_branch_dyadic_capacity_admitted_wip
