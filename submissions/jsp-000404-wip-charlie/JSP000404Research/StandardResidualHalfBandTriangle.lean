@@ -64,7 +64,7 @@ theorem standardResidual_intermediate_forces_subhalf_opposite_child
     · have hlow : (n : ℝ) ≤ D.value u x :=
         (standardResidual_iff_high D n hwidth hux).1 hleft
       have hrightHigh : (n : ℝ) ≤ D.value x v :=
-        hlow.trans (hforward.1.trans hforward.2)
+        hlow.trans (hforward.1.trans hforward.2.1)
       exact False.elim (hnotRight
         ((standardResidual_iff_high D n hwidth hxv).2 hrightHigh))
     · have hsep : 1 ≤ D.value u x - D.value x v :=
@@ -79,7 +79,7 @@ theorem standardResidual_intermediate_forces_subhalf_opposite_child
     · have hhigh : (n : ℝ) ≤ D.value x v :=
         (standardResidual_iff_high D n hwidth hxv).1 hright
       have hleftHigh : (n : ℝ) ≤ D.value u x :=
-        hhigh.trans (hreverse.1.trans hreverse.2)
+        hhigh.trans (hreverse.1.trans hreverse.2.1)
       exact False.elim (hnotLeft
         ((standardResidual_iff_high D n hwidth hux).2 hleftHigh))
 
