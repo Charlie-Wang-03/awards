@@ -130,5 +130,92 @@ theorem planar_standardResidual_edge_narrow_terminal_angle
 
 #print axioms planar_standardResidual_edge_narrow_terminal_angle
 
+
+/-- A global cross-centre consequence: any two residual edges
+(even with disjoint endpoints) have lifted angular directions in the
+same terminal cone, whose diameter is at most delta*lambda < lambda/2.
+
+This is a TRUE angular separation inequality between different edges,
+not merely a separate top-band classification at each centre. -/
+theorem planar_standardResidual_edges_common_narrow_cone
+    {V : Type*} [Fintype V] {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (u v x y : ProjectionOrdered V)
+    (huv :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      u < v)
+    (hxy :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      x < y)
+    (hres :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      let hpos : 0 < t := by
+        rw [ht]
+        have hnR : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        linarith
+      let D := genericDirectionData_sendov hp hcap hpos hlam
+      let B := standardResidualColoring D n
+        (by rw [ht]; push_cast; linarith)
+      IsResidual B u v ∧ IsResidual B x y) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let juv : OtherVertex u := ⟨v, ne_of_gt huv⟩
+    let jxy : OtherVertex x := ⟨y, ne_of_gt hxy⟩
+    |centreForwardLiftedAngle hp u juv -
+       centreForwardLiftedAngle hp x jxy| ≤ delta * lam ∧
+      delta * lam < lam / 2 := by
+  classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+  have hpos : 0 < t := by
+    rw [ht]
+    have hnR : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have hwidth : t < ((n + 1 : ℕ) : ℝ) := by
+    rw [ht]
+    push_cast
+    linarith
+  let D := genericDirectionData_sendov hp hcap hpos hlam
+  let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
+    standardResidualColoring D n hwidth
+  have hres' : IsResidual B u v ∧ IsResidual B x y := by
+    simpa [B, D] using hres
+  let juv : OtherVertex u := ⟨v, ne_of_gt huv⟩
+  let jxy : OtherVertex x := ⟨y, ne_of_gt hxy⟩
+  let beta : ℝ := projectionAngleBase (genericProjectionSlope p)
+  let a : ℝ := centreForwardLiftedAngle hp u juv - beta
+  let b : ℝ := centreForwardLiftedAngle hp x jxy - beta
+  have ha :=
+    planar_standardResidual_edge_narrow_terminal_angle
+      hp hcap hn hdelta0 hdeltaHalf ht hlam u v huv hres'.1
+  have hb :=
+    planar_standardResidual_edge_narrow_terminal_angle
+      hp hcap hn hdelta0 hdeltaHalf ht hlam x y hxy hres'.2
+  change 0 < Real.pi - a ∧
+    Real.pi - a ≤ delta * lam ∧ delta * lam < lam / 2 at ha
+  change 0 < Real.pi - b ∧
+    Real.pi - b ≤ delta * lam ∧ delta * lam < lam / 2 at hb
+  change
+    |centreForwardLiftedAngle hp u juv -
+       centreForwardLiftedAngle hp x jxy| ≤ delta * lam ∧
+      delta * lam < lam / 2
+  constructor
+  · have hAbs : |a - b| ≤ delta * lam := by
+      apply abs_le.mpr
+      constructor <;> dsimp [a, b] at * <;> linarith
+    simpa [a, b, beta, sub_sub_sub_cancel_right] using hAbs
+  · exact ha.2.2
+
+#print axioms planar_standardResidual_edges_common_narrow_cone
+
 end ProjectionOrdered
 end JSP000404Research
