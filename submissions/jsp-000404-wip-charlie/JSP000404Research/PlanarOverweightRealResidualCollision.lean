@@ -109,7 +109,7 @@ theorem planar_overweight_has_loss_or_real_saturated_residual_collision
     funext i
     exact hexp i
   rw [hk] at hcase
-  exact hcase
+  simpa only [hexp] using hcase
 
 #print axioms planar_overweight_has_loss_or_real_saturated_residual_collision
 
