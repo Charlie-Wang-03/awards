@@ -595,3 +595,56 @@ Boolean completion words or build an injective hole/credit assignment.
 The hard payment `saturatedOverlap + profileLoss <= holes + unspentSurplus`
 remains the geometrically unproved, equivalent global task.
 The admitted lower-branch WIP still contains one executable `sorry`.
+
+
+### Half-band residual-triangle and crossing-carrier planar gap (2026-10-09)
+
+Three further source-facing modules were built and axiom-audited with
+**no `sorryAx`**, without invoking the refuted subset-Hall G1 route:
+
+- `StandardResidualInterval.lean` (previously uncompiled dependency)
+  has been repaired using explicit residual-source existential
+  witnesses and Boolean contradiction elimination. Its fundamental
+  exactly-one-child and source/sink interval theorems passed Lean CI
+  https://github.com/Charlie-Wang-03/awards/actions/runs/37945930568.
+- `StandardResidualHalfBandTriangle.lean` proves that for ordered
+  `u<x<v` with outer residual edge `uv`, when
+  `t=n+delta`, `delta<1/2`, exactly one child edge is residual;
+  the opposite child direction is **strictly below `n-1/2`** and
+  differs from the high child by at least one normalized full unit.
+  It preserves more than the old mere non-residual classification.
+  Run #37945930568, 3103 build jobs, clean axioms.
+- `StandardResidualCrossingHalfBand.lean` proves that for **ordered
+  interlaced endpoints** `u<a<v<b` with residual edges `uv`,
+  `ab`, the middle edge `av` is residual, both flank edges
+  `ua`, `vb` are non-residual, each has normalized direction
+  **`< n-1/2`**, and each is one full normalized unit below
+  the middle residual direction. Run
+  https://github.com/Charlie-Wang-03/awards/actions/runs/37946222191,
+  3104 build jobs, clean axioms. "Crossing" here is in the
+  projection order, **not** an assertion that planar segments intersect.
+- `PlanarCrossingResidualAngleSeparation.lean` applies the crossing
+  theorem to the genuine canonical planar generic projection and
+  converts the normalized gap to a *physical angular inequality*:
+  writing `phi_UA`, `phi_AV`, `phi_VB` for forward lifted
+  physical angles and `beta` for the common projection angle base,
+
+  `phi_UA + lambda <= phi_AV`, and
+  `phi_VB + lambda <= phi_AV`.
+
+  Moreover the angular distance of each flank direction to the
+  common terminal seam is **strictly greater than lambda**:
+  `lambda < pi-(phi_UA-beta)`,
+  `lambda < pi-(phi_VB-beta)`.
+  Run https://github.com/Charlie-Wang-03/awards/actions/runs/37946641373,
+  3235 build jobs, successful Lean and clean axioms.
+
+These give **quantitative four-centre geometric restrictions**
+for interlaced residual-edge carriers. They should be used in
+investigating crossing hard words and potential no-double-charge
+paying schemes, but they do NOT bound the number of overlapping
+completion words or prove an injection into global holes/unspent
+surplus. The lower-branch `PlanarLowerBranchProofAdmittedWIP.lean`
+still contains ONE executable `sorry` for the globally open
+completion-defect payment. Original JSP-000404 remains unproved
+and unrefuted.
