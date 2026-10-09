@@ -139,7 +139,10 @@ theorem genericProjection_saturated_local_band_equality
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i)
-    (hexpI : exponent i = centreExponent C t)
+    (hexpI :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      exponent i = centreExponent C t)
     (hsat :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -205,7 +208,10 @@ theorem genericProjection_saturated_wrap_rigidity
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
     (C : ProjectionCentreCycle hp i)
-    (hexpI : exponent i = centreExponent C t)
+    (hexpI :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      exponent i = centreExponent C t)
     (hsat :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
