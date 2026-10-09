@@ -142,7 +142,8 @@ theorem standardResidual_hardPair_interior_separated_both
       D n hwidth hux hxv hres with hleft | hright
   · have hretXV :
         (C.color x v).val < n := by
-      exact lt_of_not_ge hleft.2
+      by_contra hnot
+      exact hleft.2 hnot
     let c : Fin n := retainedColor C x v hretXV
     have hsepXV :
         retainedBit C x c ≠ retainedBit C v c :=
@@ -156,7 +157,8 @@ theorem standardResidual_hardPair_interior_separated_both
     · exact ⟨c, hsepXV⟩
   · have hretUX :
         (C.color u x).val < n := by
-      exact lt_of_not_ge hright.1
+      by_contra hnot
+      exact hright.1 hnot
     let c : Fin n := retainedColor C u x hretUX
     have hsepUX :
         retainedBit C u c ≠ retainedBit C x c :=
