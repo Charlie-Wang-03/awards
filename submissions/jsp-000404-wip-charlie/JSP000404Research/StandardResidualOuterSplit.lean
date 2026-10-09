@@ -1,6 +1,7 @@
 
 import JSP000404Research.StandardResidual
 import JSP000404Research.ResidualBitMerge
+import JSP000404Research.ResidualHoleInjection
 import Mathlib.Tactic
 
 /-!
@@ -75,18 +76,13 @@ theorem standardResidual_inner_not_both
         (standardResidualColoring D n hwidth) x v) := by
   intro h
   let C := standardResidualColoring D n hwidth
-  have hcolUX :
-      C.color u x = residualCoord n := by
-    apply Fin.ext
-    simpa [C, residualCoord] using
-      residual_val_eq C h.1
-  have hcolXV :
-      C.color x v = residualCoord n := by
-    apply Fin.ext
-    simpa [C, residualCoord] using
-      residual_val_eq C h.2
-  exact C.noMonoTwoPath hux hxv
-    (by rw [hcolUX, hcolXV])
+  have hvalUX : (C.color u x).val = n :=
+    residual_val_eq C h.1
+  have hvalXV : (C.color x v).val = n :=
+    residual_val_eq C h.2
+  have hcolEq : C.color u x = C.color x v :=
+    Fin.ext (hvalUX.trans hvalXV.symm)
+  exact C.noMonoTwoPath hux hxv hcolEq
 
 /-- Exact XOR rule for an interior vertex of a residual outer edge. -/
 theorem standardResidual_inner_xor
