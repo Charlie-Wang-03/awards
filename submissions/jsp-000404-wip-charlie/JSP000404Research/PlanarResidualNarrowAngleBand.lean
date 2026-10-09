@@ -212,7 +212,12 @@ theorem planar_standardResidual_edges_common_narrow_cone
   · have hAbs : |a - b| ≤ delta * lam := by
       apply abs_le.mpr
       constructor <;> dsimp [a, b] at * <;> linarith
-    simpa [a, b, beta, sub_sub_sub_cancel_right] using hAbs
+    calc
+      |centreForwardLiftedAngle hp u juv -
+          centreForwardLiftedAngle hp x jxy| = |a - b| := by
+        dsimp [a, b, beta]
+        ring
+      _ ≤ delta * lam := hAbs
   · exact ha.2.2
 
 #print axioms planar_standardResidual_edges_common_narrow_cone
