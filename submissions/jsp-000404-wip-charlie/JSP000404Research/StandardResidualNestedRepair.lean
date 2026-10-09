@@ -88,9 +88,16 @@ theorem incoming_disjoint_outgoing_of_unsafe_overlap
     (hvWord : word ∈ retainedCompletionWords C v) :
     Disjoint (incomingRetained C u) (outgoingRetained C v) := by
   classical
-  rw [← Finset.inter_eq_empty]
-  exact residualThroughColours_eq_empty_of_completion_overlap
-    C huWord hvWord
+  apply Finset.disjoint_left.mpr
+  intro c hIncoming hOutgoing
+  have hthrough : c ∈ residualThroughColours C u v :=
+    (mem_residualThroughColours C u v c).2
+      ⟨hIncoming, hOutgoing⟩
+  have hempty :=
+    residualThroughColours_eq_empty_of_completion_overlap
+      C huWord hvWord
+  rw [hempty] at hthrough
+  simpa using hthrough
 
 /-- If both cross edges of two nested unsafe-overlap carriers were unsafe,
 their lower incoming sets would coincide. -/
@@ -233,12 +240,15 @@ theorem nested_unsafe_overlap_has_safe_cross
   have hwords :
       wordUV = wordAB := by
     rw [hwordUV, hwordAB, hcharEq]
-  subst wordAB
+  have haWordUV :
+      wordUV ∈ retainedCompletionWords R a := by
+    rw [hwords]
+    exact haWord
   exact no_three_distinct_share_retained_completion
     R (ne_of_lt hua)
       (ne_of_lt (hua.trans (hab.trans hbv)))
       (ne_of_lt (hab.trans hbv))
-      huWord haWord hvWord
+      huWord haWordUV hvWord
 
 #print axioms standardResidual_nested_cross_edges
 #print axioms nested_cross_both_unsafe_force_lower_incoming_eq
