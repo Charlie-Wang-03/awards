@@ -154,7 +154,12 @@ theorem coreResidualBitSlice_opposite_demand_gt_slack
   have hDemandSplit :
       (∑ v ∈ T, d v) =
         (∑ v ∈ S, d v) + (∑ v ∈ T \ S, d v) := by
-    rw [hDecomp, Finset.sum_union hDisjoint]
+    calc
+      (∑ v ∈ T, d v) =
+          ∑ v ∈ S ∪ (T \ S), d v :=
+        congrArg (fun U : Finset V => ∑ v ∈ U, d v) hDecomp
+      _ = (∑ v ∈ S, d v) + (∑ v ∈ T \ S, d v) :=
+        Finset.sum_union hDisjoint
   have hUnionLe :
       (∑ v ∈ S, (Q v).card) ≤ (T.biUnion Q).card := by
     rw [← hSliceCard]
