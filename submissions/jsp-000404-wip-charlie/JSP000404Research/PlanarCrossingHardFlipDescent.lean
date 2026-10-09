@@ -170,7 +170,7 @@ theorem planar_crossing_unsafe_high_mass_flip_hole_resolve_or_descend
     exact hprof.2 i
   have hmain :=
     crossing_unsafe_hard_high_mass_middle_flip_hole_resolve_or_descend
-      D n hn hdeltaHalf ht hwidth k hexp hone
+      D hn hdeltaHalf ht hwidth k hexp hone
       hua hav hvb hunsafeUV hunsafeAB huWord hvWord haWord hbWord
       hmass hsame hnoCommon
   exact hmain
