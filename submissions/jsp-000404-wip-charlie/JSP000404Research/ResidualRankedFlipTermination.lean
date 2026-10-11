@@ -163,8 +163,8 @@ theorem exterior_blocker_descending_edge_not_residual
     (v w : V) (c : Fin n)
     (hdesc : (C.color v w).val < c.val) :
     ¬ IsResidual C v w := by
-  unfold IsResidual
-  exact lt_trans hdesc c.isLt
+  intro hres
+  exact hres (lt_trans hdesc c.isLt)
 
 #print axioms rankedFlipReachSteps_rank_budget
 #print axioms rankedFlipReachSteps_lt_color_count
