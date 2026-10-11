@@ -874,3 +874,54 @@ patterns and projected loss. Only after these are handled can
 `hardOverlap + loss <= holes + unspentSurplus` be discharged.
 The admitted planar lower-branch entry still contains ONE `sorry`;
 the full JSP-000404 conjecture is not yet proved or refuted.
+
+
+### Rank-zero flip and cube-only blocker closure (2026-10-11)
+
+The earlier verified planar crossing-hard flip trichotomy ends in:
+a canonical **retained-code** vacancy; a retained-separated interior
+residual child; or an exterior retained-colour blocker of smaller rank.
+It is NOT a theorem that the first outlet produces an uncovered Boolean
+**completion-cube** word, nor that the exterior edge can be re-used as a
+new residual carrier.
+
+Two new source modules isolate rigorously what follows and what does not.
+
+1. `ResidualRankedFlipTermination.lean` now proves
+   `zero_colour_flip_no_external_blocker`,
+   `zero_colour_flip_code_hole_or_separation`, and
+   `rankedFlipReach_zero_rank_terminal`.
+   At rank zero the exterior strict-descent branch is impossible; the
+   other two outlets are local and not yet globally payable.
+   Verified by fast incremental workflow
+   https://github.com/Charlie-Wang-03/awards/actions/runs/38119130475
+   on source commit `343631bad0c37c47a47ed62f189fffdf3d4ad75a`
+   (3159 jobs; no `sorryAx` in the added declarations).
+
+2. `ResidualCompletionCubeFlipCriterion.lean` proves
+   `flippedRetainedCode_mem_cube_iff_base_of_inactive`,
+   `flippedRetainedCode_global_hole_iff_active_separator`,
+   `code_hole_covered_has_inactive_disagreement`, and
+   `canonical_code_hole_global_of_full_retained_active`.
+   The key *exact* condition for an actual global hole is an
+   active-coordinate mismatch against **each** vertex's completion cube.
+   Moreover, if an unoccupied canonical flipped code is nevertheless
+   covered, some covering vertex differs in an **inactive** retained
+   coordinate. This extracts the precise hidden cube-only blocker which
+   any future geometric injection/no-double-charge proof must control.
+   The full-active corollary is explicitly conditional and cannot be
+   assumed for arbitrary planar configurations.
+   Verified by fast incremental workflow
+   https://github.com/Charlie-Wang-03/awards/actions/runs/38119367187
+   on source commit `26e4c163d5ac88af84dcde55c4a950ade99d88ab`
+   (3122 jobs; no `sorryAx` in the added declarations).
+
+**Remaining mathematical gate:** Give an AngleCap/planar-geometric argument
+that either excludes the cube-only inactive-coordinate blockers or charges
+them injectively, together with nested/noncrossing hard carriers and
+projected-loss fibres. This must prove
+`overlapCompletionWords.card + totalDyadicProfileLoss <=
+(2^n - coveredCompletionWords.card) + totalDyadicProfileSurplus`
+without assuming it. The lower-branch admitted WIP still has ONE explicit
+`sorry`, the arbitrary-cardinality source-closure gate remains open,
+and the complete JSP-000404 conjecture has not been proved or disproved.
