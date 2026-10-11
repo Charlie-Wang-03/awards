@@ -46,11 +46,18 @@ theorem unpaid_rigid_strict_lower_completion_cubes_equal
       retainedCompletionWords C p.2 ⊆
         retainedCompletionWords C p.1 :=
     hard_no_transport_upper_cube_subset_lower C hsame hrig.2
-  have hcard :
-      (retainedCompletionWords C p.1).card ≤
+  have hcardEq :
+      (retainedCompletionWords C p.1).card =
         (retainedCompletionWords C p.2).card := by
-    rw [retainedCompletionWords_card, retainedCompletionWords_card, hequal]
-  exact (Finset.eq_of_subset_of_card_le hsubset hcard).symm
+    calc
+      (retainedCompletionWords C p.1).card =
+          2 ^ projectedFree C p.1 := retainedCompletionWords_card C p.1
+      _ = 2 ^ projectedFree C p.2 :=
+        congrArg (fun k : ℕ => 2 ^ k) hequal
+      _ = (retainedCompletionWords C p.2).card :=
+        (retainedCompletionWords_card C p.2).symm
+  exact (Finset.eq_of_subset_of_card_le hsubset
+    (Nat.le_of_eq hcardEq)).symm
 
 /-- The WHOLE hard overlap face is exactly the lower endpoint's
 surplus plus the lower endpoint's target weight. The upper
@@ -92,8 +99,15 @@ theorem unpaid_rigid_strict_lower_exact_overlap_debt
         2 ^ exponent p.1 = 2 ^ projectedFree C p.1 := by
     unfold dyadicProfileSurplus
     omega
-  rw [hmass, hzero]
-  omega
+  calc
+    (carrierOverlapWords C p).card =
+        2 ^ projectedFree C p.2 := hmass
+    _ = 2 ^ projectedFree C p.1 := by rw [hequal]
+    _ = dyadicProfileSurplus exponent (projectedFree C) p.1 +
+          dyadicProfileSurplus exponent (projectedFree C) p.2 +
+            2 ^ exponent p.1 := by
+      rw [hzero]
+      omega
 
 /-- An ascending unreserved rigid carrier cannot be paid by
 the sum of its OWN two endpoint surplus budgets. -/
