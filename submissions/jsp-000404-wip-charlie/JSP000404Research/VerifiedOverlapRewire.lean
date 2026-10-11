@@ -9,6 +9,11 @@ import JSP000404Research.PlanarLowerBranchSaturatedHardReduction
 import JSP000404Research.ResidualRigidPaidDefectReduction
 import JSP000404Research.PlanarLowerBranchPaidRigidReduction
 import JSP000404Research.DirectionDataRigidHardTransportRefutation
+import JSP000404Research.ResidualUnpaidRigidExactDebt
+import JSP000404Research.ResidualUnpaidRigidPartialReservation
+import JSP000404Research.ResidualUnpaidRigidNetPaymentReduction
+import JSP000404Research.PlanarLowerBranchAscendingNetPaymentReduction
+import JSP000404Research.ResidualUnpaidHardTerminalClassification
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -24,4 +29,14 @@ unrelated historical Lean failures and is not a proof certification target.
 The admitted global-payment WIP theorem is deliberately NOT imported here.
 
 The new full-face transport proves a global singleton+soft overlap mass bound,\nbut does NOT prove that the transport-colour hypothesis always holds.\nIts destinations are still covered words.\nThe main lower-branch global payment obligation remains OPEN.
+-/
+
+/-!
+The new exact ascending-rigid net-payment chain is included in this
+SORRY-FREE independent verification umbrella. The admitted WIP remains
+excluded. Checked modules prove exact local debt, globally disjoint
+partial reservations, genuine-Boolean-word net accounting, planar
+conditional implication, and lower-saturated / transportable terminal
+classification of the still-unpaid hard carriers. They do NOT
+establish the final open planar inequality.
 -/
