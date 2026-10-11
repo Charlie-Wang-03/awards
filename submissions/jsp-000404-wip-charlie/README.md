@@ -1679,3 +1679,107 @@ equivalent to the original planar lower-branch dyadic capacity. The
 general upper branch, source-closure gate, and historical full root import
 remain unverified/broken as documented elsewhere. No complete JSP-000404
 proof, refutation, or prize-eligible submission is claimed.
+
+
+### Net ascending-rigid partial-reservation frontier (2026-10-12)
+
+**New concrete proof chain; the sole planar sorry is still OPEN.**
+
+New `ResidualUnpaidRigidExactDebt.lean` proves for an UNPAID rigid
+hard carrier `a<v` with `k(a)<nu(a)` and `k(v)<=nu(v)`:
+
+1. `Q_a = Q_v`, `nu(a)=nu(v)=k(v)`;
+2. `card(Q_a inter Q_v) = surplus(a) + surplus(v) + 2^k(a)`;
+3. `surplus(v)=0`, so the exact positive local deficit after using
+   the lower surplus is **one lower TARGET weight** `2^k(a)`.
+   Neither endpoint surplus alone or together pays the whole overlap.
+
+The three theorems were kernel-compiled at
+https://github.com/Charlie-Wang-03/awards/actions/runs/38154573428
+(3,185 tasks; printed axioms: `propext`, `Classical.choice`,
+`Quot.sound`; **no `sorryAx`**).
+
+**Global simultaneous non-reuse is certified**, not assumed.
+`ResidualUnpaidRigidPartialReservation.lean` establishes a weighted
+hard-carrier matching lemma for arbitrary nonnegative pair charges,
+then selects `A = ascendingUnpaidRigidCarriers C k`, disjoint
+from earlier whole-face paid carriers `P`. It proves
+
+`paidHardWords.card + sum_{p in A} surplus(k,nu,p.lower)
+    <= totalSurplus(k,nu)`.
+
+It further proves
+
+`sum_{p in A} card(carrierOverlapWords p)
+  = sum_{p in A} surplus(k,nu,p.lower)
+    + sum_{p in A} 2^k(p.lower)`.
+
+All three relevant axiom audits exclude `sorryAx`; CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/38154762259
+(3,186 tasks, SUCCESS).
+
+**Exact global Boolean word subtraction, not a loose cost bound.**
+`ResidualUnpaidRigidNetPaymentReduction.lean` proves the selected
+ascending-rigid Boolean overlap faces are a subset of the genuinely
+unpaid hard words, each face is globally disjoint from other such
+faces, and the selected word cardinality equals its precise
+carrier mass. Its theorem
+`completion_defect_payment_iff_after_ascending_partial_credit`
+establishes an EQUIVALENCE between the previous residual payment and
+
+`softOverlap.card
+ + (unpaidHardOverlapWords \\ ascendingUnpaidRigidWords).card
+ + sum_{p in A} 2^k(p.lower)
+ + projectedProfileLoss
+ <= BooleanHoles
+    + (totalSurplus - alreadyPaidHardMass
+                    - sum_{p in A} surplus(k,nu,p.lower))`.
+
+The inequality uses TRUE ambient Boolean holes and only NET surplus
+after BOTH globally collision-free reservations. It remains
+equivalent to the original lower-branch dyadic goal.
+Kernel build https://github.com/Charlie-Wang-03/awards/actions/runs/38154972627
+(3,187 tasks, all four printed theorems without `sorryAx`).
+
+**Genuine planar entry and sole admitted WIP updated.**
+`PlanarLowerBranchAscendingNetPaymentReduction.lean` is a fully
+checked, sorry-free `AngleCap` bridge from the above refined
+net-payment inequality to the canonical planar centre-exponent
+dyadic capacity; kernel CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/38155186676
+SUCCESS.
+The research-only `PlanarLowerBranchProofAdmittedWIP.lean`
+now uses this new bridge with its exact reduced net-payment
+condition as its **ONE AND ONLY executable `sorry`**; CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/38155326727
+SUCCESS. Its `#print axioms` still correctly includes `sorryAx`;
+a passing WIP build is NOT an unconditional proof.
+
+**Sharpened terminal hard-carrier dichotomy.**
+Under the normal one-layer residual-active profile budget,
+`ResidualUnpaidHardTerminalClassification.lean` proves that
+EVERY unpaid hard Boolean word NOT in the ascending-rigid faces has
+a hard carrier that is either:
+
+- outward/inactive-flip TRANSPORTABLE; or
+- RIGID with a projected-SATURATED **LOWER endpoint**.
+
+In particular no strictly-slack-lower rigid carrier remains wholly
+unclassified: it is now represented by the exact target-weight debt.
+CI https://github.com/Charlie-Wang-03/awards/actions/runs/38155465653
+(3,188 tasks, both printed theorems without `sorryAx`).
+
+The sorry-free independent `VerifiedOverlapRewire.lean` umbrella was
+updated to import the complete new chain, but deliberately NEVER the
+admitted WIP. The historical root `JSP000404Research.lean` and full
+legacy import remain separately unverified/broken.
+
+**Still-open genuine mathematical step:** establish from actual planar
+`AngleCap` geometry the new net payment inequality covering soft
+overlaps, transportable unpaid hard words, rigid lower-saturated
+unpaid words, the exact ascending-rigid lower target-weight debt,
+and projected-profile losses, using genuine Boolean holes and the
+remaining non-double-counted surplus. All equivalence reductions
+remain necessary accounting, not a proof of the inequality.
+Other parameter branches and Sendov/source-closure remain OPEN.
+This research is NOT ready for a prize submission.
