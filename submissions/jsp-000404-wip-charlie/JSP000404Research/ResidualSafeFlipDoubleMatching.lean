@@ -156,6 +156,84 @@ theorem doubleSafeFlipColors_card_le_interiorResidualBlockers
       (doubleSafeFlipBlockerMap_injective C hav hsame)
   simpa only [Fintype.card_coe] using hcard
 
+/-- All safe outward/inactive colours, regardless of the resulting
+completion multiplicity. -/
+noncomputable def orientedSafeFlipColors
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) : Finset (Fin n) := by
+  classical
+  exact Finset.univ.filter
+    (fun c => c ∈ outgoingRetained C a ∧
+      c ∉ retainedActive C v)
+
+@[simp] theorem mem_orientedSafeFlipColors
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) (c : Fin n) :
+    c ∈ orientedSafeFlipColors C a v ↔
+      c ∈ outgoingRetained C a ∧
+      c ∉ retainedActive C v := by
+  classical
+  simp [orientedSafeFlipColors]
+
+/-- Quantitative obstruction to ALL safe flips being doubly covered:
+if there are more oriented safe flip colours than interior residual
+vertices, then at least one flipped word is SINGLY covered.
+
+The word is still covered by v; this does NOT manufacture a Boolean
+hole or assert the missing global payment inequality. -/
+theorem safe_flip_singly_covered_of_more_colors_than_blockers
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v : V} (hav : a < v)
+    (hsame : SameRetained C a v)
+    (hlarge :
+      (interiorResidualBlockers C a v).card <
+        (orientedSafeFlipColors C a v).card) :
+    ∃ c : Fin n,
+      c ∈ outgoingRetained C a ∧
+      c ∉ retainedActive C v ∧
+      (completionFibre C (flippedRetainedCode C a c)).card = 1 := by
+  classical
+  by_contra hno
+  have hsub :
+      orientedSafeFlipColors C a v ⊆
+        doubleSafeFlipColors C a v := by
+    intro c hc
+    obtain ⟨hout, hinactive⟩ :=
+      (mem_orientedSafeFlipColors C a v c).1 hc
+    have hupper : flippedRetainedCode C a c ∈
+        retainedCompletionWords C v :=
+      sameRetained_flip_mem_inactive_upper_cube
+        C a v c hsame hinactive
+    have hv : v ∈ completionFibre C
+        (flippedRetainedCode C a c) :=
+      (mem_completionFibre C _ v).2 hupper
+    have hpos : 0 <
+        (completionFibre C (flippedRetainedCode C a c)).card :=
+      Finset.card_pos.mpr ⟨v, hv⟩
+    have htwo :
+        (completionFibre C (flippedRetainedCode C a c)).card ≤ 2 :=
+      completionFibre_card_le_two C _
+    have hnotOne :
+        (completionFibre C (flippedRetainedCode C a c)).card ≠ 1 := by
+      intro hone
+      exact hno ⟨c, hout, hinactive, hone⟩
+    have hcard : (completionFibre C
+        (flippedRetainedCode C a c)).card = 2 := by
+      omega
+    exact (mem_doubleSafeFlipColors C a v c).2
+      ⟨hout, hinactive, hcard⟩
+  have hle :=
+    Finset.card_le_card hsub
+  have hblock :=
+    doubleSafeFlipColors_card_le_interiorResidualBlockers
+      C hav hsame
+  omega
+
+#print axioms safe_flip_singly_covered_of_more_colors_than_blockers
+
 #print axioms doubleSafeFlipColor_has_interior_blocker
 #print axioms doubleSafeFlipBlockerMap_color
 #print axioms doubleSafeFlipBlockerMap_injective
