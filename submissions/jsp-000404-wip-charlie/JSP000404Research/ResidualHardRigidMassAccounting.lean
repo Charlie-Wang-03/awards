@@ -216,6 +216,65 @@ theorem rigid_hard_overlap_paid_by_lower_surplus_of_strict_dimension
   unfold dyadicProfileSurplus
   exact hpow.trans hhalf
 
+/-- SHARP remaining single-carrier obstruction to paying a rigid
+hard overlap by the LOWER endpoint's dyadic surplus alone:
+either the endpoint free dimensions are equal, or the lower
+exponent consumes the entire lower projected-free dimension.
+
+No assumption that these possibilities are globally impossible
+is made. The conclusion requires no exponent budget hypothesis;
+with the usual exponent ≤ projected-free budget, the second
+alternative is exact saturation. -/
+theorem rigid_hard_unpaid_implies_equal_free_or_lower_nonstrict
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {a v : V}
+    (hsame : SameRetained C a v)
+    (hno : ¬ HasOutgoingHardTransport C a v)
+    (hunpaid : ¬
+      ((retainedCompletionWords C a ∩
+        retainedCompletionWords C v).card ≤
+          dyadicProfileSurplus exponent (projectedFree C) a)) :
+    projectedFree C v = projectedFree C a ∨
+      projectedFree C a ≤ exponent a := by
+  have hle := hard_no_transport_upper_free_le_lower_free
+    C hsame hno
+  by_cases heq : projectedFree C v = projectedFree C a
+  · exact Or.inl heq
+  · right
+    by_contra hnot
+    have hdim : projectedFree C v < projectedFree C a := by omega
+    have hstrict : exponent a < projectedFree C a := by omega
+    exact hunpaid
+      (rigid_hard_overlap_paid_by_lower_surplus_of_strict_dimension
+        C exponent hsame hno hdim hstrict)
+
+/-- Under the projected-free profile budget, every rigid face not
+paid by its lower endpoint has EITHER equal free dimensions
+OR a projected-SATURATED lower endpoint. -/
+theorem rigid_hard_unpaid_implies_equal_free_or_lower_saturated
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {a v : V}
+    (hsame : SameRetained C a v)
+    (hno : ¬ HasOutgoingHardTransport C a v)
+    (hbudget : exponent a ≤ projectedFree C a)
+    (hunpaid : ¬
+      ((retainedCompletionWords C a ∩
+        retainedCompletionWords C v).card ≤
+          dyadicProfileSurplus exponent (projectedFree C) a)) :
+    projectedFree C v = projectedFree C a ∨
+      exponent a = projectedFree C a := by
+  rcases rigid_hard_unpaid_implies_equal_free_or_lower_nonstrict
+      C exponent hsame hno hunpaid with heq | hge
+  · exact Or.inl heq
+  · exact Or.inr (by omega)
+
+#print axioms rigid_hard_unpaid_implies_equal_free_or_lower_nonstrict
+#print axioms rigid_hard_unpaid_implies_equal_free_or_lower_saturated
+
 #print axioms hard_overlap_words_eq_transportable_union_rigid
 #print axioms rigid_transportable_hard_overlap_words_disjoint
 #print axioms hard_overlap_card_eq_transportable_add_rigid
