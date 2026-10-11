@@ -813,3 +813,64 @@ was unchanged.
 without canonical-code equality, and establish injective
 no-double-charge of hard overlap + projected loss against global
 holes + unspent surplus. The WIP contains one admitted `sorry`.
+
+
+### Finite-colour blocker rank audit, NOT yet a closed augmenting path (2026-10-11)
+
+At the current active source head, `PlanarCrossingHardFlipDescent.lean`
+already proves a one-step planar crossing flip trichotomy: the flipped
+retained CODE is unoccupied, an interior blocker yields a retained-
+separated residual edge, or an external blocker appears to the right
+with a lower retained edge colour. Its Lean CI passed on commit
+`f5b60ec800b1` (run
+https://github.com/Charlie-Wang-03/awards/actions/runs/37959953766).
+
+The new `ResidualRankedFlipTermination.lean` isolates the missing
+well-foundedness logic and quantitative cost:
+
+- `rankedFlipReach_terminal`: for an abstract transition relation
+  whose every step decreases rank in `Fin n`, every starting state
+  reaches a state with **no successor**.
+- `rankedFlipReach_eventually_terminal`: if a terminal predicate
+  additionally satisfies **actual progress/transition closure** at
+  every nonterminal state, a terminal state is reached. This
+  progress hypothesis is explicit, not silently assumed.
+- `no_unbounded_strict_colour_blocker_descent`: no infinite
+  strictly descending sequence of values in `Fin n`.
+- `rankedFlipReachSteps_rank_budget`: any sequence with `steps`
+  genuine decreasing transitions obeys
+
+  `(rank endpoint).val + steps <= (rank start).val`.
+
+  Hence `rankedFlipReachSteps_lt_color_count` proves
+  `steps < n`. This is a **conditional** upper bound on valid
+  transitions, not a guarantee that the actual blocker geometry
+  supplies another transition.
+- `exterior_blocker_descending_edge_not_residual`: whenever
+  an external blocker yields `(C.color v w).val < c.val`
+  with `c : Fin n`, the edge `v--w` is **not residual**:
+  its colour is in the retained range `<n`. Therefore the
+  raw external edge is *not* immediately reusable as another
+  residual hard-overlap state. A new geometrically valid
+  transition/reanchoring lemma is genuinely necessary.
+
+The original three ranking theorems passed
+https://github.com/Charlie-Wang-03/awards/actions/runs/38118310246
+(3159 jobs, no `sorryAx`). The quantitative step-budget and
+non-residual-edge extension passed
+https://github.com/Charlie-Wang-03/awards/actions/runs/38118550603
+(3159 jobs, no `sorryAx`). The latter non-residual result has
+**zero axioms**.
+
+**Remaining gaps (do not conflate):**
+(1) transition closure from an external retained-colour blocker to a
+new admissible state with a lower `Fin n` rank;
+(2) proof that a terminal step produces a globally unoccupied
+COMPLETION word or a reusable, injectively charged surplus/defect
+payment, rather than merely an unoccupied canonical retained code
+or a local retained-separated edge;
+(3) consistency across *all* carriers, including nested/noncrossing
+patterns and projected loss. Only after these are handled can
+`hardOverlap + loss <= holes + unspentSurplus` be discharged.
+The admitted planar lower-branch entry still contains ONE `sorry`;
+the full JSP-000404 conjecture is not yet proved or refuted.
