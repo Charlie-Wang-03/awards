@@ -1491,3 +1491,136 @@ mathematical goal; no proof/disproof or prize-eligible
 complete submission is claimed. The historical full legacy
 Lean import target remains separately broken; only the
 named verified entrypoints above are claimed green.
+
+
+### Expanded hard matching and saturated-hard remainder (2026-10-11)
+
+**A strictly stronger already-paid overlap class.**
+The earlier one-sided rigid-face payment has been extended from
+one lower-endpoint surplus to TWO-ENDPOINT surplus and then
+to ALL hard residual carriers. The crucial mathematical fact is
+that hard retained-code carrier pairs are VERTEX DISJOINT:
+neither two lower endpoints nor two upper endpoints can repeat,
+and a residual upper endpoint cannot be any residual lower
+endpoint (this would give a forbidden two-step residual path).
+
+In `ResidualRigidTwoEndpointSurplusPacking.lean`, the theorem
+`sum_twoEndpointPayableRigidMass_le_totalSurplus` pays a
+complete rigid face when (1) it has a wider strictly-slack
+lower endpoint OR (2) its endpoint free dimensions are equal
+and BOTH endpoints are strictly slack.
+No endpoint surplus is double-counted. Kernel CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38149337075
+(3180 jobs, no sorryAx).
+
+`ResidualAllHardSurplusPacking.lean` derives the generic
+`hard_carrier_subset_paid_by_pair_surplus` matching principle.
+It defines `surplusPayableHardCarrierPairs` containing:
+* ANY hard carrier with BOTH endpoints projected-strict, even
+  if it is NOT rigid and has no canonical flip mechanism;
+* rigid nested carriers with a STRICTLY larger lower free
+  dimension and strictly-slack lower endpoint.
+
+Their COMPLETE overlapping Boolean-face mass satisfies
+`sum_surplusPayableHardMass_le_totalSurplus` with globally
+disjoint endpoint surplus accounts.
+Under the standard vertex projected-free profile budgets,
+`hard_not_payable_implies_endpoint_saturation` proves that
+each carrier outside this class has AT LEAST ONE projected
+saturated endpoint. Kernel CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38149542281
+(3181 jobs, no sorryAx).
+
+**Actual global surplus reservation and exact unpaid-words
+decomposition.** In `ResidualAllHardPaidDefectReduction.lean`,
+`surplusPaidHardOverlapWords` is the union of the complete
+overlap intersection faces of ALL surplus-payable hard carriers.
+Because the carriers uniquely own overlap words,
+
+`card(surplusPaidHardOverlapWords) =
+  sum_{p ∈ surplusPayableHardCarrierPairs}
+  card(carrierOverlapWords(p))`,
+
+and this cardinality is at most the **total original profile
+surplus**. The earlier one-sided rigid reservation is INCLUDED
+as a literal subset. The universal original payment is equivalent
+to
+
+`card(afterAllHardPaymentOverlapWords) + profileLoss
+  <= BooleanHoles
+     + (totalSurplus-card(surplusPaidHardOverlapWords))`.
+
+The subtraction on the right RESERVES the exact paid amount
+and prevents later proof steps from reusing it. Kernel CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38149727925
+(3182 jobs, no sorryAx).
+
+`ResidualSaturatedHardRemainder.lean` further proves a
+DISJOINT, exact Boolean-word partition
+
+`afterAllHardPaymentOverlapWords =
+  softOverlapCompletionWords ∪ unpaidHardOverlapWords`,
+
+so the ONLY remaining overlap count is
+
+`card(softOverlapCompletionWords)
+   + card(unpaidHardOverlapWords)`.
+
+Every unpaid hard Boolean word has a unique hard residual
+carrier NOT in the surplus-paid class. Under
+`∀v, exponent(v)≤n` and the one-layer active-colour budget
+`card(active(v))≤n-exponent(v)+1`, that unique carrier MUST
+have at least one projected-saturated endpoint:
+`unpaidHardWord_has_saturated_endpoint`.
+These are explicit premises of the saturation theorem; the
+general Boolean partition itself has NO such premises.
+Kernel CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38150019688
+(3183 jobs, no sorryAx).
+
+**Real planar bridge and single admitted WIP.**
+`PlanarLowerBranchSaturatedHardReduction.lean` is a
+SORRY-FREE kernel-checked planar implication from precisely
+
+`card(softOverlapWords) + card(unpaidHardWords) + profileLoss
+  <= BooleanHoles
+    + (totalSurplus-card(surplusPaidHardOverlapWords))`
+
+to the lower-branch dyadic capacity. It is STILL logically
+equivalent to the previously open lower-branch payment and
+DOES NOT assert this narrowed payment as a theorem.
+CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38150147747
+(3355 jobs; imported chain clean).
+
+The sole admitted
+`PlanarLowerBranchProofAdmittedWIP.lean` was actually
+rewired to use the newer bridge with precisely ONE remaining
+executable `sorry`. Its build succeeded:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38150332856
+(3356 jobs). IMPORTANT: `#print axioms` on this admitted
+WIP DOES report `sorryAx`, as expected. A successful
+compilation of an admitted theorem is NOT a proof.
+
+The separate `VerifiedOverlapRewire.lean` entrypoint
+imports the new unpaid-hard reduction AND its non-admitted
+planar bridge, while EXCLUDING the WIP. It builds successfully:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38150496576
+(3423 jobs, no source errors).
+
+**Precise still-open mathematical frontier:**
+Remaining payment concerns (i) SOFT overlap words,
+(ii) HARD overlap words whose unique carrier is not
+surplus-payable and, under the one-layer budget, has a
+projected-saturated endpoint, (iii) projected profile LOSS,
+all payable only with TRUE ambient Boolean holes and
+surplus NET of all already paid hard faces. No local
+singleton-completion word is counted as a Boolean hole.
+The 3-point abstract DirectionData countermodel still
+shows that requiring EVERY hard carrier to have an
+outgoing/inactive flip is FALSE at that abstraction level.
+
+This is a proper division and independent certification
+of the easy hard-overlap MASS, but it does NOT close the
+global geometry. The original JSP-000404 conjecture,
+its upper branch, and general source closure remain OPEN.
