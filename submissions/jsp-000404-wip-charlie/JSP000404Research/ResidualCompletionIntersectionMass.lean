@@ -189,6 +189,37 @@ theorem overlapCompletionWords_card_eq_sum_boolean_face_mass
   intro q _
   exact retainedCompletionWords_inter_card_eq_if C q.1 q.2
 
+/-- The exact global projected/target mass identity with NO abstract
+overlap symbol remaining: all overlap mass is attached to the
+unique residual edge of each doubled Boolean word.
+
+The open mathematical task is to bound the residual-edge face sum
+plus profile losses by actual Boolean holes plus profile surplus. -/
+theorem dyadic_profile_exact_balance_residual_edge_faces
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    (∑ v, 2 ^ exponent v) +
+        totalDyadicProfileSurplus exponent (projectedFree C) =
+      (coveredCompletionWords C).card +
+        (∑ q ∈ retainedOverlapEdges C,
+          if (retainedCompletionWords C q.1 ∩
+              retainedCompletionWords C q.2).Nonempty then
+            2 ^ (n -
+              (retainedActive C q.1 ∪ retainedActive C q.2).card)
+          else 0) +
+        totalDyadicProfileLoss exponent (projectedFree C) := by
+  have h :=
+    residual_projection_accounting_balance
+      exponent (projectedFree C)
+      (coveredCompletionWords C).card
+      (overlapCompletionWords C).card
+      (projectedFree_mass_eq_covered_add_overlap C)
+  rw [overlapCompletionWords_card_eq_sum_boolean_face_mass C] at h
+  exact h
+
+#print axioms dyadic_profile_exact_balance_residual_edge_faces
+
 #print axioms overlapCompletionWords_card_eq_sum_boolean_face_mass
 
 #print axioms fixedCoordinateWords_card
