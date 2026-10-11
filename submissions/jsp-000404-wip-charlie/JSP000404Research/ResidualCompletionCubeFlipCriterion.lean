@@ -68,6 +68,51 @@ theorem flippedRetainedCode_global_hole_iff_active_separator
     obtain ⟨d, hd, hne⟩ := hsep w
     exact hne ((mem_retainedCompletionWords C w _).1 hw d hd)
 
+/-- An occupied completion word whose exact flipped CANONICAL CODE is
+unrealized must be covered by some other vertex solely through a retained
+INACTIVE coordinate: the vertex agrees on every active coordinate but differs
+on at least one inactive coordinate. This isolates the genuine cube-only
+blocker which the rank descent trichotomy does not address. -/
+theorem code_hole_covered_has_inactive_disagreement
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a : V) (c : Fin n)
+    (hcodehole :
+      ¬ ∃ w : V, (fun d => retainedBit C w d) =
+        flippedRetainedCode C a c)
+    (hcovered :
+      flippedRetainedCode C a c ∈ coveredCompletionWords C) :
+    ∃ w : V, ∃ d : Fin n,
+      flippedRetainedCode C a c ∈ retainedCompletionWords C w ∧
+      d ∉ retainedActive C w ∧
+      flippedRetainedCode C a c d ≠ retainedBit C w d := by
+  classical
+  obtain ⟨w, hfw⟩ :=
+    (mem_coveredCompletionWords C _).1 hcovered
+  have hwcube :
+      flippedRetainedCode C a c ∈ retainedCompletionWords C w :=
+    (mem_completionFibre C _ w).1 hfw
+  have hneq :
+      (fun d => retainedBit C w d) ≠
+        flippedRetainedCode C a c := by
+    intro heq
+    exact hcodehole ⟨w, heq⟩
+  have hdiff :
+      ∃ d : Fin n,
+        retainedBit C w d ≠ flippedRetainedCode C a c d := by
+    by_contra hnone
+    push_neg at hnone
+    apply hneq
+    funext d
+    exact hnone d
+  obtain ⟨d, hdiff⟩ := hdiff
+  have hinactive : d ∉ retainedActive C w := by
+    intro hd
+    have heq :=
+      (mem_retainedCompletionWords C w _).1 hwcube d hd
+    exact hdiff heq.symm
+  exact ⟨w, d, hwcube, hinactive, hdiff.symm⟩
+
 /-- Canonical-code vacancy WOULD imply a global hole if every vertex fixed
 all retained coordinates. The full-activity premise is deliberately explicit:
 it is not available for the general JSP-000404 lower branch. -/
@@ -96,6 +141,7 @@ theorem canonical_code_hole_global_of_full_retained_active
 
 #print axioms flippedRetainedCode_mem_cube_iff_base_of_inactive
 #print axioms flippedRetainedCode_global_hole_iff_active_separator
+#print axioms code_hole_covered_has_inactive_disagreement
 #print axioms canonical_code_hole_global_of_full_retained_active
 
 end OrderedEdgeColoring
