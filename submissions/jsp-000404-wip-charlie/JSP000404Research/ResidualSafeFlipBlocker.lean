@@ -26,7 +26,9 @@ w from v.  Otherwise v<w.  Thus an occupied safe-coordinate flip either
 resolves the hard collision inside the interval or moves strictly to the
 right.
 
-This is the monotone augmenting mechanism needed for a Boolean-hole proof.
+This is a local monotone blocker mechanism, NOT a Boolean-hole proof.
+For an oriented safe flip, the upper endpoint's retained completion cube
+always contains the flipped word: see ResidualSafeFlipCubeObstruction.lean.
 -/
 
 namespace JSP000404Research
@@ -241,10 +243,12 @@ theorem safeFlip_blocker_resolves_or_after_upper
       (hblock.1 (hsame c).symm)
   · exact Or.inr hvw
 
-/-- Every safe-oriented coordinate has one of three outcomes: its one-bit
-neighbour is a genuine Boolean hole, it is occupied by an interior blocker
-which resolves the hard residual edge, or it is occupied strictly to the
-right of the upper endpoint. -/
+/-- Every safe-oriented coordinate has one of three outcomes:
+its one-bit-flipped canonical retained code is unoccupied by VERTEX CODES
+(but the word still belongs to the upper vertex's COMPLETION CUBE),
+an interior blocker resolves the hard residual edge, or an occupied
+canonical flip lies to the right of the upper endpoint. No global Boolean
+hole is asserted by the first alternative. -/
 theorem safeFlip_hole_or_resolves_or_after_upper
     {V : Type*} [LinearOrder V] [Fintype V]
     {width : ℝ}
