@@ -925,3 +925,59 @@ projected-loss fibres. This must prove
 without assuming it. The lower-branch admitted WIP still has ONE explicit
 `sorry`, the arbitrary-cardinality source-closure gate remains open,
 and the complete JSP-000404 conjecture has not been proved or disproved.
+
+
+### Formal no-go for direct Boolean-hole payment by an oriented safe flip (2026-10-11)
+
+**Critical mathematical correction (kernel-checked).** An oriented safe
+retained flip of a same-retained hard pair `a,v` at colour `c` satisfies
+`c ∈ outgoingRetained B a` and `c ∉ retainedActive B v`.
+Independently of the other geometry, the flipped canonical code
+`flippedRetainedCode B a c` MUST lie in the upper endpoint's completion
+cube `retainedCompletionWords B v` because every active coordinate
+of `v` agrees with the lower endpoint's retained canonical bit and
+the single differing coordinate `c` is inactive at `v`.
+
+Consequently this word ALWAYS lies in `coveredCompletionWords B` and
+CANNOT pay a global Boolean-hole term. It simultaneously lies OUTSIDE
+the lower endpoint's cube because `c` is outgoing (hence active)
+at `a`. Thus the local safe flip **migrates between cubes** rather than
+creating an uncovered word. This remains true even if *no vertex*
+realizes the flipped exact canonical code. No extra AngleCap or Hall
+assumption is used to obtain this negative result.
+
+New kernel-checked module:
+`JSP000404Research/ResidualSafeFlipCubeObstruction.lean`.
+
+Its six base declarations are:
+- `sameRetained_flip_mem_inactive_upper_cube`
+- `sameRetained_flip_upper_cube_only_disagreement`
+- `sameRetained_flip_always_globally_covered`
+- `outgoing_flip_exits_lower_completion_cube`
+- `oriented_safe_flip_migrates_cubes_not_global_hole`
+- `oriented_safe_flip_code_vacancy_not_global_hole`
+
+They passed fast incremental CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/38119910670
+(3123 jobs, no `sorryAx`).
+
+The follow-on declaration `zero_rank_safe_flip_cannot_pay_boolean_hole`
+combines this obstruction with the previously established rank-zero
+trichotomy: the terminal local outlet is a **code vacancy** or a
+retained-separated interior edge, and the flipped code is still
+**globally covered**. It passed targeted CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/38120077115.
+
+**Implication for proof strategy:** A direct injection
+`oriented-safe-flip ⇒ uncovered Boolean word` is not merely
+unproven; it contradicts the existing formal definitions. Any successful
+global payment proof must instead use a genuinely global reassignment,
+surplus/defect compensation, or another geometric mechanism controlling
+the fixed union of completion cubes. Strict colour rank descent alone
+cannot fill this gap. The source comment of
+`ResidualSafeFlipBlocker.lean` that previously called a canonical-code
+vacancy a "genuine Boolean hole" has been corrected.
+
+The single admitted global-payment `sorry` in
+`PlanarLowerBranchProofAdmittedWIP.lean` remains OPEN, and the original
+JSP-000404 conjecture remains neither proved nor disproved.
