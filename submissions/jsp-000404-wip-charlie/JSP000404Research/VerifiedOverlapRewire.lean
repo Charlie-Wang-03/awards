@@ -4,6 +4,9 @@ import JSP000404Research.ResidualCompletionIntersectionMass
 import JSP000404Research.ResidualSafeFlipDoubleMatching
 import JSP000404Research.ResidualHardSoftOverlapPartition
 import JSP000404Research.ResidualHardFaceGlobalTransport
+import JSP000404Research.ResidualRigidPaidDefectReduction
+import JSP000404Research.PlanarLowerBranchPaidRigidReduction
+import JSP000404Research.DirectionDataRigidHardTransportRefutation
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
