@@ -64,6 +64,7 @@ theorem unrestricted_support_failure_equivalence_refuted :
   have hright :
       floorExcess excessAuditB < floorExcess excessAuditQ := by
     rw [excessAudit_q, excessAudit_b]
+    omega
   have hleft := hiff.mpr hright
   rw [excessAudit_q, excessAudit_support] at hleft
   omega
