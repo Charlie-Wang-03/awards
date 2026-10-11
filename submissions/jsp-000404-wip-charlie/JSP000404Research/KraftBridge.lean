@@ -1,4 +1,5 @@
 import JSP000404Research.WeightedDefect
+import Mathlib.Tactic
 
 /-!
 # Partial-cube certificate for the sharp Sendov capacity
@@ -54,7 +55,8 @@ theorem pow_deficit_eq {k exponent ell : ℕ}
     (hell : ell = k - exponent) :
     2 ^ (k - ell) = 2 ^ exponent := by
   subst ell
-  rw [Nat.sub_sub_cancel hexponent]
+  have hcancel : k - (k - exponent) = exponent := by omega
+  rw [hcancel]
 
 /-- Hence a certificate with `ell v = k - exponent v` directly bounds the
 sum of the cluster weights `2^(exponent v)`. -/
