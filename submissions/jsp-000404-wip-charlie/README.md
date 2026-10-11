@@ -1114,3 +1114,94 @@ The allowed research WIP still contains the single explicit
 The global completion-payment inequality and the original JSP-000404
 problem remain **OPEN**. Local injectivity and a corrected auxiliary
 iff do not justify replacing this `sorry`.
+
+
+### Globally injective hard-to-soft overlap words (2026-10-11, follow-on)
+
+**Global injectivity across ALL source pairs.** The newly verified
+`JSP000404Research/ResidualGlobalSafeFlipMatching.lean` derives from
+completion multiplicity ≤ 2 that two increasing `SameRetained C a v`
+source pairs sharing upper endpoint `v` must share the lower
+endpoint `a`. An oriented safe flip of a hard source
+`(a,v,c)` whose word remains doubly covered transfers to a
+genuinely intersecting residual cube pair `(w,v)`, where
+`a < w < v` and `C.color a w = c.castSucc`.
+The upper endpoint identifies `a`; the edge colour identifies
+`c`. Consequently source triples from *different* hard pairs
+cannot double-charge the same residual overlap carrier:
+
+`globalDoubledSafeFlipOverlapEdge_injective`.
+
+More strongly, the target edge `(w,v)` cannot be another
+same-retained hard pair, since that would place three distinct
+vertices in the same retained canonical-code fibre. The actual
+global injective target set is
+`softOverlapCarrierPairs`, not all residual carrier pairs:
+
+`globalDoubledSafeFlipSoftOverlapEdge_injective`,
+`globalDoubledSafeFlips_card_le_softOverlapCarrierPairs`.
+
+Kernel-verified incremental Lean builds:
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38129907921
+  (3168 jobs; global residual carrier injection).
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38130165074
+  (3168 jobs; stronger soft-carrier injection).
+
+**Global Boolean-WORD injection.**
+`JSP000404Research/ResidualGlobalSoftOverlapWordCharge.lean`
+shows equal flipped words must have equal unique ordered residual
+carriers, so carrier injectivity implies *word* injectivity:
+
+`globalDoubledSafeFlipToSoftWord_injective`.
+
+Every output word is still DOUBLY COVERED (by the soft residual
+carrier), hence this is a global overlap-to-overlap displacement,
+not an uncovered Boolean word:
+
+`(globalDoubledSafeFlips C).card ≤
+(softOverlapCompletionWords C).card`.
+
+Verified in
+https://github.com/Charlie-Wang-03/awards/actions/runs/38130317381
+(3170 jobs).
+
+**Disjoint global hard/soft overlap mass.**
+`JSP000404Research/ResidualHardSoftOverlapPartition.lean`
+partitions all overlap words by the uniquely determined pair of
+completion-cube owners:
+
+`overlapCompletionWords C =
+hardOverlapCompletionWords C ∪ softOverlapCompletionWords C`,
+
+and formally proves the parts are disjoint. Therefore
+
+`(overlapCompletionWords C).card =
+(hardOverlapCompletionWords C).card +
+(softOverlapCompletionWords C).card`.
+
+The global word injection then gives the new certified charge
+constraint
+
+`(globalDoubledSafeFlips C).card +
+(hardOverlapCompletionWords C).card ≤
+(overlapCompletionWords C).card`.
+
+Verified in
+https://github.com/Charlie-Wang-03/awards/actions/runs/38130469148
+(3171 jobs). The isolated `VerifiedOverlapRewire.lean` library
+entrypoint imports ALL three new modules and built successfully
+with 3370 jobs:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38130629626.
+All added printed axioms exclude `sorryAx`.
+
+**Remaining exact obstruction.** This does not prove an
+overlap-to-Boolean-HOLE injection, nor payment of a projected-loss
+vertex. It controls the *count* of distinct doubled safe-flip source
+triples, not the total weighted dyadic mass of arbitrary hard
+completion intersections. A new planar/geometric lower bound on
+available source safe-flip multiplicity or independent global
+surplus/hole credits is necessary before these inequalities can
+close the desired `overlap + loss ≤ holes + surplus` step.
+The admitted lower-branch WIP, upper branch, and general source
+closure remain open. No upstream award PR or unqualified
+complete-proof claim follows from this module.
