@@ -65,6 +65,7 @@ theorem compensated_induction_of_gain_closed_core
     (hind : ∀ r ∈ S,
       ∑ j ∈ Finset.univ.erase r, 2 ^ after r j ≤ bound) :
     ∑ j : V, 2 ^ exponent j ≤ bound := by
+  classical
   obtain ⟨r, hrS, i, hiS, hir, hgri, hweight⟩ :=
     exists_payable_gain_edge exponent gain S hS hclosed
   apply compensated_deletion_of_single_gain
