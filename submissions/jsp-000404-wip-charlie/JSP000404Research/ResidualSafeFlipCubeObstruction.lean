@@ -1,5 +1,6 @@
 import JSP000404Research.ResidualCompletionCubeFlipCriterion
 import JSP000404Research.RetainedOrientation
+import JSP000404Research.ResidualRankedFlipTermination
 import Mathlib.Tactic
 
 /-!
@@ -124,6 +125,44 @@ theorem oriented_safe_flip_code_vacancy_not_global_hole
         flippedRetainedCode C a c) :
     flippedRetainedCode C a c ∈ coveredCompletionWords C :=
   sameRetained_flip_always_globally_covered C a v c hsame hcInactive
+
+/-- At zero retained colour rank the strictly descending exterior
+blocker is impossible. Nonetheless the first surviving outlet is only a
+canonical-code vacancy, and its Boolean word is PROVABLY covered by v's
+completion cube. The other outlet is a locally separated residual edge.
+
+This connects the ranked-descent result to the actual completion-cube
+accounting obstruction, rather than confusing the two notions of hole. -/
+theorem zero_rank_safe_flip_cannot_pay_boolean_hole
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) (c : Fin n)
+    (hzero : c.val = 0)
+    (hsame : SameRetained C a v)
+    (hcInactive : c ∉ retainedActive C v)
+    (houtlet :
+      (¬ ∃ w : V,
+        (fun d => retainedBit C w d) = flippedRetainedCode C a c) ∨
+      (∃ w : V,
+        a < w ∧ w < v ∧
+        IsResidual C w v ∧ RetainedSeparated C w v) ∨
+      (∃ w : V,
+        v < w ∧
+        (fun d => retainedBit C w d) = flippedRetainedCode C a c ∧
+        (C.color v w).val < c.val)) :
+    flippedRetainedCode C a c ∈ coveredCompletionWords C ∧
+      ((¬ ∃ w : V,
+        (fun d => retainedBit C w d) = flippedRetainedCode C a c) ∨
+      (∃ w : V,
+        a < w ∧ w < v ∧
+        IsResidual C w v ∧ RetainedSeparated C w v)) := by
+  constructor
+  · exact sameRetained_flip_always_globally_covered
+      C a v c hsame hcInactive
+  · exact zero_colour_flip_code_hole_or_separation
+      C a v c hzero houtlet
+
+#print axioms zero_rank_safe_flip_cannot_pay_boolean_hole
 
 #print axioms sameRetained_flip_mem_inactive_upper_cube
 #print axioms sameRetained_flip_upper_cube_only_disagreement
