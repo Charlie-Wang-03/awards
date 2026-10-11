@@ -36,7 +36,7 @@ theorem completion_word_pair_covers_only_endpoints
   · exact Or.inr hwv
   exact False.elim
     (no_three_distinct_share_retained_completion
-      C huv hwu.symm hwv.symm hu hv hw)
+      C huv (Ne.symm hwu) (Ne.symm hwv) hu hv hw)
 
 /-- An overlapping completion word determines its increasing
 pair of covering vertices uniquely, without choice of witnesses. -/
