@@ -1623,3 +1623,8 @@ import JSP000404Research.ResidualLossExtremeStructural
 import JSP000404Research.ResidualSaturatedGlobalTransition
 
 import JSP000404Research.ResidualSafeSaturatedTransition
+
+-- Kernel-verified completion-cube overlap rewiring and planar hard-pair lift.
+-- No admitted WIP theorem is imported by these two modules.
+import JSP000404Research.ResidualCompletionOverlapRewire
+import JSP000404Research.PlanarCrossingHardOverlapRewire
