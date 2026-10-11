@@ -107,6 +107,69 @@ theorem no_unbounded_strict_colour_blocker_descent
   have hlimit := (colour 0).isLt
   omega
 
+
+/-- A length-indexed record of a sequence of admissible blocker steps. -/
+inductive RankedFlipReachSteps {S : Type*}
+    (step : S → S → Prop) : S → S → ℕ → Prop where
+  | refl (s : S) : RankedFlipReachSteps step s s 0
+  | cons {s u v : S} {steps : ℕ} :
+      step s u →
+      RankedFlipReachSteps step u v steps →
+      RankedFlipReachSteps step s v (steps + 1)
+
+/-- Every genuine chain spends at least one unit of finite colour rank
+per step. In particular, the endpoint's remaining rank cannot become
+negative; no claim of transition closure is made here. -/
+theorem rankedFlipReachSteps_rank_budget
+    {S : Type*} {n : ℕ}
+    (rank : S → Fin n)
+    (step : S → S → Prop)
+    (hdecrease : ∀ s u, step s u →
+      (rank u).val < (rank s).val)
+    {start endpoint : S} {steps : ℕ}
+    (hpath : RankedFlipReachSteps step start endpoint steps) :
+    (rank endpoint).val + steps ≤ (rank start).val := by
+  induction hpath with
+  | refl s =>
+      omega
+  | @cons s u v steps hsu hrest ih =>
+      have hdrop := hdecrease s u hsu
+      omega
+
+/-- A concrete bound on the maximum number of strict-colour
+external-blocker transitions: fewer than n steps. -/
+theorem rankedFlipReachSteps_lt_color_count
+    {S : Type*} {n : ℕ}
+    (rank : S → Fin n)
+    (step : S → S → Prop)
+    (hdecrease : ∀ s u, step s u →
+      (rank u).val < (rank s).val)
+    {start endpoint : S} {steps : ℕ}
+    (hpath : RankedFlipReachSteps step start endpoint steps) :
+    steps < n := by
+  have hbudget :=
+    rankedFlipReachSteps_rank_budget rank step hdecrease hpath
+  have htop := (rank start).isLt
+  omega
+
+/-- The exterior blocker colour found in the genuine safe-flip descent
+has value below the retained coordinate c < n. Thus the edge joining
+the old upper endpoint to the blocker is RETAINED, not residual.
+This prevents interpreting that edge as an immediately reusable hard
+residual overlap without another geometric transition argument. -/
+theorem exterior_blocker_descending_edge_not_residual
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v w : V) (c : Fin n)
+    (hdesc : (C.color v w).val < c.val) :
+    ¬ IsResidual C v w := by
+  unfold IsResidual
+  exact lt_trans hdesc c.isLt
+
+#print axioms rankedFlipReachSteps_rank_budget
+#print axioms rankedFlipReachSteps_lt_color_count
+#print axioms exterior_blocker_descending_edge_not_residual
+
 #print axioms rankedFlipReach_terminal
 #print axioms rankedFlipReach_eventually_terminal
 #print axioms no_unbounded_strict_colour_blocker_descent
