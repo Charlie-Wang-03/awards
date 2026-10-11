@@ -1728,7 +1728,7 @@ carrier mass. Its theorem
 establishes an EQUIVALENCE between the previous residual payment and
 
 `softOverlap.card
- + (unpaidHardOverlapWords \\ ascendingUnpaidRigidWords).card
+ + (unpaidHardOverlapWords \ ascendingUnpaidRigidWords).card
  + sum_{p in A} 2^k(p.lower)
  + projectedProfileLoss
  <= BooleanHoles
