@@ -191,7 +191,89 @@ theorem oriented_safe_flip_singly_covered_or_disjoint_rewire
         C hav hwa.symm hwv.symm hbaseOverlap hflipOverlap
     exact ⟨w, hwa, hwv, hwcube, hdisj, hres⟩
 
+/-- A second completion-cube blocker for an oriented safe flip
+must be strictly INSIDE the original residual pair's interval.
+
+Proof: a blocker to the right of v would create a forbidden consecutive
+residual two-path a-v-w. A blocker to the left of a would force the
+retained edge w-a to have colour c (the only coordinate at which the
+flipped word can disagree), contradicting that c is outgoing at a.
+
+Unlike previous canonical-code blocker lemmas, w only needs to COVER
+the flipped word in its partial completion cube. -/
+theorem oriented_safe_flip_cube_partner_strictly_interior
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v w : V} {c : Fin n}
+    (hav : a < v)
+    (hsame : SameRetained C a v)
+    (hcOutgoing : c ∈ outgoingRetained C a)
+    (hcInactive : c ∉ retainedActive C v)
+    (hwneV : w ≠ v)
+    (hwcube : flippedRetainedCode C a c ∈
+      retainedCompletionWords C w) :
+    a < w ∧ w < v ∧ IsResidual C w v := by
+  classical
+  have hvcube : flippedRetainedCode C a c ∈
+      retainedCompletionWords C v :=
+    sameRetained_flip_mem_inactive_upper_cube C a v c
+      hsame hcInactive
+  have hresAV : IsResidual C a v :=
+    isResidual_of_sameRetained_lt C hav hsame
+  have hwvRes : w < v ∧ IsResidual C w v := by
+    rcases retainedCompletion_overlap_forces_residual
+        C hwneV.symm hvcube hwcube with hright | hleft
+    · exact False.elim
+        (no_two_residual_on_path C hav hright.1
+          hresAV hright.2)
+    · exact hleft
+  have hnotA :
+      flippedRetainedCode C a c ∉ retainedCompletionWords C a :=
+    outgoing_flip_exits_lower_completion_cube C a c hcOutgoing
+  have haw : a < w := by
+    rcases lt_trichotomy a w with haw | heq | hwa
+    · exact haw
+    · subst w
+      exact False.elim (hnotA hwcube)
+    · have hnotResWA : ¬ IsResidual C w a := by
+        intro hresWA
+        exact no_two_residual_on_path C hwa hav
+          hresWA hresAV
+      have hretWA : (C.color w a).val < n := by
+        by_contra hret
+        exact hnotResWA hret
+      let d : Fin n := retainedColor C w a hretWA
+      have hdW : d ∈ retainedActive C w :=
+        retainedColor_mem_retainedActive_left C hwa hretWA
+      have hdiff :
+          retainedBit C w d ≠ retainedBit C a d :=
+        retainedBit_ne_of_retained_edge C hwa hretWA
+      have hdc : d = c := by
+        by_contra hne
+        have hbit :
+            retainedBit C w d = retainedBit C a d := by
+          calc
+            retainedBit C w d =
+                flippedRetainedCode C a c d :=
+              ((mem_retainedCompletionWords C w _).1
+                hwcube d hdW).symm
+            _ = retainedBit C a d :=
+              flippedRetainedCode_off C a c d hne
+        exact hdiff hbit
+      have hcol : C.color w a = c.castSucc := by
+        apply Fin.ext
+        simpa [d, retainedColor] using congrArg Fin.val hdc
+      have hcin : c ∈ incomingRetained C a :=
+        (mem_incomingRetained_iff C a c).2
+          ⟨w, hwa, hcol⟩
+      exact False.elim
+        ((Finset.disjoint_left.mp
+          (incomingRetained_disjoint_outgoingRetained C a))
+          hcin hcOutgoing)
+  exact ⟨haw, hwvRes.1, hwvRes.2⟩
+
 #print axioms sameRetained_base_mem_overlapCompletionWords
+#print axioms oriented_safe_flip_cube_partner_strictly_interior
 #print axioms oriented_safe_flip_singleton_or_new_residual_overlap
 #print axioms retainedCompletion_two_neighbours_disjoint
 #print axioms oriented_safe_flip_singly_covered_or_disjoint_rewire
