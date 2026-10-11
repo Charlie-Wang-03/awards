@@ -64,6 +64,53 @@ theorem residual_upper_completion_word_unique
       C hav hbz hresAV hresBZ hvz))
     hvword hzword
 
+/-- Different LOWER endpoints of residual edges also have DISJOINT
+retained completion cubes. If two lower cubes intersect, the forced
+residual edge between the lower endpoints creates a forbidden
+two-path ending at one of the upper endpoints. -/
+theorem residual_lower_completion_cubes_disjoint
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v b z : V}
+    (hav : a < v)
+    (hbz : b < z)
+    (hresAV : IsResidual C a v)
+    (hresBZ : IsResidual C b z)
+    (hab : a ≠ b) :
+    Disjoint (retainedCompletionWords C a)
+      (retainedCompletionWords C b) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro word haword hbword
+  rcases retainedCompletion_overlap_forces_residual
+      C hab haword hbword with hforward | hbackward
+  · exact no_two_residual_on_path
+      C hforward.1 hbz hforward.2 hresBZ
+  · exact no_two_residual_on_path
+      C hbackward.1 hav hbackward.2 hresAV
+
+/-- A shared retained Boolean word also uniquely identifies the
+LOWER endpoint of any residual carrier containing it. -/
+theorem residual_lower_completion_word_unique
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v b z : V} {word : Fin n → Bool}
+    (hav : a < v)
+    (hbz : b < z)
+    (hresAV : IsResidual C a v)
+    (hresBZ : IsResidual C b z)
+    (haword : word ∈ retainedCompletionWords C a)
+    (hbword : word ∈ retainedCompletionWords C b) :
+    a = b := by
+  by_contra hab
+  exact (Finset.disjoint_left.mp
+    (residual_lower_completion_cubes_disjoint
+      C hav hbz hresAV hresBZ hab))
+    haword hbword
+
+#print axioms residual_lower_completion_cubes_disjoint
+#print axioms residual_lower_completion_word_unique
+
 #print axioms residual_upper_completion_cubes_disjoint
 #print axioms residual_upper_completion_word_unique
 
