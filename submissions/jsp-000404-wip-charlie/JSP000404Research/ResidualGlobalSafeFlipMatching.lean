@@ -220,6 +220,88 @@ theorem globalDoubledSafeFlips_card_le_overlapCarrierPairs
     (globalDoubledSafeFlipOverlapEdge_injective C)
   simpa only [Fintype.card_coe] using h
 
+/-- Soft residual overlap-carriers: the two endpoint canonical
+retained codes are different, even though their partial completion
+cubes overlap. -/
+noncomputable def softOverlapCarrierPairs
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    Finset (V × V) := by
+  classical
+  exact (overlapCarrierPairs C).filter
+    (fun p => ¬ SameRetained C p.1 p.2)
+
+@[simp] theorem mem_softOverlapCarrierPairs
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (p : V × V) :
+    p ∈ softOverlapCarrierPairs C ↔
+      p ∈ overlapCarrierPairs C ∧
+      ¬ SameRetained C p.1 p.2 := by
+  classical
+  simp [softOverlapCarrierPairs]
+
+/-- The upper endpoint's NEW overlapping residual neighbour can
+never share the original retained canonical word: a second such
+same-code neighbour would create three distinct vertices with the
+same retained code, which is impossible in this completion family. -/
+theorem global_doubled_safe_flip_target_is_soft
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (x : {y : (V × V) × Fin n // y ∈ globalDoubledSafeFlips C}) :
+    ¬ SameRetained C
+      (globalDoubledSafeFlipBlocker C x) x.1.1.2 := by
+  intro hsoft
+  have hsrc := (mem_globalDoubledSafeFlips C x.1).1 x.2
+  have hblock := globalDoubledSafeFlipBlocker_spec C x
+  have heq :=
+    sameRetained_pairs_same_upper_unique_lower C
+      hsrc.1 hblock.2.1 hsrc.2.1 hsoft
+  exact (ne_of_lt hblock.1) heq
+
+/-- Strengthened target type: the global injective matching lands
+inside the SOFT (distinct-code) residual-overlap carrier set,
+not merely among all residual overlap carriers. -/
+noncomputable def globalDoubledSafeFlipSoftOverlapEdge
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    {x : (V × V) × Fin n // x ∈ globalDoubledSafeFlips C} →
+      {e : V × V // e ∈ softOverlapCarrierPairs C} := by
+  classical
+  intro x
+  let y := globalDoubledSafeFlipOverlapEdge C x
+  refine ⟨y.1, ?_⟩
+  exact (mem_softOverlapCarrierPairs C y.1).2
+    ⟨y.2, global_doubled_safe_flip_target_is_soft C x⟩
+
+/-- The extra soft-carrier restriction preserves GLOBAL injectivity. -/
+theorem globalDoubledSafeFlipSoftOverlapEdge_injective
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    Function.Injective (globalDoubledSafeFlipSoftOverlapEdge C) := by
+  intro x y hxy
+  apply globalDoubledSafeFlipOverlapEdge_injective C
+  apply Subtype.ext
+  exact congrArg Subtype.val hxy
+
+/-- Full hard-to-soft injection inequality across all hard sources:
+the number of doubled safe flips cannot exceed the number of
+overlapping residual edges with DIFFERENT endpoint codes. -/
+theorem globalDoubledSafeFlips_card_le_softOverlapCarrierPairs
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    (globalDoubledSafeFlips C).card ≤
+      (softOverlapCarrierPairs C).card := by
+  classical
+  have h := Fintype.card_le_of_injective
+    (globalDoubledSafeFlipSoftOverlapEdge C)
+    (globalDoubledSafeFlipSoftOverlapEdge_injective C)
+  simpa only [Fintype.card_coe] using h
+
+#print axioms global_doubled_safe_flip_target_is_soft
+#print axioms globalDoubledSafeFlipSoftOverlapEdge_injective
+#print axioms globalDoubledSafeFlips_card_le_softOverlapCarrierPairs
+
 #print axioms sameRetained_pairs_same_upper_unique_lower
 #print axioms doubled_safe_flip_has_interior_overlap_edge
 #print axioms globalDoubledSafeFlipOverlapEdge_injective
