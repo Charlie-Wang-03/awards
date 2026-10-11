@@ -981,3 +981,45 @@ vacancy a "genuine Boolean hole" has been corrected.
 The single admitted global-payment `sorry` in
 `PlanarLowerBranchProofAdmittedWIP.lean` remains OPEN, and the original
 JSP-000404 conjecture remains neither proved nor disproved.
+
+
+### Planar AngleCap lift of the safe-flip no-hole invariant (2026-10-11)
+
+The no-hole obstruction is now connected directly to the true planar
+crossing-hard theorem, without weakening the actual geometry or changing
+the original theorem's premises. The new module
+`JSP000404Research/PlanarCrossingHardFlipCubeObstruction.lean`
+establishes
+
+`planar_crossing_safe_flip_is_covered_or_resolves_or_descends`:
+
+under genuine injective planar `AngleCap`, canonical centre-projective
+cycles and exponents, crossing unsafe completion-word carriers
+`u<a<v<b`, high middle exponent mass and the explicit central
+same-retained/no-common-inactive hard hypotheses, there exists a
+locally safe `c` with the previously established trichotomy, AND
+`flippedRetainedCode B a c ∈ coveredCompletionWords B`.
+
+The latter membership is UNCONDITIONAL once this safe flip has been
+selected. Thus a global hole cannot be obtained by claiming that the
+locally flipped canonical code is missing from the image of vertex
+canonical codes. At rank zero the exterior branch is impossible, but
+the canonical-code-vacancy branch remains **globally covered**.
+Therefore a new global compensation/injection argument is required;
+the original local rank-descent approach cannot directly establish
+the missing global-hole payment.
+
+**Independent CI evidence:**
+https://github.com/Charlie-Wang-03/awards/actions/runs/38120257300
+successfully built 3357 jobs and verified the theorem with only
+`propext`, `Classical.choice`, `Quot.sound` (no `sorryAx`).
+An isolated style warning about necessary local `letI` instance
+declaration is nonfatal. The same workflow's explicit sorry audit
+reported exactly one executable `sorry` at
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:64`,
+and **zero** outside that allowed WIP module.
+
+**Research boundary remains unchanged:** The original global payment
+inequality, required upper branch, and arbitrary-cardinality
+source-closure are still open. This contribution disproves a proposed
+DIRECT PAYMENT MECHANISM, not JSP-000404 itself.
