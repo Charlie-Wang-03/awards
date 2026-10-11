@@ -272,7 +272,87 @@ theorem oriented_safe_flip_cube_partner_strictly_interior
           hcin hcOutgoing)
   exact ⟨haw, hwvRes.1, hwvRes.2⟩
 
+/-- The geometric-looking interior blocker found from a SECOND
+completion-cube cover is precisely connected to the lower endpoint
+by the originally flipped retained colour. No planar AngleCap assumption
+is needed for this ordered-colouring statement. -/
+theorem oriented_safe_flip_cube_partner_edgeColor_eq
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v w : V} {c : Fin n}
+    (hav : a < v)
+    (hsame : SameRetained C a v)
+    (hcOutgoing : c ∈ outgoingRetained C a)
+    (hcInactive : c ∉ retainedActive C v)
+    (hwneV : w ≠ v)
+    (hwcube : flippedRetainedCode C a c ∈
+      retainedCompletionWords C w) :
+    C.color a w = c.castSucc := by
+  classical
+  obtain ⟨haw, hwv, hresWV⟩ :=
+    oriented_safe_flip_cube_partner_strictly_interior
+      C hav hsame hcOutgoing hcInactive hwneV hwcube
+  have hnotResAW : ¬ IsResidual C a w := by
+    intro hresAW
+    exact no_two_residual_on_path C haw hwv hresAW hresWV
+  have hretAW : (C.color a w).val < n := by
+    by_contra hret
+    exact hnotResAW hret
+  let d : Fin n := retainedColor C a w hretAW
+  have hdW : d ∈ retainedActive C w :=
+    retainedColor_mem_retainedActive_right C haw hretAW
+  have hdiff :
+      retainedBit C a d ≠ retainedBit C w d :=
+    retainedBit_ne_of_retained_edge C haw hretAW
+  have hdc : d = c := by
+    by_contra hne
+    have heq :
+        retainedBit C a d = retainedBit C w d := by
+      calc
+        retainedBit C a d = flippedRetainedCode C a c d :=
+          (flippedRetainedCode_off C a c d hne).symm
+        _ = retainedBit C w d :=
+          ((mem_retainedCompletionWords C w _).1 hwcube d hdW)
+    exact hdiff heq
+  apply Fin.ext
+  simpa [d, retainedColor] using congrArg Fin.val hdc
+
+/-- Final local rewiring dichotomy with strict betweenness AND the
+precise retained edge colour of the new secondary cube blocker. -/
+theorem oriented_safe_flip_overlap_singleton_or_interior_rewire
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v : V} (c : Fin n)
+    (hav : a < v)
+    (hsame : SameRetained C a v)
+    (hcOutgoing : c ∈ outgoingRetained C a)
+    (hcInactive : c ∉ retainedActive C v) :
+    (fun d => retainedBit C a d) ∈ overlapCompletionWords C ∧
+      ((completionFibre C (flippedRetainedCode C a c)).card = 1 ∨
+        ∃ w : V, a < w ∧ w < v ∧
+          IsResidual C w v ∧
+          C.color a w = c.castSucc ∧
+          Disjoint (retainedCompletionWords C a)
+            (retainedCompletionWords C w)) := by
+  have hroute :=
+    oriented_safe_flip_singly_covered_or_disjoint_rewire
+      C a v c (ne_of_lt hav) hsame hcOutgoing hcInactive
+  refine ⟨hroute.1, ?_⟩
+  rcases hroute.2 with hone | hrewire
+  · exact Or.inl hone
+  · right
+    obtain ⟨w, hwneA, hwneV, hwcube, hdisjoint, _hres⟩ := hrewire
+    obtain ⟨haw, hwv, hresWV⟩ :=
+      oriented_safe_flip_cube_partner_strictly_interior
+        C hav hsame hcOutgoing hcInactive hwneV hwcube
+    have hcol :=
+      oriented_safe_flip_cube_partner_edgeColor_eq
+        C hav hsame hcOutgoing hcInactive hwneV hwcube
+    exact ⟨w, haw, hwv, hresWV, hcol, hdisjoint⟩
+
 #print axioms sameRetained_base_mem_overlapCompletionWords
+#print axioms oriented_safe_flip_cube_partner_edgeColor_eq
+#print axioms oriented_safe_flip_overlap_singleton_or_interior_rewire
 #print axioms oriented_safe_flip_cube_partner_strictly_interior
 #print axioms oriented_safe_flip_singleton_or_new_residual_overlap
 #print axioms retainedCompletion_two_neighbours_disjoint
