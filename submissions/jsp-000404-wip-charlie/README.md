@@ -1624,3 +1624,58 @@ This is a proper division and independent certification
 of the easy hard-overlap MASS, but it does NOT close the
 global geometry. The original JSP-000404 conjecture,
 its upper branch, and general source closure remain OPEN.
+
+
+### Unpaid-rigid exponent ascent and fully strict profile subcase (2026-10-11)
+
+**New hard-carrier obstruction classification, kernel checked.**
+`JSP000404Research/ResidualUnpaidRigidSaturation.lean` proves that any
+unreserved *rigid* hard carrier `(a,v)` satisfying the ordinary projected
+free-budget bound must either have a **projected-saturated lower endpoint**
+`k(a)=nu(a)`, or have **equal projected-free dimensions**, a saturated
+upper endpoint, and **strict exponent ascent**:
+
+`nu(a)=nu(v), k(v)=nu(v), k(a)<k(v)`.
+
+This refines the generic "some endpoint is saturated" result, and identifies
+a precise ascent pattern which any further geometric exclusion/payment
+argument must handle. It does **not** establish that the ascent is impossible.
+Its two printed theorem axiom lists have no `sorryAx`.
+Verified: https://github.com/Charlie-Wang-03/awards/actions/runs/38152473441
+(commit `5e11c8716ade988a7264bd81ca5e208de2d264e6`).
+
+**Strict-profile payment check, kernel checked after Lean repairs.**
+`JSP000404Research/ResidualStrictProfileSoftHoleCapacity.lean` proves:
+- if `k(v)<projectedFree(v)` at every vertex, every hard carrier is
+  globally surplus-payable, so `unpaidHardOverlapWords=∅`;
+- all projected-profile loss is zero in this regime;
+- under the **explicit additional** assumption
+  `card(softOverlapWords) <= card(BooleanHoles)`, the dyadic capacity
+  `sum_v 2^k(v) <= 2^n` follows using the already-certified
+  overlap reservation and **net** surplus.
+
+The soft-hole hypothesis is NOT proved from planar geometry here.
+Moreover the repository's earlier
+`StrictNonlossSubsetHallCapacity.strict_nonloss_subset_enlarged_hall_expansion`
+already gives a stronger route in the fully strict profile regime.
+Consequently the new strict-profile file should be understood as a
+cross-check of the *new accounting decomposition*, **not** a breakthrough
+on the remaining saturated planar obstruction.
+
+The initial Lean errors in the strict-profile module (missing
+`LinearOrder V`, invalid `Finset` simplification, and an unclosed
+empty-finset membership contradiction) were diagnosed from CI logs and
+repaired without `sorry` or added axioms.
+Verified: https://github.com/Charlie-Wang-03/awards/actions/runs/38153088909
+(commit `9198cf6915dfc5d206d1defdd476e25ee6ca1b55`,
+3 printed axiom lists: `[propext, Classical.choice, Quot.sound]`;
+3,185 build tasks, success).
+
+**Open gates remain unchanged.**
+`PlanarLowerBranchProofAdmittedWIP.lean` has **one intentional executable
+`sorry`** for soft plus saturated-hard plus projected-loss payment against
+true holes and surplus NET of paid hard faces. That premise is still
+equivalent to the original planar lower-branch dyadic capacity. The
+general upper branch, source-closure gate, and historical full root import
+remain unverified/broken as documented elsewhere. No complete JSP-000404
+proof, refutation, or prize-eligible submission is claimed.
