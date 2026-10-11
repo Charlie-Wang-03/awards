@@ -282,6 +282,8 @@ theorem globalDoubledSafeFlipSoftOverlapEdge_injective
   intro x y hxy
   apply globalDoubledSafeFlipOverlapEdge_injective C
   apply Subtype.ext
+  change (globalDoubledSafeFlipSoftOverlapEdge C x).val =
+    (globalDoubledSafeFlipSoftOverlapEdge C y).val
   exact congrArg Subtype.val hxy
 
 /-- Full hard-to-soft injection inequality across all hard sources:
