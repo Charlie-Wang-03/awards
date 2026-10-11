@@ -1319,3 +1319,175 @@ open geometric challenges. The JSP-000404 original theorem,
 its upper branch and complete source-closure obligations are
 NOT proved. The isolated target is clean; the old comprehensive
 legacy module import tree still has unrelated Lean failures.
+
+
+### Rigid hard-overlap excision and net-payment WIP rewrite (2026-10-11)
+
+**Main achievement: a completely unconditional structural split.**
+`ResidualHardOverlapRigidFaces.lean` proves for EVERY
+same-retained hard pair `a<v`:
+
+`¬ HasOutgoingHardTransport C a v
+ <-> retainedCompletionWords C v ⊆ retainedCompletionWords C a`.
+
+In this no-transport/nested ("rigid") case the ENTIRE upper
+completion cube, not merely one canonical Boolean word, is overlapped:
+
+`card(Q_a ∩ Q_v) = 2 ^ projectedFree(C,v)`.
+
+The lower projected-free dimension is >= the upper dimension.
+All of these are sorry-free and require no AngleCap input.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38143522327
+(3176 jobs; no `sorryAx`).
+
+**Exact rigid/transportable dyadic mass accounting.**
+`ResidualHardRigidMassAccounting.lean` proves disjointness and
+the two exact cardinal identities:
+
+`hardOverlapWords = transportableHardWords ⊔ rigidHardWords`,
+
+`card(rigidHardWords)
+ = ∑_{rigid carrier (a,v)} 2 ^ projectedFree(C,v)`.
+
+A rigid face with `projectedFree(C,v) < projectedFree(C,a)`
+and `exponent(a) < projectedFree(C,a)` is paid ENTIRELY by
+`dyadicProfileSurplus exponent projectedFree a` alone.
+If lower-only payment fails and `exponent(a) ≤ projectedFree(C,a)`,
+then necessarily either the endpoint free dimensions are equal
+OR the lower endpoint is exactly projected-saturated.
+This does NOT assume either exceptional case is impossible.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38143917102
+(3177 jobs; all printed axioms exclude `sorryAx`);
+exception isolation:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38144517836.
+
+**Critical FALSE route, formally refuted.**
+`DirectionDataRigidHardTransportRefutation.lean` reuses the
+previously kernel-checked, fully legitimate THREE-POINT
+abstract DirectionData profile with cycles exponents (1,0,0),
+retained n=2 and the hard edge 0<1. That example has equal
+retained active sets and equal canonical codes at 0,1,
+a genuinely nonempty hard residual overlap, and NO
+outgoing/inactive colour; it is a RIGID nested hard carrier.
+
+`abstract_directionData_refutes_universal_hard_transport`
+therefore disproves the previously assumed universal condition
+`HasHardOverlapOutgoingTransport` already at the abstract
+DirectionData level. This is NOT a counterexample to the actual
+JSP-000404 capacity and makes no unproved planar-realizability
+claim. CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38144120552
+(3406 jobs; no `sorryAx`).
+
+**Unconditional whole-face injection WITHOUT false premise.**
+`ResidualTransportableHardGlobalInjection.lean`
+chooses one safe coordinate separately for each TRANSPORTABLE
+hard carrier, whose definition guarantees that colour exists.
+It proves a SINGLE globally injective map from ALL transportable
+hard overlap words into singly-covered or soft-overlapped words;
+no global colour-availability premise survives:
+
+`card(transportableHardWords)
+ ≤ card(singletonCompletionWords)
+   + card(softOverlapCompletionWords)`.
+
+Combining the exact partition gives the sharp explicit
+rigid remainder:
+
+`card(hardOverlapWords)
+ ≤ card(singletonWords) + card(softOverlapWords)
+   + ∑_{rigid (a,v)} 2^projectedFree(C,v)`.
+
+These target words are COVERED, not Boolean holes. This
+inequality is NOT yet overlap payment.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38144316148
+(3178 jobs; no `sorryAx`).
+
+**Actual GLOBAL one-sided surplus reservation.**
+`ResidualRigidHardSurplusPacking.lean` proves hard carrier
+lower endpoints are uniquely assigned: two hard edges can
+never share the same LOWER endpoint. Hence the eligible
+rigid faces with
+`projectedFree(C,v) < projectedFree(C,a)` and
+`exponent(a) < projectedFree(C,a)`
+can ALL be paid SIMULTANEOUSLY without reusing any lower
+endpoint's surplus:
+
+`∑_{eligible rigid (a,v)} 2^projectedFree(C,v)
+ ≤ totalDyadicProfileSurplus exponent (projectedFree C)`.
+
+This is more than summing local face bounds without regard
+to duplicated budgets: the lower-endpoint map is injective,
+as separately Lean-verified.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38144696691
+(3178 jobs; no `sorryAx`).
+
+**Exact master payment rewrite with an honest NET budget.**
+`ResidualRigidPaidDefectReduction.lean` defines
+`oneSidedPaidRigidOverlapWords C exponent` as the union of
+eligible fully paid rigid overlap cubes, and
+`afterRigidPaymentOverlapWords C exponent` as
+`overlapCompletionWords C \ oneSidedPaidRigidOverlapWords C exponent`.
+The paid words are a proven subset of the actual globally
+overlapped words, pairwise disjoint by unique residual carrier.
+Their cardinality equals the sum of eligible full upper dyadic
+face masses and is no greater than total surplus.
+
+It proves the kernel-checked EQUIVALENCE:
+
+`overlap + loss <= BooleanHoles + surplus`
+
+**if and only if**
+
+`remainingOverlap + loss <= BooleanHoles + (surplus - paidRigidMass)`.
+
+No one-sided rigid-face surplus may be recharged on the remaining
+soft/hard/loss obligations. This is a GENUINE, not just verbal,
+accounting excision from the unfinished master payment statement,
+although the two inequalities remain mathematically equivalent.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38144887395
+(3179 jobs; five printed kernel axiom audits exclude `sorryAx`).
+
+**Actual PLANAR entrypoint and admitted hole changed.**
+`PlanarLowerBranchPaidRigidReduction.lean` is a sorry-free
+`AngleCap` bridge:
+`planar_lower_branch_dyadic_capacity_of_paid_rigid_remaining`,
+whose only additional input is the REDUCED net-payment condition.
+It passed:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38145050518
+(3351 jobs; no `sorryAx`).
+
+The single executable `sorry` in
+`PlanarLowerBranchProofAdmittedWIP.lean` has been REWIRED
+to exactly this **afterRigidPaymentOverlapWords + loss versus
+holes + NET surplus** goal. This was actually Lean-compiled:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38145198810
+(3352 jobs; the admitted WIP theorem correctly prints `sorryAx`).
+No second admitted theorem or hidden hypothesis was added.
+
+The sorry-FREE independent verification umbrella
+`JSP000404Research.VerifiedOverlapRewire` imports the
+unconditional partition, actual rigid surplus reservation,
+new planar bridge, and 3-point nonuniversality refutation,
+but NOT the WIP theorem. This whole independent chain
+compiled successfully:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38145361537
+(3418 jobs; no source errors).
+
+**Still unproved:** The remaining net-payment inequality for
+genuine planar AngleCap configurations is still equivalent to
+the original lower-branch dyadic conjecture. Its overlap
+set includes all soft residual overlap words, transportable
+hard-overlap words, and rigid words not covered by the
+independently one-sided-paid class. Projected profile loss
+remains a separate burden. Furthermore, proving separate
+surplus payments for the remaining subfamilies does not
+suffice unless their budgets are mutually nonduplicative.
+The abstract 3-point rigid example cautions against
+assuming all rigid cases disappear from DirectionData.
+The upper branch and source closure are likewise OPEN.
+There is exactly one explicitly admitted lower-branch
+mathematical goal; no proof/disproof or prize-eligible
+complete submission is claimed. The historical full legacy
+Lean import target remains separately broken; only the
+named verified entrypoints above are claimed green.
