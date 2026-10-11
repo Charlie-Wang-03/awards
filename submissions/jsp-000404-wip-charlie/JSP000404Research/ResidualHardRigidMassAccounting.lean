@@ -106,7 +106,17 @@ theorem hard_overlap_words_eq_transportable_union_rigid
     transportableHardOverlapCompletionWords
     rigidHardOverlapCompletionWords
   rw [hard_overlap_carriers_eq_transportable_union_rigid]
-  simp only [Finset.biUnion_union]
+  ext word
+  simp only [Finset.mem_biUnion, Finset.mem_union]
+  constructor
+  · rintro ⟨p, hp | hp, hw⟩
+    · left
+      exact ⟨p, hp, hw⟩
+    · right
+      exact ⟨p, hp, hw⟩
+  · rintro (⟨p, hp, hw⟩ | ⟨p, hp, hw⟩)
+    · exact ⟨p, Or.inl hp, hw⟩
+    · exact ⟨p, Or.inr hp, hw⟩
 
 /-- The two hard-overlap word classes are also DISJOINT:
 one Boolean word has one unique residual carrier. -/
@@ -129,7 +139,7 @@ theorem rigid_transportable_hard_overlap_words_disjoint
   have hqorder : q.1 < q.2 :=
     ((mem_residualCarrierPairs C q.1 q.2).1
       ((mem_overlapCarrierPairs C q).1
-        ((mem_hardOverlapCarrierPairs C q).1 hqdata.1).1).1
+        ((mem_hardOverlapCarrierPairs C q).1 hqdata.1).1).1).1
   obtain ⟨hl,hr⟩ :=
     completion_word_unique_ordered_pair C hporder hqorder
       (Finset.mem_inter.mp hpw).1
