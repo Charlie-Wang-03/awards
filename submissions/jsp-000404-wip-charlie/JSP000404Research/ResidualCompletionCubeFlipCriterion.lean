@@ -57,7 +57,7 @@ theorem flippedRetainedCode_global_hole_iff_active_separator
   constructor
   · intro hhole w
     by_contra hno
-    push_neg at hno
+    push Not at hno
     have hw : flippedRetainedCode C a c ∈ retainedCompletionWords C w := by
       apply (mem_retainedCompletionWords C w _).2
       intro d hd
@@ -101,7 +101,7 @@ theorem code_hole_covered_has_inactive_disagreement
       ∃ d : Fin n,
         retainedBit C w d ≠ flippedRetainedCode C a c d := by
     by_contra hnone
-    push_neg at hnone
+    push Not at hnone
     apply hneq
     funext d
     exact hnone d
@@ -128,7 +128,7 @@ theorem canonical_code_hole_global_of_full_retained_active
   apply (flippedRetainedCode_global_hole_iff_active_separator C a c).2
   intro w
   by_contra hno
-  push_neg at hno
+  push Not at hno
   have heq :
       (fun d => retainedBit C w d) =
         flippedRetainedCode C a c := by
