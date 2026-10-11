@@ -1205,3 +1205,117 @@ close the desired `overlap + loss ≤ holes + surplus` step.
 The admitted lower-branch WIP, upper branch, and general source
 closure remain open. No upstream award PR or unqualified
 complete-proof claim follows from this module.
+
+
+### Whole-face hard-overlap transport and two-layer separation (2026-10-11)
+
+**1. Complete Boolean face, not just canonical safe-flip words.**
+`JSP000404Research/ResidualHardOverlapCubeTransport.lean`
+defines `flipCompletionWord c` for EVERY Boolean word. For
+`c ∈ outgoingRetained C a` and
+`c ∉ retainedActive C v`, it is an involution and maps the
+ENTIRE intersection `Q_a ∩ Q_v` injectively into the complement
+`Q_v \ Q_a`:
+
+`hard_overlap_cube_card_le_upper_only`
+
+and, when the intersection is nonempty,
+
+`2^(commonRetainedInactive C a v).card <= card(Q_v \ Q_a)`.
+
+No canonical-base assumption is used. Verified:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38134648974
+(3172 jobs; printed axioms exclude `sorryAx`).
+
+**2. Image words cannot participate in ANY hard overlap.**
+`JSP000404Research/ResidualHardOverlapCubeSoftRouting.lean`
+proves that a same-retained canonical-code fibre has at most
+two distinct vertices. If `SameRetained C a v`, no word in
+`Q_v \ Q_a` can belong to `hardOverlapCompletionWords C`.
+Every complete-face flip therefore lands in the union of
+`singletonCompletionWords C` and
+`softOverlapCompletionWords C`:
+
+`hard_overlap_full_face_flip_singleton_or_soft`.
+
+For ONE hard pair with an available outward/inactive colour,
+the full face mass is bounded by that global target union
+size (`hard_overlap_face_mass_le_singleton_add_soft_global`).
+Verified:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38134963967
+(no `sorryAx`).
+
+**3. Residual graph forms two disjoint-cube endpoint layers.**
+`JSP000404Research/ResidualIncomingUpperCubeDisjoint.lean`
+proves that if `a<v` and `b<z` are residual edges,
+then their upper endpoint cubes `Q_v, Q_z` are disjoint
+whenever `v≠z`. Symmetrically their lower endpoint cubes
+`Q_a,Q_b` are disjoint whenever `a≠b`.
+This follows from the forced-residual property of any
+completion overlap and the forbidden two-edge residual
+path. The two layer-packing theorems are:
+`residual_upper_completion_cubes_disjoint` and
+`residual_lower_completion_cubes_disjoint`.
+Kernel checks:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38135128398
+and
+https://github.com/Charlie-Wang-03/awards/actions/runs/38135498421
+(3174 jobs each, no `sorryAx`).
+
+**4. True global mass transport (CONDITIONAL).**
+`JSP000404Research/ResidualHardFaceGlobalTransport.lean`
+defines the explicit unproved condition
+`HasHardOverlapOutgoingTransport C`:
+
+For EACH genuinely overlapping hard residual pair `a<v`,
+there EXISTS a retained colour outgoing from `a` which is
+inactive at `v`.
+
+Choose one such colour PER HARD PAIR (not per word). Each
+hard-overlap word has one unique hard carrier. Use that
+carrier's fixed colour flip. Distinct carriers have distinct
+upper endpoints by same-code uniqueness; all upper endpoint
+cubes are pairwise disjoint by the new two-layer theorem.
+Within each carrier, the fixed-colour flip is injective.
+This yields a SINGLE GLOBAL injection of EVERY hard-overlap
+word into covered singleton-or-soft words, even though each
+hard face may have mass `2^d`:
+
+`hardOverlapWordGlobalTransport_injective`,
+
+`hard_overlap_global_mass_le_singleton_add_soft`:
+
+`card(hardOverlapCompletionWords C)
+   <= card(singletonCompletionWords C)
+      + card(softOverlapCompletionWords C)`.
+
+This is an ACTUAL full-weight global counting theorem under
+the stated colour-availability condition, without collisions,
+Hall expansion, or a factor of two. The Lean proof itself is
+sorry-free; the `HasHardOverlapOutgoingTransport` predicate
+is an OPEN additional hypothesis, NOT proved from planar
+AngleCap geometry or asserted to be universally true.
+Successful CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38135294199
+(3175 jobs, audited axioms only propext/choice/Quot.sound).
+
+The independent verified target
+`JSP000404Research.VerifiedOverlapRewire` now imports
+all of these results and passed:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38135645671
+(3374 jobs).
+
+**Proof-status boundary:** Full-face transport lands in
+SINGLY COVERED or SOFT DOUBLY COVERED Boolean words; both are
+still COVERED, not uncovered Boolean holes. No link to
+profile-loss payment has been established. It is not valid to
+replace the remaining admitted global
+`overlap + profileLoss <= holes + profileSurplus` statement
+using this conditional theorem alone. In particular, proving
+the needed existence of outgoing/inactive retained coordinates
+(or deriving a different mechanism for hard pairs lacking them)
+and finding actual independent hole/surplus capacity remain
+open geometric challenges. The JSP-000404 original theorem,
+its upper branch and complete source-closure obligations are
+NOT proved. The isolated target is clean; the old comprehensive
+legacy module import tree still has unrelated Lean failures.
