@@ -33,13 +33,14 @@ theorem unpaidHardOverlapWords_eq_empty_of_all_strict
     unpaidHardOverlapWords C exponent = ∅ := by
   classical
   ext word
-  simp only [Finset.mem_empty, iff_false]
-  intro hw
-  obtain ⟨p, hcarrier, hnot, _⟩ :=
-    unpaidHardWord_has_unpayable_hard_carrier C exponent hw
-  apply hnot
-  exact (mem_surplusPayableHardCarrierPairs C exponent p).2
-    ⟨hcarrier, Or.inl ⟨hstrict p.1, hstrict p.2⟩⟩
+  constructor
+  · intro hw
+    obtain ⟨p, hcarrier, hnot, _⟩ :=
+      unpaidHardWord_has_unpayable_hard_carrier C exponent hw
+    apply hnot
+    exact (mem_surplusPayableHardCarrierPairs C exponent p).2
+      ⟨hcarrier, Or.inl ⟨hstrict p.1, hstrict p.2⟩⟩
+  · simp
 
 /-- Strict projected slack at every vertex rules out all profile
 losses, independently of planar geometry or the number of vertices. -/
