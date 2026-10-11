@@ -232,6 +232,99 @@ theorem safe_flip_singly_covered_of_more_colors_than_blockers
       C hav hsame
   omega
 
+/-- Flipping two different retained coordinates of the SAME
+canonical word gives two different Boolean words. -/
+theorem flippedRetainedCode_injective_in_colour
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a : V) :
+    Function.Injective (flippedRetainedCode C a) := by
+  intro c d hcdWords
+  by_contra hcd
+  have hword := congrFun hcdWords c
+  rw [flippedRetainedCode_off C a d c hcd] at hword
+  exact (flippedRetainedCode_at_ne C a c) hword
+
+/-- Safe flip colours with exactly one covering completion cube.
+Every such word is covered by the upper endpoint v. -/
+noncomputable def singletonSafeFlipColors
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) : Finset (Fin n) := by
+  classical
+  exact (orientedSafeFlipColors C a v).filter (fun c =>
+    (completionFibre C (flippedRetainedCode C a c)).card = 1)
+
+@[simp] theorem mem_singletonSafeFlipColors
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) (c : Fin n) :
+    c ∈ singletonSafeFlipColors C a v ↔
+      c ∈ orientedSafeFlipColors C a v ∧
+      (completionFibre C (flippedRetainedCode C a c)).card = 1 := by
+  classical
+  simp [singletonSafeFlipColors]
+
+/-- Quantitative matching decomposition:
+every safe flip is either singly covered or is injectively assigned
+to a distinct interior residual blocker. Therefore the number of
+safe colours is at most the number of single-coverage witnesses
+PLUS the number of interior blockers.
+
+Together with injectivity of the flip map, this counts DISTINCT
+Boolean singleton witnesses rather than repeated colours. -/
+theorem safe_flip_colour_budget_le_singleton_add_interior
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {a v : V} (hav : a < v)
+    (hsame : SameRetained C a v) :
+    (orientedSafeFlipColors C a v).card ≤
+      (singletonSafeFlipColors C a v).card +
+        (interiorResidualBlockers C a v).card := by
+  classical
+  have hsub :
+      orientedSafeFlipColors C a v ⊆
+        singletonSafeFlipColors C a v ∪
+          doubleSafeFlipColors C a v := by
+    intro c hc
+    obtain ⟨hout, hinactive⟩ :=
+      (mem_orientedSafeFlipColors C a v c).1 hc
+    have hupper : flippedRetainedCode C a c ∈
+        retainedCompletionWords C v :=
+      sameRetained_flip_mem_inactive_upper_cube
+        C a v c hsame hinactive
+    have hv : v ∈ completionFibre C
+        (flippedRetainedCode C a c) :=
+      (mem_completionFibre C _ v).2 hupper
+    have hpos : 0 <
+        (completionFibre C (flippedRetainedCode C a c)).card :=
+      Finset.card_pos.mpr ⟨v, hv⟩
+    have hle :
+        (completionFibre C (flippedRetainedCode C a c)).card ≤ 2 :=
+      completionFibre_card_le_two C _
+    have hcase :
+        (completionFibre C (flippedRetainedCode C a c)).card = 1 ∨
+        (completionFibre C (flippedRetainedCode C a c)).card = 2 := by
+      omega
+    rcases hcase with hone | htwo
+    · exact Finset.mem_union.mpr (Or.inl
+        ((mem_singletonSafeFlipColors C a v c).2 ⟨hc, hone⟩))
+    · exact Finset.mem_union.mpr (Or.inr
+        ((mem_doubleSafeFlipColors C a v c).2
+          ⟨hout, hinactive, htwo⟩))
+  have hcardSub := Finset.card_le_card hsub
+  have hcardUnion :=
+    Finset.card_union_add_card_inter
+      (singletonSafeFlipColors C a v)
+      (doubleSafeFlipColors C a v)
+  have hdouble :=
+    doubleSafeFlipColors_card_le_interiorResidualBlockers
+      C hav hsame
+  omega
+
+#print axioms flippedRetainedCode_injective_in_colour
+#print axioms safe_flip_colour_budget_le_singleton_add_interior
+
 #print axioms safe_flip_singly_covered_of_more_colors_than_blockers
 
 #print axioms doubleSafeFlipColor_has_interior_blocker
