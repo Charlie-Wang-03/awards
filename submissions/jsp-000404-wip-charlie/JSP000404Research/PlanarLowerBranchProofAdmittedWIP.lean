@@ -1,4 +1,4 @@
-import JSP000404Research.PlanarLowerBranchPaidRigidReduction
+import JSP000404Research.PlanarLowerBranchSaturatedHardReduction
 import Mathlib.Tactic
 
 /-!
@@ -12,20 +12,23 @@ a failure of proposed *subset* Hall expansion, not of the target theorem.
 
 The global payment has now been decomposed into an EXACT certified
 rigid-surplus reservation and the TRUE remaining debt:
-  unpaidOverlap + profileLoss <= BooleanHoles + netSurplus,
-where unpaidOverlap EXCLUDES all one-sided-surplus-paid rigid hard faces
-and netSurplus DEDUCTS exactly their verified dyadic face mass.
-The rigid-vs-transportable partition, global full-face injection,
-rigid nested-cube characterization, one-sided lower-surplus packing,
-and the planar implication are all sorry-free kernel-checked results.
+  softOverlap + unpaidHardOverlap + profileLoss
+    <= BooleanHoles + netSurplus,
+where the unpaid hard carriers have a projected-saturated endpoint
+under the residual-active profile budget. Net surplus DEDUCTS the
+certified whole-face mass of ALL independently payable hard carriers.
+The rigid/transportable partition, full-face injection, both-endpoint
+matching-based hard-overlap surplus reservation, saturated-hard
+remainder decomposition, and planar implication are sorry-free
+kernel-checked results.
 
 Exactly ONE explicit sorry remains, now at the REDUCED global-payment
 goal for genuine planar point configurations. The reduction is logically
 equivalent to the original lower-branch dyadic target after certified
 mass accounting; it is not an independent solution to the hard geometry.
-The remaining obligation still includes soft overlaps, the unpaid rigid
-corners (equal free dimension or saturated lower endpoint), other
-transportable hard overlaps, and projected-profile loss.
+The remaining obligation contains only SOFT overlaps, still-unpaid
+HARD overlap carriers (each saturated at an endpoint under the usual
+one-layer budget), and projected-profile loss.
 No already reserved surplus may be counted a second time.
 
 All theorem statements in this file remain research-only, admitted and
@@ -40,7 +43,8 @@ open OrderedEdgeColoring
 open DirectionData
 
 /-- ADMITTED. The remaining geometric payment obligation is stated
-AFTER an independently verified one-sided rigid-surplus reservation.
+AFTER a verified, collision-free surplus reservation for ALL payable
+hard-overlap faces.
 This reduced payment is still equivalent to the lower-branch capacity. -/
 theorem planar_lower_branch_dyadic_capacity_admitted_wip
     {V : Type*} [Fintype V]
@@ -62,13 +66,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_paid_rigid_remaining
+  exact planar_lower_branch_dyadic_capacity_of_soft_saturated_hard_remaining
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
       -- THE SOLE ADMITTED GEOMETRIC GOAL IS NOW STRICTLY RESTRICTED TO:
-      --   afterRigidPaymentOverlapWords + profileLoss
-      --     <= BooleanHoles + (totalSurplus - oneSidedPaidRigidMass).
-      -- All removed rigid faces are already kernel-certified surplus-paid.
+      --   softOverlapWords + unreservedHardOverlapWords + profileLoss
+      --     <= BooleanHoles + (totalSurplus - certifiedPaidHardMass).
+      -- Every nonreserved hard carrier is saturation-bearing under
+      -- the one-layer residual-active profile budget.
+      -- All removed hard faces are already kernel-certified surplus-paid.
       -- This remaining inequality is STILL EQUIVALENT to the full
       -- lower-branch conjecture; actual new planar geometry is needed.
       sorry)
