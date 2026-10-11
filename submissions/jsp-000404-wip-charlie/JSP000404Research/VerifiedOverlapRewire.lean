@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualCompletionOverlapRewire
 import JSP000404Research.PlanarCrossingHardOverlapRewire
 import JSP000404Research.ResidualCompletionIntersectionMass
+import JSP000404Research.ResidualSafeFlipDoubleMatching
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
