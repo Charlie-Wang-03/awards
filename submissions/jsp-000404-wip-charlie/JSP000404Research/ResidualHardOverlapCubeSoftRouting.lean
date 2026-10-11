@@ -82,7 +82,7 @@ theorem hard_pair_upper_only_not_hard_overlap
         _ = retainedBit C v d := by rw [hleft]
     have hne : p.2 ≠ v := by
       intro h
-      rw [hleft, h] at hporder
+      rw [h, hleft] at hporder
       exact (lt_irrefl _) hporder
     have heq := sameRetained_two_distinct_companions_equal
       C hav hne hsame hother
@@ -108,7 +108,7 @@ theorem hard_pair_upper_only_not_hard_overlap
         exact hpwords.1
       exact hnotA hw
     · exact no_three_distinct_share_retained_completion
-        C (ne_of_lt hporder) hleft.symm hright.symm
+        C (ne_of_lt hporder) (Ne.symm hleft) (Ne.symm hright)
         hpwords.1 hpwords.2 hvword
 
 /-- After flipping ANY word of the full same-code overlap face,
