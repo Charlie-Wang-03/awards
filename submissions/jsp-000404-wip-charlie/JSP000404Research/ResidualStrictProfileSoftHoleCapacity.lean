@@ -32,8 +32,9 @@ theorem unpaidHardOverlapWords_eq_empty_of_all_strict
     (hstrict : ∀ v, exponent v < projectedFree C v) :
     unpaidHardOverlapWords C exponent = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro word hw
+  ext word
+  simp only [Finset.mem_empty, iff_false]
+  intro hw
   obtain ⟨p, hcarrier, hnot, _⟩ :=
     unpaidHardWord_has_unpayable_hard_carrier C exponent hw
   apply hnot
@@ -43,7 +44,7 @@ theorem unpaidHardOverlapWords_eq_empty_of_all_strict
 /-- Strict projected slack at every vertex rules out all profile
 losses, independently of planar geometry or the number of vertices. -/
 theorem totalDyadicProfileLoss_eq_zero_of_all_strict
-    {V : Type*} [Fintype V] {n : ℕ}
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     (hstrict : ∀ v, exponent v < projectedFree C v) :
