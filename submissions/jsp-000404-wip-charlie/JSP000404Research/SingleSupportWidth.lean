@@ -52,7 +52,11 @@ theorem one_support_zeroGapMass_lt_one
   have hmul' :
       t * zeroGapMass gap q < t * 1 := by
     simpa using hmul
-  exact (mul_lt_mul_left htpos).mp hmul'
+  by_contra hnot
+  have hge : 1 ≤ zeroGapMass gap q := le_of_not_gt hnot
+  have hreverse : t * 1 ≤ t * zeroGapMass gap q :=
+    mul_le_mul_of_nonneg_left hge (le_of_lt htpos)
+  exact (not_le_of_gt hmul') hreverse
 
 /-- Therefore the angular width of the zero-gap complement is strictly below
 pi. -/
@@ -74,7 +78,8 @@ theorem one_support_zeroGap_angle_lt_pi
     one_support_zeroGapMass_lt_one
       gap q n ell delta t hn helln ht htpos
       hgap hQ hsupport hell hfloor
-  exact mul_lt_mul_of_pos_left hz Real.pi_pos
+  simpa only [mul_one] using
+    (mul_lt_mul_of_pos_left hz Real.pi_pos)
 
 #print axioms one_support_zeroGapMass_lt_one
 #print axioms one_support_zeroGap_angle_lt_pi
