@@ -166,6 +166,31 @@ theorem retainedCompletionWords_inter_card_eq_if
       exact h (Finset.card_pos.mp hpos)
     simp [h, hzero]
 
+/-- Explicit residual-edge Boolean-face formula for TOTAL
+overlap mass. Each residual edge contributes zero if its partial
+cubes do not meet; otherwise it contributes 2 to the number of
+retained coordinates left INACTIVE at both endpoints.
+
+No residual edge's overlap is counted twice. This is the
+exact edge-local form of the global overlap term. -/
+theorem overlapCompletionWords_card_eq_sum_boolean_face_mass
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1)) :
+    (overlapCompletionWords C).card =
+      ∑ q ∈ retainedOverlapEdges C,
+        if (retainedCompletionWords C q.1 ∩
+            retainedCompletionWords C q.2).Nonempty then
+          2 ^ (n -
+            (retainedActive C q.1 ∪
+              retainedActive C q.2).card)
+        else 0 := by
+  rw [overlapCompletionWords_card_eq_sum_residualEdge_intersections]
+  apply Finset.sum_congr rfl
+  intro q _
+  exact retainedCompletionWords_inter_card_eq_if C q.1 q.2
+
+#print axioms overlapCompletionWords_card_eq_sum_boolean_face_mass
+
 #print axioms fixedCoordinateWords_card
 #print axioms retainedCompletionWords_inter_eq_fixedCoordinateWords
 #print axioms retainedCompletionWords_inter_card_of_nonempty
