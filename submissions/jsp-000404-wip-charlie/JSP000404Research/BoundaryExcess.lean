@@ -28,7 +28,10 @@ the budget is therefore equivalent to
   floorExcess q <= floorExcess b.
 
 Thus a bad phase is exactly a phase at which the boundary-count vector loses
-floor-excess relative to the geometric quotient vector.
+floor-excess relative to the geometric quotient vector, PROVIDED the geometric
+quotient bound (sum_i q i <= n) holds. Omitting this bound makes the two
+truncated-subtraction equivalences FALSE; see
+BoundaryExcessMissingPremiseRefutation.lean.
 -/
 
 namespace JSP000404Research
@@ -49,11 +52,13 @@ theorem positiveSupport_eq_total_sub_floorExcess
 comparison of floor-excess functionals.
 
 In the geometric application, q is the scaled ray-gap quotient vector and b
-counts phase-partition boundaries in the same ray gaps. -/
+counts phase-partition boundaries in the same ray gaps. The explicit hQ
+premise is mathematically necessary, not merely a Lean tactic workaround. -/
 theorem support_budget_iff_floorExcess_le
     {I : Type*} [Fintype I]
     (q b : I → ℕ) (n : ℕ)
-    (hsum : (∑ i, b i) = n) :
+    (hsum : (∑ i, b i) = n)
+    (hQ : (∑ i, q i) ≤ n) :
     positiveSupport b ≤ n - floorExcess q ↔
       floorExcess q ≤ floorExcess b := by
   rw [positiveSupport_eq_total_sub_floorExcess b n hsum]
@@ -61,6 +66,8 @@ theorem support_budget_iff_floorExcess_le
     have hle := floorExcess_le_sum b
     rw [hsum] at hle
     exact hle
+  have hq_le : floorExcess q ≤ n :=
+    (floorExcess_le_sum q).trans hQ
   constructor <;> intro h <;> omega
 
 /-- Strict failure form: the local phase budget fails exactly when the
@@ -69,7 +76,8 @@ excess. -/
 theorem support_budget_fails_iff_floorExcess_lt
     {I : Type*} [Fintype I]
     (q b : I → ℕ) (n : ℕ)
-    (hsum : (∑ i, b i) = n) :
+    (hsum : (∑ i, b i) = n)
+    (hQ : (∑ i, q i) ≤ n) :
     n - floorExcess q < positiveSupport b ↔
       floorExcess b < floorExcess q := by
   rw [positiveSupport_eq_total_sub_floorExcess b n hsum]
@@ -77,6 +85,8 @@ theorem support_budget_fails_iff_floorExcess_lt
     have hle := floorExcess_le_sum b
     rw [hsum] at hle
     exact hle
+  have hq_le : floorExcess q ≤ n :=
+    (floorExcess_le_sum q).trans hQ
   omega
 
 /-- If the geometric side proves that the phase boundary allocation can lose
