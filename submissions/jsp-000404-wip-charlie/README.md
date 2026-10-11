@@ -1023,3 +1023,94 @@ and **zero** outside that allowed WIP module.
 inequality, required upper branch, and arbitrary-cardinality
 source-closure are still open. This contribution disproves a proposed
 DIRECT PAYMENT MECHANISM, not JSP-000404 itself.
+
+
+### Injective safe-flip double-blocker budget and legacy arithmetic premise audit (2026-10-11)
+
+**Genuine local finite matching (kernel checked).** The module
+`JSP000404Research/ResidualSafeFlipDoubleMatching.lean`
+takes a fixed same-retained residual pair `a<v` and all oriented safe
+colours `c ∈ outgoingRetained C a`, `c ∉ retainedActive C v`.
+Every flipped word is covered by the upper endpoint's completion cube.
+A flip covered by a SECOND cube yields a STRICTLY INTERIOR residual
+blocker `a<w<v` whose edge `C.color a w` equals `c.castSucc`.
+Therefore distinct doubly covered colours have distinct blockers.
+This provides an actual subtype-valued **injective map**, not a
+nonconstructive global Hall hypothesis:
+
+`doubleSafeFlipBlockerMap_injective`
+
+and the sharp local cardinal consequence:
+
+`(doubleSafeFlipColors C a v).card ≤
+(interiorResidualBlockers C a v).card`.
+
+The Boolean words obtained by flipping distinct retained colours
+are distinct (`flippedRetainedCode_injective_in_colour`).
+Every safe flip is singly or doubly covered, so:
+
+`safe_flip_colour_budget_le_singleton_add_interior` proves
+`card(safeColours) ≤ card(singletonSafeFlipColors) +
+card(interiorResidualBlockers)`.
+
+Consequently
+`safe_flip_singly_covered_of_more_colors_than_blockers` shows that
+strictly more safe colours than interior residual blockers force a
+genuine **singly-covered completion word**. It is still NOT a global
+Boolean hole; the upper endpoint covers it. This is a local,
+Hall-free matching and counting constraint, not a payment of arbitrary
+overlaps/losses.
+
+- First injective matching: successful targeted Lean workflow
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38127068295
+  (3164 jobs).
+- Quantitative singleton and full safe-colour budget:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38127189970
+  and https://github.com/Charlie-Wang-03/awards/actions/runs/38127328738
+  (3164 jobs each).
+- Independent umbrella import target:
+  `JSP000404Research.VerifiedOverlapRewire`, successfully built:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38127459009.
+  It deliberately does **not** import
+  `PlanarLowerBranchProofAdmittedWIP`.
+
+**Legacy Lean fixes and mathematical audit.** We repaired the
+definitional/tactic breakages in `KraftBridge.lean` and
+`GainCore.lean` (verified by
+https://github.com/Charlie-Wang-03/awards/actions/runs/38122127957),
+then in `ShortArcTransition.lean`,
+`CriticalPhaseInterval.lean`, and `SingleSupportWidth.lean`
+(verified by
+https://github.com/Charlie-Wang-03/awards/actions/runs/38127626065).
+These were not substitutes for geometric proof steps.
+
+More importantly, the TWO old arithmetic equivalences in
+`BoundaryExcess.lean` were MATHEMATICALLY FALSE as previously stated,
+because they compared truncated natural subtraction without bounding
+`floorExcess q` by `n`. In particular, on a one-element index type
+with `n=0`, `q(0)=2`, `b(0)=0`, we have
+`positiveSupport b=0`, `floorExcess b=0`,
+`floorExcess q=1`. Both unrestricted iff statements fail.
+
+`BoundaryExcessMissingPremiseRefutation.lean` formally refutes
+the unrestricted theorem statements with no `sorryAx`.
+`BoundaryExcess.lean` now includes the ESSENTIAL geometric
+premise `∑ i, q i ≤ n` explicitly in
+`support_budget_iff_floorExcess_le` and
+`support_budget_fails_iff_floorExcess_lt`.
+The corrected versions and both refutations passed:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38127921869
+(3094 jobs, no `sorryAx` in the audited declarations).
+This change corrects a false historical AUXILIARY statement.
+It does not add assumptions to the main JSP-000404 conjecture.
+Any legacy callers must supply this geometric sum bound.
+
+**Important status boundary.** The full legacy
+`lake build JSP000404Research` default-target tree has other
+unrelated pre-existing source errors and is not a clean proof
+acceptance artifact. Only the named module builds above are verified.
+The allowed research WIP still contains the single explicit
+`sorry` at `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:64`.
+The global completion-payment inequality and the original JSP-000404
+problem remain **OPEN**. Local injectivity and a corrected auxiliary
+iff do not justify replacing this `sorry`.
