@@ -74,9 +74,8 @@ theorem doubled_safe_flip_has_interior_overlap_edge
       C.color a w = c.castSucc ∧
       flippedRetainedCode C a c ∈ retainedCompletionWords C w := by
   have hdata := (mem_doubleSafeFlipColors C a v c).1 hc
-  obtain ⟨hone | ⟨w, hneA, hneV, hwcube, _⟩⟩ :=
-    oriented_safe_flip_singleton_or_new_residual_overlap
-      C a v c hsame hdata.1 hdata.2.1
+  rcases oriented_safe_flip_singleton_or_new_residual_overlap
+      C a v c hsame hdata.1 hdata.2.1 with hone | ⟨w, hneA, hneV, hwcube, _⟩
   · omega
   · obtain ⟨haw, hwv, hres⟩ :=
       oriented_safe_flip_cube_partner_strictly_interior
