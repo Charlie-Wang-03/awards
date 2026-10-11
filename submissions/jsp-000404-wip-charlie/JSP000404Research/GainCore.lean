@@ -51,7 +51,7 @@ every gain edge gives at least one unit of increase; and the smaller
 configuration is assumed to satisfy the inductive weight bound.
 -/
 theorem compensated_induction_of_gain_closed_core
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (gain : V → V → Prop)
