@@ -66,7 +66,7 @@ theorem critical_bad_left_in_gap
     (hs1 : 1 ≤ s) :
     alpha ≤ criticalBadLeft alpha s ∧
       criticalBadLeft alpha s ≤ alpha + s := by
-  simp [criticalBadLeft]
+  dsimp [criticalBadLeft]
   constructor <;> linarith
 
 /-- In the lower branch delta<1, the bad interval ends strictly before the
