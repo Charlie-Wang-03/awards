@@ -166,6 +166,65 @@ theorem exterior_blocker_descending_edge_not_residual
   intro hres
   exact hres (lt_trans hdesc c.isLt)
 
+/-- At the bottom retained colour, a strict-descending external blocker
+cannot occur. This closes only the rank-zero endpoint of the LOCAL safe-flip
+trichotomy; it says nothing about holes in the union of completion cubes. -/
+theorem zero_colour_flip_no_external_blocker
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (v : V) (c : Fin n) (hc : c.val = 0) :
+    ¬ ∃ w : V, v < w ∧ (C.color v w).val < c.val := by
+  rintro ⟨w, _hvw, hlt⟩
+  omega
+
+/-- The established local safe-flip alternatives collapse from three to
+two if the chosen safe coordinate is the least possible retained colour.
+The first disjunct concerns canonical VERTEX CODES, not global Boolean
+completion holes; the second concerns a locally separated residual edge. -/
+theorem zero_colour_flip_code_hole_or_separation
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (a v : V) (c : Fin n) (hc : c.val = 0)
+    (houtlet :
+      (¬ ∃ w : V,
+        (fun d => retainedBit C w d) = flippedRetainedCode C a c) ∨
+      (∃ w : V,
+        a < w ∧ w < v ∧
+        IsResidual C w v ∧ RetainedSeparated C w v) ∨
+      (∃ w : V,
+        v < w ∧
+        (fun d => retainedBit C w d) = flippedRetainedCode C a c ∧
+        (C.color v w).val < c.val)) :
+    (¬ ∃ w : V,
+      (fun d => retainedBit C w d) = flippedRetainedCode C a c) ∨
+    (∃ w : V,
+      a < w ∧ w < v ∧
+      IsResidual C w v ∧ RetainedSeparated C w v) := by
+  rcases houtlet with hhole | hresolved | hext
+  · exact Or.inl hhole
+  · exact Or.inr hresolved
+  · obtain ⟨w, hvw, _, hlt⟩ := hext
+    exact False.elim
+      ((zero_colour_flip_no_external_blocker C v c hc) ⟨w, hvw, hlt⟩)
+
+/-- At rank zero there are no further strictly decreasing transitions.
+The rank-zero observation does not supply the missing global payment. -/
+theorem rankedFlipReach_zero_rank_terminal
+    {S : Type*} {n : ℕ}
+    (rank : S → Fin n)
+    (step : S → S → Prop)
+    (hdecrease : ∀ s u, step s u →
+      (rank u).val < (rank s).val)
+    (s : S) (hzero : (rank s).val = 0) :
+    ¬ ∃ u : S, step s u := by
+  rintro ⟨u, hsu⟩
+  have hd := hdecrease s u hsu
+  omega
+
+#print axioms zero_colour_flip_no_external_blocker
+#print axioms zero_colour_flip_code_hole_or_separation
+#print axioms rankedFlipReach_zero_rank_terminal
+
 #print axioms rankedFlipReachSteps_rank_budget
 #print axioms rankedFlipReachSteps_lt_color_count
 #print axioms exterior_blocker_descending_edge_not_residual
