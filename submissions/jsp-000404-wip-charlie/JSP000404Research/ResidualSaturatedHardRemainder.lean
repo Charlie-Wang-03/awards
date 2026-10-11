@@ -178,7 +178,6 @@ theorem completion_defect_payment_iff_soft_and_unpaid_hard
             (surplusPaidHardOverlapWords C exponent).card)) := by
   rw [completion_defect_payment_iff_after_all_hard_reservation]
   rw [afterAllHardPayment_card_eq_soft_add_unpaidHard]
-  omega
 
 #print axioms afterAllHardPayment_eq_soft_union_unpaidHard
 #print axioms afterAllHardPayment_card_eq_soft_add_unpaidHard
