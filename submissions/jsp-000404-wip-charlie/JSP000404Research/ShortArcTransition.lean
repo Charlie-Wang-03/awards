@@ -71,7 +71,9 @@ theorem transitionCount_le_one_of_gapSum_lt_two
   have hreal := transitionCount_le_gapSum a signs gaps h
   have hlt : (boolTransitionCountFrom a signs : ℝ) < 2 :=
     hreal.trans_lt hshort
-  exact_mod_cast (Nat.lt_of_cast_lt hlt : boolTransitionCountFrom a signs < 2)
+  have hNat : boolTransitionCountFrom a signs < 2 := by
+    exact_mod_cast hlt
+  omega
 
 /-- Opposite endpoint signs on such a short arc force exactly one transition. -/
 theorem exactly_one_transition_of_short_opposite_arc
