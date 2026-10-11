@@ -1,11 +1,12 @@
 import JSP000404Research.ResidualCompletionOverlapRewire
 import JSP000404Research.PlanarCrossingHardOverlapRewire
+import JSP000404Research.ResidualCompletionIntersectionMass
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
 
 Import this module to rebuild the actual kernel-checked local chain:
-completion-cube accounting, safe-flip no-hole obstruction, triangular
+completion-cube accounting, edge-owned overlap face masses, safe-flip no-hole obstruction, triangular
 exclusion, strict interior cube blocker, exact retained edge colour,
 and genuine planar AngleCap retained-separated residual rewire.
 
