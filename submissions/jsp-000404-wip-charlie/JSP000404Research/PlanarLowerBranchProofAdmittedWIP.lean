@@ -6,6 +6,7 @@ import JSP000404Research.PlanarStrictShellReserveLedger
 import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
 import JSP000404Research.PlanarIncomparableBridgeCapacity
 import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
+import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 import Mathlib.Tactic
 
 /-!
@@ -134,6 +135,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hpaletteQuarterMobile :=
     planar_net_mobile_mass_plus_unused_le_incomparable_bridge_density
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hbridgeLowerExponent :=
+    planar_net_actual_collision_twice_le_strict_lower_target_sum
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -171,6 +175,11 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- 2^(n-2) Boolean words, giving a purely carrier-count bound.
       -- This is a candidate collision upper bound, NOT a
       -- true-hole credit or an unreserved profile surplus.
+      -- Certified hbridgeLowerExponent improves the ambient n-bound
+      -- to the SATURATED strict lower target k(b), giving each
+      -- incomparable bridge at most HALF of its own Q_b dyadic mass.
+      -- The sum is still indexed by BRIDGES; multiple bridges may
+      -- share lower b, so it is NOT an independent profile payment.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
