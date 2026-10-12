@@ -1,39 +1,55 @@
-import JSP000404Research.PlanarLowerBranchTerminalHardNetReduction
+import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import Mathlib.Tactic
 
 /-!
-# ADMITTED RESEARCH-ONLY ENTRY: EXPLICIT terminal rigid hard net-payment frontier
+# ADMITTED RESEARCH-ONLY ENTRY: TWIN-ONLY terminal rigid debt frontier
 
-Exactly ONE executable sorry remains, with an increasingly precise
-geometric obligation for the genuine planar AngleCap point model.
+The genuine planar AngleCap lower branch is reduced to EXACTLY ONE
+unproved global defect-payment inequality. There is ONE executable
+`sorry` in this module; `#print axioms` must report `sorryAx`.
+No full JSP-000404 proof or disproof is claimed.
 
-Certified non-reusing reservations: full hard-face payments; ascending
-rigid lower-surplus payments; descending rigid upper-surplus payments.
-After those deductions, the leftover hard Boolean words are EXACTLY
-a disjoint union of outgoing/inactive TRANSPORTABLE hard faces and
-RIGID faces whose BOTH endpoints have saturated projected budgets.
+All earlier whole-face hard surplus, ascending mixed-rigid lower
+surplus, and descending mixed-rigid upper surplus reservations are
+certified non-reusing.
 
-Unlike the previous net goal's opaque hard remainder, the currently
-admitted inequality has the explicit five-source left hand side:
-  soft overlap Boolean words
-    + unreserved TRANSPORTABLE hard Boolean words
-    + SUM of UPPER target masses of terminal doubly saturated RIGID pairs
-    + SUM of LOWER target masses of ascending mixed rigid pairs
-    + SUM of UPPER target masses of descending mixed rigid pairs
-    + projected profile loss.
-Payment must come ONLY from TRUE Boolean holes and the total dyadic
-surplus remaining after all three certified non-reusing reservations.
+A NEW global hard carrier VERTEX MATCHING proof shows all hard
+carriers pairwise share no centre. Terminal doubly-saturated rigid
+pairs further have an EXACT exhausted dichotomy:
 
-A full-face injective transport of the movable hard words does EXIST,
-but its images are singleton/soft COVERED words, NOT necessarily holes.
-The terminal rigid pairs have zero local surplus, so a new global
-geometric argument is essential.
+  1. upper target exponent STRICTLY BELOW lower target exponent:
+     a reverse-safe colour exists on the upper endpoint, inactive
+     on the lower. The ENTIRE strict-descending face is transported
+     by a globally injective flip into singleton/soft COVERED words;
+  2. EQUAL target exponents:
+     both endpoint completion cubes and all incoming/outgoing
+     retained-incidence palettes are LITERALLY IDENTICAL.
+     These are the final TWIN rigid faces left by both tested
+     forward and reverse whole-face transport mechanisms.
 
-The new equivalence and genuine-plane conditional bridge are fully
-kernel-checked independently without sorryAx; THIS theorem retains
-the one explicit sorryAx. The deficit inequality remains EQUIVALENT
-to the unproved lower-branch capacity; the JSP-000404 prize problem,
-general upper branch, and source closure are NOT solved here.
+The true outstanding six-source inequality is now explicitly:
+
+  softOverlapWords
+    + netOutgoingTransportableHardWords
+    + netReverseStrictDescentRigidHardWords
+    + SUM_twinRigid 2^k(upper)
+    + SUM_ascendingMixed 2^k(lower)
+    + SUM_descendingMixed 2^k(upper)
+    + projectedProfileLoss
+  <= TRUE Boolean holes
+    + total dyadic surplus - already reserved full-hard mass
+                           - ascending lower-surplus credit
+                           - descending upper-surplus credit.
+
+Both forward and reverse movable hard maps are individually GLOBAL
+injections, but their images are NOT certified DISJOINT; all output
+words are already COVERED and cannot be counted as Boolean holes.
+Consequently no unproved payment cancellation is permitted.
+
+The six-source net goal is formally equivalent to the previous
+five-source goal and to the original lower-branch conjecture. The
+equivalence and planar conditional bridge are certified sorry-free,
+but the actual global payment remains a genuine mathematical gap.
 -/
 
 namespace JSP000404Research
@@ -66,19 +82,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_terminal_hard_net_payment
+  exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT:
-      -- soft overlap + net TRANSPORTABLE hard overlap
-      -- + terminal DOUBLY SATURATED rigid upper-target dyadic debt
-      -- + both mixed-rigid strict-endpoint dyadic target debts
-      -- + projected-profile loss
-      -- <= TRUE Boolean holes + genuinely UNRESERVED surplus.
-      --
-      -- All intermediate word disjointness, dyadic mass accounting,
-      -- one-layer planar budget and conditional bridge are certified
-      -- without sorryAx. This global geometric payment remains open.
+      -- SOLE OPEN GEOMETRIC INPUT: true Boolean holes and genuinely
+      -- unreserved surplus must pay for soft overlap, BOTH forward
+      -- and reverse movable hard Boolean masses, equal-target TWIN
+      -- rigid dyadic weight, both mixed-rigid target debts and loss.
+      -- Forward/reverse images are COVERED and may intersect.
+      -- The global geometric payment is NOT proved; this sole sorry
+      -- is retained intentionally with sorryAx.
       sorry)
 
 #print axioms planar_lower_branch_dyadic_capacity_admitted_wip
