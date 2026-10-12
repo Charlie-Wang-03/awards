@@ -1223,3 +1223,112 @@ doubly filtered actual collisions and the other outstanding
 rigid/mixed/loss sources to independent TRUE-hole or unreserved-
 surplus capacities, or else exhibit a genuine planar counterexample.
 This work cannot be presented as an upstream award proof.
+
+## Two-flip Boolean square: local exterior injection and explicit third-centre payment
+
+
+### 1. Opposite corner of an actual forward/reverse hard image collision
+
+New Lean module: ResidualActualCollisionTwoFlipDiagonal.lean.
+
+Let p=(a,v) be the forward hard carrier, q=(b,z) the reverse
+strict-rigid hard carrier, w the ACTUAL common sink image in
+Q_b INTER Q_v, and cf/cr the distinct chosen transport colours.
+We have cf active at b and inactive at v; cr inactive at b
+and active at v. Define d(w)=flip_cf(flip_cr(w)).
+
+Certified in Lean:
+
+~~~text
+double_flip(cf,cr) is INJECTIVE
+d(w) NOT-IN Q_b and d(w) NOT-IN Q_v
+
+d(w) in GLOBAL Boolean holes
+OR
+there exists c != b and c != v with d(w) in Q_c.
+~~~
+
+This is an EXACT third-centre obstruction, NOT a proof that the
+opposite square corner is globally uncovered. An initial Lean
+type-inference failure was fixed by explicitly binding the Boolean
+word as Fin n -> Bool without adding any hypotheses.
+
+### 2. Whole-face two-cube exterior injection
+
+New Lean module: ResidualIncomparableBridgeExteriorCapacity.lean.
+
+If endpoint retained-active palettes are incomparable, choose
+cross-active coordinates cf and cr and double-flip each word
+in the entire overlap face. The map is injective into the
+exterior of the TWO endpoint completion cubes:
+
+~~~text
+card(Q_b INTER Q_v)
+ <= card(BooleanUniv \ (Q_b UNION Q_v)).
+
+For every incomparable candidate bridge r=(b,v):
+2^card(commonRetainedInactive(b,v))
+ <= card(BooleanUniv \ (Q_b UNION Q_v)).
+~~~
+
+This is a genuine numerical capacity theorem for explicit
+two-cube EXTERIOR words, and also applies to the Hamming-two
+filtered candidate bridge pool. It assumes no new AngleCap axiom.
+
+### 3. Local true-hole versus external-third-centre ledger
+
+New Lean module: ResidualBridgeDiagonalTrueHoleLedger.lean.
+
+Write C=union_all_centres Q_x (the global COVERED word set),
+H=BooleanUniv \ C (the GLOBAL TRUE HOLES),
+E(b,v)=BooleanUniv \ (Q_b UNION Q_v), and
+X(b,v)=E(b,v) INTER C (the EXTERNALLY COVERED exterior).
+
+Lean proves, for incomparable endpoint palettes:
+
+~~~text
+card(Q_b INTER Q_v) <= card(H) + card(X(b,v)).
+
+Every word in X(b,v) is covered by some c != b,v.
+
+CONDITIONAL: if X(b,v)=EMPTY, then
+  card(Q_b INTER Q_v) <= card(H).
+~~~
+
+The last theorem is deliberately conditional. We have NOT proved
+that planar AngleCap eliminates all third-centre covers. The
+external-cover mass X cannot be discarded or renamed unreserved
+dyadic surplus. Furthermore, separate local injections cannot be
+summed globally without disjointness/non-reuse.
+
+A first Lean error was an unavailable Finset emptiness lemma
+name; finite-set extensionality repaired the proof without
+new premises.
+
+### 4. Audited evidence
+
+Seven new theorems in the first two modules are Lean-checked
+with NO sorryAx in 3,500 successful build jobs:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38285261097
+
+Three new true-hole ledger theorems are Lean-checked
+with NO sorryAx in 3,501 successful build jobs:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38286241524
+
+VerifiedOverlapRewire.lean imports all three modules. The
+research-only WIP imports the true-hole obstruction explicitly
+but intentionally retains the original single sorry.
+
+### 5. Remaining mathematical frontier
+
+To turn double-flipped exterior words into genuine globally
+available Boolean holes or NET unreserved profile surplus, one
+must bound or independently pay X(b,v), and avoid reusing hole
+targets across DIFFERENT bridges. Genuine planar AngleCap may
+constrain third-centre covering configurations, but this has
+NOT yet been established.
+
+In addition, the rigid-twin, both mixed-rigid, projected-loss,
+other soft-overlap and both net mobile-hard debts must be paid
+together in the complete six-source inequality. Original
+JSP-000404 is NOT yet proved or disproved.
