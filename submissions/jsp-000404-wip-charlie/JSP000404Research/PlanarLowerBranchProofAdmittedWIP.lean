@@ -3,6 +3,7 @@ import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 import JSP000404Research.PlanarStrictShellSoftMassLedger
 import JSP000404Research.PlanarStrictShellReserveLedger
+import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
 import Mathlib.Tactic
 
 /-!
@@ -122,6 +123,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hglobalShellReserve :=
     planar_strict_shell_singleton_bridge_nonbridge_exact_ledger
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hnetPaymentFrontier :=
+    planar_net_unpaid_mobile_payment_iff_actual_sink_credit
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -143,6 +147,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- EXACT three-way global conservation: shell SINGLETON plus
       -- candidate BRIDGE plus NONBRIDGE SOFT = strict dyadic gap.
       -- All categories are COVERED; none is a true-hole credit.
+      -- Verified planar hnetPaymentFrontier is an EXACT IFF with the
+      -- remaining net-unpaid mobile masses, using the ACTUAL net
+      -- image intersection and the UNUSED singleton/soft sink credit.
+      -- Unlike the old coarse bridge upper bound, it explicitly
+      -- excludes paid forward hard sources and unrealized collisions.
+      -- This rigorously sharpens the SHAPE of the final obligation,
+      -- but neither side has been proved geometrically from holes
+      -- and genuinely unreserved profile surplus.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
