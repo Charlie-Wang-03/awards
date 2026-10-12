@@ -2,6 +2,7 @@ import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 import JSP000404Research.PlanarStrictShellSoftMassLedger
+import JSP000404Research.PlanarStrictShellReserveLedger
 import Mathlib.Tactic
 
 /-!
@@ -118,6 +119,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hlocalShellMass :=
     planar_strict_shell_singleton_soft_local_mass_ledger
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hglobalShellReserve :=
+    planar_strict_shell_singleton_bridge_nonbridge_exact_ledger
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -135,6 +139,10 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- partition: strict lower shell = singleton-covered mass plus
       -- full outgoing soft-overlap carrier dyadic mass. This does not
       -- turn either covered class into unreserved surplus or true holes.
+      -- Verified planar hglobalShellReserve sharpens hbridgeGap to
+      -- EXACT three-way global conservation: shell SINGLETON plus
+      -- candidate BRIDGE plus NONBRIDGE SOFT = strict dyadic gap.
+      -- All categories are COVERED; none is a true-hole credit.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
