@@ -45,6 +45,8 @@ theorem netStrictRigidLowerCubes_pairwiseDisjoint
       (fun q => retainedCompletionWords C q.1) := by
   classical
   intro p hp q hq hpq
+  change Disjoint (retainedCompletionWords C p.1)
+    (retainedCompletionWords C q.1)
   rw [Finset.disjoint_left]
   intro word hpword hqword
   have hp' : p ∈ netStrictDescentRigidCarriers C exponent := by
