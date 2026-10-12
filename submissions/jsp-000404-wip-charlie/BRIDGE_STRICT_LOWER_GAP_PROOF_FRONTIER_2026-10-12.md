@@ -571,3 +571,151 @@ true holes, or gives an independent source of unreserved surplus.
 The only `sorry` is genuinely mathematical, not a Lean syntax
 error. The original JSP-000404 problem remains **unproved and
 undisproved** by this downstream branch.
+
+
+## Exact actual-collision frontier restricted to net-unpaid mobile sources
+
+Date: 2026-10-12. Research branch only; **the original JSP-000404 remains
+unproved and undisproved**. The result below is an exact accounting
+refinement rather than the missing true-hole payment.
+
+### Actual forward/reverse collisions (eight Lean theorems)
+
+The new module *ResidualActualBridgeCollisionLedger.lean* defines
+the ACTUAL collision set I as the intersection of the two established
+globally injective full-forward and reverse-strict sink images, not
+the complete candidate bridge-soft face pool B.
+
+Lean certifies:
+
+~~~text
+I SUBSET B
+reverse-strict sink image SUBSET strict-rigid lower-minus-upper U
+fullForwardSourceMass + reverseStrictSourceMass
+  = card(forwardSink UNION reverseSink) + card(I)
+  <= singletonCoveredMass + softCoveredMass + card(I)
+
+card(B) = card(I) + card(B \ I).
+~~~
+
+The reverse sink image is a concrete occupied subset of U, with its
+exact reverse source mass preserved. The potential noncolliding bridge
+pool cannot be double-charged as a genuine transport intersection.
+
+A real Lean cardinal-arithmetic error was repaired by providing
+the cardinal consequence of the reverse-sink subset inclusion.
+**PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/38252954027
+(3,483 jobs; eight theorem axiom prints have no sorryAx).
+
+### Exact unused sink credit (four Lean theorems)
+
+Module: *ResidualActualMobileSinkSlack.lean*.
+
+Singleton-covered words S and soft-overlap words T are disjoint
+(completion multiplicities 1 and 2). Define
+
+~~~text
+E = (S UNION T) \ (forwardSink UNION reverseSink).
+
+fullForwardSourceMass + reverseStrictSourceMass + card(E)
+  = card(S) + card(T) + card(I).
+
+fullForwardSourceMass + reverseStrictSourceMass
+  + card(E) + card(B \ I)
+  = card(S) + card(T) + card(B).
+~~~
+
+The previous coarse candidate-bridge inequality discarded two
+separate nonnegative slacks: unused eligible covered sinks E and
+candidate bridge words B\I which are never actual collisions.
+Neither counts as a genuine Boolean hole.
+
+**PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/38253346594
+(3,484 jobs; zero new sorryAx).
+
+### Restriction to genuinely NET UNPAID forward hard words (eight theorems)
+
+Module: *ResidualNetActualCollisionLedger.lean*.
+
+The previous full-forward sink image may contain hard source words
+ALREADY PAID by dyadic profile surplus. The final six-source WIP debt
+includes ONLY the net-unpaid forward hard source words. To eliminate
+this pollution, the forward map was restricted to the exact
+netTransportableHardWords source subtype; Lean checks global
+injectivity of that restriction and exact cardinality of its image.
+
+Write F_net for its image, R for the reverse strict-rigid sink image,
+I_net for their actual intersection, and E_net for the unused
+eligible singleton/soft sink words.
+
+~~~text
+I_net = F_net INTER R
+I_net SUBSET I SUBSET B
+E_net = (S UNION T) \ (F_net UNION R)
+
+netUnpaidForwardMass + reverseStrictSourceMass + card(E_net)
+  = card(S) + card(T) + card(I_net).
+~~~
+
+A new generic Lean theorem rigorously proves, for EVERY external
+otherDebt and availableBudget:
+
+~~~text
+(otherDebt + netUnpaidForwardMass + reverseStrictSourceMass
+   <= availableBudget)
+  IFF
+(otherDebt + card(S) + card(T) + card(I_net)
+   <= availableBudget + card(E_net)).
+~~~
+
+This isolates a sharper equivalent form of the only unpaid
+geometric payment: actual collisions, not candidate face mass;
+unused eligible covered sinks on the credit side; and no repeated
+profile-surplus-paid forward hard sources.
+
+The first restricted-injection Lean run exposed a subtype projection
+type mismatch. Fix: type the value projection over the ORIGINAL
+transportable-source subtype when transporting source equalities.
+No proof hypothesis was changed.
+
+**PASS:**
+https://github.com/Charlie-Wang-03/awards/actions/runs/38254298773
+(3,485 jobs; seven new net sink theorems),
+https://github.com/Charlie-Wang-03/awards/actions/runs/38254627213
+(3,223 jobs; one more payment-IFF theorem).
+All eight have no sorryAx.
+
+### True planar AngleCap specialization
+
+Module: *PlanarNetActualCollisionPaymentFrontier.lean*.
+
+The verified theorem
+*planar_net_unpaid_mobile_payment_iff_actual_sink_credit*
+derives the genuine standard-residual one-layer exponent and
+active-card budget witnesses from AngleCap and centre projective
+cycles and then proves the exact NET mobile payment equivalence
+uniformly for all remaining debt and available budget values.
+
+**PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/38255039291
+(3,486 jobs; the new planar theorem has only the standard Lean axioms
+propext, Classical.choice, Quot.sound).
+
+### WIP integration and remaining open geometry
+
+The sole admitted WIP entry now includes a certified
+*hnetPaymentFrontier* derived from the genuine planar theorem,
+alongside the earlier shell and possible-bridge estimates.
+
+**PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/38255501362
+(3,408 jobs). The hole scanner still finds **exactly one** executable
+sorry, now at *PlanarLowerBranchProofAdmittedWIP.lean* line 160.
+Its axiom print honestly includes sorryAx.
+
+**Critical outstanding gap:** the actual six-source payment and its
+exact net-unpaid collision/unused-covered-sink equivalent are NOT
+proved from real planar geometry. Even the eligible credit E_net
+consists of ALREADY COVERED words. It is a valid algebraic credit
+only after the exact sink/source identity, not a TRUE Boolean hole
+or a newly unreserved dyadic profile surplus. The twin-rigid,
+ascending/descending mixed-rigid, and projected-loss debts remain.
+No award-level or upstream-ready conclusion is established.
