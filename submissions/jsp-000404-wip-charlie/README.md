@@ -1783,3 +1783,41 @@ remaining non-double-counted surplus. All equivalence reductions
 remain necessary accounting, not a proof of the inequality.
 Other parameter branches and Sendov/source-closure remain OPEN.
 This research is NOT ready for a prize submission.
+
+
+### Both mixed-rigid partial credits and doubly-saturated terminal frontier (2026-10-12)
+
+**Status:** New research reductions are kernel checked; the planar lower-branch payment goal remains OPEN, and its single executable `sorry` remains in `PlanarLowerBranchProofAdmittedWIP.lean`. This section supersedes the preceding *ascending-only* frontier as the most refined WIP objective, but does NOT supersede any historical proof files.
+
+**New exact descending-rigid case.** `ResidualDescendingRigidExactDebt.lean` proves that any rigid hard carrier `(a,v)` with `k(a)=nu(a)` and `k(v)<nu(v)` satisfies
+
+`card(Q_a inter Q_v) = dyadicSurplus(v) + 2^k(v)`,
+
+and the full face CANNOT be covered by its two endpoint surpluses. The strict endpoint's exact unpaid target weight is `2^k(v)`. The descending selected family is disjoint from previously full-face paid carriers and from the earlier ascending-rigid family. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194200004 (PASS; four printed axioms exclude `sorryAx`).
+
+**Global triple-family collision-free matching.** `ResidualBothMixedRigidSurplusPacking.lean` adds the third non-reusing credit class. With `P` old fully paid hard carriers, `A` unpaid ascending rigid carriers (strict LOWER), and `B` unpaid descending rigid carriers (strict UPPER), it proves
+
+`paidHardMass + sum_A surplus(lower) + sum_B surplus(upper) <= totalSurplus`.
+
+The first CI run found one Lean arithmetic-normalization proof error; this was repaired in `cfdeeea93204d5e0e2eaa1de49bbe9a8f55c5f6c`. The downstream `ResidualBothMixedRigidNetReduction.lean` then passed its own kernel CI together with all imports at https://github.com/Charlie-Wang-03/awards/actions/runs/38194527651 (3,190 jobs).
+
+**Actual Boolean words, exact net debt, not a double-counted sum.**
+`ResidualBothMixedRigidNetReduction.lean` establishes global disjointness of `ascendingUnpaidRigidWords` and `descendingUnpaidRigidWords`, individual union-cardinal identities, inclusion in genuinely unpaid hard overlap words, and the *exact equivalence* between the preceding lower-branch payment criterion and the further reduced one:
+
+`softWords.card
+ + remainingUnpaidHardAfterMixedRigidWords.card
+ + sum_A 2^k(lower) + sum_B 2^k(upper)
+ + projectedProfileLoss
+ <= trueBooleanHoles
+    + totalSurplus - paidHardMass
+                   - sum_A surplus(lower)
+                   - sum_B surplus(upper)`.
+
+Subtraction is natural-number truncated subtraction, with sufficient budget inequalities already kernel proven. The new equivalence theorem prints exactly the standard `propext`, `Classical.choice`, `Quot.sound` axioms; NO `sorryAx`.
+
+**Sharper structural terminal class.** Under the same ordinary one-layer residual-active profile budget as before, `ResidualTerminalDoubleSaturatedHard.lean` proves that every Boolean word in `remainingUnpaidHardAfterMixedRigidWords` is uniquely owned by a hard carrier which either (i) has an outward/inactive transport, or (ii) is rigid AND **both endpoints** satisfy `k=nu`. In particular any rigid hard carrier remaining after BOTH partial credits is doubly projected-saturated, whereas formerly only lower-endpoint saturation was known. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194693776 (PASS, 3,192 jobs, both theorem axiom lists exclude `sorryAx`). This classification does not imply that the transport image is uncovered or that double saturation is impossible for all planar point configurations.
+
+**Planar connection and honest admitted boundary.**
+`PlanarLowerBranchBothMixedNetPaymentReduction.lean` is a sorry-free verified bridge from the refined genuine-plane `AngleCap` net-payment input to the planar lower-branch dyadic capacity. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194845553 (PASS). `PlanarLowerBranchProofAdmittedWIP.lean` now uses this bridge with exactly ONE executable `sorry`, whose axiom report correctly includes `sorryAx`. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194983095 (PASS, 3,366 jobs; admitted theorem remains NOT a proof). `VerifiedOverlapRewire.lean` now imports every new sorry-free module and EXCLUDES the admitted WIP; CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38195143803 (PASS).
+
+**Remaining mathematical obligation.** Construct a genuine global planar-geometric payment of SOFT overlap, all unpaid TRANSPORTABLE hard mass, all DOUBLY SATURATED rigid hard mass, the two mixed-rigid STRICT-ENDPOINT target debts, and projected profile loss, against TRUE Boolean holes plus the verified net remaining surplus. This is still EQUIVALENT to the previously open lower-branch sharp capacity. The general upper branch, the legacy full-root build and the source-closure/prize-submission gates are NOT claimed closed.
