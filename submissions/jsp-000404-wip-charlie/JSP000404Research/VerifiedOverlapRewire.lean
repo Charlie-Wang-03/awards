@@ -41,6 +41,10 @@ import JSP000404Research.ResidualForwardReverseBridgeSoftFaces
 import JSP000404Research.ResidualForwardReverseBridgeCapacity
 import JSP000404Research.ResidualForwardReverseBridgeDyadicMass
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
+import JSP000404Research.ResidualBridgeReverseLowerSharedCapacity
+import JSP000404Research.ResidualBridgeReverseLowerDyadicBudget
+import JSP000404Research.ResidualBridgeStrictDyadicDescentGap
+import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -217,4 +221,36 @@ This theorem is available to the research-only WIP as hmobile. Its
 true-hole/global-surplus defect payment is STILL OPEN (one explicit
 sorry in the intentionally excluded WIP), and no final JSP proof
 is implied.
+-/
+
+/-!
+## New certified shared lower-cube and strict dyadic descent capacity
+
+Candidate SOFT bridge collision faces and genuine reverse strict-rigid
+HARD source faces are disjoint and BOTH lie in the union of strict
+rigid LOWER retained completion cubes.
+
+Hard-carrier endpoint matching plus lower residual cube uniqueness
+certify that all those lower cubes are pairwise disjoint. The genuine
+one-layer budget forces their projected free dimension to equal the
+lower target exponent. Their total cardinality is therefore EXACTLY
+  SUM_strict 2 ^ exponent(lower).
+
+The strict-rigid hard source mass is EXACTLY
+  SUM_strict 2 ^ exponent(upper).
+
+Consequently the candidate oriented soft bridge mass satisfies the
+NEW certified dimensional-descent gap inequality
+  SUM_bridgeSoft 2 ^ commonRetainedInactiveDim
+    <= SUM_strict 2 ^ exponent(lower)
+         - SUM_strict 2 ^ exponent(upper).
+
+PlanarBridgeSoftStrictDyadicGap certifies this inequality under the
+ACTUAL planar AngleCap configuration, standard residual colouring and
+centre projective cycle exponents, without using WIP/any sorryAx.
+
+The difference between strict-rigid lower/upper target dimensions
+is NOT a dyadicProfileSurplus (both endpoints are fully saturated),
+and this bound is NOT itself a payment by true Boolean holes.
+The excluded WIP retains ONE unresolved global-payment sorry.
 -/
