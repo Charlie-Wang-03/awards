@@ -78,7 +78,12 @@ theorem hard_carrier_shared_endpoint_implies_same_pair
     have hless : q.1 < p.1 := by
       rw [hlr]
       exact hqe
-    omega
+    have hcycle : p.1 < p.1 := by
+      calc
+        p.1 < p.2 := hpe
+        _ = q.1 := hOther
+        _ < p.1 := hless
+    exact (lt_irrefl _ hcycle).elim
   · have hcode : SameRetained C q.2 p.2 := by
       intro c
       calc
@@ -93,7 +98,12 @@ theorem hard_carrier_shared_endpoint_implies_same_pair
     have hless : p.2 < q.2 := by
       rw [hrl]
       exact hqe
-    omega
+    have hcycle : p.1 < p.1 := by
+      calc
+        p.1 < p.2 := hpe
+        _ < q.2 := hless
+        _ = p.1 := hOther.symm
+    exact (lt_irrefl _ hcycle).elim
   · have hcode : SameRetained C q.1 p.2 := by
       intro c
       calc
