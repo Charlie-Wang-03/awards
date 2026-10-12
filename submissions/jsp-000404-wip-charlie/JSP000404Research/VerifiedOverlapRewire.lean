@@ -23,6 +23,10 @@ import JSP000404Research.PlanarRemainingRigidTwoCycleTight
 import JSP000404Research.PlanarRemainingHardTwoCycleDichotomy
 import JSP000404Research.ResidualTerminalRigidExactUnpaidMass
 import JSP000404Research.ResidualCarrierLevelFourWayClassification
+import JSP000404Research.ResidualTerminalHardCarrierPartition
+import JSP000404Research.ResidualTerminalHardNetPaymentReduction
+import JSP000404Research.PlanarLowerBranchTerminalHardNetReduction
+import JSP000404Research.ResidualTerminalRigidTwinCubeDichotomy
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -84,4 +88,24 @@ nonincreasing target exponent, and ZERO endpoint surplus.
 This independent verification module includes these sorry-free facts,
 while excluding PlanarLowerBranchProofAdmittedWIP and its one sorryAx.
 Neither the global planar payment nor the full award theorem is claimed.
+-/
+
+/-!
+## Exact terminal-word ownership and rigid twin/descent verification (2026-10-12)
+
+All exact post-reservation hard Boolean words have now been proved
+to partition into genuinely transportable faces and terminal rigid
+faces, with unique complete face ownership. In the genuine one-layer
+regime the latter mass equals precisely SUM 2^k(upper) over terminal
+rigid carriers, not an opaque uncompensated hard-overlap word set.
+
+The new sorry-free planar conditional bridge consumes a five-source
+global payment with true holes plus genuinely unreserved surplus.
+The separate admitted WIP has been pointed at this bridge and
+still retains exactly ONE explicit sorry, excluded here.
+
+Terminal rigid hard carrier structure also yields an exact
+twin-completion-cubes/twin-retained-active alternative when its two
+target exponents agree, and strict upper-to-lower target exponent
+descent otherwise. The remaining geometric obligation is unresolved.
 -/
