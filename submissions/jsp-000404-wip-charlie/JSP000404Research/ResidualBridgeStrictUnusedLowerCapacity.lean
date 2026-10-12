@@ -57,7 +57,32 @@ theorem bridge_soft_card_le_unused_strict_lower_words
   exact Finset.card_le_card
     (bridge_soft_subset_unused_strict_lower_words C exponent)
 
+/-- The exact count of unoccupied strict LOWER completion-cube slots
+is the lower-target total minus the reverse strict-source upper-target
+total. This is an identity of covered-cube slots, not of Boolean holes. -/
+theorem unused_strict_lower_words_card_eq_dyadic_gap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss : ∀ x, (active C x).card ≤ n - exponent x + 1) :
+    (netStrictRigidUnusedLowerWords C exponent).card =
+      (∑ q ∈ netStrictDescentRigidCarriers C exponent,
+        2 ^ exponent q.1) -
+      (∑ q ∈ netStrictDescentRigidCarriers C exponent,
+        2 ^ exponent q.2) := by
+  classical
+  change (netStrictRigidLowerCapacityWords C exponent \
+    netStrictDescentRigidWords C exponent).card = _
+  rw [Finset.card_sdiff_of_subset
+    (netStrictDescentRigidWords_subset_strict_lower_cubes C exponent)]
+  rw [netStrictRigidLowerCubes_card_eq_lower_target_sum
+    C exponent hexp honeLoss]
+  rw [netStrictDescentRigidWords_card_eq_upper_target_sum
+    C exponent hexp honeLoss]
+
 #print axioms bridge_soft_subset_unused_strict_lower_words
+#print axioms unused_strict_lower_words_card_eq_dyadic_gap
 #print axioms bridge_soft_card_le_unused_strict_lower_words
 
 end OrderedEdgeColoring
