@@ -40,6 +40,7 @@ import JSP000404Research.ResidualForwardReverseCollisionOrder
 import JSP000404Research.ResidualForwardReverseBridgeSoftFaces
 import JSP000404Research.ResidualForwardReverseBridgeCapacity
 import JSP000404Research.ResidualForwardReverseBridgeDyadicMass
+import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -197,4 +198,23 @@ singleton + 2*soft estimate without claiming bridge mass is empty.
 No true-hole payment follows. These additional certified sorry-free
 lemmas are imported here, but the admitted lower-branch global
 payment theorem with its ONE explicit sorry remains excluded.
+-/
+
+/-!
+## Certified true AngleCap bridge-soft dyadic capacity
+
+PlanarForwardReverseBridgeDyadicCapacity.lean specializes the globally
+injective two-direction transport and exact potential SOFT-bridge dyadic
+mass to genuine lower-branch planar configurations with 0<=delta<1/2,
+centreExponent and verified one-layer active-card budgets.
+
+The resulting upper bound is certified without sorryAx:
+  netOutgoingMobileMass + reverseStrictRigidMobileMass
+   <= singletonCoveredMass + softCoveredMass
+      + SUM_bridge 2 ^ commonRetainedInactiveDimension.
+
+This theorem is available to the research-only WIP as hmobile. Its
+true-hole/global-surplus defect payment is STILL OPEN (one explicit
+sorry in the intentionally excluded WIP), and no final JSP proof
+is implied.
 -/
