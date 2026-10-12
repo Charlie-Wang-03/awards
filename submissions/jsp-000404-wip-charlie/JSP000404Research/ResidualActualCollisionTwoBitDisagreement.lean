@@ -180,6 +180,7 @@ theorem forward_reverse_actual_collision_bridge_hamming_ge_two
   let q := strictDescentRigidWordCarrier C exponent y
   let cf := transportablePairColor C p
   let cr := strictDescentRigidPairColor C exponent hexp honeLoss q
+  change 2 ≤ (retainedBitDisagreementCoords C q.1.1 p.1.2).card
   have hbits :=
     forward_reverse_actual_collision_two_bridge_bit_disagreements
       C exponent hexp honeLoss x y hcollision
@@ -188,6 +189,7 @@ theorem forward_reverse_actual_collision_bridge_hamming_ge_two
   have hne :=
     forward_reverse_actual_collision_distinct_flip_colors
       C exponent hexp honeLoss x y hcollision
+  change cf ≠ cr at hne
   have hsub :
       ({cf,cr} : Finset (Fin n)) ⊆
         retainedBitDisagreementCoords C q.1.1 p.1.2 := by
