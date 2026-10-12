@@ -8,6 +8,7 @@ import JSP000404Research.PlanarIncomparableBridgeCapacity
 import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
 import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
+import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
 import Mathlib.Tactic
 
 /-!
@@ -191,6 +192,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- The independently proved actual NET collision lower-shell
       -- partition also prevents reusing strict-rigid lower targets.
       -- All surviving sink words remain COVERED, not true holes.
+      -- The certified two-flip diagonal is OUTSIDE the two bridge
+      -- endpoint cubes. Its overlap cube injects into that LOCAL
+      -- exterior, and the new exact local hole ledger proves
+      -- overlap <= GLOBAL true holes + third-centre-covered exterior.
+      -- Third-centre external coverage is an EXPLICIT, UNPAID
+      -- obstruction. It may not be discarded as zero or called
+      -- genuinely unreserved surplus. Moreover hole targets across
+      -- different bridges have no proven global disjoint allocation.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
