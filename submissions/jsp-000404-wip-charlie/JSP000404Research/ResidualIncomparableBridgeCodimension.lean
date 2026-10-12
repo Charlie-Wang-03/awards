@@ -291,7 +291,58 @@ theorem incomparable_bridge_total_mass_le_carrier_count_quarter
           simp [Finset.sum_const, nsmul_eq_mul]
 
 #print axioms incomparable_palettes_have_two_distinct_active_witnesses
+
+/-- Actual NET unpaid forward/reverse transport collisions are bounded
+by one quarter of ambient completion words PER surviving incomparable
+soft bridge carrier. No whole-face candidate that fails the two-active
+palette condition contributes to this upper bound. -/
+theorem net_actual_collision_card_le_incomparable_carriers_quarter
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netActualForwardReverseCollisionWords
+      C exponent hexp honeLoss).card ≤
+      (incomparableBridgeSoftCarriers C exponent).card *
+        2 ^ (n - 2) := by
+  have hsub :=
+    net_actual_collision_card_le_incomparable_bridge_mass
+      C exponent hexp honeLoss
+  have hquarter :=
+    incomparable_bridge_total_mass_le_carrier_count_quarter
+      C exponent
+  omega
+
+/-- A useful numerical consequence of the exact mobile source/sink
+ledger: the only possible duplicated destination mass is bounded by
+the filtered carrier count times 2^(n-2), while genuinely unused
+eligible covered sinks stay on the left, preventing double credit. -/
+theorem net_mobile_source_plus_unused_le_covered_plus_quarter_density
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card +
+        (netMobileUnusedCoveredSinkWords
+          C exponent hexp honeLoss).card ≤
+      (singletonCompletionWords C).card +
+        (softOverlapCompletionWords C).card +
+        (incomparableBridgeSoftCarriers C exponent).card *
+          2 ^ (n - 2) := by
+  have hexact :=
+    net_mobile_source_plus_unused_eq_covered_plus_actual
+      C exponent hexp honeLoss
+  have hquarter :=
+    net_actual_collision_card_le_incomparable_carriers_quarter
+      C exponent hexp honeLoss
+  omega
+
 #print axioms incomparable_bridge_dyadic_mass_le_ambient_quarter
+#print axioms net_actual_collision_card_le_incomparable_carriers_quarter
+#print axioms net_mobile_source_plus_unused_le_covered_plus_quarter_density
 #print axioms incomparable_palette_overlap_mass_twice_le_each_endpoint
 #print axioms incomparable_bridge_total_mass_le_carrier_count_quarter
 #print axioms incomparable_palettes_union_card_ge_two
