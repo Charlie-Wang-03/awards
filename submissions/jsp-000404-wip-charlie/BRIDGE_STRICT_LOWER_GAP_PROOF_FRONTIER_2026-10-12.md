@@ -450,3 +450,13 @@ remaining TWIN and both mixed-rigid target debts and profile loss.
 
 No final lower-branch capacity bound, full JSP-000404 theorem,
 counterexample or upstream-ready claim is established by this work.
+
+
+WIP integration regression **PASS**:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38239149059
+(3,402 build jobs). The hole scanner finds **exactly one**
+intentional executable \`sorry\` at
+\`PlanarLowerBranchProofAdmittedWIP.lean:140\`, and
+\`#print axioms planar_lower_branch_dyadic_capacity_admitted_wip\`
+honestly reports \`sorryAx\`. All newly proved standalone
+structural and planar theorems have no \`sorryAx\`.
