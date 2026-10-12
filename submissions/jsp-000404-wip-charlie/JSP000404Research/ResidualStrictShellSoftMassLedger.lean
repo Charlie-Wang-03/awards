@@ -137,7 +137,7 @@ theorem strict_shell_soft_words_eq_outgoing_faces
     · change word ∈ (softOverlapCarrierPairs C).biUnion
         (carrierOverlapWords C)
       exact Finset.mem_biUnion.mpr
-        ⟨((mem_strictShellOutgoingSoftCarriers C q r).1 hr).1,
+        ⟨r, ((mem_strictShellOutgoingSoftCarriers C q r).1 hr).1,
           hrword⟩
 
 /-- Exact dyadic mass, rather than a mere inclusion, of all outgoing
@@ -228,7 +228,11 @@ theorem strict_shell_singleton_add_outgoing_soft_mass_eq_target_gap
     omega
   have hcard :
       (Q ∩ A).card + (Q ∩ B).card = Q.card := by
-    rw [hpart, Finset.card_union_of_disjoint hdisj]
+    calc
+      (Q ∩ A).card + (Q ∩ B).card =
+          ((Q ∩ A) ∪ (Q ∩ B)).card :=
+        (Finset.card_union_of_disjoint hdisj).symm
+      _ = Q.card := by rw [← hpart]
   change ((retainedCompletionWords C q.1 \
       retainedCompletionWords C q.2) ∩
       singletonCompletionWords C).card +
