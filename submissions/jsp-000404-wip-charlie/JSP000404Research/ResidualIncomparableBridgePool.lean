@@ -165,7 +165,82 @@ theorem actual_collision_empty_of_comparable_candidate_palettes
   · intro hw
     simpa using hw
 
+
+/-- The filtered candidate pool also has EXACT DYADIC word mass,
+without repeated overlap-face contributions. -/
+theorem incomparable_bridge_soft_words_card_eq_dyadic_sum
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    (incomparableBridgeSoftWords C exponent).card =
+      ∑ r ∈ incomparableBridgeSoftCarriers C exponent,
+        2 ^ (commonRetainedInactive C r.1 r.2).card := by
+  classical
+  have hpair :
+      ((incomparableBridgeSoftCarriers C exponent : Finset (V × V)) :
+        Set (V × V)).PairwiseDisjoint (carrierOverlapWords C) := by
+    intro p hp q hq hpq
+    apply overlapCarrierWords_pairwiseDisjoint C
+    · have hp' : p ∈ incomparableBridgeSoftCarriers C exponent := by
+        simpa using hp
+      have hbridge := (Finset.mem_filter.mp hp').1
+      have hsoft := (Finset.mem_filter.mp hbridge).1
+      exact ((mem_softOverlapCarrierPairs C p).1 hsoft).1
+    · have hq' : q ∈ incomparableBridgeSoftCarriers C exponent := by
+        simpa using hq
+      have hbridge := (Finset.mem_filter.mp hq').1
+      have hsoft := (Finset.mem_filter.mp hbridge).1
+      exact ((mem_softOverlapCarrierPairs C q).1 hsoft).1
+    · exact hpq
+  unfold incomparableBridgeSoftWords
+  rw [Finset.card_biUnion hpair]
+  apply Finset.sum_congr rfl
+  intro p hp
+  have hbridge :=
+    (Finset.mem_filter.mp hp).1
+  have hsoft : p ∈ softOverlapCarrierPairs C :=
+    (Finset.mem_filter.mp hbridge).1
+  have hcarrier : p ∈ overlapCarrierPairs C :=
+    ((mem_softOverlapCarrierPairs C p).1 hsoft).1
+  obtain ⟨word, hword⟩ :=
+    ((mem_overlapCarrierPairs C p).1 hcarrier).2
+  exact retainedCompletionWords_inter_card
+    C (Finset.mem_inter.mp hword).1
+      (Finset.mem_inter.mp hword).2
+
+/-- The TWO net-unpaid movable hard sources can now be charged only
+to genuinely used covered sinks plus actual-collision mass; using
+the necessary active-palette obstruction, the latter is bounded by
+the STRICTLY FILTERED oriented bridge dyadic mass. The unused
+eligible covered sink reserve is retained on the left. -/
+theorem net_mobile_mass_plus_unused_sink_le_incomparable_bridge_dyadic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card +
+      (netMobileUnusedCoveredSinkWords
+        C exponent hexp honeLoss).card ≤
+      (singletonCompletionWords C).card +
+      (softOverlapCompletionWords C).card +
+      (∑ r ∈ incomparableBridgeSoftCarriers C exponent,
+        2 ^ (commonRetainedInactive C r.1 r.2).card) := by
+  have hmass :=
+    net_mobile_source_plus_unused_eq_covered_plus_actual
+      C exponent hexp honeLoss
+  have hsubset :=
+    net_actual_collision_card_le_incomparable_bridge_mass
+      C exponent hexp honeLoss
+  have hdyadic :=
+    incomparable_bridge_soft_words_card_eq_dyadic_sum
+      C exponent
+  omega
+
 #print axioms incomparable_bridge_soft_words_subset_candidate
+#print axioms incomparable_bridge_soft_words_card_eq_dyadic_sum
+#print axioms net_mobile_mass_plus_unused_sink_le_incomparable_bridge_dyadic
 #print axioms actual_collision_subset_incomparable_bridge_words
 #print axioms net_actual_collision_subset_incomparable_bridge_words
 #print axioms net_actual_collision_card_le_incomparable_bridge_mass
