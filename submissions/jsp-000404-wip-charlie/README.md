@@ -1907,3 +1907,119 @@ Soft-overlap mass, projected-profile loss, both mixed-rigid target
 debts and double-saturated rigid mass remain in the sole global
 payment `sorry`. Other parameter branches, historical monolithic
 root compilation and source-closure remain open.
+
+
+### Exact terminal hard-face ownership and sharp five-source payment frontier (2026-10-12)
+
+**Current proof status:** STILL OPEN. The true-planar lower-branch entry
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean` contains
+**exactly ONE executable `sorry`**, and its `#print axioms` correctly
+reports `sorryAx`. The new work below is verified **without** admitting
+this global geometric inequality. No complete proof, disproof, award
+submission or source-closure is claimed.
+
+**New hard Boolean-word decomposition.**
+`ResidualTerminalHardCarrierPartition.lean` (commits
+`939e42adf991d657cb178b5a234c65df267c494c` and corrective
+`abcf003c080d84cd30970756f686dc732bcf53c1`) proves that
+the unreserved hard Boolean words after FULL paid carrier reservation
+and BOTH mixed-rigid partial credits comprise an EXACT, DISJOINT
+whole-face partition:
+
+`remainingUnpaidHardAfterMixedRigidWords =
+ netTransportableHardWords ∪ netRigidHardWords`
+
+with disjointness, not just a cardinal upper bound. In particular,
+the subtraction of old paid and both mixed-rigid face sets does
+not accidentally subtract parts of an unrelated carrier's face.
+The proof uses unique ORDERED hard carrier ownership for EACH
+Boolean word. The transportable subset injects into already
+COVERED singleton/soft words and is bounded by their cardinality,
+but these sinks are NOT necessarily true Boolean holes.
+Successful CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38198609641
+(3,196 jobs; six theorem axiom audits exclude `sorryAx`).
+
+**Exact terminal rigid target mass.**
+`ResidualTerminalHardNetPaymentReduction.lean` proves that the
+standard one-layer residual-active budget at a hard carrier's
+endpoints follows from residual top-colour membership. Thus
+
+`card(remainingUnpaidHardAfterMixedRigidWords) =
+ card(netTransportableHardWords)
+ + SUM_(p in netRigidHardCarriers) 2^k(p.upper)`.
+
+All terminal rigid faces are doubly projected-saturated and have
+zero endpoint surplus. This identity yields an exact equivalence
+between the preceding both-mixed-rigid net inequality and the
+five-source inequality below; it does NOT itself establish the
+inequality. Successful CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38198809573
+(3,197 jobs, four theorem axiom audits without `sorryAx`).
+
+**Sharper terminal rigid geometry/combinatorics.**
+`ResidualTerminalRigidTwinCubeDichotomy.lean` proves a certified
+carrier-level dichotomy:
+- EQUAL endpoint target exponents: the two retained completion
+  Boolean cubes are LITERALLY identical, as are the two
+  retained-active coordinate supports;
+- UNEQUAL target exponents: strict DOWNWARD exponent descent from
+  lower carrier endpoint to upper carrier endpoint.
+
+This derives from rigid upper-cube inclusion, projected-free
+equality and the one-layer double-saturation condition. It is a
+necessary structural reduction; it does not eliminate the
+twin-cube case or prove an injective global hole payment.
+Earlier failed CI attempts revealed projectedFree rewrites and
+missing reflexive inequality in a `calc` chain; fixed in
+`3df598189eafc6d6026ba700c5dd94e1ca2a9bfb`.
+Successful CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38199549518
+(3,198 jobs, three theorem axiom audits without `sorryAx`).
+
+**Genuine planar bridge + sole admitted WIP.**
+`PlanarLowerBranchTerminalHardNetReduction.lean` derives the
+standard one-layer profile budget from actual planar `AngleCap`
+geometry, uses the exact terminal hard dyadic decomposition,
+and proves the new five-source inequality IMPLIES lower-branch
+dyadic capacity. Successful CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38198976935
+(3,375 jobs; no `sorryAx`).
+The WIP entry was changed to call this more explicit bridge at
+`d398eaf90fd8e0d0c25de50e911c1c289e5da2d0`, and its
+verification CI succeeded:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38199139751
+(3,376 jobs; WARNING of precisely ONE `sorry`, `sorryAx` remains).
+
+In symbolic form, the sole OPEN global geometric inequality is:
+
+`softMass
+ + netTransportableHardMass
+ + SUM_terminalRigid 2^k(upper)
+ + SUM_ascendingMixed 2^k(lower)
+ + SUM_descendingMixed 2^k(upper)
+ + projectedProfileLoss
+ <= TRUE Boolean holes
+    + totalProfileSurplus - reservedFullPaidHardMass
+                          - reservedAscendingLowerSurplus
+                          - reservedDescendingUpperSurplus.`
+
+This five-source inequality is **mathematically equivalent** to the
+previously unproved lower-branch bound, not a resolved proof.
+The new exact split removes ambiguous hard remainder terminology
+but does not manufacture holes or reuse paid surplus.
+
+**Integrated no-sorry verification:** `VerifiedOverlapRewire.lean`
+includes ALL new modules listed above, excludes the admitted WIP
+and passed independent Lean build at
+https://github.com/Charlie-Wang-03/awards/actions/runs/38199725961
+(**3,455 Lean build tasks**, no new `sorryAx` in imported lemmas).
+
+**Unresolved conceptual target:** Prove a GENUINE planar cross-centre
+incompatibility, a well-founded source-to-sink cascade, or a global
+injective payment for terminal rigid twin-cube/strict-descent
+obstructions, movable hard faces, soft overlap and profile loss,
+against true Boolean holes and genuinely unreserved surplus.
+A hard face's locally flipped words may still be globally COVERED.
+Do not reinterpret such images as holes or assume a false general
+subset-Hall principle. The general upper branch, legacy root
+compilation and source-closure/prize-eligibility gates remain OPEN.
