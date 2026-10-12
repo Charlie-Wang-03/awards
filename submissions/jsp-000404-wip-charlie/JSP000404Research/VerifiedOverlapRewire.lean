@@ -27,6 +27,13 @@ import JSP000404Research.ResidualTerminalHardCarrierPartition
 import JSP000404Research.ResidualTerminalHardNetPaymentReduction
 import JSP000404Research.PlanarLowerBranchTerminalHardNetReduction
 import JSP000404Research.ResidualTerminalRigidTwinCubeDichotomy
+import JSP000404Research.ResidualTerminalRigidTwinIncidence
+import JSP000404Research.ResidualHardCarrierVertexMatching
+import JSP000404Research.ResidualTerminalRigidReverseFlip
+import JSP000404Research.ResidualTerminalStrictReverseGlobalInjection
+import JSP000404Research.ResidualTerminalTwinStrictPartition
+import JSP000404Research.ResidualTerminalTwinNetPaymentReduction
+import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -108,4 +115,28 @@ Terminal rigid hard carrier structure also yields an exact
 twin-completion-cubes/twin-retained-active alternative when its two
 target exponents agree, and strict upper-to-lower target exponent
 descent otherwise. The remaining geometric obligation is unresolved.
+-/
+
+/-!
+## Full retained-incidence twins, hard-vertex matching, and reverse mobile faces
+
+All previously terminal non-transportable rigid faces split, under
+the certified one-layer budget, into strict-descending rigid faces
+and equal-target full retained-incidence TWIN pairs.
+
+A new GLOBAL reverse-direction WHOLE-FACE injection proves that
+every strict-descending rigid Boolean word can be sent without
+source collision to singleton/soft covered words in its carrier's
+LOWER completion cube. The established forward transport uses
+the UPPER cube instead. Both global maps exist without new axioms;
+they are NOT shown mutually image-disjoint.
+
+The new ALL-hard vertex matching gives
+  2 * card(hardOverlapCarrierPairs) <= card(vertices).
+All results are sorry-free. The actual planar source payment
+is still a single admitted sorry, deliberately excluded here.
+
+This umbrella additionally imports the exact twin-only dyadic
+net-payment equivalence and the genuine AngleCap conditional
+lower-branch bridge, without importing the admitted WIP.
 -/
