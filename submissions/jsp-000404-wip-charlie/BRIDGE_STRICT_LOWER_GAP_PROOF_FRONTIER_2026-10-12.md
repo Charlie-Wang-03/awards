@@ -232,3 +232,108 @@ Proof regression:
 global six-source TRUE-hole plus UNRESERVED-profile-surplus payment
 lemma. The new results sharpen the allowed allocation/obstruction
 ledger; they do NOT close that lemma and do NOT solve JSP-000404.
+
+
+## New certified lower-shell decomposition and local dyadic ledger
+
+Date: 2026-10-12. Work continues only in
+\`research/jsp-000404-sharp-centre\`; this is research, NOT an upstream
+proof claim.
+
+**Certified sources newly added:**
+- \`JSP000404Research/ResidualStrictUnusedLowerSinkClassification.lean\`
+  (2 theorems).
+- \`JSP000404Research/ResidualStrictRigidLowerShellDecomposition.lean\`
+  (9 theorems, including 4 direct dyadic local-capacity results).
+Both are imported from the sorry-free independent umbrella
+\`JSP000404Research/VerifiedOverlapRewire.lean\`.
+
+Write \`S\` for \`netStrictDescentRigidCarriers C exponent\`, \`Q_v\`
+for \`retainedCompletionWords C v\`, \`R\` for
+\`netStrictDescentRigidWords C exponent\`, \`L\` for
+\`netStrictRigidLowerCapacityWords C exponent\`, and \`U=L \ R\`.
+
+**First new theorem family: stronger classification of U.**
+Every word in U has its uniquely determined strict-rigid LOWER origin.
+If that word also belonged to ANY hard-overlap face, unique residual
+lower completion ownership and the global hard-carrier vertex matching
+would identify that hard carrier with its strict-rigid source.
+The word would then lie in R, contradiction. Thus
+
+\`\`\`text
+U INTER hardOverlapCompletionWords = EMPTY
+U SUBSET singletonCompletionWords UNION softOverlapCompletionWords
+U SUBSET coveredCompletionWords
+U INTER trueBooleanHoles = EMPTY
+\`\`\`
+
+These assertions are unconditional in the ordered-colouring setting;
+no fake global Hall assumption or genuine-planar payment is used.
+
+**Second new theorem family: exact LOCAL strict shell decomposition.**
+
+\`\`\`text
+U = DISJOINT_UNION_(q in S) (Q_(q.lower) \ Q_(q.upper))
+card(U) = SUM_(q in S) card(Q_(q.lower) \ Q_(q.upper))
+\`\`\`
+
+For a strict rigid q, the upper completion cube is contained in its
+lower cube (the already certified no-outgoing rigid property).
+Under the verified one-layer endpoint saturation, EACH local shell has
+the exact target-dyadic size
+
+\`\`\`text
+card(Q_(q.lower) \ Q_(q.upper))
+  = 2 ^ exponent(q.lower) - 2 ^ exponent(q.upper)
+\`\`\`
+
+so, with no cross-carrier duplicate counting,
+
+\`\`\`text
+card(U) = SUM_(q in S)
+   (2 ^ exponent(q.lower) - 2 ^ exponent(q.upper))
+
+card(forwardReverseBridgeSoftWords C exponent)
+  <= SUM_(q in S)
+   (2 ^ exponent(q.lower) - 2 ^ exponent(q.upper))
+\`\`\`
+
+Each individual shell is itself a subset of singleton-or-soft COVERED
+words. The mass difference is real and locally allocated, but still
+CANNOT be paid as true Boolean holes or newly available profile surplus.
+
+**Lean regression and real compiler fixes:**
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38227675869
+  first run failed at a definitional mismatch
+  (\`carrierOverlapWords\` versus its explicit two-cube intersection).
+- Fix \`ba692b11ceea86856b3c49bf4dfc0faa9b330fcc\` added explicit
+  \`change\`. PASS:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38228132727 .
+- Shell decomposition before per-carrier weights: PASS,
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38228462391 ,
+  3,477 build jobs.
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38228896550
+  failed only because the \`projectedFree\` abbreviation was not
+  unfolded in the local cube-cardinality proof.
+- Fix \`0e525ff910140b37eeefe4cc9cd04ee2ba7cef69\` explicitly
+  normalizes \`projectedFree\`. PASS:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38229121810 ,
+  3,217 build jobs.
+- All 11 new theorem axiom prints are exactly
+  \`[propext, Classical.choice, Quot.sound]\`, without \`sorryAx\`.
+- The targeted hole scanner continues to report EXACTLY ONE allowed
+  executable \`sorry\` in
+  \`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:132\`.
+  The WIP module is excluded from the independent green umbrella.
+
+**Unclosed mathematical obligation is unchanged in number.**
+The remaining six-source global payment compares soft overlap,
+forward and reverse movable hard faces, equal-exponent twins, both
+mixed-rigid target debts, and projected profile loss against genuine
+Boolean holes and genuinely unreserved surplus. Nothing in this
+local lower-shell partition proves that global geometric allocation.
+
+The new results isolate a finite family of strictly local, non-reused
+shells as precise geometric objects for the NEXT attempted payment
+argument. They are not a completed JSP-000404 proof, and no upper
+branch or original theorem is declared solved.
