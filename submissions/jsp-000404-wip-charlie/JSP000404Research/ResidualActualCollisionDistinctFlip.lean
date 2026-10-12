@@ -49,7 +49,7 @@ theorem forward_hard_source_ne_reverse_strict_source
       (Finset.mem_inter.mpr
         ⟨(Finset.mem_inter.mp hpword).1,
           (Finset.mem_inter.mp hpword).2⟩)
-    rw [← heq]
+    rw [heq]
     exact hqword
   have hforward' : HasOutgoingHardTransport C q.1.1 q.1.2 := by
     simpa only [howner] using hforward
