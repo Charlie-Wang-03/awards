@@ -14,6 +14,11 @@ import JSP000404Research.ResidualUnpaidRigidPartialReservation
 import JSP000404Research.ResidualUnpaidRigidNetPaymentReduction
 import JSP000404Research.PlanarLowerBranchAscendingNetPaymentReduction
 import JSP000404Research.ResidualUnpaidHardTerminalClassification
+import JSP000404Research.ResidualDescendingRigidExactDebt
+import JSP000404Research.ResidualBothMixedRigidSurplusPacking
+import JSP000404Research.ResidualBothMixedRigidNetReduction
+import JSP000404Research.ResidualTerminalDoubleSaturatedHard
+import JSP000404Research.PlanarLowerBranchBothMixedNetPaymentReduction
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -39,4 +44,21 @@ partial reservations, genuine-Boolean-word net accounting, planar
 conditional implication, and lower-saturated / transportable terminal
 classification of the still-unpaid hard carriers. They do NOT
 establish the final open planar inequality.
+-/
+
+/-!
+# Additional proof frontier (2026-10-12)
+
+This sorry-free umbrella now includes both directions of mixed-rigid
+hard-carrier partial surplus reservations. The new simultaneous
+matching theorem reserves old whole-face credits, lower surplus
+on ascending rigid faces, and upper surplus on descending rigid
+faces without reuse. The exact Boolean-word net-payment equivalence
+reduces the remaining rigid hard carriers, under the usual one-layer
+profile budget, to OUTGOING-TRANSPORTABLE or DOUBLY SATURATED.
+
+The conditional planar bridge is included. The WIP entry with
+one explicit sorry and sorryAx is deliberately NOT imported.
+Passing this umbrella checks reductions, NOT the unsolved global
+planar payment inequality or final JSP-000404 theorem.
 -/
