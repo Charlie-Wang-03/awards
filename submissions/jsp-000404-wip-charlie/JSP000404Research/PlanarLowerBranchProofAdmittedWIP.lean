@@ -1,40 +1,39 @@
-import JSP000404Research.PlanarLowerBranchBothMixedNetPaymentReduction
+import JSP000404Research.PlanarLowerBranchTerminalHardNetReduction
 import Mathlib.Tactic
 
 /-!
-# ADMITTED RESEARCH-ONLY ENTRY: BOTH mixed-rigid net-payment frontier
+# ADMITTED RESEARCH-ONLY ENTRY: EXPLICIT terminal rigid hard net-payment frontier
 
-One-layer geometry and exact global Boolean overlap accounting are
-maintained. Whole-face payments on all previously certified payable
-hard carriers are already reserved with no reused surplus.
+Exactly ONE executable sorry remains, with an increasingly precise
+geometric obligation for the genuine planar AngleCap point model.
 
-The two remaining MIXED RIGID cases are now handled symmetrically:
-  ascending: strict lower, saturated upper; reserve LOWER surplus;
-  descending: saturated lower, strict upper; reserve UPPER surplus.
+Certified non-reusing reservations: full hard-face payments; ascending
+rigid lower-surplus payments; descending rigid upper-surplus payments.
+After those deductions, the leftover hard Boolean words are EXACTLY
+a disjoint union of outgoing/inactive TRANSPORTABLE hard faces and
+RIGID faces whose BOTH endpoints have saturated projected budgets.
 
-The complete overlap mass of each such pair is the chosen strict
-endpoint surplus PLUS precisely ONE strict endpoint target weight.
-Global hard-carrier matching makes all these reservations disjoint.
+Unlike the previous net goal's opaque hard remainder, the currently
+admitted inequality has the explicit five-source left hand side:
+  soft overlap Boolean words
+    + unreserved TRANSPORTABLE hard Boolean words
+    + SUM of UPPER target masses of terminal doubly saturated RIGID pairs
+    + SUM of LOWER target masses of ascending mixed rigid pairs
+    + SUM of UPPER target masses of descending mixed rigid pairs
+    + projected profile loss.
+Payment must come ONLY from TRUE Boolean holes and the total dyadic
+surplus remaining after all three certified non-reusing reservations.
 
-Exactly ONE executable sorry remains on genuine planar AngleCap data:
-  softOverlapWords
-    + hard words AFTER removing BOTH mixed rigid face families
-    + SUM ascending lower target weights
-    + SUM descending upper target weights
-    + projected profile loss
-  <= genuine Boolean holes
-    + total surplus - whole-face hard reservations
-                    - ascending lower-surplus credit
-                    - descending upper-surplus credit.
+A full-face injective transport of the movable hard words does EXIST,
+but its images are singleton/soft COVERED words, NOT necessarily holes.
+The terminal rigid pairs have zero local surplus, so a new global
+geometric argument is essential.
 
-Under the standard one-layer residual-active budget, every remaining
-RIGID hard-overlap carrier is DOUBLY projected-saturated. Other hard
-carriers may have an outward/inactive transport, but translated words
-are still covered unless independent hole geometry is provided.
-
-This net inequality remains EXACTLY EQUIVALENT to the unproved planar
-lower-branch capacity. The admitted WIP has sorryAx and is NOT a
-complete JSP-000404 proof or prize-submission certificate.
+The new equivalence and genuine-plane conditional bridge are fully
+kernel-checked independently without sorryAx; THIS theorem retains
+the one explicit sorryAx. The deficit inequality remains EQUIVALENT
+to the unproved lower-branch capacity; the JSP-000404 prize problem,
+general upper branch, and source closure are NOT solved here.
 -/
 
 namespace JSP000404Research
@@ -43,10 +42,10 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
-/-- ADMITTED. The residual planar payment goal is stated AFTER
-collision-free whole-face hard payment and BOTH orientations of
-globally disjoint mixed-rigid partial surplus payment.
-The remaining goal stays equivalent to the original lower branch. -/
+/-- ADMITTED. The only outstanding planar input is now precisely
+the terminal transportable Boolean mass, terminal saturated rigid
+upper target debt, both mixed-rigid target debts, soft mass and loss
+versus true holes and NET unreserved surplus. -/
 theorem planar_lower_branch_dyadic_capacity_admitted_wip
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -67,16 +66,19 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_both_mixed_rigid_net_payment
+  exact planar_lower_branch_dyadic_capacity_of_terminal_hard_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT: true Boolean holes and net surplus
-      -- must cover soft overlap + transportable/doubly-saturated
-      -- hard overlap + BOTH mixed-rigid target weight debts + loss.
-      -- All previous global face/partial-credit reservations are
-      -- independently kernel-checked and are deducted exactly once.
-      -- This remaining inequality is equivalent to the original
-      -- lower-branch capacity; no geometric payment is assumed proved.
+      -- SOLE OPEN GEOMETRIC INPUT:
+      -- soft overlap + net TRANSPORTABLE hard overlap
+      -- + terminal DOUBLY SATURATED rigid upper-target dyadic debt
+      -- + both mixed-rigid strict-endpoint dyadic target debts
+      -- + projected-profile loss
+      -- <= TRUE Boolean holes + genuinely UNRESERVED surplus.
+      --
+      -- All intermediate word disjointness, dyadic mass accounting,
+      -- one-layer planar budget and conditional bridge are certified
+      -- without sorryAx. This global geometric payment remains open.
       sorry)
 
 #print axioms planar_lower_branch_dyadic_capacity_admitted_wip
