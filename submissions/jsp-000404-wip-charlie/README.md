@@ -2275,3 +2275,28 @@ The independent `VerifiedOverlapRewire.lean` now imports
 all three new no-sorry modules; its full Lean CI is
 https://github.com/Charlie-Wang-03/awards/actions/runs/38207499389 .
 The WIP remains excluded from this certification umbrella.
+
+
+### Certified forward/reverse oriented soft-bridge frontier (2026-10-12)
+
+See the standalone auditable handoff:
+[BRIDGE_SOFT_PROOF_FRONTIER_2026-10-12.md](BRIDGE_SOFT_PROOF_FRONTIER_2026-10-12.md).
+
+Four new SORRY-FREE Lean files prove unique oriented soft-bridge
+ownership of all forward/reverse global transport collisions, joint
+capacity `forward + reverse <= singleton + soft + bridgeSoft`,
+the exact dyadic formula
+`bridgeSoftMass = SUM_bridge 2^card(commonRetainedInactive)`,
+and its GENUINE planar `AngleCap` / `centreExponent`
+specialization. Each module has independently passing Lean CI;
+`VerifiedOverlapRewire.lean` imports them and passes its full
+**3,470/3,470** job regression:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38209853255 .
+
+The admitted WIP now has the certified genuine-planar auxiliary
+`hmobile` in scope, but its sole source-payment `sorry` remains.
+WIP 3,392-job CI passes with exactly one expected `sorryAx`:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38209708671 .
+
+These new results quantify potential SOFT covered-word collisions
+and DO NOT pay TRUE Boolean holes or prove JSP-000404.
