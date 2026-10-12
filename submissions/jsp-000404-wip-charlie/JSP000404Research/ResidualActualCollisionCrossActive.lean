@@ -118,6 +118,8 @@ theorem forward_reverse_collision_cross_active_flip_colors
           retainedCompletionWords C q.1.1 := hwQ
       have hback :=
         flipCompletionWord_mem_upper_of_inactive C hcNot hflipped
+      change flipCompletionWord cf (flipCompletionWord cf x.1) ∈
+        retainedCompletionWords C q.1.1 at hback
       simpa only [flipCompletionWord_flip] using hback
     exact no_three_distinct_share_retained_completion
       C (ne_of_lt hpOrder) hdisj.1 hdisj.2.1
@@ -134,6 +136,8 @@ theorem forward_reverse_collision_cross_active_flip_colors
           retainedCompletionWords C p.1.2 := hwP
       have hback :=
         flipCompletionWord_mem_upper_of_inactive C hcNot hflipped
+      change flipCompletionWord cr (flipCompletionWord cr y.1) ∈
+        retainedCompletionWords C p.1.2 at hback
       simpa only [flipCompletionWord_flip] using hback
     exact no_three_distinct_share_retained_completion
       C (ne_of_lt hqOrder) hdisj.2.1.symm hdisj.2.2
