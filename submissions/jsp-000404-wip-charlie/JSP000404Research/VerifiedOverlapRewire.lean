@@ -55,6 +55,7 @@ import JSP000404Research.ResidualStrictShellGlobalReserveLedger
 import JSP000404Research.PlanarStrictShellReserveLedger
 import JSP000404Research.ResidualActualBridgeCollisionLedger
 import JSP000404Research.ResidualActualMobileSinkSlack
+import JSP000404Research.ResidualNetActualCollisionLedger
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
