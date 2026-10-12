@@ -19,6 +19,10 @@ import JSP000404Research.ResidualBothMixedRigidSurplusPacking
 import JSP000404Research.ResidualBothMixedRigidNetReduction
 import JSP000404Research.ResidualTerminalDoubleSaturatedHard
 import JSP000404Research.PlanarLowerBranchBothMixedNetPaymentReduction
+import JSP000404Research.PlanarRemainingRigidTwoCycleTight
+import JSP000404Research.PlanarRemainingHardTwoCycleDichotomy
+import JSP000404Research.ResidualTerminalRigidExactUnpaidMass
+import JSP000404Research.ResidualCarrierLevelFourWayClassification
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -61,4 +65,23 @@ The conditional planar bridge is included. The WIP entry with
 one explicit sorry and sorryAx is deliberately NOT imported.
 Passing this umbrella checks reductions, NOT the unsolved global
 planar payment inequality or final JSP-000404 theorem.
+-/
+
+/-!
+## Planar two-cycle endgame and carrier-level audit (2026-10-12)
+
+The new actual-AngleCap geometric modules show that every hard Boolean word
+remaining after BOTH mixed-rigid credits has either a safe transportable
+carrier or a rigid carrier with TWO simultaneous top-band stepwise-tight
+projective direction cycles (not just one saturated endpoint).
+
+The new carrier-level classification removes the need to choose any
+overlap word: every UNPAYABLE hard pair with ordinary projected budget is
+transportable, ascending mixed, descending mixed, or doubly-saturated
+rigid. In the last case the ENTIRE rigid face has exact upper target mass,
+nonincreasing target exponent, and ZERO endpoint surplus.
+
+This independent verification module includes these sorry-free facts,
+while excluding PlanarLowerBranchProofAdmittedWIP and its one sorryAx.
+Neither the global planar payment nor the full award theorem is claimed.
 -/
