@@ -220,7 +220,80 @@ theorem net_actual_collision_empty_of_n_le_one
   · intro hw
     simpa using hw
 
+
+/-- An incomparable potential soft bridge has a Boolean overlap face
+of cardinality at most ONE QUARTER of the full 2^n ambient cube. -/
+theorem incomparable_bridge_dyadic_mass_le_ambient_quarter
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (r : V × V)
+    (hr : r ∈ incomparableBridgeSoftCarriers C exponent) :
+    2 ^ (commonRetainedInactive C r.1 r.2).card ≤
+      2 ^ (n - 2) := by
+  have hcodim :=
+    incomparable_bridge_common_inactive_card_add_two_le
+      C exponent r hr
+  have he : (commonRetainedInactive C r.1 r.2).card ≤
+      n - 2 := by omega
+  exact pow_le_pow_right₀ (by norm_num : (1 : ℕ) ≤ 2) he
+
+/-- In fact a common Boolean overlap face can occupy at most HALF of
+either endpoint's own retained-completion cube, from the independent
+cross-active witness at the opposite endpoint. -/
+theorem incomparable_palette_overlap_mass_twice_le_each_endpoint
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (u v : V)
+    (hinc : ¬ retainedActive C u ⊆ retainedActive C v ∧
+      ¬ retainedActive C v ⊆ retainedActive C u) :
+    2 * (2 ^ (commonRetainedInactive C u v).card) ≤
+        (retainedCompletionWords C u).card ∧
+      2 * (2 ^ (commonRetainedInactive C u v).card) ≤
+        (retainedCompletionWords C v).card := by
+  have hh :=
+    common_inactive_card_plus_each_active_lt_n C u v hinc
+  have hfirst : (commonRetainedInactive C u v).card + 1 ≤
+      n - (retainedActive C u).card := by omega
+  have hsecond : (commonRetainedInactive C u v).card + 1 ≤
+      n - (retainedActive C v).card := by omega
+  have hpow1 : 2 ^ ((commonRetainedInactive C u v).card + 1) ≤
+      2 ^ (n - (retainedActive C u).card) :=
+    pow_le_pow_right₀ (by norm_num : (1 : ℕ) ≤ 2) hfirst
+  have hpow2 : 2 ^ ((commonRetainedInactive C u v).card + 1) ≤
+      2 ^ (n - (retainedActive C v).card) :=
+    pow_le_pow_right₀ (by norm_num : (1 : ℕ) ≤ 2) hsecond
+  constructor
+  · simpa [retainedCompletionWords_card, pow_succ, Nat.mul_comm] using hpow1
+  · simpa [retainedCompletionWords_card, pow_succ, Nat.mul_comm] using hpow2
+
+/-- Entire filtered pool's exact dyadic mass is bounded above by
+one-quarter ambient cube per (disjoint) candidate bridge face. -/
+theorem incomparable_bridge_total_mass_le_carrier_count_quarter
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    (incomparableBridgeSoftWords C exponent).card ≤
+      (incomparableBridgeSoftCarriers C exponent).card *
+        2 ^ (n - 2) := by
+  rw [incomparable_bridge_soft_words_card_eq_dyadic_sum]
+  calc
+    (∑ r ∈ incomparableBridgeSoftCarriers C exponent,
+      2 ^ (commonRetainedInactive C r.1 r.2).card) ≤
+      ∑ r ∈ incomparableBridgeSoftCarriers C exponent,
+        2 ^ (n - 2) := by
+          apply Finset.sum_le_sum
+          intro r hr
+          exact incomparable_bridge_dyadic_mass_le_ambient_quarter
+            C exponent r hr
+    _ = (incomparableBridgeSoftCarriers C exponent).card *
+        2 ^ (n - 2) := by
+          simp [Finset.sum_const, nsmul_eq_mul]
+
 #print axioms incomparable_palettes_have_two_distinct_active_witnesses
+#print axioms incomparable_bridge_dyadic_mass_le_ambient_quarter
+#print axioms incomparable_palette_overlap_mass_twice_le_each_endpoint
+#print axioms incomparable_bridge_total_mass_le_carrier_count_quarter
 #print axioms incomparable_palettes_union_card_ge_two
 #print axioms incomparable_palettes_strictly_expand_both
 #print axioms common_inactive_card_add_two_le_of_incomparable
