@@ -70,6 +70,8 @@ theorem unused_strict_lower_words_disjoint_all_hard_overlap
     unfold netStrictDescentRigidWords
     apply Finset.mem_biUnion.mpr
     refine ⟨p, hp, ?_⟩
+    change word ∈ retainedCompletionWords C p.1 ∩
+      retainedCompletionWords C p.2
     simpa only [hpq] using hqword
   exact (Finset.mem_sdiff.mp hunused').2 hrigid
 
