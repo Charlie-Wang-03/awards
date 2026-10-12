@@ -1,39 +1,40 @@
-import JSP000404Research.PlanarLowerBranchAscendingNetPaymentReduction
+import JSP000404Research.PlanarLowerBranchBothMixedNetPaymentReduction
 import Mathlib.Tactic
 
 /-!
-# ADMITTED RESEARCH-ONLY ENTRY: NET ascending-rigid payment frontier
+# ADMITTED RESEARCH-ONLY ENTRY: BOTH mixed-rigid net-payment frontier
 
-The original loss-free subset-Hall claim is refuted at the abstract
-DirectionData layer; it is not used in this entry.
+One-layer geometry and exact global Boolean overlap accounting are
+maintained. Whole-face payments on all previously certified payable
+hard carriers are already reserved with no reused surplus.
 
-The previously kernel-verified global accounting pays complete hard
-overlap faces whenever their two endpoint surpluses suffice. New
-verified matching lemmas additionally reserve the LOWER surplus of
-unpaid rigid faces with STRICT lower endpoint and saturated upper
-endpoint. Their FULL intersection mass is exactly:
-  lower dyadic surplus + lower target weight.
+The two remaining MIXED RIGID cases are now handled symmetrically:
+  ascending: strict lower, saturated upper; reserve LOWER surplus;
+  descending: saturated lower, strict upper; reserve UPPER surplus.
 
-Exactly ONE executable sorry remains at the further NARROWED planar
-net-payment goal:
+The complete overlap mass of each such pair is the chosen strict
+endpoint surplus PLUS precisely ONE strict endpoint target weight.
+Global hard-carrier matching makes all these reservations disjoint.
 
+Exactly ONE executable sorry remains on genuine planar AngleCap data:
   softOverlapWords
-    + (unpaidHardOverlapWords minus ascendingRigidWords)
-    + SUM ascendingRigid lower target weights
-    + projectedProfileLoss
+    + hard words AFTER removing BOTH mixed rigid face families
+    + SUM ascending lower target weights
+    + SUM descending upper target weights
+    + projected profile loss
   <= genuine Boolean holes
-    + totalSurplus - alreadyPaidFullHardMass
-                   - ascendingRigidPartialCredit.
+    + total surplus - whole-face hard reservations
+                    - ascending lower-surplus credit
+                    - descending upper-surplus credit.
 
-All subtractions are natural-number net reservations. The new
-accounting interface formally proves the nonreuse budget and
-equivalence to the older lower-branch target. No surplus can
-be counted a second time.
+Under the standard one-layer residual-active budget, every remaining
+RIGID hard-overlap carrier is DOUBLY projected-saturated. Other hard
+carriers may have an outward/inactive transport, but translated words
+are still covered unless independent hole geometry is provided.
 
-This remaining inequality is mathematically EQUIVALENT to the
-lower-branch capacity: this file is NOT a complete proof.
-The general upper branch and source-closure obligations remain open.
-No award-eligible theorem is claimed.
+This net inequality remains EXACTLY EQUIVALENT to the unproved planar
+lower-branch capacity. The admitted WIP has sorryAx and is NOT a
+complete JSP-000404 proof or prize-submission certificate.
 -/
 
 namespace JSP000404Research
@@ -42,10 +43,10 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
-/-- ADMITTED. The remaining geometric payment obligation is stated
-AFTER verified whole-face hard payments AND globally nonoverlapping
-partial payments of ascending rigid faces.
-The reduced net payment remains equivalent to the lower-branch target. -/
+/-- ADMITTED. The residual planar payment goal is stated AFTER
+collision-free whole-face hard payment and BOTH orientations of
+globally disjoint mixed-rigid partial surplus payment.
+The remaining goal stays equivalent to the original lower branch. -/
 theorem planar_lower_branch_dyadic_capacity_admitted_wip
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -66,18 +67,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  exact planar_lower_branch_dyadic_capacity_of_net_ascending_rigid_remaining
+  exact planar_lower_branch_dyadic_capacity_of_both_mixed_rigid_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT:
-      -- soft overlap + nonascending unpaid hard overlap
-      -- + one lower target weight per ascending rigid carrier + profile loss
-      -- <= true Boolean holes + net surplus after BOTH reservations.
-      --
-      -- All reductions, whole-face matching and partial reservations
-      -- are independently kernel-checked with NO sorryAx.
-      -- This outstanding inequality is still EQUIVALENT to the true
-      -- lower-branch dyadic capacity, NOT a solved theorem.
+      -- SOLE OPEN GEOMETRIC INPUT: true Boolean holes and net surplus
+      -- must cover soft overlap + transportable/doubly-saturated
+      -- hard overlap + BOTH mixed-rigid target weight debts + loss.
+      -- All previous global face/partial-credit reservations are
+      -- independently kernel-checked and are deducted exactly once.
+      -- This remaining inequality is equivalent to the original
+      -- lower-branch capacity; no geometric payment is assumed proved.
       sorry)
 
 #print axioms planar_lower_branch_dyadic_capacity_admitted_wip
