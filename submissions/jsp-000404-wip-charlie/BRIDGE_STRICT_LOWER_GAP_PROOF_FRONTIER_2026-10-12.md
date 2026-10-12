@@ -1048,3 +1048,178 @@ Boolean holes and NET unreserved dyadic profile surplus.
 An individual half-cube estimate cannot, on its own, pay the
 same lower target repeatedly. This increment supplies a sharper
 verified bound, NOT completion or disproof of JSP-000404.
+
+
+## Exact unique strict shell ownership and two-bit bridge Hamming filter
+
+**2026-10-12. Research-only progress on the actual collision subproblem.
+The original JSP-000404 is NOT proved or disproved by this increment.**
+
+### A. ACTUAL net collision: unique strict-rigid lower-shell ledger (5 Lean theorems)
+
+Module: JSP000404Research/ResidualNetActualCollisionStrictShellFibre.lean
+
+Let I_net be the exact intersection of the chosen globally injective
+unpaid-forward-hard and reverse-strict-rigid sink images. For each
+strict-descending rigid carrier q=(b,z), set shell(q)=Q_b \ Q_z
+and I_q = I_net INTER shell(q).
+
+The kernel certifies:
+
+~~~text
+I_net SUBSET U = union_(q strict) shell(q)
+
+I_net = DISJOINT UNION_(q strict) I_q
+
+card(I_net) = SUM_(q strict) card(I_q)
+
+I_q SUBSET shell(q) INTER softOverlapCompletionWords
+
+card(I_q)
+  + card(shell(q) INTER singletonCompletionWords)
+  <= 2^exponent(b) - 2^exponent(z).
+~~~
+
+The disjointness follows from the already certified strict-hard lower
+cube separation and hard-carrier matching. This is a literal
+NON-REUSING attribution of each actual collision word to exactly one
+strict-rigid lower target, unlike the prior upper bound that summed a
+full lower-target weight once PER BRIDGE and hence repeated lower b.
+The shell capacity and singleton words are nevertheless COVERED,
+not Boolean holes or newly available profile surplus.
+
+Five axiom prints exclude sorryAx. Targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38280332600
+(3,495 Lean build jobs successful).
+
+### B. ACTUAL collisions require two distinct retained-bit disagreements (3 theorems)
+
+Module: JSP000404Research/ResidualActualCollisionTwoBitDisagreement.lean
+
+The canonical forward hard source p=(a,v) and reverse strict rigid
+source q=(b,z) have identical retained bits WITHIN each hard
+carrier, by SameRetained(a,v) and SameRetained(b,z).
+Their chosen individual flips c_f and c_r are provably distinct.
+
+If their transported image words actually agree, the kernel proves:
+
+~~~text
+retainedBit(b, c_f) != retainedBit(v, c_f)
+retainedBit(b, c_r) != retainedBit(v, c_r)
+c_f != c_r
+
+card({ c : Fin n | retainedBit(b,c) != retainedBit(v,c) }) >= 2.
+~~~
+
+The proof uses source completion membership, flipped target
+completion membership, and the two hard carriers' identical retained
+codes. An initial Lean failure was only a local-let normalization in
+the final Finset-cardinality tactic; it was corrected using explicit
+change expressions, without new hypotheses.
+
+The Hamming-distance >=2 requirement is a NEW structural obstruction
+that does not follow merely from palette incomparability.
+
+Three theorem axiom prints exclude sorryAx. CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38281461703
+(3,496 Lean build jobs successful).
+
+### C. Doubly filtered BRIDGE pool: palettes AND actual bit disagreement (7 theorems)
+
+Module: JSP000404Research/ResidualActualCollisionTwoBitBridgePool.lean
+
+Define the doubly filtered oriented potential carrier pool B_2 to
+contain r=(b,v) only when it was already a candidate
+forward/reverse SOFT bridge with incomparable endpoint retained-active
+palettes, AND the retained Boolean bit codes of b and v differ
+in at least two positions.
+
+The new theorems establish the literal inclusions:
+
+~~~text
+I_net SUBSET B_2_words
+actual full-forward/reverse collision SUBSET B_2_words
+B_2_words SUBSET incomparableBridgeSoftWords
+incomparableBridgeSoftWords SUBSET originalBridgeSoftWords
+~~~
+
+Distinct soft residual carrier overlap faces remain disjoint.
+Therefore there is also an EXACT mass equality:
+
+~~~text
+card(B_2_words)
+  = SUM_(r in B_2_carriers)
+      2^card(commonRetainedInactive(r)).
+~~~
+
+With E_net the already covered but UNUSED singleton/soft sink words:
+
+~~~text
+netUnpaidForwardHardMass + reverseStrictHardMass + card(E_net)
+  <= card(singletonCoveredWords) + card(softCoveredWords)
+     + SUM_(r in B_2_carriers)
+         2^card(commonRetainedInactive(r)).
+~~~
+
+Additionally, if ALL formerly incomparable candidate bridge
+endpoint code pairs have Hamming distance <=1, the actual full
+forward/reverse intersection is empty. This is an explicitly
+CONDITIONAL statement; no claim is made that every genuine planar
+AngleCap instance has that property. The filtered set may
+coincide with the older candidate set in some instances.
+
+Seven theorem axiom prints exclude sorryAx. CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38281903499
+(3,497 Lean build jobs successful).
+
+### D. True planar AngleCap specialization and single WIP boundary (1 theorem)
+
+Module: JSP000404Research/PlanarActualCollisionTwoBitBridgeCapacity.lean
+
+The new planar_net_mobile_mass_plus_unused_le_two_bit_bridge_dyadic
+obtains the exponent and active-colour one-layer budgets from
+the REAL injective planar point map, AngleCap, t=n+delta,
+0<=delta<1/2, and true centre projective cycles, then certifies
+the above two-bit BRIDGE mass bound in the actual residual model.
+No extra geometric hypothesis or unverified collision-matching
+axiom is introduced.
+
+The sole WIP imports this planar lemma as
+htwoBitFilteredMobile and preserves the previously verified
+lower-exponent and non-reusing lower-shell components.
+
+Final integrated CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38282485407
+(3,499 Lean jobs PASS). The planar lemma has only
+propext, Classical.choice, Quot.sound in its axiom report.
+
+The WIP scanner still records EXACTLY ONE executable sorry
+in PlanarLowerBranchProofAdmittedWIP.lean line 199.
+The WIP conclusion's #print axioms still includes sorryAx.
+
+### E. Exact remaining proof obligation: still genuine geometry, not bookkeeping
+
+The new partition prevents REUSING any strict-rigid lower shell
+when accounting for ACTUAL mobile transport collisions.
+The two-bit filter eliminates all Hamming-0/1 and comparable
+palette candidate soft bridge faces.
+
+These facts DO NOT prove that true Boolean holes plus genuinely
+UNRESERVED dyadic profile surplus pay:
+- all soft-overlap debt,
+- net unpaid forward mobile hard sources,
+- reverse strict-rigid hard sources,
+- equal-exponent rigid twin targets,
+- ascending and descending mixed-rigid target debt, and
+- projected-profile loss.
+
+Indeed all strict-rigid lower shell positions, singleton sinks,
+and soft bridge sinks are ALREADY COVERED Boolean words. The
+verified local collision budget cannot be rebranded as the
+missing global true-hole payment.
+
+The decisive next mathematical step must connect the remaining
+doubly filtered actual collisions and the other outstanding
+rigid/mixed/loss sources to independent TRUE-hole or unreserved-
+surplus capacities, or else exhibit a genuine planar counterexample.
+This work cannot be presented as an upstream award proof.
