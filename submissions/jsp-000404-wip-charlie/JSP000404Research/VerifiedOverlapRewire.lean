@@ -37,6 +37,9 @@ import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.ResidualForwardReverseSinkCollision
 import JSP000404Research.ResidualForwardReverseJointSoftMultiplicity
 import JSP000404Research.ResidualForwardReverseCollisionOrder
+import JSP000404Research.ResidualForwardReverseBridgeSoftFaces
+import JSP000404Research.ResidualForwardReverseBridgeCapacity
+import JSP000404Research.ResidualForwardReverseBridgeDyadicMass
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -165,4 +168,33 @@ residual bridge reverseLower < forwardUpper. All of these claims are
 certified without sorryAx. Covered sinks are NOT true Boolean holes.
 The admitted global planar payment remains open and excluded from
 this independent umbrella.
+-/
+
+/-!
+## Exact soft BRIDGE ownership and quantified cross-transport overlap
+
+For ANY collision between outward forward hard transport and strict-rigid
+reverse hard transport, the UNIQUE SOFT residual carrier of the target word
+is precisely the oriented bridge
+  (reverseHard.lower, forwardHard.upper).
+
+Define the candidate soft bridge carriers by their endpoint provenance.
+Their Boolean completion faces are pairwise disjoint; exact dyadic mass:
+
+  |bridgeSoftWords| =
+    SUM_(p in bridgeSoftCarriers)
+      2 ^ |commonRetainedInactive(C,p.lower,p.upper)|.
+
+The global two-direction mass bound now becomes
+
+  fullForwardHardMass + reverseStrictRigidHardMass
+     <= singletonMass + softOverlapMass + bridgeSoftMass,
+
+and the net hard remainder costs at most the same plus the EXACT
+equal-target twin dyadic sum. This refines the previous
+singleton + 2*soft estimate without claiming bridge mass is empty.
+
+No true-hole payment follows. These additional certified sorry-free
+lemmas are imported here, but the admitted lower-branch global
+payment theorem with its ONE explicit sorry remains excluded.
 -/
