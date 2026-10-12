@@ -34,6 +34,9 @@ import JSP000404Research.ResidualTerminalStrictReverseGlobalInjection
 import JSP000404Research.ResidualTerminalTwinStrictPartition
 import JSP000404Research.ResidualTerminalTwinNetPaymentReduction
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
+import JSP000404Research.ResidualForwardReverseSinkCollision
+import JSP000404Research.ResidualForwardReverseJointSoftMultiplicity
+import JSP000404Research.ResidualForwardReverseCollisionOrder
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -139,4 +142,27 @@ is still a single admitted sorry, deliberately excluded here.
 This umbrella additionally imports the exact twin-only dyadic
 net-payment equivalence and the genuine AngleCap conditional
 lower-branch bridge, without importing the admitted WIP.
+-/
+
+/-!
+## Forward/reverse global sink collision and single-singleton-capacity audit
+
+Hard-carrier endpoint matching plus both globally injective whole-face
+transports yield: a Boolean word in BOTH forward and reverse sink images
+is SOFT overlapped, never singleton covered. Hence inclusion-exclusion:
+
+  cardinal(fullForwardHard) + cardinal(reverseStrictRigid)
+    <= cardinal(singletonCompletionWords)
+        + 2 * cardinal(softOverlapCompletionWords).
+
+The actually UNPAID forward face subfamily satisfies the same inequality.
+Consequently remaining unpaid hard words are bounded by this single
+singleton charge, two soft charges, and the exact equal-target twin
+dyadic face mass.
+
+Every cross-direction collision additionally forces a BACKWARD
+residual bridge reverseLower < forwardUpper. All of these claims are
+certified without sorryAx. Covered sinks are NOT true Boolean holes.
+The admitted global planar payment remains open and excluded from
+this independent umbrella.
 -/
