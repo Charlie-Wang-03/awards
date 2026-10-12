@@ -247,6 +247,7 @@ theorem strict_shell_unused_after_reverse_plus_reverse_mass_eq_shell
   have hcard := Finset.card_sdiff_of_subset hsub
   have heq := reverseStrictRigidSinkWords_card
     C exponent hexp honeLoss
+  have hle := Finset.card_le_card hsub
   omega
 
 #print axioms actual_collision_subset_candidate_bridge
