@@ -337,3 +337,116 @@ The new results isolate a finite family of strictly local, non-reused
 shells as precise geometric objects for the NEXT attempted payment
 argument. They are not a completed JSP-000404 proof, and no upper
 branch or original theorem is declared solved.
+
+
+## Oriented strict-shell outgoing-soft ledger (2026-10-12)
+
+This research increment is a **valid structural reduction, not an award
+solution**. The entire true-hole plus genuinely-unreserved-surplus
+six-source payment inequality remains open and explicitly admitted in
+\`PlanarLowerBranchProofAdmittedWIP.lean\`. A single \`sorry\` there is
+not evidence that the missing mathematics is small.
+
+### A. Oriented ownership, no new assumptions
+
+Module:
+\`JSP000404Research/ResidualStrictShellSoftOwnerOrientation.lean\`.
+
+Let \`q=(a,v)\` be a strict-descending terminal rigid carrier, and
+\`w in Q_a \ Q_v\` be a SOFT overlap word. If \`w\` belongs to the
+soft residual carrier \`r=(b,z)\`, then:
+
+\`\`\`text
+b = a
+z != v
+a < z  (because r is an ordered residual carrier)
+\`\`\`
+
+The crucial equality follows from **residual lower-cube word
+uniqueness**: \`w\` lies in the lower cubes of both residual carriers.
+The upper endpoints differ because one carrier is HARD and the other
+SOFT. There are four new independent Lean theorems, all without
+\`sorryAx\`.
+
+CI PASS:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38237647007
+(3,478 successful jobs).
+
+### B. Full outgoing SOFT faces and an exact per-carrier identity
+
+Module:
+\`JSP000404Research/ResidualStrictShellSoftMassLedger.lean\`.
+
+For a SOFT carrier \`r=(a,z)\` outgoing from the strict carrier
+\`q=(a,v)\`, the **entire** overlap face \`Q_a intersect Q_z\` is
+contained in the lower shell \`Q_a \ Q_v\`: the upper cubes \`Q_z\`
+and \`Q_v\` are disjoint, as both are upper endpoints of distinct
+residual edges.
+
+Conversely, every SOFT word in the shell has just such an owner.
+The overlap faces are pairwise disjoint by the earlier exact
+residual-carrier word ownership theorem.
+
+Writing \`SoftOut(a)\` for all nonempty SOFT overlap carriers whose
+lower endpoint equals \`a\`, the following holds as an exact
+finite-cardinality equality under the verified one-layer budget:
+
+\`\`\`text
+2^k(a) - 2^k(v)
+  = card((Q_a \ Q_v) intersect singletonCompletionWords)
+    + SUM_(r in SoftOut(a)) 2^card(commonRetainedInactive(r)).
+\`\`\`
+
+There are five new independent Lean theorems, including the full
+set-level equality, disjoint dyadic mass sum, and the local equality.
+
+A first run exposed two **Lean script** defects, not mathematical
+counterexamples: a missing existential carrier witness and a
+\`rw\` that rewrote local binder occurrences. These were repaired
+by explicitly supplying \`r\` to \`Finset.mem_biUnion\` and replacing
+the problematic rewrite with a directed \`calc\` chain.
+
+Initial failing CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38238146947
+
+Corrected CI PASS:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38238465805
+(3,479 successful jobs, zero \`sorryAx\` in all five new theorems).
+
+### C. Genuine planar specialization
+
+Module:
+\`JSP000404Research/PlanarStrictShellSoftMassLedger.lean\`.
+
+One new Lean theorem specializes the exact local mass ledger to
+the genuine \`AngleCap\` geometry, actual standard residual
+colouring, and the true centre-projective-cycle target exponents.
+The required \`hexp\` and \`honeLoss\` hypotheses are **derived**
+from established planar estimates; they are not assumed independently.
+
+Planar CI PASS:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38238758562
+(3,480 successful jobs, no \`sorryAx\` for the new planar theorem).
+
+The theorem is also referenced as \`hlocalShellMass\` at the
+research-only admitted final-payment WIP boundary. The WIP itself
+retains its single \`sorry\`; adding this derived input does NOT
+assert or discharge the missing global inequality.
+
+### D. Mathematical limit and next obstruction
+
+The ledger is more precise than the global dyadic descent-gap bound:
+it identifies **every soft face** inside the shell and distinguishes
+it from genuinely singly covered words without multiple charges.
+But EVERY term above counts ALREADY-COVERED Boolean words. Neither
+these words nor the strict dimensional descent gap can simply be
+booked as a **true Boolean hole** or a **net unreserved dyadic profile
+surplus**.
+
+The missing result must couple this local covered-word accounting
+to external genuine holes/unused profile surplus in the actual
+planar configuration, while nonredundantly accounting for the
+remaining TWIN and both mixed-rigid target debts and profile loss.
+
+No final lower-branch capacity bound, full JSP-000404 theorem,
+counterexample or upstream-ready claim is established by this work.
