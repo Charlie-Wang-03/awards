@@ -48,6 +48,7 @@ import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 import JSP000404Research.ResidualBridgeStrictUnusedLowerCapacity
 import JSP000404Research.ResidualStrictUnusedLowerSinkClassification
 import JSP000404Research.ResidualStrictRigidLowerShellDecomposition
+import JSP000404Research.ResidualStrictShellSoftOwnerOrientation
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
