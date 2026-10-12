@@ -42,6 +42,7 @@ theorem rigid_hard_equal_projectedFree_twin_completion_cubes
       _ = 2 ^ projectedFree C v := by rw [hfree]
       _ = (retainedCompletionWords C v).card :=
         (retainedCompletionWords_card C v).symm
+      _ ≤ (retainedCompletionWords C v).card := le_refl _
   exact (Finset.eq_of_subset_of_card_le hsub hcard).symm
 
 /-- On a rigid hard pair, equality of the two projected budgets
