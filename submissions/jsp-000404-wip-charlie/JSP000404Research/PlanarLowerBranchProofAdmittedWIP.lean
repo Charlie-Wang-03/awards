@@ -5,6 +5,7 @@ import JSP000404Research.PlanarStrictShellSoftMassLedger
 import JSP000404Research.PlanarStrictShellReserveLedger
 import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
 import JSP000404Research.PlanarIncomparableBridgeCapacity
+import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
 import Mathlib.Tactic
 
 /-!
@@ -130,6 +131,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hpaletteFilteredMobile :=
     planar_net_mobile_mass_plus_unused_le_incomparable_bridge_dyadic
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hpaletteQuarterMobile :=
+    planar_net_mobile_mass_plus_unused_le_incomparable_bridge_density
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -161,6 +165,12 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Only incomparable-palette SOFT bridge dyadic faces survive
       -- as possible NET hard transport collision mass, with the
       -- unused covered sink reserve explicitly retained.
+      -- New hpaletteQuarterMobile shows the stronger STRUCTURAL
+      -- codimension restriction: each surviving bridge face has
+      -- at most n-2 common inactive coordinates and at most
+      -- 2^(n-2) Boolean words, giving a purely carrier-count bound.
+      -- This is a candidate collision upper bound, NOT a
+      -- true-hole credit or an unreserved profile surplus.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
