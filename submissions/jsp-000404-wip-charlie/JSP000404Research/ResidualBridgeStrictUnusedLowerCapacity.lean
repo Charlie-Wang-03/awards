@@ -81,7 +81,47 @@ theorem unused_strict_lower_words_card_eq_dyadic_gap
   rw [netStrictDescentRigidWords_card_eq_upper_target_sum
     C exponent hexp honeLoss]
 
+/-- Even the *unused* strict lower-cube slots remain globally COVERED:
+every word in the lower-cube union extends a centre's retained code.
+Consequently this capacity cannot, by itself, be allocated as holes. -/
+theorem unused_strict_lower_words_subset_covered
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    netStrictRigidUnusedLowerWords C exponent ⊆
+      coveredCompletionWords C := by
+  classical
+  intro word hword
+  change word ∈ netStrictRigidLowerCapacityWords C exponent \
+    netStrictDescentRigidWords C exponent at hword
+  have hlower : word ∈ netStrictRigidLowerCapacityWords C exponent :=
+    (Finset.mem_sdiff.mp hword).1
+  change word ∈ (netStrictDescentRigidCarriers C exponent).biUnion
+    (fun q => retainedCompletionWords C q.1) at hlower
+  obtain ⟨q, _hq, hqword⟩ := Finset.mem_biUnion.mp hlower
+  rw [coveredCompletionWords_eq_biUnion C]
+  exact Finset.mem_biUnion.mpr
+    ⟨q.1, Finset.mem_univ q.1, hqword⟩
+
+/-- The potential bridge-soft collision pool's lower-cube slack is
+DISJOINT from genuine Boolean holes, i.e. uncovered words.
+Any global payment must therefore use a separate mechanism. -/
+theorem unused_strict_lower_words_disjoint_true_holes
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    Disjoint (netStrictRigidUnusedLowerWords C exponent)
+      ((Finset.univ : Finset (Fin n → Bool)) \
+        coveredCompletionWords C) := by
+  classical
+  apply Finset.disjoint_left.mpr
+  intro word hunused hhole
+  exact (Finset.mem_sdiff.mp hhole).2
+    (unused_strict_lower_words_subset_covered C exponent hunused)
+
 #print axioms bridge_soft_subset_unused_strict_lower_words
+#print axioms unused_strict_lower_words_subset_covered
+#print axioms unused_strict_lower_words_disjoint_true_holes
 #print axioms unused_strict_lower_words_card_eq_dyadic_gap
 #print axioms bridge_soft_card_le_unused_strict_lower_words
 
