@@ -152,16 +152,18 @@ theorem actual_collision_empty_of_comparable_candidate_palettes
     actualForwardReverseCollisionWords C exponent hexp honeLoss = ∅ := by
   classical
   ext word
-  simp only [Finset.mem_empty, iff_false]
-  intro hw
-  have hi :=
-    actual_collision_subset_incomparable_bridge_words
-      C exponent hexp honeLoss hw
-  obtain ⟨r, hr, _⟩ := Finset.mem_biUnion.mp hi
-  have hdata := Finset.mem_filter.mp hr
-  rcases hcomparable r hdata.1 with hsub | hsub
-  · exact hdata.2.1 hsub
-  · exact hdata.2.2 hsub
+  constructor
+  · intro hw
+    have hi :=
+      actual_collision_subset_incomparable_bridge_words
+        C exponent hexp honeLoss hw
+    obtain ⟨r, hr, _⟩ := Finset.mem_biUnion.mp hi
+    have hdata := Finset.mem_filter.mp hr
+    rcases hcomparable r hdata.1 with hsub | hsub
+    · exact False.elim (hdata.2.1 hsub)
+    · exact False.elim (hdata.2.2 hsub)
+  · intro hw
+    simpa using hw
 
 #print axioms incomparable_bridge_soft_words_subset_candidate
 #print axioms actual_collision_subset_incomparable_bridge_words
