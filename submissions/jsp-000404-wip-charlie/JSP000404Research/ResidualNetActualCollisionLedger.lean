@@ -234,7 +234,47 @@ theorem net_mobile_source_plus_unused_eq_covered_plus_actual
       C exponent hexp honeLoss
   omega
 
+
+/-- Formally equivalent reformulation of ANY proposed global payment
+for the two NET unpaid mobile hard classes.
+
+All further debts (including soft overlap, rigid twins, the two
+mixed-rigid branches, and projected loss) can be put into 'otherDebt'.
+The genuine true-hole / unreserved-surplus capacity is the arbitrary
+'availableBudget'.
+
+The REFORMULATED payment includes ONLY the actual intersection of
+net forward/reverse transport images, and CREDIT from covered
+singleton/soft destination words not consumed by either transport.
+
+This theorem does NOT assert either side without a geometric proof.
+The equivalence does not make the original lower-branch conjecture
+true. It identifies a sharper possible shape for the ONE open input. -/
+theorem net_mobile_payment_iff_actual_collision_unused_sink_credit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (otherDebt availableBudget : ℕ) :
+    (otherDebt +
+      (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card ≤ availableBudget) ↔
+    (otherDebt +
+      (singletonCompletionWords C).card +
+      (softOverlapCompletionWords C).card +
+      (netActualForwardReverseCollisionWords
+        C exponent hexp honeLoss).card ≤
+      availableBudget +
+        (netMobileUnusedCoveredSinkWords
+          C exponent hexp honeLoss).card) := by
+  have hnet :=
+    net_mobile_source_plus_unused_eq_covered_plus_actual
+      C exponent hexp honeLoss
+  omega
+
 #print axioms netForwardHardTransportSinkWords_card
+#print axioms net_mobile_payment_iff_actual_collision_unused_sink_credit
 #print axioms netForwardHardTransportSinkWords_subset_forward
 #print axioms net_actual_collision_subset_all_actual
 #print axioms net_actual_collision_subset_candidate_bridge
