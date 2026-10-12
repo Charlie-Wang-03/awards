@@ -126,7 +126,7 @@ theorem paid_hard_and_both_mixed_rigid_credits_le_total_surplus
       Finset.sum_union hdisjoint.2]
   rw [hSum, hPSum, hASum, hBSum] at hbudget
   rw [surplusPaidHardOverlapWords_card_eq_carrier_mass]
-  omega
+  simpa only [Nat.add_assoc] using hbudget
 
 /-- Both partial reservations remove precisely their corresponding
 local surplus. The total rigid-mixed overlap mass is the credits
