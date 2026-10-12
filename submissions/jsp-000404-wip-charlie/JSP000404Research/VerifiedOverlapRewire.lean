@@ -67,6 +67,7 @@ import JSP000404Research.ResidualIncomparableBridgeLowerExponent
 import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 import JSP000404Research.ResidualNetActualCollisionStrictShellFibre
 import JSP000404Research.ResidualActualCollisionTwoBitDisagreement
+import JSP000404Research.ResidualActualCollisionTwoBitBridgePool
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
