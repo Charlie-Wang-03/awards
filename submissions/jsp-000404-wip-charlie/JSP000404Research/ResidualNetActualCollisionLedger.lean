@@ -66,7 +66,12 @@ theorem netForwardHardTransportSinkWords_card
             C exponent y.2⟩ := Subtype.ext h
     have hinj' :=
       transportableHardWordToSingletonOrSoft_injective C heq
-    exact Subtype.ext (congrArg Subtype.val hinj')
+    have hval : x.1 = y.1 :=
+      congrArg
+        (fun z : {word : Fin n → Bool //
+          word ∈ transportableHardOverlapCompletionWords C} => z.1)
+        hinj'
+    exact Subtype.ext hval
   unfold netForwardHardTransportSinkWords
   rw [Finset.card_image_of_injective _ hinj]
   simp only [Finset.card_univ, Fintype.card_coe]
