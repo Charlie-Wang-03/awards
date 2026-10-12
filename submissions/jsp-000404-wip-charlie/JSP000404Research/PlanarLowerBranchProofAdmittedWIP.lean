@@ -7,6 +7,7 @@ import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
 import JSP000404Research.PlanarIncomparableBridgeCapacity
 import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
 import JSP000404Research.PlanarIncomparableBridgeLowerExponent
+import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
 import Mathlib.Tactic
 
 /-!
@@ -138,6 +139,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hbridgeLowerExponent :=
     planar_net_actual_collision_twice_le_strict_lower_target_sum
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have htwoBitFilteredMobile :=
+    planar_net_mobile_mass_plus_unused_le_two_bit_bridge_dyadic
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -180,6 +184,13 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- incomparable bridge at most HALF of its own Q_b dyadic mass.
       -- The sum is still indexed by BRIDGES; multiple bridges may
       -- share lower b, so it is NOT an independent profile payment.
+      -- htwoBitFilteredMobile excludes MORE impossible soft carriers:
+      -- beyond the incomparable active palettes, the canonical
+      -- retained Boolean codes of reverse lower b and forward upper
+      -- v must disagree at >=2 distinct retained coordinates.
+      -- The independently proved actual NET collision lower-shell
+      -- partition also prevents reusing strict-rigid lower targets.
+      -- All surviving sink words remain COVERED, not true holes.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
