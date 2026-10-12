@@ -136,10 +136,13 @@ theorem incomparable_overlap_le_true_holes_of_no_external_cover
             retainedCompletionWords C v)) ∩
           coveredCompletionWords C).card) = 0 := by
     apply Finset.card_eq_zero.mpr
-    apply Finset.eq_empty_iff_forall_not_mem.mpr
-    intro word hw
-    exact (Finset.disjoint_left.mp hzero)
-      (Finset.mem_inter.mp hw).1 (Finset.mem_inter.mp hw).2
+    ext word
+    constructor
+    · intro hw
+      exact False.elim ((Finset.disjoint_left.mp hzero)
+        (Finset.mem_inter.mp hw).1 (Finset.mem_inter.mp hw).2)
+    · intro hw
+      simpa using hw
   omega
 
 #print axioms two_cube_exterior_covered_iff_external_centre
