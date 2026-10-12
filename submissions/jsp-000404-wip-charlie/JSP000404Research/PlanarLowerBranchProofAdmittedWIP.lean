@@ -1,5 +1,6 @@
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
+import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 import Mathlib.Tactic
 
 /-!
@@ -52,6 +53,19 @@ Consequently the two movable hard classes together are bounded by
 this is now a verified actual AngleCap planar theorem, available
 below as `hmobile`.
 
+NEW verified shared-cube and exact strict dimensional-descent bounds
+show that bridge-soft candidate mass and reverse strict-rigid source
+mass inhabit one disjoint family of lower completion cubes. In
+genuine planar AngleCap this gives the auxiliary theorem `hbridgeGap`:
+
+  SUM_bridge 2^commonInactive
+  <= SUM_strictRigid 2^k(lower) - SUM_strictRigid 2^k(upper).
+
+This dyadic DIMENSION GAP is not `dyadicProfileSurplus`: both
+endpoints of terminal rigid carriers are saturated. One may NOT
+deduct it again as already-unreserved surplus without an additional
+proved global allocation theorem.
+
 The two images are NOT proven DISJOINT. All sink words are already
 COVERED and cannot count as TRUE Boolean holes. The new bridge
 bound by itself does NOT establish the net-payment inequality.
@@ -97,6 +111,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hmobile :=
     planar_mobile_hard_mass_le_singleton_soft_bridge_dyadic
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hbridgeGap :=
+    planar_bridge_soft_dyadic_mass_le_strict_target_descent_gap
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -106,6 +123,8 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- rigid dyadic weight, both mixed-rigid target debts and loss.
       -- Verified planar hmobile bounds both movable source classes
       -- by singleton + soft + the exact dyadic BRIDGE-SOFT pool.
+      -- Verified planar hbridgeGap bounds that candidate bridge mass
+      -- by the strict-rigid LOWER-minus-UPPER dyadic descent budget.
       -- That bound is already in context, but its targets are COVERED,
       -- not TRUE holes. It does not pay the remaining global debt.
       -- The global geometric payment is NOT proved; this sole sorry
