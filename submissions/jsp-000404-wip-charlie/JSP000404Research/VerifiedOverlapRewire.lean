@@ -58,6 +58,7 @@ import JSP000404Research.ResidualActualMobileSinkSlack
 import JSP000404Research.ResidualNetActualCollisionLedger
 import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
 import JSP000404Research.ResidualActualCollisionDistinctFlip
+import JSP000404Research.ResidualActualCollisionCrossActive
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
