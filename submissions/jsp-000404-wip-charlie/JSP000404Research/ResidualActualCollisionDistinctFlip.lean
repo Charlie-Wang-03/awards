@@ -85,7 +85,7 @@ theorem forward_reverse_actual_collision_distinct_flip_colors
       (strictDescentRigidPairColor C exponent hexp honeLoss
         (strictDescentRigidWordCarrier C exponent y)) y.1
       at hcollision
-    rw [hcol] at hcollision
+    rw [← hcol] at hcollision
     exact hcollision
   exact forward_hard_source_ne_reverse_strict_source
     C exponent x y hsource
