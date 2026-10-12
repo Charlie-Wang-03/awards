@@ -719,3 +719,166 @@ only after the exact sink/source identity, not a TRUE Boolean hole
 or a newly unreserved dyadic profile surplus. The twin-rigid,
 ascending/descending mixed-rigid, and projected-loss debts remain.
 No award-level or upstream-ready conclusion is established.
+
+
+## Actual collision requires incomparable bridge active palettes
+
+**2026-10-12. A genuinely new structural collision restriction;
+the original JSP-000404 is still OPEN in this fork.**
+
+### Exact hard-source obstruction (2 independently checked Lean theorems)
+
+File: `JSP000404Research/ResidualActualCollisionDistinctFlip.lean`.
+
+A forward safe hard transport source Boolean word and a strict-rigid
+reverse hard transport source word cannot be identical, by unique
+hard-word carrier ownership and the opposite transportability flags
+of their hard carriers.
+
+Consequently, whenever their one-coordinate flip images are equal,
+their chosen flip colours MUST be DIFFERENT. If the colours coincided,
+flipping the common image back along that coordinate would make both
+hard source words literally equal. This is a necessary condition on
+actual image collisions, not a conjectured Hall payment.
+
+Green targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38259713597
+(3,487 jobs; zero new `sorryAx`).
+
+### Cross-active palette obstruction (3 independently checked theorems)
+
+File: `JSP000404Research/ResidualActualCollisionCrossActive.lean`.
+
+Let `p=(a,v)` be a forward-transportable hard carrier, and
+`q=(b,z)` be a terminal strictly descending rigid hard carrier.
+For an ACTUAL common transported image `w`, the unique residual
+soft bridge has oriented endpoints `(b,v)`.
+
+Writing `A_x=retainedActive C x`, and `c_f`, `c_r` for the
+forward and reverse flip coordinates, the Lean kernel proves:
+
+~~~text
+c_f in A_b  A_v
+c_r in A_v  A_b
+
+THEREFORE
+
+NOT (A_b SUBSET A_v)
+AND
+NOT (A_v SUBSET A_b).
+~~~
+
+The proof establishes the two positive cross-active memberships
+by contradiction using the no-three-distinct-centres-can-cover-one-
+Boolean-word theorem. If `c_f` were inactive at `b`, the ORIGINAL
+forward hard source word would simultaneously belong to three
+different retained completion cubes `Q_a,Q_v,Q_b`; the reverse
+argument similarly uses `Q_b,Q_z,Q_v`.
+
+This is stronger than flip-coordinate inequality, and applies
+without any extra AngleCap hypothesis.
+
+Green targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38260728510
+(3,488 jobs; all three theorem axiom prints exclude `sorryAx`).
+
+### Exclude palette-comparable candidate bridge faces (5 theorems)
+
+File: `JSP000404Research/ResidualIncomparableBridgePool.lean`.
+
+Define `incomparableBridgeSoftCarriers` by FILTERING the original
+oriented `forwardReverseBridgeSoftCarriers`, retaining ONLY those
+soft carrier pairs `r=(b,v)` whose endpoint active sets are
+mutually non-contained.
+
+The actual full-forward/reverse and NET-UNPAID forward/reverse
+collision sets BOTH lie in the union of the filtered overlap faces:
+
+~~~text
+actualCollision SUBSET incomparableBridgeSoftWords
+netActualCollision SUBSET actualCollision
+incomparableBridgeSoftWords SUBSET originalCandidateBridgeSoftWords
+~~~
+
+Moreover, if EVERY possible original candidate bridge happens to
+have comparable active palettes, the ACTUAL collision set is empty.
+This is a rigorously proved CONDITIONAL; no claim is made that
+true planar AngleCap geometry automatically makes all candidates
+comparable. The filter need not be proper in every instance.
+
+A minor Lean-library naming issue in the emptiness corollary was
+fixed by a direct `Finset` extensionality-and-contradiction proof.
+No axiom or theorem hypothesis was added.
+
+Green targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38262013201
+(3,489 jobs; five new theorem axiom prints have no `sorryAx`).
+
+### Exact filtered dyadic mass and NET mobile bound (2 theorems)
+
+Also in `ResidualIncomparableBridgePool.lean`.
+
+Distinct candidate soft carrier overlap faces are pairwise disjoint,
+and the original completion-cube intersection formula counts every
+such face exactly. Therefore:
+
+~~~text
+card(incomparableBridgeSoftWords)
+ = SUM_(r in incomparableBridgeSoftCarriers)
+     2^card(commonRetainedInactive(r)).
+
+netUnpaidForwardHardSourceMass + reverseStrictHardSourceMass
+  + card(netUnusedEligibleCoveredSinkWords)
+ <= card(singletonCompletionWords) + card(softOverlapCompletionWords)
+    + SUM_(r in incomparableBridgeSoftCarriers)
+        2^card(commonRetainedInactive(r)).
+~~~
+
+This is a **stronger source-side restriction** than the old bound
+which used ALL potential bridge-soft carriers and discarded all
+unused covered sink slots.
+
+Green targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38262369113
+(3,226 jobs; both new theorem axiom prints exclude `sorryAx`).
+
+### Genuine AngleCap specialization and WIP wiring (1 planar theorem)
+
+File: `JSP000404Research/PlanarIncomparableBridgeCapacity.lean`.
+
+The new theorem
+`planar_net_mobile_mass_plus_unused_le_incomparable_bridge_dyadic`
+derives all active-colour/exponent one-layer requirements from
+the REAL planar `AngleCap`, `t=n+delta`, `0<=delta<1/2`,
+and centre-projective-cycle assumptions, with no additional
+geometric postulate. It then establishes the filtered dyadic
+bound above on the actual planar residual colouring.
+
+Green CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38262764725
+(3,490 jobs; only `propext`, `Classical.choice`,
+`Quot.sound` in the planar theorem's axiom audit).
+
+The existing research-only WIP now imports the planar theorem and
+records `hpaletteFilteredMobile` alongside the previous
+`hnetPaymentFrontier`. Its end-to-end targeted regression
+is green:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38263145132
+(3,412 jobs).
+
+The WIP audit STILL reports precisely ONE executable `sorry`
+at `PlanarLowerBranchProofAdmittedWIP.lean:169`, and its
+`#print axioms` STILL reports `sorryAx`.
+
+**What remains mathematical:** The new incomparable-palette filter
+eliminates many structurally IMPOSSIBLE collision carriers, but
+does NOT establish that the filtered mass can be paid by actual
+Boolean holes or genuinely unreserved profile surplus. In
+particular, the twin, both mixed-rigid and projected-profile-loss
+sources are not discharged. The next high-value target is to
+derive a TRUE geometric bound (or explicit counterexample) on
+the palette-INCOMPARABLE bridge configuration in real AngleCap
+geometry, then connect it to a non-reusing true-hole/surplus
+payment. The original JSP-000404 conclusion is NOT established,
+and the admitted theorem must not be used as an upstream
+prize-proof claim.
