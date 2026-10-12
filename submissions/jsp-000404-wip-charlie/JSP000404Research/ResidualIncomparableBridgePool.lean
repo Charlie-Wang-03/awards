@@ -151,8 +151,9 @@ theorem actual_collision_empty_of_comparable_candidate_palettes
           retainedActive C r.2 ⊆ retainedActive C r.1) :
     actualForwardReverseCollisionWords C exponent hexp honeLoss = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro word hw
+  ext word
+  simp only [Finset.mem_empty, iff_false]
+  intro hw
   have hi :=
     actual_collision_subset_incomparable_bridge_words
       C exponent hexp honeLoss hw
