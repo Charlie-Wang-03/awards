@@ -130,8 +130,10 @@ theorem terminal_rigid_carrier_mass_and_zero_surplus_without_word
       C exponent hrigid hnot hnotA hnotB hloBudget hhiBudget
   have hrig := (mem_rigidHardOverlapCarrierPairs C p).1 hrigid
   have hsame := ((mem_hardOverlapCarrierPairs C p).1 hrig.1).2
-  have hmass :=
-    hard_no_transport_inter_card_eq_projected_cube C hsame hrig.2
+  have hmass :
+      (carrierOverlapWords C p).card = 2 ^ projectedFree C p.2 := by
+    simpa only [carrierOverlapWords] using
+      hard_no_transport_inter_card_eq_projected_cube C hsame hrig.2
   have hdim :=
     hard_no_transport_upper_free_le_lower_free C hsame hrig.2
   have hlozero :
