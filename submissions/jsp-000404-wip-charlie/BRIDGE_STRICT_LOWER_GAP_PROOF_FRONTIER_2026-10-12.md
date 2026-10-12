@@ -178,3 +178,57 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38216270221 .
 
 Do not claim a solved lower branch, complete JSP-000404, or an
 unconditional Hall expansion from this handoff.
+
+
+## Word-level unused lower-cube partition and no-hole audit
+
+New certified Lean module:
+`JSP000404Research/ResidualBridgeStrictUnusedLowerCapacity.lean`.
+
+Let `L = netStrictRigidLowerCapacityWords C k`,
+`R = netStrictDescentRigidWords C k`, and
+`B = forwardReverseBridgeSoftWords C k`.
+Define `U = L \\ R` as **unused lower-cube slots**, NOT global
+Boolean holes. The kernel-certified chain now proves:
+
+```text
+B SUBSET U                                    (word-level)
+card(B) <= card(U)
+card(U) = SUM_strict 2^k(lower) - SUM_strict 2^k(upper)
+U SUBSET coveredCompletionWords C
+U INTER (univ \\ coveredCompletionWords C) = EMPTY
+```
+
+The last two statements are significant for adversarial correctness:
+even the unused strict-rigid LOWER-cube slots are covered by at least
+one original retained completion cube, so **not one** of these slots
+can be directly charged as a TRUE Boolean hole. The strict descent
+gap is mathematically real but is NOT the unreserved dyadic profile
+surplus. It remains invalid to subtract/credit this gap on the
+true-hole side of the still-admitted global-payment inequality.
+
+Five new theorem names (all in `JSP000404Research.OrderedEdgeColoring`):
+`bridge_soft_subset_unused_strict_lower_words`,
+`bridge_soft_card_le_unused_strict_lower_words`,
+`unused_strict_lower_words_card_eq_dyadic_gap`,
+`unused_strict_lower_words_subset_covered`, and
+`unused_strict_lower_words_disjoint_true_holes`.
+
+Proof regression:
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38224203801
+  — 3,475 jobs PASS for the first three theorems.
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38224550204
+  — 3,215 jobs PASS for all five theorems.
+- All five printed axiom sets:
+  `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+- Exactly one intentional executable `sorry` remains in
+  `PlanarLowerBranchProofAdmittedWIP.lean:132`; this WIP is still
+  deliberately excluded from the sorry-free verification umbrella.
+- Targeted CI preflight was tightened from
+  `--wip-max-sorries 2` to `--wip-max-sorries 1`.
+  Its success does not certify the admitted WIP theorem.
+
+**Remaining mathematical gap unchanged in count:** the one genuine
+global six-source TRUE-hole plus UNRESERVED-profile-surplus payment
+lemma. The new results sharpen the allowed allocation/obstruction
+ledger; they do NOT close that lemma and do NOT solve JSP-000404.
