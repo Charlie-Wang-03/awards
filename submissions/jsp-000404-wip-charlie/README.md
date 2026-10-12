@@ -1821,3 +1821,89 @@ Subtraction is natural-number truncated subtraction, with sufficient budget ineq
 `PlanarLowerBranchBothMixedNetPaymentReduction.lean` is a sorry-free verified bridge from the refined genuine-plane `AngleCap` net-payment input to the planar lower-branch dyadic capacity. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194845553 (PASS). `PlanarLowerBranchProofAdmittedWIP.lean` now uses this bridge with exactly ONE executable `sorry`, whose axiom report correctly includes `sorryAx`. CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38194983095 (PASS, 3,366 jobs; admitted theorem remains NOT a proof). `VerifiedOverlapRewire.lean` now imports every new sorry-free module and EXCLUDES the admitted WIP; CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38195143803 (PASS).
 
 **Remaining mathematical obligation.** Construct a genuine global planar-geometric payment of SOFT overlap, all unpaid TRANSPORTABLE hard mass, all DOUBLY SATURATED rigid hard mass, the two mixed-rigid STRICT-ENDPOINT target debts, and projected profile loss, against TRUE Boolean holes plus the verified net remaining surplus. This is still EQUIVALENT to the previously open lower-branch sharp capacity. The general upper branch, the legacy full-root build and the source-closure/prize-submission gates are NOT claimed closed.
+
+
+### Genuine-planar two-tight terminal hard carrier frontier (2026-10-12)
+
+**Certification scope:** The recent accounting frontier remains the exact BOTH
+mixed-rigid net payment in `PlanarLowerBranchProofAdmittedWIP.lean`.
+There is still exactly **one admitted executable `sorry`** at this
+equivalent planar global defect-payment inequality. Its `#print axioms`
+continues to include `sorryAx`. Neither this section nor the new files
+constitutes a complete solution or disproof of JSP-000404.
+
+**New genuine geometry, not a repeated accounting tautology:**
+`PlanarRemainingRigidTwoCycleTight.lean` proves that an actual remaining
+rigid hard Boolean word, in a genuine planar `AngleCap` configuration
+with `t=n+delta`, `0<=delta<1/2`, forces **BOTH endpoints** of its
+unique rigid carrier to have independently stepwise-tight local
+projective direction cycles. At each endpoint `i`, the actual
+`projectionCutLocalCycle` has values `a_i::xs_i` satisfying
+`InteriorBandGapTight a_i xs_i`,
+`floor(xs_i.getLastD a_i)=n`, and
+`excess(floor(a_i+t-xs_i.getLastD a_i))=floor(a_i)`.
+This uses real `centreExponent`, the planar one-layer budget, the
+residual top-band incidence and the verified exact local-cycle theorem.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38196290358
+(3,407 jobs, successful; one printed theorem with the standard
+`propext/Classical.choice/Quot.sound` axioms and NO `sorryAx`).
+
+`PlanarRemainingHardTwoCycleDichotomy.lean` elevates the above to
+EVERY genuinely unpaid hard-overlap Boolean word after both mixed-rigid
+partial payments: either its carrier has a safe outward/inactive
+transport, or a rigid carrier owns the word and BOTH its genuine
+local cycles have the three stepwise/top-band/wrap certificates.
+The second case is a necessary two-centre geometric obstruction.
+It has NOT been shown impossible for all planar configurations.
+CI (also covers the next file):
+https://github.com/Charlie-Wang-03/awards/actions/runs/38196515601
+(3,409 jobs, successful; axiom audit excludes `sorryAx`).
+
+**Exact terminal rigid mass.**
+`ResidualTerminalRigidExactUnpaidMass.lean` proves that for a terminal
+rigid Boolean word under the usual one-layer budget,
+
+`card(carrierOverlapWords(p)) = 2^k(p.upper)`,
+
+`k(p.upper)<=k(p.lower)`, and BOTH endpoint dyadic surplus values
+equal zero. The face's entire upper target weight is genuinely
+unpaid locally; reusing endpoint surplus would be incorrect.
+
+**Carrier-level classification WITHOUT selecting any Boolean word.**
+`ResidualCarrierLevelFourWayClassification.lean` strengthens the
+prior Boolean-word classification, using ONLY hard-carrier membership
+and the two endpoint projected budget conditions. Every genuinely
+unpayable hard carrier belongs to one of FOUR classes:
+
+1. safe outward/inactive transportable;
+2. ascending mixed rigid, strict LOWER endpoint, certified partial credit;
+3. descending mixed rigid, strict UPPER endpoint, certified partial credit;
+4. doubly projected-saturated rigid.
+
+For a rigid carrier outside both mixed-rigid and whole-face paid
+families, no overlap word is needed to prove that both endpoints
+are saturated, its full face has mass `2^k(upper)`, and its two
+surpluses are zero. The first CI run found a Lean expression
+mismatch between `carrierOverlapWords` and the defining finite-set
+intersection when rewriting cardinality. Repaired by explicitly
+normalizing the carrier face expression at commit
+`7af6f44a17808e9b5bbf0248f8518c2b2a44a4fe`.
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38196825275
+(3,194 tasks, successful, four axiom audits without `sorryAx`).
+
+**Independent Lean integration:** `VerifiedOverlapRewire.lean`
+now imports all new modules and continues to EXCLUDE the admitted WIP.
+The umbrella successfully compiled **3,450 jobs**:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38196962349.
+
+**Remaining mathematical bottleneck:** From the TWO tight-cycle
+conditions at real planar terminal rigid carriers, prove a new
+cross-centre geometric impossibility, a non-reusing transition
+strictly decreasing a well-founded obstruction, or a globally
+injective payment into TRUE Boolean holes or verified unreserved
+surplus. The already proved transport of movable hard faces into
+singleton/soft-overlap COVERED words is NOT a hole injection.
+Soft-overlap mass, projected-profile loss, both mixed-rigid target
+debts and double-saturated rigid mass remain in the sole global
+payment `sorry`. Other parameter branches, historical monolithic
+root compilation and source-closure remain open.
