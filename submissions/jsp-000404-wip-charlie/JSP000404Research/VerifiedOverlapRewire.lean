@@ -51,6 +51,7 @@ import JSP000404Research.ResidualStrictRigidLowerShellDecomposition
 import JSP000404Research.ResidualStrictShellSoftOwnerOrientation
 import JSP000404Research.ResidualStrictShellSoftMassLedger
 import JSP000404Research.PlanarStrictShellSoftMassLedger
+import JSP000404Research.ResidualStrictShellGlobalReserveLedger
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
