@@ -64,6 +64,7 @@ import JSP000404Research.PlanarIncomparableBridgeCapacity
 import JSP000404Research.ResidualIncomparableBridgeCodimension
 import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
 import JSP000404Research.ResidualIncomparableBridgeLowerExponent
+import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
