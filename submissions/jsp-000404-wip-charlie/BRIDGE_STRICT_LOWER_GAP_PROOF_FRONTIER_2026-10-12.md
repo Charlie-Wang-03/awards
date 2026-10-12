@@ -237,21 +237,21 @@ ledger; they do NOT close that lemma and do NOT solve JSP-000404.
 ## New certified lower-shell decomposition and local dyadic ledger
 
 Date: 2026-10-12. Work continues only in
-\`research/jsp-000404-sharp-centre\`; this is research, NOT an upstream
+`research/jsp-000404-sharp-centre`; this is research, NOT an upstream
 proof claim.
 
 **Certified sources newly added:**
-- \`JSP000404Research/ResidualStrictUnusedLowerSinkClassification.lean\`
+- `JSP000404Research/ResidualStrictUnusedLowerSinkClassification.lean`
   (2 theorems).
-- \`JSP000404Research/ResidualStrictRigidLowerShellDecomposition.lean\`
+- `JSP000404Research/ResidualStrictRigidLowerShellDecomposition.lean`
   (9 theorems, including 4 direct dyadic local-capacity results).
 Both are imported from the sorry-free independent umbrella
-\`JSP000404Research/VerifiedOverlapRewire.lean\`.
+`JSP000404Research/VerifiedOverlapRewire.lean`.
 
-Write \`S\` for \`netStrictDescentRigidCarriers C exponent\`, \`Q_v\`
-for \`retainedCompletionWords C v\`, \`R\` for
-\`netStrictDescentRigidWords C exponent\`, \`L\` for
-\`netStrictRigidLowerCapacityWords C exponent\`, and \`U=L \ R\`.
+Write `S` for `netStrictDescentRigidCarriers C exponent`, `Q_v`
+for `retainedCompletionWords C v`, `R` for
+`netStrictDescentRigidWords C exponent`, `L` for
+`netStrictRigidLowerCapacityWords C exponent`, and `U=L \ R`.
 
 **First new theorem family: stronger classification of U.**
 Every word in U has its uniquely determined strict-rigid LOWER origin.
@@ -260,43 +260,43 @@ lower completion ownership and the global hard-carrier vertex matching
 would identify that hard carrier with its strict-rigid source.
 The word would then lie in R, contradiction. Thus
 
-\`\`\`text
+```text
 U INTER hardOverlapCompletionWords = EMPTY
 U SUBSET singletonCompletionWords UNION softOverlapCompletionWords
 U SUBSET coveredCompletionWords
 U INTER trueBooleanHoles = EMPTY
-\`\`\`
+```
 
 These assertions are unconditional in the ordered-colouring setting;
 no fake global Hall assumption or genuine-planar payment is used.
 
 **Second new theorem family: exact LOCAL strict shell decomposition.**
 
-\`\`\`text
+```text
 U = DISJOINT_UNION_(q in S) (Q_(q.lower) \ Q_(q.upper))
 card(U) = SUM_(q in S) card(Q_(q.lower) \ Q_(q.upper))
-\`\`\`
+```
 
 For a strict rigid q, the upper completion cube is contained in its
 lower cube (the already certified no-outgoing rigid property).
 Under the verified one-layer endpoint saturation, EACH local shell has
 the exact target-dyadic size
 
-\`\`\`text
+```text
 card(Q_(q.lower) \ Q_(q.upper))
   = 2 ^ exponent(q.lower) - 2 ^ exponent(q.upper)
-\`\`\`
+```
 
 so, with no cross-carrier duplicate counting,
 
-\`\`\`text
+```text
 card(U) = SUM_(q in S)
    (2 ^ exponent(q.lower) - 2 ^ exponent(q.upper))
 
 card(forwardReverseBridgeSoftWords C exponent)
   <= SUM_(q in S)
    (2 ^ exponent(q.lower) - 2 ^ exponent(q.upper))
-\`\`\`
+```
 
 Each individual shell is itself a subset of singleton-or-soft COVERED
 words. The mass difference is real and locally allocated, but still
@@ -305,25 +305,25 @@ CANNOT be paid as true Boolean holes or newly available profile surplus.
 **Lean regression and real compiler fixes:**
 - https://github.com/Charlie-Wang-03/awards/actions/runs/38227675869
   first run failed at a definitional mismatch
-  (\`carrierOverlapWords\` versus its explicit two-cube intersection).
-- Fix \`ba692b11ceea86856b3c49bf4dfc0faa9b330fcc\` added explicit
-  \`change\`. PASS:
+  (`carrierOverlapWords` versus its explicit two-cube intersection).
+- Fix `ba692b11ceea86856b3c49bf4dfc0faa9b330fcc` added explicit
+  `change`. PASS:
   https://github.com/Charlie-Wang-03/awards/actions/runs/38228132727 .
 - Shell decomposition before per-carrier weights: PASS,
   https://github.com/Charlie-Wang-03/awards/actions/runs/38228462391 ,
   3,477 build jobs.
 - https://github.com/Charlie-Wang-03/awards/actions/runs/38228896550
-  failed only because the \`projectedFree\` abbreviation was not
+  failed only because the `projectedFree` abbreviation was not
   unfolded in the local cube-cardinality proof.
-- Fix \`0e525ff910140b37eeefe4cc9cd04ee2ba7cef69\` explicitly
-  normalizes \`projectedFree\`. PASS:
+- Fix `0e525ff910140b37eeefe4cc9cd04ee2ba7cef69` explicitly
+  normalizes `projectedFree`. PASS:
   https://github.com/Charlie-Wang-03/awards/actions/runs/38229121810 ,
   3,217 build jobs.
 - All 11 new theorem axiom prints are exactly
-  \`[propext, Classical.choice, Quot.sound]\`, without \`sorryAx\`.
+  `[propext, Classical.choice, Quot.sound]`, without `sorryAx`.
 - The targeted hole scanner continues to report EXACTLY ONE allowed
-  executable \`sorry\` in
-  \`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:132\`.
+  executable `sorry` in
+  `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:132`.
   The WIP module is excluded from the independent green umbrella.
 
 **Unclosed mathematical obligation is unchanged in number.**
@@ -344,29 +344,29 @@ branch or original theorem is declared solved.
 This research increment is a **valid structural reduction, not an award
 solution**. The entire true-hole plus genuinely-unreserved-surplus
 six-source payment inequality remains open and explicitly admitted in
-\`PlanarLowerBranchProofAdmittedWIP.lean\`. A single \`sorry\` there is
+`PlanarLowerBranchProofAdmittedWIP.lean`. A single `sorry` there is
 not evidence that the missing mathematics is small.
 
 ### A. Oriented ownership, no new assumptions
 
 Module:
-\`JSP000404Research/ResidualStrictShellSoftOwnerOrientation.lean\`.
+`JSP000404Research/ResidualStrictShellSoftOwnerOrientation.lean`.
 
-Let \`q=(a,v)\` be a strict-descending terminal rigid carrier, and
-\`w in Q_a \ Q_v\` be a SOFT overlap word. If \`w\` belongs to the
-soft residual carrier \`r=(b,z)\`, then:
+Let `q=(a,v)` be a strict-descending terminal rigid carrier, and
+`w in Q_a \ Q_v` be a SOFT overlap word. If `w` belongs to the
+soft residual carrier `r=(b,z)`, then:
 
-\`\`\`text
+```text
 b = a
 z != v
 a < z  (because r is an ordered residual carrier)
-\`\`\`
+```
 
 The crucial equality follows from **residual lower-cube word
-uniqueness**: \`w\` lies in the lower cubes of both residual carriers.
+uniqueness**: `w` lies in the lower cubes of both residual carriers.
 The upper endpoints differ because one carrier is HARD and the other
 SOFT. There are four new independent Lean theorems, all without
-\`sorryAx\`.
+`sorryAx`.
 
 CI PASS:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38237647007
@@ -375,62 +375,62 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38237647007
 ### B. Full outgoing SOFT faces and an exact per-carrier identity
 
 Module:
-\`JSP000404Research/ResidualStrictShellSoftMassLedger.lean\`.
+`JSP000404Research/ResidualStrictShellSoftMassLedger.lean`.
 
-For a SOFT carrier \`r=(a,z)\` outgoing from the strict carrier
-\`q=(a,v)\`, the **entire** overlap face \`Q_a intersect Q_z\` is
-contained in the lower shell \`Q_a \ Q_v\`: the upper cubes \`Q_z\`
-and \`Q_v\` are disjoint, as both are upper endpoints of distinct
+For a SOFT carrier `r=(a,z)` outgoing from the strict carrier
+`q=(a,v)`, the **entire** overlap face `Q_a intersect Q_z` is
+contained in the lower shell `Q_a \ Q_v`: the upper cubes `Q_z`
+and `Q_v` are disjoint, as both are upper endpoints of distinct
 residual edges.
 
 Conversely, every SOFT word in the shell has just such an owner.
 The overlap faces are pairwise disjoint by the earlier exact
 residual-carrier word ownership theorem.
 
-Writing \`SoftOut(a)\` for all nonempty SOFT overlap carriers whose
-lower endpoint equals \`a\`, the following holds as an exact
+Writing `SoftOut(a)` for all nonempty SOFT overlap carriers whose
+lower endpoint equals `a`, the following holds as an exact
 finite-cardinality equality under the verified one-layer budget:
 
-\`\`\`text
+```text
 2^k(a) - 2^k(v)
   = card((Q_a \ Q_v) intersect singletonCompletionWords)
     + SUM_(r in SoftOut(a)) 2^card(commonRetainedInactive(r)).
-\`\`\`
+```
 
 There are five new independent Lean theorems, including the full
 set-level equality, disjoint dyadic mass sum, and the local equality.
 
 A first run exposed two **Lean script** defects, not mathematical
 counterexamples: a missing existential carrier witness and a
-\`rw\` that rewrote local binder occurrences. These were repaired
-by explicitly supplying \`r\` to \`Finset.mem_biUnion\` and replacing
-the problematic rewrite with a directed \`calc\` chain.
+`rw` that rewrote local binder occurrences. These were repaired
+by explicitly supplying `r` to `Finset.mem_biUnion` and replacing
+the problematic rewrite with a directed `calc` chain.
 
 Initial failing CI:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38238146947
 
 Corrected CI PASS:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38238465805
-(3,479 successful jobs, zero \`sorryAx\` in all five new theorems).
+(3,479 successful jobs, zero `sorryAx` in all five new theorems).
 
 ### C. Genuine planar specialization
 
 Module:
-\`JSP000404Research/PlanarStrictShellSoftMassLedger.lean\`.
+`JSP000404Research/PlanarStrictShellSoftMassLedger.lean`.
 
 One new Lean theorem specializes the exact local mass ledger to
-the genuine \`AngleCap\` geometry, actual standard residual
+the genuine `AngleCap` geometry, actual standard residual
 colouring, and the true centre-projective-cycle target exponents.
-The required \`hexp\` and \`honeLoss\` hypotheses are **derived**
+The required `hexp` and `honeLoss` hypotheses are **derived**
 from established planar estimates; they are not assumed independently.
 
 Planar CI PASS:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38238758562
-(3,480 successful jobs, no \`sorryAx\` for the new planar theorem).
+(3,480 successful jobs, no `sorryAx` for the new planar theorem).
 
-The theorem is also referenced as \`hlocalShellMass\` at the
+The theorem is also referenced as `hlocalShellMass` at the
 research-only admitted final-payment WIP boundary. The WIP itself
-retains its single \`sorry\`; adding this derived input does NOT
+retains its single `sorry`; adding this derived input does NOT
 assert or discharge the missing global inequality.
 
 ### D. Mathematical limit and next obstruction
@@ -455,8 +455,119 @@ counterexample or upstream-ready claim is established by this work.
 WIP integration regression **PASS**:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38239149059
 (3,402 build jobs). The hole scanner finds **exactly one**
-intentional executable \`sorry\` at
-\`PlanarLowerBranchProofAdmittedWIP.lean:140\`, and
-\`#print axioms planar_lower_branch_dyadic_capacity_admitted_wip\`
-honestly reports \`sorryAx\`. All newly proved standalone
-structural and planar theorems have no \`sorryAx\`.
+intentional executable `sorry` at
+`PlanarLowerBranchProofAdmittedWIP.lean:140`, and
+`#print axioms planar_lower_branch_dyadic_capacity_admitted_wip`
+honestly reports `sorryAx`. All newly proved standalone
+structural and planar theorems have no `sorryAx`.
+
+
+## Global singleton / bridge / nonbridge shell reserves
+
+**Research branch:** `research/jsp-000404-sharp-centre`.
+This increment proves a globally disjoint covered-word conservation
+ledger and specializes it to the genuine planar `AngleCap` objects.
+It does **not** close the original lower-branch conjecture.
+
+### Certified abstract theorem family
+
+Module: `JSP000404Research/ResidualStrictShellGlobalReserveLedger.lean`.
+Twelve new abstract theorems were established across this increment:
+eight in the initial module and three further explicit three-way
+reservation lemmas, plus one actual-planar specialization described
+below (11 abstract + 1 planar total).
+
+Let `S` be the strict-descent terminal rigid carriers,
+`U` their disjoint lower-minus-upper completion shells, and
+`B` the potential forward/reverse bridge-soft word pool.
+Define literal, globally disjoint, finite sets:
+
+- `A = U ∩ singletonCompletionWords`;
+- `T = U ∩ softOverlapCompletionWords`;
+- `N = T \ B` (soft words which cannot be candidate bridge collisions).
+
+The new Lean theorems certify:
+
+```text
+U = A DISJOINT_UNION T
+B SUBSET T
+T = B DISJOINT_UNION N
+
+card(U) = card(A) + card(B) + card(N)
+
+card(U) =
+  SUM_(q in S) (2^exponent(q.lower) - 2^exponent(q.upper))
+
+THEREFORE
+card(A) + card(B) + card(N) =
+  SUM_(q in S) (2^exponent(q.lower) - 2^exponent(q.upper))
+
+and in particular
+card(B) + card(A) <= SUM_strict_local_dyadic_gaps.
+```
+
+This refines the earlier inequality for potential bridge collisions:
+singleton-covered words are **provably unavailable** as collision
+slots. In fact, the entire nonbridge-soft portion `N` can also be
+removed by exact equality, without reusing a Boolean word.
+
+The global soft part `T` has an additional exact dyadic identity:
+
+```text
+card(T) =
+  SUM_(q in S)
+    SUM_(r in outgoingSoftCarriers(q.lower))
+      2^card(commonRetainedInactive(r)).
+```
+
+This is not a claim that the counted words are holes: all
+of `A`, `B` and `N` are **ALREADY COVERED** words.
+
+### Genuine planar theorem
+
+Module: `JSP000404Research/PlanarStrictShellReserveLedger.lean`.
+
+`planar_strict_shell_singleton_bridge_nonbridge_exact_ledger`
+proves the entire three-way exact equality for the *actual*
+standard residual colouring of injective plane points under
+`AngleCap p lam`, `t=n+delta`, `0<=delta<1/2`, and the
+centre-projective-cycle exponent function.
+
+There is no new assumed one-layer input: the proof derives
+the exponent and active-colour budget from the established planar
+results. All new lemmas were imported into the independent
+sorry-free umbrella `VerifiedOverlapRewire.lean` and had only
+`[propext, Classical.choice, Quot.sound]` in their `#print axioms`
+outputs—zero `sorryAx`.
+
+### Verified GitHub Actions and WIP
+
+- Initial global 8 theorem module: [CI #38248662920](https://github.com/Charlie-Wang-03/awards/actions/runs/38248662920) — **PASS, 3,481 jobs**.
+- Added exact nonbridge-soft remainder and three-way ledger:
+  [CI #38249056356](https://github.com/Charlie-Wang-03/awards/actions/runs/38249056356) — **PASS, 3,220 jobs**.
+- Genuine planar `AngleCap` specialization:
+  [CI #38249341201](https://github.com/Charlie-Wang-03/awards/actions/runs/38249341201) — **PASS, 3,482 jobs**.
+- Integrated `hglobalShellReserve` into the sole admitted WIP:
+  [CI #38249753124](https://github.com/Charlie-Wang-03/awards/actions/runs/38249753124) — **PASS, 3,404 jobs**.
+
+The WIP scanner and independent axiom report continue to agree:
+**one** intentional executable `sorry` remains, now at
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:148`.
+Its final statement still depends on `sorryAx`, whereas all new
+standalone theorems do not. No new unresolved Lean compilation
+errors remain after this increment.
+
+### Precise remaining mathematical frontier
+
+The strict-rigid shell's previously unused covered-word pool is
+now partitioned exactly and globally without double counting.
+Nevertheless, the final SIX-SOURCE defect payment still has to
+relate **actual Boolean holes plus genuinely unreserved profile
+surplus** to total soft overlap, forward/reverse mobile hard, rigid
+twin and mixed-rigid target debts, and projected-profile loss.
+
+Nothing in the newly certified shell ledger turns covered words into
+true holes, or gives an independent source of unreserved surplus.
+The only `sorry` is genuinely mathematical, not a Lean syntax
+error. The original JSP-000404 problem remains **unproved and
+undisproved** by this downstream branch.
