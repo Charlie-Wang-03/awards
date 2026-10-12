@@ -4,6 +4,7 @@ import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
 import JSP000404Research.PlanarStrictShellSoftMassLedger
 import JSP000404Research.PlanarStrictShellReserveLedger
 import JSP000404Research.PlanarNetActualCollisionPaymentFrontier
+import JSP000404Research.PlanarIncomparableBridgeCapacity
 import Mathlib.Tactic
 
 /-!
@@ -126,6 +127,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hnetPaymentFrontier :=
     planar_net_unpaid_mobile_payment_iff_actual_sink_credit
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hpaletteFilteredMobile :=
+    planar_net_mobile_mass_plus_unused_le_incomparable_bridge_dyadic
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -152,6 +156,11 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- image intersection and the UNUSED singleton/soft sink credit.
       -- Unlike the old coarse bridge upper bound, it explicitly
       -- excludes paid forward hard sources and unrealized collisions.
+      -- New hpaletteFilteredMobile also removes EVERY candidate
+      -- bridge-soft carrier whose endpoint active palettes are nested.
+      -- Only incomparable-palette SOFT bridge dyadic faces survive
+      -- as possible NET hard transport collision mass, with the
+      -- unused covered sink reserve explicitly retained.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
