@@ -170,6 +170,8 @@ theorem forward_reverse_hard_mass_le_singleton_add_two_soft
   have htotal : (S ∪ T).card ≤ S.card + T.card :=
     Finset.card_union_le S T
   have hinclusion := Finset.card_union_add_card_inter F R
+  have hS : S.card = (singletonCompletionWords C).card := rfl
+  have hT : T.card = (softOverlapCompletionWords C).card := rfl
   omega
 
 /-- Same joint bound on the ACTUALLY UNRESERVED forward hard
