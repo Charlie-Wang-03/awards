@@ -969,3 +969,82 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38267340306
 The full six-source TRUE-hole/unreserved-profile-surplus payment does NOT follow from the proven collision codimension. We still lack a sufficiently strong geometric bound on the COUNT of incomparable bridge carriers and, especially, a non-reusing assignment of these plus the soft, rigid-twin, mixed-rigid and projected-loss debts to ACTUAL Boolean holes or genuinely unreserved surplus.
 
 The singleton/soft eligible sink sets remain COVERED and cannot be reclassified as true holes. This work improves a quantified necessary collision budget but is not a proof or disproof of JSP-000404 and licenses no upstream award submission.
+
+
+## Strict-rigid lower-exponent bridge half-mass bound
+
+**2026-10-12: 6 NEW kernel-certified theorems; original
+JSP-000404 remains unproved and undisproved.**
+
+Modules:
+- JSP000404Research/ResidualIncomparableBridgeLowerExponent.lean
+- JSP000404Research/PlanarIncomparableBridgeLowerExponent.lean
+
+The previous incomparable-bridge codimension bound measured each
+remaining candidate soft bridge face against the full ambient cube,
+giving 2^card(commonInactive(b,v)) <= 2^(n-2).
+
+The stronger breakthrough in this increment measures the very same
+face against its actual strict-rigid LOWER target b. By the literal
+candidate-bridge definition, b is the lower endpoint of some genuine
+strict descending rigid hard carrier q=(b,z). The already certified
+one-layer rigid saturation theorem yields the exact identity
+
+  projectedFree C b = exponent b = n - card(retainedActive C b).
+
+Palette incomparability supplies an additional retained-active colour
+on v absent from b. Hence, without ANY additional geometric
+assumption, Lean now proves:
+
+~~~text
+For each incomparable bridge r=(b,v):
+
+card(commonRetainedInactive(b,v)) + 1 <= exponent(b)
+
+2 * 2^card(commonRetainedInactive(b,v)) <= 2^exponent(b)
+
+0 < exponent(b)
+
+2 * card(incomparableBridgeSoftWords)
+  <= SUM_(r=(b,v) incomparable bridge) 2^exponent(b)
+
+2 * card(NET actual forward/reverse sink collisions)
+  <= SUM_(r=(b,v) incomparable bridge) 2^exponent(b).
+~~~
+
+This is an exponent-budget improvement over 2^(n-2) whenever the
+actual lower target k(b) is small. Crucially, the sum is OVER
+BRIDGE CARRIERS: several bridges can share the SAME lower endpoint,
+so it is NOT an independent sum over strict rigid lower targets,
+nor a proven injection to true Boolean holes or genuinely unreserved
+profile surplus. Those payments remain wholly unresolved.
+
+The abstract five theorems are imported by VerifiedOverlapRewire
+and print only standard Lean axioms:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38273326744
+(3,493 Lean jobs PASS, no new sorryAx).
+
+The genuine planar theorem
+planar_net_actual_collision_twice_le_strict_lower_target_sum
+specializes the fifth inequality to actual injective plane points,
+AngleCap, t=n+delta with 0<=delta<1/2, and their true
+centre-projective-cycle exponents without adding hypotheses:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38273810920
+(3,494 Lean jobs PASS, only propext/Classical.choice/Quot.sound).
+
+The sole admitted WIP now imports this new planar module and
+has the certified hbridgeLowerExponent available at the
+six-source geometric payment boundary. Integrated CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38274243612
+(3,416 jobs PASS). There is STILL exactly one executable sorry
+in PlanarLowerBranchProofAdmittedWIP.lean at line 188,
+and its axiom audit still reports sorryAx.
+
+**Precise research frontier:** Prove a genuinely NON-REUSING
+geometric aggregation over distinct saturated lower endpoints,
+then connect that collision capacity with ALL remaining soft,
+rigid-twin, mixed-rigid and projection-loss debt to ACTUAL true
+Boolean holes and NET unreserved dyadic profile surplus.
+An individual half-cube estimate cannot, on its own, pay the
+same lower target repeatedly. This increment supplies a sharper
+verified bound, NOT completion or disproof of JSP-000404.
