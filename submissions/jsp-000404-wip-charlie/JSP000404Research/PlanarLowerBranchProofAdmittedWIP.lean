@@ -1,6 +1,7 @@
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
+import JSP000404Research.PlanarStrictShellSoftMassLedger
 import Mathlib.Tactic
 
 /-!
@@ -114,6 +115,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have hbridgeGap :=
     planar_bridge_soft_dyadic_mass_le_strict_target_descent_gap
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
+  have hlocalShellMass :=
+    planar_strict_shell_singleton_soft_local_mass_ledger
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -127,6 +131,10 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- by the strict-rigid LOWER-minus-UPPER dyadic descent budget.
       -- That bound is already in context, but its targets are COVERED,
       -- not TRUE holes. It does not pay the remaining global debt.
+      -- Verified planar hlocalShellMass is the STRONGER exact per-carrier
+      -- partition: strict lower shell = singleton-covered mass plus
+      -- full outgoing soft-overlap carrier dyadic mass. This does not
+      -- turn either covered class into unreserved surplus or true holes.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
