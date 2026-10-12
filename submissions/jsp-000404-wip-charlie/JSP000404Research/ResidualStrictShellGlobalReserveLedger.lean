@@ -231,7 +231,77 @@ theorem strict_shell_global_singleton_add_oriented_soft_eq_local_gaps
       C exponent hexp honeLoss
   omega
 
+
+/-- SOFT-covered shell words that CANNOT participate even in the
+candidate oriented forward/reverse bridge pool. -/
+noncomputable def strictShellNonBridgeSoftWords
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) : Finset (Fin n → Bool) :=
+  strictShellSoftWords C exponent \
+    forwardReverseBridgeSoftWords C exponent
+
+/-- Exact—not just upper-bounded—division of the global soft shell
+mass into potential bridge collisions and non-bridge soft words. -/
+theorem strict_shell_soft_mass_eq_bridge_add_nonbridge
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    (strictShellSoftWords C exponent).card =
+      (forwardReverseBridgeSoftWords C exponent).card +
+        (strictShellNonBridgeSoftWords C exponent).card := by
+  classical
+  have hsubset :=
+    bridge_soft_subset_global_strict_shell_soft C exponent
+  have hcard :=
+    Finset.card_sdiff_of_subset hsubset
+  change (strictShellNonBridgeSoftWords C exponent).card =
+      (strictShellSoftWords C exponent).card -
+        (forwardReverseBridgeSoftWords C exponent).card at hcard
+  have hle := Finset.card_le_card hsubset
+  omega
+
+/-- The nonbridge soft remainder has no word in common with
+the potential bridge pool. This is a literal Finset reservation. -/
+theorem strict_shell_nonbridge_disjoint_bridge
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) :
+    Disjoint (strictShellNonBridgeSoftWords C exponent)
+      (forwardReverseBridgeSoftWords C exponent) := by
+  classical
+  apply Finset.disjoint_left.mpr
+  intro word hw hn
+  exact (Finset.mem_sdiff.mp hw).2 hn
+
+/-- THREE-WAY exact globally non-reusing strict descent ledger.
+The potential bridge pool is only the THIRD use category of
+strict lower shells, beside singleton and nonbridge-soft mass.
+No category is a genuine Boolean hole or unreserved surplus. -/
+theorem strict_shell_singleton_bridge_nonbridge_eq_local_gaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss : ∀ x, (active C x).card ≤ n - exponent x + 1) :
+    (strictShellSingletonWords C exponent).card +
+      (forwardReverseBridgeSoftWords C exponent).card +
+        (strictShellNonBridgeSoftWords C exponent).card =
+      ∑ q ∈ netStrictDescentRigidCarriers C exponent,
+        (2 ^ exponent q.1 - 2 ^ exponent q.2) := by
+  have hpartition :=
+    strict_shell_global_card_eq_singleton_add_soft C exponent
+  have hbridge :=
+    strict_shell_soft_mass_eq_bridge_add_nonbridge C exponent
+  have hgap :=
+    unused_strict_lower_words_card_eq_sum_target_gaps
+      C exponent hexp honeLoss
+  omega
+
 #print axioms strict_shell_global_singleton_soft_partition
+#print axioms strict_shell_soft_mass_eq_bridge_add_nonbridge
+#print axioms strict_shell_nonbridge_disjoint_bridge
+#print axioms strict_shell_singleton_bridge_nonbridge_eq_local_gaps
 #print axioms strict_shell_global_singleton_soft_disjoint
 #print axioms strict_shell_global_card_eq_singleton_add_soft
 #print axioms bridge_soft_subset_global_strict_shell_soft
