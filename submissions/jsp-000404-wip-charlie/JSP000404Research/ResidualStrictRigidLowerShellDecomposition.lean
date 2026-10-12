@@ -192,6 +192,7 @@ theorem strict_rigid_lower_shell_card_eq_projected_gap
   rw [Finset.card_sdiff_of_subset hsub]
   rw [retainedCompletionWords_card C q.1,
     retainedCompletionWords_card C q.2]
+  simp only [projectedFree]
 
 /-- The one-layer endpoint saturation theorem converts EACH local
 strict-rigid shell's projected dimension gap into the corresponding
