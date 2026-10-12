@@ -1,4 +1,5 @@
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
+import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import Mathlib.Tactic
 
 /-!
@@ -42,8 +43,18 @@ The true outstanding six-source inequality is now explicitly:
                            - descending upper-surplus credit.
 
 Both forward and reverse movable hard maps are individually GLOBAL
-injections, but their images are NOT certified DISJOINT; all output
-words are already COVERED and cannot be counted as Boolean holes.
+injections. Their common sink words are SOFT and have a UNIQUE
+oriented residual bridge owner (reverse lower, forward upper).
+The candidate bridge soft pool has exactly the summed DYADIC mass
+  SUM_bridge 2^card(commonRetainedInactive).
+Consequently the two movable hard classes together are bounded by
+  singleton + soft + bridge-soft;
+this is now a verified actual AngleCap planar theorem, available
+below as `hmobile`.
+
+The two images are NOT proven DISJOINT. All sink words are already
+COVERED and cannot count as TRUE Boolean holes. The new bridge
+bound by itself does NOT establish the net-payment inequality.
 Consequently no unproved payment cancellation is permitted.
 
 The six-source net goal is formally equivalent to the previous
@@ -59,9 +70,10 @@ open OrderedEdgeColoring
 open DirectionData
 
 /-- ADMITTED. The only outstanding planar input is now precisely
-the terminal transportable Boolean mass, terminal saturated rigid
-upper target debt, both mixed-rigid target debts, soft mass and loss
-versus true holes and NET unreserved surplus. -/
+two certified movable hard source masses (subject to a global
+singleton/soft/bridge dyadic sink bound), equal-exponent TWIN
+rigid dyadic target debt, both mixed-rigid target debts, soft mass
+and loss versus TRUE holes and NET unreserved surplus. -/
 theorem planar_lower_branch_dyadic_capacity_admitted_wip
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -82,6 +94,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
+  have hmobile :=
+    planar_mobile_hard_mass_le_singleton_soft_bridge_dyadic
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
   exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
@@ -89,7 +104,10 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- unreserved surplus must pay for soft overlap, BOTH forward
       -- and reverse movable hard Boolean masses, equal-target TWIN
       -- rigid dyadic weight, both mixed-rigid target debts and loss.
-      -- Forward/reverse images are COVERED and may intersect.
+      -- Verified planar hmobile bounds both movable source classes
+      -- by singleton + soft + the exact dyadic BRIDGE-SOFT pool.
+      -- That bound is already in context, but its targets are COVERED,
+      -- not TRUE holes. It does not pay the remaining global debt.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
