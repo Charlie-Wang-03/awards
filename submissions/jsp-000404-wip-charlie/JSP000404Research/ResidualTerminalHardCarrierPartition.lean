@@ -139,8 +139,9 @@ outward/inactive coordinate, chosen by the exact hard definition. -/
 noncomputable def netTransportableHardCarriers
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ) : Finset (V × V) :=
-  (netUnpaidHardCarrierPairs C exponent).filter
+    (exponent : V → ℕ) : Finset (V × V) := by
+  classical
+  exact (netUnpaidHardCarrierPairs C exponent).filter
     (fun p => HasOutgoingHardTransport C p.1 p.2)
 
 /-- Those of the net-unpaid carriers which have NO safe transport.
@@ -148,8 +149,9 @@ These are the only true terminal rigid hard-face carriers. -/
 noncomputable def netRigidHardCarriers
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ) : Finset (V × V) :=
-  (netUnpaidHardCarrierPairs C exponent).filter
+    (exponent : V → ℕ) : Finset (V × V) := by
+  classical
+  exact (netUnpaidHardCarrierPairs C exponent).filter
     (fun p => ¬ HasOutgoingHardTransport C p.1 p.2)
 
 @[simp] theorem mem_netTransportableHardCarriers
@@ -216,6 +218,7 @@ theorem remainingUnpaidHard_eq_transportable_union_rigid
       netTransportableHardWords C exponent ∪
         netRigidHardWords C exponent := by
   classical
+  unfold netTransportableHardWords netRigidHardWords
   rw [remainingUnpaidHard_eq_netCarriers_biUnion,
     netHardCarriers_eq_transportable_union_rigid]
   ext word
