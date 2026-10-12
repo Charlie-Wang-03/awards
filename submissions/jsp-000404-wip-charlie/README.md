@@ -2174,3 +2174,104 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38203489427
 built **3,463 Lean tasks**, with no `sorryAx` introduced into the
 independent reduction chain. This is NOT the legacy monolithic root,
 nor a completed JSP-000404 proof.
+
+
+### Opposite-direction covered-sink collision and JOINT capacity (2026-10-12)
+
+**Verified new mathematical step:** The two previously proved
+GLOBAL injective transport maps, outward transportable hard faces
+and reverse strict-descending terminal rigid hard faces, can be
+charged JOINTLY without double counting singleton-covered sinks.
+This is a true new cross-map theorem, not a restatement of the
+admitted global planar payment.
+
+**Cross collision classification.**
+`ResidualForwardReverseSinkCollision.lean` proves that if the
+full forward hard transport and the reverse strict-rigid hard
+transport send two input words to the SAME Boolean word, that
+target is SOFT-OVERLAPPED, never singly covered. The forward
+output lies in its residual carrier's UPPER cube Q_v and the
+reverse output in a DIFFERENT hard carrier's LOWER cube Q_b;
+hard carrier vertex matching shows v != b, hence the output
+has at least two distinct completion-fibre owners.
+This gives a genuine soft-only collision certificate. The
+CI for this module is included in
+https://github.com/Charlie-Wang-03/awards/actions/runs/38207178720
+and its `#print axioms` excludes `sorryAx`.
+
+**Joint inclusion-exclusion mass bound.**
+`ResidualForwardReverseJointSoftMultiplicity.lean` defines
+full forward and reverse sink-image Finsets, proves each
+cardinality equals its source mass, proves their common image
+is a subset of `softOverlapCompletionWords`, and applies
+finite-set inclusion-exclusion. Its key unconditional theorem is
+
+```text
+card(transportableHardOverlapCompletionWords)
++ card(netStrictDescentRigidWords)
+<= card(singletonCompletionWords)
+   + 2 * card(softOverlapCompletionWords).
+```
+
+In particular, substituting the actually unpaid forward
+subfamily and combining exact three-way net-hard partition
+and exact twin target mass:
+
+```text
+card(remainingUnpaidHardAfterMixedRigidWords)
+<= card(singletonCompletionWords)
+   + 2 * card(softOverlapCompletionWords)
+   + SUM_(twin p) 2^k(p.upper).
+```
+
+**The coefficient of singleton covered mass is ONE**, not
+the TWO copies obtained by adding old independent bounds.
+The remaining coefficient 2 on soft destinations is honest:
+a forward and reverse source may collide there; no
+inter-map-disjointness is asserted. First CI failed only in the
+final `omega` because let-bound singleton/soft Finsets were
+not syntactically identified with the original sets. Commit
+`08db5de9503b08db7e85076872539a1d5025a778` supplied
+explicit let-cardinality equations. Verified PASS:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38207178720
+(**3,207 Lean tasks**, four theorem `#print axioms` audits
+with no `sorryAx`).
+
+**Direction of any surviving cross collision.**
+`ResidualForwardReverseCollisionOrder.lean` strengthens the
+soft-only classification. Any coinciding forward/reverse sink
+words force
+
+```text
+reverseLower < forwardUpper
+IsResidual C reverseLower forwardUpper
+```
+
+because the opposite order would produce a forbidden
+monochromatic increasing two-edge path starting with the
+forward carrier. This is a concrete oriented residual BRIDGE
+which may be paired with genuine planar AngleCap geometry in
+later work. It is NOT a contradiction in arbitrary
+`OrderedEdgeColoring`, since multiple outgoing colours at
+a lower endpoint or multiple incoming colours at an upper
+endpoint can coincide. Verified PASS:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38207370043
+(**3,208 Lean tasks**, both new theorems no `sorryAx`).
+
+**Unresolved mathematical boundary:** the current admitted
+`PlanarLowerBranchProofAdmittedWIP.lean` retains exactly ONE
+`sorry`, whose net inequality still compares actual TRUE
+Boolean holes plus genuinely unreserved dyadic surplus against
+soft source mass, both mobile hard masses, twin rigid target debt,
+mixed rigid debts and profile loss. None of the new covered-sink
+estimates converts a covered singleton or soft word into a
+TRUE Boolean hole. Do not cancel the admitted net terms
+against the covered image counts. The new joint capacity and
+backward bridge identify narrower intermediate geometric
+objectives, but they do not prove JSP-000404 or either general
+source-closure branch.
+
+The independent `VerifiedOverlapRewire.lean` now imports
+all three new no-sorry modules; its full Lean CI is
+https://github.com/Charlie-Wang-03/awards/actions/runs/38207499389 .
+The WIP remains excluded from this certification umbrella.
