@@ -2300,3 +2300,51 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38209708671 .
 
 These new results quantify potential SOFT covered-word collisions
 and DO NOT pay TRUE Boolean holes or prove JSP-000404.
+
+
+### Verified bridge-soft / strict-rigid shared lower-cube capacity (2026-10-12)
+
+Full independent handoff:
+[BRIDGE_STRICT_LOWER_GAP_PROOF_FRONTIER_2026-10-12.md](BRIDGE_STRICT_LOWER_GAP_PROOF_FRONTIER_2026-10-12.md).
+
+Four new SORRY-FREE Lean modules:
+`ResidualBridgeReverseLowerSharedCapacity.lean`,
+`ResidualBridgeReverseLowerDyadicBudget.lean`,
+`ResidualBridgeStrictDyadicDescentGap.lean`, and
+`PlanarBridgeSoftStrictDyadicGap.lean` establish a certified
+shared-capacity refinement of the previous cross-transport bound.
+
+Let `B` be ALL potential SOFT bridge words between reverse
+strict-rigid lower and forward transportable upper endpoints;
+let `R` be the reverse strict-rigid HARD source face words;
+and let `S` be strict-rigid carrier pairs. Then:
+```text
+B INTER R = EMPTY
+B UNION R SUBSET UNION_((b,z) in S) retainedCompletionWords(b)
+
+card(B) + card(R) <= SUM_((b,z) in S) 2^k(b)
+card(R) = SUM_((b,z) in S) 2^k(z)
+card(B) = SUM_(e in bridgeSoftCarriers) 2^commonInactiveDimension(e)
+
+THUS:
+SUM_(e in bridgeSoftCarriers) 2^commonInactiveDimension(e)
+ <= SUM_((b,z) in S) 2^k(b) - SUM_((b,z) in S) 2^k(z).
+```
+
+The exact lower-cube sum is certified by *pairwise-disjoint*
+lower cubes (residual-lower completion uniqueness plus hard vertex
+matching) and one-layer double endpoint saturation. A genuine
+`AngleCap` / `centreExponent` theorem instantiates this under
+the actual planar lower-branch hypotheses. The source gap is
+NOT `dyadicProfileSurplus`, because strict rigid endpoints are
+individually saturated. Nor are soft or singleton images TRUE
+Boolean holes. None of this closes the final six-source global
+payment or its one remaining executable `sorry`.
+
+All four modules were individually compiled with standard axioms
+only. `VerifiedOverlapRewire.lean` imports them, and the
+**3,474 / 3,474** task independent Lean regression PASSED:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38216270221 .
+The research-only WIP was compiled independently with **3,396**
+tasks, one intentional `sorry`/`sorryAx`:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38216044106 .
