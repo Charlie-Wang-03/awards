@@ -882,3 +882,90 @@ geometry, then connect it to a non-reusing true-hole/surplus
 payment. The original JSP-000404 conclusion is NOT established,
 and the admitted theorem must not be used as an upstream
 prize-proof claim.
+
+
+## New codimension-two palette obstruction and dyadic density budget
+
+**2026-10-12 research increment; NO proof/disproof of the original JSP-000404 and NO new assumed geometric payment.**
+
+### Two independent cross-active witnesses (8 Lean theorems)
+
+New sorry-free module: JSP000404Research/ResidualIncomparableBridgeCodimension.lean.
+
+For every candidate soft bridge r=(b,v) with incomparable retained-active endpoint palettes, the Lean kernel constructs TWO DISTINCT witnesses:
+
+~~~text
+cf in A_b \ A_v
+cr in A_v \ A_b
+cf != cr
+
+card(A_b UNION A_v) >= 2
+card(A_b UNION A_v) >= card(A_b) + 1
+card(A_b UNION A_v) >= card(A_v) + 1
+
+card(commonRetainedInactive(b,v)) + 2 <= n
+card(commonRetainedInactive(b,v)) + card(A_b) + 1 <= n
+card(commonRetainedInactive(b,v)) + card(A_v) + 1 <= n
+~~~
+
+This sharpens the qualitative incomparability obstruction to two independent Boolean dimensions and two separate per-endpoint free-coordinate losses. It requires no new AngleCap hypothesis.
+
+The filtered candidate bridge carrier pool and actual NET unpaid forward/reverse collision set are BOTH empty for n <= 1. This settles only that collision component, not the six-source lower-branch conclusion.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38265659015
+(3,491 jobs PASS; eight theorem axiom prints exclude sorryAx).
+
+### Dyadic quarter/half bounds and finite-carrier density (5 Lean theorems)
+
+Same module, additional theorems:
+
+~~~text
+For every filtered bridge r=(b,v):
+
+2^card(commonInactive(b,v)) <= 2^(n-2)
+
+2 * 2^card(commonInactive(b,v))
+  <= card(retainedCompletionWords(b))
+2 * 2^card(commonInactive(b,v))
+  <= card(retainedCompletionWords(v))
+
+card(incomparableBridgeSoftWords)
+  <= card(incomparableBridgeSoftCarriers) * 2^(n-2)
+
+card(NET actual forward/reverse collisions)
+  <= card(incomparableBridgeSoftCarriers) * 2^(n-2)
+
+netUnpaidForwardHardMass + reverseStrictHardMass
+  + card(netUnusedCoveredEligibleSinks)
+ <= singletonCoveredMass + softCoveredMass
+      + card(incomparableBridgeSoftCarriers) * 2^(n-2).
+~~~
+
+This identifies a concrete candidate geometrical carrier-COUNT problem instead of requiring the full weight of arbitrary overlap faces. The sink sets in this statement are ALREADY COVERED, NOT Boolean holes.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38266203593
+(3,227 jobs PASS; three mass lemmas);
+https://github.com/Charlie-Wang-03/awards/actions/runs/38266577403
+(3,227 jobs PASS; two net collision mass lemmas).
+All five axiom audits exclude sorryAx.
+
+### True planar AngleCap specialization and WIP wiring (1 theorem)
+
+New module: JSP000404Research/PlanarIncomparableBridgeDensityCapacity.lean.
+
+The certified planar_net_mobile_mass_plus_unused_le_incomparable_bridge_density theorem derives the original centre exponent and one-layer active-card budgets from actual AngleCap geometry and true projective cycles, then proves the quarter-density inequality above with NO extra geometric postulate.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38266932182
+(3,492 jobs PASS; only standard Lean axioms).
+
+The sole admitted WIP now imports this planar module and retains the verified hpaletteQuarterMobile among its open-boundary inputs.
+
+WIP CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38267340306
+(3,414 jobs PASS). The scanner still finds EXACTLY ONE executable sorry, at JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean:179, and the dependent WIP theorem's axiom print still includes sorryAx.
+
+### Essential still-open mathematics
+
+The full six-source TRUE-hole/unreserved-profile-surplus payment does NOT follow from the proven collision codimension. We still lack a sufficiently strong geometric bound on the COUNT of incomparable bridge carriers and, especially, a non-reusing assignment of these plus the soft, rigid-twin, mixed-rigid and projected-loss debts to ACTUAL Boolean holes or genuinely unreserved surplus.
+
+The singleton/soft eligible sink sets remain COVERED and cannot be reclassified as true holes. This work improves a quantified necessary collision budget but is not a proof or disproof of JSP-000404 and licenses no upstream award submission.
