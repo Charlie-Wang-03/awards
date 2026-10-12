@@ -2023,3 +2023,154 @@ A hard face's locally flipped words may still be globally COVERED.
 Do not reinterpret such images as holes or assume a false general
 subset-Hall principle. The general upper branch, legacy root
 compilation and source-closure/prize-eligibility gates remain OPEN.
+
+
+### Global reverse rigid-face transport and twin-only final debt (2026-10-12)
+
+**Verification boundary:** This work DOES NOT prove or refute JSP-000404,
+does not show the lower-branch global payment, and does not close the
+upper branch or legacy monolithic Lean root. The research-only
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean` retains
+**exactly ONE executable `sorry`**, and `#print axioms` honestly
+reports `sorryAx`. Its newest obligation is an EXACTLY EQUIVALENT
+six-source true-planar net-payment inequality, NOT an established
+inequality. The independent `VerifiedOverlapRewire.lean` intentionally
+excludes this WIP and has **no imported `sorryAx`**.
+
+**A. Complete retained-incidence twin rigidity.**
+`ResidualTerminalRigidTwinIncidence.lean` proves equal-target terminal
+rigid carriers have exactly equal incoming AND outgoing retained
+colour sets (not just equal completion cubes and active supports):
+`incomingRetained(a)=incomingRetained(v)` and
+`outgoingRetained(a)=outgoingRetained(v)`.
+Successful incremental Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38201931381
+(no `sorryAx`).
+
+**B. ALL hard carrier edges form a vertex-disjoint matching.**
+`ResidualHardCarrierVertexMatching.lean` combines genuine
+same-retained-code two-companion uniqueness with a finite ordered
+pair matching counting lemma to prove EVERY pair of distinct hard
+carriers has disjoint endpoints, independently of their overlapping
+Boolean words. Consequently
+`2 * card(hardOverlapCarrierPairs C) <= Fintype.card V`,
+and specifically
+`2 * card(netRigidHardCarriers C k) <= Fintype.card V`.
+First CI failed in crossed-endpoint cases because `omega` could not
+see order axioms on abstract `V`; repair at
+`8b659cca2b5cba236201b1ff96731df2f8532cae` used explicit
+strict-order cycles instead. Successful Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38202176604
+(3,201 tasks, all theorem axioms exclude `sorryAx`).
+
+**C. New REVERSE SAFE-COLOUR for strict-descending terminal rigid
+pairs.**
+`ResidualTerminalRigidReverseFlip.lean` proves that for a terminal
+rigid carrier `a<v` with `k(v)<k(a)`, both one-layer saturated
+budgets force `retainedActive(a)\subsetneq retainedActive(v)`.
+Since same-retained Boolean codes have equal incoming palettes,
+there exists a retained coordinate `c` with
+`c in outgoingRetained(v)` and
+`c notin retainedActive(a)`.
+Flipping ANY word in the entire rigid hard face
+`Q_a intersect Q_v = Q_v` at that coordinate sends it into
+`Q_a \ Q_v` and into globally singly covered or SOFT overlapping
+words. This is the reverse direction of previously proved outward
+transport; all images remain COVERED (NOT true Boolean holes).
+Successful Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38202376520
+(3,202 tasks; three theorems no `sorryAx`).
+
+**D. Collision-free GLOBAL reverse whole-face injection.**
+`ResidualTerminalStrictReverseGlobalInjection.lean` chooses one such
+reverse colour PER strict-descending rigid carrier, independently
+of which Boolean word is flipped. The global flip
+`netStrictDescentRigidWords -> singletonCompletionWords union
+softOverlapCompletionWords` is INJECTIVE: within a face flipping is
+involutive, and across distinct carriers the image lies in the
+LOWER completion cube of that carrier; verified disjointness of
+lower residual centres and same-code carrier matching prevent
+collisions. In particular,
+
+`card(netStrictDescentRigidWords) <=
+ card(singletonCompletionWords) + card(softOverlapCompletionWords)`.
+
+The existing forward transport and this new reverse transport
+are EACH injective. Their IMAGES are **NOT KNOWN TO BE MUTUALLY
+DISJOINT** and must NOT be added as two non-reusing sink credits.
+Successful Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38202600690
+(3,203 tasks; no `sorryAx`).
+
+**E. Exact terminal rigid TWO-WAY / net hard THREE-WAY partition.**
+`ResidualTerminalTwinStrictPartition.lean` establishes, under the
+standard one-layer residual active-card profile budget,
+
+`netRigidHardWords =
+ netStrictDescentRigidWords disjoint_union netTwinRigidWords`.
+
+Thus the remaining unpaid hard Boolean words split into
+`netTransportableHardWords + netStrictDescentRigidWords
+ + netTwinRigidWords` exactly, with no partial faces or repeated
+hard-word owners. `netTwinRigidWords` has exact mass
+`SUM_(p in netTwinRigidCarriers) 2^k(p.upper)`.
+The last TWIN branch requires `k(lower)=k(upper)`,
+identical completion cubes and identical incoming/outgoing retained
+palettes. It is the sole terminal rigid TYPE not handled by
+the two VERIFIED forward/reverse safe-flip mechanisms, NOT the
+sole remaining source of the final defect payment.
+Successful Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38202834492
+(3,204 tasks; no `sorryAx`).
+
+**F. Final exact six-source net payment and planar conditional bridge.**
+`ResidualTerminalTwinNetPaymentReduction.lean` proves the new
+six-source inequality mathematically EQUIVALENT to the preceding
+five-source terminal hard net inequality. Independent successful
+Lean run https://github.com/Charlie-Wang-03/awards/actions/runs/38202988413
+(3,205 tasks).
+
+`PlanarLowerBranchTerminalTwinNetReduction.lean` derives the
+one-layer budget from genuine injective planar `AngleCap` geometry
+and proves the six-source net-payment hypothesis implies the
+lower-branch dyadic capacity. Independent Lean run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38203150665
+(3,384 tasks; only standard `propext/Classical.choice/Quot.sound`
+axioms). At `f8a1e5a15631618af8740bca2bd5b353ec3d9f45`,
+the WIP was moved to this precise conditional bridge, keeping the
+SOLE admitted `sorry`. WIP run
+https://github.com/Charlie-Wang-03/awards/actions/runs/38203307820
+(3,385 tasks, PASS with one admitted `sorryAx` as expected).
+
+The ONLY admitted inequality now reads symbolically:
+
+```text
+softOverlapMass
++ forwardMovableHardMass
++ reverseStrictDescentRigidHardMass
++ SUM_equalExponentTwinRigid 2^k(upper)
++ SUM_ascendingMixedRigid 2^k(lower)
++ SUM_descendingMixedRigid 2^k(upper)
++ projectedProfileLoss
+<= TRUE Boolean holes
+ + genuinely UNRESERVED dyadic surplus
+   (after paid whole-hard, ascending-lower, descending-upper credits)
+```
+
+The exact global **mathematical gap** is to use genuine planar
+geometry to pay this inequality WITHOUT reusing previously charged
+surplus or reusing singleton/soft covered sinks of the forward and
+reverse injections. A possible separate subgoal is proving
+sufficient disjointness/multiplicity control of forward/reverse
+sink images (collisions could lie in SOFT coverage), then
+cross-centre geometric treatment of fully twin rigid pairs.
+Do NOT assume arbitrary DirectionData subset Hall or treat covered
+singleton/soft images as Boolean holes.
+
+**Full sorry-free Lean umbrella verification:**
+`VerifiedOverlapRewire.lean` now imports every new module A-F and
+continues to omit admitted WIP. GitHub Actions
+https://github.com/Charlie-Wang-03/awards/actions/runs/38203489427
+built **3,463 Lean tasks**, with no `sorryAx` introduced into the
+independent reduction chain. This is NOT the legacy monolithic root,
+nor a completed JSP-000404 proof.
