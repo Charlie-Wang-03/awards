@@ -170,7 +170,101 @@ theorem strict_rigid_lower_shell_subset_singleton_soft
   exact (strict_rigid_lower_shell_subset_unused C exponent hq).trans
     (unused_strict_lower_words_subset_singleton_soft C exponent)
 
+/-- On EACH strict rigid carrier, the lower-minus-upper Boolean
+shell has precisely the difference of the two projected cube sizes. -/
+theorem strict_rigid_lower_shell_card_eq_projected_gap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {q : V × V}
+    (hq : q ∈ netStrictDescentRigidCarriers C exponent) :
+    (retainedCompletionWords C q.1 \
+        retainedCompletionWords C q.2).card =
+      2 ^ projectedFree C q.1 - 2 ^ projectedFree C q.2 := by
+  have hnet :=
+    ((mem_netStrictDescentRigidCarriers C exponent q).1 hq).1
+  have hrigid := (mem_netRigidHardCarriers C exponent q).1 hnet
+  have hhard :=
+    ((mem_netUnpaidHardCarrierPairs C exponent q).1 hrigid.1).1
+  have hsame := ((mem_hardOverlapCarrierPairs C q).1 hhard).2
+  have hsub :=
+    hard_no_transport_upper_cube_subset_lower C hsame hrigid.2
+  rw [Finset.card_sdiff_of_subset hsub]
+  rw [retainedCompletionWords_card C q.1,
+    retainedCompletionWords_card C q.2]
+
+/-- The one-layer endpoint saturation theorem converts EACH local
+strict-rigid shell's projected dimension gap into the corresponding
+dyadic target exponent gap; no global subtraction is needed. -/
+theorem strict_rigid_lower_shell_card_eq_target_gap
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss : ∀ x, (active C x).card ≤ n - exponent x + 1)
+    {q : V × V}
+    (hq : q ∈ netStrictDescentRigidCarriers C exponent) :
+    (retainedCompletionWords C q.1 \
+        retainedCompletionWords C q.2).card =
+      2 ^ exponent q.1 - 2 ^ exponent q.2 := by
+  have hnet :=
+    ((mem_netStrictDescentRigidCarriers C exponent q).1 hq).1
+  have hrigid := (mem_netRigidHardCarriers C exponent q).1 hnet
+  have hdata := (mem_netUnpaidHardCarrierPairs C exponent q).1
+    hrigid.1
+  have hrig : q ∈ rigidHardOverlapCarrierPairs C :=
+    (mem_rigidHardOverlapCarrierPairs C q).2
+      ⟨hdata.1, hrigid.2⟩
+  have hb :=
+    netRigidHardCarriers_endpoint_budgets_of_oneLayer
+      C exponent hexp honeLoss q hnet
+  have hsat :=
+    terminal_rigid_carrier_both_saturated_without_word
+      C exponent hrig hdata.2.1 hdata.2.2.1 hdata.2.2.2
+      hb.1 hb.2
+  rw [strict_rigid_lower_shell_card_eq_projected_gap C exponent hq]
+  rw [← hsat.1, ← hsat.2]
+
+/-- Localized dyadic strict-descent capacity: the entire unused lower
+pool is the sum of independently certified per-carrier shell gaps. -/
+theorem unused_strict_lower_words_card_eq_sum_target_gaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss : ∀ x, (active C x).card ≤ n - exponent x + 1) :
+    (netStrictRigidUnusedLowerWords C exponent).card =
+      ∑ q ∈ netStrictDescentRigidCarriers C exponent,
+        (2 ^ exponent q.1 - 2 ^ exponent q.2) := by
+  rw [unused_strict_lower_words_card_eq_sum_shells]
+  apply Finset.sum_congr rfl
+  intro q hq
+  exact strict_rigid_lower_shell_card_eq_target_gap
+    C exponent hexp honeLoss hq
+
+/-- Potential bridge-soft collisions are bounded by the SUM of
+strict descent local shell capacities. Every slot counted on the
+right is still covered and unavailable as a direct true-hole charge. -/
+theorem bridge_soft_card_le_sum_local_strict_gaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss : ∀ x, (active C x).card ≤ n - exponent x + 1) :
+    (forwardReverseBridgeSoftWords C exponent).card ≤
+      ∑ q ∈ netStrictDescentRigidCarriers C exponent,
+        (2 ^ exponent q.1 - 2 ^ exponent q.2) := by
+  have h :=
+    bridge_soft_card_le_unused_strict_lower_words C exponent
+  rw [unused_strict_lower_words_card_eq_sum_target_gaps
+    C exponent hexp honeLoss] at h
+  exact h
+
 #print axioms strict_rigid_lower_shell_subset_unused
+#print axioms strict_rigid_lower_shell_card_eq_projected_gap
+#print axioms strict_rigid_lower_shell_card_eq_target_gap
+#print axioms unused_strict_lower_words_card_eq_sum_target_gaps
+#print axioms bridge_soft_card_le_sum_local_strict_gaps
 #print axioms unused_strict_lower_words_eq_union_shells
 #print axioms strict_rigid_lower_shells_pairwiseDisjoint
 #print axioms unused_strict_lower_words_card_eq_sum_shells
