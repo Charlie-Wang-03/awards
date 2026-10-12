@@ -89,6 +89,12 @@ theorem planar_mobile_hard_mass_le_singleton_soft_bridge_dyadic
     intro i
     exact planarStandardResidual_active_card_le_oneLayer
       hp hcap hn hdelta0 hdelta1 ht hlam i (cycles i)
+  change (netTransportableHardWords B k).card +
+      (netStrictDescentRigidWords B k).card ≤
+        (singletonCompletionWords B).card +
+          (softOverlapCompletionWords B).card +
+          (∑ e ∈ forwardReverseBridgeSoftCarriers B k,
+            2 ^ (commonRetainedInactive B e.1 e.2).card)
   rw [← forwardReverseBridgeSoftWords_card_eq_dyadic_sum B k]
   exact net_forward_reverse_hard_mass_le_singleton_soft_bridge
     B k hexp honeLoss
