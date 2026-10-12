@@ -43,7 +43,7 @@ they do NOT imply that the corner is a global true hole. -/
 theorem two_flip_diagonal_outside_bridge_endpoints
     {V : Type*} [LinearOrder V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
-    (b v : V) (cf cr : Fin n)
+    (b v : V) (cf cr : Fin n) (w : Fin n → Bool)
     (hcfActiveB : cf ∈ retainedActive C b)
     (hcrInactiveB : cr ∉ retainedActive C b)
     (hcrActiveV : cr ∈ retainedActive C v)
@@ -129,7 +129,7 @@ theorem actual_forward_reverse_collision_two_flip_diagonal_outside_bridge
   have hV : w ∈ retainedCompletionWords C p.1.2 :=
     transportableHardWordToSingletonOrSoft_mem_upper C x
   exact two_flip_diagonal_outside_bridge_endpoints
-    C q.1.1 p.1.2 cf cr
+    C q.1.1 p.1.2 cf cr w
       hcross.1 hreverseInactive hcross.2 hB hV
 
 /-- Exact two-bit square obstruction to using a diagonal as a true
@@ -138,7 +138,7 @@ DIFFERENT from both bridge endpoints covering it. -/
 theorem two_flip_diagonal_hole_or_external_centre
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
-    (b v : V) (cf cr : Fin n)
+    (b v : V) (cf cr : Fin n) (w : Fin n → Bool)
     (hcfActiveB : cf ∈ retainedActive C b)
     (hcrInactiveB : cr ∉ retainedActive C b)
     (hcrActiveV : cr ∈ retainedActive C v)
@@ -157,7 +157,7 @@ theorem two_flip_diagonal_hole_or_external_centre
         d ∈ retainedCompletionWords C c
   have houtside :=
     two_flip_diagonal_outside_bridge_endpoints
-      C b v cf cr hcfActiveB hcrInactiveB hcrActiveV hwB hwV
+      C b v cf cr w hcfActiveB hcrInactiveB hcrActiveV hwB hwV
   change d ∉ retainedCompletionWords C b ∧
     d ∉ retainedCompletionWords C v at houtside
   by_cases hcovered : d ∈ coveredCompletionWords C
