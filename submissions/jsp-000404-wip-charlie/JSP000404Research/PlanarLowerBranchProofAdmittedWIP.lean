@@ -15,6 +15,10 @@ import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
 import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
 import JSP000404Research.ResidualNetCollisionCertifiedMobilePayment
 import JSP000404Research.ResidualNetCollisionCertifiedDuplicateWitness
+import JSP000404Research.ResidualNetCollisionExactHammingObstruction
+import JSP000404Research.ResidualTwoFlipExactHammingCases
+import JSP000404Research.ResidualNetCollisionExactFlipSupport
+import JSP000404Research.ResidualTwoFlipExactSymmetricDifference
 import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
@@ -270,6 +274,19 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Neither covered-target mass nor duplicate hits are shown
       -- payable by TRUE holes or UNRESERVED dyadic profile surplus.
       -- The twin/mixed/soft/loss debts are also not cancelled.
+      -- EXACT DOUBLE-FLIP SYMMETRIC DIFFERENCE (NEW):
+      -- if two canonical actual sink collision words hit the SAME
+      -- diagonal target, their DIFFERENCE COORDINATES are EXACTLY
+      -- the symmetric difference of their two original unordered
+      -- 2-colour flip supports, not merely a subset of four colours.
+      -- Hence same unordered colour support implies the same source:
+      -- the canonical map is injective INSIDE EACH support fibre.
+      -- A strictly POSITIVE duplicate debt forces TWO distinct
+      -- genuine NET sink words of Hamming distance exactly 2 OR 4,
+      -- from DIFFERENT canonical unordered flip-colour supports.
+      -- This closes odd-distance and same-support cases ONLY.
+      -- Planar AngleCap exclusion/payment of the remaining
+      -- 2-bit/4-bit cross-support pairs is still OPEN.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
