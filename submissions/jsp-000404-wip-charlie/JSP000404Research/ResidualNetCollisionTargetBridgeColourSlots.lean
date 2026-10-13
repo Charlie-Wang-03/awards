@@ -238,6 +238,83 @@ theorem net_collision_duplicate_debt_le_sum_lower_colour_slot_excess
     C exponent hexp honeLoss d
   omega
 
+
+/-- A STRICTER joint, source-native fixed-target capacity:
+the number of actual sources hitting d is bounded simultaneously by
+the number of eligible original SOFT bridges, and by EACH of the
+lower/upper endpoint-inactive-colour slot capacities.
+All three constraints hold, no extra geometry assumption is used. -/
+theorem net_collision_diagonal_fibre_card_le_joint_bridge_slot_min
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (d : Fin n → Bool) :
+    (netCollisionCertifiedDiagonalFibre C exponent hexp honeLoss d).card ≤
+      min (targetDoubleShellTwoBitBridgeCarriers C exponent d).card
+        (min (targetLowerDoubleShellInactiveColourSlots C exponent d).card
+             (targetUpperDoubleShellInactiveColourSlots C exponent d).card) := by
+  have hb := net_collision_fixed_diagonal_fibre_card_le_target_double_shell
+    C exponent hexp honeLoss d
+  have hl := net_collision_diagonal_fibre_card_le_lower_target_colour_slots
+    C exponent hexp honeLoss d
+  have hu := net_collision_diagonal_fibre_card_le_upper_target_colour_slots
+    C exponent hexp honeLoss d
+  exact Nat.le_min.mpr ⟨hb, Nat.le_min.mpr ⟨hl, hu⟩⟩
+
+/-- Sharpest presently certified target-capacity excess sum for
+ACTUAL canonical duplicate-source debt: a per-target MIN of
+three independent, genuinely source-native bridge/slot bounds,
+rather than their sum or a globally multiplied proxy.
+This is still COVERED candidate capacity, NOT TRUE HOLES. -/
+theorem net_collision_duplicate_debt_le_sum_joint_bridge_slot_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        (min (targetDoubleShellTwoBitBridgeCarriers C exponent d).card
+          (min (targetLowerDoubleShellInactiveColourSlots C exponent d).card
+            (targetUpperDoubleShellInactiveColourSlots C exponent d).card) - 1) := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_le_sum
+  intro d hd
+  have h := net_collision_diagonal_fibre_card_le_joint_bridge_slot_min
+    C exponent hexp honeLoss d
+  omega
+
+/-- If EACH ACTUALLY ATTAINED diagonal target has joint bridge/slot
+capacity <=1, then all actual canonical duplicate-image debt is ZERO.
+A planar AngleCap theorem implying that hypothesis is STILL OPEN. -/
+theorem net_collision_duplicate_debt_zero_of_joint_capacity_at_most_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hunique : ∀ d ∈ netCollisionCertifiedDiagonalWords
+      C exponent hexp honeLoss,
+      min (targetDoubleShellTwoBitBridgeCarriers C exponent d).card
+        (min (targetLowerDoubleShellInactiveColourSlots C exponent d).card
+          (targetUpperDoubleShellInactiveColourSlots C exponent d).card) ≤ 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss = 0 := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_eq_zero
+  intro d hd
+  have h := net_collision_diagonal_fibre_card_le_joint_bridge_slot_min
+    C exponent hexp honeLoss d
+  have hone := hunique d hd
+  omega
+
+#print axioms net_collision_diagonal_fibre_card_le_joint_bridge_slot_min
+#print axioms net_collision_duplicate_debt_le_sum_joint_bridge_slot_excess
+#print axioms net_collision_duplicate_debt_zero_of_joint_capacity_at_most_one
+
 #print axioms net_collision_diagonal_fibre_card_le_lower_target_colour_slots
 #print axioms net_collision_diagonal_fibre_card_le_upper_target_colour_slots
 #print axioms net_collision_duplicate_debt_le_sum_lower_colour_slot_excess
