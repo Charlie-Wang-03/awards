@@ -76,6 +76,7 @@ import JSP000404Research.ResidualTwoFlipOppositeBitBlocker
 import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
 import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
+import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
