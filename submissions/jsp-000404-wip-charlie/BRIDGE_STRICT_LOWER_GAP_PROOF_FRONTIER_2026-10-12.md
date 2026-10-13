@@ -1332,3 +1332,132 @@ In addition, the rigid-twin, both mixed-rigid, projected-loss,
 other soft-overlap and both net mobile-hard debts must be paid
 together in the complete six-source inequality. Original
 JSP-000404 is NOT yet proved or disproved.
+
+
+## Opposite-bit external blockers and exact targeted diagonal hole deficit
+
+**2026-10-13. Six NEW kernel-certified Lean theorems.
+NO complete proof or disproof of JSP-000404.**
+
+### 1. Third-centre blocker MUST have the OPPOSITE retained bit
+
+New module:
+JSP000404Research/ResidualTwoFlipOppositeBitBlocker.lean.
+
+Let w lie in Q_b INTER Q_v. Choose cross-active
+flip colours cf in A_b \ A_v and cr in A_v \ A_b,
+and let d = flip_cf(flip_cr(w)). Previous Lean
+lemmas show d OUTSIDE Q_b UNION Q_v. Any new centre
+c with d in Q_c must satisfy
+
+~~~text
+(cr in A_c AND retainedBit(c,cr) = NOT retainedBit(v,cr))
+OR
+(cf in A_c AND retainedBit(c,cf) = NOT retainedBit(b,cf)).
+~~~
+
+Proof reuses the certified two-flip blocker-active-one,
+bit-at-first and bit-at-second lemmas with the precise
+cr-then-cf flip order. It is a kernel-checked
+orientation/bit constraint, not a conjectural
+AngleCap exclusion.
+
+The same module establishes a CONDITIONAL genuine
+GLOBAL true-hole injection from the WHOLE overlap cube:
+if every other centre c != b,v has a matching
+(not opposite) bit whenever it activates cr or cf,
+then every selected double-flip image is a true hole:
+
+~~~text
+card(Q_b INTER Q_v) <= card(global_TRUE_holes).
+~~~
+
+That condition is much WEAKER than the former
+"entire exterior E(b,v) has no global coverage"
+sufficient condition. It is still not known to follow
+from the genuine planar AngleCap and centre cycles.
+
+CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38350749459
+(3,502 successful Lean jobs; three theorems with
+standard axioms only, no sorryAx).
+
+### 2. EXACT target-image partition, not whole exterior
+
+New module:
+JSP000404Research/ResidualTwoFlipTargetedTrueHoleLedger.lean.
+
+Fix the same cf,cr, and let
+F = Q_b INTER Q_v,
+D = {flip_cf(flip_cr(w)) : w in F},
+H = global TRUE holes,
+K = global coveredCompletionWords.
+
+The double-flip map is injective; its image partitions
+EXACTLY as
+
+~~~text
+card(F) = card(D INTER H) + card(D INTER K).
+~~~
+
+Therefore, rigorously,
+
+~~~text
+card(F) <= card(H) + card(D INTER K).
+~~~
+
+This bound improves the PREVIOUS coarse external-centre
+term card((univ \ (Q_b UNION Q_v)) INTER K):
+only actually reachable double-flip diagonal images
+can obstruct genuine hole payment.
+
+More significantly, EVERY selected covered diagonal
+d in D INTER K has an original overlap word w and
+an EXTERNAL centre c != b,v covering d, where c
+exhibits the OPPOSITE bit at cr or cf as above.
+
+An initial Lean run had two script-level failures:
+an unexpanded set-complement case split and an
+inappropriate goal transformation at the final
+cardinal arithmetic step. Both were corrected
+with explicit by_cases and a goal-local change;
+no theorem statements or hypotheses changed.
+
+CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38351334101
+(3,503 successful Lean jobs, three theorem
+axiom checks no sorryAx).
+
+### 3. WIP integration and precise remaining obstruction
+
+The sole admitted file
+JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean
+now imports the targeted true-hole ledger. Its
+comments state the exact local diagonal identity
+and explicitly warn that the globally COVERED
+diagonal targets are NOT true holes or surplus.
+
+Integrated targeted CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38351612317
+(3,428 successful Lean jobs; no compile errors).
+Scanner: EXACTLY ONE executable sorry at line 219.
+The WIP theorem's axiom audit STILL contains sorryAx.
+
+The frontier is now more specific:
+
+- Eliminate or bound the OPPOSITE-BIT external-centre
+  obstruction on selected diagonal images, using real
+  planar AngleCap geometry, rather than all possible
+  exterior third-centre coverage.
+- Establish a GLOBAL NON-REUSING assignment across
+  DIFFERENT bridge faces; per-bridge double-flip maps
+  are injective individually, but their target images
+  may collide across faces.
+- Pay remaining soft overlap, forward/reverse net
+  mobile hard, rigid twins, both mixed rigid sources,
+  and projected-profile loss with TRUE Boolean holes
+  and genuinely UNRESERVED dyadic profile surplus.
+
+The local exact identity and conditional injection
+do NOT discharge this global geometric payment.
+No upstream prize solution is asserted.
