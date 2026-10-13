@@ -10,6 +10,7 @@ import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
 import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
+import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
 import Mathlib.Tactic
 
 /-!
@@ -206,6 +207,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- OVERLAP mass = TRUE-HOLE diagonal mass + COVERED diagonal mass.
       -- Every COVERED diagonal is certified to have an EXTERNAL centre
       -- with the OPPOSITE canonical retained bit at cf or cr.
+      -- New ACTUAL-COLLISION obstruction: the double-flipped corner
+      -- equals reverseFlip(original forward HARD source) and ALSO
+      -- forwardFlip(original reverse strict-rigid HARD source).
+      -- If reverse colour is inactive at forward lower a, Q_a covers
+      -- the diagonal; if forward colour is inactive at reverse upper
+      -- z, Q_z covers it. Hence a GLOBAL hole requires simultaneous
+      -- cr ∈ retainedActive(a) AND cf ∈ retainedActive(z).
+      -- These are NECESSARY conditions, NOT a guarantee of a hole.
+      -- In particular the true-hole diagonal budget cannot be
+      -- inferred from the earlier two-cube exterior injection alone.
       -- If this specific opposite-bit blocker type can be excluded,
       -- the entire overlap face injects into global TRUE holes.
       -- The planar exclusion of such blockers, plus disjointness of
