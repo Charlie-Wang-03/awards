@@ -21,10 +21,12 @@ source-side/fifth-centre blockers and repeated hole fibres is OPEN.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+set_option maxHeartbeats 3000000
+
 /-- A generic disjoint partition of a finite weighted sum into
 members lying in an arbitrary covered set K and its complement. -/
 theorem finset_sum_split_covered_complement
-    {α : Type*} [DecidableEq α]
+    {α : Type*} [Fintype α] [DecidableEq α]
     (D K : Finset α) (g : α → ℕ) :
     (∑ d ∈ D, g d) =
       (∑ d ∈ D ∩ ((Finset.univ : Finset α) \ K), g d) +
@@ -68,15 +70,30 @@ theorem net_collision_certified_duplicate_debt_eq_hole_covered_fibre_excess
         ((netCollisionCertifiedDiagonalFibre
           C exponent hexp honeLoss d).card - 1)) := by
   classical
-  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
-    C exponent hexp honeLoss]
-  simpa only [netCollisionCertifiedTrueHoleDiagonals,
-      netCollisionCertifiedCoveredDiagonals] using
-    (finset_sum_split_covered_complement
+  have hdebt :=
+    net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+      C exponent hexp honeLoss
+  have hsplit :=
+    finset_sum_split_covered_complement
       (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss)
       (coveredCompletionWords C)
       (fun d => (netCollisionCertifiedDiagonalFibre
-        C exponent hexp honeLoss d).card - 1))
+        C exponent hexp honeLoss d).card - 1)
+  have hsplit' :
+      (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        ((netCollisionCertifiedDiagonalFibre
+          C exponent hexp honeLoss d).card - 1)) =
+      (∑ d ∈ netCollisionCertifiedTrueHoleDiagonals
+          C exponent hexp honeLoss,
+        ((netCollisionCertifiedDiagonalFibre
+          C exponent hexp honeLoss d).card - 1)) +
+      (∑ d ∈ netCollisionCertifiedCoveredDiagonals
+          C exponent hexp honeLoss,
+        ((netCollisionCertifiedDiagonalFibre
+          C exponent hexp honeLoss d).card - 1)) := by
+    simpa only [netCollisionCertifiedTrueHoleDiagonals,
+      netCollisionCertifiedCoveredDiagonals] using hsplit
+  exact hdebt.trans hsplit'
 
 /-- Final exact NET mobile-source identity in literally distinct TRUE
 hole targets, literally distinct COVERED targets, and the two
@@ -110,9 +127,10 @@ theorem net_mobile_source_plus_unused_eq_truehole_covered_fibre_accounting
   have h :=
     net_mobile_source_plus_unused_eq_certified_three_diagonals
       C exponent hexp honeLoss
-  rw [net_collision_certified_duplicate_debt_eq_hole_covered_fibre_excess
-    C exponent hexp honeLoss] at h
-  exact h
+  have hdebt :=
+    net_collision_certified_duplicate_debt_eq_hole_covered_fibre_excess
+      C exponent hexp honeLoss
+  omega
 
 #print axioms finset_sum_split_covered_complement
 #print axioms net_collision_certified_duplicate_debt_eq_hole_covered_fibre_excess
