@@ -9,6 +9,7 @@ import JSP000404Research.PlanarIncomparableBridgeDensityCapacity
 import JSP000404Research.PlanarIncomparableBridgeLowerExponent
 import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
 import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
+import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
 import Mathlib.Tactic
 
 /-!
@@ -200,6 +201,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- obstruction. It may not be discarded as zero or called
       -- genuinely unreserved surplus. Moreover hole targets across
       -- different bridges have no proven global disjoint allocation.
+      -- The new exact selected-diagonal ledger refines that coarse
+      -- exterior-cover obstruction: for any fixed bridge/flip pair,
+      -- OVERLAP mass = TRUE-HOLE diagonal mass + COVERED diagonal mass.
+      -- Every COVERED diagonal is certified to have an EXTERNAL centre
+      -- with the OPPOSITE canonical retained bit at cf or cr.
+      -- If this specific opposite-bit blocker type can be excluded,
+      -- the entire overlap face injects into global TRUE holes.
+      -- The planar exclusion of such blockers, plus disjointness of
+      -- hole assignments across different bridges and payments for
+      -- twin/mixed/loss terms, remains UNPROVED.
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
