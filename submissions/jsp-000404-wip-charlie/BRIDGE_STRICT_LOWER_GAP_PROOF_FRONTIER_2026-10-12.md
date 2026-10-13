@@ -2259,3 +2259,43 @@ and terminal twin / two mixed-rigid / soft / projected-loss
 debts still need a six-source global payment certificate. The ONE
 WIP `sorry` remains intentionally, and no full JSP-000404
 solution/disproof is claimed.
+
+
+## Target-shell exact global duplicate-debt upper bound (2026-10-13)
+
+Following the full independent integration of the exact double-shell
+source proof and the target-dependent candidate bridge injection,
+`ResidualNetCollisionTargetShellBridgeFibre.lean` contains TWO further
+proved, sorry-free theorems:
+
+- `net_collision_duplicate_debt_le_sum_target_double_shell_excess`
+- `net_collision_positive_duplicate_forces_two_target_double_shell_bridges`
+
+With `I` the set of genuine NET collisions, `D` its actual certified
+diagonal map, and `B_2(d)` the double-shell target-specific compatible
+soft bridge candidate pool, Lean proves
+
+```text
+E_D = |I| - |D(I)|
+    = sum_(d in D(I)) (|D^(-1)(d)| - 1)
+   <= sum_(d in D(I)) (|B_2(d)| - 1).
+```
+
+If `E_D > 0`, a canonical target d ACTUALLY attained by a NET
+collision must exist with `2 <= |B_2(d)|`.
+
+The pointwise bound uses a genuine SOURCE-bridge injection per target.
+This global bound uses exact fibre-excess conservation and does not
+confuse globally covered target words with TRUE Boolean holes.
+It also does NOT prove any target pool has cardinal <= 1 under
+planar AngleCap, nor that excess bridge candidates can be paid by
+any globally unreserved dyadic profile.
+
+Final *integration* CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38423845606
+PASS, 3,526 jobs including `VerifiedOverlapRewire` and the
+separate `PlanarLowerBranchProofAdmittedWIP`. The new two theorem
+axiom prints omit `sorryAx`. The sorry audit found exactly ONE
+explicit WIP sorry (then line 359), with WIP's admitted theorem
+continuing to report `sorryAx`, and no additional admitted axioms.
+No complete solution or disproof of JSP-000404 has been obtained.
