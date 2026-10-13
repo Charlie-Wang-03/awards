@@ -75,6 +75,13 @@ theorem net_collision_same_diagonal_lower_star_reverse_colour_injective
             (netCollisionCertifiedReverseSource
               C exponent hexp honeLoss s.1))) := by
   intro s t hcr
+  change strictDescentRigidPairColor C exponent hexp honeLoss
+    (strictDescentRigidWordCarrier C exponent
+      (netCollisionCertifiedReverseSource C exponent hexp honeLoss s.1)) =
+    strictDescentRigidPairColor C exponent hexp honeLoss
+    (strictDescentRigidWordCarrier C exponent
+      (netCollisionCertifiedReverseSource C exponent hexp honeLoss t.1))
+    at hcr
   have hs := (Finset.mem_filter.mp s.2).2
   have ht := (Finset.mem_filter.mp t.2).2
   change netCollisionCertifiedDiagonal C exponent hexp honeLoss s.1 = d ∧
@@ -113,6 +120,13 @@ theorem net_collision_same_diagonal_upper_star_forward_colour_injective
             (netCollisionCertifiedForwardSource
               C exponent hexp honeLoss s.1))) := by
   intro s t hcf
+  change transportablePairColor C
+    (transportableWordCarrier C
+      (netCollisionCertifiedForwardSource C exponent hexp honeLoss s.1)) =
+    transportablePairColor C
+    (transportableWordCarrier C
+      (netCollisionCertifiedForwardSource C exponent hexp honeLoss t.1))
+    at hcf
   have hs := (Finset.mem_filter.mp s.2).2
   have ht := (Finset.mem_filter.mp t.2).2
   change netCollisionCertifiedDiagonal C exponent hexp honeLoss s.1 = d ∧
