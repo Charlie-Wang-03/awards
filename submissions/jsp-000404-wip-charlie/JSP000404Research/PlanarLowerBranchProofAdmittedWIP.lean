@@ -23,6 +23,9 @@ import JSP000404Research.ResidualNetCollisionBridgeFibreCapacity
 import JSP000404Research.ResidualNetCollisionDoubleShellBridge
 import JSP000404Research.ResidualNetCollisionTargetShellBridgeFibre
 import JSP000404Research.ResidualNetCollisionFourBitBridgeEndpointSeparation
+import JSP000404Research.ResidualNetCollisionCrossRoleEndpointSeparation
+import JSP000404Research.ResidualNetCollisionSharedVertexTwoBitClassification
+import JSP000404Research.ResidualNetCollisionSharedVertexInactiveCapacity
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -354,6 +357,23 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- SAME-ROLE soft bridge endpoints, not necessarily at all four
       -- centres across cross-roles. Geometric exclusion/payment
       -- of remaining CROSS-bridge motifs remains OPEN.
+      -- NEW CROSS-ROLE / SHARED-VERTEX STRUCTURAL OBLIGATIONS:
+      -- Equal canonical diagonals plus CROSS-ROLE shared source
+      -- bridge vertices force equality of corresponding original
+      -- forward/reverse transport colours. Thus FOUR-bit repeated
+      -- sources require all FOUR source-native bridge endpoints to
+      -- be PAIRWISE DISTINCT (not just distinct in their own roles).
+      -- Two DISTINCT same-target sources whose original bridges
+      -- share ANY vertex instead have EXACTLY TWO different bits
+      -- and exactly ONE original flip colour in common. Both sink
+      -- words inhabit the completion cube of the common vertex,
+      -- so that vertex has AT LEAST TWO inactive Boolean coordinates.
+      -- Inactive dimension <=1 excludes shared-vertex duplication
+      -- there, but NO planar AngleCap theorem currently guarantees
+      -- that all candidate bridge endpoints have this dimension.
+      -- Vertex-disjoint four-bit and two-bit patterns and remaining
+      -- higher-dimensional shared-vertex motifs remain to be PAID
+      -- or excluded, with fifth-centre, twin, mixed, soft, loss debt.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
