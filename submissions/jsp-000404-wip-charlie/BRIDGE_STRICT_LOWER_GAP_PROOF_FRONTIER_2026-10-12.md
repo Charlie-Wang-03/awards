@@ -1461,3 +1461,129 @@ The frontier is now more specific:
 The local exact identity and conditional injection
 do NOT discharge this global geometric payment.
 No upstream prize solution is asserted.
+
+
+## Actual collision diagonal: original hard-source blockers and fifth-centre frontier
+
+**2026-10-13 research increment. JSP-000404 remains OPEN.**
+
+Module: JSP000404Research/ResidualTwoFlipSourceEndpointBlocker.lean
+(the new module is imported by the independently verified
+VerifiedOverlapRewire.lean; the sole admitted WIP also imports it).
+
+Let the actual globally injective forward and reverse hard transports
+collide at covered sink word w. Write their original hard carriers as
+p=(a,v), q=(b,z), their source words as x,y, their distinct chosen
+retained flip coordinates as cf,cr, and their double-flip diagonal as
+
+  d = flip(cf, flip(cr,w)).
+
+The Lean kernel now proves exact identities:
+
+~~~text
+w = flip(cf,x) = flip(cr,y)
+d = flip(cr,x) = flip(cf,y)
+~~~
+
+The two identities hold for ACTUAL common transport images, not
+arbitrary candidate soft bridges.
+
+### A. Two CONCRETE original-hard-source blockers (6 Lean theorems)
+
+If cr is INACTIVE at a, the original forward-hard source centre a
+itself covers d: d in Q_a.
+
+If cf is INACTIVE at z, the original reverse-hard source centre z
+itself covers d: d in Q_z.
+
+Thus, a TRUE GLOBAL HOLE at d forces BOTH additional cross-activity
+conditions:
+
+~~~text
+cr in retainedActive(a)
+AND
+cf in retainedActive(z).
+~~~
+
+These conditions are NECESSARY, never proved to hold universally
+from AngleCap, and are NOT sufficient to make d a global hole.
+
+The first six Lean theorems include the independent commuting-flip
+identity, the two exact source-diagonal equations, both concrete
+source endpoint coverage lemmas, and the true-hole necessary
+cross-activity criterion.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38356011212
+(3,504 jobs PASS; all six theorem axiom checks have no sorryAx).
+
+The WIP import and comments explicitly retain the fact that a
+two-cube exterior word can be COVERED by its original hard-source
+endpoints; it is not independently usable profile surplus.
+
+WIP CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38356345189
+(3,429 jobs PASS). Exactly ONE executable sorry is still at
+PlanarLowerBranchProofAdmittedWIP.lean:230, and the WIP theorem
+still has sorryAx in its axiom report.
+
+### B. Fifth-centre exclusion and exact iff (3 more Lean theorems)
+
+Under BOTH source-side cross-active conditions just specified, the
+opposite diagonal is provably outside ALL FOUR original hard
+carrier completion cubes, including those source endpoints:
+
+~~~text
+d NOT IN Q_a
+d NOT IN Q_v
+d NOT IN Q_b
+d NOT IN Q_z.
+~~~
+
+Consequently, if d is nevertheless globally covered, some centre c
+different from EACH of a,v,b,z must cover it.
+
+The strongest new lemma establishes a precise mathematical IFF:
+
+~~~text
+Under both source-side cross-active conditions,
+
+d IN (univ \ coveredCompletionWords)
+ IFF
+for every centre c with
+  c != a, c != v, c != b, c != z,
+  d NOT IN Q_c.
+~~~
+
+Hard carrier vertex matching already guarantees the two hard pairs
+are distinct and vertex-disjoint, so any such external c is
+literally a FIFTH distinct vertex (or later).
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38356554751
+(3,240 jobs PASS; all-four-exterior and fifth-centre existence
+theorems have no sorryAx).
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38356880695
+(3,240 jobs PASS; exact true-hole iff no fifth-centre theorem
+has no sorryAx). The sole WIP sorry remains at line 230.
+
+### C. What is actually unresolved
+
+This is a GENUINE sharpening of the missing true-hole outlet
+condition, not a proof of the outlet itself.
+
+For an ACTUAL hard sink collision w to be charged to the particular
+double-flip diagonal d as a genuine true Boolean hole, the two
+source-side cross-activities must first hold, and then every
+POSSIBLE fifth-centre covering of d must be excluded.
+
+No current theorem establishes either global requirement
+automatically from real planar AngleCap geometry. Even proving
+the local fifth-centre exclusion for each collision would NOT
+provide a globally injective hole allocation across distinct
+hard collision carriers, nor pay the other soft, rigid-twin,
+mixed-rigid, and projected-profile-loss debts.
+
+Do not count d as a true hole without those conditions, do not
+double-book global holes across collision carriers, and do not
+remove the one executable sorry in the absence of a complete
+six-source payment proof. The original JSP-000404 theorem
+remains unproved and undisproved by this downstream branch.
