@@ -103,8 +103,7 @@ theorem two_flip_equal_target_distinct_sources_hamming_two_or_four
     have hmem :
         e ∈ Finset.univ.filter (fun i : Fin n => w i ≠ z i) :=
       Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdiff⟩
-    rw [hempty] at hmem
-    exact Finset.not_mem_empty e hmem
+    simp [hempty] at hmem
   rw [← hsupport] at hcases
   omega
 
