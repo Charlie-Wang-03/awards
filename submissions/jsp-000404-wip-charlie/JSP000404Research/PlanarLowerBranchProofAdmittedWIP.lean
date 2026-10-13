@@ -16,6 +16,8 @@ import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
 import JSP000404Research.ResidualNetCollisionCertifiedMobilePayment
 import JSP000404Research.ResidualNetCollisionCertifiedDuplicateWitness
 import JSP000404Research.ResidualNetCollisionExactHammingObstruction
+import JSP000404Research.ResidualNetCollisionSupportFibreMultiplicity
+import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
 import JSP000404Research.ResidualTwoFlipExactSymmetricDifference
@@ -287,6 +289,18 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- This closes odd-distance and same-support cases ONLY.
       -- Planar AngleCap exclusion/payment of the remaining
       -- 2-bit/4-bit cross-support pairs is still OPEN.
+      -- NEW actual 2-colour support-intersection conservation:
+      -- equal canonical diagonals give source Hamming distance
+      -- PLUS twice the common-colour intersection size EXACTLY FOUR.
+      -- Thus 2-bit duplicate sources share ONE original colour,
+      -- while 4-bit duplicate sources have DISJOINT colour pairs.
+      -- The pair (canonical diagonal, unordered chosen colour set)
+      -- is a globally INJECTIVE tag of each actual NET source.
+      -- Every target fibre has cardinal <= Nat.choose n 2,
+      -- and |NET collisions| <= Nat.choose n 2 * |distinct diagonals|.
+      -- These are overlap/finite-multiplicity bounds, NOT a proof
+      -- that the actual diagonals are holes, disjoint payments,
+      -- or that the remaining covered/duplicate debt vanishes.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

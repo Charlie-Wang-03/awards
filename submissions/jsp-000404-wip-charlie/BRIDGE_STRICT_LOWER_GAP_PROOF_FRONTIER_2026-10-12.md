@@ -1937,3 +1937,68 @@ and duplicate-image debts remain uncharged; moreover twin
 rigid, mixed rigid, soft and profile-loss terms need honest
 nonreusing payment. The sole admitted WIP `sorry`
 and the full JSP-000404 problem remain OPEN.
+
+
+## Canonical NET diagonal multiplicity: exact shared colours and choose-two cap (2026-10-13)
+
+New, sorry-free Lean source modules:
+- `JSP000404Research/ResidualNetCollisionSupportOverlapLaw.lean`:
+  four theorems, including the exact per-pair conservation identity,
+  the 2-bit/common-1-colour IFF, and the 4-bit/disjoint-colours IFF.
+- `JSP000404Research/ResidualNetCollisionSupportFibreMultiplicity.lean`:
+  global injection of `(actual canonical diagonal, unordered TWO-colour
+  support)`; aggregate choose-two multiplicity bound; and the
+  fixed-diagonal SOURCE FIBRE choose-two cardinal bound.
+
+Let `I` denote the GENUINE NET forward/reverse hard collision sink set,
+`D` the actual canonical double-flip target map with selected colours
+certified by UNIQUE original hard source carriers, and
+`A_w` the unordered support of two original transport flip colours.
+
+Whenever `D(w)=D(z)`, the new Lean proofs establish the EXACT equality
+
+```text
+HammingDistance(w,z) + 2 * card(A_w intersect A_z) = 4.
+```
+
+So Hamming distance TWO is EQUIVALENT to exactly ONE shared colour.
+Hamming distance FOUR is EQUIVALENT to DISJOINT unordered colour pairs.
+The already certified positive duplicate witness is therefore
+restricted to either a 3-colour one-shared-coordinate pattern
+or a 4-colour disjoint-pair pattern. This is a **source-native**
+classification and does not assume any new AngleCap property.
+
+The function `w ↦ (D(w),A_w)` is GLOBALLY injective on the ACTUAL
+NET collision set, hence the remaining reuse of any one canonical
+diagonal is strictly bounded by the number of available unordered
+two-colour supports:
+
+```text
+for each d: |{ w in I | D(w)=d }| <= Nat.choose n 2
+globally:   |I| <= |image(D)| * Nat.choose n 2.
+```
+
+This does NOT charge source words to true holes: `image(D)`
+includes globally covered diagonal words, which must NOT be counted
+as available global holes or genuinely unreserved dyadic surplus.
+Nor does a multiplicity upper bound prove the duplicate-image debt
+is ZERO or show how to pay it.
+
+Build evidence for the overlap-law module:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38405980972
+PASS (3,442 jobs); no added `sorryAx`.
+Build evidence for initial choose-two pair injection and total
+multiplicity bound:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38406630292
+PASS (3,253 jobs); no added `sorryAx`.
+The enhanced per-target fibre theorem is also imported into
+`VerifiedOverlapRewire.lean` for independent checking.
+
+**Still open:** under actual planar AngleCap, exclude or pay the
+3-colour and 4-colour distinct-source/reused-diagonal motifs;
+exclude or pay cross-inactivity/fifth-centre opposite-bit covered
+diagonal obstructions; and integrate the truly non-reused twin,
+mixed-rigid, soft and projected-loss debts against literal global
+Boolean holes and genuinely unreserved profile surplus.
+The admitted six-source global inequality and full JSP-000404
+remain unproved; the unique WIP `sorry` stays intentionally.
