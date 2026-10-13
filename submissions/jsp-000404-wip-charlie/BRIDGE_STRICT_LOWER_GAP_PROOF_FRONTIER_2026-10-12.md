@@ -1850,3 +1850,90 @@ of the ACTUAL net mobile-source payment obligation, NOT a
 proof of the final six-source inequality. The admitted WIP
 still has exactly one executable `sorry`. No completed proof
 or counterexample to full JSP-000404 is claimed.
+
+
+## Exact 2/4-bit actual NET canonical duplicate obstruction (2026-10-13)
+
+This step CLOSES a further combinatorial subgap for the ACTUAL
+canonical diagonal map. It strengthens the previous necessary
+`outside-four coordinates agree` property to an EXACT equality
+and a strict Hamming-distance dichotomy, with no added geometric,
+source-separation, hole-coverage, or Hall hypotheses.
+
+Let `s,t` be two genuine NET collision sink words; each has
+a UNIQUE pair of original hard source carriers and the
+canonically selected two DISTINCT flip colours. Let `A_s,A_t`
+denote the corresponding unordered 2-colour sets, and let
+`D(s),D(t)` be their certified canonical opposite diagonals.
+
+New verified theorem statements:
+
+1. `distinct_two_flip_coordinate_eval`: a double flip toggles
+   precisely the two chosen distinct coordinates.
+2. `two_flip_target_eq_source_diff_iff_pair_exclusive`:
+   if two double-flipped targets coincide, then a source
+   coordinate differs IFF it is contained in exactly one
+   of the two unordered flip-colour supports.
+3. `two_flip_equal_target_exact_difference_set`:
+   `{i | w(i) != z(i)} = A_w △ A_z` exactly, not just
+   subset-of-four.
+4. `two_flip_equal_target_same_support_source_eq`:
+   coinciding diagonals and identical UNORDERED flip-colour
+   supports imply the same original source, including a
+   reversal/swapping of colour roles.
+5. `net_collision_certified_forward_reverse_colours_distinct`:
+   the two actual canonical colours are DISTINCT, deduced
+   from existing independently proved hard-source injection.
+6. `net_collision_canonical_diagonal_exact_difference_support`:
+   exact difference-set identity specialized to actual NET
+   collision sources, using the UNIQUE original carriers.
+7. `net_collision_canonical_same_target_same_unordered_pair_eq`:
+   SAME unordered source pair and same target => same actual
+   NET collision sink. Canonical diagonal transport is
+   injective WITHIN every fixed unordered pair class.
+8. `pair_symmetric_difference_card_zero_two_four`:
+   a symmetric difference of two 2-element sets always
+   has cardinality 0, 2 or 4.
+9. `two_flip_equal_target_distinct_sources_hamming_two_or_four`:
+   two DIFFERENT Boolean sources mapping to the same
+   double-flip target have Hamming distance exactly TWO
+   or FOUR; no odd distance and no zero-distance case.
+10. `net_collision_canonical_support_fibre_injective`:
+    actual NET canonical diagonals are injection on each
+    fibre of their unordered support selector.
+11. `net_collision_positive_duplicate_cross_support_hamming_two_or_four`:
+    positive genuine global canonical duplicate debt
+    witnesses DISTINCT actual NET collisions `s != t` with
+    `D(s)=D(t)`, `A_s != A_t`, and `d_H(s,t) = 2 or 4`.
+
+Lean source modules, all sorry-free:
+
+- `ResidualTwoFlipExactSymmetricDifference.lean`
+- `ResidualNetCollisionExactFlipSupport.lean`
+- `ResidualTwoFlipExactHammingCases.lean`
+- `ResidualNetCollisionExactHammingObstruction.lean`
+
+Lean checks:
+- GitHub Actions https://github.com/Charlie-Wang-03/awards/actions/runs/38401329370
+  PASS (3,249 jobs) and all 7 initial theorem axiom audits
+  exclude `sorryAx`.
+- GitHub Actions https://github.com/Charlie-Wang-03/awards/actions/runs/38402258343
+  PASS (3,251 jobs) for 4 additional Hamming/canonical
+  witness theorems; `sorryAx` absent.
+- Earlier failing iterations found a set-difference syntax
+  escaping issue, reversed conjunction in a Lean goal,
+  and an invalid reference to `Finset.not_mem_empty`.
+  They were actually fixed; no `sorry`, `axiom`,
+  or unrelated source mutation was introduced.
+
+**Important scope firewall:** This is a mathematically real
+restriction on the shape of the ACTUAL global duplication
+obstruction, not its elimination. The hypothesis `E_D > 0`
+is NOT disproved. Cross-support canonical duplicates
+at Hamming 2 or Hamming 4 are NOT shown impossible in real
+planar `AngleCap`. Covered canonical diagonals still have
+source-side or fifth-centre opposite-bit blockers. Those
+and duplicate-image debts remain uncharged; moreover twin
+rigid, mixed rigid, soft and profile-loss terms need honest
+nonreusing payment. The sole admitted WIP `sorry`
+and the full JSP-000404 problem remain OPEN.
