@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
+import JSP000404Research.ResidualTwoFlipOppositeBitBlocker
 import Mathlib.Tactic
 
 /-!
@@ -141,6 +142,109 @@ theorem actual_collision_diagonal_true_hole_iff_cross_active_no_fifth
   · rintro ⟨ha, hz, hno⟩
     exact (actual_collision_diagonal_hole_iff_no_fifth_centre
       C exponent hexp honeLoss x y hcollision ha hz).2 hno
+
+
+/-- In the exact covered-diagonal IFF, any FIFTH-centre obstruction
+also carries a precise opposite retained-bit signature relative
+to one of the two actual BRIDGE endpoints (reverse lower or
+forward upper). This is necessary for coverage; it is not an
+AngleCap-level theorem excluding such an obstruction. -/
+theorem actual_collision_diagonal_covered_iff_source_block_or_opposite_fifth
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (x : {word : Fin n → Bool //
+      word ∈ transportableHardOverlapCompletionWords C})
+    (y : {word : Fin n → Bool //
+      word ∈ netStrictDescentRigidWords C exponent})
+    (hcollision :
+      (transportableHardWordToSingletonOrSoft C x).1 =
+      (strictDescentRigidWordToSingletonOrSoft
+        C exponent hexp honeLoss y).1) :
+    let p := transportableWordCarrier C x
+    let q := strictDescentRigidWordCarrier C exponent y
+    let cf := transportablePairColor C p
+    let cr := strictDescentRigidPairColor C exponent hexp honeLoss q
+    let w := (transportableHardWordToSingletonOrSoft C x).1
+    let d := flipCompletionWord cf (flipCompletionWord cr w)
+    d ∈ coveredCompletionWords C ↔
+      (cr ∉ retainedActive C p.1.1 ∨
+       cf ∉ retainedActive C q.1.2 ∨
+       ∃ c : V, c ≠ p.1.1 ∧ c ≠ p.1.2 ∧
+         c ≠ q.1.1 ∧ c ≠ q.1.2 ∧
+         d ∈ retainedCompletionWords C c ∧
+         ((cr ∈ retainedActive C c ∧
+           retainedBit C c cr = !(retainedBit C p.1.2 cr)) ∨
+          (cf ∈ retainedActive C c ∧
+           retainedBit C c cf = !(retainedBit C q.1.1 cf)))) := by
+  classical
+  let p := transportableWordCarrier C x
+  let q := strictDescentRigidWordCarrier C exponent y
+  let cf := transportablePairColor C p
+  let cr := strictDescentRigidPairColor C exponent hexp honeLoss q
+  let w := (transportableHardWordToSingletonOrSoft C x).1
+  let d := flipCompletionWord cf (flipCompletionWord cr w)
+  change d ∈ coveredCompletionWords C ↔
+    (cr ∉ retainedActive C p.1.1 ∨
+     cf ∉ retainedActive C q.1.2 ∨
+     ∃ c : V, c ≠ p.1.1 ∧ c ≠ p.1.2 ∧
+       c ≠ q.1.1 ∧ c ≠ q.1.2 ∧
+       d ∈ retainedCompletionWords C c ∧
+       ((cr ∈ retainedActive C c ∧
+         retainedBit C c cr = !(retainedBit C p.1.2 cr)) ∨
+        (cf ∈ retainedActive C c ∧
+         retainedBit C c cf = !(retainedBit C q.1.1 cf))))
+  have hbase :=
+    actual_collision_diagonal_covered_iff_source_block_or_fifth
+      C exponent hexp honeLoss x y hcollision
+  change (d ∈ coveredCompletionWords C ↔
+    (cr ∉ retainedActive C p.1.1 ∨
+     cf ∉ retainedActive C q.1.2 ∨
+     ∃ c : V, c ≠ p.1.1 ∧ c ≠ p.1.2 ∧
+       c ≠ q.1.1 ∧ c ≠ q.1.2 ∧
+       d ∈ retainedCompletionWords C c)) at hbase
+  constructor
+  · intro hcovered
+    rcases hbase.mp hcovered with ha | hz | ⟨c, hca, hcv, hcb, hcz, hc⟩
+    · exact Or.inl ha
+    · exact Or.inr (Or.inl hz)
+    · right
+      right
+      have hbridge :=
+        forward_reverse_collision_cross_active_flip_colors
+          C exponent hexp honeLoss x y hcollision
+      change cf ∈ retainedActive C q.1.1 ∧
+        cr ∈ retainedActive C p.1.2 at hbridge
+      have hcrInactiveB : cr ∉ retainedActive C q.1.1 :=
+        (strictDescentRigidPairColor_spec
+          C exponent hexp honeLoss q).2
+      have hbv : q.1.1 ≠ p.1.2 := by
+        intro heq
+        apply hcrInactiveB
+        rw [heq]
+        exact hbridge.2
+      have hwB : w ∈ retainedCompletionWords C q.1.1 := by
+        change (transportableHardWordToSingletonOrSoft C x).1 ∈ _
+        rw [hcollision]
+        exact strictDescentRigidWordToSingletonOrSoft_mem_lower
+          C exponent hexp honeLoss y
+      have hwV : w ∈ retainedCompletionWords C p.1.2 :=
+        transportableHardWordToSingletonOrSoft_mem_upper C x
+      have hob :=
+        two_flip_diagonal_external_blocker_opposite_bit
+          C q.1.1 p.1.2 c cf cr w hbv hbridge.1
+            hcrInactiveB hbridge.2 hwB hwV hc
+      exact ⟨c, hca, hcv, hcb, hcz, hc, hob⟩
+  · intro h
+    apply hbase.mpr
+    rcases h with ha | hz | ⟨c, hca, hcv, hcb, hcz, hc, _⟩
+    · exact Or.inl ha
+    · exact Or.inr (Or.inl hz)
+    · exact Or.inr (Or.inr ⟨c, hca, hcv, hcb, hcz, hc⟩)
+
+#print axioms actual_collision_diagonal_covered_iff_source_block_or_opposite_fifth
 
 #print axioms actual_collision_diagonal_covered_iff_source_block_or_fifth
 #print axioms actual_collision_diagonal_true_hole_iff_cross_active_no_fifth
