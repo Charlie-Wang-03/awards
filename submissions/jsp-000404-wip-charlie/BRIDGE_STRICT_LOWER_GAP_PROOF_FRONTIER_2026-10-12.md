@@ -1737,3 +1737,116 @@ Regression evidence:
 The two new steps therefore isolate the exact required
 cross-pair nonreuse mechanism more sharply, but DO NOT
 reduce the WIP `sorry` count.
+
+
+## Exact ACTUAL NET-collision canonical diagonal global ledger (2026-10-13)
+
+This step moves beyond the conditional fixed-flip-pair
+source-separation lemmas. Every source is a GENUINE NET
+forward/reverse hard-image collision word, not a hypothetical
+bridge candidate. The two ORIGINAL hard transport sources
+are certified unique by the globally injective forward and
+strict-descent reverse maps; their carrier flip colours determine
+one canonical, source-dependent double-flip diagonal.
+
+### New sorry-free modules (17 named theorems total)
+
+- `ResidualNetCollisionVariableDiagonalLedger.lean`
+  (3 theorems): arbitrary variable-colour exact partition
+  into DISTINCT global true-hole diagonals, DISTINCT globally
+  covered diagonals and exact duplicate-image cardinal loss;
+  source-dependent equal-diagonal four-coordinate rigidity.
+  CI https://github.com/Charlie-Wang-03/awards/actions/runs/38387421192
+  PASS, 3,243 build jobs.
+- `ResidualNetCollisionCertifiedDiagonalWitness.lean`
+  (4 theorems): each actual NET collision has a witnessed
+  forward and reverse original hard source, each unique by
+  its respective verified global injection. Hence the
+  genuine chosen flip coordinates of each collision are
+  unambiguous.
+- `ResidualNetCollisionCertifiedGlobalLedger.lean`
+  (2 theorems): the same exact three-way accounting on the
+  ACTUAL source-dependent canonical diagonal map, plus
+  unconditional hole-capacity bound retaining both
+  unpaid obstruction terms.
+- `ResidualNetCollisionCertifiedBlockerClassification.lean`
+  (2 theorems): covered CANONICAL diagonals satisfy the exact
+  source-side cross-inactivity or FIFTH-centre opposite-bit
+  signature IFF; every distinct covered target has a
+  real source collision witness and a concrete blocker.
+- `ResidualNetCollisionCertifiedMobilePayment.lean`
+  (3 theorems): substitute the canonical hole/blocker/duplicate
+  partition into the independently established exact NET
+  forward+reverse mobile-source conserved mass. This
+  removes the formerly opaque actual-sink-collision term
+  and gives a formal IFF for any proposed net payment.
+- `ResidualNetCollisionCertifiedDuplicateWitness.lean`
+  (3 theorems): POSITIVE actual duplicate-image debt implies
+  two DISTINCT original NET collision sinks with the SAME
+  canonical target, and the sinks agree at EVERY coordinate
+  outside their four ACTUAL chosen original transport colours.
+  CI https://github.com/Charlie-Wang-03/awards/actions/runs/38389064306
+  PASS, 3,247 build jobs.
+
+The first 14 certified theorems are jointly compiled with both
+the sorry-free `VerifiedOverlapRewire` umbrella and the sole
+admitted WIP via
+https://github.com/Charlie-Wang-03/awards/actions/runs/38388685391
+PASS, 3,512 build jobs. During development a missing unfolding
+of `netCollisionCertifiedDiagonal` caused an actual Lean type error;
+it was fixed by explicitly unfolding the definition. No new
+`sorry` or ad-hoc axiom was introduced in the independent modules.
+
+### New exact global equation
+
+Write:
+- `F` = NET unpaid forward movable hard SOURCE words;
+- `R` = strict-descent reverse rigid hard SOURCE words;
+- `U` = unused singleton-or-soft COVERED transport sink words;
+- `S` = singleton-covered words, `T` = soft-overlap words;
+- `I` = actual NET forward/reverse sink collision set;
+- `D` = set of DISTINCT canonical double-flip diagonal targets
+  with actual flip colours uniquely determined by `I`;
+- `H` = TRUE global Boolean holes, `K` = globally covered
+  Boolean words;
+- `E` = `|I| - |D|`, the EXACT nonnegative global multiple-hit
+  loss of the canonical diagonal mapping.
+
+Then Lean proves, UNCONDITIONALLY at residual one-layer level,
+
+```text
+|F| + |R| + |U| = |S| + |T| + |D intersect H|
+                                 + |D intersect K| + E.
+```
+
+Every term has unique set-level provenance. In particular,
+`D intersect H` may be charged only once, while `D intersect K`
+cannot be called holes, and `E` cannot be dropped on grounds
+of unproved global injectivity.
+
+The exact covered-diagonal IFF identifies the two ORIGINAL
+source-side cross-inactivity blockers plus opposite-bit
+fifth-centre coverage. Positive `E` has been reduced to
+a SPECIFIC pair of distinct actual collision sink words with
+the same target, differing at no coordinate outside their
+four chosen flip colours.
+
+### Remaining genuinely open gates
+
+1. Either globally exclude (under actual planar AngleCap)
+   the certified source-side/fifth-centre COVERED blockers
+   OR pay them from genuine, NON-REUSED available resources.
+2. Either exclude the exact four-colour duplicate-source
+   witness pairs OR pay their multiplicity debt without
+   counting a true hole twice.
+3. Integrate those credits with independent soft-overlap,
+   terminal equal-exponent twin, ascending/descending mixed
+   rigid, and projected-loss debts. The right-hand profile
+   surplus MUST be literally unreserved after all prior
+   hard/mixed reservations.
+
+**Status:** a genuine tightening and better literal provenance
+of the ACTUAL net mobile-source payment obligation, NOT a
+proof of the final six-source inequality. The admitted WIP
+still has exactly one executable `sorry`. No completed proof
+or counterexample to full JSP-000404 is claimed.
