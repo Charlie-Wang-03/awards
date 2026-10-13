@@ -11,6 +11,7 @@ import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
 import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
+import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
 import Mathlib.Tactic
 
 /-!
@@ -207,6 +208,12 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- OVERLAP mass = TRUE-HOLE diagonal mass + COVERED diagonal mass.
       -- Every COVERED diagonal is certified to have an EXTERNAL centre
       -- with the OPPOSITE canonical retained bit at cf or cr.
+      -- The new exact collision-diagonal obstruction IFF makes the
+      -- global hole criterion completely explicit: BOTH original
+      -- source-side cross-activities and exclusion of EVERY fifth
+      -- or later covering centre are necessary and sufficient
+      -- for THIS ONE diagonal to be a true Boolean hole.
+      -- This is not a non-reusing allocation across collisions.
       -- New ACTUAL-COLLISION obstruction: the double-flipped corner
       -- equals reverseFlip(original forward HARD source) and ALSO
       -- forwardFlip(original reverse strict-rigid HARD source).
