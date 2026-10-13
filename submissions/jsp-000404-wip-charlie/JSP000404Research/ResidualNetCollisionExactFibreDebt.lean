@@ -110,6 +110,7 @@ theorem net_collision_certified_duplicate_debt_eq_sum_fibre_excess
       (Finset.univ.image f).card =
     ∑ d ∈ Finset.univ.image f,
       ((Finset.univ.filter (fun s : S => f s = d)).card - 1) at h
+  dsimp only [f] at h
   simpa only [netCollisionCertifiedDuplicateDebt,
     netCollisionCertifiedDiagonalWords,
     netCollisionCertifiedDiagonalFibre,
