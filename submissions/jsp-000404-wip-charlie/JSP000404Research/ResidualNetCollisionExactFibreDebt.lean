@@ -90,8 +90,8 @@ theorem net_collision_certified_duplicate_debt_eq_sum_fibre_excess
     (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
     netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss =
       ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
-        (netCollisionCertifiedDiagonalFibre
-          C exponent hexp honeLoss d).card - 1 := by
+        ((netCollisionCertifiedDiagonalFibre
+          C exponent hexp honeLoss d).card - 1) := by
   classical
   let S := {w : Fin n → Bool //
       w ∈ netActualForwardReverseCollisionWords
