@@ -140,8 +140,10 @@ theorem net_collision_same_bridge_same_diagonal_source_eq
 
   have hbridge' : (qS.1.1, pS.1.2) = (qT.1.1, pT.1.2) := by
     exact hbridge
-  have hb : qS.1.1 = qT.1.1 := congrArg Prod.fst hbridge'
-  have hv : pS.1.2 = pT.1.2 := congrArg Prod.snd hbridge'
+  have hb : qS.1.1 = qT.1.1 :=
+    congrArg (fun r : V × V => r.1) hbridge'
+  have hv : pS.1.2 = pT.1.2 :=
+    congrArg (fun r : V × V => r.2) hbridge'
 
   have hcrossS :=
     forward_reverse_collision_cross_active_flip_colors
