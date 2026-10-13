@@ -1629,3 +1629,45 @@ PASS (3,241 Lean jobs). Both `#print axioms` outputs list
 The only executable admitted WIP `sorry` remains in
 `PlanarLowerBranchProofAdmittedWIP.lean`; it is not replaced
 by this local equivalence. JSP-000404 is NOT solved.
+
+## Fifth-centre opposite-bit signature at ACTUAL hard collision (2026-10-13)
+
+Follow-up theorem:
+`actual_collision_diagonal_covered_iff_source_block_or_opposite_fifth`
+in the SAME sorry-free
+`ResidualActualCollisionDiagonalExactObstruction.lean` module.
+
+This strengthens the exact local classification further. If an
+actual hard sink-collision diagonal `d` is globally COVERED,
+one of these three cases holds, and each case is sufficient:
+
+1. `cr` is INACTIVE at the forward original lower source `a`,
+   whose completion cube then explicitly covers `d`.
+2. `cf` is INACTIVE at the reverse original upper source `z`,
+   whose completion cube then explicitly covers `d`.
+3. A genuinely FIFTH-OR-LATER centre `c` covers `d`, AND
+   this `c` must activate a cross-flip coordinate with the
+   OPPOSITE retained Boolean bit relative to its bridge endpoint:
+   `(cr active at c, bit(c,cr)=NOT bit(v,cr))` OR
+   `(cf active at c, bit(c,cf)=NOT bit(b,cf))`,
+   with bridge endpoints `(b,v)` equal to
+   (reverse rigid LOWER, forward hard UPPER).
+
+The proof uses the pre-existing certified actual-bridge
+cross-activity and bridge-endpoint coverage, then applies the
+two-flip opposite-bit blocker lemma to the exact FIFTH witness.
+It introduces NO new hypotheses or custom axioms. In the
+reverse direction the explicit coverage witness itself suffices.
+
+Lean CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38368480720
+PASS (3,241 build jobs). Its axiom set is the ordinary
+`[propext, Classical.choice, Quot.sound]`; zero `sorryAx`.
+
+**Scope firewall:** this exact opposite-bit signature is a
+NECESSARY characteristic of a covered fifth-centre diagonal.
+It DOES NOT show that such a fifth centre cannot exist under
+AngleCap; it DOES NOT globally allocate unique holes to
+distinct actual collisions. It DOES NOT discharge the sole
+six-source true-hole plus unreserved-surplus payment `sorry`,
+and does not complete the upper branch or JSP-000404.
