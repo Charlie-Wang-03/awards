@@ -86,8 +86,8 @@ theorem two_flip_equal_target_exact_difference_set
       flipCompletionWord a (flipCompletionWord b w) =
       flipCompletionWord c (flipCompletionWord d z)) :
     (Finset.univ.filter (fun e : Fin n => w e ≠ z e)) =
-      (({a, b} : Finset (Fin n)) \\ ({c, d} : Finset (Fin n))) ∪
-      (({c, d} : Finset (Fin n)) \\ ({a, b} : Finset (Fin n))) := by
+      (({a, b} : Finset (Fin n)) \ ({c, d} : Finset (Fin n))) ∪
+      (({c, d} : Finset (Fin n)) \ ({a, b} : Finset (Fin n))) := by
   classical
   ext e
   rw [Finset.mem_filter, Finset.mem_union,
