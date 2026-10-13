@@ -14,6 +14,7 @@ import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
 import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
 import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
 import JSP000404Research.ResidualNetCollisionCertifiedMobilePayment
+import JSP000404Research.ResidualNetCollisionCertifiedDuplicateWitness
 import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
@@ -260,6 +261,12 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Every COVERED canonical diagonal has a certified blocker:
       -- source-side cross-inactivity OR a fifth-or-later covering
       -- centre with an opposite retained-bit signature.
+      -- NEW: positive duplicate debt is now certified to imply two
+      -- DISTINCT actual net sink-collision sources with one common
+      -- canonical diagonal. Such sources agree at every coordinate
+      -- OUTSIDE their four genuinely chosen transport flip colours.
+      -- A planar exclusion or separate credit for those exact
+      -- four-coordinate pairs is the OPEN next proof target.
       -- Neither covered-target mass nor duplicate hits are shown
       -- payable by TRUE holes or UNRESERVED dyadic profile surplus.
       -- The twin/mixed/soft/loss debts are also not cancelled.
