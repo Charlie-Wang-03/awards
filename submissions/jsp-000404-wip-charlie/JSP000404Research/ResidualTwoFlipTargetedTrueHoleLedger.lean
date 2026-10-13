@@ -72,9 +72,9 @@ theorem two_flip_bridge_overlap_card_eq_true_hole_add_blocked
   let H := (Finset.univ : Finset (Fin n → Bool)) \ K
   have hpart : D = (D ∩ H) ∪ (D ∩ K) := by
     ext word
-    simp only [Finset.mem_union,Finset.mem_inter,Finset.mem_sdiff,
-      Finset.mem_univ, true_and]
-    tauto
+    by_cases hw : word ∈ K
+    · simp [H, hw]
+    · simp [H, hw]
   have hdisj : Disjoint (D ∩ H) (D ∩ K) := by
     apply Finset.disjoint_left.mpr
     intro word hwH hwK
@@ -92,7 +92,9 @@ theorem two_flip_bridge_overlap_card_eq_true_hole_add_blocked
     unfold D twoFlipBridgeDiagonalWords
     rw [Finset.card_image_of_injective _
       (double_flip_completion_word_injective cf cr)]
-  change D.card = (D ∩ H).card + (D ∩ K).card at *
+  change (retainedCompletionWords C b ∩
+      retainedCompletionWords C v).card =
+        (D ∩ H).card + (D ∩ K).card
   omega
 
 /-- Only globally covered words IN THE ACTUAL double-flip image
