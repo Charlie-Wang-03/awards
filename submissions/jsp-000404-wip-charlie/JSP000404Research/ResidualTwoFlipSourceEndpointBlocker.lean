@@ -403,7 +403,79 @@ theorem actual_collision_covered_diagonal_has_fifth_centre
   · intro h; subst c; exact hout.2.2.1 hc
   · intro h; subst c; exact hout.2.2.2 hc
 
+
+/-- Under the two necessary source-side cross-activity conditions,
+the opposite diagonal is a GLOBAL TRUE Boolean hole IFF no centre
+outside the four original hard carrier endpoints covers it.
+
+This exact equivalence is the strongest safe reduction of the
+previous generic "external third-centre blocker": the first four
+centres have now been completely excluded, but a fifth centre has
+NOT been ruled out by the known AngleCap theorems. -/
+theorem actual_collision_diagonal_hole_iff_no_fifth_centre
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (x : {word : Fin n → Bool //
+      word ∈ transportableHardOverlapCompletionWords C})
+    (y : {word : Fin n → Bool //
+      word ∈ netStrictDescentRigidWords C exponent})
+    (hcollision :
+      (transportableHardWordToSingletonOrSoft C x).1 =
+      (strictDescentRigidWordToSingletonOrSoft
+        C exponent hexp honeLoss y).1)
+    (hcrActiveA :
+      strictDescentRigidPairColor C exponent hexp honeLoss
+        (strictDescentRigidWordCarrier C exponent y) ∈
+        retainedActive C (transportableWordCarrier C x).1.1)
+    (hcfActiveZ :
+      transportablePairColor C (transportableWordCarrier C x) ∈
+        retainedActive C
+          (strictDescentRigidWordCarrier C exponent y).1.2) :
+    let p := transportableWordCarrier C x
+    let q := strictDescentRigidWordCarrier C exponent y
+    let cf := transportablePairColor C p
+    let cr := strictDescentRigidPairColor C exponent hexp honeLoss q
+    let w := (transportableHardWordToSingletonOrSoft C x).1
+    let d := flipCompletionWord cf (flipCompletionWord cr w)
+    (d ∈ (Finset.univ : Finset (Fin n → Bool)) \
+      coveredCompletionWords C) ↔
+      (∀ c : V, c ≠ p.1.1 → c ≠ p.1.2 →
+        c ≠ q.1.1 → c ≠ q.1.2 →
+          d ∉ retainedCompletionWords C c) := by
+  classical
+  let p := transportableWordCarrier C x
+  let q := strictDescentRigidWordCarrier C exponent y
+  let cf := transportablePairColor C p
+  let cr := strictDescentRigidPairColor C exponent hexp honeLoss q
+  let w := (transportableHardWordToSingletonOrSoft C x).1
+  let d := flipCompletionWord cf (flipCompletionWord cr w)
+  change (d ∈ (Finset.univ : Finset (Fin n → Bool)) \
+      coveredCompletionWords C) ↔
+      (∀ c : V, c ≠ p.1.1 → c ≠ p.1.2 →
+        c ≠ q.1.1 → c ≠ q.1.2 →
+          d ∉ retainedCompletionWords C c)
+  constructor
+  · intro hhole c _ _ _ _ hc
+    have hcover : d ∈ coveredCompletionWords C :=
+      (mem_coveredCompletionWords C d).2
+        ⟨c, (mem_completionFibre C d c).2 hc⟩
+    exact (Finset.mem_sdiff.mp hhole).2 hcover
+  · intro hno
+    apply Finset.mem_sdiff.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    intro hcovered
+    have hfifth :=
+      actual_collision_covered_diagonal_has_fifth_centre
+        C exponent hexp honeLoss x y hcollision
+        hcrActiveA hcfActiveZ hcovered
+    obtain ⟨c, hca, hcv, hcb, hcz, hc⟩ := hfifth
+    exact (hno c hca hcv hcb hcz) hc
+
 #print axioms flipCompletionWord_comm
+#print axioms actual_collision_diagonal_hole_iff_no_fifth_centre
 #print axioms actual_collision_diagonal_outside_all_four_hard_endpoints
 #print axioms actual_collision_covered_diagonal_has_fifth_centre
 #print axioms actual_collision_diagonal_eq_reverse_flip_forward_source
