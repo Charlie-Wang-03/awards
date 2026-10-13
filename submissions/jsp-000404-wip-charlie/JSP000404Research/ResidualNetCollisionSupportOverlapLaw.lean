@@ -46,9 +46,17 @@ theorem two_two_support_symmetric_difference_intersection_card
     intro e he hf
     exact (Finset.mem_sdiff.mp he).2 (Finset.mem_sdiff.mp hf).1
   have ha : A.card = (A \ B).card + (A ∩ B).card := by
-    rw [hsplitA, Finset.card_union_of_disjoint hdisA]
+    calc
+      A.card = ((A \ B) ∪ (A ∩ B)).card :=
+        congrArg Finset.card hsplitA
+      _ = (A \ B).card + (A ∩ B).card :=
+        Finset.card_union_of_disjoint hdisA
   have hb : B.card = (B \ A).card + (A ∩ B).card := by
-    rw [hsplitB, Finset.card_union_of_disjoint hdisB]
+    calc
+      B.card = ((B \ A) ∪ (A ∩ B)).card :=
+        congrArg Finset.card hsplitB
+      _ = (B \ A).card + (A ∩ B).card :=
+        Finset.card_union_of_disjoint hdisB
   have hd : ((A \ B) ∪ (B \ A)).card =
       (A \ B).card + (B \ A).card :=
     Finset.card_union_of_disjoint hdis
