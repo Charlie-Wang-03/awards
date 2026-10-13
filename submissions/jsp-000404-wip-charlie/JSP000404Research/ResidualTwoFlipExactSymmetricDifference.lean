@@ -94,8 +94,18 @@ theorem two_flip_equal_target_exact_difference_set
     Finset.mem_sdiff, Finset.mem_sdiff]
   simp only [Finset.mem_univ, true_and,
     Finset.mem_insert, Finset.mem_singleton]
-  exact two_flip_target_eq_source_diff_iff_pair_exclusive
+  have hiff := two_flip_target_eq_source_diff_iff_pair_exclusive
     w z a b c d hab hcd heq e
+  constructor
+  · intro hw
+    rcases hiff.mp hw with hleft | hright
+    · exact Or.inl hleft
+    · exact Or.inr ⟨hright.2, hright.1⟩
+  · intro hw
+    apply hiff.mpr
+    rcases hw with hleft | hright
+    · exact Or.inl hleft
+    · exact Or.inr ⟨hright.2, hright.1⟩
 
 /-- In particular, EQUAL diagonal targets from the SAME UNORDERED
 flip support have EQUAL original source words, hence cannot
