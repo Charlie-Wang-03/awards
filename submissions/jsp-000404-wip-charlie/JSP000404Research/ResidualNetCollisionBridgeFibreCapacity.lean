@@ -141,6 +141,73 @@ theorem net_collision_fixed_diagonal_fibre_card_le_two_bit_bridges
       (Finset.card_image_of_injective _ hinj).symm
     _ ≤ P.card := Finset.card_le_card hsubset
 
+
+/-- Genuine NET collisions admit a GLOBAL source count controlled by
+the number of DISTINCT canonical diagonal targets times the number
+of authentic source-compatible doubly filtered soft bridges. This is
+a genuine geometric-combinatorial refinement of the colour-only
+choose-two bound (the better bound depends on the actual bridge pool). -/
+theorem net_collision_card_le_distinct_diagonals_times_two_bit_bridges
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netActualForwardReverseCollisionWords C exponent hexp honeLoss).card ≤
+      (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card *
+      (twoBitDisagreementBridgeCarriers C exponent).card := by
+  classical
+  let I := netActualForwardReverseCollisionWords C exponent hexp honeLoss
+  let Src := {w : Fin n → Bool // w ∈ I}
+  let D := netCollisionCertifiedDiagonalWords C exponent hexp honeLoss
+  let B := twoBitDisagreementBridgeCarriers C exponent
+  let f : Src → (Fin n → Bool) × (V × V) :=
+    fun s => (netCollisionCertifiedDiagonal C exponent hexp honeLoss s,
+      netCollisionCertifiedBridgeOwner C exponent hexp honeLoss s)
+  have hinj : Function.Injective f :=
+    net_collision_diagonal_bridge_pair_injective C exponent hexp honeLoss
+  have hsubset : (Finset.univ : Finset Src).image f ⊆ D.product B := by
+    intro pair hp
+    obtain ⟨s, _, rfl⟩ := Finset.mem_image.mp hp
+    apply Finset.mem_product.mpr
+    constructor
+    · unfold D netCollisionCertifiedDiagonalWords
+      exact Finset.mem_image.mpr ⟨s, Finset.mem_univ _, rfl⟩
+    · exact net_collision_certified_bridge_owner_mem_two_bit_carriers
+        C exponent hexp honeLoss s
+  change I.card ≤ D.card * B.card
+  calc
+    I.card = (Finset.univ : Finset Src).card := by simp [Src]
+    _ = ((Finset.univ : Finset Src).image f).card :=
+      (Finset.card_image_of_injective _ hinj).symm
+    _ ≤ (D.product B).card := Finset.card_le_card hsubset
+    _ = D.card * B.card := Finset.card_product D B
+
+/-- A precise, optional sufficient criterion for ZERO actual
+canonical duplicate-image debt: if there is at most ONE genuine
+two-bit incomparable soft bridge carrier, no pair of different
+actual sources can hit the same diagonal. We do NOT assert the
+planar AngleCap hypotheses imply this one-bridge condition. -/
+theorem net_collision_duplicate_debt_zero_of_at_most_one_two_bit_bridge
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hone : (twoBitDisagreementBridgeCarriers C exponent).card ≤ 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss = 0 := by
+  have hmass :=
+    net_collision_card_le_distinct_diagonals_times_two_bit_bridges
+      C exponent hexp honeLoss
+  have hle :
+      (netActualForwardReverseCollisionWords C exponent hexp honeLoss).card ≤
+      (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card := by
+    omega
+  exact Nat.sub_eq_zero_iff_le.mpr hle
+
+#print axioms net_collision_card_le_distinct_diagonals_times_two_bit_bridges
+#print axioms net_collision_duplicate_debt_zero_of_at_most_one_two_bit_bridge
+
 #print axioms net_collision_certified_bridge_owner_mem_two_bit_carriers
 #print axioms net_collision_diagonal_bridge_pair_injective
 #print axioms net_collision_fixed_diagonal_fibre_card_le_two_bit_bridges
