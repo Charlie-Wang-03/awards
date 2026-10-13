@@ -12,6 +12,7 @@ import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
 import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
+import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
 import Mathlib.Tactic
 
 /-!
@@ -214,6 +215,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- or later covering centre are necessary and sufficient
       -- for THIS ONE diagonal to be a true Boolean hole.
       -- This is not a non-reusing allocation across collisions.
+      -- Rigidity of the double-flip diagonal across DIFFERENT chosen
+      -- flip pairs is now proved: equal diagonal targets require the
+      -- underlying collision sink words to agree outside the four
+      -- flip coordinates. A FIXED flip pair has no duplicate images.
+      -- Different-pair hole images have a joint non-reusing bound
+      -- IF their source sets differ at an outside-four coordinate
+      -- for EVERY cross-class pair, and each target is a true hole.
+      -- Neither hypothesis is presently derived from planar AngleCap,
+      -- and no automatic global hole-credit cancellation follows.
       -- New ACTUAL-COLLISION obstruction: the double-flipped corner
       -- equals reverseFlip(original forward HARD source) and ALSO
       -- forwardFlip(original reverse strict-rigid HARD source).
