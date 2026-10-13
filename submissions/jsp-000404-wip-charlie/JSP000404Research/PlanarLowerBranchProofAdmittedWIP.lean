@@ -20,6 +20,9 @@ import JSP000404Research.ResidualNetCollisionSupportFibreMultiplicity
 import JSP000404Research.ResidualNetCollisionExactFibreDebt
 import JSP000404Research.ResidualNetCollisionFibreDebtPartition
 import JSP000404Research.ResidualNetCollisionBridgeFibreCapacity
+import JSP000404Research.ResidualNetCollisionDoubleShellBridge
+import JSP000404Research.ResidualNetCollisionTargetShellBridgeFibre
+import JSP000404Research.ResidualNetCollisionFourBitBridgeEndpointSeparation
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -333,6 +336,24 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Under the EXTRA assumption that at most ONE such bridge
       -- carrier exists, duplicate debt is zero; planar AngleCap
       -- does NOT currently imply that additional assumption.
+      -- NEW EXACT TARGET-DEPENDENT DOUBLE-SHELL OBSTRUCTION:
+      -- For each ACTUAL NET source collision, its canonical diagonal
+      -- violates EXACTLY ONE retained-active bit at EACH original
+      -- SOFT bridge endpoint: the actual forward / reverse flip.
+      -- These coordinates are EXCLUSIVE to their respective
+      -- endpoints, giving a target-specific eligible bridge pool.
+      -- Each actual diagonal source fibre injects into THAT
+      -- target-dependent pool, never just the global bridge pool.
+      -- If every ACTUALLY HIT target admits at most one such eligible
+      -- bridge, duplicate-image debt vanishes; planar AngleCap
+      -- has NOT been shown to imply this conditional uniqueness.
+      -- Under same-diagonal reuse, equal reverse-lower endpoints
+      -- force equal original forward colours; equal forward-upper
+      -- endpoints force equal original reverse colours. Therefore
+      -- 4-BIT duplicate-source pairs must differ at BOTH
+      -- SAME-ROLE soft bridge endpoints, not necessarily at all four
+      -- centres across cross-roles. Geometric exclusion/payment
+      -- of remaining CROSS-bridge motifs remains OPEN.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

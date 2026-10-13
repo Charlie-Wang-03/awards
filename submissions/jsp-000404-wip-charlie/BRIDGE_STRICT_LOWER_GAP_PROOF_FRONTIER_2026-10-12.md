@@ -2157,3 +2157,105 @@ repeated targets to genuinely unreserved global budget without reuse;
 also pay covered diagonal/fifth-centre blockers and the
 twin/mixed-rigid/soft/projected-loss debts. The unique WIP global
 six-source payment `sorry` is NOT closed.
+
+
+## Exact double-shell bridge filter and four-bit same-role endpoint separation (2026-10-13)
+
+THREE new modules are complete, all entirely `sorryAx`-free, and
+imported into `VerifiedOverlapRewire.lean` and the separate admitted
+WIP research module:
+
+- `JSP000404Research/ResidualNetCollisionDoubleShellBridge.lean`
+- `JSP000404Research/ResidualNetCollisionTargetShellBridgeFibre.lean`
+- `JSP000404Research/ResidualNetCollisionFourBitBridgeEndpointSeparation.lean`
+
+Define the ACTIVE-constraint violation set for any Boolean target d
+and retained centre u:
+
+```text
+E_u(d) = {e in retainedActive(u) | d[e] != retainedBit(u,e)}
+```
+
+For each GENUINE net forward/reverse sink collision s, let its
+original two hard transport colours be cf, cr; let its unique
+original soft bridge owner be (b,v) = (reverse.lower, forward.upper);
+and let d be its canonical source-dependent two-flip diagonal.
+The kernel has verified the EXACT equalities:
+
+```text
+E_b(d) = {cf}     E_v(d) = {cr}
+cf in active(b) \ active(v)
+cr in active(v) \ active(b)
+```
+
+Each violation set is thus a SINGLETON, not merely nonempty. This
+is stronger than the earlier assertion d is OUTSIDE both endpoint
+completion cubes. It uses actual original hard sources; the reverse
+and forward flip colours are proven distinct. No new source assumption
+or planar postulate is introduced.
+
+Define the target-DEPENDENT eligible bridge pool B_2(d) by filtering
+the certified two-bit / incomparable-palette original-candidate SOFT
+bridges (b,v) to those with singleton violation sets E_b(d),E_v(d)
+and each violation subset of the corresponding EXCLUSIVE retained
+active palette difference.
+
+The checked injection within each original bridge then yields:
+
+```text
+for every Boolean target d:
+|{s genuine NET collision | certifiedDiagonal(s)=d}|
+    <= |B_2(d)|
+    <= |twoBitDisagreementBridgeCarriers|.
+```
+
+Compared with the earlier target-independent bound, this eliminates
+all candidate bridges that do not have EXACT compatible one-bit
+endpoint shells for the particular target d. It still counts SOFT
+COVERED bridge candidates, never literal true holes.
+
+A strengthened, explicitly CONDITIONAL zero-debt criterion is proved:
+IF, for each ACTUALLY HIT diagonal d, `|B_2(d)| <= 1`, then the
+entire actual canonical duplicate-image debt E_D is zero. This is
+more focused than assuming at most one soft bridge globally, but
+is NOT established by the real planar AngleCap hypotheses.
+
+Finally, if two actual NET collisions s,t have the SAME canonical
+diagonal target:
+- SAME reverse-lower bridge endpoint implies the exact same
+  original FORWARD flip colour.
+- SAME forward-upper bridge endpoint implies the exact same
+  original REVERSE flip colour.
+- If their original source Boolean words have Hamming distance FOUR,
+  BOTH same-role original bridge endpoints must differ: lower(s)
+  != lower(t) AND upper(s) != upper(t).
+  This does NOT say all four bridge endpoint vertices are pairwise
+  distinct; cross-role coincidences are not excluded here.
+
+The last fact follows since four-bit target duplication is exactly
+disjointness of the two original unordered flip-colour pairs, while
+any shared SAME-ROLE endpoint would force a common flip colour.
+
+Independent fast Lean certificates:
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38422172506
+  PASS, 3,259 jobs, TWO new theorems, no `sorryAx`.
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38422639723
+  PASS, 3,260 jobs, FOUR new theorems, no `sorryAx`.
+- https://github.com/Charlie-Wang-03/awards/actions/runs/38423160464
+  PASS, 3,261 jobs, THREE new theorems, no `sorryAx`.
+
+A compiler-error pass corrected argument-order polarity in the
+existing `flipCompletionWord_off` lemma; no new axioms or admitted
+proofs were used. Previous SAME-bridge rigidity and the exact
+true-hole vs globally covered duplicate-debt fibre partition stay
+unchanged.
+
+**Open nontrivial mathematics:** derive globally valid uniqueness
+or genuine non-reused payment for target-eligible TWO-BRIDGE collision
+patterns under actual planar AngleCap. The remaining 2-bit motifs
+(including same-role shared endpoints), 4-bit same-role-separated
+motifs, fifth-centre covered diagonals, source-cross-inactivity,
+and terminal twin / two mixed-rigid / soft / projected-loss
+debts still need a six-source global payment certificate. The ONE
+WIP `sorry` remains intentionally, and no full JSP-000404
+solution/disproof is claimed.

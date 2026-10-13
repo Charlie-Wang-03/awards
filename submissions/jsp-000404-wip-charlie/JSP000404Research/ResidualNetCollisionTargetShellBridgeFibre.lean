@@ -95,8 +95,8 @@ theorem net_collision_bridge_owner_mem_target_double_shell
     targetDoubleShellTwoBitBridgeCarriers C exponent d
   apply Finset.mem_filter.mpr
   refine ⟨hbridge, ?_, ?_, ?_, ?_⟩
-  · simpa [hshell.1]
-  · simpa [hshell.2]
+  · simp [hshell.1]
+  · simp [hshell.2]
   · rw [hshell.1]
     intro e he
     have hecf : e = cf := Finset.mem_singleton.mp he
