@@ -85,6 +85,83 @@ theorem fixed_two_flip_hole_capacity
       hcard.symm
     _ ≤ holes.card := Finset.card_le_card himage
 
+
+/-- Two classes of source words with possibly DIFFERENT fixed flip
+pairs have pairwise DISJOINT target images whenever each cross-class
+source pair has a differing coordinate outside all four flip bits.
+The condition is concrete and checkable, but not yet proved for
+all actual planar collision classes. -/
+theorem two_flip_images_disjoint_of_four_coordinate_separation
+    {n : ℕ}
+    (left right : Finset (Fin n → Bool))
+    (cf₁ cr₁ cf₂ cr₂ : Fin n)
+    (hsep :
+      ∀ w ∈ left, ∀ z ∈ right,
+        ∃ e : Fin n,
+          e ≠ cf₁ ∧ e ≠ cr₁ ∧
+          e ≠ cf₂ ∧ e ≠ cr₂ ∧ w e ≠ z e) :
+    Disjoint
+      (left.image
+        (fun w => flipCompletionWord cf₁ (flipCompletionWord cr₁ w)))
+      (right.image
+        (fun z => flipCompletionWord cf₂ (flipCompletionWord cr₂ z))) := by
+  classical
+  apply Finset.disjoint_left.mpr
+  intro d hdLeft hdRight
+  obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hdLeft
+  obtain ⟨z, hz, hzd⟩ := Finset.mem_image.mp hdRight
+  obtain ⟨e, hf₁, hr₁, hf₂, hr₂, hne⟩ := hsep w hw z hz
+  exact (double_flip_targets_ne_of_source_diff_outside_four
+    w z cf₁ cr₁ cf₂ cr₂ e hf₁ hr₁ hf₂ hr₂ hne) hzd.symm
+
+/-- Concrete two-class NON-REUSING hole payment. In addition to
+each class having legitimate true-hole diagonal targets, the
+four-coordinate source separation certifies their target images
+do not overlap. No colour-uniformity or independence is silently
+assumed across the classes. -/
+theorem separated_two_flip_classes_joint_hole_capacity
+    {n : ℕ}
+    (left right holes : Finset (Fin n → Bool))
+    (cf₁ cr₁ cf₂ cr₂ : Fin n)
+    (hleft : ∀ w ∈ left,
+      flipCompletionWord cf₁ (flipCompletionWord cr₁ w) ∈ holes)
+    (hright : ∀ z ∈ right,
+      flipCompletionWord cf₂ (flipCompletionWord cr₂ z) ∈ holes)
+    (hsep :
+      ∀ w ∈ left, ∀ z ∈ right,
+        ∃ e : Fin n,
+          e ≠ cf₁ ∧ e ≠ cr₁ ∧
+          e ≠ cf₂ ∧ e ≠ cr₂ ∧ w e ≠ z e) :
+    left.card + right.card ≤ holes.card := by
+  classical
+  let L := left.image
+    (fun w => flipCompletionWord cf₁ (flipCompletionWord cr₁ w))
+  let R := right.image
+    (fun z => flipCompletionWord cf₂ (flipCompletionWord cr₂ z))
+  have hdisj : Disjoint L R :=
+    two_flip_images_disjoint_of_four_coordinate_separation
+      left right cf₁ cr₁ cf₂ cr₂ hsep
+  have hLcard : L.card = left.card :=
+    Finset.card_image_of_injective left
+      (double_flip_completion_word_injective cf₁ cr₁)
+  have hRcard : R.card = right.card :=
+    Finset.card_image_of_injective right
+      (double_flip_completion_word_injective cf₂ cr₂)
+  have hsubset : L ∪ R ⊆ holes := by
+    intro d hd
+    rcases Finset.mem_union.mp hd with hdL | hdR
+    · obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hdL
+      exact hleft w hw
+    · obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hdR
+      exact hright z hz
+  calc
+    left.card + right.card = (L ∪ R).card := by
+      rw [Finset.card_union_of_disjoint hdisj, hLcard, hRcard]
+    _ ≤ holes.card := Finset.card_le_card hsubset
+
+#print axioms two_flip_images_disjoint_of_four_coordinate_separation
+#print axioms separated_two_flip_classes_joint_hole_capacity
+
 #print axioms double_flip_target_eq_source_agree_outside_four
 #print axioms double_flip_targets_ne_of_source_diff_outside_four
 #print axioms fixed_two_flip_hole_capacity
