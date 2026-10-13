@@ -85,21 +85,13 @@ theorem net_collision_card_le_choose_two_times_distinct_diagonal_card
       · have hdistinct :=
           net_collision_certified_forward_reverse_colours_distinct
             C exponent hexp honeLoss s
-        simpa [netCollisionCanonicalColourSupport] using
-          (show
-            ({transportablePairColor C (transportableWordCarrier C
-                 (netCollisionCertifiedForwardSource
-                   C exponent hexp honeLoss s)),
-               strictDescentRigidPairColor C exponent hexp honeLoss
-                 (strictDescentRigidWordCarrier C exponent
-                   (netCollisionCertifiedReverseSource
-                     C exponent hexp honeLoss s))}
-                 : Finset (Fin n)).card = 2 by
-             simp [hdistinct])
+        change (netCollisionCanonicalColourSupport
+          C exponent hexp honeLoss s).card = 2
+        simp [netCollisionCanonicalColourSupport, hdistinct]
   change I.card ≤ D.card * Nat.choose n 2
   calc
     I.card = (Finset.univ : Finset Src).card := by
-      simp [Src, Fintype.card_coe]
+      simp [Src]
     _ = ((Finset.univ : Finset Src).image f).card :=
       (Finset.card_image_of_injective _ hinj).symm
     _ ≤ (D.product P).card := Finset.card_le_card hsubset
