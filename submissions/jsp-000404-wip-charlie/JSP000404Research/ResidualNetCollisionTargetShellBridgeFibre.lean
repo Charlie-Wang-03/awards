@@ -191,6 +191,60 @@ theorem net_collision_duplicate_debt_zero_of_target_double_shell_unique
   have hone := hunique d hd
   omega
 
+
+/-- A GLOBAL exact-debt upper bound by TARGET-SPECIFIC eligible
+bridge excess. Unlike the former uniform choose-two/product bounds,
+this local-to-global sum preserves the actual hole/covered target
+partition without reusing a single target as a new hole credit. -/
+theorem net_collision_duplicate_debt_le_sum_target_double_shell_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        ((targetDoubleShellTwoBitBridgeCarriers C exponent d).card - 1) := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_le_sum
+  intro d hd
+  have h := net_collision_fixed_diagonal_fibre_card_le_target_double_shell
+    C exponent hexp honeLoss d
+  omega
+
+/-- A strictly quantified target-specific geometric obstruction:
+positive actual duplicate debt FORCES some actually hit canonical
+target to admit at least TWO distinct doubly-filtered compatible
+original soft bridge candidates. It does NOT claim these candidate
+bridges are false holes, nor that planar AngleCap rules them out. -/
+theorem net_collision_positive_duplicate_forces_two_target_double_shell_bridges
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hpositive : 0 < netCollisionCertifiedDuplicateDebt
+      C exponent hexp honeLoss) :
+    ∃ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+      2 ≤ (targetDoubleShellTwoBitBridgeCarriers C exponent d).card := by
+  classical
+  by_contra hno
+  have hunique : ∀ d ∈ netCollisionCertifiedDiagonalWords
+      C exponent hexp honeLoss,
+      (targetDoubleShellTwoBitBridgeCarriers C exponent d).card ≤ 1 := by
+    intro d hd
+    by_contra hbad
+    have htwo : 2 ≤ (targetDoubleShellTwoBitBridgeCarriers
+        C exponent d).card := by omega
+    exact hno ⟨d, hd, htwo⟩
+  have hz := net_collision_duplicate_debt_zero_of_target_double_shell_unique
+    C exponent hexp honeLoss hunique
+  omega
+
+#print axioms net_collision_duplicate_debt_le_sum_target_double_shell_excess
+#print axioms net_collision_positive_duplicate_forces_two_target_double_shell_bridges
+
 #print axioms net_collision_bridge_owner_mem_target_double_shell
 #print axioms net_collision_fixed_diagonal_fibre_card_le_target_double_shell
 #print axioms target_double_shell_bridge_carriers_subset_two_bit
