@@ -68,8 +68,7 @@ theorem net_collision_shared_bridge_vertex_same_diagonal_distinct_sources_two_bi
       by_contra he
       have hm : e ∈ H :=
         Finset.mem_filter.mpr ⟨Finset.mem_univ e, he⟩
-      rw [hnot] at hm
-      exact Finset.not_mem_empty e hm
+      simp [hnot] at hm
     exact hne (Subtype.ext heq)
   have hfourNE : H.card ≠ 4 := by
     intro hfour
@@ -99,6 +98,7 @@ theorem net_collision_shared_bridge_vertex_same_diagonal_distinct_sources_two_bi
     2 * (netCollisionCanonicalColourSupport C exponent hexp honeLoss s ∩
       netCollisionCanonicalColourSupport C exponent hexp honeLoss t).card = 4
     at hcount
+  dsimp only [H] at hpos hfourNE hcount
   omega
 
 #print axioms net_collision_shared_bridge_vertex_same_diagonal_distinct_sources_two_bit
