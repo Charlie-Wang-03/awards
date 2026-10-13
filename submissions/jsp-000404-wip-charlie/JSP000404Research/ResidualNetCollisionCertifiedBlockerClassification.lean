@@ -89,7 +89,7 @@ theorem net_collision_certified_diagonal_covered_iff_blocker
           (cf ∈ retainedActive C c ∧
            retainedBit C c cf = !(retainedBit C q.1.1 cf))))
        at hiff
-  simpa only [hfx] using hiff
+  simpa only [netCollisionCertifiedDiagonal, hfx] using hiff
 
 /-- Every DISTINCT certified diagonal that is already COVERED
 has a genuine NET source collision and precisely one of the
