@@ -72,6 +72,7 @@ import JSP000404Research.PlanarActualCollisionTwoBitBridgeCapacity
 import JSP000404Research.ResidualActualCollisionTwoFlipDiagonal
 import JSP000404Research.ResidualIncomparableBridgeExteriorCapacity
 import JSP000404Research.ResidualBridgeDiagonalTrueHoleLedger
+import JSP000404Research.ResidualTwoFlipOppositeBitBlocker
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
