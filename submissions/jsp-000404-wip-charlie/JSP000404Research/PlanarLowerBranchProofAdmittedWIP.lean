@@ -13,6 +13,11 @@ import JSP000404Research.ResidualTwoFlipTargetedTrueHoleLedger
 import JSP000404Research.ResidualTwoFlipSourceEndpointBlocker
 import JSP000404Research.ResidualActualCollisionDiagonalExactObstruction
 import JSP000404Research.ResidualTwoFlipDiagonalGlobalCollisionRigidity
+import JSP000404Research.ResidualNetCollisionCertifiedMobilePayment
+import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
+import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
+import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
+import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
 import Mathlib.Tactic
 
 /-!
@@ -242,6 +247,22 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- This rigorously sharpens the SHAPE of the final obligation,
       -- but neither side has been proved geometrically from holes
       -- and genuinely unreserved profile surplus.
+      -- NEW kernel-checked ACTUAL NET collision map and conservation:
+      -- each collision sink has a UNIQUE original forward and reverse
+      -- hard source by the two existing globally injective transports.
+      -- Their genuine chosen flip colours give a deterministic
+      -- canonical opposite diagonal, not an arbitrary bridge face.
+      -- The complete NET collision cardinal is EXACTLY:
+      -- DISTINCT true-hole diagonals + DISTINCT covered diagonals
+      -- + duplicate-image hits for source-dependent flip colours.
+      -- Replacing the collision mass in exact net mobile-source
+      -- conservation yields a certified 5-term mobile ledger.
+      -- Every COVERED canonical diagonal has a certified blocker:
+      -- source-side cross-inactivity OR a fifth-or-later covering
+      -- centre with an opposite retained-bit signature.
+      -- Neither covered-target mass nor duplicate hits are shown
+      -- payable by TRUE holes or UNRESERVED dyadic profile surplus.
+      -- The twin/mixed/soft/loss debts are also not cancelled.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
