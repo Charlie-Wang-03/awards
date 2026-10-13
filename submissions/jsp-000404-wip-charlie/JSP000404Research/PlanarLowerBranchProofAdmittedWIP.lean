@@ -26,6 +26,8 @@ import JSP000404Research.ResidualNetCollisionFourBitBridgeEndpointSeparation
 import JSP000404Research.ResidualNetCollisionCrossRoleEndpointSeparation
 import JSP000404Research.ResidualNetCollisionSharedVertexTwoBitClassification
 import JSP000404Research.ResidualNetCollisionSharedVertexInactiveCapacity
+import JSP000404Research.ResidualNetCollisionFixedEndpointColourInjection
+import JSP000404Research.ResidualNetCollisionTargetBridgeColourSlots
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -374,6 +376,26 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Vertex-disjoint four-bit and two-bit patterns and remaining
       -- higher-dimensional shared-vertex motifs remain to be PAID
       -- or excluded, with fifth-centre, twin, mixed, soft, loss debt.
+      -- NEW EXACT ENDPOINT-COLOUR-SLOT DUPLICATE CAPACITIES:
+      -- Within any target d and original lower vertex b, the
+      -- source-native original reverse flip colour is INACTIVE at b
+      -- and INJECTIVELY labels the ACTUAL sources, as the original
+      -- forward flip is FIXED by the exact singleton violation.
+      -- The upper vertex v has the dual forward-colour injection.
+      -- Hence fixed-endpoint target source mass is bounded by its
+      -- retained-INACTIVE colour count (LINEAR, not 2^dimension).
+      -- Globally each genuine NET source fibre D^-1(d) injects
+      -- separately into target-compatible LOWER and UPPER
+      -- vertex/inactive-colour slots, L(d) and U(d), with endpoint
+      -- eligibility certified by existing double-shell soft bridges.
+      -- With original eligible bridge candidates B_2(d),
+      -- |D^-1(d)| <= m(d) := min(|B_2(d)|,|L(d)|,|U(d)|).
+      -- Exact duplicate debt E_D <= SUM_(d IN D(I))(m(d)-1)
+      -- follows from the previously proved exact fibre ledger.
+      -- The theorem "m(d)<=1 for EACH ACTUALLY HIT d => E_D=0"
+      -- is CONDITIONAL. Planar AngleCap does NOT yet prove that
+      -- condition; no covered SOFT target or slot is a literal
+      -- TRUE Boolean hole or already-unreserved dyadic surplus.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
