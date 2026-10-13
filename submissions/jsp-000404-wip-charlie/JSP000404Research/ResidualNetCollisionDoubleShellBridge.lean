@@ -54,11 +54,10 @@ theorem two_flip_one_active_one_inactive_exact_violation
   constructor
   · rintro ⟨hea, hbad⟩
     by_contra he
-    have heca : ca ≠ e := Ne.symm he
-    have heci : ci ≠ e := by
+    have heca : e ≠ ca := he
+    have heci : e ≠ ci := by
       intro heci
-      have : e = ci := heci.symm
-      exact hi (this ▸ hea)
+      exact hi (heci ▸ hea)
     have hEq : flipCompletionWord ca (flipCompletionWord ci w) e =
         w e := by
       rw [flipCompletionWord_off ca e (flipCompletionWord ci w) heca,
@@ -71,7 +70,7 @@ theorem two_flip_one_active_one_inactive_exact_violation
     have hEq : flipCompletionWord ca (flipCompletionWord ci w) ca =
         ! (w ca) := by
       rw [flipCompletionWord_at,
-        flipCompletionWord_off ci ca w hne.symm]
+        flipCompletionWord_off ci ca w hne]
     have hcode := (mem_retainedCompletionWords C v w).1 hw ca ha
     rw [hEq, ← hcode]
     cases w ca <;> decide
