@@ -100,6 +100,12 @@ theorem net_collision_certified_duplicate_debt_eq_sum_fibre_excess
     netCollisionCertifiedDiagonal C exponent hexp honeLoss
   have h := finset_image_duplicate_debt_eq_sum_fibre_excess
     (Finset.univ : Finset S) f
+  have hcardS :
+      (Finset.univ : Finset S).card =
+        (netActualForwardReverseCollisionWords
+          C exponent hexp honeLoss).card := by
+    simp [S]
+  rw [hcardS] at h
   change (netActualForwardReverseCollisionWords C exponent hexp honeLoss).card -
       (Finset.univ.image f).card =
     ∑ d ∈ Finset.univ.image f,
