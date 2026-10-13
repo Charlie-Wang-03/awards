@@ -2069,3 +2069,91 @@ fifth-centre covered diagonals, and globally non-reusing terminal
 twin, two mixed-rigid debts, soft overlap and projected profile
 loss. The sole WIP geometric payment `sorry` is unchanged;
 no solution or disproof of full JSP-000404 is asserted.
+
+
+## Actual original-bridge diagonal injection and bridge-count fibre cap (2026-10-13)
+
+Two new independently sorry-free Lean modules, now imported into the
+verified umbrella and the admitted WIP entrypoint:
+
+- `JSP000404Research/ResidualNetCollisionSameBridgeDiagonalInjection.lean`
+- `JSP000404Research/ResidualNetCollisionBridgeFibreCapacity.lean`
+
+**Core proof (new nontrivial source-native rigidity):** take TWO genuine
+NET hard-transport intersection sink words `w,z`. Each comes with its
+UNIQUE original forward and reverse hard source carriers; define its
+original soft bridge owner `B(w) = (reverse.lower, forward.upper)`.
+Assume `B(w)=B(z)`, and the two source-dependent DOUBLE-FLIP canonical
+opposite diagonals coincide. Both sinks lie in the SAME two endpoint
+completion cubes. The original forward hard flip colours are retained
+active at the reverse lower bridge endpoint; the reverse hard flip
+colours are retained active at the forward upper bridge endpoint.
+Hence each of the FOUR original flips occurs at a coordinate where
+`w` and `z` must agree. But the previously verified EXACT
+symmetric-difference identity forces ALL disagreement coordinates
+of `w,z` to lie among those colours. Consequently `w=z`.
+
+Lean theorem names:
+- `two_flip_same_bridge_equal_target_source_eq`: the fundamental
+  source-word rigidity for shared actual two-endpoint completion.
+- `net_collision_same_bridge_same_diagonal_source_eq`: same original
+  bridge and same canonical target imply same ACTUAL NET source.
+- `net_collision_positive_duplicate_requires_distinct_bridges`:
+  positive actual canonical duplicate debt forces distinct bridges.
+- `net_collision_certified_bridge_owner_mem_two_bit_carriers`:
+  each actual original bridge owner belongs to the previously
+  proved genuine-source two-bit bridge carrier pool with
+  incomparable retained palettes and Hamming disagreement >=2.
+- `net_collision_diagonal_bridge_pair_injective`:
+  `w |-> (D(w), B(w))` is globally injective.
+- `net_collision_fixed_diagonal_fibre_card_le_two_bit_bridges`:
+  for ANY target diagonal `d`,
+  `|{w in NET | D(w)=d}| <= |twoBitDisagreementBridgeCarriers|`.
+- `net_collision_card_le_distinct_diagonals_times_two_bit_bridges`:
+  `|NET| <= |D(NET)| * |twoBitDisagreementBridgeCarriers|`.
+- `net_collision_duplicate_debt_zero_of_at_most_one_two_bit_bridge`:
+  IF the entire genuine filtered bridge carrier pool has size <=1,
+  then actual canonical duplicate debt is zero. This is CONDITIONAL
+  on the pool bound, NOT an asserted consequence of AngleCap.
+
+The previous global choose-two bound remains valid. Combining both
+gives the honest source-fibre cap
+
+```text
+|{w in NET | D(w)=d}|
+  <= min (Nat.choose n 2)
+         (card (twoBitDisagreementBridgeCarriers C exponent)).
+```
+
+Importantly, the candidate bridge pool is made of COVERED SOFT
+completion faces, not true Boolean holes, and this source-fibre cap
+is NOT itself a nonreusing hole payment. Distinct bridges CAN
+potentially map to the same canonical diagonal. The NEW proof
+removes all SAME-bridge multiple-hit obstruction unconditionally,
+leaving specifically the CROSS-bridge diagonal collision problem,
+which is now structurally more targeted than the previous
+cross-colour-pair obstruction.
+
+CI for the three same-bridge proofs:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38415803842
+PASS (3,257 jobs); each theorem's `#print axioms` shows
+standard kernel axioms only, NO `sorryAx`.
+CI for three bridge-owner/fibre proofs:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38416260918
+PASS (3,258 jobs); NO `sorryAx`.
+CI for global multiplicity and conditional debt-zero:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38417088862
+PASS (3,258 jobs); NO `sorryAx`.
+
+The two observed compiler problems were a dependent/elaboration
+mismatch when extracting pair endpoint equalities, resolved using
+`Prod.mk.injEq`, and an unsupported linear `omega` proof involving
+an opaque natural product, resolved by the honest cases bridge-card
+zero or one. No new `sorry`, `axiom`, `admit`, or geometry assumption.
+
+**Still open:** show distinct original NET soft bridges cannot share
+a double-flip diagonal under actual planar AngleCap, or charge their
+repeated targets to genuinely unreserved global budget without reuse;
+also pay covered diagonal/fifth-centre blockers and the
+twin/mixed-rigid/soft/projected-loss debts. The unique WIP global
+six-source payment `sorry` is NOT closed.

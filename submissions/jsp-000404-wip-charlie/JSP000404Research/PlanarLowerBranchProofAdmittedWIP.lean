@@ -19,6 +19,7 @@ import JSP000404Research.ResidualNetCollisionExactHammingObstruction
 import JSP000404Research.ResidualNetCollisionSupportFibreMultiplicity
 import JSP000404Research.ResidualNetCollisionExactFibreDebt
 import JSP000404Research.ResidualNetCollisionFibreDebtPartition
+import JSP000404Research.ResidualNetCollisionBridgeFibreCapacity
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -316,6 +317,22 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Geometric payment of BOTH classes of fibre excess,
       -- plus source-side/fifth-centre covering, twin/mixed/soft
       -- and projected-loss budgets, remains OPEN.
+      -- STRONGER ORIGINAL-BRIDGE DIAGONAL RIGIDITY:
+      -- ANY two ACTUAL NET sinks with the SAME original soft bridge
+      -- and the SAME canonical diagonal are EQUAL, even if their
+      -- original hard flip colours differ. Thus a POSITIVE duplicate
+      -- debt necessarily witnesses DIFFERENT original soft bridges.
+      -- Every actual bridge owner lies in the doubly filtered
+      -- incomparable-active / >=2-bit discrepancy soft bridge pool.
+      -- EVERY actual diagonal source fibre therefore has cardinal
+      -- <= the card of that GENUINE candidate bridge carrier pool,
+      -- as well as <= Nat.choose n 2 (the older colour-support cap).
+      -- Globally |NET| <= |distinct diagonals| * |bridge carriers|.
+      -- This is an honest COVERED bridge capacity, NOT true-hole
+      -- or independent unreserved profile-surplus credit.
+      -- Under the EXTRA assumption that at most ONE such bridge
+      -- carrier exists, duplicate debt is zero; planar AngleCap
+      -- does NOT currently imply that additional assumption.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
