@@ -1671,3 +1671,69 @@ AngleCap; it DOES NOT globally allocate unique holes to
 distinct actual collisions. It DOES NOT discharge the sole
 six-source true-hole plus unreserved-surplus payment `sorry`,
 and does not complete the upper branch or JSP-000404.
+
+
+## Verified four-coordinate rigidity and conditional cross-pair nonreuse (2026-10-13)
+
+New independent module:
+`JSP000404Research/ResidualTwoFlipDiagonalGlobalCollisionRigidity.lean`.
+It imports the existing EXACT actual-collision blocker classification,
+and the new source is imported by the sorry-free
+`JSP000404Research/VerifiedOverlapRewire.lean` umbrella.
+
+For any Boolean words `w,z : Fin n -> Bool` and any two (possibly
+DIFFERENT) ordered flip pairs `(cf1,cr1)`, `(cf2,cr2)`, if
+
+```text
+flip(cf1, flip(cr1,w)) = flip(cf2, flip(cr2,z)),
+```
+
+then the SOURCE words agree at EVERY coordinate outside
+`{cf1,cr1,cf2,cr2}`. Therefore disagreement at any FIFTH
+unflipped coordinate guarantees the two diagonal targets differ.
+This is a proved unconditional necessary condition for
+cross-pair double-flip target collision, not a geometric
+AngleCap exclusion.
+
+The five newly certified theorems are:
+
+1. `double_flip_target_eq_source_agree_outside_four`.
+2. `double_flip_targets_ne_of_source_diff_outside_four`.
+3. `fixed_two_flip_hole_capacity`: a fixed double-flip map is
+   injective on ANY source set, so if every target lies in a
+   specified hole set H, source cardinality is at most |H|.
+4. `two_flip_images_disjoint_of_four_coordinate_separation`:
+   two source classes with possibly DIFFERENT fixed flip pairs
+   have DISJOINT diagonal image sets if every cross-class
+   source pair differs at some coordinate outside the union
+   of the four flips.
+5. `separated_two_flip_classes_joint_hole_capacity`: under
+   the same cross-class separation PLUS genuine hole membership
+   of BOTH classes' diagonal targets, the exact NON-REUSING
+   bound `|S1| + |S2| <= |H|` holds.
+
+Regression evidence:
+- Initial three theorems: https://github.com/Charlie-Wang-03/awards/actions/runs/38377898759
+  — 3,242 build jobs PASS, no new `sorryAx`.
+- Cross-pair disjointness and joint hole capacity:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38378284080
+  — 3,242 build jobs PASS, no new `sorryAx`.
+
+**Open gates, not implied by the proved lemmas:**
+- The source-separation premise is NOT known to follow from the
+  ACTUAL planar `AngleCap` data for different collision classes.
+- True-hole status of the actual two-flip diagonals still requires
+  both cross-source activities and exclusion of all fifth-or-later
+  opposite-bit external blockers. Those requirements have not
+  been proved universally from real planar geometry.
+- The five new theorems provide a CONDITIONAL two-class allocation,
+  NOT a general global injection or six-source payment.
+- The single executable `sorry` in
+  `PlanarLowerBranchProofAdmittedWIP.lean` remains genuine and
+  must not be discharged by treating conditional hypotheses
+  as geometric facts. The upper branch and full JSP-000404
+  remain OPEN.
+
+The two new steps therefore isolate the exact required
+cross-pair nonreuse mechanism more sharply, but DO NOT
+reduce the WIP `sorry` count.
