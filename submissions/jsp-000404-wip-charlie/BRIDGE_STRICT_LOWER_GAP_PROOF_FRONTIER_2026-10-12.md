@@ -1587,3 +1587,45 @@ double-book global holes across collision carriers, and do not
 remove the one executable sorry in the absence of a complete
 six-source payment proof. The original JSP-000404 theorem
 remains unproved and undisproved by this downstream branch.
+
+## Exact actual-collision diagonal obstruction equivalence (2026-10-13)
+
+Module: `JSP000404Research/ResidualActualCollisionDiagonalExactObstruction.lean`.
+Both new theorem statements are proved in Lean 4 without `sorry` or new
+mathematical assumptions; they are imported by the independent
+`VerifiedOverlapRewire.lean` umbrella. They concern an ACTUAL common
+sink of the globally injective forward and reverse hard transports.
+
+For original hard carriers `p=(a,v)` and `q=(b,z)`, with forward and
+reverse flip colours `cf,cr`, let `d=flip(cf,flip(cr,w))` be the
+opposite diagonal of their common sink `w`. The certified exact
+covering criterion is
+
+```text
+d IS GLOBALLY COVERED
+  IFF (cr NOT retainedActive(a))
+   OR (cf NOT retainedActive(z))
+   OR (EXISTS c OUTSIDE {a,v,b,z} WITH d IN Q_c).
+
+d IS A GLOBAL TRUE HOLE
+  IFF (cr IN retainedActive(a))
+  AND (cf IN retainedActive(z))
+  AND (FOR EVERY c OUTSIDE {a,v,b,z}, d NOT IN Q_c).
+```
+
+Proof method: combine the previous two constructive original-source
+coverage lemmas, the certified fifth-centre theorem under both
+cross-active conditions, and the earlier conditional true-hole IFF.
+The new statements do NOT postulate that cross-activity always holds
+or that fifth-centre coverage is absent. In particular, there is no
+proved globally injective allocation of diagonals to true holes
+across different actual collisions, and the remaining twin/mixed/
+soft/projected-loss payments are NOT discharged.
+
+Original new-module CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38367805581
+PASS (3,241 Lean jobs). Both `#print axioms` outputs list
+`[propext, Classical.choice, Quot.sound]`; NO `sorryAx`.
+The only executable admitted WIP `sorry` remains in
+`PlanarLowerBranchProofAdmittedWIP.lean`; it is not replaced
+by this local equivalence. JSP-000404 is NOT solved.
