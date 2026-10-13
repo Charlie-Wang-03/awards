@@ -2002,3 +2002,70 @@ mixed-rigid, soft and projected-loss debts against literal global
 Boolean holes and genuinely unreserved profile surplus.
 The admitted six-source global inequality and full JSP-000404
 remain unproved; the unique WIP `sorry` stays intentionally.
+
+
+## Exact source-fibre duplicate-debt and covered/uncovered split (2026-10-13)
+
+The previous global canonical NET collision loss `E_D = |I| - |D(I)|`
+was a correct but coarse cardinal difference. Two additional genuinely
+sorry-free Lean modules now localize **every unit** of that debt to its
+actual target fibre:
+
+- `JSP000404Research/ResidualNetCollisionExactFibreDebt.lean`:
+  a general finite-map theorem and its specialization to the
+  unique-source canonical NET collision diagonal.
+- `JSP000404Research/ResidualNetCollisionFibreDebtPartition.lean`:
+  a checked complementary-set sum partition, exact actual debt split
+  by true-hole versus globally covered targets, and a completely
+  explicit replacement of the duplicate term in the NET
+  forward/reverse mobile source conservation identity.
+
+Define `F_d := {w in I | D(w) = d}`, where `I` is the genuine
+NET collision sink set and `D` is its certified source-dependent
+double-flip map. Define `H_D` as DISTINCT images lying in global
+Boolean TRUE holes and `K_D` as DISTINCT images lying in GLOBAL
+covered words. Lean now proves:
+
+```text
+E_D = sum_(d in D(I)) (|F_d| - 1)
+    = sum_(d in H_D) (|F_d| - 1)
+      + sum_(d in K_D) (|F_d| - 1).
+
+|netForwardHard| + |netReverseStrictRigid| + |unusedCoveredSinks|
+ = |singletonCovered| + |softOverlapCovered|
+   + |H_D| + |K_D|
+   + sum_(d in H_D) (|F_d| - 1)
+   + sum_(d in K_D) (|F_d| - 1).
+```
+
+Each fibre size satisfies the independently verified
+`|F_d| <= Nat.choose n 2`, and distinct members of one fibre
+require genuinely distinct unordered colour supports, corresponding
+to two-bit 3-colour or four-bit 4-colour difference configurations.
+Crucially `|H_D|` can be charged to TRUE holes at most ONCE,
+while the additional `|F_d|-1` for any true-hole fibre and all
+terms over `K_D` remain separately UNPAID. No fifth-centre
+exclusion or support disjointness is presumed.
+
+CI for exact fibre debt:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38410685763
+PASS 3,254 jobs; both new theorem axiom sets exclude `sorryAx`.
+CI for separate covered/uncovered fibre debt:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38411627220
+PASS 3,256 jobs; all three new theorem axiom sets exclude
+`sorryAx`.
+
+Development fixed actual Lean errors: converting the finite
+subtype-universe count to the corresponding NET collision Finset
+cardinality; unfolding a local `f` alias; parenthesizing the
+`(fibre_card - 1)` term INSIDE the sum binder; providing `Fintype`
+for a generic complement partition; avoiding expensive uncontrolled
+whole-goal rewrites and unbounded elaboration.
+
+**Remaining truthfully OPEN:** exclusion/payment under real planar
+`AngleCap` of nontrivial Hamming-2 shared-colour and Hamming-4
+disjoint-colour duplicate fibres, cross-inactivity / opposite-bit
+fifth-centre covered diagonals, and globally non-reusing terminal
+twin, two mixed-rigid debts, soft overlap and projected profile
+loss. The sole WIP geometric payment `sorry` is unchanged;
+no solution or disproof of full JSP-000404 is asserted.

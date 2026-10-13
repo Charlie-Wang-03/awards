@@ -17,6 +17,8 @@ import JSP000404Research.ResidualNetCollisionCertifiedMobilePayment
 import JSP000404Research.ResidualNetCollisionCertifiedDuplicateWitness
 import JSP000404Research.ResidualNetCollisionExactHammingObstruction
 import JSP000404Research.ResidualNetCollisionSupportFibreMultiplicity
+import JSP000404Research.ResidualNetCollisionExactFibreDebt
+import JSP000404Research.ResidualNetCollisionFibreDebtPartition
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -301,6 +303,19 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- These are overlap/finite-multiplicity bounds, NOT a proof
       -- that the actual diagonals are holes, disjoint payments,
       -- or that the remaining covered/duplicate debt vanishes.
+      -- NEW EXACT SOURCE-FIBRE DEFECT ACCOUNTING (verified):
+      -- the global actual canonical duplicate debt is the exact SUM
+      -- of (genuine source-fibre size - 1) over EACH distinct diagonal.
+      -- This sum is explicitly split by TRUE Boolean hole diagonals
+      -- and ALREADY-COVERED diagonals, with no duplicated hole credit.
+      -- The resulting NET forward/reverse mobile-source equation is
+      -- a fully checked hole+covered+excess-fibres conservation law.
+      -- Each individual fibre is bounded by Nat.choose n 2 and
+      -- its distinct sources differ by original 3-colour or
+      -- 4-colour collision motifs; neither motif is yet excluded.
+      -- Geometric payment of BOTH classes of fibre excess,
+      -- plus source-side/fifth-centre covering, twin/mixed/soft
+      -- and projected-loss budgets, remains OPEN.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
