@@ -202,7 +202,14 @@ theorem net_collision_duplicate_debt_zero_of_at_most_one_two_bit_bridge
   have hle :
       (netActualForwardReverseCollisionWords C exponent hexp honeLoss).card ≤
       (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card := by
-    omega
+    by_cases hz :
+        (twoBitDisagreementBridgeCarriers C exponent).card = 0
+    · simp only [hz, Nat.mul_zero] at hmass
+      omega
+    · have honeq :
+          (twoBitDisagreementBridgeCarriers C exponent).card = 1 := by
+        omega
+      simpa [honeq] using hmass
   exact Nat.sub_eq_zero_iff_le.mpr hle
 
 #print axioms net_collision_card_le_distinct_diagonals_times_two_bit_bridges
