@@ -375,3 +375,49 @@ This faithfully counts all possible **cross-target shadow reuse**. It is an uppe
 **Additional strict first-hit target obligation (PENDING):** `ResidualNetCollisionShadowFirstHitGlobalCharge.lean`, independent [CI #38598066535](https://github.com/Charlie-Wang-03/awards/actions/runs/38598066535), proposes the stronger bound `E_D + |D| <= SUM_s m(s)`, using exact finite-map first-preimage accounting. Do not count as proved until the CI is SUCCESS and its axiom audit is clean.
 
 The only intentionally admitted global six-source proof `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` is untouched. The historical root entry still has unrelated compile errors; isolated successful CIs do NOT make the entire root green.
+
+
+## 2026-10-15: first-hit global NET/SOFT accounting and historical repair
+
+### Kernel-verified global first-hit shadow incidence ledger
+
+`ResidualNetCollisionShadowFirstHitGlobalCharge.lean` was independently checked in [CI #38598066535](https://github.com/Charlie-Wang-03/awards/actions/runs/38598066535): SUCCESS, 3,282 jobs, zero errors. Both audited theorems use only `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`.
+
+The theorem `finite_image_duplicate_plus_first_hits_le_fibre_caps` is a generic exact finite-fibre source capacity inequality. Its real NET specialization proves, with D the set of DISTINCT ACTUAL diagonal targets and S the set of ACTUAL covered SOFT overlap completion words,
+
+```text
+E_D + |D| <= SUM_(s in S) #{d in D : Hamming(d,s)=2}.
+```
+
+Unlike the prior bound on E_D alone, this retains exactly one **first source** per hit target as a charge, with remaining source mass counted as actual duplicate-image excess. The shadow incidence sum still counts REUSE and is entirely COVERED; it must NOT be treated as true-hole credit.
+
+The refinement combining this inequality with the verified per-shadow `Nat.choose n 2` degree cap has been committed as `net_duplicate_plus_distinct_hits_le_choose_soft_mass` and has focused CI [#38599220607](https://github.com/Charlie-Wang-03/awards/actions/runs/38599220607). **Do not claim this refined theorem verified until its CI succeeds.**
+
+A true planar `AngleCap` adaptation of the first-hit plus choose bound is committed as `PlanarNetGlobalSoftFirstHitReuse.lean`, [focused CI #38599457731](https://github.com/Charlie-Wang-03/awards/actions/runs/38599457731), also **PENDING**.
+
+### Newly isolated true-hole refund (NOT YET VERIFIED)
+
+`ResidualNetCollisionTrueHoleRefundShadowLedger.lean` uses the certified target decomposition
+
+```text
+|D| = |D ∩ TRUE HOLES| + |D ∩ ALREADY COVERED|.
+```
+
+Combining the existing honest mobile hard-source ledger with the new first-hit shadow incidence inequality proposes the more geometrically meaningful bound
+
+```text
+mobile hard mass <= singleton covered mass + soft covered mass
+                  + (all TRUE holes - already NET-hit TRUE holes)
+                  + SUM_(s in S) #{d in D : Hamming(d,s)=2}.
+```
+
+This eliminates the separately charged COVERED diagonal blocker term and refunds NET-hit true holes from the available-hole account. It does **NOT** convert SOFT shadow incidence into unreserved payment. Dedicated CI [#38599828846](https://github.com/Charlie-Wang-03/awards/actions/runs/38599828846) is **PENDING**; only promote after kernel and axiom verification.
+
+### Historical Lean source repairs (independently verified)
+
+- `MinimalPhaseCover.lean`: corrected three inequality witness direction errors; [CI #38597418973](https://github.com/Charlie-Wang-03/awards/actions/runs/38597418973), 3,092 jobs SUCCESS, zero errors, no sorryAx.
+- `LinearArcPacking.lean`: repaired empty-list base and tail-sum normalization; [CI #38598375567](https://github.com/Charlie-Wang-03/awards/actions/runs/38598375567), 3,092 jobs SUCCESS, zero errors, no sorryAx.
+- `ResidualListCapacity.lean`: explicit classical decidable residual edge choice and typed compatibility premise; [CI #38598920727](https://github.com/Charlie-Wang-03/awards/actions/runs/38598920727), 3,098 jobs SUCCESS, zero errors, no sorryAx.
+- `OneSupportTransitionCost.lean`: repaired zero-quotient branch, dependent `AngleCap` parameter, ray-list constructor and local Sendov scale inequality; [CI #38599086065](https://github.com/Charlie-Wang-03/awards/actions/runs/38599086065), 3,237 jobs SUCCESS, zero errors, no sorryAx.
+
+**Open proof**: the single intentional global six-source payment `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` remains untouched. These verified improvements do not establish a non-reusable global allocation of SOFT, TWIN, mixed-rigid and projection-loss liabilities to available true holes and genuinely unreserved profile surplus. The historical root umbrella is still not fully green.
