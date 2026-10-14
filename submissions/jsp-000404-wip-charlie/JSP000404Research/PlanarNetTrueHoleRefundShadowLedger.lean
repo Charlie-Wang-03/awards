@@ -57,7 +57,7 @@ theorem planar_net_mobile_true_hole_refund_shadow_ledger
           (netStrictDescentRigidWords B k).card ≤
           (singletonCompletionWords B).card +
           (softOverlapCompletionWords B).card +
-          (((Finset.univ : Finset (Fin n → Bool)) \\
+          (((Finset.univ : Finset (Fin n → Bool)) \
               coveredCompletionWords B).card -
             (netCollisionCertifiedTrueHoleDiagonals
               B k hexp honeLoss).card) +
@@ -87,7 +87,7 @@ theorem planar_net_mobile_true_hole_refund_shadow_ledger
           (netStrictDescentRigidWords B k).card ≤
           (singletonCompletionWords B).card +
           (softOverlapCompletionWords B).card +
-          (((Finset.univ : Finset (Fin n → Bool)) \\
+          (((Finset.univ : Finset (Fin n → Bool)) \
               coveredCompletionWords B).card -
             (netCollisionCertifiedTrueHoleDiagonals
               B k hexp honeLoss).card) +
