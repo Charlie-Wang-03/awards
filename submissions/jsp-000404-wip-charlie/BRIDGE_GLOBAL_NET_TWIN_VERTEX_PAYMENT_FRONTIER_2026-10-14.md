@@ -85,22 +85,61 @@ Result: **SUCCESS**, 3,471 jobs. Three newly proved declarations:
 All 3 `#print axioms`:
 `[propext, Classical.choice, Quot.sound]`, NO `sorryAx`.
 
-### D. Target-exact matching meets TWIN-reserved original ownership (PENDING)
+### D. Target-exact coloured-slot matching with TWIN vertex reservation (VERIFIED)
 
-New `ResidualNetCollisionTwinMatchingJointPayment.lean` intersects
-the independently checked exact-shell candidate maximum matching
-constraint with the bound in C:
+`ResidualNetCollisionTwinMatchingJointPayment.lean` proves:
 
-    |F_d| <= min(nu(G_d), floor((|V|-2*|T|)/4)),
+    |F_d| <= min(nu_coloured_slot(G_d), floor((|V|-2*|T|)/4)).
 
-and substitutes its actual-target fibre excess into the original
-mobile source ledger while separating TRUE Boolean holes from
-already-covered diagonal blockers.
+It transports this source-fibre cap into the exact NET duplicate-image
+debt sum and actual mobile hard-source ledger, preserving the TRUE
+Boolean holes vs already-COVERED target blocker distinction.
 
-This is a **possible** further capacity tightening, not a newly
-available hole/surplus payment. The source is not verified until
-focused CI reports success:
+Focused Lean CI:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38562709753
+
+Result **SUCCESS**: 3,472 jobs, 4 audited declarations;
+axioms are exactly [propext, Classical.choice, Quot.sound].
+
+### E. Source-native ORIGINAL bridge matching with TWIN reservation (VERIFIED)
+
+**New theorem:** `ResidualNetCollisionOriginalTwinJointCapacity.lean`.
+With `mu_original(d)` the maximum number of eligible SOFT
+target-exact bridges using pairwise vertex-disjoint ORIGINAL centres,
+not merely separate coloured endpoint slots:
+
+    |F_d| <= min(mu_original(d), floor((|V|-2*|T|)/4)).
+
+This is independently formally established **no weaker than BOTH**:
+- `min(nu_coloured_slot(d), floor((|V|-2*|T|)/4))`
+- `min(mu_original(d), floor(|V|/4))`
+
+The exact diagonal-image excess sum and mobile source budget inherit
+the stronger bound. The full mobile bound continues to track actual
+singleton words, actual soft words, literal Boolean holes, distinct
+already-COVERED diagonal blockers, and duplicate-image excess separately.
+
+Kernel-checked declarations:
+
+- `net_collision_fibre_original_matching_twin_reserved_min`
+- `net_collision_original_twin_min_le_slot_twin_min`
+- `net_collision_original_twin_min_le_original_quarter_min`
+- `net_collision_duplicate_debt_le_original_twin_matching_excess`
+- `net_mobile_mass_le_holes_covered_original_twin_matching_excess`
+
+Focused GitHub Actions CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38578187635
+
+Result **SUCCESS**, 3,473 jobs, zero Lean errors.
+All five #print axioms checks:
+[propext, Classical.choice, Quot.sound]. NO sorryAx.
+
+The improvement is a pointwise bound on ACTUAL source fibres, not a
+claim of globally non-reusable targetwise carrier or true-hole payments.
+Even if the new bound is strictly smaller for a target, that alone does
+not prove global six-source dyadic capacity, since soft, twin,
+mixed-rigid and projected profile loss liabilities remain outstanding.
+
 
 ## Integrity and outstanding geometric obligation
 
