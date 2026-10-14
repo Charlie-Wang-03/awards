@@ -90,7 +90,6 @@ theorem hansel_card_le_two_pow_of_atMostOne_full
         (∑ v : V, term v) =
           (∑ v ∈ (Finset.univ.erase v0), term v) + term v0 := by
       rw [← Finset.sum_erase_add (Finset.univ) term (Finset.mem_univ v0)]
-      rfl
     have hcardpos : 1 ≤ Fintype.card V := by
       exact Fintype.card_pos_iff.mpr ⟨v0⟩
     have hcarderase :

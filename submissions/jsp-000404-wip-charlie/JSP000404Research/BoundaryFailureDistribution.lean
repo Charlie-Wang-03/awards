@@ -125,7 +125,7 @@ theorem zeroHitSupport_eq_deficit_sub_support_add_one
       q b e n hsum hQ hregular hexception hbad
   have hdec :=
     deficit_eq_floorDefect_add_support q n hQ
-  rw [hell] at hdec
+  rw [hell]
   omega
 
 #print axioms positiveSupport_eq_add_zeroHitSupport

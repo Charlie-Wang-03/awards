@@ -32,7 +32,7 @@ open scoped BigOperators
 /-- A total bonus exceeding W-|V| forces an individually compensated
 deletion.  The hypothesis is written without natural subtraction. -/
 theorem exists_compensated_deletion_of_bonus_threshold
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (weight post bonus : V → ℕ)
     (hpoint : ∀ r,
       (∑ i ∈ Finset.univ.erase r, weight i) + bonus r ≤ post r)
@@ -55,7 +55,7 @@ theorem exists_compensated_deletion_of_bonus_threshold
         Fintype.card V * W := by
     have hp : ∀ r : V, post r + 1 ≤ W := by
       intro r
-      dsimp [W]
+      have hr := hnone r
       omega
     have hs :
         ∑ r : V, (post r + 1) ≤ ∑ _r : V, W :=
@@ -67,7 +67,7 @@ theorem exists_compensated_deletion_of_bonus_threshold
 
 /-- Dyadic specialization for Sendov cluster exponents. -/
 theorem exists_compensated_deletion_of_dyadic_bonus_threshold
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (exponent : V → ℕ)
     (post bonus : V → ℕ)
     (hpoint : ∀ r,

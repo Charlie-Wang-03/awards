@@ -33,15 +33,17 @@ theorem zero_gain_positive_sum_imp_carry_zero
       exponentAfterMerge rest a b (binaryCarry r s) =
         exponentBeforeMerge rest a b) :
     binaryCarry r s = 0 := by
+  by_contra hnot
   have hc := binaryCarry_le_one r s
-  interval_cases hcarry : binaryCarry r s
-  · rfl
-  · have hgain :=
-      exponent_merge_gain_of_carry
-        (rest := rest) (a := a) (b := b)
-        (carry := binaryCarry r s) hpos (by omega)
-    rw [hzero] at hgain
-    omega
+  have hcpos : 1 ≤ binaryCarry r s := by omega
+  have hgain :=
+    exponent_merge_gain_of_carry
+      (rest := rest) (a := a) (b := b)
+      (carry := binaryCarry r s) hpos hcpos
+  have hbad : exponentBeforeMerge rest a b + 1 ≤
+      exponentBeforeMerge rest a b := by
+    simpa only [hzero] using hgain
+  omega
 
 /-- Therefore the two adjacent fractional remainders sum to less than one. -/
 theorem zero_gain_positive_sum_imp_remainder_sum_lt_one

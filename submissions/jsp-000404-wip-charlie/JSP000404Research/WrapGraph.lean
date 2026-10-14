@@ -62,8 +62,8 @@ theorem edgeMiddle_of_not_wrap
   have hnotWrap := hnot huv
   unfold EdgeMiddle
   constructor
-  · exact le_of_not_gt (fun hlow => hnotWrap (Or.inl hlow))
-  · exact lt_of_not_ge (fun hhigh => hnotWrap (Or.inr hhigh))
+  · exact le_of_not_gt (fun hlow => hnotWrap.1 hlow)
+  · exact lt_of_not_ge (fun hhigh => hnotWrap.2 hhigh)
 
 /-- Triangle-free wrap paths have middle chords. -/
 theorem middle_chord_of_triangleFree
@@ -106,7 +106,7 @@ theorem triangleFree_same_at_local_min
     (EdgeLow D v x ∧ EdgeLow D v y) ∨
       (EdgeHigh D n v x ∧ EdgeHigh D n v y) := by
   apply edgeWrap_same_at_local_min D hvx hvy hxy hvxAdj.2 hvyAdj.2
-  exact middle_chord_of_triangleFree D htri hvxAdj hvyAdj hxy
+  exact middle_chord_of_triangleFree D htri hvxAdj.symm hvyAdj hxy
 
 /-- At a local maximum of a triangle-free wrap path, the two L/H types agree. -/
 theorem triangleFree_same_at_local_max

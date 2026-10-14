@@ -64,7 +64,12 @@ theorem stableExample_total_gap :
   calc
     (∑ i, ((stableExampleQ i : ℕ) : ℝ) + stableExampleR i) =
         (∑ i, (stableExampleQ i : ℝ)) + (∑ i, stableExampleR i) := by
-          rw [Finset.sum_add_distrib]
+          change (Finset.univ : Finset (Fin 6)).sum
+              (fun i => (stableExampleQ i : ℝ) + stableExampleR i) =
+            (Finset.univ : Finset (Fin 6)).sum
+              (fun i => (stableExampleQ i : ℝ)) +
+            (Finset.univ : Finset (Fin 6)).sum stableExampleR
+          exact Finset.sum_add_distrib
     _ = (4 : ℝ) + 23 / 21 := by
       have hq : (∑ i, (stableExampleQ i : ℝ)) = 4 := by
         exact_mod_cast stableExample_quotient_sum
