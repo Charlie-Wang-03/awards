@@ -63,8 +63,8 @@ theorem exists_highExponentTransitionIntervalCertificate
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -118,8 +118,11 @@ theorem exists_highExponentTransitionIntervalCertificate
         rw [← hafterLen, hafter]
         rfl
       have hgpostNil : gpost = [] := by
-        apply List.length_eq_zero.mp
-        rw [hpostGapLen, hpostLen0]
+        have hglen : gpost.length = 0 := by
+          rw [hpostGapLen, hpostLen0]
+        cases gpost with
+        | nil => rfl
+        | cons x xs => simp at hglen
       have hrestEq : rest = before := by
         rw [hafter] at hrest
         simpa using hrest
@@ -150,8 +153,7 @@ theorem exists_highExponentTransitionIntervalCertificate
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
-        exact C.theta_sorted
+        simpa only [List.cons_append, hrays'] using C.theta_sorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
         intro j
@@ -276,8 +278,9 @@ theorem exists_highExponentTransitionIntervalCertificate
             j ∈ first :: before ∨ j ∈ right :: tail := by
         intro j
         have hj := C.mem_rays_iff j
-        rw [hrays', List.mem_append] at hj
-        exact hj
+        rw [hrays'] at hj
+        simp only [List.mem_cons, List.mem_append] at hj ⊢
+        tauto
       let width : ℝ :=
         rayThetaAt hp i left + Real.pi -
           rayThetaAt hp i right
@@ -303,8 +306,9 @@ theorem exists_highExponentTransitionIntervalCertificate
                 rayThetaAt hp i left := by
           rw [hgeEq] at hgePos
           have hpi : 0 < Real.pi := Real.pi_pos
-          exact (div_pos_iff.mp hgePos).resolve_right
-            (by linarith : ¬ Real.pi < 0) |>.1
+          rcases (div_pos_iff.mp hgePos) with hpos | hneg
+          · exact hpos.1
+          · linarith [Real.pi_pos]
         dsimp [width]
         linarith
       have hrepr0 :=
