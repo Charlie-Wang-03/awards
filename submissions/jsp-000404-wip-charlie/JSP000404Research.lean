@@ -147,7 +147,7 @@ import JSP000404Research.RetainedOrientation
 
 import JSP000404Research.ResidualBudget
 
-/-!
+/-
 Research-only formalization for the still-incomplete JSP-000404 proof.
 
 Only closed lemmas are exported here. The general geometric construction
