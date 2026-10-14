@@ -2348,3 +2348,24 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38216270221 .
 The research-only WIP was compiled independently with **3,396**
 tasks, one intentional `sorry`/`sorryAx`:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38216044106 .
+
+
+### Certified target-exact matching obstruction (2026-10-14)
+
+`ResidualNetCollisionMatchingObstruction.lean` is included in the
+**sorry-free** `VerifiedOverlapRewire` umbrella and imported by the
+separate research-only admitted WIP. Four new Lean theorems prove
+that two actual same-target NET sources force two candidate exact-shell
+edges disjoint on *both* lower and upper original-colour slots. If
+each hit target graph contains no such edge pair, actual duplicate
+debt vanishes; the genuine mobile ledger then retains only literal
+holes, already covered diagonals, and covered singleton/soft words.
+
+This is a *conditional* simplification. No global planar
+`AngleCap` matching-exclusion theorem or six-source payment has
+been established. The intentionally admitted WIP still contains
+one executable `sorry`, and the original JSP-000404 is OPEN.
+Module and umbrella validation: [GitHub Actions run 38500726760](https://github.com/Charlie-Wang-03/awards/actions/runs/38500726760),
+3,535/3,535 jobs PASS; all four new theorem axiom audits return
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
+See [the precise proof-frontier note](BRIDGE_SLOT_MATCHING_OBSTRUCTION_2026-10-14.md).

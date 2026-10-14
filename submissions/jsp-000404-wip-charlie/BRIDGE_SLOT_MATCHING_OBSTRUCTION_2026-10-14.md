@@ -34,8 +34,10 @@ mixed-rigid, soft overlap, or projected profile-loss terms.
 - Dependencies: the previously certified exact-shell bipartite cover
   and true-hole/covered-diagonal mobile ledger.
 - Lean/Mathlib: use repository-pinned versions.
-- Build and axiom evidence must be checked on this branch's CI;
-  no green status is asserted before the checks finish.
+- GitHub Actions run: https://github.com/Charlie-Wang-03/awards/actions/runs/38500726760
+  — PASS, 3,535 Lean build tasks. All four theorem `#print axioms`
+  results: `[propext, Classical.choice, Quot.sound]`; no `sorryAx`.
+  The separate admitted WIP is **not** part of this sorry-free umbrella.
 
 ## Open mathematical gate
 

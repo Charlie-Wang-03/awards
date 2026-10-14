@@ -32,6 +32,7 @@ import JSP000404Research.ResidualNetCollisionExactShellColourSlots
 import JSP000404Research.ResidualNetCollisionExactShellPaymentBound
 import JSP000404Research.ResidualFiniteBipartiteCoverCapacity
 import JSP000404Research.ResidualNetCollisionExactShellBipartiteCover
+import JSP000404Research.ResidualNetCollisionMatchingObstruction
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -441,6 +442,13 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- small enough covers under real AngleCap and paying them
       -- from genuinely UNRESERVED resources are OPEN obligations.
       -- A covered SOFT edge or endpoint SLOT is NEVER a TRUE hole.
+      -- Certified two-edge matching obstruction (matching-free graph
+      -- implies zero NET duplicate debt): see
+      -- ResidualNetCollisionMatchingObstruction.lean. Any two ACTUAL
+      -- same-diagonal sources imply two eligible edges with DISTINCT
+      -- lower and upper colour slots. Deriving geometric matching
+      -- exclusion (or paying such matchings from nonreused resources)
+      -- remains OPEN; no matching-free hypothesis is silently assumed.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
