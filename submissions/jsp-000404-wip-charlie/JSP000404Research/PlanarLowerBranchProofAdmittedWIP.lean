@@ -61,6 +61,7 @@ import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
+import JSP000404Research.ResidualNetCollisionElevenCentreDoubleHit
 import Mathlib.Tactic
 
 /-!

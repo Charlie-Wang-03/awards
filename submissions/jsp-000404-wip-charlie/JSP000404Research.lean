@@ -1623,3 +1623,5 @@ import JSP000404Research.ResidualLossExtremeStructural
 import JSP000404Research.ResidualSaturatedGlobalTransition
 
 import JSP000404Research.ResidualSafeSaturatedTransition
+
+import JSP000404Research.ResidualNetCollisionElevenCentreDoubleHit
