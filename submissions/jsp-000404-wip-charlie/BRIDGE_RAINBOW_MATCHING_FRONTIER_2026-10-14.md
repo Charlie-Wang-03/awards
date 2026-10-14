@@ -502,3 +502,24 @@ debt and <=9 vertices. It DOES NOT prove positivity is
 geometrically possible, and leaves covered diagonal blockers,
 soft overlap, mixed rigid and profile-loss debts unpaid.
 Lean CI pending.
+
+## <=9 genuine AngleCap: NET duplicate vs TWIN dyadic source mass exclusivity
+
+The abstract source-native proof now gives the UNCONDITIONAL
+<=9-original-centre tradeoff:
+`NET duplicate debt = 0 OR netTwinRigidCarriers = EMPTY`.
+The product of duplicate debt and the actual TWIN dyadic mass
+is identically zero, and these two ledger terms sum to their MAX
+(in contrast with the unrestricted case).
+
+For positive actual duplicate debt and <=9 centres, the ENTIRE
+netRigidHardWords set is precisely the strict-descending rigid
+hard word set: no independent TWIN rigid words survive.
+
+`PlanarNetNineCentreTwinTradeoff.lean` applies the same mutually
+exclusive debt identity to genuine AngleCap/centre-cycle plane
+configurations, deriving one-layer exponent and active-colour
+budget hypotheses rather than assuming them. It is only a
+<=9-centre result: it neither proves the global lower-branch
+dyadic inequality nor supplies fifth-centre/soft/mixed/profile
+payments. Lean CI pending.
