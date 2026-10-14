@@ -40,6 +40,7 @@ theorem zero_gain_positive_sum_imp_carry_zero
       exponent_merge_gain_of_carry
         (rest := rest) (a := a) (b := b)
         (carry := binaryCarry r s) hpos (by omega)
+    rw [hzero] at hgain
     omega
 
 /-- Therefore the two adjacent fractional remainders sum to less than one. -/
