@@ -67,9 +67,14 @@ theorem not_high_high_at_middle
     False := by
   have hsep := D.middleSeparated hav hvb
   unfold IsHigh at havHigh hvbHigh
-  have haTop := D.belowWidth hav
-  have hbTop := D.belowWidth hvb
-  rw [hwidth] at haTop hbTop
+  have haTop : D.value a v < (n : ℝ) + delta := by
+    calc
+      D.value a v < width := D.belowWidth hav
+      _ = (n : ℝ) + delta := hwidth
+  have hbTop : D.value v b < (n : ℝ) + delta := by
+    calc
+      D.value v b < width := D.belowWidth hvb
+      _ = (n : ℝ) + delta := hwidth
   have hsmall : |D.value a v - D.value v b| < 1 := by
     rw [abs_lt]
     constructor <;> linarith
