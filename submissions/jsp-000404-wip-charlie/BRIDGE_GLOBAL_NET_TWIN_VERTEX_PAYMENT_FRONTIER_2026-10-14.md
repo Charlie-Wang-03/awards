@@ -421,3 +421,10 @@ This eliminates the separately charged COVERED diagonal blocker term and refunds
 - `OneSupportTransitionCost.lean`: repaired zero-quotient branch, dependent `AngleCap` parameter, ray-list constructor and local Sendov scale inequality; [CI #38599086065](https://github.com/Charlie-Wang-03/awards/actions/runs/38599086065), 3,237 jobs SUCCESS, zero errors, no sorryAx.
 
 **Open proof**: the single intentional global six-source payment `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` remains untouched. These verified improvements do not establish a non-reusable global allocation of SOFT, TWIN, mixed-rigid and projection-loss liabilities to available true holes and genuinely unreserved profile surplus. The historical root umbrella is still not fully green.
+
+
+### True-hole refund verification correction (2026-10-15)
+
+The first focused abstract refund build [#38599828846](https://github.com/Charlie-Wang-03/awards/actions/runs/38599828846) completed FAILURE. The target-partition lemma `net_collision_distinct_targets_eq_true_holes_add_covered` was kernel-checked with no sorryAx. Only the final `omega` step in `net_mobile_mass_le_unhit_true_holes_plus_global_soft_incidence` failed: the Lean arithmetic normalizer treated locally named `HD.card` and `Holes.card` as unrelated atoms to their unfolded expression in the already-verified premises. No geometric counterexample was supplied by this failure.
+
+Corrective source commit [c25f9b9](https://github.com/Charlie-Wang-03/awards/commit/c25f9b989cae2cceaee073ff69c076b7a40fb097) explicitly unfolds `HD` and `Holes` before `omega`. Recheck: [abstract CI #38601105086](https://github.com/Charlie-Wang-03/awards/actions/runs/38601105086) and [planar CI #38601143049](https://github.com/Charlie-Wang-03/awards/actions/runs/38601143049). **Both remain unverified unless these runs report SUCCESS and axiom audits exclude sorryAx.** No new axiom or sorry was added.
