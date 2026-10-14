@@ -171,3 +171,26 @@ come from genuinely NEW geometry or global non-reused payment, not
 renaming this candidate matching's colour constraint.
 
 Axiom and CI proof for these audit claims pending.
+
+## Target-local Hamming-two SOFT sphere refinement
+
+Candidate graph edge e of fixed d maps INJECTIVELY to a genuine
+covered SOFT shadow word s_e. The pair of original transport colours
+has two DISTINCT coordinates and s_e differs from d at EXACTLY those
+two coordinates. Thus the image is not all global soft words but
+the ACTUAL target-local Hamming-two soft sphere:
+
+  S2_soft(d) = {s in softOverlapCompletionWords(C) :
+                 Hamming(s,d) = 2}.
+  |actual NET fibre(d)| <= |candidateEdges(d)| <= |S2_soft(d)|
+                              <= |all soft words|.
+
+The exact duplicate-debt sum inherits the target-wise
+sum(|S2_soft(d)| - 1) upper bound. Unlike the earlier (vacuous)
+rainbow-vs-ordinary matching distinction, S2_soft(d) can genuinely
+exclude irrelevant soft words from the bound. Its cardinal still
+counts COVERED words, NOT true holes or a non-reused surplus budget;
+a global cross-target payment remains open.
+
+Source: `ResidualNetCollisionLocalSoftSphereCapacity.lean`;
+Lean verification pending.
