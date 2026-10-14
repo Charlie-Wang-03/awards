@@ -139,3 +139,35 @@ covered witnesses without reusing them.
 CI: initial run [38506989335](https://github.com/Charlie-Wang-03/awards/actions/runs/38506989335) FAILED due to one **Lean proof projection typo** in the upper-endpoint reverse-colour proof (`heData.2.2.1` erroneously selected forward-colour violation membership, should be `heData.2.1`). This did not expose a mathematical counterexample. Fixed by commit `a72b126a`.
 
 Final run [38507215558](https://github.com/Charlie-Wang-03/awards/actions/runs/38507215558) PASS, 3,543 jobs. All four theorems in `ResidualNetCollisionCandidateShadowInjection.lean` print only the standard axioms `[propext, Classical.choice, Quot.sound]`, no `sorryAx`; verified umbrella and admitted WIP entry both build. The only `sorryAx` is the prior, explicitly admitted global six-source geometric payment.
+
+## CRITICAL AUDIT: Rainbow matching does NOT sharpen this graph
+
+The previously certified per-target candidate-edge-to-soft-shadow
+INJECTION has a mathematical consequence overlooked when the rainbow
+matching number was first introduced:
+
+- At fixed d, two flips at the same UNORDERED pair of colours produce
+  exactly the same shadow completion word.
+- That shadow determines a unique actual SOFT bridge owner, and
+  the singleton retained-active violation sets determine both slots.
+- Thus every candidate edge at d has a UNIQUE unordered flip-colour
+  pair, even if it does not come from an ACTUAL NET hard-source pair.
+- Consequently every ORDINARY matching is already RAINBOW and
+  **rho(G_d) = nu(G_d)**. A purported improvement via rainbow
+  matching was overclaimed and must not be used as a strict
+  reduction of the eligible candidate graph.
+
+The new `ResidualNetCollisionRainbowRedundancyAudit.lean`
+formalizes this equality and the underlying injectivity. The earlier
+conditional two-edge colour-clash hypothesis on the ACTUAL eligible
+graph in fact implies the absence of ANY two distinct slot-disjoint
+candidate edges; it does not leave additional ordinary matchings
+in this exact-shell graph.
+
+This correction does not invalidate prior verified inequalities:
+they remain TRUE but some are equalities / rephrasings instead of
+strict improvements. The only meaningful further tightening must
+come from genuinely NEW geometry or global non-reused payment, not
+renaming this candidate matching's colour constraint.
+
+Axiom and CI proof for these audit claims pending.
