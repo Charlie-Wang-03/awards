@@ -503,12 +503,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- NEW TARGET-LOCAL SOFT SPHERE CAPACITY:
       -- Every candidate edge's shadow differs from target d at
       -- EXACTLY TWO bit positions, and is a genuine SOFT word.
-      -- Actual NET fibre(d) <= MIN( ordinary nu(G_d),
-      --   count{soft overlap words at Hamming distance 2 from d} ).
-      -- The exact duplicate debt and mobile-hard ledger inherit
-      -- SUM_hit_d (MIN(...) - 1), with no fake TRUE hole credits.
-      -- Single local soft shadow per hit d implies zero NET debt.
-      -- Such uniqueness is NOT proved from planar AngleCap.
+      -- Since ordinary nu(G_d) <= |E(G_d)| <= local soft count,
+      -- MIN(nu(G_d), local soft count) = nu(G_d) IDENTICALLY.
+      -- Thus MIN-bound rewrites do NOT shrink earlier NET duplicate
+      -- debt estimates. This explicitly corrects the previous
+      -- overclaim of an independent local-sphere improvement.
+      -- Single local soft shadow per hit d implies zero NET debt;
+      -- that conditional criterion is NOT proved from AngleCap.
+      -- No new true hole credits or global nonreused payments.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

@@ -198,14 +198,33 @@ First 7 theorems verified in [run 38512146479](https://github.com/Charlie-Wang-0
 
 ## Corrected sharpest certified necessary capacity gate
 
-Let `L2(d)` count actual covered SOFT words at Hamming distance
-exactly two from diagonal d, and `nu(d)` be the ordinary exact-shell
-candidate matching number. The formal goal strengthened from
-`|F_d| <= nu(d)` to `|F_d| <= min(nu(d), L2(d))`.
-When proved, the exact duplicate-debt bound is the hit-target
-sum `min(nu(d),L2(d))-1`, rather than separately weaker sums.
+Let `L2(d)` count actual COVERED SOFT words at Hamming
+distance exactly two from diagonal d, and `nu(d)` be the ordinary
+exact-shell candidate matching number. The proof establishes
+
+  |F_d| <= nu(d) <= |candidateEdges(d)| <= L2(d).
+
+Hence `min(nu(d), L2(d)) = nu(d)` ALWAYS: an attempted apparent
+strengthening via a minimum is in fact redundant. Likewise, the
+min-based duplicate-debt excess sum equals the old matching-number
+excess sum. Keep the local Hamming-two structure certificate, but
+do NOT credit this reformulation as an independent capacity gain.
 
 NONE of `L2(d)`, `nu(d)`, `rho(d)` provides automatic TRUE
 Boolean hole credit or unreserved profile surplus. The remaining
 hard step is geometric/ledger-level global payment for all six
 independent debt families. Validation pending.
+
+## Final bound redundancy verification (2026-10-14)
+
+Three no-sorry theorems in `ResidualNetCollisionLocalSoftSphereCapacity.lean`
+prove `nu(d) <= L2(d)`, `min(nu(d),L2(d))=nu(d)` and equality
+of all hit-target duplicate-debt excess sums. The exact-shell
+colour-support rainbow number was previously also proved equal
+to the ordinary matching number.
+
+These are valuable AUDIT results: correct earlier capacity upper
+bounds have not independently shortened the unique global geometric
+payment `sorry`. Next mathematics must produce new AngleCap
+restrictions or globally distinct hole/surplus resources.
+Lean CI and axiom audit pending.

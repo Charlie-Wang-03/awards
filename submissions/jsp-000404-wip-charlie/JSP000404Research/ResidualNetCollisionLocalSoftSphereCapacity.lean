@@ -10,14 +10,18 @@ However EVERY candidate shadow is exactly TWO Boolean flips away
 from the candidate target diagonal d.
 
 Restrict the target's resource pool to actual SOFT words at Hamming
-distance exactly TWO from d. The exact-slot graph edges inject into
-this SMALLER local sphere. In particular actual NET duplicate fibres
-are bounded by the local source-compatible covered-word sphere,
-and the duplicate debt can be controlled target by target.
+distance exactly TWO from d. Exact-slot graph edges inject into this
+local sphere; it is tighter than the raw count of ALL soft words.
 
-This remains a covered-word accounting certificate, NOT a payment
-by true Boolean holes or unreserved dyadic surplus. There is still
-no global cross-target injectivity.
+IMPORTANT LATER AUDIT: since the ordinary matching number is at most
+the number of graph edges, it is ITSELF bounded by the local sphere
+count. Hence min(matching number, local sphere count) is IDENTICALLY
+the matching number. This is a valid new structural shadow-membership
+certificate, not an independent improvement to the best existing NET
+duplicate-debt upper bound.
+
+This remains covered-word accounting, NOT payment from true Boolean
+holes or unreserved dyadic surplus. No global cross-target injection.
 -/
 
 namespace JSP000404Research
@@ -176,10 +180,9 @@ theorem net_collision_duplicate_debt_le_local_soft_sphere_excess
   omega
 
 
-/-- The useful target-dependent joint upper bound takes the MINIMUM
-of actual graph matching capacity and the genuine local Hamming-two
-soft shadow inventory. Neither inequality alone dominates the other
-in every configuration. -/
+/-- The valid MIN bound is included for accounting completeness, but
+the subsequently proved inequality ordinary ν(d) ≤ local soft sphere
+shows this MIN is identical to ν(d) and DOES NOT sharpen it. -/
 theorem net_collision_target_fibre_card_le_matching_local_soft_min
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -196,9 +199,9 @@ theorem net_collision_target_fibre_card_le_matching_local_soft_min
     (net_collision_target_fibre_card_le_local_soft_sphere
       C exponent hexp honeLoss d)
 
-/-- The true duplicate-source debt is controlled by the pointwise
-MINIMUM of graph-matching capacity and the local covered soft sphere,
-not by either bound in isolation. -/
+/-- A correct duplicate-source bound expressed using the MINIMUM of
+two capacities. The MIN equals ordinary ν(d), as later proved,
+so this is NOT a genuinely stronger upper bound. -/
 theorem net_collision_duplicate_debt_le_matching_local_soft_min_excess
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -218,9 +221,9 @@ theorem net_collision_duplicate_debt_le_matching_local_soft_min_excess
       C exponent hexp honeLoss d
   omega
 
-/-- Consequent mobile-hard accounting with the honest combined
-matching/target-local-covered-soft resource bound. It does NOT
-identify extra TRUE Boolean holes or disjoint profile surplus. -/
+/-- Consequent mobile-hard accounting with the MIN expression,
+which later simplifies to the pre-existing ordinary matching bound.
+It does NOT identify extra TRUE Boolean holes or surplus. -/
 theorem net_mobile_mass_le_holes_covered_matching_local_soft_min_excess
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -269,6 +272,69 @@ theorem net_collision_duplicate_debt_zero_of_local_soft_sphere_unique
       C exponent hexp honeLoss d
   have hone := hunique d hd
   omega
+
+
+/-- The entire graph matching number is itself bounded by the
+target-local Hamming-two actual SOFT completion shadow inventory.
+This follows from matching size ≤ eligible graph edge count and
+the source-provenance-free edge→shadow injection. -/
+theorem target_exact_shell_matching_number_le_local_soft_sphere
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (d : Fin n → Bool) :
+    targetExactShellSlotMatchingNumber C exponent d ≤
+      (targetHammingTwoSoftOverlapWords C d).card := by
+  classical
+  have hgraph :
+      targetExactShellSlotMatchingNumber C exponent d ≤
+        (targetExactShellSlotEdges C exponent d).card := by
+    unfold targetExactShellSlotMatchingNumber
+    apply Finset.sup_le
+    intro M hM
+    exact Finset.card_le_card (Finset.mem_filter.mp hM).2.1
+  have hsphere :=
+    target_exact_shell_candidate_edges_card_le_local_soft_sphere
+      C exponent d
+  omega
+
+/-- CRITICAL CAPACITY AUDIT: taking min(ordinary matching number,
+local Hamming-two soft sphere count) NEVER changes the matching
+number for this particular candidate graph. The extra min is
+logically redundant rather than a sharper bound. -/
+theorem target_exact_shell_matching_local_soft_min_eq_matching
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (d : Fin n → Bool) :
+    min (targetExactShellSlotMatchingNumber C exponent d)
+      (targetHammingTwoSoftOverlapWords C d).card =
+        targetExactShellSlotMatchingNumber C exponent d := by
+  exact min_eq_left
+    (target_exact_shell_matching_number_le_local_soft_sphere
+      C exponent d)
+
+/-- Consequently, the apparently stronger min-based duplicate-debt
+sum is EXACTLY the already available ordinary matching-number
+duplicate-debt sum. This is a formal warning against counting
+tautologically stronger-looking bounds as new progress. -/
+theorem target_exact_shell_min_excess_sum_eq_ordinary_excess_sum
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+      (min (targetExactShellSlotMatchingNumber C exponent d)
+        (targetHammingTwoSoftOverlapWords C d).card - 1)) =
+    (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+      (targetExactShellSlotMatchingNumber C exponent d - 1)) := by
+  apply Finset.sum_congr rfl
+  intro d hd
+  rw [target_exact_shell_matching_local_soft_min_eq_matching
+    C exponent d]
+
+#print axioms target_exact_shell_matching_number_le_local_soft_sphere
+#print axioms target_exact_shell_matching_local_soft_min_eq_matching
+#print axioms target_exact_shell_min_excess_sum_eq_ordinary_excess_sum
 
 #print axioms net_collision_target_fibre_card_le_matching_local_soft_min
 #print axioms net_collision_duplicate_debt_le_matching_local_soft_min_excess

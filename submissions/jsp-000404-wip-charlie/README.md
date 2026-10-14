@@ -2446,13 +2446,28 @@ PASS 3,544, six new theorems without `sorryAx`.
 `ResidualNetCollisionLocalSoftSphereCapacity.lean` proves that
 every fixed-target candidate edge injects into the ACTUAL SOFT
 overlap word set whose Hamming distance from target `d` is exactly
-two. This yields a combined pointwise upper bound for the real NET
-source fibre by the minimum of the exact-shell ordinary matching
-number and the size of this local soft sphere; the exact duplicate
-debt/mobile-hard ledger inherit its per-target excess. If each
-actually hit target has at most one such soft word, duplicate debt
+two. The local sphere is a genuine subset of all covered soft words,
+but because graph matchings are subsets of candidate edges,
+`nu(G_d) <= |E(G_d)| <= |S2_soft(d)|`. Thus the previously
+advertised combined minimum `min(nu(G_d), |S2_soft(d)|)`
+is IDENTICALLY `nu(G_d)`; it cannot improve the best matching
+bound or the actual NET duplicate-debt estimate. This redundancy
+is now proved in Lean, not merely suspected. If each actually
+hit target has at most one local soft word, duplicate debt
 vanishes (conditional, NOT established under AngleCap).
 
 This local sphere is a subset of COVERED words, NOT a set of true
 Boolean holes; no global across-target non-reused charge exists.
 The sole admitted six-class planar payment `sorry` remains.
+
+### Matching / soft-sphere bound redundancy audit
+
+The latest source-level audit formally certifies
+`nu(G_d) <= |E(G_d)| <= |S2_soft(d)|`. Therefore the previously
+introduced min-combined duplicate-debt sum is exactly equal to the
+earlier ordinary matching-number sum. No independent geometric
+debt payment has been obtained by these capacity reformulations.
+The target-local Hamming-two word characterization remains a
+correct structural result and useful potential falsification gate,
+but the open planar `AngleCap` six-source global `sorry`
+is unchanged.
