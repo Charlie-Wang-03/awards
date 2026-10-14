@@ -1,7 +1,7 @@
 import JSP000404Research.StrictSupportAnglePacking
 import JSP000404Research.ConcreteTransitionInterval
 import JSP000404Research.LinearizedTransitionExposure
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Matrix.Basic
 import Mathlib.Tactic
 
 /-!
