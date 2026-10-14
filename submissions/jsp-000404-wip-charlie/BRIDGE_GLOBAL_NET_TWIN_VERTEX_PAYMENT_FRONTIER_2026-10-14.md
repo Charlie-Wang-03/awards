@@ -56,27 +56,51 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/38560808223
 Result: **SUCCESS**, 3,473 jobs; both `#print axioms` contain only
 `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
 
-### C. Simultaneous target fibre/TWIN budget (UNDER VERIFICATION)
+### C. Simultaneous target fibre/TWIN budget (VERIFIED)
 
-Proposed in `ResidualNetCollisionTwinAdjustedFibre.lean`:
+In `ResidualNetCollisionTwinAdjustedFibre.lean` the REAL target fibre
+and the actual TWIN hard carrier family consume one shared
+original-vertex matching:
 
-    4 * |F_d| + 2 * |T| <= |V|    for EVERY genuine target d.
+    4 * |F_d| + 2 * |T| <= |V|    for EVERY target d.
 
-If Lean verifies this, the immediate exact-fibre consequence is
+This gives the exact capacity and global finite target ledger:
 
-    |F_d| <= floor((|V| - 2*|T|)/4),
+    |F_d| <= floor((|V| - 2*|T|)/4);
+    E_D <= SUM_(d in distinct actual diagonal image)
+                 (floor((|V| - 2*|T|)/4) - 1).
 
-and summing over **distinct ACTUAL diagonal targets** would give
-an improved upper bound on exact NET duplicate debt using this
-TWIN-adjusted fibre capacity.
+All arithmetic is natural-number arithmetic, with truncated subtraction.
+The pointwise bound is strictly more informative than a vertex-quarter
+cap when extra TWIN hard carrier ownership reduces available vertices.
 
-These are only potential tightening steps; the above source code is
-NOT counted as verified before the following focussed run succeeds:
-
+Independent focused CI:
 https://github.com/Charlie-Wang-03/awards/actions/runs/38561321399
 
-Do not describe this section as proved if CI fails or remains running.
-Any failure should be debugged from actual job logs with no new `sorry`.
+Result: **SUCCESS**, 3,471 jobs. Three newly proved declarations:
+- `net_collision_fibre_twin_joint_vertex_budget`
+- `net_collision_fibre_card_le_twin_adjusted_quarter`
+- `net_collision_duplicate_debt_le_twin_adjusted_quarter_excess`
+
+All 3 `#print axioms`:
+`[propext, Classical.choice, Quot.sound]`, NO `sorryAx`.
+
+### D. Target-exact matching meets TWIN-reserved original ownership (PENDING)
+
+New `ResidualNetCollisionTwinMatchingJointPayment.lean` intersects
+the independently checked exact-shell candidate maximum matching
+constraint with the bound in C:
+
+    |F_d| <= min(nu(G_d), floor((|V|-2*|T|)/4)),
+
+and substitutes its actual-target fibre excess into the original
+mobile source ledger while separating TRUE Boolean holes from
+already-covered diagonal blockers.
+
+This is a **possible** further capacity tightening, not a newly
+available hole/surplus payment. The source is not verified until
+focused CI reports success:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38562709753
 
 ## Integrity and outstanding geometric obligation
 
