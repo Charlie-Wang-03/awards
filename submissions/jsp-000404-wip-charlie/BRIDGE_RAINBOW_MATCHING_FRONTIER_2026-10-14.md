@@ -452,3 +452,33 @@ associated duplicate-image debt inequality remains an upper
 bound on REAL collisions, not a true Boolean hole credit.
 An example proving strict inequality is not currently supplied.
 Lean CI pending.
+
+
+## Verification closure for three 2026-10-14 original-bridge modules
+
+- All-bit original soft bridge endpoint separation: **PASS**,
+  [run 38523670647](https://github.com/Charlie-Wang-03/awards/actions/runs/38523670647),
+  3,552 jobs; four theorems with only standard Lean axioms.
+- Exact source-fibre original-bridge vertex matching, maximal
+  capacity and original-vertex pairwise-intersection conditional
+  zero-debt gate: **PASS**,
+  [run 38524684280](https://github.com/Charlie-Wang-03/awards/actions/runs/38524684280),
+  3,553 jobs; seven new theorems with no `sorryAx`.
+- Original-bridge vertex matching ALWAYS dominates the previous
+  coloured-slot matching bound by explicit chosen-slot lifting:
+  `nu_original_vertex(d)<=nu_slot(d)`. Combined with the
+  independent `floor(|V|/4)` hard-carrier capacity, this
+  yields `|F_d|<=min(nu_original_vertex(d),floor(|V|/4))`.
+  **PASS**,
+  [run 38525036403](https://github.com/Charlie-Wang-03/awards/actions/runs/38525036403),
+  3,554 jobs; five new no-`sorryAx` theorems.
+
+**Honest open gate:** To turn the new conditional criterion into
+an unconditional AngleCap proof, exclude pairs of target-exact
+eligible ORIGINAL soft bridges with disjoint original vertex
+sets, or derive a non-reused global charge for their NET
+duplicate images. There is currently NO AngleCap derivation
+of pairwise original bridge intersection. Even after that,
+the global fifth-centre/soft/twin/mixed-rigid/profile loss
+dyadic payment still must be established. The single WIP root
+`sorry` is unchanged; no complete proof or disproof.

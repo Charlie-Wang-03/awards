@@ -2557,4 +2557,65 @@ and unreserved-dyadic-surplus payment `sorry`. Covered/fifth-centre
 canonical targets, terminal twins, both mixed-rigid masses,
 soft overlap and projected profile loss are not discharged.
 No complete JSP-000404 proof or disproof is claimed.
+ 
+## 2026-10-14 — Actual NET soft-bridge vertex separation and dominance
 
+The **first genuinely excluded remaining n=3 subcase** is now
+fully formalized: any two DISTINCT genuine NET sources hitting
+the SAME canonical diagonal have TWO ORIGINAL SOFT bridges with
+FOUR PAIRWISE DISTINCT endpoints, even at Hamming distance TWO.
+The old "shared bridge vertex" two-bit scenario cannot occur
+as a true duplicated NET target. With n<=3, any positive real
+duplicate debt requires Hamming distance exactly TWO, original
+two-flip colour supports sharing exactly ONE colour, and
+FOUR DISTINCT soft-bridge endpoints.
+
+[ResidualNetCollisionAllBitBridgeVertexSeparation.lean](JSP000404Research/ResidualNetCollisionAllBitBridgeVertexSeparation.lean)
+— **4** new kernel-verified no-`sorryAx` theorems.
+[Lean CI 38523670647](https://github.com/Charlie-Wang-03/awards/actions/runs/38523670647):
+PASS, 3,552 jobs.
+
+A stronger **original-centre vertex matching certificate** now
+embeds every actual target source fibre F_d, preserving exact
+cardinality, into the projection of eligible target-exact slot
+edges onto their original SOFT bridge endpoints.
+This yields `|F_d|<=nu_original_vertex(d)`, an exact
+duplicate-image debt upper bound, and a conditional zero-debt
+criterion: if for EVERY d all such eligible bridges have
+intersecting ORIGINAL endpoints, then the NET duplicate debt
+vanishes. The condition is **NOT** proved from AngleCap.
+
+[ResidualNetCollisionOriginalBridgeVertexMatching.lean](JSP000404Research/ResidualNetCollisionOriginalBridgeVertexMatching.lean)
+— **7** new kernel-verified no-`sorryAx` theorems.
+Initial Lean API disjunction-order mismatch fixed in
+[commit c7df884](https://github.com/Charlie-Wang-03/awards/commit/c7df884c459ba6a3e3cc8e5a0ba78fd87146f334).
+[Lean CI 38524684280](https://github.com/Charlie-Wang-03/awards/actions/runs/38524684280):
+PASS, 3,553 jobs.
+
+The original-bridge VERTEX matching bound has additionally
+been **proved no weaker than** the old original (vertex,colour)
+slot matching bound: any eligible original-bridge vertex matching
+lifts to an equal-cardinality coloured-slot matching. In notation,
+
+  nu_original_vertex(d) <= nu_slot(d),
+
+and the new certified actual source capacity is
+
+  |F_d| <= min(nu_original_vertex(d), floor(|V|/4)).
+
+The matching dominance is unconditional; STRICT inequality in any
+specific actual configuration is **not** claimed without a witness.
+
+[ResidualNetCollisionOriginalBridgeMatchingDominance.lean](JSP000404Research/ResidualNetCollisionOriginalBridgeMatchingDominance.lean)
+— **5** new kernel-verified no-`sorryAx` theorems.
+[Lean CI 38525036403](https://github.com/Charlie-Wang-03/awards/actions/runs/38525036403):
+PASS, 3,554 jobs.
+
+**Total new theorems this iteration: 16, all kernel-checked
+without `sorryAx`. The only intentionally admitted executable
+`sorry` remains the global six-source `AngleCap` dyadic
+payment in `PlanarLowerBranchProofAdmittedWIP.lean`.** The
+four-centre hard-carrier packing lemma, Boolean hole versus
+COVERED word distinction, fifth-centre blockers, twins, mixed
+rigid and projected loss have NOT been turned into paid surplus.
+The JSP-000404 claim remains unproved and undisproved.
