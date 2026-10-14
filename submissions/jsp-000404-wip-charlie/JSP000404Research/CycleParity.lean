@@ -37,7 +37,7 @@ theorem even_of_cycleGraph_isBipartite
     Even m := by
   obtain ⟨c⟩ := h
   exact even_of_cycleGraph_bool_coloring hm
-    (SimpleGraph.recolorOfEquiv (cycleGraph m) finTwoEquiv.symm c)
+    (SimpleGraph.recolorOfEquiv (cycleGraph m) finTwoEquiv c)
 
 
 /-- Abstract cyclic switch rule.
