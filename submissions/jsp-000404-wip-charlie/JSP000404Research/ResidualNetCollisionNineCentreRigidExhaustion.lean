@@ -182,8 +182,9 @@ theorem net_collision_positive_duplicate_nine_centres_no_twin_rigid
   have hrigid :=
     net_collision_two_sources_nine_centres_rigid_eq_two_strict
       C exponent hexp honeLoss hsmall s t hdiag hne
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro r hr
+  ext r
+  simp only [Finset.mem_empty, iff_false]
+  intro hr
   have htwin := (mem_netTwinRigidCarriers C exponent r).mp hr
   have hmem : r ∈
       ({netCollisionReverseHardPair C exponent hexp honeLoss s,
