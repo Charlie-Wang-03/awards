@@ -33,8 +33,9 @@ noncomputable def targetOfForbiddenCardLt
     (hk : 0 < k)
     (hcard : ∀ {u v : V}, u < v → IsResidual C u v →
       (residualForbidden C u v).card < k) :
-    V → V → Fin k :=
-  fun u v =>
+    V → V → Fin k := by
+  classical
+  exact fun u v =>
     if h : u < v ∧ IsResidual C u v then
       Classical.choose
         (exists_compatible_target_of_forbidden_card_lt
@@ -52,11 +53,12 @@ theorem targetOfForbiddenCardLt_compatible
     ResidualTargetCompatible C
       (targetOfForbiddenCardLt C hk hcard) := by
   intro u v huv hres
-  unfold targetOfForbiddenCardLt
-  simp only [dif_pos ⟨huv, hres⟩]
-  exact Classical.choose_spec
-    (exists_compatible_target_of_forbidden_card_lt
-      C (hcard huv hres))
+  classical
+  have hh : u < v ∧ IsResidual C u v := ⟨huv, hres⟩
+  simpa [targetOfForbiddenCardLt, hh] using
+    (Classical.choose_spec
+      (exists_compatible_target_of_forbidden_card_lt
+        C (hcard huv hres)))
 
 /-- Proper local forbidden lists eliminate the residual colour globally. -/
 noncomputable def recoloringOfForbiddenCardLt
