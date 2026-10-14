@@ -7,8 +7,6 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/StableDeletionReduction.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TransitionCutExposure.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/StableDeletionReduction.lean"
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research/TransitionCutExposure.lean"
       - ".github/workflows/jsp000404-focused-stable-cut.yml"
   workflow_dispatch:
 
@@ -21,7 +19,7 @@ concurrency:
 
 jobs:
   proof:
-    name: Check exact two-module proof frontier (not root)
+    name: Check stable deletion and strict transition exposure only
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
