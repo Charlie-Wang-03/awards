@@ -1,7 +1,7 @@
 import JSP000404Research.MergeZeroGain
 import JSP000404Research.MergeCarry
 import JSP000404Research.ZeroCarry
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Matrix.Basic
 import Mathlib.Tactic
 
 /-!
