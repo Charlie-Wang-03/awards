@@ -92,6 +92,7 @@ theorem net_collision_duplicate_debt_eq_double_hit_card_of_centres_le_eleven
       have hle :=
         net_collision_fibre_card_le_two_of_centres_le_eleven
           C exponent hexp honeLoss hsmall d
+      change (F d).card ≤ 2 at hle
       by_cases htwo : 2 ≤ (F d).card
       · simp [htwo]
         omega
