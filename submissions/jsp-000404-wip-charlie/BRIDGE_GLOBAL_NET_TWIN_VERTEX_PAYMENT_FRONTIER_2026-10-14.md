@@ -352,3 +352,26 @@ is not an injection to spendable credits.
 
 No existing `sorry` or theorem statement has been altered, and no
 additional axiom has been introduced.
+
+
+## 2026-10-15 continuation: verified cross-target SOFT reuse
+
+**Verified original research:** `ResidualNetCollisionGlobalSoftShadowReuse.lean` and `ResidualNetCollisionShadowReuseMultiplicityCap.lean` now both kernel-check in [CI #38597062511](https://github.com/Charlie-Wang-03/awards/actions/runs/38597062511). Build: SUCCESS (3,282 jobs, zero errors). All four printed theorem axiom sets are exactly `[propext, Classical.choice, Quot.sound]` and contain no `sorryAx`.
+
+Let `D = netCollisionCertifiedDiagonalWords C exponent hexp honeLoss` and `S = softOverlapCompletionWords C`. For an ACTUAL soft word `s`, its target reuse multiplicity `m(s)` is the number of `d ∈ D` differing from `s` in exactly two Boolean coordinates. Lean establishes:
+
+```text
+SUM_(d in D) |targetHammingTwoSoftOverlapWords C d|
+  = SUM_(s in S) m(s),
+E_D <= SUM_(s in S) m(s),
+m(s) <= Nat.choose n 2,
+E_D <= |S| * Nat.choose n 2.
+```
+
+This faithfully counts all possible **cross-target shadow reuse**. It is an upper bound on COVERED resources, not an injective true-hole payment or proof of any unreserved dyadic surplus. The bound can be looser than some prior target-specific matching bounds; it is valuable for accounting for reuse explicitly, not as an automatic strict improvement in the original theorem.
+
+**Verified historical Lean repair:** `MinimalPhaseCover.lean` previously had three opposite-direction inequality witnesses (`i ≠ j` vs `j ≠ i`). Their corrected uses kernel-check in [CI #38597418973](https://github.com/Charlie-Wang-03/awards/actions/runs/38597418973): SUCCESS (3,092 jobs, zero errors); audited theorems depend only on standard Lean logical axioms.
+
+**Additional strict first-hit target obligation (PENDING):** `ResidualNetCollisionShadowFirstHitGlobalCharge.lean`, independent [CI #38598066535](https://github.com/Charlie-Wang-03/awards/actions/runs/38598066535), proposes the stronger bound `E_D + |D| <= SUM_s m(s)`, using exact finite-map first-preimage accounting. Do not count as proved until the CI is SUCCESS and its axiom audit is clean.
+
+The only intentionally admitted global six-source proof `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` is untouched. The historical root entry still has unrelated compile errors; isolated successful CIs do NOT make the entire root green.
