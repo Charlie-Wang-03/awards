@@ -161,7 +161,16 @@ theorem four_turnLength_sum_le_two_pi
             exact Fin.elim0 r
   have h :=
     turnLength_sum_le_two_pi centre hcentre cert
-  simpa [cert, centre, Fin.cases, Fin.sum_univ_succ] using h
+  have hc0 : cert (0 : Fin 4) = Cs := rfl
+  have hc1 : cert (1 : Fin 4) = Ca := rfl
+  have hc2 : cert (2 : Fin 4) = Cb := rfl
+  have hc3 : cert (3 : Fin 4) = Cc := rfl
+  have hsum :
+      (∑ r : Fin 4, (cert r).turnLength) =
+        Cs.turnLength + Ca.turnLength + Cb.turnLength + Cc.turnLength := by
+    simp [Fin.sum_univ_succ, hc0, hc1, hc2, hc3, add_assoc]
+  rw [hsum] at h
+  exact h
 
 #print axioms turnLength_sum_le_two_pi
 #print axioms four_turnLength_sum_le_two_pi
