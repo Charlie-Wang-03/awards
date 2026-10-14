@@ -451,6 +451,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- lower and upper colour slots. Deriving geometric matching
       -- exclusion (or paying such matchings from nonreused resources)
       -- remains OPEN; no matching-free hypothesis is silently assumed.
+      -- SOURCE-COMPATIBLE GRAPH CORRECTION: eligible candidate edges
+      -- now additionally require reverse colour INACTIVE at their
+      -- own lower endpoint and forward colour INACTIVE at their
+      -- own upper endpoint. Prior source-inclusion remains certified.
+      -- Every candidate edge has both target-exact slot endpoints;
+      -- the derived maximum matching number is for this STRICTER
+      -- finite graph, not arbitrary coloured endpoint pairs.
+      -- None of these edges or matching capacities is a TRUE hole.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

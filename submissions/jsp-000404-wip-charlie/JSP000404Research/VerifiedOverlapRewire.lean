@@ -316,3 +316,16 @@ is NOT a dyadicProfileSurplus (both endpoints are fully saturated),
 and this bound is NOT itself a payment by true Boolean holes.
 The excluded WIP retains ONE unresolved global-payment sorry.
 -/
+
+
+/-!
+## Target-exact candidate graph provenance tightening (2026-10-14)
+
+The exact-shell edge predicate now ALSO requires each original flip
+colour to be retained-INACTIVE at its OWN bridge endpoint. The
+source-edge membership lemma and the newly proved endpoint-pool
+membership theorem are imported through
+ResidualNetCollisionExactShellBipartiteCover. The matching-number
+and duplicate-debt theorems consequently apply to this refined
+candidate graph; none establishes an AngleCap payment by TRUE holes.
+-/

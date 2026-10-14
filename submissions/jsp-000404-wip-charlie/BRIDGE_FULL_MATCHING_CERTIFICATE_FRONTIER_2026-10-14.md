@@ -89,4 +89,4 @@ principle** (no strictness witness asserted for all configurations).
 Its maximum-matching number may become smaller, strengthening
 the unconditional source-fibre and duplicate-debt bound. It is
 not a proof that these matching credits are TRUE Boolean holes.
-Lean build verification and axiom audit are pending.
+Isolated module: [GitHub Actions run 38503265973](https://github.com/Charlie-Wang-03/awards/actions/runs/38503265973) — PASS, 3,270 jobs; actual-source edge inclusion and new endpoint membership theorem have only standard `[propext, Classical.choice, Quot.sound]` axioms. Full umbrella and admitted WIP import-chain rebuild remains a separate gate.
