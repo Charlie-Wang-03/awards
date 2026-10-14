@@ -2382,3 +2382,24 @@ previously verified target-exact endpoint colour-slot pools.
 The resulting maximum-matching number counts a smaller, fully
 source-compatible candidate graph. This does not pay the remaining
 six-source geometric `sorry` or upgrade the result to a full proof.
+
+### Source-native rainbow matching refinement (2026-10-14)
+
+The certified actual NET target-source fibre embeds at equal size into
+an eligible **rainbow matching**: both original colour-slot endpoints
+are pairwise distinct, and the unordered original forward/reverse
+flip-colour pairs of different edges are pairwise distinct. Its finite
+maximum `rho(d)` satisfies `|F_d| <= rho(d) <= nu(d)`. The exact
+canonical duplicate-debt sum and actual mobile ledger inherit the
+smaller `rho(d)-1` bound. Positive NET duplicate debt MUST witness
+at least two eligible target-exact edges with disjoint slots and
+**different unordered original colour supports**. Exclusion of this
+rainbow pair would suffice to remove the duplicate debt; unlike the
+prior no-matching condition it allows ordinary slot-disjoint edge
+pairs that reuse the same colour pair.
+
+Lean CI: [rainbow capacity 38504690545](https://github.com/Charlie-Wang-03/awards/actions/runs/38504690545)
+and [rainbow pair obstruction 38504957833](https://github.com/Charlie-Wang-03/awards/actions/runs/38504957833), both PASS, new
+11 theorems free of `sorryAx`. These are honest combinatorial
+necessary conditions, not yet a planar AngleCap exclusion or proof
+of the unresolved six-source geometric payment.

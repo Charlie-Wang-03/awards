@@ -43,7 +43,7 @@ themselves literal Boolean holes or unreserved global surplus.
   matching components, keeping fifth-centre, twin, mixed-rigid,
   soft and profile loss debts separate.
 
-Validation: pending GitHub Actions result.
+Verification: [run 38504690545](https://github.com/Charlie-Wang-03/awards/actions/runs/38504690545) PASS, 3,539 jobs; six rainbow capacity theorems only depend on [propext, Classical.choice, Quot.sound].
 
 ## No two-edge rainbow obstruction: a weaker local exclusion
 
@@ -68,4 +68,4 @@ The assumption that all disjoint candidate edge pairs clash in
 colour support is still an EXTRA unproved geometry hypothesis:
 no AngleCap consequence has been asserted.
 
-CI and axioms audit: pending.
+Verification: [run 38504957833](https://github.com/Charlie-Wang-03/awards/actions/runs/38504957833) PASS, 3,540 jobs; five rainbow two-edge obstruction theorems only depend on [propext, Classical.choice, Quot.sound]. Both runs compiled the verified umbrella and WIP module; the latter retains the historical sole sorryAx.

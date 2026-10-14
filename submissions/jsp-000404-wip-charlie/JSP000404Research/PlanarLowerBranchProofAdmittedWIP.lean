@@ -461,6 +461,27 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- the derived maximum matching number is for this STRICTER
       -- finite graph, not arbitrary coloured endpoint pairs.
       -- None of these edges or matching capacities is a TRUE hole.
+      -- VERIFIED SOURCE-NATIVE RAINBOW MATCHING REDUCTION:
+      -- Every ACTUAL target-diagonal source fibre embeds at EXACT
+      -- cardinality into a matching with DISTINCT lower slots,
+      -- DISTINCT upper slots, and DISTINCT unordered original
+      -- forward/reverse flip-colour PAIRS. This is strictly more
+      -- selective at the candidate-graph level than ordinary
+      -- bipartite matching (which may reuse a colour pair).
+      -- The maximum such graph rainbow matching count rho(d)
+      -- satisfies |true fibre(d)| <= rho(d) <= ordinary nu(d).
+      -- Hence actual NET duplicate debt <= SUM_hit_d (rho(d)-1),
+      -- with the corresponding literal-hole/covered-target ledger.
+      -- TRUE positive duplicate debt FORCEs at one ACTUALLY HIT d
+      -- a pair of candidate edges with different lower slots,
+      -- different upper slots, and DISTINCT unordered colour pairs.
+      -- Therefore it suffices to exclude those RAINBOW PAIRS, a
+      -- weaker conditional obligation than excluding all
+      -- candidate two-edge ordinary matchings; that would give
+      -- E_D=0. No planar AngleCap proof of this exclusion or a
+      -- geometric payment of the surviving pair motif exists.
+      -- Fifth-centre blockers, twin, mixed-rigid, soft and
+      -- projected-loss debts are further independent obstacles.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
