@@ -404,3 +404,28 @@ exactly ONE common original flip colour, whose two original soft
 bridge owners have FOUR DISTINCT endpoints. Covered fifth-centre
 blockers, other dyadic debts and the global six-source geometric
 payment are still open. Lean CI pending.
+
+## Source-specific original-centre vertex matching, and a new precise geometric gate
+
+`ResidualNetCollisionOriginalBridgeVertexMatching.lean`
+constructs `targetExactShellOriginalBridgeEdges`: the set of
+original oriented SOFT bridge pairs obtained by projecting eligible
+target-exact slot edges from `(vertex,colour)` endpoints down to
+their ORIGINAL vertices. For every actual NET fibre at target d,
+a same-cardinality VERTEX-DISJOINT soft-bridge matching exists in
+this smaller source-compatible pool. Therefore the actual fibre is
+bounded by the maximal vertex-disjoint bridge matching, rather
+than relying only on the slot matching number.
+
+Conditional new gate: if for every canonical target d, every
+two target-exact eligible ORIGINAL SOFT bridge candidates share
+an ORIGINAL centre, then every actual NET diagonal fibre has
+card <=1, the actual duplicate-image debt is zero, and the
+mobile-hard ledger loses the duplicate term. This is a genuinely
+less demanding *target to aim for* than excluding every
+two-edge matching of colour slots; the extra ORIGINAL vertex
+coincidence can eliminate combinations allowed by slot matchings.
+No `AngleCap` proof of this pairwise-intersection hypothesis
+currently exists, and neither the covered-target blocker debt
+nor the other five global dyadic payments is addressed here.
+Lean CI pending.

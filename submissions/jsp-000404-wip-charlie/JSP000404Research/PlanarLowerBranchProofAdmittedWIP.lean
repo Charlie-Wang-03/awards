@@ -49,6 +49,7 @@ import JSP000404Research.ResidualNetCollisionEightCentreBarrier
 import JSP000404Research.PlanarNetSmallCentreNoDuplicate
 import JSP000404Research.ResidualNetCollisionVertexBudgetFibre
 import JSP000404Research.ResidualNetCollisionAllBitBridgeVertexSeparation
+import JSP000404Research.ResidualNetCollisionOriginalBridgeVertexMatching
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -555,6 +556,17 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- requires TWO fully vertex-disjoint SOFT bridges with
       -- exactly one original flip-colour overlap. No AngleCap
       -- geometric exclusion of this residual remains proved.
+      -- FURTHER ORIGINAL-VERTEX MATCHING GEOMETRIC GATE:
+      -- Every real same-target NET source fibre embeds at EXACT
+      -- CARDINALITY into the original-centre VERTEX MATCHING of
+      -- original soft bridges projected from target-exact
+      -- (vertex,colour) slot edges. This condition is stronger
+      -- than a slot matching: candidate edges may be slot-disjoint
+      -- but still share an ORIGINAL centre and cannot both be
+      -- genuine duplicate sources. A targetwise pairwise-intersecting
+      -- eligible original bridge graph would therefore force ZERO
+      -- duplicate debt, but that hypothesis has NOT been proved
+      -- from planar AngleCap and is NOT inserted into this goal.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
