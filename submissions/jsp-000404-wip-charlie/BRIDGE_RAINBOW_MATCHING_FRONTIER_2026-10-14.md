@@ -482,3 +482,23 @@ of pairwise original bridge intersection. Even after that,
 the global fifth-centre/soft/twin/mixed-rigid/profile loss
 dyadic payment still must be established. The single WIP root
 `sorry` is unchanged; no complete proof or disproof.
+
+## Conditional <=9 original-centre hard-carrier and twin exhaustion
+
+`ResidualNetCollisionNineCentreRigidExhaustion.lean`:
+if |V| <= 9 and there are two distinct genuine NET sources
+with the SAME target diagonal, their four original HARD
+carrier pairs constitute **ALL** hardOverlapCarrierPairs.
+This follows from four-way source hard pairing plus the global
+vertex matching 2*|hardCarriers| <= |V|, which implies that no
+fifth hard carrier fits among <=9 original centres.
+
+Consequently all NET rigid hard carriers are exactly the TWO
+strict-descending reverse-source carriers; under positive real
+duplicate debt, the equal-target terminal TWIN rigid carrier
+set is EMPTY. This is an actual subcase reduction of the
+six-source dyadic ledger, conditional on positive duplicate
+debt and <=9 vertices. It DOES NOT prove positivity is
+geometrically possible, and leaves covered diagonal blockers,
+soft overlap, mixed rigid and profile-loss debts unpaid.
+Lean CI pending.

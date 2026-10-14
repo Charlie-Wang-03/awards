@@ -51,6 +51,7 @@ import JSP000404Research.ResidualNetCollisionVertexBudgetFibre
 import JSP000404Research.ResidualNetCollisionAllBitBridgeVertexSeparation
 import JSP000404Research.ResidualNetCollisionOriginalBridgeVertexMatching
 import JSP000404Research.ResidualNetCollisionOriginalBridgeMatchingDominance
+import JSP000404Research.ResidualNetCollisionNineCentreRigidExhaustion
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -577,6 +578,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- |F_d| <= min(nu_original_vertex(d), floor(|V|/4))
       -- is PROVED no weaker than the previous slot + quarter
       -- bound. Strictness is NOT claimed for all configurations.
+      -- SMALL-VERTEX ACTUAL COLLISION EXHAUSTION:
+      -- For <=9 original centres, TWO distinct same-target NET
+      -- sources consume ALL FOUR possible original hard carriers.
+      -- Every terminal NET rigid pair is one of the two
+      -- STRICT-descending reverse sources, hence no EQUAL-exponent
+      -- twin-rigid term survives IF positive duplicate debt occurs
+      -- in this regime. The remaining covered SOFT and global
+      -- geometric payment obligations are not thereby closed.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
