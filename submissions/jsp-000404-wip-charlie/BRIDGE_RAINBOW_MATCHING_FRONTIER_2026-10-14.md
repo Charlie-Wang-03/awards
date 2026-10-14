@@ -501,7 +501,7 @@ six-source dyadic ledger, conditional on positive duplicate
 debt and <=9 vertices. It DOES NOT prove positivity is
 geometrically possible, and leaves covered diagonal blockers,
 soft overlap, mixed rigid and profile-loss debts unpaid.
-Lean CI pending.
+[Lean CI 38526827836](https://github.com/Charlie-Wang-03/awards/actions/runs/38526827836) PASS (3,555 jobs); all three initial hard-carrier/twin source theorems have only standard Lean axioms.
 
 ## <=9 genuine AngleCap: NET duplicate vs TWIN dyadic source mass exclusivity
 
@@ -522,4 +522,4 @@ configurations, deriving one-layer exponent and active-colour
 budget hypotheses rather than assuming them. It is only a
 <=9-centre result: it neither proves the global lower-branch
 dyadic inequality nor supplies fifth-centre/soft/mixed/profile
-payments. Lean CI pending.
+payments. [Lean CI 38527213593](https://github.com/Charlie-Wang-03/awards/actions/runs/38527213593) PASS for the four added source-native tradeoff/word-set lemmas (3,468 jobs). [Planar Lean CI 38527633606](https://github.com/Charlie-Wang-03/awards/actions/runs/38527633606) PASS (3,556 jobs); one new planar theorem without `sorryAx`.

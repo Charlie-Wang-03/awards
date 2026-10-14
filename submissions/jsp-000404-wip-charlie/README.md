@@ -2619,3 +2619,55 @@ four-centre hard-carrier packing lemma, Boolean hole versus
 COVERED word distinction, fifth-centre blockers, twins, mixed
 rigid and projected loss have NOT been turned into paid surplus.
 The JSP-000404 claim remains unproved and undisproved.
+
+
+## 2026-10-14 — <=9 original-centre NET/TWIN exclusion, verified
+
+A positive REAL canonical NET target-image duplication requires
+FOUR distinct original HARD carrier edges. Since all HARD carrier
+edges form a vertex matching, if `Fintype.card V <= 9`, those four
+carriers exhaust the ENTIRE hard carrier family. The complete
+terminal `netRigidHardCarriers` are precisely the two
+STRICT-descending reverse-source pairs, and
+`netTwinRigidCarriers = ∅`. No equal-exponent TWIN rigid
+faces survive in the positive-duplication regime.
+
+An unconditional and source-honest finite-size **tradeoff**
+follows for every eligible abstract residual colouring:
+
+  |V|<=9 => [duplicateDebt=0 OR netTwinRigidCarriers=empty]
+
+and therefore the NET duplicate excess `E_D` and TWIN
+dyadic mass `T` satisfy `E_D*T = 0` and `E_D+T=max(E_D,T)`.
+Under positive NET duplication the WHOLE `netRigidHardWords`
+set equals `netStrictDescentRigidWords`, so the absence of
+TWIN is witnessed at the Boolean word-set level, not just
+at the carrier-label level.
+
+`PlanarNetNineCentreTwinTradeoff.lean` derives these budget
+hypotheses from ACTUAL planar `AngleCap` and projective centre
+cycles, then proves the same `E_D+T=max(E_D,T)` identity.
+This is an honest reduction of two COMPETING debt categories
+in the small original-centre regime, NOT a complete dyadic
+payment or Boolean hole allocation.
+
+[ResidualNetCollisionNineCentreRigidExhaustion.lean](JSP000404Research/ResidualNetCollisionNineCentreRigidExhaustion.lean):
+**7** no-`sorryAx` Lean theorems;
+[CI 38527213593](https://github.com/Charlie-Wang-03/awards/actions/runs/38527213593),
+PASS, 3,468 incrementally built targets. The three foundational
+theorems also passed full dependent-target builds in
+[CI 38526827836](https://github.com/Charlie-Wang-03/awards/actions/runs/38526827836),
+3,555 jobs.
+
+[PlanarNetNineCentreTwinTradeoff.lean](JSP000404Research/PlanarNetNineCentreTwinTradeoff.lean):
+**1** actual planar no-`sorryAx` theorem;
+[CI 38527633606](https://github.com/Charlie-Wang-03/awards/actions/runs/38527633606),
+PASS, 3,556 jobs.
+
+**Remaining open mathematical input:** the full six-family,
+unrestricted-cardinality `AngleCap` geometric payment;
+covered diagonals including fifth-centre blockers, SOFT
+overlap, mixed-rigid liabilities, and projected profile
+loss are NOT discharged by this finite-size tradeoff.
+One intentionally admitted executable `sorry` remains
+in `PlanarLowerBranchProofAdmittedWIP.lean`.

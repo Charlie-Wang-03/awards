@@ -587,6 +587,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- twin-rigid term survives IF positive duplicate debt occurs
       -- in this regime. The remaining covered SOFT and global
       -- geometric payment obligations are not thereby closed.
+      -- FORMAL SMALL-VERTEX TWO-DEBT MUTUAL EXCLUSION:
+      -- For <=9 original centres, E_D (genuine NET duplicate
+      -- image excess) and T (equal-exponent TWIN rigid dyadic
+      -- mass) CANNOT BOTH BE POSITIVE: E_D * T = 0 and
+      -- E_D + T = max(E_D,T). The SAME identity is now a
+      -- genuine planar AngleCap theorem built from centre cycles
+      -- and one-layer residual evidence. When E_D>0, ALL terminal
+      -- rigid hard words are strict-descending reverse movable
+      -- hard words; no TWIN face survives. This is conditional
+      -- on <=9 original centres and not a complete global payment.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
