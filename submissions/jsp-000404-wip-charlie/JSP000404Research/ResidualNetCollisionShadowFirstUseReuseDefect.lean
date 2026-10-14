@@ -43,7 +43,7 @@ theorem finite_degree_first_use_plus_reuse_exact
       intro s hs
       split_ifs <;> omega
     _ = (∑ s ∈ S, if 0 < deg s then 1 else 0) +
-          (∑ s ∈ S, deg s - 1) := Finset.sum_add_distrib
+          (∑ s ∈ S, (deg s - 1)) := Finset.sum_add_distrib
     _ = (S.filter (fun s => 0 < deg s)).card +
           ∑ s ∈ S, (deg s - 1) := by rw [hused]
 
@@ -64,7 +64,7 @@ theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
       (S.filter (fun s => 0 < deg s)).card +
         ∑ s ∈ S, (deg s - 1) := by
   classical
-  dsimp
+  dsimp only
   exact finite_degree_first_use_plus_reuse_exact
     (softOverlapCompletionWords C)
     (fun s => ((netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).filter
@@ -89,7 +89,7 @@ theorem net_duplicate_first_hits_le_used_soft_plus_reuse_defect
       (S.filter (fun s => 0 < deg s)).card +
         ∑ s ∈ S, (deg s - 1) := by
   classical
-  dsimp
+  dsimp only
   let D := netCollisionCertifiedDiagonalWords C exponent hexp honeLoss
   let S := softOverlapCompletionWords C
   let deg : (Fin n → Bool) → ℕ := fun s =>
@@ -127,7 +127,7 @@ theorem net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
   let deg : (Fin n → Bool) → ℕ := fun s =>
     (D.filter (fun d =>
       (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card
-  have hreuse : (∑ s ∈ S, deg s - 1) = 0 := by
+  have hreuse : (∑ s ∈ S, (deg s - 1)) = 0 := by
     apply Finset.sum_eq_zero
     intro s hs
     have h := hnoreuse s hs
@@ -137,7 +137,7 @@ theorem net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
     C exponent hexp honeLoss
   change netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
     D.card ≤ (S.filter (fun s => 0 < deg s)).card +
-      (∑ s ∈ S, deg s - 1) at hbudget
+      (∑ s ∈ S, (deg s - 1)) at hbudget
   rw [hreuse, add_zero] at hbudget
   exact hbudget.trans
     (Finset.card_le_card (Finset.filter_subset _ _))
