@@ -70,6 +70,19 @@ theorem weighted_hansel_missing_finset
         2 ^ k - Fintype.card V := by
     dsimp [defectTerm]
     exact weighted_hansel_defect bit specified hsep
+  -- Nat subtraction truncates. The defect bound alone does NOT prove
+  -- the claimed sum inequality when |V| > 2^k. Establish the required
+  -- baseline Hansel capacity before using omega.
+  have hcard : Fintype.card V ≤ 2 ^ k := by
+    have hones :
+        (∑ v : V, (1 : ℕ)) ≤
+          ∑ v : V, 2 ^ (k - (specified v).card) := by
+      apply Finset.sum_le_sum
+      intro v _
+      have hp : 0 < (2 : ℕ) ^ (k - (specified v).card) :=
+        pow_pos (by omega) _
+      omega
+    simpa using hones.trans (weighted_hansel bit specified hsep)
   omega
 
 namespace BinaryEdgePartition
