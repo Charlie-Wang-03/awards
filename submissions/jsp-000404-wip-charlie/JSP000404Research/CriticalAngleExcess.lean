@@ -66,7 +66,10 @@ theorem critical_angle_excess_bounds
         criticalBadWidth delta s ≤ delta := by
       unfold criticalBadWidth
       linarith
-    exact mul_le_mul_of_nonneg_left hw hlam0
+    calc
+      lam * criticalBadWidth delta s ≤ lam * delta :=
+        mul_le_mul_of_nonneg_left hw hlam0
+      _ = delta * lam := mul_comm lam delta
 
 /-- If the normalized total bad mass is below the Sendov phase circumference,
 then the corresponding physical total angle excess is below pi. -/
@@ -80,7 +83,9 @@ theorem physical_excess_lt_pi_of_bad_mass_lt_phase
     (∑ c, lam * bad c) < Real.pi := by
   rw [hpi]
   rw [← Finset.mul_sum]
-  exact mul_lt_mul_of_pos_left hbad hlam
+  calc
+    lam * (∑ c, bad c) < lam * t := mul_lt_mul_of_pos_left hbad hlam
+    _ = t * lam := mul_comm lam t
 
 #print axioms critical_bad_width_mul_eq_angle_excess
 #print axioms critical_angle_excess_bounds
