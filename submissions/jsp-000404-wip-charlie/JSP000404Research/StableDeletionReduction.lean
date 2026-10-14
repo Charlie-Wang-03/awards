@@ -62,7 +62,7 @@ theorem selected_weight_le_total_matrix_bonus
 /-- If every nonstable row pays for itself and the complementary stable weight
 is below the number of deletion choices, the sharp average threshold is met. -/
 theorem exists_compensated_deletion_of_stable_weight_lt_card
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (weight post : V → ℕ)
     (bonus : V → V → ℕ)
     (unstable : Finset V)
@@ -91,7 +91,9 @@ theorem exists_compensated_deletion_of_stable_weight_lt_card
         simp
       · intro i hi
         rfl
-    · exact Finset.disjoint_sdiff_right
+    · apply Finset.disjoint_left.mpr
+      intro x hx hcomp
+      exact (Finset.mem_sdiff.mp hcomp).2 hx
   apply exists_compensated_deletion_of_bonus_threshold
     weight post (fun r => ∑ i : V, bonus i r) hpoint
   rw [hsplit]
@@ -100,7 +102,7 @@ theorem exists_compensated_deletion_of_stable_weight_lt_card
 /-- Dyadic specialization: stable centres are precisely the rows for which no
 incident deletion provides a one-old-weight bonus. -/
 theorem exists_compensated_deletion_of_dyadic_stable_weight_lt_card
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (exponent : V → ℕ)
     (post : V → ℕ)
     (bonus : V → V → ℕ)

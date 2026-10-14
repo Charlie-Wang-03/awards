@@ -53,12 +53,9 @@ theorem strictlyExposedAt_of_positive_transition_cut
         a ≤ theta ∧ theta ≤ a + (Real.pi - gap) ∧
         p j - p i = rho • signedRayDirection sigma theta) :
     StrictlyExposedAt p i := by
-  apply strictlyExposedAt_of_common_signed_interval
+  exact strictlyExposedAt_of_common_signed_interval
     (a := a) (width := Real.pi - gap)
-  · linarith
-  · exact pi_sub_gap_lt_pi hgap0
-  · exact sigma
-  · exact hrepr
+    (by linarith) (pi_sub_gap_lt_pi hgap0) sigma hrepr
 
 /-- In Sendov scaling it suffices that the removed transition gap contain one
 full cap unit lambda. -/
