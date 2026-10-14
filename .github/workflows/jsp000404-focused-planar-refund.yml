@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarNetTrueHoleRefundShadowLedger.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualNetCollisionTrueHoleRefundShadowLedger.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualNetCollisionLocalSoftSphereCapacity.lean"
       - ".github/workflows/jsp000404-focused-planar-refund.yml"
   workflow_dispatch:
