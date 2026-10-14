@@ -81,7 +81,9 @@ theorem exists_fixedPhase_separating_color
       have hmhi : D.value i j < (m : ℝ) + 1 := by
         simpa [m] using Nat.lt_floor_add_one (D.value i j)
       have hmpos : 1 ≤ Nat.floor (D.value i j) := by
-        exact Nat.le_floor hx1
+        have hcast : ((1 : ℕ) : ℝ) ≤ D.value i j := by
+          simpa using hx1
+        exact Nat.le_floor hcast
       have hmne : m.val ≠ 0 := by
         dsimp [m]
         omega
@@ -181,7 +183,10 @@ theorem fixedPhaseEdgeColor_bit_ne
       have hmpos : m.val ≠ 0 := by
         rw [hmval]
         have hf : 1 ≤ Nat.floor (D.value u v) :=
-          Nat.le_floor hmid
+          (by
+            have hcast : ((1 : ℕ) : ℝ) ≤ D.value u v := by
+              simpa using hmid
+            exact Nat.le_floor hcast)
         omega
       have hmlo : (m : ℝ) ≤ D.value u v := by
         rw [show (m : ℝ) = (Nat.floor (D.value u v) : ℕ) by
