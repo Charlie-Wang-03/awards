@@ -81,11 +81,18 @@ theorem net_collision_duplicate_debt_le_global_soft_shadow_incidence
   have hdrop :
       (∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card - 1) ≤
         ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card := by
-    apply Finset.sum_le_sum
-    intro d hd
-    omega
+    exact Finset.sum_le_sum (s := D)
+      (fun d hd => Nat.sub_le (targetHammingTwoSoftOverlapWords C d).card 1)
   have hdouble := soft_hamming_two_shadow_incidence_double_count C D
-  exact (hlocal.trans hdrop).trans hdouble
+  calc
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card - 1 := by
+        simpa only [D] using hlocal
+    _ ≤ ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card := hdrop
+    _ = ∑ s ∈ softOverlapCompletionWords C,
+        (D.filter (fun d =>
+          (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card :=
+        hdouble
 
 #print axioms soft_hamming_two_shadow_incidence_double_count
 #print axioms net_collision_duplicate_debt_le_global_soft_shadow_incidence
