@@ -102,6 +102,7 @@ theorem net_mobile_mass_le_unhit_true_holes_plus_global_soft_incidence
         ((netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).filter
           (fun d =>
             (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card)
+  dsimp only [Holes, HD] at hsubset ⊢
   omega
 
 #print axioms net_collision_distinct_targets_eq_true_holes_add_covered
