@@ -40,7 +40,7 @@ theorem ordered_interval_length_sum_le
   induction xs generalizing A with
   | nil =>
       simp
-      exact sub_nonneg.mpr hAB
+      exact hAB
   | cons x xs ih =>
       have hxNonneg : x.1 ≤ x.2 :=
         hnonneg x (by simp)
@@ -70,8 +70,8 @@ theorem ordered_interval_length_sum_le
           have htail :=
             ih (x.2) hx2B
               htailNonneg htailBounds htailPair
-          simp only [List.map_cons, List.sum_cons]
-          dsimp [realIntervalLength]
+          simp only [List.map_cons, List.sum_cons] at htail ⊢
+          dsimp [realIntervalLength] at htail ⊢
           linarith
 
 /-- Specialized window of angular width 2*pi. -/
