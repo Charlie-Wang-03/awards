@@ -384,3 +384,23 @@ closes; for >=8 centres or general n, fifth-centre covered
 diagonals, surviving duplicate hits, terminal twin and mixed
 rigid, soft, and projection-loss ledgers still need a genuinely
 global nonreusing geometric payment theorem.
+
+## Genuine same-target soft bridges: ALL-BIT vertex separation
+
+`ResidualNetCollisionAllBitBridgeVertexSeparation.lean` proves
+an actual-source sharpening absent from the previous FOUR-bit-only
+bridge separation: for ANY distinct genuine NET sources `s != t`
+with one certified target diagonal, their original SOFT bridge
+owners share **NO ORIGINAL VERTEX**, including lower/lower,
+upper/upper, lower/upper and upper/lower coincidences.
+It derives this from four distinct source HARD carrier pairs
+and the global hard-carrier VERTEX MATCHING. Thus the earlier
+"shared bridge vertex => 2-bit" possibility is EXCLUDED for real
+same-target duplicated sources, not merely classified.
+
+For `n<=3`, positive actual NET duplicate debt therefore needs
+two different source words at Hamming distance exactly TWO, with
+exactly ONE common original flip colour, whose two original soft
+bridge owners have FOUR DISTINCT endpoints. Covered fifth-centre
+blockers, other dyadic debts and the global six-source geometric
+payment are still open. Lean CI pending.

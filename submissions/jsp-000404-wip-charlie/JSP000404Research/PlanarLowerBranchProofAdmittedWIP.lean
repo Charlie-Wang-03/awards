@@ -48,6 +48,7 @@ import JSP000404Research.ResidualNetCollisionThreeColourTwoBitObstruction
 import JSP000404Research.ResidualNetCollisionEightCentreBarrier
 import JSP000404Research.PlanarNetSmallCentreNoDuplicate
 import JSP000404Research.ResidualNetCollisionVertexBudgetFibre
+import JSP000404Research.ResidualNetCollisionAllBitBridgeVertexSeparation
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -544,6 +545,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- FORCES at least EIGHT original centres, regardless of n.
       -- For |V| <= 7 this exact debt is ZERO; covered-blocker,
       -- soft, rigid and profile debts remain unpaid.
+      -- NEW ACTUAL ALL-BIT SOFT-BRIDGE ENDPOINT EXCLUSION:
+      -- Four original hard carriers for any distinct same-target
+      -- NET sources form a vertex matching, so even their TWO
+      -- induced soft bridge owners are VERTEX-DISJOINT in all
+      -- lower/upper and CROSS-ROLE combinations. This upgrades
+      -- the older four-bit-only separation to the surviving
+      -- TWO-BIT case. In n<=3, positive NET duplicate debt
+      -- requires TWO fully vertex-disjoint SOFT bridges with
+      -- exactly one original flip-colour overlap. No AngleCap
+      -- geometric exclusion of this residual remains proved.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
