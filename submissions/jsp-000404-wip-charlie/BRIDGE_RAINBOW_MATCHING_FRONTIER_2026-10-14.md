@@ -255,3 +255,22 @@ an incomplete application of `Finset.card_le_one`. Both are Lean
 engineering errors, not counterexamples. The first theorem has been
 deleted as redundant; `card_le_one` is now applied to both elements
 and their memberships. Revalidation pending.
+
+## Actual planar specialization of small-n NET debt closure
+
+`PlanarNetLowColourNoDuplicate.lean` applies the abstract
+zero-duplicate-debt bound to the **genuine** ordered residual
+colouring `standardResidualColoring` obtained from the original
+planar `AngleCap` hypothesis and cyclic centre profiles.
+For `1 <= n <= 2`, it constructs `hexp` and
+`honeLoss` as mathematical consequences of the geometry,
+then establishes both:
+
+  NET certified duplicate debt = 0;
+  NET forward+reverse mobile hard mass
+    <= singleton + soft + TRUE holes + covered diagonals.
+
+This closes the duplicate portion of the *real planar* NET
+mobile ledger for this n-regime, and keeps covered fifth-centre,
+soft, twins, mixed rigid and profile losses unpaid.
+Lean CI and `#print axioms` pending.
