@@ -215,6 +215,119 @@ theorem net_collision_positive_duplicate_nine_centres_no_twin_rigid
   · intro hr
     simpa using hr
 
+
+/-- For ALL eligible source-native residual colourings on <=9 vertices,
+TWO distinct global debts cannot coexist: either the genuine NET
+duplicate-image excess is ZERO, or the equal-exponent terminal
+TWIN rigid carrier family is EMPTY. This is unconditional with
+respect to whether any collision source pair exists. -/
+theorem net_collision_nine_centres_duplicate_or_twin_zero
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hsmall : Fintype.card V ≤ 9) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss = 0 ∨
+    netTwinRigidCarriers C exponent = ∅ := by
+  by_cases hd :
+      netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss = 0
+  · exact Or.inl hd
+  · exact Or.inr
+      (net_collision_positive_duplicate_nine_centres_no_twin_rigid
+        C exponent hexp honeLoss hsmall (Nat.pos_of_ne_zero hd))
+
+/-- The actual twin-rigid DYADIC WEIGHT and genuine NET duplicate
+debt are mutually exclusive on <=9 original centres. No credit
+or payment is invented: the product vanishes because ONE actual
+source-dependent term vanishes. -/
+theorem net_collision_nine_centres_duplicate_times_twin_mass_zero
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hsmall : Fintype.card V ≤ 9) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss *
+      (∑ p ∈ netTwinRigidCarriers C exponent,
+        (2 : ℕ) ^ exponent p.2) = 0 := by
+  rcases net_collision_nine_centres_duplicate_or_twin_zero
+      C exponent hexp honeLoss hsmall with hd | htwin
+  · simp [hd]
+  · simp [htwin]
+
+/-- The two competing net-duplicate and terminal-twin dyadic
+liabilities add by MAX, not their independent sum, when |V|<=9.
+This is a useful EXACT LEDGER IDENTITY rather than a speculative
+net-collision exclusion. It does not pay either surviving debt. -/
+theorem net_collision_nine_centres_duplicate_plus_twin_mass_eq_max
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hsmall : Fintype.card V ≤ 9) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
+      (∑ p ∈ netTwinRigidCarriers C exponent,
+        (2 : ℕ) ^ exponent p.2) =
+    max (netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss)
+      (∑ p ∈ netTwinRigidCarriers C exponent,
+        (2 : ℕ) ^ exponent p.2) := by
+  rcases net_collision_nine_centres_duplicate_or_twin_zero
+      C exponent hexp honeLoss hsmall with hd | htwin
+  · simp [hd]
+  · simp [htwin]
+
+/-- Under positive actual NET duplication on <=9 centres, every
+terminal RIGID HARD word is actually a STRICT DESCENDING reverse-
+transportable rigid word. Hence the independent equal-exponent
+twin word mass disappears as a genuine FINITE WORD SET. -/
+theorem net_collision_positive_duplicate_nine_centres_all_rigid_words_strict
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hsmall : Fintype.card V ≤ 9)
+    (hpositive : 0 <
+      netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss) :
+    netRigidHardWords C exponent =
+      netStrictDescentRigidWords C exponent := by
+  classical
+  obtain ⟨s,t,hne,hdiag⟩ :=
+    net_collision_positive_duplicate_has_distinct_source_pair
+      C exponent hexp honeLoss hpositive
+  have hpair :=
+    net_collision_two_sources_nine_centres_rigid_eq_two_strict
+      C exponent hexp honeLoss hsmall s t hdiag hne
+  have hcarriers :
+      netRigidHardCarriers C exponent =
+        netStrictDescentRigidCarriers C exponent := by
+    ext p
+    constructor
+    · intro hp
+      have he : p ∈
+          ({netCollisionReverseHardPair C exponent hexp honeLoss s,
+            netCollisionReverseHardPair C exponent hexp honeLoss t} :
+            Finset (V × V)) := by
+        rw [← hpair]
+        exact hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at he
+      rcases he with rfl | rfl
+      · exact (strictDescentRigidWordCarrier C exponent
+          (netCollisionCertifiedReverseSource C exponent hexp honeLoss s)).2
+      · exact (strictDescentRigidWordCarrier C exponent
+          (netCollisionCertifiedReverseSource C exponent hexp honeLoss t)).2
+    · intro hp
+      exact ((mem_netStrictDescentRigidCarriers C exponent p).mp hp).1
+  unfold netRigidHardWords netStrictDescentRigidWords
+  rw [hcarriers]
+
+#print axioms net_collision_nine_centres_duplicate_or_twin_zero
+#print axioms net_collision_nine_centres_duplicate_times_twin_mass_zero
+#print axioms net_collision_nine_centres_duplicate_plus_twin_mass_eq_max
+#print axioms net_collision_positive_duplicate_nine_centres_all_rigid_words_strict
+
 #print axioms net_collision_two_sources_nine_centres_exhaust_hard_carriers
 #print axioms net_collision_two_sources_nine_centres_rigid_eq_two_strict
 #print axioms net_collision_positive_duplicate_nine_centres_no_twin_rigid
