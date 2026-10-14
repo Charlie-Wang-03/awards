@@ -79,14 +79,14 @@ theorem net_collision_duplicate_debt_le_global_soft_shadow_incidence
     net_collision_duplicate_debt_le_local_soft_sphere_excess
       C exponent hexp honeLoss
   have hdrop :
-      (∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card - 1) ≤
+      (∑ d ∈ D, ((targetHammingTwoSoftOverlapWords C d).card - 1)) ≤
         ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card := by
     exact Finset.sum_le_sum (s := D)
       (fun d hd => Nat.sub_le (targetHammingTwoSoftOverlapWords C d).card 1)
   have hdouble := soft_hamming_two_shadow_incidence_double_count C D
   calc
     netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
-      ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card - 1 := by
+      ∑ d ∈ D, ((targetHammingTwoSoftOverlapWords C d).card - 1) := by
         simpa only [D] using hlocal
     _ ≤ ∑ d ∈ D, (targetHammingTwoSoftOverlapWords C d).card := hdrop
     _ = ∑ s ∈ softOverlapCompletionWords C,
