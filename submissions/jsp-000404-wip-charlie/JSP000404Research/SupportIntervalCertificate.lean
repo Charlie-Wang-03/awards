@@ -161,7 +161,7 @@ theorem four_turnLength_sum_le_two_pi
   have hsum :
       (∑ r : Fin 4, (cert r).turnLength) =
         Cs.turnLength + Ca.turnLength + Cb.turnLength + Cc.turnLength := by
-    simp [Fin.sum_univ_succ, hc0, hc1, hc2, hc3, add_assoc]
+    simp [Fin.sum_univ_succ, hc0, hc1, hc2, hc3, add_assoc] <;> rfl
   rw [hsum] at h
   exact h
 
