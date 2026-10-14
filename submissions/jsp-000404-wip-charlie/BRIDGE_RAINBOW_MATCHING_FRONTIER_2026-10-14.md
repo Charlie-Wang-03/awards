@@ -339,3 +339,20 @@ zero canonical NET target duplicate debt for any n>=1 whenever
 `Fintype.card V <= 7`. The exact planar mobile-hard bound
 then excludes the duplicate debt but retains covered diagonals
 and other uncharged classes. Lean verification pending.
+
+## Quantitative actual NET fibre hard-carrier packing
+
+The four-pair witness theorem has a finite-fibre strengthening:
+for EVERY canonical diagonal d, source images to original forward
+and reverse HARD pairs are separately injective and mutually
+disjoint. The global HARD carrier vertex matching gives
+
+  4 * |actual NET source fibre(d)| <= |original vertices|.
+
+Consequently `|fibre(d)| <= floor(|V|/4)` and
+`duplicateDebt <= SUM_hit_d (floor(|V|/4)-1)`.
+Unlike the n<=2 choose-two bound this estimate depends on ACTUAL
+available centres and works at arbitrary retained n. It is only
+a necessary capacity, not a proof of non-reused Boolean hole
+or profile-surplus payment. Source:
+`ResidualNetCollisionVertexBudgetFibre.lean`. Lean CI pending.
