@@ -87,7 +87,7 @@ This lifts previously proved four-bit source-only rigidity to the
 ENTIRE source-compatible target candidate graph. It narrows the
 remaining source-compatible motifs, but does not assert AngleCap
 exclusion, global Boolean hole payment, or a lower bound on any
-unreserved profile surplus. Lean CI and axiom audit pending.
+unreserved profile surplus. Lean CI [38506236757](https://github.com/Charlie-Wang-03/awards/actions/runs/38506236757) PASS, 3,541 jobs, two new theorems sorry-free (only standard Lean axioms).
 
 ## Every candidate edge has a covered common shadow completion
 
@@ -110,7 +110,7 @@ rather than an unreserved global payment credit.
 
 The bridge between graph incidence and Boolean completion cubes
 is materially strengthened; geometric matching exclusion and
-six-class global payment remain OPEN. Lean validation pending.
+six-class global payment remain OPEN. Lean CI [38506654774](https://github.com/Charlie-Wang-03/awards/actions/runs/38506654774) PASS, 3,542 jobs, three new theorems sorry-free.
 
 ## Fixed-target candidate edge -> REAL soft word injection
 
@@ -136,4 +136,6 @@ TRUE Boolean hole or an unreserved dyadic credit. A correct
 global source-payment argument must still allocate these already
 covered witnesses without reusing them.
 
-CI and axioms check pending.
+CI: initial run [38506989335](https://github.com/Charlie-Wang-03/awards/actions/runs/38506989335) FAILED due to one **Lean proof projection typo** in the upper-endpoint reverse-colour proof (`heData.2.2.1` erroneously selected forward-colour violation membership, should be `heData.2.1`). This did not expose a mathematical counterexample. Fixed by commit `a72b126a`.
+
+Final run [38507215558](https://github.com/Charlie-Wang-03/awards/actions/runs/38507215558) PASS, 3,543 jobs. All four theorems in `ResidualNetCollisionCandidateShadowInjection.lean` print only the standard axioms `[propext, Classical.choice, Quot.sound]`, no `sorryAx`; verified umbrella and admitted WIP entry both build. The only `sorryAx` is the prior, explicitly admitted global six-source geometric payment.

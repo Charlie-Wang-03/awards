@@ -2403,3 +2403,35 @@ and [rainbow pair obstruction 38504957833](https://github.com/Charlie-Wang-03/aw
 11 theorems free of `sorryAx`. These are honest combinatorial
 necessary conditions, not yet a planar AngleCap exclusion or proof
 of the unresolved six-source geometric payment.
+
+### Candidate graph → covered soft-shadow injection (2026-10-14)
+
+Two new verified modules formalize a stronger **target-specific** bridge
+between Rainbow Matching and ACTUAL covered Boolean words:
+
+- `ResidualNetCollisionCandidateColourVertexSeparation.lean`: two
+  candidate exact-shell bridge edges with DISJOINT unordered flip-colour
+  supports have all FOUR cross-edge original endpoint incidences distinct.
+- `ResidualNetCollisionCandidateShadowCompletion.lean`: for ANY
+  candidate edge `((b,cr),(v,cf))`, the double-flip shadow of the fixed
+  target `d` lies in BOTH endpoint completion cubes, hence is COVERED.
+- `ResidualNetCollisionCandidateShadowInjection.lean`: the original
+  bridge is an ordered SOFT overlap carrier. The shadow belongs to
+  the actual `softOverlapCompletionWords`, and for a FIXED `d`
+  the candidate edge → soft word map is INJECTIVE by unique two-vertex
+  ownership and singleton target violation colours. Thus
+
+  `|targetExactShellSlotEdges(C,exponent,d)| <= |softOverlapCompletionWords(C)|`.
+
+The shadow pool is already COVERED. This is NOT a charge to true
+Boolean holes and is NOT globally injective across different d.
+No geometric matching exclusion, non-reused global dyadic surplus
+allocation or closure of the six-source admitted `sorry` is claimed.
+
+CI: [38506236757](https://github.com/Charlie-Wang-03/awards/actions/runs/38506236757)
+(PASS 3,541),
+[38506654774](https://github.com/Charlie-Wang-03/awards/actions/runs/38506654774)
+(PASS 3,542), and
+[38507215558](https://github.com/Charlie-Wang-03/awards/actions/runs/38507215558)
+(PASS 3,543). One incorrect Lean conjunction projection was
+fixed, without changing a mathematical statement.

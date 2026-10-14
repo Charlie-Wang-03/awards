@@ -485,6 +485,24 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- geometric payment of the surviving pair motif exists.
       -- Fifth-centre blockers, twin, mixed-rigid, soft and
       -- projected-loss debts are further independent obstacles.
+      -- NEW CANDIDATE EDGE --> COVERED SOFT SHADOW CERTIFICATES:
+      -- Every eligible target-exact bridge edge, even without any
+      -- ACTUAL hard-source provenance, gives a canonical double-flip
+      -- shadow word lying in BOTH retained completion cubes.
+      -- Its bridge is an ordered SOFT overlap carrier, so the
+      -- shadow belongs to the genuine already-COVERED soft words.
+      -- Because each completion word has at most TWO covering
+      -- vertices, the oriented bridge is uniquely determined by
+      -- the shadow; at FIXED target d, the exact singleton violated
+      -- active colours uniquely recover BOTH edge endpoint slots.
+      -- Thus target-exact candidate EDGES inject into ACTUAL soft
+      -- overlap words: |E(d)| <= |softOverlapCompletionWords|.
+      -- This is only PER TARGET; shadow words can be reused across
+      -- different d and are NOT true Boolean holes. Neither this
+      -- injection nor the Rainbow Matching bounds supplies an
+      -- unreserved global six-source payment budget. The missing
+      -- AngleCap allocation, fifth-centre, twin, mixed, soft and
+      -- projection loss debts remain unproved.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
