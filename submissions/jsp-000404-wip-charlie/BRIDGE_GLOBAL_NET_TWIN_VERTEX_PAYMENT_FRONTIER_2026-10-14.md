@@ -169,10 +169,17 @@ Result: **SUCCESS**, 3,095 jobs, zero Lean errors;
 
 A stale Mathlib import `Mathlib.Data.Matrix.Notation` in
 `SupportIntervalCertificate.lean` was replaced with
-`Mathlib.Data.Matrix.Basic`. The independent verification for the
-complete corrected support-interval module is
+`Mathlib.Data.Matrix.Basic`. This fixes the observed invalid import,
+but the independent support-interval run
 https://github.com/Charlie-Wang-03/awards/actions/runs/38580724431
-and is pending until that run reaches a checked terminal state.
+has now completed **FAILURE**. It exposed six previously masked
+elaboration errors in dependency `ConcreteTransitionInterval.lean`
+(lines 81, 121-122, 226, 279 and 307), including an AngleCap
+`lam` parameter mismatch, removed `List.length_eq_zero.mp`,
+list-expression rewrite shape drift, and a wrong
+`div_pos_iff` branch elimination. `SupportIntervalCertificate.lean`
+itself is therefore NOT yet kernel-verified at the new HEAD.
+Do not represent this chain as repaired or the root umbrella as green.
 
 
 ## Integrity and outstanding geometric obligation
