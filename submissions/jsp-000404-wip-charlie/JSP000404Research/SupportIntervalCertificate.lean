@@ -146,19 +146,12 @@ theorem four_turnLength_sum_le_two_pi
   let cert : ∀ r : Fin 4,
       SupportIntervalCertificate (p := p) (centre r) := by
     intro r
-    refine Fin.cases ?_ ?_ r
+    rcases r with ⟨i, hi⟩
+    interval_cases i
     · simpa [centre] using Cs
-    · intro r
-      refine Fin.cases ?_ ?_ r
-      · simpa [centre] using Ca
-      · intro r
-        refine Fin.cases ?_ ?_ r
-        · simpa [centre] using Cb
-        · intro r
-          refine Fin.cases ?_ ?_ r
-          · simpa [centre] using Cc
-          · intro r
-            exact Fin.elim0 r
+    · simpa [centre] using Ca
+    · simpa [centre] using Cb
+    · simpa [centre] using Cc
   have h :=
     turnLength_sum_le_two_pi centre hcentre cert
   have hc0 : cert (0 : Fin 4) = Cs := rfl
