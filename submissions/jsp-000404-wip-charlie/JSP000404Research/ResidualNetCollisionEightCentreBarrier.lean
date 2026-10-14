@@ -122,11 +122,15 @@ theorem net_collision_distinct_same_target_forward_hard_pairs_ne
     netCollisionForwardHardPair C exponent hexp honeLoss s ≠
       netCollisionForwardHardPair C exponent hexp honeLoss t := by
   intro hp
-  have hv : (netCollisionCertifiedBridgeOwner
+  have hv : (netCollisionForwardHardPair
       C exponent hexp honeLoss s).2 =
-    (netCollisionCertifiedBridgeOwner
+    (netCollisionForwardHardPair
       C exponent hexp honeLoss t).2 := by
     exact congrArg Prod.snd hp
+  change (netCollisionCertifiedBridgeOwner
+      C exponent hexp honeLoss s).2 =
+    (netCollisionCertifiedBridgeOwner
+      C exponent hexp honeLoss t).2 at hv
   have hcf :
       transportablePairColor C
         (transportableWordCarrier C
@@ -159,11 +163,15 @@ theorem net_collision_distinct_same_target_reverse_hard_pairs_ne
     netCollisionReverseHardPair C exponent hexp honeLoss s ≠
       netCollisionReverseHardPair C exponent hexp honeLoss t := by
   intro hq
-  have hb : (netCollisionCertifiedBridgeOwner
+  have hb : (netCollisionReverseHardPair
       C exponent hexp honeLoss s).1 =
-    (netCollisionCertifiedBridgeOwner
+    (netCollisionReverseHardPair
       C exponent hexp honeLoss t).1 := by
     exact congrArg Prod.fst hq
+  change (netCollisionCertifiedBridgeOwner
+      C exponent hexp honeLoss s).1 =
+    (netCollisionCertifiedBridgeOwner
+      C exponent hexp honeLoss t).1 at hb
   have hcr :
       strictDescentRigidPairColor C exponent hexp honeLoss
         (strictDescentRigidWordCarrier C exponent
