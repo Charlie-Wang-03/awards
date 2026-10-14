@@ -59,11 +59,10 @@ theorem stableExample_remainder_sum :
   norm_num [stableExampleR, Fin.sum_univ_succ]
 
 theorem stableExample_total_gap :
-    (∑ i, ((stableExampleQ i : ℕ) : ℝ) + stableExampleR i) =
+    (∑ i : Fin 6, (((stableExampleQ i : ℕ) : ℝ) + stableExampleR i)) =
       (107 : ℝ) / 21 := by
-  -- Explicitly expand the finite six-term sum; never rebind a hidden
-  -- index inside the real-valued summand.
-  simp [Fin.sum_univ_succ, stableExampleQ, stableExampleR]
+  -- Fully parenthesized finite sum: each summand includes BOTH parts.
+  simp [stableExampleQ, stableExampleR, Fin.sum_univ_succ]
   norm_num
 
 theorem stableExample_delta_lower_branch :

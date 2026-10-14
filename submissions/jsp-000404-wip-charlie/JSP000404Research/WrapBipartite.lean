@@ -112,8 +112,9 @@ theorem edgeParity_outgoing_eq
 /-- The common outgoing parity at a vertex; isolated vertices receive false. -/
 noncomputable def wrapVertexColor
     {V : Type*} [LinearOrder V] {width : ℝ}
-    (D : DirectionData V width) (n : ℕ) (v : V) : Bool :=
-  if h : ∃ w, (wrapGraph D n).Adj v w then
+    (D : DirectionData V width) (n : ℕ) (v : V) : Bool := by
+  classical
+  exact if h : ∃ w, (wrapGraph D n).Adj v w then
     edgeParity D n v h.choose
   else
     false
@@ -128,6 +129,7 @@ theorem wrapVertexColor_eq_edgeParity
     {v w : V}
     (hvw : (wrapGraph D n).Adj v w) :
     wrapVertexColor D n v = edgeParity D n v w := by
+  classical
   unfold wrapVertexColor
   split_ifs with h
   · exact edgeParity_outgoing_eq
