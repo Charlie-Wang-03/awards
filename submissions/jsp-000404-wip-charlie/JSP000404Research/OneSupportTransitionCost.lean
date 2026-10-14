@@ -47,8 +47,9 @@ theorem list_sum_eq_zero_of_positiveCount_eq_zero
   | cons q qs ih =>
       by_cases hq : q = 0
       · subst q
-        simp only [listPositiveCount, if_pos rfl, zero_add] at h
-        simp [ih h]
+        have htail : listPositiveCount qs = 0 := by
+          simpa [listPositiveCount] using h
+        simpa using ih htail
       · simp [listPositiveCount, hq] at h
 
 /-- In a one-support list, any displayed positive entry is the whole list
