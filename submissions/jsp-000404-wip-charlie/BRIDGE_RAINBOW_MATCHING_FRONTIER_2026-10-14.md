@@ -228,3 +228,22 @@ bounds have not independently shortened the unique global geometric
 payment `sorry`. Next mathematics must produce new AngleCap
 restrictions or globally distinct hole/surplus resources.
 Lean CI and axiom audit pending.
+
+## Actual low-colour NET debt elimination (NEW restricted theorem)
+
+`ResidualNetCollisionLowColourNoDuplicate.lean` formalizes the
+quantitative consequence of the already certified real-source
+colour pair injection for small n:
+
+- n <= 1: no genuine NET forward/reverse hard sink collisions.
+- n <= 2: every ACTUAL target diagonal fibre has at most ONE source.
+- Thus the canonical NET diagonal map is **GLOBALLY INJECTIVE** and
+  the real duplicate-image debt is **ZERO**, with no extra geometry
+  hypothesis beyond the usual one-layer residual budget.
+- The exact NET mobile hard ledger now contains TRUE holes plus
+  distinct COVERED target blockers but no duplicate debt, for n<=2.
+
+This is a genuine partial closure of ONE six-source debt
+in the small-colour regime, not proof of the planar dyadic
+inequality even for n<=2. The full-root and fifth-centre gates
+remain open. Lean CI pending.

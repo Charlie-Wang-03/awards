@@ -42,6 +42,7 @@ import JSP000404Research.ResidualNetCollisionCandidateShadowCompletion
 import JSP000404Research.ResidualNetCollisionCandidateShadowInjection
 import JSP000404Research.ResidualNetCollisionRainbowRedundancyAudit
 import JSP000404Research.ResidualNetCollisionLocalSoftSphereCapacity
+import JSP000404Research.ResidualNetCollisionLowColourNoDuplicate
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -511,6 +512,16 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Single local soft shadow per hit d implies zero NET debt;
       -- that conditional criterion is NOT proved from AngleCap.
       -- No new true hole credits or global nonreused payments.
+      -- GENUINE SMALL-n NET DUPLICATE ELIMINATION (n<=2):
+      -- Since a true source fibre injects into the choose(n,2)
+      -- unordered flip-colour supports, there can be at most ONE
+      -- actual source per canonical target for n<=2. The actual
+      -- canonical diagonal map is globally injective in this
+      -- regime and actual duplicate debt = ZERO unconditionally.
+      -- For n<=1 the entire genuine NET collision set is empty.
+      -- This is an authentic closed debt SUBCASE, not another
+      -- equivalent matching bound. The covered target blockers
+      -- and the independent twin/mixed/soft/profile debts remain.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
