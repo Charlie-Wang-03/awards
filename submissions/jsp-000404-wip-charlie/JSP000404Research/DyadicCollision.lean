@@ -57,8 +57,10 @@ theorem sum_pow_two_le_pred_of_injective
         ∑ k ∈ Finset.range n, 2 ^ k := by
     exact Finset.sum_le_sum_of_subset_of_nonneg
       hsub (fun _ _ _ => Nat.zero_le _)
-  rw [hsum, sum_range_two_pow] at hle
-  exact hle
+  calc
+    (∑ v : V, 2 ^ exponent v) = ∑ k ∈ S, 2 ^ k := hsum
+    _ ≤ ∑ k ∈ Finset.range n, 2 ^ k := hle
+    _ = 2 ^ n - 1 := sum_range_two_pow n
 
 /-- Therefore mass at least 2^n forces an exponent collision. -/
 theorem exists_equal_exponent_of_two_pow_le_sum
@@ -80,7 +82,7 @@ theorem exists_equal_exponent_of_two_pow_le_sum
 
 /-- Equal exponents plus one survivor gain give exact dyadic payment. -/
 theorem deletion_payment_of_equal_gain
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after : V → ℕ) {r i : V}
     (hri : r ≠ i)
     (heq : exponent r = exponent i)
@@ -94,7 +96,7 @@ theorem deletion_payment_of_equal_gain
 
 /-- Huffman carry induction outlet. -/
 theorem compensated_deletion_of_equal_gain
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent after : V → ℕ) {r i : V} (bound : ℕ)
     (hri : r ≠ i)
     (heq : exponent r = exponent i)
