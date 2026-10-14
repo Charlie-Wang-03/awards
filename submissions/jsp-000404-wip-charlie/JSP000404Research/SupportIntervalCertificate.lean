@@ -41,7 +41,7 @@ structure SupportIntervalCertificate
 
 namespace SupportIntervalCertificate
 
-def turnLength
+noncomputable def turnLength
     {V : Type*} {p : V → Plane} {i : V}
     (C : SupportIntervalCertificate (p := p) i) : ℝ :=
   Real.pi - C.width
@@ -75,7 +75,7 @@ theorem turnLength_ofHighExponent
     {C : CentreProjectiveCycle hp i}
     (H : HighExponentTransitionIntervalCertificate hp t i C) :
     (ofHighExponent H).turnLength = Real.pi * H.ge := by
-  unfold turnLength ofHighExponent
+  change Real.pi - H.width = Real.pi * H.ge
   rw [H.width_eq]
   ring
 
@@ -144,13 +144,21 @@ theorem four_turnLength_sum_le_two_pi
       try { exact False.elim (hac hxy.symm) } <;>
       try { exact False.elim (hbc hxy.symm) }
   let cert : ∀ r : Fin 4,
-      SupportIntervalCertificate (p := p) (centre r) :=
-    fun r => by
-      fin_cases r
-      · simpa [centre] using Cs
+      SupportIntervalCertificate (p := p) (centre r) := by
+    intro r
+    refine Fin.cases ?_ ?_ r
+    · simpa [centre] using Cs
+    · intro r
+      refine Fin.cases ?_ ?_ r
       · simpa [centre] using Ca
-      · simpa [centre] using Cb
-      · simpa [centre] using Cc
+      · intro r
+        refine Fin.cases ?_ ?_ r
+        · simpa [centre] using Cb
+        · intro r
+          refine Fin.cases ?_ ?_ r
+          · simpa [centre] using Cc
+          · intro r
+            exact Fin.elim0 r
   have h :=
     turnLength_sum_le_two_pi centre hcentre cert
   simpa [cert, centre, Fin.sum_univ_succ] using h
