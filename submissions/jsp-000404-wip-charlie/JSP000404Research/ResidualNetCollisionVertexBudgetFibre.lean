@@ -100,8 +100,12 @@ theorem net_collision_fibre_four_mul_card_le_vertices
   have hunion : (A ∪ B).card = 2 * F.card := by
     rw [Finset.card_union_of_disjoint hdisj, hcardA, hcardB]
     omega
+  have hle : 2 * F.card ≤ (hardOverlapCarrierPairs C).card := by
+    calc
+      2 * F.card = (A ∪ B).card := hunion.symm
+      _ ≤ (hardOverlapCarrierPairs C).card := Finset.card_le_card hsub
   have hsize := hardOverlapCarrierPairs_two_mul_card_le_vertices C
-  have hle := Finset.card_le_card hsub
+  change 4 * F.card ≤ Fintype.card V
   omega
 
 /-- A uniform per-target bound from actual HARD carrier matching:
