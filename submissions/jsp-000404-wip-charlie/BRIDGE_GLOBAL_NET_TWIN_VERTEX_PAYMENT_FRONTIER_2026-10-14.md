@@ -391,9 +391,9 @@ E_D + |D| <= SUM_(s in S) #{d in D : Hamming(d,s)=2}.
 
 Unlike the prior bound on E_D alone, this retains exactly one **first source** per hit target as a charge, with remaining source mass counted as actual duplicate-image excess. The shadow incidence sum still counts REUSE and is entirely COVERED; it must NOT be treated as true-hole credit.
 
-The refinement combining this inequality with the verified per-shadow `Nat.choose n 2` degree cap has been committed as `net_duplicate_plus_distinct_hits_le_choose_soft_mass` and has focused CI [#38599220607](https://github.com/Charlie-Wang-03/awards/actions/runs/38599220607). **Do not claim this refined theorem verified until its CI succeeds.**
+The refinement combining this inequality with the verified per-shadow `Nat.choose n 2` degree cap has been committed as `net_duplicate_plus_distinct_hits_le_choose_soft_mass` and has focused CI [#38599220607](https://github.com/Charlie-Wang-03/awards/actions/runs/38599220607). **VERIFIED**: [CI #38599220607](https://github.com/Charlie-Wang-03/awards/actions/runs/38599220607) completed SUCCESS (3,283 jobs; zero errors). All three theorem axiom audits have only [propext, Classical.choice, Quot.sound], without sorryAx.
 
-A true planar `AngleCap` adaptation of the first-hit plus choose bound is committed as `PlanarNetGlobalSoftFirstHitReuse.lean`, [focused CI #38599457731](https://github.com/Charlie-Wang-03/awards/actions/runs/38599457731), also **PENDING**.
+A true planar `AngleCap` adaptation of the first-hit plus choose bound is committed as `PlanarNetGlobalSoftFirstHitReuse.lean`, [focused CI #38599457731](https://github.com/Charlie-Wang-03/awards/actions/runs/38599457731), **VERIFIED**: [CI #38599457731](https://github.com/Charlie-Wang-03/awards/actions/runs/38599457731) completed SUCCESS (3,474 jobs, zero errors). The true planar AngleCap theorem has only [propext, Classical.choice, Quot.sound] axioms, no sorryAx.
 
 ### Newly isolated true-hole refund (NOT YET VERIFIED)
 
