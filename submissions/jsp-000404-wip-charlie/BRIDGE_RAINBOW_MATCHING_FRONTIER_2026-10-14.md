@@ -356,3 +356,15 @@ available centres and works at arbitrary retained n. It is only
 a necessary capacity, not a proof of non-reused Boolean hole
 or profile-surplus payment. Source:
 `ResidualNetCollisionVertexBudgetFibre.lean`. Lean CI pending.
+
+## Combining independent hard-carrier and eligible graph capacities
+
+`ResidualNetCollisionVertexBudgetFibre.lean` also proves
+`|F_d| <= min(nu(G_d), floor(|V|/4))`, with a matching
+hit-target duplicate-debt upper bound and real mobile-source
+ledger. Here `nu(G_d)` is the TRUE target-exact eligible slot
+matching bound, while the vertex-quarter term is a genuine
+hard-source pairing restriction, so the two estimates are
+not known equivalent. Neither term pays true Boolean holes;
+the covered-diagonal/fifth-centre and the other dyadic debts
+remain open. Lean CI pending.

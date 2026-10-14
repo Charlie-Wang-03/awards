@@ -147,6 +147,87 @@ theorem net_collision_duplicate_debt_le_vertex_quarter_excess
       C exponent hexp honeLoss d
   omega
 
+
+/-- Source-native hard-carrier VERTEX capacity can be combined with
+the earlier target-exact candidate graph ordinary matching bound.
+Unlike previous rainbow and local-soft "min" reformulations, the
+vertex-quarter bound comes from original HARD carrier ownership,
+NOT from candidate edges. No ordering between these two bounds
+has been assumed or proved, so their minimum is an honest
+potentially sharper genuine-source capacity. -/
+theorem net_collision_fibre_card_le_matching_vertex_quarter_min
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (d : Fin n → Bool) :
+    (netCollisionCertifiedDiagonalFibre C exponent hexp honeLoss d).card ≤
+      min (targetExactShellSlotMatchingNumber C exponent d)
+        (Fintype.card V / 4) := by
+  exact le_min
+    (net_collision_target_fibre_card_le_matching_number
+      C exponent hexp honeLoss d)
+    (net_collision_fibre_card_le_vertex_quarter
+      C exponent hexp honeLoss d)
+
+/-- The exact canonical NET duplication excess is controlled by
+the pointwise MINIMUM of a source-compatible soft-bridge graph
+matching number and an INDEPENDENT original-hard-carrier vertex
+capacity. Unlike a min with the target local-soft word sphere,
+this minimum is not known to reduce identically to matching. -/
+theorem net_collision_duplicate_debt_le_matching_vertex_quarter_min_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        (min (targetExactShellSlotMatchingNumber C exponent d)
+          (Fintype.card V / 4) - 1) := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_le_sum
+  intro d hd
+  have hbound :=
+    net_collision_fibre_card_le_matching_vertex_quarter_min
+      C exponent hexp honeLoss d
+  omega
+
+/-- Real movable-hard source mass ledger with duplicate targets
+charged only to independently justified matching/vertex capacities.
+It still counts COVERED canonical diagonals separately from
+TRUE Boolean holes and does NOT pay rigid/soft/profile debts. -/
+theorem net_mobile_mass_le_holes_covered_matching_vertex_min_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card ≤
+      (singletonCompletionWords C).card +
+      (softOverlapCompletionWords C).card +
+      ((Finset.univ : Finset (Fin n → Bool)) \
+        coveredCompletionWords C).card +
+      (netCollisionCertifiedCoveredDiagonals
+        C exponent hexp honeLoss).card +
+      (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        (min (targetExactShellSlotMatchingNumber C exponent d)
+          (Fintype.card V / 4) - 1)) := by
+  have hm :=
+    net_mobile_mass_le_singleton_soft_holes_blockers_duplicates
+      C exponent hexp honeLoss
+  have hd :=
+    net_collision_duplicate_debt_le_matching_vertex_quarter_min_excess
+      C exponent hexp honeLoss
+  omega
+
+#print axioms net_collision_fibre_card_le_matching_vertex_quarter_min
+#print axioms net_collision_duplicate_debt_le_matching_vertex_quarter_min_excess
+#print axioms net_mobile_mass_le_holes_covered_matching_vertex_min_excess
+
 #print axioms net_collision_fibre_four_mul_card_le_vertices
 #print axioms net_collision_fibre_card_le_vertex_quarter
 #print axioms net_collision_duplicate_debt_le_vertex_quarter_excess
