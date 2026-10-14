@@ -524,6 +524,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- This is an authentic closed debt SUBCASE, not another
       -- equivalent matching bound. The covered target blockers
       -- and the independent twin/mixed/soft/profile debts remain.
+      -- FIRST UNRESOLVED SMALL-n COLLISION MOTIF (n=3):
+      -- With <=3 Boolean colours, positive ACTUAL NET duplicate
+      -- debt forces two distinct same-diagonal source sinks with
+      -- EXACT Hamming distance TWO, and their unordered canonical
+      -- two-flip colour supports have intersection CARDINALITY ONE.
+      -- Four-bit/disjoint-support duplicates are impossible here.
+      -- These are real Lean-checked necessary conditions, NOT a
+      -- geometric exclusion of the remaining two-bit witness.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

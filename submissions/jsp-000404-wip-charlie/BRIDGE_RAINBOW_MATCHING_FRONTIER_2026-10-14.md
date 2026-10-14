@@ -247,7 +247,7 @@ colour pair injection for small n:
 This is a genuine partial closure of ONE six-source debt
 in the small-colour regime, not proof of the planar dyadic
 inequality even for n<=2. The full-root and fifth-centre gates
-remain open. Lean CI pending.
+remain open. Lean CI [38515114924](https://github.com/Charlie-Wang-03/awards/actions/runs/38515114924) PASS, 3,546 jobs, four new theorems with standard axioms only.
 
 Lean CI first run [38514847387](https://github.com/Charlie-Wang-03/awards/actions/runs/38514847387):
 FAILED on a duplicate **pre-existing** theorem name for n<=1 and
@@ -273,7 +273,7 @@ then establishes both:
 This closes the duplicate portion of the *real planar* NET
 mobile ledger for this n-regime, and keeps covered fifth-centre,
 soft, twins, mixed rigid and profile losses unpaid.
-Lean CI and `#print axioms` pending.
+Lean CI [38515328775](https://github.com/Charlie-Wang-03/awards/actions/runs/38515328775) PASS, 3,547 jobs, one new theorem without `sorryAx`.
 
 ## n<=3: only Hamming-two, one-shared-colour duplicate obstruction
 
@@ -292,4 +292,18 @@ duplicates are entirely absent.
 
 This is a genuine obstruction-case reduction for the n=3 regime,
 not an exclusion of the remaining two-bit case. The six-source
-AngleCap global proof is still open. Lean CI pending.
+AngleCap global proof is still open. Lean CI [38515557311](https://github.com/Charlie-Wang-03/awards/actions/runs/38515557311) PASS, 3,548 jobs, two new theorems without `sorryAx`.
+## Verification and honest frontier
+
+Total in the three new small-colour modules: 7 no-`sorryAx`
+theorems (4 abstract low-n, 1 genuine AngleCap specialization,
+2 n<=3 collision-shape classification). Earlier n<=1 emptiness was
+pre-existing, not a new theorem. The first CI failed due to an
+already-declared name and an incorrect Lean API application, both
+subsequently fixed and kernel verified.
+
+For n<=2 genuine NET target duplication is CLOSED; for n=3
+the only possible nonzero-duplication case has Hamming-two
+source distance and precisely one shared flip colour. These
+results do not prove global full-dyadic six-source payment or
+the actual JSP-000404 award claim.

@@ -2471,3 +2471,43 @@ The target-local Hamming-two word characterization remains a
 correct structural result and useful potential falsification gate,
 but the open planar `AngleCap` six-source global `sorry`
 is unchanged.
+
+
+### Genuine low-colour NET duplicate-debt closure and first n=3 residual (2026-10-14)
+
+**New actual debt closure for `n <= 2`.**
+`ResidualNetCollisionLowColourNoDuplicate.lean` proves, using
+the kernel-verified canonical unordered flip-pair bound, that
+every genuine NET diagonal source fibre has at most one member
+when `n <= 2`. The canonical source→diagonal map is globally
+injective and actual duplicate debt `E_D = 0`; the mobile-hard
+ledger loses the duplicate-target charge. The earlier `n<=1`
+empty-collision theorem was already in the repository and is not
+counted as a new result.
+[Lean CI 38515114924](https://github.com/Charlie-Wang-03/awards/actions/runs/38515114924)
+PASS (3,546 jobs), four new declarations with standard axioms only.
+
+**Planar AngleCap specialization.**
+`PlanarNetLowColourNoDuplicate.lean` derives the required one-layer
+budget from the genuine plane geometry and centre cycles and certifies
+the same zero duplicate debt and no-duplicate mobile ledger for
+`1 <= n <= 2`.
+[Lean CI 38515328775](https://github.com/Charlie-Wang-03/awards/actions/runs/38515328775)
+PASS (3,547 jobs), one new theorem with no `sorryAx`.
+
+**First potentially nontrivial case n=3.**
+`ResidualNetCollisionThreeColourTwoBitObstruction.lean` proves:
+positive NET duplicate debt for `n<=3` forces two distinct real
+same-diagonal sink words at **Hamming distance exactly two**, whose
+unordered original flip-colour supports share **exactly one** colour.
+A four-bit/disjoint-support duplicate is impossible on three bits.
+[Lean CI 38515557311](https://github.com/Charlie-Wang-03/awards/actions/runs/38515557311)
+PASS (3,548 jobs), two new theorems with no `sorryAx`.
+
+**What is still open:** in n=3 the Hamming-two/common-colour
+configuration is not excluded by AngleCap, and even in n<=2
+distinct covered diagonals, soft overlap, twin rigid, mixed-rigid
+and projected profile-loss charges remain. The one global
+six-source planar geometric payment `sorry` is unchanged;
+no complete JSP-000404 proof or disproof has been obtained.
+
