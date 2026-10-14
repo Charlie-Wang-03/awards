@@ -75,15 +75,13 @@ theorem exponent_merge_eq_of_zero_left
     (rest b : ℕ) :
     exponentAfterMerge rest 0 b 0 =
       exponentBeforeMerge rest 0 b := by
-  simp [exponentAfterMerge, exponentBeforeMerge,
-    excess_merge_eq_of_zero_left]
+  simp [exponentAfterMerge, exponentBeforeMerge, excess]
 
 theorem exponent_merge_eq_of_zero_right
     (rest a : ℕ) :
     exponentAfterMerge rest a 0 0 =
       exponentBeforeMerge rest a 0 := by
-  simp [exponentAfterMerge, exponentBeforeMerge,
-    excess_merge_eq_of_zero_right]
+  simp [exponentAfterMerge, exponentBeforeMerge, excess]
 
 #print axioms exponent_merge_mono
 #print axioms exponent_merge_gain_of_both_pos
