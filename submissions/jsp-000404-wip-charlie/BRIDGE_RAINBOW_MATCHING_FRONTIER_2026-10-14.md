@@ -44,3 +44,28 @@ themselves literal Boolean holes or unreserved global surplus.
   soft and profile loss debts separate.
 
 Validation: pending GitHub Actions result.
+
+## No two-edge rainbow obstruction: a weaker local exclusion
+
+At any genuinely hit diagonal d, it suffices to show:
+every candidate-edge pair with DISTINCT lower slots and DISTINCT
+upper slots has the SAME unordered pair of flip colours.
+This permits ordinary two-edge matchings, but excludes all two-edge
+*rainbow* matchings.
+
+`ResidualNetCollisionRainbowPairObstruction.lean` certifies:
+- all rainbow matching sets are of size ≤1 under this condition;
+- the finite rainbow matching number ≤1;
+- global actual NET canonical duplicate debt = 0 if the condition
+  holds at all actually hit d;
+- the literal-hole + distinct-covered-diagonal mobile inequality
+  without a duplicate-debt term;
+- conversely, positive duplicate debt implies an actual hit target
+  graph contains two edges with **disjoint lower slots**, **disjoint
+  upper slots** and **DIFFERENT original unordered colour pairs**.
+
+The assumption that all disjoint candidate edge pairs clash in
+colour support is still an EXTRA unproved geometry hypothesis:
+no AngleCap consequence has been asserted.
+
+CI and axioms audit: pending.
