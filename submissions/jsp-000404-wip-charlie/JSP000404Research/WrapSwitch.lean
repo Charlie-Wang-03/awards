@@ -26,7 +26,7 @@ namespace DirectionData
 noncomputable def edgeHighBool
     {V : Type*} [LinearOrder V] {width : ℝ}
     (D : DirectionData V width) (n : ℕ) (u v : V) : Bool :=
-  decide (EdgeHigh D n u v)
+  by classical exact decide (EdgeHigh D n u v)
 
 noncomputable def edgeUpBool
     {V : Type*} [LinearOrder V] (u v : V) : Bool :=
@@ -65,45 +65,56 @@ theorem triangleFree_switch_at_vertex
     (hxy : x ≠ y) :
     (edgeHighBool D n x v = edgeHighBool D n v y) ↔
       edgeUpBool x v ≠ edgeUpBool v y := by
+  classical
   have hxne : x ≠ v := hxv.1
   have hvne : v ≠ y := hvy.1
+  -- For unoriented edge labels, normalization of the two orders
+  -- is explicit; it is not interchangeable with a directed label.
+  have hsym : EdgeHigh D n y v ↔ EdgeHigh D n v y :=
+    edgeHigh_symm D hvne.symm
   rcases lt_or_gt_of_ne hxne with hxvlt | hvxlt
   · rcases lt_or_gt_of_ne hvne with hvylt | hyvlt
-    · have hop :=
-        triangleFree_opposite_at_between
-          D hwidth hdelta hxv hvy hxy
-          (Or.inl ⟨hxvlt, hvylt⟩)
+    · have hop := triangleFree_opposite_at_between
+        D hwidth hdelta hxv hvy hxy (Or.inl ⟨hxvlt, hvylt⟩)
       rcases hop with h | h
-      · have hnx := edgeHigh_not_low D hn h.1
-        simp [edgeHighBool, edgeUpBool, hxvlt, hvylt, h.2, hnx]
-      · have hny := edgeHigh_not_low D hn h.2
+      · have hnx := edgeLow_not_high D hn h.1
+        simp [edgeHighBool, edgeUpBool, hxvlt, hvylt, hnx, h.2]
+      · have hny := edgeLow_not_high D hn h.2
         simp [edgeHighBool, edgeUpBool, hxvlt, hvylt, h.1, hny]
-    · have hsame :=
-        triangleFree_same_at_local_max
-          D htri hxvlt hyvlt hxy hxv hvy.symm
+    · have hsame := triangleFree_same_at_local_max
+        D htri hxvlt hyvlt hxy hxv hvy.symm
+      have hnotvy : ¬ v < y := not_lt.mpr hyvlt.le
       rcases hsame with h | h
       · have hnx := edgeLow_not_high D hn h.1
-        have hny := edgeLow_not_high D hn h.2
-        simp [edgeHighBool, edgeUpBool, hxvlt, hyvlt, hnx, hny]
-      · simp [edgeHighBool, edgeUpBool, hxvlt, hyvlt, h.1, h.2]
+        have hny : ¬EdgeHigh D n v y := by
+          intro hy
+          exact (edgeLow_not_high D hn h.2) (hsym.mpr hy)
+        simp [edgeHighBool, edgeUpBool, hxvlt, hnotvy, hnx, hny]
+      · have hny : EdgeHigh D n v y := hsym.mp h.2
+        simp [edgeHighBool, edgeUpBool, hxvlt, hnotvy, h.1, hny]
   · rcases lt_or_gt_of_ne hvne with hvylt | hyvlt
-    · have hsame :=
-        triangleFree_same_at_local_min
-          D htri hvxlt hvylt hxy hxv.symm hvy
+    · have hsame := triangleFree_same_at_local_min
+        D htri hvxlt hvylt hxy hxv.symm hvy
+      have hnotxv : ¬ x < v := not_lt.mpr hvxlt.le
+      have hsx : EdgeHigh D n v x ↔ EdgeHigh D n x v :=
+        edgeHigh_symm D (Ne.symm hxne)
       rcases hsame with h | h
-      · have hnx := edgeLow_not_high D hn h.1
+      · have hnx : ¬EdgeHigh D n x v := by
+          intro hx
+          exact (edgeLow_not_high D hn h.1) (hsx.mpr hx)
         have hny := edgeLow_not_high D hn h.2
-        simp [edgeHighBool, edgeUpBool, hvxlt, hvylt, hnx, hny]
-      · simp [edgeHighBool, edgeUpBool, hvxlt, hvylt, h.1, h.2]
-    · have hop :=
-        triangleFree_opposite_at_between
-          D hwidth hdelta hxv hvy hxy
-          (Or.inr ⟨hyvlt, hvxlt⟩)
+        simp [edgeHighBool, edgeUpBool, hnotxv, hvylt, hnx, hny]
+      · have hnx : EdgeHigh D n x v := hsx.mp h.1
+        simp [edgeHighBool, edgeUpBool, hnotxv, hvylt, hnx, h.2]
+    · have hop := triangleFree_opposite_at_between
+        D hwidth hdelta hxv hvy hxy (Or.inr ⟨hyvlt, hvxlt⟩)
+      have hnotxv : ¬ x < v := not_lt.mpr hvxlt.le
+      have hnotvy : ¬ v < y := not_lt.mpr hyvlt.le
       rcases hop with h | h
-      · have hnx := edgeHigh_not_low D hn h.1
-        simp [edgeHighBool, edgeUpBool, hvxlt, hyvlt, h.2, hnx]
-      · have hny := edgeHigh_not_low D hn h.2
-        simp [edgeHighBool, edgeUpBool, hvxlt, hyvlt, h.1, hny]
+      · have hnx := edgeLow_not_high D hn h.1
+        simp [edgeHighBool, edgeUpBool, hnotxv, hnotvy, hnx, h.2]
+      · have hny := edgeLow_not_high D hn h.2
+        simp [edgeHighBool, edgeUpBool, hnotxv, hnotvy, h.1, hny]
 
 #print axioms edgeLow_not_high
 #print axioms triangleFree_switch_at_vertex

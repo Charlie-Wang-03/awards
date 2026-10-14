@@ -71,7 +71,7 @@ theorem support_budget_of_zeroHits_le_floorDefect
     (hpres : ∀ i, q i ≠ 0 → b i ≠ 0)
     (hz : zeroHitSupport q b ≤ n - ∑ i, q i) :
     positiveSupport b ≤ n - floorExcess q := by
-  exact (support_budget_iff_floorExcess_le q b n hsumB).2
+  exact (support_budget_iff_floorExcess_le q b n hsumB hQ).2
     (floorExcess_ge_of_zeroHits_le_floorDefect
       q b n hsumB hQ hpres hz)
 

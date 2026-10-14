@@ -36,7 +36,7 @@ open scoped BigOperators
 
 /-- Restricted sharp bonus threshold. -/
 theorem exists_compensated_deletion_in_finset
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (weight post bonus : V → ℕ)
     (R : Finset V)
     (hR : R.Nonempty)
@@ -57,16 +57,15 @@ theorem exists_compensated_deletion_in_finset
       exact Finset.single_le_sum
         (fun _ _ => Nat.zero_le _)
         (Finset.mem_univ r)
-    have hsplit :
-        (∑ i ∈ Finset.univ.erase r, weight i) = W - weight r := by
-      dsimp [W]
-      rw [Finset.sum_erase (Finset.mem_univ r)]
+    have htotal :
+        (∑ i ∈ Finset.univ.erase r, weight i) + weight r = W := by
+      simpa [W] using
+        (Finset.sum_erase_add (Finset.univ : Finset V) weight
+          (Finset.mem_univ r))
     have hp := hpoint r hr
-    rw [hsplit] at hp
-    have hfail : post r < W := by
-      dsimp [W]
-      exact hnone r hr
+    have hfail : post r < W := hnone r hr
     omega
+
   have hsum :
       ∑ r ∈ R, (bonus r + 1) ≤ ∑ r ∈ R, weight r :=
     Finset.sum_le_sum hbonus_point
@@ -80,7 +79,7 @@ theorem exists_compensated_deletion_in_finset
 
 /-- Dyadic specialization. -/
 theorem exists_compensated_dyadic_deletion_in_finset
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent : V → ℕ)
     (post bonus : V → ℕ)
     (R : Finset V)
