@@ -190,6 +190,13 @@ theorem net_collision_target_fibre_card_le_lower_exact_shell_slots
     intro s t heq
     have hb := congrArg (fun p : V × Fin n => p.1) heq
     have hcr := congrArg (fun p : V × Fin n => p.2) heq
+    change strictDescentRigidPairColor C exponent hexp honeLoss
+      (strictDescentRigidWordCarrier C exponent
+        (netCollisionCertifiedReverseSource C exponent hexp honeLoss s.1)) =
+      strictDescentRigidPairColor C exponent hexp honeLoss
+      (strictDescentRigidWordCarrier C exponent
+        (netCollisionCertifiedReverseSource C exponent hexp honeLoss t.1))
+      at hcr
     have hs : netCollisionCertifiedDiagonal C exponent hexp honeLoss s.1 = d :=
       (Finset.mem_filter.mp s.2).2
     have ht : netCollisionCertifiedDiagonal C exponent hexp honeLoss t.1 = d :=
@@ -245,6 +252,13 @@ theorem net_collision_target_fibre_card_le_upper_exact_shell_slots
     intro s t heq
     have hv := congrArg (fun p : V × Fin n => p.1) heq
     have hcf := congrArg (fun p : V × Fin n => p.2) heq
+    change transportablePairColor C
+      (transportableWordCarrier C
+        (netCollisionCertifiedForwardSource C exponent hexp honeLoss s.1)) =
+      transportablePairColor C
+      (transportableWordCarrier C
+        (netCollisionCertifiedForwardSource C exponent hexp honeLoss t.1))
+      at hcf
     have hs : netCollisionCertifiedDiagonal C exponent hexp honeLoss s.1 = d :=
       (Finset.mem_filter.mp s.2).2
     have ht : netCollisionCertifiedDiagonal C exponent hexp honeLoss t.1 = d :=
