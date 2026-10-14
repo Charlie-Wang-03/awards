@@ -30,6 +30,8 @@ import JSP000404Research.ResidualNetCollisionFixedEndpointColourInjection
 import JSP000404Research.ResidualNetCollisionTargetBridgeColourSlots
 import JSP000404Research.ResidualNetCollisionExactShellColourSlots
 import JSP000404Research.ResidualNetCollisionExactShellPaymentBound
+import JSP000404Research.ResidualFiniteBipartiteCoverCapacity
+import JSP000404Research.ResidualNetCollisionExactShellBipartiteCover
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -420,6 +422,25 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Geometric payment/exclusion of all cross-bridge targets,
       -- fifth-centre covered diagonals, twin, mixed-rigid, soft
       -- and projected loss debts remains GENUINELY OPEN.
+      -- VERIFIED NON-REUSED BIPARTITE SLOT COVER CAPACITY:
+      -- For each ACTUAL canonical diagonal target d construct
+      -- genuine-source-compatible exact-shell bridge edges between
+      -- LOWER slots (original lower, reverse flip) and UPPER slots
+      -- (original upper, forward flip). Every true NET collision
+      -- produces one ALLOWED edge, with separate injectivity
+      -- of lower and upper endpoint slot labels at fixed d.
+      -- For ANY finite candidate edge-vertex cover A(d),B(d),
+      -- the ACTUAL fibre cardinal is <= |A(d)|+|B(d)|.
+      -- Each source is charged ONCE via disjoint Sum.inl/inr tags.
+      -- Consequently E_D <= SUM_(d IN D(I))
+      --   (|A(d)|+|B(d)|-1), provided the cover property holds
+      -- on EVERY eligible target-edge graph. The bound is substituted
+      -- into the literal-hole/covered-target/mobile-hard ledger.
+      -- This may be sharper than min(|B_2(d)|,|L*(d)|,|U*(d)|)
+      -- when the eligible bipartite graph is sparse, BUT finding
+      -- small enough covers under real AngleCap and paying them
+      -- from genuinely UNRESERVED resources are OPEN obligations.
+      -- A covered SOFT edge or endpoint SLOT is NEVER a TRUE hole.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
