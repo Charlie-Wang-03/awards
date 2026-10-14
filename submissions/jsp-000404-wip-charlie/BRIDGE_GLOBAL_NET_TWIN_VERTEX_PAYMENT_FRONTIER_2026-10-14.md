@@ -141,6 +141,40 @@ not prove global six-source dyadic capacity, since soft, twin,
 mixed-rigid and projected profile loss liabilities remain outstanding.
 
 
+### F. Root import-chain repairs without introducing proof holes
+
+Historical root entry `JSP000404Research.lean` remains NOT green. The
+full fast CI contains many unrelated legacy errors; separate certified
+frontier modules MUST NOT be downgraded because of those errors, and
+neither should they be presented as a fully green root tree.
+
+An actual **logical prerequisite** was repaired in
+`BinaryMissingDefect.lean`: an old tactic step tried to infer
+
+    |V| + |Q| <= 2^k
+
+from `|Q| <= D` and `D <= 2^k - |V|` using Nat truncated
+subtraction WITHOUT first establishing `|V|<=2^k`.
+The correct proof derives the missing baseline capacity from
+`weighted_hansel bit specified hsep`, then uses the truncated defect
+inequality. No new mathematical assumption, sorry or axiom is added.
+
+Focused CI:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38580323522
+
+Result: **SUCCESS**, 3,095 jobs, zero Lean errors;
+`weighted_hansel_missing_finset` and its two
+`BinaryEdgePartition` corollaries are kernel-checked and free of
+`sorryAx`.
+
+A stale Mathlib import `Mathlib.Data.Matrix.Notation` in
+`SupportIntervalCertificate.lean` was replaced with
+`Mathlib.Data.Matrix.Basic`. The independent verification for the
+complete corrected support-interval module is
+https://github.com/Charlie-Wang-03/awards/actions/runs/38580724431
+and is pending until that run reaches a checked terminal state.
+
+
 ## Integrity and outstanding geometric obligation
 
 1. Local source-fibre multiplicity, hard carrier matching and TWIN dyadic
