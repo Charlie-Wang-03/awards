@@ -88,3 +88,26 @@ ENTIRE source-compatible target candidate graph. It narrows the
 remaining source-compatible motifs, but does not assert AngleCap
 exclusion, global Boolean hole payment, or a lower bound on any
 unreserved profile surplus. Lean CI and axiom audit pending.
+
+## Every candidate edge has a covered common shadow completion
+
+The new `ResidualNetCollisionCandidateShadowCompletion.lean`
+certifies a **new stronger bridge-witness law** from the exact
+target shells themselves. For each candidate graph edge
+e=((b,cr),(v,cf)) at target d, define the reverse two-flip
+shadow s_e := flip(cf, flip(cr,d)). Then Lean proves
+
+- s_e lies in BOTH original bridge retained completion cubes
+  (at b and at v).
+- Consequently s_e lies in the full union of COVERED completion
+  words, so it is definitively NOT a TRUE Boolean hole.
+
+This result is about ALL geometrically eligible candidate edges,
+not just real NET source collisions. It does not certify that
+the edge has a hard-source provenance or that distinct edges
+have distinct shadow words, and the shadow is a covered resource
+rather than an unreserved global payment credit.
+
+The bridge between graph incidence and Boolean completion cubes
+is materially strengthened; geometric matching exclusion and
+six-class global payment remain OPEN. Lean validation pending.
