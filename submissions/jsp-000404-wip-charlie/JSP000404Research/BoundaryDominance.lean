@@ -83,7 +83,11 @@ theorem support_le_deficit_of_full_domination
     (hsum : (∑ i, b i) = n)
     (hdom : ∀ i, q i ≤ b i) :
     positiveSupport b ≤ n - floorExcess q := by
-  apply (support_budget_iff_floorExcess_le q b n hsum).2
+  have hq : (∑ i, q i) ≤ n := by
+    calc
+      (∑ i, q i) ≤ ∑ i, b i := Finset.sum_le_sum (fun i _ => hdom i)
+      _ = n := hsum
+  apply (support_budget_iff_floorExcess_le q b n hsum hq).2
   unfold floorExcess
   exact Finset.sum_le_sum fun i _ => by
     have h := hdom i
