@@ -73,7 +73,9 @@ noncomputable def targetExactShellSlotEdges
   exact Finset.univ.filter (fun e =>
     (e.1.1,e.2.1) ∈ targetDoubleShellTwoBitBridgeCarriers C exponent d ∧
     e.1.2 ∈ retainedActiveViolationCoords C e.2.1 d ∧
-    e.2.2 ∈ retainedActiveViolationCoords C e.1.1 d)
+    e.2.2 ∈ retainedActiveViolationCoords C e.1.1 d ∧
+    e.1.2 ∉ retainedActive C e.1.1 ∧
+    e.2.2 ∉ retainedActive C e.2.1)
 
 /-- ACTUAL canonical NET sources define actual EDGES in the
 geometrically permitted target-dependent candidate-slot graph. -/
@@ -106,12 +108,39 @@ theorem net_collision_actual_pair_mem_exact_shell_slot_edges
   change retainedActiveViolationCoords C q.1.1 d = {cf} ∧
     retainedActiveViolationCoords C p.1.2 d = {cr} at hshell
   change ((q.1.1,cr),(p.1.2,cf)) ∈ targetExactShellSlotEdges C exponent d
+  have hnotcr : cr ∉ retainedActive C q.1.1 :=
+    (strictDescentRigidPairColor_spec C exponent hexp honeLoss q).2
+  have hnotcf : cf ∉ retainedActive C p.1.2 :=
+    (transportablePairColor_spec C p).2
   apply Finset.mem_filter.mpr
-  refine ⟨Finset.mem_univ _, hb, ?_, ?_⟩
+  refine ⟨Finset.mem_univ _, hb, ?_, ?_, hnotcr, hnotcf⟩
   · rw [hshell.2]
     simp
   · rw [hshell.1]
     simp
+
+/-- The tightened candidate edge graph no longer contains
+original-colour slots active at their OWN endpoint. Thus BOTH
+endpoints of EVERY candidate graph edge lie in the previously
+certified target-EXACT lower and upper slot sets.
+This is stronger than the prior graph definition which checked
+only the opposite endpoint's violated colour. -/
+theorem target_exact_shell_edge_endpoints_mem_exact_colour_slots
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (d : Fin n → Bool)
+    (e : (V × Fin n) × (V × Fin n))
+    (he : e ∈ targetExactShellSlotEdges C exponent d) :
+    e.1 ∈ targetLowerExactShellColourSlots C exponent d ∧
+    e.2 ∈ targetUpperExactShellColourSlots C exponent d := by
+  classical
+  obtain ⟨_, hb, hcr, hcf, hnotcr, hnotcf⟩ :=
+    Finset.mem_filter.mp he
+  constructor
+  · exact Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, hnotcr, ⟨e.2.1, hb, hcr⟩⟩
+  · exact Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, hnotcf, ⟨e.1.1, hb, hcf⟩⟩
 
 /-- A common canonical target and the same LOWER endpoint-colour slot
 force the original NET collision word to be identical. -/
@@ -311,6 +340,7 @@ theorem net_mobile_mass_le_holes_covered_exact_slot_cover_excess
 #print axioms net_mobile_mass_le_holes_covered_exact_slot_cover_excess
 
 #print axioms net_collision_actual_pair_mem_exact_shell_slot_edges
+#print axioms target_exact_shell_edge_endpoints_mem_exact_colour_slots
 #print axioms net_collision_same_target_lower_slot_injective
 #print axioms net_collision_same_target_upper_slot_injective
 #print axioms net_collision_target_fibre_card_le_exact_slot_vertex_cover

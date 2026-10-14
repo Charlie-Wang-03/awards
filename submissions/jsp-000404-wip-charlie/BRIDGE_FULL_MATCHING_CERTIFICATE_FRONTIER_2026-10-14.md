@@ -63,3 +63,30 @@ The cardinal `matchingNumber(G_d)` is a count of source-compatible
 candidate edges, **not** a newly available hole/surplus budget.
 No general upper bound from AngleCap or complete six-source payment
 follows from this replacement. Lean CI evidence is pending.
+
+
+## Tightening the candidate edge graph (2026-10-14)
+
+Source audit exposed two **missing local eligibility filters** in
+the graph used for matching-number certificates. Its original
+candidate edges were constrained by source-compatible bridges
+and *opposite* endpoint violation colours, but did not explicitly
+require the colour in each pair to be **retained-inactive at its own
+endpoint**. The revised graph now enforces BOTH own-endpoint
+conditions in addition to the original source-compatible bridge
+and two exact opposite-endpoint target-violation conditions.
+
+The actual-source edge theorem is repaired with the previously
+certified `strictDescentRigidPairColor_spec` and
+`transportablePairColor_spec` inactivity lemmas. No genuine
+NET source is discarded. A new theorem
+`target_exact_shell_edge_endpoints_mem_exact_colour_slots`
+certifies EVERY candidate edge's endpoints belong to the
+existing exact lower and upper colour-slot pools.
+
+This strictly **tightens the admissible graph definition in
+principle** (no strictness witness asserted for all configurations).
+Its maximum-matching number may become smaller, strengthening
+the unconditional source-fibre and duplicate-debt bound. It is
+not a proof that these matching credits are TRUE Boolean holes.
+Lean build verification and axiom audit are pending.

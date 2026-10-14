@@ -2369,3 +2369,16 @@ Module and umbrella validation: [GitHub Actions run 38500726760](https://github.
 3,535/3,535 jobs PASS; all four new theorem axiom audits return
 `[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
 See [the precise proof-frontier note](BRIDGE_SLOT_MATCHING_OBSTRUCTION_2026-10-14.md).
+
+### Candidate matching graph own-endpoint semantic repair (2026-10-14)
+
+`ResidualNetCollisionExactShellBipartiteCover.lean` now requires
+both original-colour slots to be inactive at their own source bridge
+endpoints, not merely exact violations at the opposite endpoint.
+The actual NET source-to-edge proof uses pre-existing certified
+flip-colour inactivity specifications; no real source is excluded.
+Every new candidate edge is also certified to project to both
+previously verified target-exact endpoint colour-slot pools.
+The resulting maximum-matching number counts a smaller, fully
+source-compatible candidate graph. This does not pay the remaining
+six-source geometric `sorry` or upgrade the result to a full proof.
