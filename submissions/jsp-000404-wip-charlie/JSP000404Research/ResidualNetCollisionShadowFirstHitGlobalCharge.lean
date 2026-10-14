@@ -1,4 +1,4 @@
-import JSP000404Research.ResidualNetCollisionGlobalSoftShadowReuse
+import JSP000404Research.ResidualNetCollisionShadowReuseMultiplicityCap
 import Mathlib.Tactic
 
 /-!
@@ -91,6 +91,39 @@ theorem net_duplicate_plus_distinct_hits_le_soft_shadow_incidence
         (D.filter (fun d =>
           (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card :=
         hdouble
+
+/-- Sharper than the E_D-only global SOFT bound: retain the
+first-hit source for EVERY ACTUALLY HIT diagonal in the global
+cross-target shadow multiplicity budget. -/
+theorem net_duplicate_plus_distinct_hits_le_choose_soft_mass
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
+      (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card ≤
+      (softOverlapCompletionWords C).card * Nat.choose n 2 := by
+  classical
+  let D := netCollisionCertifiedDiagonalWords C exponent hexp honeLoss
+  have h := net_duplicate_plus_distinct_hits_le_soft_shadow_incidence
+    C exponent hexp honeLoss
+  change netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
+    D.card ≤ ∑ s ∈ softOverlapCompletionWords C,
+      (D.filter (fun d =>
+        (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card at h
+  calc
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss + D.card ≤
+      ∑ s ∈ softOverlapCompletionWords C,
+        (D.filter (fun d =>
+          (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card := h
+    _ ≤ ∑ _s ∈ softOverlapCompletionWords C, Nat.choose n 2 := by
+      apply Finset.sum_le_sum
+      intro s hs
+      exact hamming_two_targets_card_le_choose D s
+    _ = (softOverlapCompletionWords C).card * Nat.choose n 2 := by simp
+
+#print axioms net_duplicate_plus_distinct_hits_le_choose_soft_mass
 
 #print axioms finite_image_duplicate_plus_first_hits_le_fibre_caps
 #print axioms net_duplicate_plus_distinct_hits_le_soft_shadow_incidence
