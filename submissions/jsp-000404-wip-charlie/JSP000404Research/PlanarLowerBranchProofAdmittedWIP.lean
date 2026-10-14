@@ -28,6 +28,8 @@ import JSP000404Research.ResidualNetCollisionSharedVertexTwoBitClassification
 import JSP000404Research.ResidualNetCollisionSharedVertexInactiveCapacity
 import JSP000404Research.ResidualNetCollisionFixedEndpointColourInjection
 import JSP000404Research.ResidualNetCollisionTargetBridgeColourSlots
+import JSP000404Research.ResidualNetCollisionExactShellColourSlots
+import JSP000404Research.ResidualNetCollisionExactShellPaymentBound
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -396,6 +398,28 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- is CONDITIONAL. Planar AngleCap does NOT yet prove that
       -- condition; no covered SOFT target or slot is a literal
       -- TRUE Boolean hole or already-unreserved dyadic surplus.
+      -- NEW TARGET-EXACT OTHER-ENDPOINT VIOLATION SLOT FILTER:
+      -- Previous eligible lower/upper vertex-colour slots permitted
+      -- ANY retained-inactive colour at the listed endpoint,
+      -- regardless of whether it was the ACTUAL opposite endpoint's
+      -- uniquely violated active bit at this target d.
+      -- L*(d),U*(d) impose BOTH that exact violation requirement AND
+      -- the genuine candidate double-shell bridge compatibility.
+      -- Every ACTUAL source fibre D^-1(d) injects separately into
+      -- L*(d) and U*(d); both are PROVED subsets of the older
+      -- L(d),U(d), so the triple target-specific minimum
+      -- m*(d) = min(|B_2(d)|, |L*(d)|, |U*(d)|) <= m(d).
+      -- The full certified duplicate debt is bounded by
+      -- SUM_(d IN D(I)) (m*(d)-1). This has been substituted into
+      -- the REAL NET MOBILE HARD SOURCE PAYMENT inequality against
+      -- only LITERAL true Boolean holes, genuine singleton/soft
+      -- covered mass, DISTINCT already-COVERED diagonals, and
+      -- the EXPLICIT exact-shell duplicate excess. Covered targets
+      -- are NOT silently holes; neither slot pool is a hole or
+      -- independently unreserved dyadic profile surplus.
+      -- Geometric payment/exclusion of all cross-bridge targets,
+      -- fifth-centre covered diagonals, twin, mixed-rigid, soft
+      -- and projected loss debts remains GENUINELY OPEN.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

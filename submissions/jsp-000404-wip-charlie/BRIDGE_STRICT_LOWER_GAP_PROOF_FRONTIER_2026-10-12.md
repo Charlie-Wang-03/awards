@@ -2299,3 +2299,10 @@ axiom prints omit `sorryAx`. The sorry audit found exactly ONE
 explicit WIP sorry (then line 359), with WIP's admitted theorem
 continuing to report `sorryAx`, and no additional admitted axioms.
 No complete solution or disproof of JSP-000404 has been obtained.
+
+
+## 2026-10-14 exact-shell endpoint colour-slot payment refinement
+
+The newest independent, CI-certified successor is
+[`BRIDGE_EXACT_SHELL_SLOT_PAYMENT_FRONTIER_2026-10-14.md`](BRIDGE_EXACT_SHELL_SLOT_PAYMENT_FRONTIER_2026-10-14.md).
+It replaces coarse endpoint-inactive colour slots by **target-exact opposite-endpoint violation slots**, proves the joint per-target minimum and global duplicate-excess upper bound, and inserts that bound into the actual mobile-source/true-hole/covered-diagonal ledger. The single WIP six-source geometric payment `sorry` remains; no false proof or new axiom has been introduced.
