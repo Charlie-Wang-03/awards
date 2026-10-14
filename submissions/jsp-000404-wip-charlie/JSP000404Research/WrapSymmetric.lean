@@ -84,36 +84,36 @@ theorem edgeWrap_opposite_at_between
       (EdgeHigh D n x v ∧ EdgeLow D v y) := by
   rcases hbetween with ⟨hxvlt, hvylt⟩ | ⟨hyvlt, hvxlt⟩
   · have hxWrap' : IsLow D x v ∨ IsHigh D n x v := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hxvlt] using hxWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hxvlt] using hxWrap
     have hyWrap' : IsLow D v y ∨ IsHigh D n v y := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hvylt] using hyWrap
-    simpa [EdgeLow, EdgeHigh, edgeValue, hxvlt, hvylt] using
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvylt] using hyWrap
+    simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hxvlt, hvylt] using
       wrap_opposite_at_middle D hwidth hdelta hxvlt hvylt hxWrap' hyWrap'
   · have hyWrap' : IsLow D y v ∨ IsHigh D n y v := by
       rcases hyWrap with h | h
       · have hs : EdgeLow D y v := (edgeLow_symm D hvy).mp h
-        simpa [EdgeLow, edgeValue, hyvlt] using hs
+        exact Or.inl (by simpa [IsLow, EdgeLow, edgeValue, hyvlt] using hs)
       · have hs : EdgeHigh D n y v := (edgeHigh_symm D hvy).mp h
-        simpa [EdgeHigh, edgeValue, hyvlt] using hs
+        exact Or.inr (by simpa [IsHigh, EdgeHigh, edgeValue, hyvlt] using hs)
     have hxWrap' : IsLow D v x ∨ IsHigh D n v x := by
       rcases hxWrap with h | h
       · have hs : EdgeLow D v x := (edgeLow_symm D hxv).mp h
-        simpa [EdgeLow, edgeValue, hvxlt] using hs
+        exact Or.inl (by simpa [IsLow, EdgeLow, edgeValue, hvxlt] using hs)
       · have hs : EdgeHigh D n v x := (edgeHigh_symm D hxv).mp h
-        simpa [EdgeHigh, edgeValue, hvxlt] using hs
+        exact Or.inr (by simpa [IsHigh, EdgeHigh, edgeValue, hvxlt] using hs)
     have h :=
       wrap_opposite_at_middle D hwidth hdelta hyvlt hvxlt hyWrap' hxWrap'
     rcases h with h | h
     · exact Or.inr ⟨
         (edgeHigh_symm D hxv).mpr (by
-          simpa [EdgeHigh, edgeValue, hvxlt] using h.2),
+          simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hvxlt] using h.2),
         (edgeLow_symm D hvy).mpr (by
-          simpa [EdgeLow, edgeValue, hyvlt] using h.1)⟩
+          simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hyvlt] using h.1)⟩
     · exact Or.inl ⟨
         (edgeLow_symm D hxv).mpr (by
-          simpa [EdgeLow, edgeValue, hvxlt] using h.2),
+          simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hvxlt] using h.2),
         (edgeHigh_symm D hvy).mpr (by
-          simpa [EdgeHigh, edgeValue, hyvlt] using h.1)⟩
+          simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hyvlt] using h.1)⟩
 
 theorem edgeWrap_same_at_local_min
     {V : Type*} [LinearOrder V] {width : ℝ} {n : ℕ}
@@ -127,30 +127,30 @@ theorem edgeWrap_same_at_local_min
       (EdgeHigh D n v x ∧ EdgeHigh D n v y) := by
   rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
   · have hxWrap' : IsLow D v x ∨ IsHigh D n v x := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hvx] using hxWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvx] using hxWrap
     have hyWrap' : IsLow D v y ∨ IsHigh D n v y := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hvy] using hyWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvy] using hyWrap
     have hxyMid' : IsMiddle D n x y := by
-      simpa [EdgeMiddle, edgeValue, hxylt] using hxyMid
-    simpa [EdgeLow, EdgeHigh, edgeValue, hvx, hvy] using
+      simpa [IsLow, IsHigh, IsMiddle, EdgeMiddle, edgeValue, hxylt] using hxyMid
+    simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvx, hvy] using
       wrap_same_at_local_min D hvx hxylt hxWrap' hyWrap' hxyMid'
   · have hyWrap' : IsLow D v y ∨ IsHigh D n v y := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hvy] using hyWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvy] using hyWrap
     have hxWrap' : IsLow D v x ∨ IsHigh D n v x := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hvx] using hxWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hvx] using hxWrap
     have hmid : EdgeMiddle D n y x :=
       (edgeMiddle_symm D hxy).mp hxyMid
     have hmid' : IsMiddle D n y x := by
-      simpa [EdgeMiddle, edgeValue, hyxlt] using hmid
+      simpa [IsLow, IsHigh, IsMiddle, EdgeMiddle, edgeValue, hyxlt] using hmid
     have h :=
       wrap_same_at_local_min D hvy hyxlt hyWrap' hxWrap' hmid'
     rcases h with h | h
     · exact Or.inl ⟨
-        (by simpa [EdgeLow, edgeValue, hvx] using h.2),
-        (by simpa [EdgeLow, edgeValue, hvy] using h.1)⟩
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hvx] using h.2),
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hvy] using h.1)⟩
     · exact Or.inr ⟨
-        (by simpa [EdgeHigh, edgeValue, hvx] using h.2),
-        (by simpa [EdgeHigh, edgeValue, hvy] using h.1)⟩
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hvx] using h.2),
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hvy] using h.1)⟩
 
 theorem edgeWrap_same_at_local_max
     {V : Type*} [LinearOrder V] {width : ℝ} {n : ℕ}
@@ -164,30 +164,30 @@ theorem edgeWrap_same_at_local_max
       (EdgeHigh D n x v ∧ EdgeHigh D n y v) := by
   rcases lt_or_gt_of_ne hxy with hxylt | hyxlt
   · have hxWrap' : IsLow D x v ∨ IsHigh D n x v := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hxv] using hxWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hxv] using hxWrap
     have hyWrap' : IsLow D y v ∨ IsHigh D n y v := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hyv] using hyWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hyv] using hyWrap
     have hxyMid' : IsMiddle D n x y := by
-      simpa [EdgeMiddle, edgeValue, hxylt] using hxyMid
-    simpa [EdgeLow, EdgeHigh, edgeValue, hxv, hyv] using
+      simpa [IsLow, IsHigh, IsMiddle, EdgeMiddle, edgeValue, hxylt] using hxyMid
+    simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hxv, hyv] using
       wrap_same_at_local_max D hxylt hyv hxWrap' hyWrap' hxyMid'
   · have hyWrap' : IsLow D y v ∨ IsHigh D n y v := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hyv] using hyWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hyv] using hyWrap
     have hxWrap' : IsLow D x v ∨ IsHigh D n x v := by
-      simpa [EdgeLow, EdgeHigh, edgeValue, hxv] using hxWrap
+      simpa [IsLow, IsHigh, IsMiddle, EdgeLow, EdgeHigh, edgeValue, hxv] using hxWrap
     have hmid : EdgeMiddle D n y x :=
       (edgeMiddle_symm D hxy).mp hxyMid
     have hmid' : IsMiddle D n y x := by
-      simpa [EdgeMiddle, edgeValue, hyxlt] using hmid
+      simpa [IsLow, IsHigh, IsMiddle, EdgeMiddle, edgeValue, hyxlt] using hmid
     have h :=
       wrap_same_at_local_max D hyxlt hxv hyWrap' hxWrap' hmid'
     rcases h with h | h
     · exact Or.inl ⟨
-        (by simpa [EdgeLow, edgeValue, hxv] using h.2),
-        (by simpa [EdgeLow, edgeValue, hyv] using h.1)⟩
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hxv] using h.2),
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeLow, edgeValue, hyv] using h.1)⟩
     · exact Or.inr ⟨
-        (by simpa [EdgeHigh, edgeValue, hxv] using h.2),
-        (by simpa [EdgeHigh, edgeValue, hyv] using h.1)⟩
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hxv] using h.2),
+        (by simpa [IsLow, IsHigh, IsMiddle, EdgeHigh, edgeValue, hyv] using h.1)⟩
 
 #print axioms edgeValue_symm
 #print axioms edgeWrap_opposite_at_between
