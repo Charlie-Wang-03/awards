@@ -49,7 +49,7 @@ theorem hansel_card_le_two_pow_of_atMostOne_full
       intro v hv hcontra
       have hv_eq : v = v0 := hfull v v0 hcontra hv0
       subst v
-      exact (Finset.not_mem_erase v0 Finset.univ) hv
+      simpa using hv
     have hterm :
         ∀ v ∈ (Finset.univ.erase v0), 2 ≤ term v := by
       intro v hv
