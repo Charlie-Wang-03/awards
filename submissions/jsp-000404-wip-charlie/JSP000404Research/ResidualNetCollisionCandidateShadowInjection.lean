@@ -157,7 +157,7 @@ theorem target_exact_shell_candidate_shadow_injective_on_edges
   have hcr : e.1.2 = f.1.2 := by
     obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcardUpper
     have heq : e.1.2 = x := by
-      have ht := heData.2.2.1
+      have ht := heData.2.1
       rw [hx] at ht
       exact Finset.mem_singleton.mp ht
     have hfq : f.1.2 = x := by
