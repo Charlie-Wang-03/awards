@@ -206,3 +206,66 @@ liabilities) into literal TRUE Boolean holes and dyadic surplus proven
 UNRESERVED by all prior carrier allocations. Work with distinct actual
 targets and fifth-centre blocker witnesses; do not equate a bound on
 candidate bridge/matching capacities with payment.
+
+
+## 2026-10-14 continuation: unrestricted dyadic twin cap and isolated Lean repair
+
+### F. Arbitrary-size dyadic TWIN liability (kernel-verified)
+
+`ResidualNetCollisionGlobalTwinDyadicLiability.lean` combines the
+earlier **verified**, genuinely same-target NET duplicate witness
+vertex budget `8 + 2*|T| <= |V|` with the exponent bound:
+
+When actual duplicate debt `E_D > 0` and all exponents satisfy
+`k(v) < n`, the total TWIN dyadic **liability** is bounded by
+
+    SUM_(p in TWIN) 2 ^ k(p.second)
+      <= (floor(|V|/2) - 4) * 2^(n-1).
+
+The weaker non-strict bound uses `2^n`. The conditional theorem
+`E_D = 0 OR (strict liability cap)` is also verified.
+
+`PlanarNetGlobalTwinDyadicLiability.lean` proves the corresponding
+TRUE planar AngleCap statement without any |V| <= 11 condition.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38583820034
+SUCCESS: 3,474 Lean jobs, zero errors; all four new theorem axioms
+[propext, Classical.choice, Quot.sound], no sorryAx.
+
+### G. Source-fibre-specific weighted TWIN tradeoff (CI pending)
+
+Proposed abstract and genuine planar `AngleCap` theorem:
+
+    forall ACTUAL target d,
+    SUM_(p in TWIN) 2 ^ k(p.second)
+      <= (floor(|V|/2) - 2*|F_d|) * 2^(n-1).
+
+This refines the positive-duplicate bound when one fixed target has
+more than two actual NET sources, but does NOT spend vertex or soft
+bridge payment again at other targets. Source:
+
+- `ResidualNetCollisionTwinFibreDyadicTradeoff.lean`
+- `PlanarNetTwinFibreDyadicTradeoff.lean`
+
+Focused CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38584349299
+**Do not mark verified before successful kernel checks and axiom audit.**
+
+### H. Restored old local Lean chain (independent CI verified)
+
+Targeted geometry and Hansel modules, formerly failing downstream of
+stale Mathlib imports and dependent Fin-4 sum elaboration, now compile
+independently with no sorryAx in audited declarations.
+
+- Support interval:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38584726476
+  SUCCESS (3,441 jobs), including the genuine
+  `four_turnLength_sum_le_two_pi` theorem.
+- Transition interval:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38584726192
+  SUCCESS (3,441 jobs).
+- Weighted Hansel missing-vertex defect:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/38584726284
+  SUCCESS (3,445 jobs).
+
+**DO NOT CONFLATE THESE RESULTS WITH FULL ROOT COMPILATION OR WITH
+THE MISSING UNRESTRICTED SIX-SOURCE GLOBAL NON-REUSED PAYMENT.**
