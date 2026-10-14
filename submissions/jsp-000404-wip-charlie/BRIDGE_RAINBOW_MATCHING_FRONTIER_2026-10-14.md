@@ -69,3 +69,22 @@ colour support is still an EXTRA unproved geometry hypothesis:
 no AngleCap consequence has been asserted.
 
 Verification: [run 38504957833](https://github.com/Charlie-Wang-03/awards/actions/runs/38504957833) PASS, 3,540 jobs; five rainbow two-edge obstruction theorems only depend on [propext, Classical.choice, Quot.sound]. Both runs compiled the verified umbrella and WIP module; the latter retains the historical sole sorryAx.
+
+## Candidate graph: four original endpoints separated by disjoint colours
+
+The module `ResidualNetCollisionCandidateColourVertexSeparation.lean`
+uses the **exact cardinality-one violation shells** already required
+for each candidate bridge. For any TWO candidate eligible edges of
+the SAME target d, even if neither is known to come from an actual
+NET source, DISJOINT unordered flip-colour supports imply all FOUR
+cross-edge source bridge endpoints are distinct (lower/lower,
+upper/upper, lower/upper and upper/lower).
+
+Conversely, sharing a vertex in ANY endpoint role forces the
+candidate edges' original two-colour supports to intersect.
+
+This lifts previously proved four-bit source-only rigidity to the
+ENTIRE source-compatible target candidate graph. It narrows the
+remaining source-compatible motifs, but does not assert AngleCap
+exclusion, global Boolean hole payment, or a lower bound on any
+unreserved profile surplus. Lean CI and axiom audit pending.
