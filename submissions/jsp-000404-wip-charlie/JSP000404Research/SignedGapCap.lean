@@ -100,7 +100,8 @@ theorem sign_eq_of_normalized_gap_lt_one
     sigma = tau := by
   apply sign_eq_of_projective_separation_lt_cap hdiffPi
   · rw [hgap]
-    nlinarith
+    have hmul : x * lam < 1 * lam := mul_lt_mul_of_pos_right hx1 hlam
+    linarith
   · exact hcap
 
 #print axioms angle_signedRay_of_sign_ne
