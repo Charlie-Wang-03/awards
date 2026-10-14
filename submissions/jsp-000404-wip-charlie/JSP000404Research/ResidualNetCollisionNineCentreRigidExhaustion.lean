@@ -183,35 +183,37 @@ theorem net_collision_positive_duplicate_nine_centres_no_twin_rigid
     net_collision_two_sources_nine_centres_rigid_eq_two_strict
       C exponent hexp honeLoss hsmall s t hdiag hne
   ext r
-  simp only [Finset.mem_empty, iff_false]
-  intro hr
-  have htwin := (mem_netTwinRigidCarriers C exponent r).mp hr
-  have hmem : r ∈
-      ({netCollisionReverseHardPair C exponent hexp honeLoss s,
-        netCollisionReverseHardPair C exponent hexp honeLoss t} :
-        Finset (V × V)) := by
-    rw [← hrigid]
-    exact htwin.1
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
-  rcases hmem with hr | hr
-  · have hstrict :
-        exponent (netCollisionReverseHardPair C exponent hexp honeLoss s).2 <
-        exponent (netCollisionReverseHardPair C exponent hexp honeLoss s).1 :=
-      (mem_netStrictDescentRigidCarriers C exponent
-        (netCollisionReverseHardPair C exponent hexp honeLoss s)).mp
-        (strictDescentRigidWordCarrier C exponent
-          (netCollisionCertifiedReverseSource C exponent hexp honeLoss s)).2 |>.2
-    rw [hr] at htwin
-    omega
-  · have hstrict :
-        exponent (netCollisionReverseHardPair C exponent hexp honeLoss t).2 <
-        exponent (netCollisionReverseHardPair C exponent hexp honeLoss t).1 :=
-      (mem_netStrictDescentRigidCarriers C exponent
-        (netCollisionReverseHardPair C exponent hexp honeLoss t)).mp
-        (strictDescentRigidWordCarrier C exponent
-          (netCollisionCertifiedReverseSource C exponent hexp honeLoss t)).2 |>.2
-    rw [hr] at htwin
-    omega
+  constructor
+  · intro hr
+    have htwin := (mem_netTwinRigidCarriers C exponent r).mp hr
+    have hmem : r ∈
+        ({netCollisionReverseHardPair C exponent hexp honeLoss s,
+          netCollisionReverseHardPair C exponent hexp honeLoss t} :
+          Finset (V × V)) := by
+      rw [← hrigid]
+      exact htwin.1
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with hr | hr
+    · have hstrict :
+          exponent (netCollisionReverseHardPair C exponent hexp honeLoss s).2 <
+          exponent (netCollisionReverseHardPair C exponent hexp honeLoss s).1 :=
+        (mem_netStrictDescentRigidCarriers C exponent
+          (netCollisionReverseHardPair C exponent hexp honeLoss s)).mp
+          (strictDescentRigidWordCarrier C exponent
+            (netCollisionCertifiedReverseSource C exponent hexp honeLoss s)).2 |>.2
+      rw [hr] at htwin
+      omega
+    · have hstrict :
+          exponent (netCollisionReverseHardPair C exponent hexp honeLoss t).2 <
+          exponent (netCollisionReverseHardPair C exponent hexp honeLoss t).1 :=
+        (mem_netStrictDescentRigidCarriers C exponent
+          (netCollisionReverseHardPair C exponent hexp honeLoss t)).mp
+          (strictDescentRigidWordCarrier C exponent
+            (netCollisionCertifiedReverseSource C exponent hexp honeLoss t)).2 |>.2
+      rw [hr] at htwin
+      omega
+  · intro hr
+    simpa using hr
 
 #print axioms net_collision_two_sources_nine_centres_exhaust_hard_carriers
 #print axioms net_collision_two_sources_nine_centres_rigid_eq_two_strict
