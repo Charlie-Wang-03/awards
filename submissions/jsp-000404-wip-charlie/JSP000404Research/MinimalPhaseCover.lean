@@ -162,7 +162,7 @@ theorem irredundant_interval_right_strict
     exists_private_phase_of_irredundant
       (InClosedInterval L R) S hmin hj
   exact right_strictMono_of_left_le_of_private
-    L R hij hL hxj (hxprivate i hi hij.symm)
+    L R hij hL hxj (hxprivate i hi hij)
 
 /-- Two distinct intervals in an irredundant interval cover cannot be
 comparable by containment in either direction. -/
@@ -180,12 +180,12 @@ theorem irredundant_intervals_not_nested
       exists_private_phase_of_irredundant
         (InClosedInterval L R) S hmin hj
     exact (not_interval_contained_of_private
-      L R hij hxj (hxprivate i hi hij.symm)) hijContain
+      L R hij hxj (hxprivate i hi hij)) hijContain
   · obtain ⟨x, hxi, hxprivate⟩ :=
       exists_private_phase_of_irredundant
         (InClosedInterval L R) S hmin hi
     exact (not_interval_contained_of_private
-      L R hij.symm hxi (hxprivate j hj hij)) hjiContain
+      L R hij.symm hxi (hxprivate j hj hij.symm)) hjiContain
 
 /-- Abstract slot-compression principle: if every pair of intervals assigned
 to the same slot is nested, then the slot map is injective on any
