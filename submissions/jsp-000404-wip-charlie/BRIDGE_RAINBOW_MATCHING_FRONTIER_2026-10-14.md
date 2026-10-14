@@ -327,7 +327,7 @@ Consequences for ALL Boolean dimensions n:
 
 Does not resolve any remaining fifth-centre covered-blocker,
 soft, terminal twin, mixed rigid or profile-loss obligation.
-Lean CI and axiom audit pending.
+[Lean CI 38518193019](https://github.com/Charlie-Wang-03/awards/actions/runs/38518193019) PASS, 3,549 jobs; nine standard-axiom Lean theorems without `sorryAx`.
 
 ## Planar AngleCap consequence for at most seven centres
 
@@ -338,7 +338,7 @@ cardinality across `ProjectionOrdered V ≃ V`, and proves genuine
 zero canonical NET target duplicate debt for any n>=1 whenever
 `Fintype.card V <= 7`. The exact planar mobile-hard bound
 then excludes the duplicate debt but retains covered diagonals
-and other uncharged classes. Lean verification pending.
+and other uncharged classes. [Lean CI 38518458671](https://github.com/Charlie-Wang-03/awards/actions/runs/38518458671) PASS, 3,550 jobs; one standard-axiom planar theorem without `sorryAx`.
 
 ## Quantitative actual NET fibre hard-carrier packing
 
@@ -355,7 +355,7 @@ Unlike the n<=2 choose-two bound this estimate depends on ACTUAL
 available centres and works at arbitrary retained n. It is only
 a necessary capacity, not a proof of non-reused Boolean hole
 or profile-surplus payment. Source:
-`ResidualNetCollisionVertexBudgetFibre.lean`. Lean CI pending.
+`ResidualNetCollisionVertexBudgetFibre.lean`. [Lean CI 38519176642](https://github.com/Charlie-Wang-03/awards/actions/runs/38519176642) PASS; all six vertex-fibre/min-capacity theorems have standard axioms only and no `sorryAx`.
 
 ## Combining independent hard-carrier and eligible graph capacities
 
@@ -367,4 +367,20 @@ matching bound, while the vertex-quarter term is a genuine
 hard-source pairing restriction, so the two estimates are
 not known equivalent. Neither term pays true Boolean holes;
 the covered-diagonal/fifth-centre and the other dyadic debts
-remain open. Lean CI pending.
+remain open. [Lean CI 38519176642](https://github.com/Charlie-Wang-03/awards/actions/runs/38519176642) PASS; all six vertex-fibre/min-capacity theorems have standard axioms only and no `sorryAx`.
+## Verified next mathematical frontier
+
+For actual NET duplicate-source geometry, every canonical target
+now has the independently certified absolute vertex cost
+
+  4 * |F_d| <= |V|.
+
+The exact integrated payment ledger has
+  |F_d| <= min(nu(G_d), floor(|V|/4)),
+where `nu(G_d)` is the target-exact candidate slot matching number.
+This does not make `coveredCompletionWords` into actual holes.
+For <=7 planar centres, the entire ACTUAL duplicate-image term
+closes; for >=8 centres or general n, fifth-centre covered
+diagonals, surviving duplicate hits, terminal twin and mixed
+rigid, soft, and projection-loss ledgers still need a genuinely
+global nonreusing geometric payment theorem.

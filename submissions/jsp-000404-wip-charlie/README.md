@@ -2511,3 +2511,50 @@ and projected profile-loss charges remain. The one global
 six-source planar geometric payment `sorry` is unchanged;
 no complete JSP-000404 proof or disproof has been obtained.
 
+
+### Actual NET original-hard vertex budget (2026-10-14; verified)
+
+The source-level eight-centre barrier is **kernel-checked**:
+every pair of DISTINCT genuine NET source words sharing the SAME
+canonical diagonal requires FOUR distinct original HARD carriers.
+The verified hard-carrier vertex matching gives
+`positiveDuplicateDebt => Fintype.card V >= 8`, so
+`Fintype.card V <= 7 => duplicateDebt = 0`, **for all n**.
+File: `JSP000404Research/ResidualNetCollisionEightCentreBarrier.lean`.
+[Lean CI 38518193019](https://github.com/Charlie-Wang-03/awards/actions/runs/38518193019):
+PASS 3,549 builds, nine no-`sorryAx` theorems.
+
+The actual `AngleCap` plane specialization establishes the same
+zero-debt statement for genuine cyclic projective centre profiles
+on configurations with at most seven original centres, for every
+`n>=1`. File: `JSP000404Research/PlanarNetSmallCentreNoDuplicate.lean`.
+[Lean CI 38518458671](https://github.com/Charlie-Wang-03/awards/actions/runs/38518458671):
+PASS 3,550 builds, one no-`sorryAx` theorem.
+
+For **each** canonical target `d`, independently of Boolean
+dimension and without source-independent candidate overcount:
+`4*|F_d| <= |V|`. This gives a genuine per-target ceiling
+`|F_d| <= floor(|V|/4)`, and a combined bound
+`|F_d| <= min(nu(G_d),floor(|V|/4))` using two distinct
+proof mechanisms. The exact duplicate-image debt and mobile
+source ledger inherit the hit-target min-excess bound. File:
+`JSP000404Research/ResidualNetCollisionVertexBudgetFibre.lean`.
+[Lean CI 38519176642](https://github.com/Charlie-Wang-03/awards/actions/runs/38519176642):
+PASS 3,464 incrementally selected builds, six no-`sorryAx` theorems.
+The earlier full upstream-dependent build of the three base
+vertex-quarter theorems was PASS 3,551 in
+[run 38518932632](https://github.com/Charlie-Wang-03/awards/actions/runs/38518932632).
+
+**Interpretation:** Unlike previously audited rainbow/local-soft
+minimum bounds, the hard-carrier vertex-quarter budget does NOT
+follow from the candidate edge shadow injection; it is a new
+actual-source vertex packing restriction. It may improve the
+matching-only bound, but an explicit numerical strict-improvement
+example is not asserted here.
+
+**Still open:** the sole global six-class `AngleCap` true-hole
+and unreserved-dyadic-surplus payment `sorry`. Covered/fifth-centre
+canonical targets, terminal twins, both mixed-rigid masses,
+soft overlap and projected profile loss are not discharged.
+No complete JSP-000404 proof or disproof is claimed.
+
