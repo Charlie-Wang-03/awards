@@ -136,6 +136,9 @@ theorem net_collision_target_fibre_has_exact_original_vertex_matching
             exact hst (Subtype.ext heq))
       have hsourceShare : netCollisionBridgeOwnersShareVertex
           C exponent hexp honeLoss s.1 t.1 := by
+        dsimp only [f] at hshare
+        change netCollisionBridgeOwnersShareVertex
+          C exponent hexp honeLoss s.1 t.1 at hshare
         exact hshare
       exact False.elim (hnone hsourceShare)
   · change ((Finset.univ : Finset E).image f).card = F.card
