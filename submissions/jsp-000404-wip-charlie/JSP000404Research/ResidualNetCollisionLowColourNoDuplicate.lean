@@ -10,8 +10,8 @@ MOST ONE two-element subset; hence its canonical opposite-diagonal
 target map is genuinely globally injective and its duplicate-image
 debt is EXACTLY ZERO.
 
-For n<=1 no such unordered two-colour flip pair exists at all, so
-the complete actual forward/reverse NET collision set is EMPTY.
+The n<=1 emptiness fact was ALREADY formally present in the
+repository, so it is deliberately NOT redeclared here.
 
 This is an unconditional small-colour elimination of one specific
 geometric accounting debt under only the pre-existing one-layer
@@ -22,29 +22,6 @@ NOT a full sharp planar lower-branch solution for n<=2.
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
-
-/-- At n<=1 there is no two-colour support, hence NO genuine
-collision of the selected NET forward/reverse hard transports. -/
-theorem net_actual_collision_empty_of_n_le_one
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (hexp : ∀ v, exponent v ≤ n)
-    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
-    (hn : n ≤ 1) :
-    netActualForwardReverseCollisionWords
-      C exponent hexp honeLoss = ∅ := by
-  classical
-  have hbound :=
-    net_collision_card_le_choose_two_times_distinct_diagonal_card
-      C exponent hexp honeLoss
-  have hzero : Nat.choose n 2 = 0 := by
-    interval_cases n <;> norm_num at *
-  rw [hzero, mul_zero] at hbound
-  have hcard :
-      (netActualForwardReverseCollisionWords
-        C exponent hexp honeLoss).card = 0 := by omega
-  exact Finset.card_eq_zero.mp hcard
 
 /-- With at most TWO retained colours, a genuine NET source-target
 diagonal fibre contains at most ONE source. The previous choose-two
@@ -95,7 +72,7 @@ theorem net_collision_certified_diagonal_injective_of_n_le_two
   have hcard : F.card ≤ 1 :=
     net_collision_target_fibre_card_le_one_of_n_le_two
       C exponent hexp honeLoss hn d
-  exact (Finset.card_le_one.mp hcard) hs ht
+  exact (Finset.card_le_one.mp hcard) s hs t ht
 
 /-- The exact duplicate-image debt is UNCONDITIONALLY zero
 whenever n<=2. This removes the entire repeated canonical
@@ -144,7 +121,6 @@ theorem net_mobile_mass_le_holes_covered_without_duplicates_of_n_le_two
       C exponent hexp honeLoss hn
   omega
 
-#print axioms net_actual_collision_empty_of_n_le_one
 #print axioms net_collision_target_fibre_card_le_one_of_n_le_two
 #print axioms net_collision_certified_diagonal_injective_of_n_le_two
 #print axioms net_collision_duplicate_debt_zero_of_n_le_two

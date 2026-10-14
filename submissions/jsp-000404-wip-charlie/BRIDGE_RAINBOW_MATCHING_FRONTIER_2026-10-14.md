@@ -235,7 +235,8 @@ Lean CI and axiom audit pending.
 quantitative consequence of the already certified real-source
 colour pair injection for small n:
 
-- n <= 1: no genuine NET forward/reverse hard sink collisions.
+- n <= 1: no genuine NET forward/reverse hard sink collisions
+  (already proved elsewhere in the repository; NOT a new lemma).
 - n <= 2: every ACTUAL target diagonal fibre has at most ONE source.
 - Thus the canonical NET diagonal map is **GLOBALLY INJECTIVE** and
   the real duplicate-image debt is **ZERO**, with no extra geometry
@@ -247,3 +248,10 @@ This is a genuine partial closure of ONE six-source debt
 in the small-colour regime, not proof of the planar dyadic
 inequality even for n<=2. The full-root and fifth-centre gates
 remain open. Lean CI pending.
+
+Lean CI first run [38514847387](https://github.com/Charlie-Wang-03/awards/actions/runs/38514847387):
+FAILED on a duplicate **pre-existing** theorem name for n<=1 and
+an incomplete application of `Finset.card_le_one`. Both are Lean
+engineering errors, not counterexamples. The first theorem has been
+deleted as redundant; `card_le_one` is now applied to both elements
+and their memberships. Revalidation pending.
