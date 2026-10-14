@@ -225,8 +225,7 @@ theorem exists_highExponentTransitionIntervalCertificate
           ((first :: before) ++ (right :: tail)).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
-        exact C.theta_sorted
+        simpa only [List.cons_append, hrays'] using C.theta_sorted
       have hpairs :
           (first :: before).Pairwise
               (fun a b =>
