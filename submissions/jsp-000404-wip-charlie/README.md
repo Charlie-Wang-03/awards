@@ -2385,18 +2385,17 @@ six-source geometric `sorry` or upgrade the result to a full proof.
 
 ### Source-native rainbow matching refinement (2026-10-14)
 
-The certified actual NET target-source fibre embeds at equal size into
-an eligible **rainbow matching**: both original colour-slot endpoints
-are pairwise distinct, and the unordered original forward/reverse
-flip-colour pairs of different edges are pairwise distinct. Its finite
-maximum `rho(d)` satisfies `|F_d| <= rho(d) <= nu(d)`. The exact
-canonical duplicate-debt sum and actual mobile ledger inherit the
-smaller `rho(d)-1` bound. Positive NET duplicate debt MUST witness
-at least two eligible target-exact edges with disjoint slots and
-**different unordered original colour supports**. Exclusion of this
-rainbow pair would suffice to remove the duplicate debt; unlike the
-prior no-matching condition it allows ordinary slot-disjoint edge
-pairs that reuse the same colour pair.
+A genuine fixed-target NET source fibre embeds at equal size
+into a slot matching with distinct unordered flip-colour supports.
+**CORRECTION established by kernel-checked shadow injectivity:**
+every pair of DISTINCT candidate edges of the fixed-target graph
+already has DISTINCT colour supports. Therefore the maximum
+rainbow matching number and ordinary matching number are EQUAL:
+`rho(G_d) = nu(G_d)`. The earlier interpretation of a strictly
+smaller rainbow capacity was incorrect; the theorem inequalities
+remain valid. The proposed colour-clash exclusion is equivalent to
+ordinary two-edge matching exclusion in this graph. A truly new
+geometric upper bound or non-reused global payment is still missing.
 
 Lean CI: [rainbow capacity 38504690545](https://github.com/Charlie-Wang-03/awards/actions/runs/38504690545)
 and [rainbow pair obstruction 38504957833](https://github.com/Charlie-Wang-03/awards/actions/runs/38504957833), both PASS, new
@@ -2435,3 +2434,25 @@ CI: [38506236757](https://github.com/Charlie-Wang-03/awards/actions/runs/3850623
 [38507215558](https://github.com/Charlie-Wang-03/awards/actions/runs/38507215558)
 (PASS 3,543). One incorrect Lean conjunction projection was
 fixed, without changing a mathematical statement.
+
+### Audited exact-shell matching and target-local soft sphere (2026-10-14)
+
+`ResidualNetCollisionRainbowRedundancyAudit.lean` proves
+`rho(G_d) = nu(G_d)`; the earlier proposed strict rainbow
+capacity improvement did NOT hold for this candidate graph.
+[Lean CI 38511850877](https://github.com/Charlie-Wang-03/awards/actions/runs/38511850877):
+PASS 3,544, six new theorems without `sorryAx`.
+
+`ResidualNetCollisionLocalSoftSphereCapacity.lean` proves that
+every fixed-target candidate edge injects into the ACTUAL SOFT
+overlap word set whose Hamming distance from target `d` is exactly
+two. This yields a combined pointwise upper bound for the real NET
+source fibre by the minimum of the exact-shell ordinary matching
+number and the size of this local soft sphere; the exact duplicate
+debt/mobile-hard ledger inherit its per-target excess. If each
+actually hit target has at most one such soft word, duplicate debt
+vanishes (conditional, NOT established under AngleCap).
+
+This local sphere is a subset of COVERED words, NOT a set of true
+Boolean holes; no global across-target non-reused charge exists.
+The sole admitted six-class planar payment `sorry` remains.

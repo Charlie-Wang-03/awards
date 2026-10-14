@@ -466,27 +466,22 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- the derived maximum matching number is for this STRICTER
       -- finite graph, not arbitrary coloured endpoint pairs.
       -- None of these edges or matching capacities is a TRUE hole.
-      -- VERIFIED SOURCE-NATIVE RAINBOW MATCHING REDUCTION:
+      -- AUDITED RAINBOW MATCHING CONDITION:
       -- Every ACTUAL target-diagonal source fibre embeds at EXACT
-      -- cardinality into a matching with DISTINCT lower slots,
-      -- DISTINCT upper slots, and DISTINCT unordered original
-      -- forward/reverse flip-colour PAIRS. This is strictly more
-      -- selective at the candidate-graph level than ordinary
-      -- bipartite matching (which may reuse a colour pair).
-      -- The maximum such graph rainbow matching count rho(d)
-      -- satisfies |true fibre(d)| <= rho(d) <= ordinary nu(d).
-      -- Hence actual NET duplicate debt <= SUM_hit_d (rho(d)-1),
-      -- with the corresponding literal-hole/covered-target ledger.
-      -- TRUE positive duplicate debt FORCEs at one ACTUALLY HIT d
-      -- a pair of candidate edges with different lower slots,
-      -- different upper slots, and DISTINCT unordered colour pairs.
-      -- Therefore it suffices to exclude those RAINBOW PAIRS, a
-      -- weaker conditional obligation than excluding all
-      -- candidate two-edge ordinary matchings; that would give
-      -- E_D=0. No planar AngleCap proof of this exclusion or a
-      -- geometric payment of the surviving pair motif exists.
-      -- Fifth-centre blockers, twin, mixed-rigid, soft and
-      -- projected-loss debts are further independent obstacles.
+      -- size into an eligible matching with DISTINCT lower/upper
+      -- slots and DISTINCT unordered original flip colour PAIRS.
+      -- LATER CANDIDATE SHADOW-INJECTION AUDIT proves that these
+      -- pairs are ALREADY distinct for ALL eligible candidate
+      -- edges, including ones without hard-source provenance.
+      -- Thus rho(d) = nu(d), a verified equality: the rainbow
+      -- constraint gives NO strict graph capacity improvement.
+      -- A positive actual duplicate debt still forces two
+      -- slot-disjoint candidate edges with DIFFERENT colour pairs;
+      -- in the actual exact-shell graph ALL distinct edges differ
+      -- in this pair. Hence excluding those pairs is simply
+      -- ordinary two-edge matching exclusion, NOT a weaker gate.
+      -- Remaining geometry must pay/exclude matching components,
+      -- plus fifth-centre, twin, mixed-rigid, soft and profile debt.
       -- NEW CANDIDATE EDGE --> COVERED SOFT SHADOW CERTIFICATES:
       -- Every eligible target-exact bridge edge, even without any
       -- ACTUAL hard-source provenance, gives a canonical double-flip
@@ -505,6 +500,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- unreserved global six-source payment budget. The missing
       -- AngleCap allocation, fifth-centre, twin, mixed, soft and
       -- projection loss debts remain unproved.
+      -- NEW TARGET-LOCAL SOFT SPHERE CAPACITY:
+      -- Every candidate edge's shadow differs from target d at
+      -- EXACTLY TWO bit positions, and is a genuine SOFT word.
+      -- Actual NET fibre(d) <= MIN( ordinary nu(G_d),
+      --   count{soft overlap words at Hamming distance 2 from d} ).
+      -- The exact duplicate debt and mobile-hard ledger inherit
+      -- SUM_hit_d (MIN(...) - 1), with no fake TRUE hole credits.
+      -- Single local soft shadow per hit d implies zero NET debt.
+      -- Such uniqueness is NOT proved from planar AngleCap.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

@@ -1,13 +1,13 @@
 # JSP-000404 — exact-shell rainbow matching capacity (2026-10-14)
 
-## Real structural sharpening
+## Historical matching model, corrected by subsequent Lean audit
 
 Prior: any genuine same-target NET collision fibre gives a matching
-of the candidate lower-/upper-colour slots. The allowed graph can
-contain two distinct slot-disjoint edges with the **same** unordered
-pair of original flip colours. The already formally proved
-`net_collision_canonical_support_fibre_injective` excludes both of
-those edges being different REAL same-target sources.
+of the candidate lower-/upper-colour slots. EARLY INCORRECT PREMISE
+(now formally refuted): that two distinct candidate edges could
+share the same unordered colour support. The verified candidate
+soft-shadow injection proves that distinct same-target candidate
+edges ALWAYS have different unordered supports.
 
 New: introduce the finite maximum **rainbow matching number**
 `targetExactShellRainbowMatchingNumber C exponent d`, defined
@@ -45,13 +45,14 @@ themselves literal Boolean holes or unreserved global surplus.
 
 Verification: [run 38504690545](https://github.com/Charlie-Wang-03/awards/actions/runs/38504690545) PASS, 3,539 jobs; six rainbow capacity theorems only depend on [propext, Classical.choice, Quot.sound].
 
-## No two-edge rainbow obstruction: a weaker local exclusion
+## Two-edge rainbow obstruction: equivalent to ordinary matching exclusion
 
 At any genuinely hit diagonal d, it suffices to show:
 every candidate-edge pair with DISTINCT lower slots and DISTINCT
 upper slots has the SAME unordered pair of flip colours.
-This permits ordinary two-edge matchings, but excludes all two-edge
-*rainbow* matchings.
+CORRECTION: since distinct eligible candidate edges are always
+colour-distinct, the hypothesis also excludes all two-edge ordinary
+matchings. It is NOT a weaker exclusion for the actual graph.
 
 `ResidualNetCollisionRainbowPairObstruction.lean` certifies:
 - all rainbow matching sets are of size ≤1 under this condition;
@@ -192,5 +193,19 @@ exclude irrelevant soft words from the bound. Its cardinal still
 counts COVERED words, NOT true holes or a non-reused surplus budget;
 a global cross-target payment remains open.
 
-Source: `ResidualNetCollisionLocalSoftSphereCapacity.lean`;
-Lean verification pending.
+Source: `ResidualNetCollisionLocalSoftSphereCapacity.lean`.
+First 7 theorems verified in [run 38512146479](https://github.com/Charlie-Wang-03/awards/actions/runs/38512146479), 3,545 jobs PASS, no `sorryAx`. The new MIN-combined bounds, their debt and mobile ledger, and the conditional local-sphere uniqueness exclusion await the next build.
+
+## Corrected sharpest certified necessary capacity gate
+
+Let `L2(d)` count actual covered SOFT words at Hamming distance
+exactly two from diagonal d, and `nu(d)` be the ordinary exact-shell
+candidate matching number. The formal goal strengthened from
+`|F_d| <= nu(d)` to `|F_d| <= min(nu(d), L2(d))`.
+When proved, the exact duplicate-debt bound is the hit-target
+sum `min(nu(d),L2(d))-1`, rather than separately weaker sums.
+
+NONE of `L2(d)`, `nu(d)`, `rho(d)` provides automatic TRUE
+Boolean hole credit or unreserved profile surplus. The remaining
+hard step is geometric/ledger-level global payment for all six
+independent debt families. Validation pending.

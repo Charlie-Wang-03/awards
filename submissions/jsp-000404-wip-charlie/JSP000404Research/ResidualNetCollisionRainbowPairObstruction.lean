@@ -2,22 +2,24 @@ import JSP000404Research.ResidualNetCollisionRainbowMatchingCapacity
 import Mathlib.Tactic
 
 /-!
-# The exact two-edge RAINBOW obstruction to true NET duplicate debt
+# Conditional two-edge obstruction for true NET duplicate debt
 
-A target-exact candidate graph may contain two slot-disjoint edges
-with IDENTICAL unordered original flip-colour support. This creates
-an ordinary two-edge matching, but never two genuine distinct
-NET sources sharing one target diagonal.
+The conditional "all slot-disjoint candidate edge pairs have equal
+unordered colour supports" suffices to eliminate NET duplicate debt;
+this remains a fully verified correct theorem. Positive actual debt
+forces two slot-disjoint edges with different support.
 
-The new conditional geometric exclusion is therefore weaker than
-"no two disjoint edges": require instead that every disjoint pair
-of eligible edges shares its unordered pair of flip colours.
-That condition suffices to eliminate all true NET duplicate debt
-and removes its term from the literal-hole/covered-source ledger.
-It is NOT currently proved from planar AngleCap.
+IMPORTANT LATER CORRECTION: such a colour-equal candidate edge pair
+is IMPOSSIBLE under the actual exact-shell graph definition, even
+without knowing whether the edges are real NET sources. It follows
+from the previously verified injective candidate shadow word map.
+Thus the conditional two-edge hypothesis is EQUIVALENT to excluding
+all distinct two-edge ordinary matchings, not a strictly weaker
+geometric exclusion as previously claimed. See
+ResidualNetCollisionRainbowRedundancyAudit.lean.
 
-Conversely, positive duplicate debt forces two allowed candidate
-edges disjoint in both slots with DIFFERENT unordered colour support.
+The AngleCap matching-exclusion and global six-source payment remain
+open; the proved conditional implications are retained.
 -/
 
 namespace JSP000404Research
@@ -25,7 +27,8 @@ namespace OrderedEdgeColoring
 
 /-- A rainbow matching has at most one edge whenever ANY two
 disjoint-slot candidate edges must reuse the same unordered colour
-support. Ordinary matchings are allowed to have more than one edge. -/
+support. In THIS graph no two distinct edges can share that support,
+so the premise forbids every genuine two-edge ordinary matching. -/
 theorem exact_shell_rainbow_matching_card_le_one_of_disjoint_colour_clash
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -53,7 +56,9 @@ theorem exact_shell_rainbow_matching_card_le_one_of_disjoint_colour_clash
     (hclash e (hsub he) f (hsub hf) hle hre))
 
 /-- The exact rainbow matching number is at most one even when
-the ordinary graph has a matching of size two, provided disjoint
+a priori there could be ordinary two-edge matchings; but for this
+particular graph a later audit rules out colour-reused edge pairs.
+Formally the bound holds provided disjoint
 candidate edges necessarily share their unordered flip colours. -/
 theorem exact_shell_rainbow_matching_number_le_one_of_disjoint_colour_clash
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}

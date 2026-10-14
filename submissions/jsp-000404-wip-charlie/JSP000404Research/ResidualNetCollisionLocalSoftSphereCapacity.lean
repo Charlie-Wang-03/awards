@@ -175,6 +175,106 @@ theorem net_collision_duplicate_debt_le_local_soft_sphere_excess
       C exponent hexp honeLoss d
   omega
 
+
+/-- The useful target-dependent joint upper bound takes the MINIMUM
+of actual graph matching capacity and the genuine local Hamming-two
+soft shadow inventory. Neither inequality alone dominates the other
+in every configuration. -/
+theorem net_collision_target_fibre_card_le_matching_local_soft_min
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (d : Fin n → Bool) :
+    (netCollisionCertifiedDiagonalFibre C exponent hexp honeLoss d).card ≤
+      min (targetExactShellSlotMatchingNumber C exponent d)
+        (targetHammingTwoSoftOverlapWords C d).card := by
+  exact le_min
+    (net_collision_target_fibre_card_le_matching_number
+      C exponent hexp honeLoss d)
+    (net_collision_target_fibre_card_le_local_soft_sphere
+      C exponent hexp honeLoss d)
+
+/-- The true duplicate-source debt is controlled by the pointwise
+MINIMUM of graph-matching capacity and the local covered soft sphere,
+not by either bound in isolation. -/
+theorem net_collision_duplicate_debt_le_matching_local_soft_min_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        (min (targetExactShellSlotMatchingNumber C exponent d)
+          (targetHammingTwoSoftOverlapWords C d).card - 1) := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_le_sum
+  intro d hd
+  have hbound :=
+    net_collision_target_fibre_card_le_matching_local_soft_min
+      C exponent hexp honeLoss d
+  omega
+
+/-- Consequent mobile-hard accounting with the honest combined
+matching/target-local-covered-soft resource bound. It does NOT
+identify extra TRUE Boolean holes or disjoint profile surplus. -/
+theorem net_mobile_mass_le_holes_covered_matching_local_soft_min_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
+    (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card ≤
+      (singletonCompletionWords C).card +
+      (softOverlapCompletionWords C).card +
+      ((Finset.univ : Finset (Fin n → Bool)) \
+        coveredCompletionWords C).card +
+      (netCollisionCertifiedCoveredDiagonals
+        C exponent hexp honeLoss).card +
+      (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        (min (targetExactShellSlotMatchingNumber C exponent d)
+          (targetHammingTwoSoftOverlapWords C d).card - 1)) := by
+  have hmobile :=
+    net_mobile_mass_le_singleton_soft_holes_blockers_duplicates
+      C exponent hexp honeLoss
+  have hbound :=
+    net_collision_duplicate_debt_le_matching_local_soft_min_excess
+      C exponent hexp honeLoss
+  omega
+
+/-- A testable sufficient condition with actual geometric content:
+if the fixed-target Hamming-two SOFT shadow sphere has at most one
+word for each ACTUALLY HIT target, the real NET duplicate debt
+vanishes. This condition is NOT asserted to follow from AngleCap. -/
+theorem net_collision_duplicate_debt_zero_of_local_soft_sphere_unique
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hunique : ∀ d ∈ netCollisionCertifiedDiagonalWords
+      C exponent hexp honeLoss,
+      (targetHammingTwoSoftOverlapWords C d).card ≤ 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss = 0 := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_eq_zero
+  intro d hd
+  have hbound :=
+    net_collision_target_fibre_card_le_local_soft_sphere
+      C exponent hexp honeLoss d
+  have hone := hunique d hd
+  omega
+
+#print axioms net_collision_target_fibre_card_le_matching_local_soft_min
+#print axioms net_collision_duplicate_debt_le_matching_local_soft_min_excess
+#print axioms net_mobile_mass_le_holes_covered_matching_local_soft_min_excess
+#print axioms net_collision_duplicate_debt_zero_of_local_soft_sphere_unique
+
 #print axioms two_flip_word_exact_hamming_two_support
 #print axioms two_flip_word_hamming_distance_two
 #print axioms target_exact_shell_candidate_shadow_mem_local_soft_sphere

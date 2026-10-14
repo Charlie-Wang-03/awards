@@ -2,23 +2,22 @@ import JSP000404Research.ResidualNetCollisionMaximumMatchingPayment
 import Mathlib.Tactic
 
 /-!
-# Exact-shell rainbow matching obstruction for true NET duplicate fibres
+# Exact-shell rainbow matching bound, with later redundancy audit
 
-An ordinary target-exact slot matching cannot capture the previously
-certified UNIQUE unordered two-colour support of every actual source
-at a fixed diagonal. Different candidate edges may use different
-vertex slots but the SAME unordered pair of flip colours, and hence
-cannot both be genuine same-diagonal NET sources.
+The actual same-target NET collision fibre yields a matching that
+additionally uses distinct unordered original flip-colour supports.
+These verified necessary conditions remain valid.
 
-Here a rainbow matching is an admissible bipartite matching with
-pairwise DISTINCT unordered colour supports. All true source fibres
-embed cardinality-preservingly into rainbow matchings. This sharpens
-the ordinary matching upper bound without classifying graph edges as
-true holes or separately unreserved dyadic surplus.
+IMPORTANT LATER CORRECTION: the previous interpretation that this
+extra rainbow condition strictly improves the ordinary matching bound
+on the defined candidate graph is FALSE. The proved candidate-shadow
+injection shows that different eligible edges at the same target
+ALREADY have different unordered colour supports. Consequently
+the corresponding rainbow and ordinary matching numbers are EQUAL;
+see ResidualNetCollisionRainbowRedundancyAudit.lean.
 
-The graph-colour rainbow matching number is an explicit finite
-maximum. A SMALL upper bound from genuine geometry, and the global
-six-source payment, remain open.
+The graph capacities still do not pay true Boolean holes or the
+remaining six-source planar geometric debt.
 -/
 
 namespace JSP000404Research
