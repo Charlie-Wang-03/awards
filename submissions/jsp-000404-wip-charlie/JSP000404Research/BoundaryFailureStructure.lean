@@ -31,6 +31,22 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
+/-- Direct strict comparison valid WITHOUT the extra quotient-total
+hypothesis used by the unrelated iff theorem. Truncated subtraction
+requires the boundary floor-excess bound, but no bound on sum q. -/
+private theorem floorExcess_lt_of_budget_failure_direct
+    {I : Type*} [Fintype I]
+    (q b : I → ℕ) (n : ℕ)
+    (hsum : (∑ i, b i) = n)
+    (hbad : n - floorExcess q < positiveSupport b) :
+    floorExcess b < floorExcess q := by
+  have hb : floorExcess b ≤ n := by
+    have hle := floorExcess_le_sum b
+    rw [hsum] at hle
+    exact hle
+  have hsupport := positiveSupport_eq_total_sub_floorExcess b n hsum
+  omega
+
 /-- If all regular gaps dominate and the exceptional gap also satisfies
 q e <= b e, then the exact local budget holds. -/
 theorem support_budget_of_exception_not_lost
@@ -93,7 +109,7 @@ theorem exceptional_boundary_pos_of_budget_failure
     unfold floorExcess
     exact Finset.sum_le_sum fun i _ => hpoint i
   have hfail :=
-    (support_budget_fails_iff_floorExcess_lt q b n hsum).1 hbad
+    floorExcess_lt_of_budget_failure_direct q b n hsum hbad
   omega
 
 /-- Therefore the exceptional quotient is at least two. -/
@@ -123,7 +139,7 @@ theorem floorExcess_eq_add_one_of_budget_failure
     (hbad : n - floorExcess q < positiveSupport b) :
     floorExcess q = floorExcess b + 1 := by
   have hlower :=
-    (support_budget_fails_iff_floorExcess_lt q b n hsum).1 hbad
+    floorExcess_lt_of_budget_failure_direct q b n hsum hbad
   have hupper :=
     floorExcess_le_add_one_of_one_exception
       q b e hregular hexception
