@@ -77,8 +77,8 @@ theorem concrete_one_support_transition_cost
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -107,9 +107,11 @@ theorem concrete_one_support_transition_cost
     | nil =>
         exact False.elim (C.nonempty h)
     | cons first rest =>
-        exact ⟨first, rest, h⟩
-  have ht1 : 1 ≤ t :=
-    sendov_scale_one_le hn hdelta0 ht
+        exact ⟨first, rest, rfl⟩
+  have ht1 : 1 ≤ t := by
+    rw [ht]
+    have hnreal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have htpos : 0 < t :=
     lt_of_lt_of_le zero_lt_one ht1
   have hchanges :
