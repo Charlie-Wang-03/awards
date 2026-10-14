@@ -63,13 +63,13 @@ theorem survivor_double_count
   classical
   rw [← Finset.sum_add_distrib]
   calc
-    (∑ r : V,
-        (∑ i ∈ Finset.univ.erase r, weight i) + weight r)
-        =
-        ∑ _r : V, (∑ i : V, weight i) := by
-          apply Finset.sum_congr rfl
-          intro r _
-          exact Finset.sum_erase_add _ _ (Finset.mem_univ r)
+    (Finset.univ : Finset V).sum
+        (fun r : V => (Finset.univ.erase r).sum weight + weight r) =
+        (Finset.univ : Finset V).sum
+          (fun _r : V => (Finset.univ : Finset V).sum weight) := by
+      apply Finset.sum_congr rfl
+      intro r _
+      exact Finset.sum_erase_add _ _ (Finset.mem_univ r)
     _ = Fintype.card V * (∑ i : V, weight i) := by
       simp
 
