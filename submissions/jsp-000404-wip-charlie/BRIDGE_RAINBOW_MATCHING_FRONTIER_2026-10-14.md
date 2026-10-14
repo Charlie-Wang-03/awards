@@ -429,3 +429,26 @@ No `AngleCap` proof of this pairwise-intersection hypothesis
 currently exists, and neither the covered-target blocker debt
 nor the other five global dyadic payments is addressed here.
 Lean CI pending.
+
+## Dominance proof for original soft-bridge versus coloured-slot matching
+
+`ResidualNetCollisionOriginalBridgeMatchingDominance.lean`
+formally lifts every ORIGINAL-centre vertex matching of
+target-exact candidate SOFT bridges to an eligible ordinary
+(coloured-slot) matching of the same cardinality. Therefore
+
+  nu_original_vertex(d) <= nu_slot(d)
+
+holds for EVERY `d`. Combining the kernel-certified
+source-native original-bridge matching fibre certificate and
+the independently proved FOUR original-hard vertices per
+source gives
+
+  |F_d| <= min(nu_original_vertex(d), floor(|V|/4)),
+
+which is rigorously **NO WEAKER** than the previous
+`min(nu_slot(d),floor(|V|/4))` source bound. The
+associated duplicate-image debt inequality remains an upper
+bound on REAL collisions, not a true Boolean hole credit.
+An example proving strict inequality is not currently supplied.
+Lean CI pending.

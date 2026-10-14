@@ -50,6 +50,7 @@ import JSP000404Research.PlanarNetSmallCentreNoDuplicate
 import JSP000404Research.ResidualNetCollisionVertexBudgetFibre
 import JSP000404Research.ResidualNetCollisionAllBitBridgeVertexSeparation
 import JSP000404Research.ResidualNetCollisionOriginalBridgeVertexMatching
+import JSP000404Research.ResidualNetCollisionOriginalBridgeMatchingDominance
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -567,6 +568,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- eligible original bridge graph would therefore force ZERO
       -- duplicate debt, but that hypothesis has NOT been proved
       -- from planar AngleCap and is NOT inserted into this goal.
+      -- ORIGINAL-VERTEX vs COLOURED SLOT DOMINANCE AUDIT:
+      -- EVERY vertex-disjoint candidate original SOFT bridge
+      -- matching lifts (via a chosen eligible slot edge per
+      -- bridge) to a SAME-CARDINALITY ordinary slot matching.
+      -- Thus nu_original_vertex(d) <= nu_slot(d) for ALL targets.
+      -- The new genuine NET bound
+      -- |F_d| <= min(nu_original_vertex(d), floor(|V|/4))
+      -- is PROVED no weaker than the previous slot + quarter
+      -- bound. Strictness is NOT claimed for all configurations.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)
