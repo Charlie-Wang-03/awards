@@ -227,7 +227,7 @@ These are valuable AUDIT results: correct earlier capacity upper
 bounds have not independently shortened the unique global geometric
 payment `sorry`. Next mathematics must produce new AngleCap
 restrictions or globally distinct hole/surplus resources.
-Lean CI and axiom audit pending.
+Lean CI [38518193019](https://github.com/Charlie-Wang-03/awards/actions/runs/38518193019) PASS (3,549 jobs): nine new theorems, standard axioms only; the sole WIP root retains its original admitted sorry.
 
 ## Actual low-colour NET debt elimination (NEW restricted theorem)
 
@@ -328,3 +328,14 @@ Consequences for ALL Boolean dimensions n:
 Does not resolve any remaining fifth-centre covered-blocker,
 soft, terminal twin, mixed rigid or profile-loss obligation.
 Lean CI and axiom audit pending.
+
+## Planar AngleCap consequence for at most seven centres
+
+`PlanarNetSmallCentreNoDuplicate.lean` derives the one-layer
+residual hypotheses from actual `AngleCap` geometry and
+`CentreProjectiveCycle`, transfers the exact original centre
+cardinality across `ProjectionOrdered V ≃ V`, and proves genuine
+zero canonical NET target duplicate debt for any n>=1 whenever
+`Fintype.card V <= 7`. The exact planar mobile-hard bound
+then excludes the duplicate debt but retains covered diagonals
+and other uncharged classes. Lean verification pending.
