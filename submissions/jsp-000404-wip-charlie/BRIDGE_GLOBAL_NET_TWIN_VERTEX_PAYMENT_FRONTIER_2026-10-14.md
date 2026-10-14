@@ -428,3 +428,76 @@ This eliminates the separately charged COVERED diagonal blocker term and refunds
 The first focused abstract refund build [#38599828846](https://github.com/Charlie-Wang-03/awards/actions/runs/38599828846) completed FAILURE. The target-partition lemma `net_collision_distinct_targets_eq_true_holes_add_covered` was kernel-checked with no sorryAx. Only the final `omega` step in `net_mobile_mass_le_unhit_true_holes_plus_global_soft_incidence` failed: the Lean arithmetic normalizer treated locally named `HD.card` and `Holes.card` as unrelated atoms to their unfolded expression in the already-verified premises. No geometric counterexample was supplied by this failure.
 
 Corrective source commit [c25f9b9](https://github.com/Charlie-Wang-03/awards/commit/c25f9b989cae2cceaee073ff69c076b7a40fb097) explicitly unfolds `HD` and `Holes` before `omega`. Recheck: [abstract CI #38601105086](https://github.com/Charlie-Wang-03/awards/actions/runs/38601105086) and [planar CI #38601143049](https://github.com/Charlie-Wang-03/awards/actions/runs/38601143049). **Both remain unverified unless these runs report SUCCESS and axiom audits exclude sorryAx.** No new axiom or sorry was added.
+
+
+## 2026-10-15: verified planar refund and exact SOFT reuse-defect frontier
+
+### Certified update: actual TRUE Boolean hole refund
+
+The previous refund check is **no longer pending**:
+- [Abstract refund CI #38601105086](https://github.com/Charlie-Wang-03/awards/actions/runs/38601105086): SUCCESS, 3,284 Lean jobs, zero Lean errors.
+- [Genuine planar AngleCap refund CI #38601143049](https://github.com/Charlie-Wang-03/awards/actions/runs/38601143049): SUCCESS, 3,475 Lean jobs, zero Lean errors.
+
+All printed axioms for the two abstract refund lemmas and the true planar
+theorem are exactly `[propext, Classical.choice, Quot.sound]`, with
+**no `sorryAx`**. Hence the following is fully certified for the
+source-native NET ledger in the abstract residual colouring, with a
+genuine planar lift:
+
+    mobile_hard_mass <= singleton_mass + soft_mass
+                        + (TRUE_holes - NET_hit_TRUE_holes)
+                        + SUM_(s in ACTUAL_SOFT) target_shadow_degree(s).
+
+The covered-target blocker count cancels against the distinct FIRST
+hit capacity. NET-hit true holes are removed from the remaining
+TRUE-hole inventory. All shadow degrees still count COVERED SOFT
+words; none are certified unreserved dyadic credits.
+
+### Newly isolated cross-target SOFT reuse defect (CI PENDING)
+
+New `ResidualNetCollisionShadowFirstUseReuseDefect.lean` introduces
+the exact *first use + repeat use* identity for every finite SOFT set
+S with nonnegative target-shadow degrees `deg(s)`:
+
+    SUM_(s in S) deg(s)
+       = |{s in S : deg(s) > 0}| + SUM_(s in S) (deg(s)-1).
+
+When `deg(s)=0`, the truncated subtraction gives zero; when
+`deg(s)>0`, it counts the exact additional use beyond the first.
+Thus the actual NET source ledger admits the honest bound
+
+    E_D + |D| <= |SOFT_used|
+                    + SOFT_cross_target_reuse_defect.
+
+If and ONLY IF the geometry actually guarantees no cross-target reuse
+(`deg(s) <= 1` on all actual SOFT shadows, as a sufficient condition
+implemented here), this reduces to `E_D + |D| <= |SOFT|`.
+Such an exclusion has **NOT** been established from AngleCap.
+
+Focused run: https://github.com/Charlie-Wang-03/awards/actions/runs/38606512064
+Status **PENDING** until the full build and no-`sorryAx` audit succeed.
+
+New `ResidualNetCollisionTrueHoleRefundReuseDefect.lean` composes
+this exact reuse-defect decomposition with the verified TRUE-hole
+refund, resulting in
+
+    mobile_hard_mass <= singleton_mass + soft_mass
+                        + (TRUE_holes - NET_hit_TRUE_holes)
+                        + |SOFT_used| + SOFT_cross_target_reuse_defect.
+
+It is a reduction of the missing payment to an explicitly measured
+cross-target repetition charge, not an actual payment of that charge.
+
+Focused run: https://github.com/Charlie-Wang-03/awards/actions/runs/38606807805
+Status **PENDING**. Do not count new theorems as proved unless their
+own focussed run succeeds with no `sorryAx`.
+
+### Proof integrity
+
+The sole deliberately admitted unrestricted global six-source
+payment theorem in `PlanarLowerBranchProofAdmittedWIP.lean` still
+contains its original one `sorry`. The independent target CIs do not
+mean the historical root umbrella compiles. Even after the reuse
+defect is isolated, TWIN, both mixed rigid categories, soft overlaps,
+fifth-centre blockers and projected loss must still be funded by
+genuinely non-reused TRUE holes or unreserved dyadic resources.
