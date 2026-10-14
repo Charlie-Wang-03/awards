@@ -1,0 +1,29 @@
+name: PC5-488 Lean
+
+on:
+  pull_request:
+    paths:
+      - 'proofs/pc5-488/lean/**'
+      - '.github/workflows/pc5-488-lean.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build PC5-488 proof project
+        working-directory: proofs/pc5-488/lean
+        run: |
+          lake update
+          lake exe cache get
+          lake build
