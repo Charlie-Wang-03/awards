@@ -161,7 +161,7 @@ theorem four_turnLength_sum_le_two_pi
             exact Fin.elim0 r
   have h :=
     turnLength_sum_le_two_pi centre hcentre cert
-  simpa [cert, centre, Fin.sum_univ_succ] using h
+  simpa [cert, centre, Fin.cases, Fin.sum_univ_succ] using h
 
 #print axioms turnLength_sum_le_two_pi
 #print axioms four_turnLength_sum_le_two_pi
