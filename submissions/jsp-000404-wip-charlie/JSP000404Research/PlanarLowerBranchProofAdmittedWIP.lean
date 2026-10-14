@@ -45,6 +45,7 @@ import JSP000404Research.ResidualNetCollisionLocalSoftSphereCapacity
 import JSP000404Research.ResidualNetCollisionLowColourNoDuplicate
 import JSP000404Research.PlanarNetLowColourNoDuplicate
 import JSP000404Research.ResidualNetCollisionThreeColourTwoBitObstruction
+import JSP000404Research.ResidualNetCollisionEightCentreBarrier
 import JSP000404Research.ResidualNetCollisionSupportOverlapLaw
 import JSP000404Research.ResidualTwoFlipExactHammingCases
 import JSP000404Research.ResidualNetCollisionExactFlipSupport
@@ -532,6 +533,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       -- Four-bit/disjoint-support duplicates are impossible here.
       -- These are real Lean-checked necessary conditions, NOT a
       -- geometric exclusion of the remaining two-bit witness.
+      -- NEW ALL-n SOURCE-NATIVE EIGHT-CENTRE BARRIER:
+      -- Any two actual distinct NET sources with the SAME canonical
+      -- target have two different forward hard carriers and two
+      -- different reverse rigid hard carriers. These FOUR hard
+      -- carriers are distinct, and all hard carriers form a
+      -- vertex matching. Therefore positive duplicate debt
+      -- FORCES at least EIGHT original centres, regardless of n.
+      -- For |V| <= 7 this exact debt is ZERO; covered-blocker,
+      -- soft, rigid and profile debts remain unpaid.
       -- The global geometric payment is NOT proved; this sole sorry
       -- is retained intentionally with sorryAx.
       sorry)

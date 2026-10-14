@@ -307,3 +307,24 @@ the only possible nonzero-duplication case has Hamming-two
 source distance and precisely one shared flip colour. These
 results do not prove global full-dyadic six-source payment or
 the actual JSP-000404 award claim.
+
+## Genuine cross-source hard-carrier vertex barrier (2026-10-14)
+
+`ResidualNetCollisionEightCentreBarrier.lean` derives a real
+source-level obstruction, not a weaker restatement of matching
+number capacity. Distinct actual NET sources of the SAME canonical
+diagonal require two different forward hard transport carriers and
+two different reverse rigid hard carriers. Safe outward transport
+separates the forward from reverse classes. Thus at least FOUR
+distinct hard-overlap carrier edges exist. The established GLOBAL
+vertex-matching law makes these edges occupy at least EIGHT vertices.
+
+Consequences for ALL Boolean dimensions n:
+- positive genuine NET target duplicate debt => original |V| >= 8;
+- original |V| <= 7 => genuine NET duplicate debt exactly ZERO;
+- the mobile-hard ledger then has TRUE holes and distinct covered
+  blockers but no multiple-target-image debt.
+
+Does not resolve any remaining fifth-centre covered-blocker,
+soft, terminal twin, mixed rigid or profile-loss obligation.
+Lean CI and axiom audit pending.
