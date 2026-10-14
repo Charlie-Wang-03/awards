@@ -61,7 +61,15 @@ theorem stableExample_remainder_sum :
 theorem stableExample_total_gap :
     (∑ i, ((stableExampleQ i : ℕ) : ℝ) + stableExampleR i) =
       (107 : ℝ) / 21 := by
-  norm_num [stableExampleQ, stableExampleR, Fin.sum_univ_succ]
+  calc
+    (∑ i, ((stableExampleQ i : ℕ) : ℝ) + stableExampleR i) =
+        (∑ i, (stableExampleQ i : ℝ)) + (∑ i, stableExampleR i) := by
+          rw [Finset.sum_add_distrib]
+    _ = (4 : ℝ) + 23 / 21 := by
+      have hq : (∑ i, (stableExampleQ i : ℝ)) = 4 := by
+        exact_mod_cast stableExample_quotient_sum
+      rw [hq, stableExample_remainder_sum]
+    _ = (107 : ℝ) / 21 := by norm_num
 
 theorem stableExample_delta_lower_branch :
     (0 : ℝ) ≤ (2 : ℝ) / 21 ∧ (2 : ℝ) / 21 < 1 / 2 := by
