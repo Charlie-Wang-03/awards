@@ -269,3 +269,86 @@ independently with no sorryAx in audited declarations.
 
 **DO NOT CONFLATE THESE RESULTS WITH FULL ROOT COMPILATION OR WITH
 THE MISSING UNRESTRICTED SIX-SOURCE GLOBAL NON-REUSED PAYMENT.**
+
+
+## Continued formalization: cross-target SOFT shadow multiplicity (2026-10-14)
+
+### I. Global SOFT-shadow reuse incidence (CI not yet certified)
+
+Proposed Lean source:
+`JSP000404Research/ResidualNetCollisionGlobalSoftShadowReuse.lean`.
+
+For any finite set D of Boolean diagonals, with S the ACTUAL
+softOverlapCompletionWords, define H(d,s) to mean Hamming(d,s)=2.
+The exact global double-counting identity is
+
+  SUM_(d in D) #{s in S : H(d,s)}
+    = SUM_(s in S) #{d in D : H(d,s)}.
+
+Unlike target-by-target SOFT cardinal inequalities this counts the
+precise extent to which one covered SOFT shadow is reused by DIFFERENT
+targets. No global pairwise disjointness is assumed. Combining with
+the existing exact actual NET fibre duplicate ledger yields the proposed
+
+  actual E_D <= SUM_(s in S) #{d in D_actual : H(d,s)}.
+
+This is a COVERED SOFT shadow incidence bound, not payment by unique
+true holes, and not proof that these SOFT words are unreserved.
+
+Focused run:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38589790783
+Do not claim it passed until the job reaches SUCCESS and the
+`#print axioms` lines exclude `sorryAx`.
+
+### J. Bounded global SOFT-shadow reuse per fixed word (CI not yet certified)
+
+Proposed Lean source:
+`JSP000404Research/ResidualNetCollisionShadowReuseMultiplicityCap.lean`.
+
+Fix s. The exact Hamming-two difference set of d relative to s
+uniquely determines d, and it is a two-element subset of Fin n.
+Consequently
+
+  #{d in D : H(d,s)} <= Nat.choose n 2.
+
+Together with I this would yield a GLOBAL non-fictitious multiplicity
+bound on genuine duplicate-image debt:
+
+  E_D <= Nat.choose n 2 * |S|.
+
+The factor is explicitly retained; the statement NEVER says
+|D| distinct target sinks inject directly into |S| SOFT words.
+This bound by itself does not settle Boolean-hole or unreserved
+profile surplus payment.
+
+Focused run:
+https://github.com/Charlie-Wang-03/awards/actions/runs/38590448333
+Pending successful kernel and axiom audits.
+
+### K. Two root-import dependency repairs (verified)
+
+The historical root umbrella still fails because of many other stale
+modules; the two scoped modules below ARE actually verified:
+
+- `StableDeletionReduction.lean`: restored decidable finite erase
+  and explicit disjoint partition proof.
+- `TransitionCutExposure.lean`: corrected theorem application
+  argument positions for Bool sign and ray representation.
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/38589909740
+SUCCESS, 3,209 Lake tasks, zero Lean errors, six
+`#print axioms` with only [propext, Classical.choice, Quot.sound].
+
+### Next exact global payment frontier
+
+The local target exact-shell matching, TWIN-reserved original-vertex
+capacity, and bounded SOFT shadow reuse are capacity constraints.
+To close the existing single admitted global six-source theorem one
+needs a NEW geometry-derived disjoint allocation of actual covered
+target blockers / duplicate excess / TWIN / both mixed-rigid / SOFT
+and projection loss liabilities to genuinely available TRUE Boolean
+holes and **UNRESERVED** dyadic surplus. Source incidence multiplicity
+is not an injection to spendable credits.
+
+No existing `sorry` or theorem statement has been altered, and no
+additional axiom has been introduced.
