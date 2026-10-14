@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/BinaryMissingDefect.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SupportIntervalCertificate.lean"
       - ".github/workflows/jsp000404-focused-hansel-defect.yml"
   workflow_dispatch:
 
@@ -55,7 +56,7 @@ jobs:
       - name: Build ONLY new Hansel finite missing-vertex defect module
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.BinaryMissingDefect
+          lake build JSP000404Research.BinaryMissingDefect JSP000404Research.SupportIntervalCertificate
       - name: Scope
         if: always()
         run: echo 'Focused verification only. Full JSP-000404 remains open; root historical modules are excluded.'
