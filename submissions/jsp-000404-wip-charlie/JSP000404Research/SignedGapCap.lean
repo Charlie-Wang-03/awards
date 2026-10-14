@@ -98,7 +98,7 @@ theorem sign_eq_of_normalized_gap_lt_one
           (signedRayDirection tau phi)
         ≤ Real.pi - lam) :
     sigma = tau := by
-  apply sign_eq_of_projective_separation_lt_cap hdiffPi
+  apply sign_eq_of_projective_separation_lt_cap (lam := lam) hdiffPi
   · rw [hgap]
     have hmul : x * lam < 1 * lam := mul_lt_mul_of_pos_right hx1 hlam
     linarith
