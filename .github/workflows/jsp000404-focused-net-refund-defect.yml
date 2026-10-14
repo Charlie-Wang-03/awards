@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualNetCollisionTrueHoleRefundReuseDefect.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualNetCollisionShadowFirstUseReuseDefect.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualNetCollisionLocalSoftSphereCapacity.lean"
       - ".github/workflows/jsp000404-focused-net-refund-defect.yml"
   workflow_dispatch:
