@@ -54,7 +54,7 @@ theorem exists_post_ge_of_average
 survivors.  Adding one copy of the full old total gives exactly
 `card(V)` copies of that total. -/
 theorem survivor_double_count
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (weight : V → ℕ) :
     (∑ r : V, ∑ i ∈ Finset.univ.erase r, weight i) +
         (∑ i : V, weight i)
@@ -77,7 +77,7 @@ theorem survivor_double_count
 bonus, and the bonuses collectively pay one full copy of the original total,
 then the average post-deletion total is at least the original total. -/
 theorem average_post_ge_of_bonus
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (weight post bonus : V → ℕ)
     (hpoint : ∀ r,
       (∑ i ∈ Finset.univ.erase r, weight i) + bonus r ≤ post r)
@@ -98,7 +98,7 @@ theorem average_post_ge_of_bonus
 /-- Consequently, a collective bonus of one full original weight guarantees
 the existence of an individually compensated deletion. -/
 theorem exists_compensated_deletion_of_bonus_average
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (weight post bonus : V → ℕ)
     (hpoint : ∀ r,
       (∑ i ∈ Finset.univ.erase r, weight i) + bonus r ≤ post r)
@@ -110,7 +110,7 @@ theorem exists_compensated_deletion_of_bonus_average
 
 /-- Dyadic exponent specialization. -/
 theorem exists_compensated_deletion_of_dyadic_bonus
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (exponent : V → ℕ)
     (post bonus : V → ℕ)
     (hpoint : ∀ r,
