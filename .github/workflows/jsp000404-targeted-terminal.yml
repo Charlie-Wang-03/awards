@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/jsp-000404-sharp-centre
+      - research/jsp-000404-slot-matching-obstruction
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/**"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research.lean"
