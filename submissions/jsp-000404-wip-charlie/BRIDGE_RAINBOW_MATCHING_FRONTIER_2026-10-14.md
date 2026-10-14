@@ -274,3 +274,22 @@ This closes the duplicate portion of the *real planar* NET
 mobile ledger for this n-regime, and keeps covered fifth-centre,
 soft, twins, mixed rigid and profile losses unpaid.
 Lean CI and `#print axioms` pending.
+
+## n<=3: only Hamming-two, one-shared-colour duplicate obstruction
+
+`ResidualNetCollisionThreeColourTwoBitObstruction.lean` focuses on
+the FIRST possible positive NET duplication dimension: n=3
+(n<=2 duplicates already ZERO).
+
+Every two Boolean words on at most three bits differ in at most
+three coordinates. But distinct ACTUAL same-target NET sources
+have exact distance TWO or FOUR, and Hamming-two is equivalent
+to having exactly ONE common original flip colour. Thus
+n<=3 + positive NET duplicate debt forces a REAL same-target
+source pair with Hamming distance exactly TWO and exactly one
+common original transport flip colour; four-bit disjoint-support
+duplicates are entirely absent.
+
+This is a genuine obstruction-case reduction for the n=3 regime,
+not an exclusion of the remaining two-bit case. The six-source
+AngleCap global proof is still open. Lean CI pending.
