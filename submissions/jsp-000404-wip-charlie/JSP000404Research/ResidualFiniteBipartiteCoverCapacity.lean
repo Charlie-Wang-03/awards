@@ -45,11 +45,17 @@ theorem finset_two_injective_labels_card_le_cover
         then Sum.inl (left s.1) else Sum.inr (right s.1)) =
       (if left t.1 ∈ A
         then Sum.inl (left t.1) else Sum.inr (right t.1)) := heq
-    split_ifs at hval with hs ht
-    · exact hleft s.1 s.2 t.1 t.2 (Sum.inl.inj hval)
-    · cases hval
-    · cases hval
-    · exact hright s.1 s.2 t.1 t.2 (Sum.inr.inj hval)
+    by_cases hs : left s.1 ∈ A
+    · by_cases ht : left t.1 ∈ A
+      · simp only [if_pos hs, if_pos ht] at hval
+        exact hleft s.1 s.2 t.1 t.2 (Sum.inl.inj hval)
+      · simp only [if_pos hs, if_neg ht] at hval
+        cases hval
+    · by_cases ht : left t.1 ∈ A
+      · simp only [if_neg hs, if_pos ht] at hval
+        cases hval
+      · simp only [if_neg hs, if_neg ht] at hval
+        exact hright s.1 s.2 t.1 t.2 (Sum.inr.inj hval)
   have hsub :
       (Finset.univ : Finset {s : S // s ∈ sources}).image f ⊆
         (A.image Sum.inl) ∪ (B.image Sum.inr) := by
@@ -75,7 +81,13 @@ theorem finset_two_injective_labels_card_le_cover
     _ ≤ (A.image Sum.inl).card + (B.image Sum.inr).card :=
       Finset.card_union_le _ _
     _ = A.card + B.card := by
-      simp [Finset.card_image_of_injective]
+      have hL : (A.image (Sum.inl : L → Sum L R)).card = A.card :=
+        Finset.card_image_of_injective _
+          (fun _ _ h => Sum.inl.inj h)
+      have hR : (B.image (Sum.inr : R → Sum L R)).card = B.card :=
+        Finset.card_image_of_injective _
+          (fun _ _ h => Sum.inr.inj h)
+      rw [hL, hR]
 
 #print axioms finset_two_injective_labels_card_le_cover
 
