@@ -243,6 +243,73 @@ theorem net_collision_target_fibre_card_le_exact_slot_vertex_cover
   exact finset_two_injective_labels_card_le_cover
     F left right hleft hright A B hactual
 
+
+/-- A FAMILY of exact-shell graph vertex covers (one for each ACTUALLY
+hit canonical target) bounds the GLOBAL genuine NET duplicate-image
+debt by the sum of those explicit NONREUSED cover excesses. The
+cover property must be CHECKED, not silently assumed from AngleCap.
+Unlike earlier min-of-pool capacities, this can exploit sparse
+allowed edge incidence between exact lower/upper slots. -/
+theorem net_collision_duplicate_debt_le_sum_exact_slot_cover_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (A B : (Fin n → Bool) → Finset (V × Fin n))
+    (hcover : ∀ d ∈ netCollisionCertifiedDiagonalWords
+      C exponent hexp honeLoss,
+      ∀ e ∈ targetExactShellSlotEdges C exponent d,
+      e.1 ∈ A d ∨ e.2 ∈ B d) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss ≤
+      ∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        ((A d).card + (B d).card - 1) := by
+  rw [net_collision_certified_duplicate_debt_eq_sum_fibre_excess
+    C exponent hexp honeLoss]
+  apply Finset.sum_le_sum
+  intro d hd
+  have hfibre := net_collision_target_fibre_card_le_exact_slot_vertex_cover
+    C exponent hexp honeLoss d (A d) (B d) (hcover d hd)
+  omega
+
+/-- The certified ACTUAL NET mobile forward/reverse hard mass remains
+bounded by literal TRUE global Boolean holes plus singleton/soft
+covered sinks, DISTINCT already-COVERED diagonals, and the explicit
+NONREUSED exact-shell bipartite vertex-cover excess.
+
+This is an exact legitimate reduction of the mobile payment obstacle,
+NOT a proof that the vertex covers fit in independently unreserved
+profile surplus, nor a payment of the remaining twin/mixed/soft terms.
+-/
+theorem net_mobile_mass_le_holes_covered_exact_slot_cover_excess
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (A B : (Fin n → Bool) → Finset (V × Fin n))
+    (hcover : ∀ d ∈ netCollisionCertifiedDiagonalWords
+      C exponent hexp honeLoss,
+      ∀ e ∈ targetExactShellSlotEdges C exponent d,
+      e.1 ∈ A d ∨ e.2 ∈ B d) :
+    (netTransportableHardWords C exponent).card +
+      (netStrictDescentRigidWords C exponent).card ≤
+      (singletonCompletionWords C).card +
+      (softOverlapCompletionWords C).card +
+      ((Finset.univ : Finset (Fin n → Bool)) \
+        coveredCompletionWords C).card +
+      (netCollisionCertifiedCoveredDiagonals C exponent hexp honeLoss).card +
+      (∑ d ∈ netCollisionCertifiedDiagonalWords C exponent hexp honeLoss,
+        ((A d).card + (B d).card - 1)) := by
+  have hmobile := net_mobile_mass_le_singleton_soft_holes_blockers_duplicates
+    C exponent hexp honeLoss
+  have hdup := net_collision_duplicate_debt_le_sum_exact_slot_cover_excess
+    C exponent hexp honeLoss A B hcover
+  omega
+
+#print axioms net_collision_duplicate_debt_le_sum_exact_slot_cover_excess
+#print axioms net_mobile_mass_le_holes_covered_exact_slot_cover_excess
+
 #print axioms net_collision_actual_pair_mem_exact_shell_slot_edges
 #print axioms net_collision_same_target_lower_slot_injective
 #print axioms net_collision_same_target_upper_slot_injective
