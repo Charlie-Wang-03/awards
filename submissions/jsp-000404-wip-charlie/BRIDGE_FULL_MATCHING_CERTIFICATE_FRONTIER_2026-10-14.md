@@ -43,3 +43,23 @@ AngleCap / source-native cross-bridge geometry, or assign
 nonoverlapping certified resources to each irreducible matching
 edge, while also paying covered-target, twin, mixed-rigid, soft
 and projected-loss debts.
+
+## Follow-up: explicit finite maximum-matching invariant
+
+The `ResidualNetCollisionMaximumMatchingPayment.lean` module defines
+`targetExactShellSlotMatchingNumber C exponent d` as the **maximum
+size of a finite slot matching** in the candidate graph, not as a
+previously assumed bound. This is a finite but potentially costly
+combinatorial definition. The resulting statements are unconditional:
+
+```text
+|true source fibre F_d| <= matchingNumber(G_d)
+E_D <= sum_(d in true target image) (matchingNumber(G_d) - 1)
+mobileHard <= singleton + soft + trueHoles + coveredDiagonals
+             + sum_(d in true target image) (matchingNumber(G_d) - 1)
+```
+
+The cardinal `matchingNumber(G_d)` is a count of source-compatible
+candidate edges, **not** a newly available hole/surplus budget.
+No general upper bound from AngleCap or complete six-source payment
+follows from this replacement. Lean CI evidence is pending.
