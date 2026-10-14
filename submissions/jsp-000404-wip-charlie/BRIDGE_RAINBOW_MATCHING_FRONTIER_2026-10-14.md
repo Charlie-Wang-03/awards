@@ -111,3 +111,29 @@ rather than an unreserved global payment credit.
 The bridge between graph incidence and Boolean completion cubes
 is materially strengthened; geometric matching exclusion and
 six-class global payment remain OPEN. Lean validation pending.
+
+## Fixed-target candidate edge -> REAL soft word injection
+
+`ResidualNetCollisionCandidateShadowInjection.lean` strengthens
+the candidate-shadow relation. The chosen bridge is proved an
+oriented soft-overlap carrier. The two-flip word is therefore
+genuinely in `softOverlapCompletionWords`, not just in the
+larger covered-word union. Because every retained completion word
+has at most two vertex owners, the original bridge pair is UNIQUE.
+
+For a FIXED diagonal target d, the two singleton violated active
+colour sets then determine both original colours. Hence equal
+two-flip shadow words force equal candidate edges. This gives
+a source-provenance-free injection:
+
+  candidateEdges(d) -> ACTUAL softOverlapCompletionWords,
+
+and consequently `|candidateEdges(d)| <= |softOverlapWords|`.
+
+The map is NOT established globally injective across distinct
+targets d; neither soft word capacity nor this inequality is a
+TRUE Boolean hole or an unreserved dyadic credit. A correct
+global source-payment argument must still allocate these already
+covered witnesses without reusing them.
+
+CI and axioms check pending.
