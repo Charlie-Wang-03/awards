@@ -144,10 +144,32 @@ theorem net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
   exact hbudget.trans
     (Finset.card_le_card (Finset.filter_subset _ _))
 
+/-- An actually attained NET image consisting of at most one
+diagonal has no cross-target SOFT shadow reuse. This is a genuine
+conditional closure, not a claim that planar AngleCap forces a
+singleton target image or supplies any other missing payments. -/
+theorem net_duplicate_first_hits_le_soft_words_of_singleton_target_image
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (honeTarget :
+      (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card ≤ 1) :
+    netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
+      (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card ≤
+        (softOverlapCompletionWords C).card := by
+  classical
+  apply net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
+    C exponent hexp honeLoss
+  intro s hs
+  exact (Finset.card_le_card (Finset.filter_subset _ _)).trans honeTarget
+
 #print axioms finite_degree_first_use_plus_reuse_exact
 #print axioms net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
 #print axioms net_duplicate_first_hits_le_used_soft_plus_reuse_defect
 #print axioms net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
+#print axioms net_duplicate_first_hits_le_soft_words_of_singleton_target_image
 
 end OrderedEdgeColoring
 end JSP000404Research
