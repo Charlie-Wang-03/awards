@@ -83,13 +83,13 @@ theorem floor_edge_value_eq_top_of_standardResidual
     (huv : u < v)
     (hres :
       OrderedEdgeColoring.IsResidual
-        (standardResidualColoring D n hwidth) u v) :
+        (standardResidualColoring D n (by push_cast; exact hwidth)) u v) :
     Nat.floor (D.value u v) = n := by
   have hx0 : 0 ≤ D.value u v := D.nonnegative huv
   have hxn :
       (n : ℝ) ≤ D.value u v :=
     (standardResidual_iff_high
-      D n hwidth huv).1 hres
+      D n (by push_cast; exact hwidth) huv).1 hres
   have hxTop :
       D.value u v < (n : ℝ) + 1 :=
     (D.belowWidth huv).trans hwidth
@@ -119,13 +119,17 @@ theorem genericProjection_saturated_stepwise_rigidity
     (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hexpI : exponent i = centreExponent C t)
     (hsat :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ExactProjectedBudget
-        (genericResidualColoring hp hcap htPos hlam n hwidth)
+        (genericResidualColoring hp hcap htPos hlam n
+          (by push_cast; exact hwidth))
         exponent i)
     (hres :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       residualCoord n ∈
         active
-          (genericResidualColoring hp hcap htPos hlam n hwidth) i) :
+          (genericResidualColoring hp hcap htPos hlam n
+            (by push_cast; exact hwidth)) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let D := genericDirectionData_sendov hp hcap htPos hlam
@@ -140,7 +144,8 @@ theorem genericProjection_saturated_stepwise_rigidity
     projectionLinearOrder hp
   let D := genericDirectionData_sendov hp hcap htPos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
-    genericResidualColoring hp hcap htPos hlam n hwidth
+    genericResidualColoring hp hcap htPos hlam n
+      (by push_cast; exact hwidth)
   let L := projectionCutLocalCycle hp hcap htPos hlam i C
   have heq :
       L.exponent + (D.incidentBands (n + 1) i).card = n + 1 :=
@@ -151,7 +156,7 @@ theorem genericProjection_saturated_stepwise_rigidity
       residualCoord n ∈ D.incidentBands (n + 1) i := by
     have hactiveEq :=
       standardResidual_active_eq_incidentBands_succ
-        D n hwidth i
+        D n (by push_cast; exact hwidth) i
     have hres' : residualCoord n ∈ active B i := by
       simpa [B] using hres
     have hactiveEq' :
