@@ -55,7 +55,9 @@ terminalTwinOtherFiveDebt
 ≤ |outside translated-loss true holes| + genuinely unreserved surplus.
 ```
 
-This is still an EXISTENTIAL PAYMENT condition on an active choice; its focused terminal CI must be checked before stating it is certified. Even if the IFF compiles, it is an EQUIVALENCE and NOT the missing global payment proof.
+**Certified:** `terminalTwinSixSourcePayment_iff_covered_trueHole_earliestEdgeFrontier` passed focused CI **38773635332 SUCCESS**, 3,408 jobs, with Lean foundational axioms `[propext, Classical.choice, Quot.sound]` and **no `sorryAx`**.
+
+This is an EXACT IFF on an EXISTENTIAL PAYMENT condition with an active choice, NOT proof that the inequality holds. The mathematical global non-reusing payment still remains open.
 
 ## Independent Lean compilation repairs
 
@@ -65,7 +67,7 @@ Confirmed focused SUCCESS without `sorryAx`:
 - **38772578052:** `FullMassPointwiseRemainder`; repaired `List.Forall₂` induction and exact delta remainder.
 - **38772914851:** `ProjectiveBandOccupancy`; repaired AngleCap binder and the definitional unfolding of the real edge-color constructor.
 
-The separate `SupportThreeMiddleHiddenCanonicalSigns` focused job was still under verification at this checkpoint.
+- **38773487011 SUCCESS:** `SupportThreeMiddleHiddenCanonicalSigns`; repaired proof of positive endpoint quotients using the certificate fields `qFirst_pos`, `qLast_pos`. Five canonical wrap/sign cases remain provable, with no `sorryAx`.
 
 ## What remains mathematically unsolved
 
@@ -78,3 +80,7 @@ No existing theorem shows a suitable assignment or numerical payment. In particu
 - A claim about a new true-hole refund cannot be inferred just from flipping c or d: both one-flip ancestors are already covered.
 
 The latest full Fast Incremental Lean workflow was still failing on historical modules; focused successes are not a full workspace success.
+
+## New focused proof infrastructure check
+
+The previously independent `VerifiedOverlapRewire.lean` umbrella was updated to import the certified `ResidualLossEarliestEdgeCoveredSplit.lean` and record the genuine third-party collision dichotomy. The new focused root run **38773883425** must be consulted directly before declaring this extended umbrella green. Success of the narrower standalone focused modules alone does not automatically certify the umbrella's latest import.
