@@ -125,6 +125,7 @@ import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
+import JSP000404Research.ResidualLossCrossCoordinateEdgeAvoidance
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -346,4 +347,14 @@ membership theorem are imported through
 ResidualNetCollisionExactShellBipartiteCover. The matching-number
 and duplicate-debt theorems consequently apply to this refined
 candidate graph; none establishes an AngleCap payment by TRUE holes.
+-/
+
+/-!
+## Checked projected-loss cross-coordinate union criterion (2026-10-15)
+
+The independently kernel-checked
+`ResidualLossCrossCoordinateEdgeAvoidance` module proves a genuine Boolean
+union cardinality identity under an explicit retained-edge flip-avoidance
+hypothesis. This assumption has NOT been derived from actual planar AngleCap;
+the separate admitted lower-branch WIP still has one global payment sorry.
 -/
