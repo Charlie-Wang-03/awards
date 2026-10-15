@@ -47,17 +47,13 @@ theorem finite_degree_first_use_plus_reuse_exact
     _ = (S.filter (fun s => 0 < deg s)).card +
           ∑ s ∈ S, (deg s - 1) := by rw [hused]
 
-/-- Exact ACTUAL SOFT shadow incidence decomposition across the
-distinct NET image D: only first-shadow uses count as fresh words. -/
-set_option maxHeartbeats 1200000 in
+/-- The exact first-use/reuse decomposition for a set of ACTUALLY
+attained diagonal targets D and an ACTUAL SOFT shadow inventory S.
+Keeping the finite target inventory explicit avoids elaborator expansion
+of the very large certified NET definitions. Instantiate D and S with
+the certified sets at use sites; no extra geometry is assumed. -/
 theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    (hexp : ∀ v, exponent v ≤ n)
-    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1) :
-    let D := netCollisionCertifiedDiagonalWords C exponent hexp honeLoss
-    let S := softOverlapCompletionWords C
+    {n : ℕ} (D S : Finset (Fin n → Bool)) :
     let deg : (Fin n → Bool) → ℕ := fun s =>
       (D.filter (fun d =>
         (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card
@@ -65,14 +61,9 @@ theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
       (S.filter (fun s => 0 < deg s)).card +
         ∑ s ∈ S, (deg s - 1) := by
   classical
-  -- Avoid eager zeta-reduction of the large certified NET definition:
-  -- its expansion during `dsimp only` exhausts the heartbeat budget.
-  -- `exact` can instantiate the generic finite-degree lemma directly.
-  exact finite_degree_first_use_plus_reuse_exact
-    (softOverlapCompletionWords C)
-    (fun s => ((netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).filter
-      (fun d =>
-        (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card)
+  exact finite_degree_first_use_plus_reuse_exact S
+    (fun s => (D.filter (fun d =>
+      (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card)
 
 /-- Necessary GLOBAL source debt inequality with the true cross-target
 reuse defect retained, rather than silently spending one SOFT word
