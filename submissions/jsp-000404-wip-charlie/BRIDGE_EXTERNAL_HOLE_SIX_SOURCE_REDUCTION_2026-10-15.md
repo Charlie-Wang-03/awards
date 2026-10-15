@@ -133,3 +133,31 @@ cross-coordinate duplicate mass to outside-translated TRUE holes and
 actually unreserved dyadic surplus. All conditional reductions and
 exact-cover identities must remain distinguished from a proof of
 that missing inequality.
+
+## Follow-on verification and exact blocker-carrier interfaces
+
+- The active-choice WIP root compilation **38725969587: PASS** with its
+  explicitly audited single remaining `sorry`. The conditional active-choice
+  planar theorem itself passed separately as recorded above.
+- The independent **sorry-free** `VerifiedOverlapRewire.lean` root,
+  importing both active-choice planar and opposite-bit blocker modules,
+  passed **38726331856: SUCCESS**.
+- The actual source/blocker/coordinate carrier-set **inclusion** and
+  cardinality bound `ResidualLossCoveredPairBudget.lean` passed focused
+  CI **38727268633: SUCCESS**. Carrier intersections may overlap.
+- `ResidualLossCoveredExactTripleLedger.lean` refines the carrier family
+  to exactly the **selected active coordinate** and proposes an **equality**
+  with the covered-loss Boolean set. The first CI encountered a nested
+  pattern syntax issue; it has been repaired and rerun, result still
+  pending at this entry (**38727782973**).
+- Two subsequent conditional reductions were submitted:
+  `ResidualTerminalTwinExactBlockerCarrierFrontier.lean` rewrites the
+  six-source payment exactly in terms of the chosen-carrier union; and
+  `PlanarLowerBranchExactCarrierFrontier.lean` propagates that obligation
+  back to the planar lower-branch theorem. Their focused CIs are pending
+  (**38727817652**, **38727968899**). Neither is certified until PASS.
+
+In all cases, the global injective allocation of genuine exterior holes and
+unreserved surplus against the five/six non-loss debt terms, actual covered
+blocker carriers and duplicate debt remains unproved. New equivalences
+must not be confused with the truth of the shared payment inequality.
