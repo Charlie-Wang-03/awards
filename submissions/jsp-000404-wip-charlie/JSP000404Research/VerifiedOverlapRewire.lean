@@ -138,6 +138,7 @@ import JSP000404Research.ResidualLossEarliestActualEdgeGlobalLedger
 import JSP000404Research.ResidualLossEarliestEdgePaymentSeparation
 import JSP000404Research.ResidualLossEarliestEdgeFlipRefundObstruction
 import JSP000404Research.ResidualLossCrossSliceTwoCoveredAncestors
+import JSP000404Research.ResidualLossEarliestEdgeCoveredSplit
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -536,4 +537,39 @@ Certified in focused Lean builds, without `sorryAx`:
 These are obstructions to naive hole-refund constructions, NOT a
 global injection into outside true holes or genuinely unreserved
 surplus. The sole admitted WIP six-source `sorry` is untouched.
+-/
+
+/-!
+## Certified two-owner corner and third-party collision-cover split (2026-10-16)
+
+The source-native collision ledger is further refined by:
+
+- `lossEarliestActualEdgeCarrier_two_distinct_owner_ancestors`:
+  for each true earliest retained-edge collision (v,w) with two
+  distinct flip coordinates, the two one-flip neighbours lie in
+  the actual ORIGINAL completion cubes owned respectively by v,w,
+  and those Boolean neighbours are distinct.
+- `lossEarliestActualEdgeCarrier_outside_both_owner_cubes`:
+  if the chosen loss coordinates are retained-ACTIVE, the
+  collision word itself is in neither original owner cube.
+  Focused CI 38771471851: SUCCESS (no sorryAx).
+- `lossEarliestActualEdgeCarrier_covered_iff_third_owner` and
+  `lossEarliestActualEdgeCarrier_trueHole_iff_no_third_owner`:
+  on active choices the collision word is originally covered IFF
+  SOME THIRD vertex (not either edge endpoint) owns that original
+  completion word; otherwise the word is a global true hole.
+  Focused CI 38772204893: SUCCESS (no sorryAx).
+- `translatedLossDuplicateDebt_eq_covered_plus_trueHole_edge_mass`:
+  the entire original cross-coordinate duplicate debt equals the
+  EXACT SUM over genuine earliest edge events of (a) word is already
+  covered by an original cube, and (b) word is a global true hole
+  inside the translated loss union. Focused CI 38773117086:
+  SUCCESS (no sorryAx).
+
+These identities are necessary bookkeeping. A collision TRUE-HOLE
+word still lies INSIDE translated loss U and cannot be double-credited
+as an outside-U resource; a covered collision requires third-party
+original completion ownership. None of this supplies a matching into
+globally unreserved TRUE holes or surplus, and the sole admitted
+terminal six-source sorry remains open.
 -/
