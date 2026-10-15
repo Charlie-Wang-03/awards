@@ -118,19 +118,19 @@ theorem projectiveBandPartition_active_eq_occupied
       have hmem :=
         projectiveBandColor_mem_upper
           hp ht n htop (ne_of_lt hai)
-      change
-        RayInProjectiveBand hp t i a'
-          (projectiveBandColor hp ht n htop a i)
-      simpa [P, a', hcol] using hmem
+      have hcol' :
+          projectiveBandColor hp ht n htop a i = c := by
+        simpa [P, projectiveBandPartition] using hcol
+      simpa [a', hcol'] using hmem
     · let w' : OtherVertex i := ⟨w, ne_of_gt hiw⟩
       refine ⟨w', ?_⟩
       have hmem :=
         projectiveBandColor_mem_lower
           hp ht n htop (ne_of_lt hiw)
-      change
-        RayInProjectiveBand hp t i w'
-          (projectiveBandColor hp ht n htop i w)
-      simpa [P, w', hcol] using hmem
+      have hcol' :
+          projectiveBandColor hp ht n htop i w = c := by
+        simpa [P, projectiveBandPartition] using hcol
+      simpa [w', hcol'] using hmem
   · intro hc
     obtain ⟨j, hjBand⟩ :=
       (mem_occupiedProjectiveBands hp t n i c).1 hc
@@ -144,7 +144,7 @@ theorem projectiveBandPartition_active_eq_occupied
       have :
           (∃ a, a < i ∧ P.edgeColor a i = c) ∨
           (∃ w, i < w ∧ P.edgeColor i w = c) :=
-        Or.inr ⟨j.1, hijlt, by simpa [P] using hcol⟩
+        Or.inr ⟨j.1, hijlt, by simpa [P, projectiveBandPartition] using hcol⟩
       simpa [BinaryEdgePartition.active, P] using this
     · have hcol :
           projectiveBandColor hp ht n htop j.1 i = c :=
@@ -154,7 +154,7 @@ theorem projectiveBandPartition_active_eq_occupied
       have :
           (∃ a, a < i ∧ P.edgeColor a i = c) ∨
           (∃ w, i < w ∧ P.edgeColor i w = c) :=
-        Or.inl ⟨j.1, hjilt, by simpa [P] using hcol⟩
+        Or.inl ⟨j.1, hjilt, by simpa [P, projectiveBandPartition] using hcol⟩
       simpa [BinaryEdgePartition.active, P] using this
 
 /-- Cardinal form. -/
