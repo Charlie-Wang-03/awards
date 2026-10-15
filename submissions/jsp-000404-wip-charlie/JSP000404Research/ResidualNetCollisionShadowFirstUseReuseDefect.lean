@@ -64,7 +64,9 @@ theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
       (S.filter (fun s => 0 < deg s)).card +
         ∑ s ∈ S, (deg s - 1) := by
   classical
-  dsimp only
+  -- Avoid eager zeta-reduction of the large certified NET definition:
+  -- its expansion during `dsimp only` exhausts the heartbeat budget.
+  -- `exact` can instantiate the generic finite-degree lemma directly.
   exact finite_degree_first_use_plus_reuse_exact
     (softOverlapCompletionWords C)
     (fun s => ((netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).filter
