@@ -47,6 +47,15 @@ noncomputable def parentRayToChildOption
     childOtherToParent_ne_deleted r i hir j
   unfold parentRayToChildOption
   simp only [dif_pos hnr]
+  have heq :
+      (⟨childOtherToParent r i hir j, hnr⟩ :
+        ParentSurvivorRay r i) =
+        (childOtherEquivParentSurvivor r i hir) j := by
+    apply Subtype.ext
+    rfl
+  rw [heq]
+  exact congrArg some
+    ((childOtherEquivParentSurvivor r i hir).symm_apply_apply j)
 
 /-- The parent image of every successful partial transport is the original
 parent ray. -/
