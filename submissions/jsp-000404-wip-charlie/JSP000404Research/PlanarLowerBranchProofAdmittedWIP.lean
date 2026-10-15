@@ -1,3 +1,4 @@
+import JSP000404Research.PlanarLowerBranchExternalHoleFrontier
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
@@ -197,13 +198,20 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   have htwoBitFilteredMobile :=
     planar_net_mobile_mass_plus_unused_le_two_bit_bridge_dyadic
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
-  exact planar_lower_branch_dyadic_capacity_of_terminal_twin_net_payment
+  -- The exact six-source terminal debt has been algebraically reduced
+  -- without strengthening AngleCap or manufacturing hole credit.
+  -- This application leaves precisely the EXTERNAL-hole payment open:
+  -- non-loss debt + translated-covered blockers + duplicate debt
+  -- <= TRUE holes OUTSIDE translated loss slices + unreserved surplus.
+  exact planar_lower_branch_capacity_of_external_loss_obstruction
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT: true Boolean holes and genuinely
-      -- unreserved surplus must pay for soft overlap, BOTH forward
-      -- and reverse movable hard Boolean masses, equal-target TWIN
-      -- rigid dyadic weight, both mixed-rigid target debts and loss.
+      -- SOLE OPEN GEOMETRIC INPUT (exact equivalent reduced form):
+      -- outside-translated TRUE holes and genuinely unreserved surplus
+      -- must pay all other terminal debts, globally covered translated
+      -- loss blockers, and cross-coordinate translated duplicate debt.
+      -- The translated loss TRUE holes have already been cancelled
+      -- from both sides using the verified exact loss conservation.
       -- Verified planar hmobile bounds both movable source classes
       -- by singleton + soft + the exact dyadic BRIDGE-SOFT pool.
       -- Verified planar hbridgeGap bounds that candidate bridge mass
