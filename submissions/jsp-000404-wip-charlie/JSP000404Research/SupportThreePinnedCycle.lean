@@ -24,7 +24,8 @@ theorem support_three_end_positive_forces_middle_count_one
     listPositiveCount mid = 1 := by
   have hF : qFirst ≠ 0 := by omega
   have hL : qLast ≠ 0 := by omega
-  rw [listPositiveCount] at hsupport
+  change (if qFirst = 0 then 0 else 1) +
+    listPositiveCount (mid ++ [qLast]) = 3 at hsupport
   simp [hF, listPositiveCount_append, hL] at hsupport
   omega
 

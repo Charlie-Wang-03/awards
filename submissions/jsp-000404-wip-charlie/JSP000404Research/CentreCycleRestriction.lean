@@ -26,8 +26,9 @@ noncomputable def parentRayToChildOption
     {V : Type*}
     (r i : V) (hir : i ≠ r)
     (j : OtherVertex i) :
-    Option (OtherVertex (survivingCentre r i hir)) :=
-  if hjr : j.1 ≠ r then
+    Option (OtherVertex (survivingCentre r i hir)) := by
+  classical
+  exact if hjr : j.1 ≠ r then
     some ((childOtherEquivParentSurvivor r i hir).symm
       ⟨j, hjr⟩)
   else

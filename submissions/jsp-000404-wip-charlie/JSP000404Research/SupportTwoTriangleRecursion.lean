@@ -37,7 +37,9 @@ theorem support_two_transfer_complement_width
     (hq : (b : ℝ) ≤ t * s) :
     t * (1 - s) ≤ (a : ℝ) + delta := by
   have hbn : (b : ℝ) = (n : ℝ) - (a : ℝ) := by
-    exact_mod_cast (by omega : b = n - a)
+    have hsumR : (a : ℝ) + (b : ℝ) = (n : ℝ) := by
+      exact_mod_cast hsum
+    linarith
   rw [ht] at hq ⊢
   rw [hbn] at hq
   nlinarith

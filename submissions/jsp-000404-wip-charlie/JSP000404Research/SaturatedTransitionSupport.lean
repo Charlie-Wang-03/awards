@@ -62,7 +62,7 @@ theorem changesExactlyOnPositive_of_saturated_count
               omega
           · have hq : q ≠ 0 := hstep hab
             constructor
-            · exact ⟨hab,hq⟩
+            · exact ⟨fun _ => hq, fun _ => hab⟩
             · apply ih b qs hrest
               simp [boolTransitionCountFrom,
                 listPositiveCount, hab, hq] at hsat

@@ -23,7 +23,7 @@ open scoped BigOperators
 
 namespace OrderedEdgeColoring
 
-def activeBadWeight
+noncomputable def activeBadWeight
     {V : Type*} [LinearOrder V] [Fintype V]
     {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
