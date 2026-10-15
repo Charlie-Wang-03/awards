@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   two-shadow:
-    name: Kernel-check exact earliest-coordinate actual-edge collision decomposition
+    name: Kernel-check exact earliest-prior-coordinate duplicate-debt decomposition
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -52,6 +52,6 @@ jobs:
       - name: Restore pinned Mathlib oleans
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
-      - name: Kernel-check first-coordinate first-blocker exact retained-edge duplicate ledger
+      - name: Kernel-check earliest exact retained-edge collision carrier partition
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualLossEarliestActualEdgeCarrier

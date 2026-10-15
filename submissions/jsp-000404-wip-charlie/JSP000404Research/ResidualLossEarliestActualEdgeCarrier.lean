@@ -1,157 +1,177 @@
 import JSP000404Research.ResidualLossEarliestCollision
+import JSP000404Research.ResidualLossCrossSliceCarrier
 import Mathlib.Tactic
 
 /-!
-# Exact first-appearance loss duplicate debt on REAL retained edges
+# Earliest-prior cross-coordinate collision mass carried by actual edges
 
-For fixed distinct loss coordinates c and d, each word in their
-translated-slice intersection uniquely belongs to an actual source/
-blocker pair. Restrict to words NOT appearing before d; disjointness
-within this fixed pair survives restriction.
+For a fixed later coordinate i, the earliest prior coordinate j
+partitions repeated words into disjoint finite cells.
+Within every fixed coordinate pair (i,j), the exact collision pair
+carriers have uniquely determined source and blocker owners, and are
+pairwise disjoint. Restricting them to words not previously seen
+before j preserves disjointness.
 
-The final global duplicate debt is counted exactly across later
-coordinates i and their earliest predecessor j, and therefore has
-an exact triple-index finite carrier decomposition. This is still
-an accounting theorem, not payment into true holes or surplus.
+Consequently the full GLOBAL duplicate debt has an EXACT, finite
+edge-local representation, not just a conservative dyadic upper bound.
+The SAME Boolean word can contribute to multiple later i coordinates;
+this proof does not create unreserved surplus or disjoint global
+hole payments.
 -/
 
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
-/-- Actual intersecting pair words for coordinates c,d which are
-seen at coordinate d for the FIRST time. -/
-noncomputable def lossEarliestActualEdgePairWords
+/-- Earliest previous coordinate cannot be both j and k. -/
+theorem lossEarliestPairWords_disjoint_of_lt
+    {α : Type*} [DecidableEq α]
+    (A : ℕ → Finset α) (i : ℕ) {j k : ℕ}
+    (hjk : j < k) :
+    Disjoint (lossEarliestPairWords A i j)
+      (lossEarliestPairWords A i k) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro word hwj hwk
+  have hj := Finset.mem_sdiff.mp hwj
+  have hk := Finset.mem_sdiff.mp hwk
+  have hprefix : word ∈ lossPrefixUnion A k := by
+    unfold lossPrefixUnion
+    exact Finset.mem_biUnion.mpr
+      ⟨j, Finset.mem_range.mpr hjk,
+        (Finset.mem_inter.mp hj.1).2⟩
+  exact hk.2 hprefix
+
+/-- For each later coordinate i, first-hit prior coordinates
+give a genuinely pairwise disjoint partition of the repeated
+words. A word may nevertheless recur for a different later i. -/
+theorem lossEarliestPairWords_pairwiseDisjoint
+    {α : Type*} [DecidableEq α]
+    (A : ℕ → Finset α) (i : ℕ) :
+    (((Finset.range i : Finset ℕ) : Set ℕ)).PairwiseDisjoint
+      (lossEarliestPairWords A i) := by
+  classical
+  intro j hj k hk hjk
+  change Disjoint (lossEarliestPairWords A i j)
+    (lossEarliestPairWords A i k)
+  rcases lt_or_gt_of_ne hjk with hlt | hgt
+  · exact lossEarliestPairWords_disjoint_of_lt A i hlt
+  · exact (lossEarliestPairWords_disjoint_of_lt A i hgt).symm
+
+/-- The TRUE two-coordinate collision words of an actual pair,
+with every word previously appearing at a coordinate < d excluded.
+The filtered intersection is a real source--blocker edge carrier,
+not a Boolean hole. -/
+noncomputable def lossEarliestActualEdgeCarrier
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) (choice : V → Fin n)
-    (c d : Fin n) (p : V × V) :
-    Finset (Fin n → Bool) :=
-  crossLossPairWords C c d p \
+    (c d : Fin n) (p : V × V) : Finset (Fin n → Bool) :=
+  crossLossPairWords C c d p \\
     lossPrefixUnion (lossSliceAtNat C exponent choice) d.val
 
-/-- The exact (c,d) first-predecessor collision set is the
-union of true source/blocker *edge* intersection carriers cut
-by the prefix prior to d. -/
-theorem lossEarliestPair_eq_actualEdge_biUnion
+/-- Earliest-prior collision words equal a union indexed by the
+actual source--blocker pairs, with NO invented conflict pairs. -/
+theorem lossEarliestPairWords_eq_biUnion_actualEdge
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) (choice : V → Fin n)
     (c d : Fin n) :
-    lossEarliestPairWords
-        (lossSliceAtNat C exponent choice) c.val d.val =
-      (crossLossConflictPairs C exponent choice c d).biUnion
-        (lossEarliestActualEdgePairWords C exponent choice c d) := by
+    lossEarliestPairWords (lossSliceAtNat C exponent choice)
+      c.val d.val =
+    (crossLossConflictPairs C exponent choice c d).biUnion
+      (lossEarliestActualEdgeCarrier C exponent choice c d) := by
   classical
-  have hc :
+  have hcslice :
       lossSliceAtNat C exponent choice c.val =
         translatedLossSliceWords C exponent choice c := by
     simp [lossSliceAtNat, c.isLt]
-  have hd :
+  have hdslice :
       lossSliceAtNat C exponent choice d.val =
         translatedLossSliceWords C exponent choice d := by
     simp [lossSliceAtNat, d.isLt]
-  unfold lossEarliestPairWords lossEarliestActualEdgePairWords
-  rw [hc, hd,
-    crossTranslatedLossSlice_inter_eq_biUnion_pairs C exponent choice c d]
   ext word
-  simp only [Finset.mem_sdiff, Finset.mem_biUnion]
   constructor
-  · rintro ⟨⟨p, hp, hword⟩, hnot⟩
-    exact ⟨p, hp, ⟨hword, hnot⟩⟩
-  · rintro ⟨p, hp, ⟨hword, hnot⟩⟩
-    exact ⟨⟨p, hp, hword⟩, hnot⟩
+  · intro hw
+    have hparts := Finset.mem_sdiff.mp hw
+    have hword :
+        word ∈ translatedLossSliceWords C exponent choice c ∩
+          translatedLossSliceWords C exponent choice d := by
+      simpa only [lossEarliestPairWords, hcslice, hdslice] using hparts.1
+    rw [crossTranslatedLossSlice_inter_eq_biUnion_pairs
+      C exponent choice c d] at hword
+    obtain ⟨p, hp, hpword⟩ := Finset.mem_biUnion.mp hword
+    exact Finset.mem_biUnion.mpr
+      ⟨p, hp, Finset.mem_sdiff.mpr ⟨hpword, hparts.2⟩⟩
+  · intro hw
+    obtain ⟨p, hp, hpword⟩ := Finset.mem_biUnion.mp hw
+    have hboth := Finset.mem_sdiff.mp hpword
+    have hword :
+        word ∈ translatedLossSliceWords C exponent choice c ∩
+          translatedLossSliceWords C exponent choice d := by
+      rw [crossTranslatedLossSlice_inter_eq_biUnion_pairs
+        C exponent choice c d]
+      exact Finset.mem_biUnion.mpr ⟨p, hp, hboth.1⟩
+    apply Finset.mem_sdiff.mpr
+    exact ⟨by simpa [lossEarliestPairWords, hcslice, hdslice] using hword,
+      hboth.2⟩
 
-/-- Exact cardinal sum over true distinct source/blocker carriers
-for one earliest-prior-coordinate slice. No edge carrier repeats a
-Boolean word WITHIN this (c,d) coordinate pair. -/
-theorem lossEarliestPair_card_eq_actualEdge_sum
+/-- Distinct effective source--blocker pairs have disjoint earliest
+collision word sets within one fixed ordered pair (c,d). -/
+theorem lossEarliestActualEdgeCarrier_pairwiseDisjoint
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     (hexp : ∀ v, exponent v ≤ n)
     (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
     (choice : V → Fin n)
-    (c d : Fin n) (hcd : c ≠ d) :
-    (lossEarliestPairWords
-      (lossSliceAtNat C exponent choice) c.val d.val).card =
-      ∑ p ∈ crossLossConflictPairs C exponent choice c d,
-        (lossEarliestActualEdgePairWords
-          C exponent choice c d p).card := by
+    {c d : Fin n} (hcd : c ≠ d) :
+    (((crossLossConflictPairs C exponent choice c d : Finset (V × V)) :
+      Set (V × V))).PairwiseDisjoint
+      (lossEarliestActualEdgeCarrier C exponent choice c d) := by
   classical
-  rw [lossEarliestPair_eq_actualEdge_biUnion C exponent choice c d]
-  have hpair :=
+  have hparent :=
     crossLossPairWords_pairwiseDisjoint
       C exponent hexp honeLoss choice hcd
-  have hdisj :
-      (((crossLossConflictPairs C exponent choice c d :
-          Finset (V × V)) : Set (V × V))).PairwiseDisjoint
-        (lossEarliestActualEdgePairWords C exponent choice c d) := by
-    intro p hp q hq hpq
-    have h0 := hpair hp hq hpq
-    change Disjoint
-      (lossEarliestActualEdgePairWords C exponent choice c d p)
-      (lossEarliestActualEdgePairWords C exponent choice c d q)
-    rw [Finset.disjoint_left]
-    intro word hwp hwq
-    exact Finset.disjoint_left.mp h0
-      (Finset.mem_sdiff.mp hwp).1
-      (Finset.mem_sdiff.mp hwq).1
-  exact Finset.card_biUnion hdisj
+  intro p hp q hq hpq
+  change Disjoint (lossEarliestActualEdgeCarrier C exponent choice c d p)
+    (lossEarliestActualEdgeCarrier C exponent choice c d q)
+  have hdisj : Disjoint (crossLossPairWords C c d p)
+      (crossLossPairWords C c d q) :=
+    hparent hp hq hpq
+  rw [Finset.disjoint_left]
+  intro word hwp hwq
+  exact Finset.disjoint_left.mp hdisj
+    (Finset.mem_sdiff.mp hwp).1
+    (Finset.mem_sdiff.mp hwq).1
 
-/-- Finite natural-coordinate index for the exact actual-edge
-first-appearance mass. Out-of-palette indices contribute zero. -/
-noncomputable def lossEarliestActualEdgePairCostAtNat
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ) (choice : V → Fin n)
-    (i j : ℕ) : ℕ :=
-  if hi : i < n then
-    if hj : j < n then
-      ∑ p ∈ crossLossConflictPairs C exponent choice
-          ⟨i, hi⟩ ⟨j, hj⟩,
-        (lossEarliestActualEdgePairWords C exponent choice
-          ⟨i, hi⟩ ⟨j, hj⟩ p).card
-    else 0
-  else 0
-
-/-- Full original duplicate debt as an EXACT, finite,
-earliest-coordinate / earliest actual-edge source-blocker pair sum.
-Only actually intersecting words and genuine retained edge carriers
-enter the expression; no true-hole credit has been assumed. -/
-theorem translatedLossDuplicateDebt_eq_earliestActualEdge_sum
+/-- Exact actual-edge sum for each earliest coordinate pair.
+The outer coordinate j is strictly the first previous occurrence,
+while each effective source--blocker carrier has a unique word owner
+within that pair. -/
+theorem lossEarliestPairWords_card_eq_actualEdge_sum
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     (hexp : ∀ v, exponent v ≤ n)
     (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
-    (choice : V → Fin n) :
-    translatedLossDuplicateDebt C exponent choice =
-      ∑ i ∈ Finset.range n,
-        ∑ j ∈ Finset.range i,
-          lossEarliestActualEdgePairCostAtNat
-            C exponent choice i j := by
+    (choice : V → Fin n)
+    {c d : Fin n} (hcd : c ≠ d) :
+    (lossEarliestPairWords
+      (lossSliceAtNat C exponent choice) c.val d.val).card =
+      ∑ p ∈ crossLossConflictPairs C exponent choice c d,
+        (lossEarliestActualEdgeCarrier C exponent choice c d p).card := by
   classical
-  rw [translatedLossDuplicateDebt_eq_sum_earliestPairWords]
-  apply Finset.sum_congr rfl
-  intro i hi
-  apply Finset.sum_congr rfl
-  intro j hj
-  have hin : i < n := Finset.mem_range.mp hi
-  have hji : j < i := Finset.mem_range.mp hj
-  have hjn : j < n := lt_trans hji hin
-  have hcd : (⟨i, hin⟩ : Fin n) ≠ ⟨j, hjn⟩ := by
-    intro h
-    have hv : i = j := by
-      simpa only [Fin.val_mk] using congrArg Fin.val h
-    omega
-  simpa [lossEarliestActualEdgePairCostAtNat, hin, hjn] using
-    (lossEarliestPair_card_eq_actualEdge_sum
-      C exponent hexp honeLoss choice
-      ⟨i, hin⟩ ⟨j, hjn⟩ hcd)
+  rw [lossEarliestPairWords_eq_biUnion_actualEdge
+    C exponent choice c d]
+  rw [Finset.card_biUnion
+    (lossEarliestActualEdgeCarrier_pairwiseDisjoint
+      C exponent hexp honeLoss choice hcd)]
 
-#print axioms lossEarliestPair_eq_actualEdge_biUnion
-#print axioms lossEarliestPair_card_eq_actualEdge_sum
-#print axioms translatedLossDuplicateDebt_eq_earliestActualEdge_sum
+#print axioms lossEarliestPairWords_disjoint_of_lt
+#print axioms lossEarliestPairWords_pairwiseDisjoint
+#print axioms lossEarliestPairWords_eq_biUnion_actualEdge
+#print axioms lossEarliestActualEdgeCarrier_pairwiseDisjoint
+#print axioms lossEarliestPairWords_card_eq_actualEdge_sum
 
 end OrderedEdgeColoring
 end JSP000404Research
