@@ -1,4 +1,5 @@
 import JSP000404Research.TransitionCertificateFromDecomposition
+import JSP000404Research.HighExponentTransitionPacking
 import JSP000404Research.CentreSignPath
 import Mathlib.Tactic
 
@@ -24,8 +25,8 @@ theorem exists_transition_decomposition_of_support_le_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -85,8 +86,8 @@ theorem exists_transitionIntervalCertificate_of_support_le_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -130,8 +131,8 @@ theorem strictlyExposedAt_of_positiveSupport_le_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
