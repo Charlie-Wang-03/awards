@@ -6,6 +6,8 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualTerminalTwinActualEdgeDyadicSufficient.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossGlobalDuplicateDyadicBudget.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossPairwiseOvercount.lean"
       - ".github/workflows/jsp000404-focused-terminal-dyadic-six-source.yml"
   workflow_dispatch:
 
