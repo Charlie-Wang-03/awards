@@ -47,7 +47,7 @@ theorem changesOnlyOnZero_forces_replicate
             intro x hx
             exact hzero x (by simp [hx])
           have htail := ih a bs hrest htailZero
-          simp [htail]
+          simpa [htail, Nat.add_comm, List.replicate_succ]
 
 /-- Pointwise form: every sign displayed along a zero quotient block equals
 the entering sign. -/
@@ -79,7 +79,7 @@ theorem lastSign_eq_entry_of_zero_block
       simp [boolLastFrom]
   | cons q qs ih =>
       simp [boolLastFrom]
-      cases qs <;> simp [boolLastFrom]
+      cases qs <;> simp [boolLastFrom, Nat.add_comm, List.replicate_succ]
 
 #print axioms changesOnlyOnZero_forces_replicate
 #print axioms sign_eq_entry_of_zero_block
