@@ -39,13 +39,15 @@ theorem pointwise_eq_of_sum_eq_of_le
   have hf :
       (∑ w : V, f w) =
         f v + ∑ w ∈ (Finset.univ.erase v), f w := by
-    rw [← Finset.sum_erase_add f (Finset.mem_univ v)]
-    omega
+    simpa [add_comm] using
+      (Finset.sum_erase_add (Finset.univ : Finset V) f
+        (Finset.mem_univ v)).symm
   have hg :
       (∑ w : V, g w) =
         g v + ∑ w ∈ (Finset.univ.erase v), g w := by
-    rw [← Finset.sum_erase_add g (Finset.mem_univ v)]
-    omega
+    simpa [add_comm] using
+      (Finset.sum_erase_add (Finset.univ : Finset V) g
+        (Finset.mem_univ v)).symm
   rw [hf, hg] at hsum
   omega
 
@@ -69,6 +71,7 @@ theorem specified_card_eq_target_of_expected_capacity_eq
           2 ^ (k - (specified v).card) := by
     intro v
     apply Nat.pow_le_pow_right (by norm_num : 0 < 2)
+    have hv := hactive v
     omega
   have hlower :
       2 ^ k ≤
