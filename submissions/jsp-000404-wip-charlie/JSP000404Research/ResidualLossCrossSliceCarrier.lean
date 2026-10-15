@@ -212,6 +212,66 @@ theorem crossLossConflictPair_edge_colour
     C exponent hexp honeLoss
     hvLoss hwLoss hne hvWord hwWord
 
+/-- A cross-coordinate collision carrier is contained in each
+of its two translated completion cubes. Translation preserves dyadic
+cube cardinality; no disjointness or extra geometric assumptions are
+needed for this local upper bound. -/
+theorem crossLossPairWords_card_le_min_dyadic
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (c d : Fin n) (p : V × V) :
+    (crossLossPairWords C c d p).card ≤
+      min (2 ^ projectedFree C p.1)
+          (2 ^ projectedFree C p.2) := by
+  classical
+  have hleft :
+      (crossLossPairWords C c d p).card ≤
+        (translatedCompletionWords C p.1 c).card := by
+    exact Finset.card_le_card Finset.inter_subset_left
+  have hright :
+      (crossLossPairWords C c d p).card ≤
+        (translatedCompletionWords C p.2 d).card := by
+    exact Finset.card_le_card Finset.inter_subset_right
+  rw [translatedCompletionWords_card, retainedCompletionWords_card] at hleft
+  rw [translatedCompletionWords_card, retainedCompletionWords_card] at hright
+  exact le_min hleft hright
+
+/-- Pairwise translated-loss slice overlap is quantitatively bounded by
+the dyadic capacities of its ACTUAL, nonempty, uniquely indexed
+source/blocker pair carriers. Each local capacity is counted at most once
+within this fixed ordered coordinate pair. Different coordinate pairs
+may reuse the same Boolean word, so no global nonreuse payment follows. -/
+theorem crossTranslatedLossSlice_inter_card_le_sum_min_dyadic
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (choice : V → Fin n)
+    {c d : Fin n} (hcd : c ≠ d) :
+    (translatedLossSliceWords C exponent choice c ∩
+      translatedLossSliceWords C exponent choice d).card ≤
+      ∑ p ∈ crossLossConflictPairs C exponent choice c d,
+        min (2 ^ projectedFree C p.1)
+            (2 ^ projectedFree C p.2) := by
+  classical
+  calc
+    (translatedLossSliceWords C exponent choice c ∩
+        translatedLossSliceWords C exponent choice d).card =
+        ∑ p ∈ crossLossConflictPairs C exponent choice c d,
+          (crossLossPairWords C c d p).card :=
+      crossTranslatedLossSlice_inter_card_eq_sum_pairs
+        C exponent hexp honeLoss choice hcd
+    _ ≤ ∑ p ∈ crossLossConflictPairs C exponent choice c d,
+          min (2 ^ projectedFree C p.1)
+              (2 ^ projectedFree C p.2) := by
+      apply Finset.sum_le_sum
+      intro p hp
+      exact crossLossPairWords_card_le_min_dyadic C c d p
+
+#print axioms crossLossPairWords_card_le_min_dyadic
+#print axioms crossTranslatedLossSlice_inter_card_le_sum_min_dyadic
+
 #print axioms crossLossPairWords_pairwiseDisjoint
 #print axioms crossTranslatedLossSlice_inter_eq_biUnion_pairs
 #print axioms crossTranslatedLossSlice_inter_card_eq_sum_pairs
