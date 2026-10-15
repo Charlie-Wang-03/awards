@@ -51,7 +51,7 @@ theorem exists_transition_decomposition_of_support_le_two
     | nil =>
         exact False.elim (C.nonempty h)
     | cons first rest =>
-        exact ⟨first, rest, h⟩
+        exact ⟨first, rest, rfl⟩
   have hchanges :
       ChangesOnlyOnPositive
         (raySignAt hp i first)
