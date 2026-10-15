@@ -1,3 +1,4 @@
+import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
@@ -203,10 +204,18 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   -- This application leaves precisely the EXTERNAL-hole payment open:
   -- non-loss debt + translated-covered blockers + duplicate debt
   -- <= TRUE holes OUTSIDE translated loss slices + unreserved surplus.
-  exact planar_lower_branch_capacity_of_exists_active_external_loss_payment
+  exact planar_lower_branch_capacity_of_exact_oppositeBlocker_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT (exact equivalent reduced form):
+      -- SOLE OPEN GEOMETRIC INPUT (kernel-equivalent exact carrier form):
+      -- The true covered translated-loss words are exactly the union
+      -- of ACTUALLY CHOSEN retained-active source/blocker/coordinate
+      -- triple intersections with opposite canonical bits. The sole
+      -- outstanding inequality must pay this EXACT triple union,
+      -- non-loss terminal debts and cross-coordinate duplicate debt
+      -- from TRUE holes outside all translated-loss words and from
+      -- genuine unreserved surplus. No disjointness between carrier
+      -- triples, or unproved geometric exclusion, is assumed.
       -- there must EXIST a genuinely retained-active flip choice at
       -- projected-loss vertices for which outside-translated TRUE holes
       -- and genuinely unreserved surplus pay the other terminal debts,
