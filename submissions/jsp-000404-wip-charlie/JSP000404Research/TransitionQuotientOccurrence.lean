@@ -135,7 +135,7 @@ theorem transitionQuotientOccurs_two_blocks_iff
                 intro hbad
                 rcases hbad with hchange | hrest
                 · exact hchange.2 rfl
-                · exact ih a hrest
+                · exact (ih a hrest) hrest
           exact False.elim (hsame htail)
       · intro heq
         left
