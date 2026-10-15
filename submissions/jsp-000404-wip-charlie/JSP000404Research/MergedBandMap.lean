@@ -36,14 +36,14 @@ def mergeWrapBand
 
 @[simp] theorem mergeWrapBand_zero
     {n : ℕ} (hn : 1 ≤ n) :
-    mergeWrapBand hn (0 : Fin (n + 1)) = (0 : Fin n) := by
+    mergeWrapBand hn (0 : Fin (n + 1)) = ⟨0, by omega⟩ := by
   apply Fin.ext
   simp [mergeWrapBand]
   omega
 
 theorem mergeWrapBand_top
     {n : ℕ} (hn : 1 ≤ n) :
-    mergeWrapBand hn ⟨n, by omega⟩ = (0 : Fin n) := by
+    mergeWrapBand hn ⟨n, by omega⟩ = ⟨0, by omega⟩ := by
   apply Fin.ext
   simp [mergeWrapBand]
 
@@ -87,7 +87,7 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
     simpa [x, hwidth] using D.belowWidth huv
   by_cases hlow : x < 1
   · have hfloor0 : Nat.floor x = 0 := by
-      exact Nat.floor_eq_zero.mpr ⟨hx0, hlow⟩
+      exact Nat.floor_eq_zero.mpr hlow
     apply Fin.ext
     have hwrap : x < 1 ∨ (n : ℝ) ≤ x := Or.inl hlow
     rw [fixedPhaseEdgeColor_eq_zero_of_wrap D hn huv
@@ -158,7 +158,7 @@ theorem canonicalFixedPhase_active_eq_image_standard
               D hwidth hdelta hn htri).edgeColor a v =
               fixedPhaseEdgeColor D n hn a v := rfl
         rw [hcanon, hmerge] at hcol
-        exact hcol.symm
+        exact hcol
     · let d :=
         standardBandColor D (n + 1)
           (by omega)
@@ -174,7 +174,7 @@ theorem canonicalFixedPhase_active_eq_image_standard
               D hwidth hdelta hn htri).edgeColor v w =
               fixedPhaseEdgeColor D n hn v w := rfl
         rw [hcanon, hmerge] at hcol
-        exact hcol.symm
+        exact hcol
   · rintro ⟨d, hdactive, hdc⟩
     rcases hdactive with ⟨a, hav, hstd⟩ | ⟨w, hvw, hstd⟩
     · left
@@ -252,14 +252,14 @@ theorem mergeWrapBand_injOn_erase_top
     have haeq : a = (⟨n, by omega⟩ : Fin (n + 1)) := by
       apply Fin.ext
       exact h
-    subst a
+    rw [haeq] at ha
     exact (Finset.not_mem_erase _ _) ha
   have hbtop : b.val ≠ n := by
     intro h
     have hbeq : b = (⟨n, by omega⟩ : Fin (n + 1)) := by
       apply Fin.ext
       exact h
-    subst b
+    rw [hbeq] at hb
     exact (Finset.not_mem_erase _ _) hb
   have halt : a.val < n := by
     have ha_le : a.val ≤ n := by omega

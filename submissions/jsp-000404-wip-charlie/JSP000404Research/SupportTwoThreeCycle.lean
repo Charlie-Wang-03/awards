@@ -98,23 +98,22 @@ theorem three_support_two_exists_cyclic_gain
         (a := a) (b := b) (c := carry) hab.1 hab.2
     simp only [listExponent_three, listExponent_mergeThreeAB]
     omega
-  · rcases hbc with hbc | hca
-    · right; left
-      refine ⟨hbc, ?_⟩
-      intro carry
-      have hlocal :=
-        excess_merge_gain_of_both_pos
-          (a := b) (b := c) (c := carry) hbc.1 hbc.2
-      simp only [listExponent_three, listExponent_mergeThreeBC]
-      omega
-    · right; right
-      refine ⟨hca, ?_⟩
-      intro carry
-      have hlocal :=
-        excess_merge_gain_of_both_pos
-          (a := c) (b := a) (c := carry) hca.1 hca.2
-      simp only [listExponent_three, listExponent_mergeThreeCA]
-      omega
+  · right; left
+    refine ⟨hbc, ?_⟩
+    intro carry
+    have hlocal :=
+      excess_merge_gain_of_both_pos
+        (a := b) (b := c) (c := carry) hbc.1 hbc.2
+    simp only [listExponent_three, listExponent_mergeThreeBC]
+    omega
+  · right; right
+    refine ⟨hca, ?_⟩
+    intro carry
+    have hlocal :=
+      excess_merge_gain_of_both_pos
+        (a := c) (b := a) (c := carry) hca.1 hca.2
+    simp only [listExponent_three, listExponent_mergeThreeCA]
+    omega
 
 /-- Dyadic form: one of the three cyclic deletions at least doubles this
 centre's old weight. -/
