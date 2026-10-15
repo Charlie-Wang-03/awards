@@ -226,9 +226,9 @@ theorem exists_same_side_zeroUnit_pair_of_rayStep
           ih k htail htailStep
         refine ⟨a, b, ?_, ?_, hab,
           hfloor, hzero, hside⟩
-        · simp only [List.mem_cons]
+        · simp only [List.mem_cons] at ha ⊢
           exact Or.inr ha
-        · simp only [List.mem_cons]
+        · simp only [List.mem_cons] at hb ⊢
           exact Or.inr hb
 
 namespace LocalDirectionCycle

@@ -61,8 +61,8 @@ projective separation, without choosing which endpoint is theta-smaller. -/
 theorem one_le_normalized_abs_gap_of_canonical_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
