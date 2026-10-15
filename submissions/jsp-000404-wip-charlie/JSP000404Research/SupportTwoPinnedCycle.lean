@@ -61,8 +61,14 @@ theorem interior_zero_of_support_two_end_positive
     ∀ q ∈ mid, q = 0 := by
   have hcount :
       listPositiveCount mid = 0 := by
-    rw [listPositiveCount] at hsupport
-    simp [hFirst, listPositiveCount_append, hLast] at hsupport
+    change (if qFirst = 0 then 0 else 1) +
+      listPositiveCount (mid ++ [qLast]) = 2 at hsupport
+    rw [listPositiveCount_append] at hsupport
+    have hlast : listPositiveCount [qLast] = 1 := by
+      simp [listPositiveCount, hLast]
+    have hfirst : (if qFirst = 0 then 0 else 1) = 1 := by
+      simp [hFirst]
+    rw [hlast, hfirst] at hsupport
     omega
   exact (positiveCount_eq_zero_iff_all_zero mid).1 hcount
 
