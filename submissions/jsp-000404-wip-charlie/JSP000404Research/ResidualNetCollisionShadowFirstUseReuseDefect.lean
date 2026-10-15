@@ -47,23 +47,15 @@ theorem finite_degree_first_use_plus_reuse_exact
     _ = (S.filter (fun s => 0 < deg s)).card +
           ∑ s ∈ S, (deg s - 1) := by rw [hused]
 
-/-- The exact first-use/reuse decomposition for a set of ACTUALLY
-attained diagonal targets D and an ACTUAL SOFT shadow inventory S.
-Keeping the finite target inventory explicit avoids elaborator expansion
-of the very large certified NET definitions. Instantiate D and S with
-the certified sets at use sites; no extra geometry is assumed. -/
-theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
-    {n : ℕ} (D S : Finset (Fin n → Bool)) :
-    let deg : (Fin n → Bool) → ℕ := fun s =>
-      (D.filter (fun d =>
-        (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card
-    (∑ s ∈ S, deg s) =
-      (S.filter (fun s => 0 < deg s)).card +
-        ∑ s ∈ S, (deg s - 1) := by
-  classical
-  exact finite_degree_first_use_plus_reuse_exact S
-    (fun s => (D.filter (fun d =>
-      (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)).card)
+/-!
+The ACTUAL NET specialization of the generic finite-degree identity is not
+redeclared here: it is an immediate instantiation of
+`finite_degree_first_use_plus_reuse_exact` with the certified diagonal set
+and SOFT vocabulary. Re-elaborating the gigantic certified NET expression
+inside the specialized theorem exceeded 200,000 and 1,200,000 heartbeats.
+All proofs below use the generic kernel-checked lemma directly; this
+removes a redundant elaboration bottleneck, not a mathematical assumption.
+-/
 
 /-- Necessary GLOBAL source debt inequality with the true cross-target
 reuse defect retained, rather than silently spending one SOFT word
@@ -158,7 +150,6 @@ theorem net_duplicate_first_hits_le_soft_words_of_singleton_target_image
   exact (Finset.card_le_card (Finset.filter_subset _ _)).trans honeTarget
 
 #print axioms finite_degree_first_use_plus_reuse_exact
-#print axioms net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
 #print axioms net_duplicate_first_hits_le_used_soft_plus_reuse_defect
 #print axioms net_duplicate_first_hits_le_soft_words_of_no_cross_target_reuse
 #print axioms net_duplicate_first_hits_le_soft_words_of_singleton_target_image
