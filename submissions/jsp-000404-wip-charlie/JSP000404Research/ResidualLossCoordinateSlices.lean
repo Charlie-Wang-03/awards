@@ -172,7 +172,50 @@ theorem two_mul_total_translatedLossSliceWords_card
           rw [Finset.sum_comm]
           simp
 
+/-- If two different coordinate slices share an actual translated word,
+then two distinct projected-loss centres are joined by a retained edge
+whose colour is one of the two chosen flip coordinates. This records the
+only possible cross-slice collision without assuming that it is absent. -/
+theorem translatedLossSliceWords_cross_collision_edge_colour
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (choice : V → Fin n)
+    {c d : Fin n}
+    (hcd : c ≠ d)
+    {word : Fin n → Bool}
+    (hc : word ∈ translatedLossSliceWords C exponent choice c)
+    (hd : word ∈ translatedLossSliceWords C exponent choice d) :
+    ∃ v ∈ lossCoordinateSlice C exponent choice c,
+      ∃ w ∈ lossCoordinateSlice C exponent choice d,
+        v ≠ w ∧
+          ((∃ hvwlt : v < w,
+              ∃ hret : (C.color v w).val < n,
+                retainedColor C v w hret = c ∨
+                retainedColor C v w hret = d) ∨
+           (∃ hwvlt : w < v,
+              ∃ hret : (C.color w v).val < n,
+                retainedColor C w v hret = c ∨
+                retainedColor C w v hret = d)) := by
+  classical
+  obtain ⟨v, hv, hvWord⟩ := Finset.mem_biUnion.mp hc
+  obtain ⟨w, hw, hwWord⟩ := Finset.mem_biUnion.mp hd
+  have hvData := (mem_lossCoordinateSlice C exponent choice c v).1 hv
+  have hwData := (mem_lossCoordinateSlice C exponent choice d w).1 hw
+  have hvw : v ≠ w := by
+    intro heq
+    subst w
+    exact hcd (hvData.2.symm.trans hwData.2)
+  refine ⟨v, hv, w, hw, hvw, ?_⟩
+  exact translated_loss_conflict_edge_colour
+    C exponent hexp honeLoss hvData.1 hwData.1
+    hvw hvWord hwWord
+
 #print axioms translatedLossSlice_pairwiseDisjoint
+#print axioms translatedLossSliceWords_cross_collision_edge_colour
 #print axioms two_mul_total_translatedLossSliceWords_card
 #print axioms translatedLossSliceWords_card
 #print axioms two_mul_translatedLossSliceWords_card
