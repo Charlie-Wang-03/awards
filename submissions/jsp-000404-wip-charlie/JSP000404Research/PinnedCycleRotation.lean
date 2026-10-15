@@ -36,8 +36,12 @@ theorem exists_take_cons_drop_decomposition
     have hfull :
         l.take (k + 1) ++ l.drop (k + 1) = l :=
       List.take_append_drop (k + 1) l
-    rw [← hfull, ← htake]
-    simp [List.append_assoc]
+    calc
+      l = l.take (k + 1) ++ l.drop (k + 1) := hfull.symm
+      _ = (l.take k ++ [l[k]]) ++ l.drop (k + 1) := by
+        rw [htake]
+      _ = l.take k ++ l[k] :: l.drop (k + 1) := by
+        simp [List.append_assoc]
   · dsimp [pre]
     simp [List.length_take, Nat.min_eq_left hk.le]
 
