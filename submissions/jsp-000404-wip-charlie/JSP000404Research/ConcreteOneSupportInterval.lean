@@ -37,8 +37,8 @@ theorem concrete_one_support_interval_certificate
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -152,10 +152,16 @@ theorem concrete_one_support_interval_certificate
       have hpostLen0 : post.length = 0 := by
         rw [← hafterLen, hafter]
         rfl
-      have hpostNil : post = [] := List.length_eq_zero.mp hpostLen0
+      have hpostNil : post = [] := by
+        cases post with
+        | nil => rfl
+        | cons x xs => simp at hpostLen0
       have hgpostNil : gpost = [] := by
-        apply List.length_eq_zero.mp
-        rw [hpostGapLen, hpostLen0]
+        have hgpostLen : gpost.length = 0 := by
+          rw [hpostGapLen, hpostLen0]
+        cases gpost with
+        | nil => rfl
+        | cons x xs => simp at hgpostLen
       have hrestEq : rest = before := by
         rw [hafter] at hrest
         simpa using hrest
@@ -186,7 +192,7 @@ theorem concrete_one_support_interval_certificate
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
+        rw [List.cons_append, ← hrays']
         exact C.theta_sorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
@@ -300,8 +306,8 @@ theorem concrete_one_support_interval_certificate
             j ∈ first :: before ∨ j ∈ right :: tail := by
         intro j
         have hj := C.mem_rays_iff j
-        rw [hrays', List.mem_append] at hj
-        exact hj
+        rw [hrays'] at hj
+        simpa only [List.mem_cons, List.mem_append, or_assoc] using hj
       let width : ℝ :=
         rayThetaAt hp i left + Real.pi -
           rayThetaAt hp i right
@@ -333,8 +339,9 @@ theorem concrete_one_support_interval_certificate
                 (rayThetaAt hp i right -
                   rayThetaAt hp i left) / Real.pi :=
             hgePos
-          exact (div_pos_iff.mp this).resolve_right
-            (by linarith : ¬ Real.pi < 0) |>.1
+          rcases div_pos_iff.mp this with hpos | hneg
+          · exact hpos.1
+          · exact False.elim ((not_lt_of_ge Real.pi_pos.le) hneg.2)
         dsimp [width]
         linarith
       have hrepr0 :=
