@@ -53,11 +53,10 @@ theorem zeroAngleEntries_length
           simp only [List.length_cons, Nat.succ.injEq] at hlen
           by_cases hq : q = 0
           · subst q
-            simp [zeroAngleEntries, listPositiveCount, ih As hlen]
+            simp [zeroAngleEntries, listPositiveCount, ih As hlen] <;> omega
           · have hpos : 0 < listPositiveCount (q :: qs) := by
               simp [listPositiveCount, hq]
-            simp [zeroAngleEntries, listPositiveCount, hq, ih As hlen]
-            omega
+            simp [zeroAngleEntries, listPositiveCount, hq, ih As hlen] <;> omega
 
 theorem mem_zeroAngleEntries
     {qs : List ℕ} {As : List ℝ} {A : ℝ}
@@ -121,8 +120,7 @@ theorem exists_small_zeroAngleEntry_of_five_support_two
   let zs := zeroAngleEntries qs As
   have hzlen : zs.length = 3 := by
     dsimp [zs]
-    rw [zeroAngleEntries_length qs As hlen, hlenQ, hsupport]
-    norm_num
+    rw [zeroAngleEntries_length qs As hlen, hlenQ, hsupport] <;> norm_num
   have hzsum : zs.sum ≤ B := by
     dsimp [zs]
     rw [zeroAngleEntries_sum qs As hlen]
