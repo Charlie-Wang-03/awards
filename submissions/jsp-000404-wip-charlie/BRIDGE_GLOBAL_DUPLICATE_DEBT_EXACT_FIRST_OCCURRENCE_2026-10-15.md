@@ -87,9 +87,24 @@ and the conservative dyadic duplicate budget. Under that
 hypothesis, the original terminal six-source inequality follows
 using the certified exact-retained-edge frontier.
 
-The theorem's **focused kernel check must be separately confirmed**
-before calling this final interface certified. Even after checking,
-its PAYMENT HYPOTHESIS remains the unsolved mathematical requirement.
+Focused CI **38757291830: SUCCESS**, 3,398 build jobs;
+`#print axioms` reports only `[propext, Classical.choice, Quot.sound]`,
+with **no `sorryAx`**. Its PAYMENT HYPOTHESIS remains the
+unsolved mathematical requirement.
+
+A distinct EXACT, non-conservative IFF theorem is also certified in
+`ResidualTerminalTwinExactFirstOccurrenceFrontier.lean`:
+
+- `terminalTwinSixSourcePayment_iff_actualEdge_firstOccurrenceFrontier`
+- Focused CI **38757971149: SUCCESS**, 3,397 build jobs;
+  axioms `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+This is a literal two-way equivalence of the original terminal
+payment and existence of an active flip choice paying the
+actual retained-edge covered words, other five debts, and the
+**exact first-occurrence** duplicate ledger. The dyadic sufficient
+certificate is computationally explicit but may overestimate; the
+exact IFF keeps the truly necessary amount without inflation.
 
 ## Honest global frontier
 
