@@ -109,7 +109,7 @@ theorem concrete_unit_deficit_is_sharp
       (n : ℝ) / t ≤ ge := by
     rw [div_le_iff₀ htpos]
     rw [← hqeN]
-    exact hqeLe
+    simpa only [mul_comm t ge] using hqeLe
   have hwidth :
       width ≤ delta * lam := by
     have hnt : (n : ℝ) / t ≤ ge := hge
@@ -125,12 +125,9 @@ theorem concrete_unit_deficit_is_sharp
       _ ≤ Real.pi * (delta / t) := by
         apply mul_le_mul_of_nonneg_left _ hpi.le
         rw [div_eq_mul_inv] at hnt ⊢
-        have hone :
-            1 - (t - delta) * (1 / t) =
-              delta * (1 / t) := by
-          field_simp
-          ring
-        rw [← hone]
+        have htinv : t * t⁻¹ = 1 :=
+          mul_inv_cancel₀ (ne_of_gt htpos)
+        rw [sub_mul, htinv] at hnt
         linarith
       _ = delta * (Real.pi / t) := by ring
       _ = delta * lam := by rw [hlam]
