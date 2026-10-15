@@ -70,7 +70,9 @@ theorem normalizedProjectiveGaps_cons_cons_parent
   simp [normalizedProjectiveGaps, projectiveGaps,
     successiveDiffsFrom, normalizedSuccessiveTail,
     firstNormalizedGap, lastNormalizedGap,
-    List.map_append, hlast]
+    List.map_append]
+  change (b :: bs).getLastD a = bs.getLastD b
+  exact hlast
 
 theorem normalizedProjectiveGaps_delete_first_general
     (a b : ℝ) (bs : List ℝ) :
