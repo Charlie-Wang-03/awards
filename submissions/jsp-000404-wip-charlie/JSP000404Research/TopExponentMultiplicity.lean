@@ -1,5 +1,6 @@
 import JSP000404Research.ConcreteSharpCentre
 import JSP000404Research.CentreExponentBounds
+import JSP000404Research.TailMajorizationCapacity
 import Mathlib.Tactic
 
 /-!
@@ -25,8 +26,8 @@ theorem topExponent_filter_card_le_one
     {m : ℕ}
     {p : Fin m → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hm : 3 ≤ m)
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -70,8 +71,8 @@ theorem topExponent_tailCount_le_one
     {m : ℕ}
     {p : Fin m → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hm : 3 ≤ m)
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
