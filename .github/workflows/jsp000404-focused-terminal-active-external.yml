@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualTerminalTwinActiveExternalFrontier.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossActiveFlipBlocker.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossDuplicateDebtLedger.lean"
       - ".github/workflows/jsp000404-focused-terminal-active-external.yml"
   workflow_dispatch:
