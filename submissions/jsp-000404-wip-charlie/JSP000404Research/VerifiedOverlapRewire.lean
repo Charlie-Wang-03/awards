@@ -132,6 +132,8 @@ import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
 import JSP000404Research.ResidualLossProfileExactUnionLedger
 import JSP000404Research.ResidualLossCrossSliceCarrier
+import JSP000404Research.ResidualLossPairwiseOvercount
+import JSP000404Research.ResidualLossGlobalDuplicateDyadicBudget
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -461,4 +463,28 @@ for a future non-reusing payment argument.
 
 Focused CI 38740700053: SUCCESS; no sorryAx in the four cited
 cross-slice theorems. The WIP root with its sole sorry stays separate.
+-/
+
+/-!
+## Exact global loss duplicate debt and dyadic pair envelope (2026-10-15)
+
+Certified without sorryAx:
+
+- `translatedLossDuplicateDebt_eq_sum_prior_coordinate_overlaps`:
+  D_dup equals the sum of each new natural-index loss slice's overlap
+  with the union of strictly earlier coordinate slices.
+  Focused CI 38756885932: SUCCESS.
+- `translatedLossDuplicateDebt_le_pairwise_slices`:
+  D_dup is bounded by the sum of pairwise coordinate intersections.
+  Focused CI 38755590278: SUCCESS.
+- `translatedLossDuplicateDebt_le_actualEdge_dyadic_pairBudget`:
+  pair intersections are further bounded by dyadic minimum capacities
+  over the genuinely intersecting loss-source pairs connected by
+  actual retained edges.
+  Focused CI 38756672393: SUCCESS.
+
+These statements make cross-coordinate duplicate debt a finite,
+auditable budget. They do not provide globally disjoint true-hole
+targets or unreserved surplus. The terminal six-source payment and
+the admitted WIP sorry remain open.
 -/
