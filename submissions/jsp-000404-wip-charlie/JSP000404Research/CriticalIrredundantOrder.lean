@@ -47,7 +47,8 @@ theorem critical_terminal_endpoint_strict_of_anchor_strict
     fun q => criticalBadRight (alpha q) delta
   have hmin' :
       IrredundantCover (InClosedInterval L R) S := by
-    simpa [CriticalBadAt, InClosedInterval, L, R] using hmin
+    change IrredundantCover (InClosedInterval L R) S at hmin
+    exact hmin
   have hRij : R i < R j := by
     dsimp [R, criticalBadRight]
     linarith
