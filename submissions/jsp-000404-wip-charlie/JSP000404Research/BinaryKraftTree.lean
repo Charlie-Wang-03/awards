@@ -51,7 +51,7 @@ theorem depths_nonempty (T : BinaryKraftTree) :
 
 theorem exists_mem_depths (T : BinaryKraftTree) :
     ∃ d, d ∈ T.depths := by
-  exact List.exists_mem_of_ne_nil T.depths_nonempty
+  exact List.exists_mem_of_ne_nil T.depths T.depths_nonempty
 
 /-- Exact integer Kraft identity for leaf depths of a full binary tree. -/
 theorem dyadic_depth_sum_eq
@@ -89,8 +89,7 @@ theorem dyadic_depth_sum_eq
             omega
           have ihL' := ihL n hL
           have ihR' := ihR n hR
-          simp only [depths, List.map_append, List.sum_append,
-            List.map_map]
+          simp only [depths, List.map_append, List.sum_append]
           have hmapL :
               ((L.depths.map Nat.succ).map
                   (fun d => 2 ^ (Nat.succ n - d))).sum
@@ -113,6 +112,7 @@ theorem dyadic_depth_sum_eq
             apply List.map_congr_left
             intro d hd
             simp
+          simp only [Nat.succ_eq_add_one] at hmapL hmapR
           rw [hmapL, hmapR, ihL', ihR', pow_succ]
           omega
 
@@ -136,7 +136,7 @@ theorem dyadic_sum_le_of_pairwise_depth_ge
   induction halign with
   | nil =>
       simp
-  | cons d e ds es hde hrest ih =>
+  | cons hde hrest ih =>
       simp only [List.map_cons, List.sum_cons]
       exact Nat.add_le_add
         (dyadic_term_antitone hde) ih
