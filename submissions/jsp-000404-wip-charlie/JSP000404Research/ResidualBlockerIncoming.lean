@@ -69,10 +69,9 @@ theorem incomingRetained_eq_insert_of_blocker
     simp [hwTrue]
   · have hbit :
         retainedBit C w d = retainedBit C u d :=
-      hblock.2 d hdc
-    rw [mem_incomingRetained_iff_retainedBit_true,
-        mem_incomingRetained_iff_retainedBit_true]
-    simp [hdc, hbit]
+      (hblock.2 d hdc).symm
+    simp only [Finset.mem_insert, hdc, false_or,
+      mem_incomingRetained_iff_retainedBit_true, hbit]
 
 /-- The incoming-pattern rank increases by exactly one. -/
 theorem incomingRetained_card_blocker
