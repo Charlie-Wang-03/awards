@@ -23,6 +23,18 @@ theorem positiveCount_cons_eq
       (if q = 0 then 0 else 1) + listPositiveCount qs := by
   rfl
 
+/-- Positive quotient support is additive under list concatenation. -/
+theorem listPositiveCount_append
+    (xs ys : List ℕ) :
+    listPositiveCount (xs ++ ys) =
+      listPositiveCount xs + listPositiveCount ys := by
+  induction xs with
+  | nil =>
+      simp [listPositiveCount]
+  | cons q xs ih =>
+      simp only [List.cons_append, listPositiveCount, ih]
+      omega
+
 theorem positiveCount_eq_zero_iff_all_zero
     (qs : List ℕ) :
     listPositiveCount qs = 0 ↔ ∀ q ∈ qs, q = 0 := by
@@ -115,6 +127,7 @@ theorem pinned_support_two_shape_of_end_zero_impossible
   exact ⟨hFirst, hLast,
     (positiveCount_eq_zero_iff_all_zero mid).1 hmid⟩
 
+#print axioms listPositiveCount_append
 #print axioms positiveCount_eq_zero_iff_all_zero
 #print axioms pinned_support_two_shape_of_end_zero_impossible
 #print axioms interior_zero_of_support_two_end_positive
