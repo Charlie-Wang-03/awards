@@ -53,6 +53,7 @@ theorem zeroAngleEntries_length
           simp only [List.length_cons, Nat.succ.injEq] at hlen
           by_cases hq : q = 0
           · subst q
+            have hcount := listPositiveCount_le_length qs
             simp [zeroAngleEntries, listPositiveCount, ih As hlen] <;> omega
           · have hpos : 0 < listPositiveCount (q :: qs) := by
               simp [listPositiveCount, hq]
