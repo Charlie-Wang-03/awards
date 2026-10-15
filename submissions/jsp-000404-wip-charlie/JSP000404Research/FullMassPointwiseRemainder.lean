@@ -30,14 +30,23 @@ theorem listRemainderMass_nonneg_of_aligned
     {t : ℝ} {qs : List ℕ} {gs : List ℝ}
     (halign : QuotientGapAligned t qs gs) :
     0 ≤ listRemainderMass t qs gs := by
-  induction halign with
+  unfold QuotientGapAligned at halign
+  induction qs generalizing gs with
   | nil =>
-      simp [listRemainderMass]
-  | @cons q g qs gs hqg htail ih =>
-      simp only [listRemainderMass]
-      have hhead : 0 ≤ t * g - (q : ℝ) := by
-        linarith
-      linarith
+      cases gs with
+      | nil => simp [listRemainderMass]
+      | cons g gs => cases halign
+  | cons q qs ih =>
+      cases gs with
+      | nil => cases halign
+      | cons g gs =>
+          cases halign with
+          | cons hqg htail =>
+              simp only [listRemainderMass]
+              have hhead : 0 ≤ t * g - (q : ℝ) := by
+                linarith
+              have htail0 := ih htail
+              linarith
 
 /-- A displayed aligned entry contributes at most the total remainder mass. -/
 theorem displayed_remainder_le_listRemainderMass
@@ -56,8 +65,10 @@ theorem displayed_remainder_le_listRemainderMass
         (gpre ++ ge :: gpost) := by
   induction qpre generalizing gpre with
   | nil =>
-      have hgpre : gpre = [] :=
-        List.length_eq_zero.mp (by simpa using hpreLen.symm)
+      have hgpre : gpre = [] := by
+        cases gpre with
+        | nil => rfl
+        | cons g gs => simp at hpreLen
       subst gpre
       simp only [List.nil_append] at halign ⊢
       cases halign with
@@ -112,9 +123,15 @@ theorem displayed_gap_scaled_le_quotient_add_delta
       (qpre ++ q :: qpost)
       (gpre ++ ge :: gpost)
       hlen
-  rw [ht, hgapsum, hqsum] at htotal
-  norm_num at htotal
-  rw [htotal] at hrem
+  rw [hgapsum, hqsum] at htotal
+  have htotal' :
+      listRemainderMass t
+        (qpre ++ q :: qpost)
+        (gpre ++ ge :: gpost) = delta := by
+    calc
+      _ = t * 1 - (n : ℝ) := by simpa using htotal
+      _ = delta := by rw [mul_one]; linarith [ht]
+  rw [htotal'] at hrem
   linarith
 
 /-- Unit-gap specialization. -/
