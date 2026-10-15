@@ -32,7 +32,7 @@ open scoped BigOperators
 /-- Finite partition form: disjoint rank-one blocks whose local sizes are
 bounded by dyadic centre weights inherit the global dyadic capacity. -/
 theorem rankOne_blocks_card_le_of_dyadic_capacity
-    {I P : Type*} [Fintype I] [Fintype P]
+    {I P : Type*} [Fintype I] [Fintype P] [DecidableEq P]
     (block : I → Finset P)
     (exponent : I → ℕ)
     (hpairwise :
@@ -66,7 +66,7 @@ theorem rankOne_blocks_card_le_of_dyadic_capacity
 /-- Exact perfect-block form, corresponding to Sendov's Lemma 4.7 when every
 rank-one block has exactly 2^k points. -/
 theorem rankOne_blocks_card_eq_dyadic_sum
-    {I P : Type*} [Fintype I] [Fintype P]
+    {I P : Type*} [Fintype I] [Fintype P] [DecidableEq P]
     (block : I → Finset P)
     (exponent : I → ℕ)
     (hpairwise :
