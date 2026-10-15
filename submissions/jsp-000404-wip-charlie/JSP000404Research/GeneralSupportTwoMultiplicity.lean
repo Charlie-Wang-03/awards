@@ -53,12 +53,12 @@ theorem two_outerSmallAwayFrom_no_fourth
   have hA :
       EuclideanGeometry.angle (p b) (p a) (p c) ≤
         delta * lam :=
-    ha b c hab.symm hac
+    ha b c hab.symm hac.symm
       hsb.symm hsc.symm hbc
   have hB :
       EuclideanGeometry.angle (p a) (p b) (p c) ≤
         delta * lam :=
-    hb a c hab hbc
+    hb a c hab hbc.symm
       hsa.symm hsc.symm hac
   have hC :
       EuclideanGeometry.angle (p a) (p c) (p b) ≤
@@ -73,7 +73,7 @@ theorem two_outerSmallAwayFrom_no_fourth
       EuclideanGeometry.angle_comm (p c) (p b) (p a)] using
       (EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p b) (p₂ := p a) (p c)
-        (hp.ne hab.symm))
+        (hp.ne hab))
   have hBcomm :
       EuclideanGeometry.angle (p c) (p b) (p a) =
         EuclideanGeometry.angle (p a) (p b) (p c) :=
