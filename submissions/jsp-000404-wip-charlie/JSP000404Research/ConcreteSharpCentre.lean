@@ -94,25 +94,25 @@ theorem concrete_unit_deficit_is_sharp
       positiveSupport (centreQuotient C t) = 1 :=
     (unit_deficit_structure
       (centreQuotient C t) n hn hsum hdef).1
-  let cert :=
-    Classical.choice
-      (exists_oneSupportIntervalCertificate
-        hp hcap (by omega : 1 ≤ n) hdelta0
-        ht hlam i C hsupport)
-  have hqeN : cert.qe = n := by
-    rw [cert.qe_eq, hexp]
+  obtain ⟨qe, ge, a, width, sigma, hqePos,
+      hqeExp, hqeLe, hgePos, hwidthEq,
+      hwidth0, hwidthPi, hrepr⟩ :=
+    concrete_one_support_interval_certificate
+      hp hcap (by omega : 1 ≤ n) hdelta0
+      ht hlam i C hsupport
+  have hqeN : qe = n := by
+    rw [hqeExp, hexp]
     omega
   have htpos : 0 < t :=
     sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have hge :
-      (n : ℝ) / t ≤ cert.ge := by
+      (n : ℝ) / t ≤ ge := by
     rw [div_le_iff₀ htpos]
     rw [← hqeN]
-    exact cert.qe_le
+    exact hqeLe
   have hwidth :
-      cert.width ≤ delta * lam := by
-    rw [cert.width_eq, hlam]
-    have hnt : (n : ℝ) / t ≤ cert.ge := hge
+      width ≤ delta * lam := by
+    have hnt : (n : ℝ) / t ≤ ge := hge
     have htEq : (n : ℝ) = t - delta := by
       rw [ht]
       ring
@@ -120,8 +120,8 @@ theorem concrete_unit_deficit_is_sharp
     have hpi := Real.pi_pos
     have hinvt : 0 < 1 / t := one_div_pos.mpr htpos
     calc
-      cert.width
-          = Real.pi * (1 - cert.ge) := cert.width_eq
+      width
+          = Real.pi * (1 - ge) := hwidthEq
       _ ≤ Real.pi * (delta / t) := by
         apply mul_le_mul_of_nonneg_left _ hpi.le
         rw [div_eq_mul_inv] at hnt ⊢
@@ -133,9 +133,10 @@ theorem concrete_unit_deficit_is_sharp
         rw [← hone]
         linarith
       _ = delta * (Real.pi / t) := by ring
+      _ = delta * lam := by rw [hlam]
   intro j k hji hki hjk
   exact (angle_le_width_of_common_signed_interval
-    cert.width_nonneg cert.width_lt_pi hji hki cert.repr).trans hwidth
+    hwidth0 hwidthPi hji hki hrepr).trans hwidth
 
 #print axioms angle_le_width_of_common_signed_interval
 #print axioms concrete_unit_deficit_is_sharp
