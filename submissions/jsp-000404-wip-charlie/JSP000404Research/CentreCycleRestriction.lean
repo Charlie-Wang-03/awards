@@ -46,9 +46,7 @@ noncomputable def parentRayToChildOption
   have hnr :=
     childOtherToParent_ne_deleted r i hir j
   unfold parentRayToChildOption
-  simpa only [dif_pos hnr] using
-    (congrArg some
-      ((childOtherEquivParentSurvivor r i hir).symm_apply_apply j))
+  simp only [dif_pos hnr]
 
 /-- The parent image of every successful partial transport is the original
 parent ray. -/
@@ -70,8 +68,10 @@ theorem parent_of_parentRayToChildOption_eq_some
       congrArg
         (childOtherEquivParentSurvivor r i hir)
         hb
-    simpa [childOtherEquivParentSurvivor] using
-      (congrArg Subtype.val hback.symm)
+    apply Subtype.ext
+    have hv := congrArg
+      (fun x : ParentSurvivorRay r i => x.1.1) hback.symm
+    simpa [childOtherEquivParentSurvivor, childOtherToParent] using hv
   next ha =>
     simp at h
 
