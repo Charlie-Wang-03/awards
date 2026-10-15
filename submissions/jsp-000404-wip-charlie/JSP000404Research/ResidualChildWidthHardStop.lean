@@ -52,27 +52,27 @@ noncomputable def childWidthHardStopData :
   nonnegative := by
     intro i j hij
     fin_cases i <;> fin_cases j
-    all_goals norm_num [childWidthHardStopValue] at hij ⊢
+    all_goals norm_num [childWidthHardStopValue] at *
   belowWidth := by
     intro i j hij
     fin_cases i <;> fin_cases j
-    all_goals norm_num [childWidthHardStopValue] at hij ⊢
+    all_goals norm_num [childWidthHardStopValue] at *
   between := by
     intro i j k hij hjk
     fin_cases i <;> fin_cases j <;> fin_cases k
-    all_goals norm_num [childWidthHardStopValue] at hij hjk ⊢
+    all_goals norm_num [childWidthHardStopValue] at *
   middleSeparated := by
     intro i j k hij hjk
     fin_cases i <;> fin_cases j <;> fin_cases k
-    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at *
   firstGap := by
     intro i j k hij hjk
     fin_cases i <;> fin_cases j <;> fin_cases k
-    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at *
   lastGap := by
     intro i j k hij hjk
     fin_cases i <;> fin_cases j <;> fin_cases k
-    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at *
 
 theorem childWidthHardStop_zero_not_sink :
     ¬ HighSink childWidthHardStopData 3 (0 : Fin 3) := by
