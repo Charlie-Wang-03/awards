@@ -47,13 +47,13 @@ Two further Lean theorems have been submitted:
    two **distinct projected-loss owners** connected by a retained edge
    whose colour equals the chosen flip coordinate of one owner.
 
-Their **updated** independent CI must be checked before claiming them as
-kernel-certified. They are necessary witnesses, not converses.
+Independent CI **38716912640: SUCCESS**. Both witness theorems\nare kernel-certified and omit `sorryAx`. They are necessary witnesses,\nnot converses.
 
 ## Exact link to the real six-source payment term
 
 New `ResidualLossProfileExactUnionLedger.lean` builds on
-`ResidualLossWords.lean` and proves, subject to successful independent CI:
+`ResidualLossWords.lean` and is verified by independent CI
+**38717344717: SUCCESS**:
 
 ```text
 totalDyadicProfileLoss k (projectedFree C)
@@ -82,3 +82,20 @@ non-hole targets, and non-reuse of all six classes of payment remain open.
 
 The only admitted `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean`
 remains unchanged. JSP-000404 has **not** been fully proved or disproved.
+
+## New actual three-way true-hole frontier (verification pending)
+
+`ResidualLossTrueHoleCoverPartition.lean` further splits the actual
+translated union `U` against the global retained completion cover `K`:
+
+```text
+H = U \ K             (genuine global true holes reached by translations)
+B = U ∩ K             (covered translated words; not payment credits)
+profileLoss = |H| + |B| + D
+```
+
+This is a claimed **submitted** Lean target, not a verified theorem until
+its independent `JSP-000404 Focused Loss True Hole Partition Lean` CI
+completes successfully. Even if it compiles, hole targets might be used
+elsewhere among the five other payment classes; disjoint global allocation
+remains an open mathematical requirement.
