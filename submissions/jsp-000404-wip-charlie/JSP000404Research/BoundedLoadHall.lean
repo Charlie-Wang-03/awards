@@ -66,7 +66,7 @@ theorem hall_of_uniform_degree_bounded_load
                   (fun x => y ∈ candidates x) := by
             intro x hx
             simp only [Finset.mem_filter] at hx ⊢
-            exact ⟨Finset.mem_univ x, hx.2⟩
+            exact ⟨Finset.mem_univ x, hx.2.2⟩
           exact (Finset.card_le_card hsub).trans (hright y)
       _ = d * (s.biUnion candidates).card := by
           simp [Nat.mul_comm]

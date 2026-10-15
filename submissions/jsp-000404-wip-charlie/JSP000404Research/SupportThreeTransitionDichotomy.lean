@@ -54,7 +54,7 @@ theorem support_three_transition_count_one_or_three
     | nil =>
         exact False.elim (C.nonempty h)
     | cons first rest =>
-        exact ⟨first, rest, h⟩
+        exact ⟨first, rest, rfl⟩
   have hchanges :
       ChangesOnlyOnPositive
         (raySignAt hp i first)

@@ -51,8 +51,8 @@ theorem projective_gap_lt_lam_of_scaled_lt_one
 theorem ordinary_zero_quotient_actual_angle_lt_lam
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -84,8 +84,8 @@ theorem ordinary_zero_quotient_actual_angle_lt_lam
 theorem wrap_zero_quotient_actual_angle_lt_lam
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
