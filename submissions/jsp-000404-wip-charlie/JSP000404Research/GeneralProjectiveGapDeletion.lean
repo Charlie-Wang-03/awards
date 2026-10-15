@@ -59,7 +59,14 @@ theorem normalizedProjectiveGaps_cons_cons_parent
     cases bs with
     | nil => simp
     | cons c cs =>
-      simp [List.getLastD_cons]
+      change (c :: cs).getLast?.getD a =
+        (c :: cs).getLast?.getD b
+      induction cs generalizing c with
+      | nil => simp
+      | cons d ds ih =>
+        change (d :: ds).getLast?.getD a =
+          (d :: ds).getLast?.getD b
+        exact ih d
   simp [normalizedProjectiveGaps, projectiveGaps,
     successiveDiffsFrom, normalizedSuccessiveTail,
     firstNormalizedGap, lastNormalizedGap,
