@@ -38,8 +38,9 @@ The theorem is a lifting of the earlier proven source-level
 `translated_loss_conflict_edge_colour` and does not assert that
 cross-coordinate overlaps are absent. New source commit:
 `468dda965b50068889ceb4796643bcfcb839b8e6`.
-Its dedicated focused CI must be checked separately; no success is
-presumed here until the run concludes.
+Its dedicated focused GitHub Actions run 38689297861 completed
+successfully. This is a kernel-checked aggregate cross-coordinate
+collision necessity theorem; it is not a no-collision assertion.
 
 ## Remaining proof obligation
 
