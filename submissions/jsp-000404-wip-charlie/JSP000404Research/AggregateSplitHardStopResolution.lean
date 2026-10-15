@@ -31,7 +31,7 @@ def aggregateHardStopLeft : Finset (Fin 5) :=
   balancedHardStopLeft 0
 
 def aggregateHardStopRight : Finset (Fin 5) :=
-  Finset.univ  aggregateHardStopLeft
+  Finset.univ \\ aggregateHardStopLeft
 
 def aggregateHardStopPostExp : Fin 5 → ℕ :=
   balancedHardStopPostExp 0
@@ -88,7 +88,7 @@ theorem aggregateHardStop_closed :
     3 hdisj hcover
     aggregateHardStop_left_doubles
     aggregateHardStop_right_doubles
-    (by rw [aggregateHardStop_post_left_mass])
+    (by rw [aggregateHardStop_post_left_mass]; norm_num)
     (by rw [aggregateHardStop_post_right_mass]; norm_num)
 
 #print axioms aggregateHardStop_closed
