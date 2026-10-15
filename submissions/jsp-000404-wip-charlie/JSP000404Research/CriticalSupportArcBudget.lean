@@ -104,7 +104,8 @@ theorem critical_bad_mass_lt_phase_of_disjoint_direction_arcs
   have htotal :=
     critical_total_turn_sendov_of_disjoint_direction_arcs
       center s hlam hpi
-      (fun c => (hone c).trans (by norm_num : (0 : ℝ) ≤ 1))
+      (fun c => (show (0 : ℝ) ≤ s c from
+        (by norm_num : (0 : ℝ) ≤ 1).trans (hone c)))
       hsBound hdisj
   exact sum_criticalBadWidth_lt_sendov_phase
     s hn hdelta0 hdelta hone htotal

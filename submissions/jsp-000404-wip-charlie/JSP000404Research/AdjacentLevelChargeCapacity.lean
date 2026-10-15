@@ -131,7 +131,9 @@ theorem tailCount_le_of_adjacent_level_charge
   have hcardCharge :
       (badLevelSet k d z r).card ≤
         (surplusPrevLevelSet k d z r).card :=
-    Fintype.card_le_of_injective charge hinj
+    by
+      simpa only [Fintype.card_coe] using
+        (Fintype.card_le_of_injective charge hinj)
   exact hcardCharge.trans (Finset.card_le_card hsub)
 
 /-- Levelwise adjacent charging closes the full dyadic profile inequality. -/
