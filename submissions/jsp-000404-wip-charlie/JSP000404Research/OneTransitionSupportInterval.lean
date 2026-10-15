@@ -51,8 +51,8 @@ theorem exists_supportIntervalCertificate_of_one_sign_transition
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -123,8 +123,11 @@ theorem exists_supportIntervalCertificate_of_one_sign_transition
         rw [← hafterLen, hafter]
         rfl
       have hgpostNil : gpost = [] := by
-        apply List.length_eq_zero.mp
-        rw [hpostGapLen, hpostLen0]
+        have hgpostLen : gpost.length = 0 := by
+          rw [hpostGapLen, hpostLen0]
+        cases gpost with
+        | nil => rfl
+        | cons x xs => simp at hgpostLen
       have hrestEq : rest = before := by
         rw [hafter] at hrest
         simpa using hrest
@@ -155,7 +158,7 @@ theorem exists_supportIntervalCertificate_of_one_sign_transition
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
+        rw [List.cons_append, ← hrays']
         exact C.theta_sorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
@@ -274,8 +277,8 @@ theorem exists_supportIntervalCertificate_of_one_sign_transition
             j ∈ first :: before ∨ j ∈ right :: tail := by
         intro j
         have hj := C.mem_rays_iff j
-        rw [hrays', List.mem_append] at hj
-        exact hj
+        rw [hrays'] at hj
+        simpa only [List.mem_cons, List.mem_append, or_assoc] using hj
       let width : ℝ :=
         rayThetaAt hp i left + Real.pi -
           rayThetaAt hp i right
@@ -301,8 +304,9 @@ theorem exists_supportIntervalCertificate_of_one_sign_transition
                 rayThetaAt hp i left := by
           rw [hgeEq] at hgePos
           have hpi : 0 < Real.pi := Real.pi_pos
-          exact (div_pos_iff.mp hgePos).resolve_right
-            (by linarith : ¬ Real.pi < 0) |>.1
+          rcases div_pos_iff.mp hgePos with hpos | hneg
+          · exact hpos.1
+          · exact False.elim ((not_lt_of_ge Real.pi_pos.le) hneg.2)
         dsimp [width]
         linarith
       have hrepr0 :=
