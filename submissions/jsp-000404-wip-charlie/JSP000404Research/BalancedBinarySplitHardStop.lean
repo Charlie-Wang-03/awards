@@ -66,6 +66,7 @@ theorem balancedHardStop_covers_all_two_subsets :
   intro A hA
   obtain ⟨a, b, hab, hpair⟩ := Finset.card_eq_two.mp hA
   subst A
+  letI : DecidableEq (Finset (Fin 5)) := inferInstance
   fin_cases a <;> fin_cases b <;>
     simp_all <;> native_decide
 
