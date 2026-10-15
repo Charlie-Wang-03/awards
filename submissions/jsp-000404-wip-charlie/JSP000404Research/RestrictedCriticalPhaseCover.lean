@@ -162,6 +162,35 @@ theorem critical_irredundant_on_card_le_slots
   have hcard := Fintype.card_le_of_injective f hf
   simpa [f] using hcard
 
+/-- Complete restricted-phase cover compression outlet: an arbitrary
+finite family covering the physically selected phase-domain admits
+a subcover with at most one obstruction per geometric slot.
+
+Only the geometric domain-coverage hypothesis and anchor/slot rule
+remain as inputs. This does NOT pay other disjoint dyadic debts. -/
+theorem critical_restricted_cover_exists_small_slot_subcover
+    {I Slot : Type*} [DecidableEq I] [Fintype Slot]
+    (Domain : ℝ → Prop) (alpha s : I → ℝ)
+    (delta : ℝ) (slot : I → Slot) (S : Finset I)
+    (hcover : PredicateCoversOn Domain
+       (fun i x => criticalBadLeft (alpha i) (s i) ≤ x ∧
+          x ≤ criticalBadRight (alpha i) delta) S)
+    (hslot : ∀ {i j : I}, slot i = slot j → alpha i = alpha j) :
+    ∃ T : Finset I, T ⊆ S ∧
+      PredicateCoversOn Domain
+        (fun i x => criticalBadLeft (alpha i) (s i) ≤ x ∧
+          x ≤ criticalBadRight (alpha i) delta) T ∧
+      T.card ≤ Fintype.card Slot := by
+  obtain ⟨T, hTS, hmin⟩ :=
+    exists_irredundant_subcover_on Domain
+      (fun i x => criticalBadLeft (alpha i) (s i) ≤ x ∧
+         x ≤ criticalBadRight (alpha i) delta) S hcover
+  exact ⟨T, hTS, hmin.1,
+    critical_irredundant_on_card_le_slots
+      Domain alpha s delta slot T hmin hslot⟩
+
+#print axioms critical_restricted_cover_exists_small_slot_subcover
+
 /-- Concrete consistency check: the singleton interval [0,1]
 is an irredundant cover of the NONEMPTY phase-domain [0,1].
 This would be impossible with an all-real-line cover obligation. -/
