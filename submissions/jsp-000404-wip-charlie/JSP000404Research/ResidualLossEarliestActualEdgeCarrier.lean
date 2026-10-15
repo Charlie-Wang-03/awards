@@ -98,6 +98,22 @@ theorem lossEarliestPair_card_eq_actualEdge_sum
       (Finset.mem_sdiff.mp hwq).1
   exact Finset.card_biUnion hdisj
 
+/-- Finite natural-coordinate index for the exact actual-edge
+first-appearance mass. Out-of-palette indices contribute zero. -/
+noncomputable def lossEarliestActualEdgePairCostAtNat
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (i j : ℕ) : ℕ :=
+  if hi : i < n then
+    if hj : j < n then
+      ∑ p ∈ crossLossConflictPairs C exponent choice
+          ⟨i, hi⟩ ⟨j, hj⟩,
+        (lossEarliestActualEdgePairWords C exponent choice
+          ⟨i, hi⟩ ⟨j, hj⟩ p).card
+    else 0
+  else 0
+
 /-- Full original duplicate debt as an EXACT, finite,
 earliest-coordinate / earliest actual-edge source-blocker pair sum.
 Only actually intersecting words and genuine retained edge carriers
@@ -112,10 +128,8 @@ theorem translatedLossDuplicateDebt_eq_earliestActualEdge_sum
     translatedLossDuplicateDebt C exponent choice =
       ∑ i ∈ Finset.range n,
         ∑ j ∈ Finset.range i,
-          ∑ p ∈ crossLossConflictPairs C exponent choice
-              ⟨i, by omega⟩ ⟨j, by omega⟩,
-            (lossEarliestActualEdgePairWords C exponent choice
-              ⟨i, by omega⟩ ⟨j, by omega⟩ p).card := by
+          lossEarliestActualEdgePairCostAtNat
+            C exponent choice i j := by
   classical
   rw [translatedLossDuplicateDebt_eq_sum_earliestPairWords]
   apply Finset.sum_congr rfl
@@ -130,7 +144,7 @@ theorem translatedLossDuplicateDebt_eq_earliestActualEdge_sum
     have hv : i = j := by
       simpa only [Fin.val_mk] using congrArg Fin.val h
     omega
-  simpa using
+  simpa [lossEarliestActualEdgePairCostAtNat, hin, hjn] using
     (lossEarliestPair_card_eq_actualEdge_sum
       C exponent hexp honeLoss choice
       ⟨i, hin⟩ ⟨j, hjn⟩ hcd)
