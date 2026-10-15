@@ -95,6 +95,29 @@ theorem totalDyadicProfileLoss_eq_translated_union_plus_duplicate
   exact lossCompletionWords_card_eq_translated_union_plus_duplicate
     C exponent hexp honeLoss choice
 
+/-- The pre-existing `badProjectionWords` ledger can now be stated
+using the *actual* translated-loss union, while explicitly retaining the
+cross-coordinate duplicate correction. This is a numerical equality:
+we do NOT assert that the translated union is disjoint from overlap words. -/
+theorem badProjectionWords_card_eq_overlap_union_plus_duplicate
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (choice : V → Fin n) :
+    (lossCompletionWords C exponent ∪ overlapCompletionWords C).card =
+      (overlapCompletionWords C).card +
+        (translatedLossAllCoordinateWords C exponent choice).card +
+        translatedLossDuplicateDebt C exponent choice := by
+  rw [badProjectionWords_card C exponent hexp honeLoss]
+  rw [totalDyadicProfileLoss_eq_translated_union_plus_duplicate
+    C exponent hexp honeLoss choice]
+  omega
+
+#print axioms badProjectionWords_card_eq_overlap_union_plus_duplicate
+
 #print axioms lossCompletionWords_card_eq_sum_translatedSlices
 #print axioms lossCompletionWords_card_eq_translated_union_plus_duplicate
 #print axioms totalDyadicProfileLoss_eq_translated_union_plus_duplicate
