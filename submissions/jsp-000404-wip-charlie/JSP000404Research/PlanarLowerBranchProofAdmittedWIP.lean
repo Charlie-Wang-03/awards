@@ -1,4 +1,4 @@
-import JSP000404Research.PlanarLowerBranchExternalHoleFrontier
+import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
 import JSP000404Research.PlanarForwardReverseBridgeDyadicCapacity
 import JSP000404Research.PlanarBridgeSoftStrictDyadicGap
@@ -203,15 +203,18 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   -- This application leaves precisely the EXTERNAL-hole payment open:
   -- non-loss debt + translated-covered blockers + duplicate debt
   -- <= TRUE holes OUTSIDE translated loss slices + unreserved surplus.
-  exact planar_lower_branch_capacity_of_external_loss_obstruction
+  exact planar_lower_branch_capacity_of_exists_active_external_loss_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
       -- SOLE OPEN GEOMETRIC INPUT (exact equivalent reduced form):
-      -- outside-translated TRUE holes and genuinely unreserved surplus
-      -- must pay all other terminal debts, globally covered translated
-      -- loss blockers, and cross-coordinate translated duplicate debt.
-      -- The translated loss TRUE holes have already been cancelled
-      -- from both sides using the verified exact loss conservation.
+      -- there must EXIST a genuinely retained-active flip choice at
+      -- projected-loss vertices for which outside-translated TRUE holes
+      -- and genuinely unreserved surplus pay the other terminal debts,
+      -- globally covered translated blockers, and duplicate debt.
+      -- Existence of active coordinates is itself already proved;
+      -- the uncompensated GLOBAL payment remains the sole sorry.
+      -- True holes reached by translated-loss words are cancelled
+      -- from both sides, so they cannot be double-counted.
       -- Verified planar hmobile bounds both movable source classes
       -- by singleton + soft + the exact dyadic BRIDGE-SOFT pool.
       -- Verified planar hbridgeGap bounds that candidate bridge mass
