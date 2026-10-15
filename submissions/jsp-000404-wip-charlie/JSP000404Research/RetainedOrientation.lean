@@ -87,17 +87,6 @@ theorem outgoingRetained_subset_retainedActive
   rw [retainedActive_eq_incoming_union_outgoing C v]
   exact Finset.mem_union_right _ hc
 
-/-- The retained Boolean bit is false for an outgoing colour.
-This is the same claim as the existing full-colour theorem, after
-casting the retained coordinate into the full colour type. -/
-theorem retainedBit_false_of_outgoingRetained
-    {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V (k + 1))
-    {v : V} {c : Fin k}
-    (hc : c ∈ outgoingRetained C v) :
-    retainedBit C v c = false := by
-  simpa [retainedBit] using (bit_false_of_outgoingRetained C hc)
-
 /-- Consequently the retained active count is the sum of the two directed
 incidence counts. -/
 theorem card_retainedActive_eq_add
@@ -168,7 +157,6 @@ theorem common_forward_colour_absorbed
 #print axioms common_forward_colour_absorbed
 #print axioms incomingRetained_subset_retainedActive
 #print axioms outgoingRetained_subset_retainedActive
-#print axioms retainedBit_false_of_outgoingRetained
 
 end OrderedEdgeColoring
 end JSP000404Research

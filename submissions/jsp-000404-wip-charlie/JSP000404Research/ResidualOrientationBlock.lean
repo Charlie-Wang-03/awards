@@ -271,8 +271,8 @@ theorem retainedCompletionWords_subset_orientationBlock_right
       outgoingRetained_subset_retainedActive C v hcOutV
     have hcomp :=
       (mem_retainedCompletionWords C v word).1 hvWord
-    have hfalse :=
-      retainedBit_false_of_outgoingRetained C hcOutV
+    have hfalse : retainedBit C v c = false := by
+      simpa [retainedBit] using (bit_false_of_outgoingRetained C hcOutV)
     have hcNotInV :
         c ∉ incomingRetained C v := by
       intro hInV
