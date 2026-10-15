@@ -148,8 +148,8 @@ that missing inequality.
 - `ResidualLossCoveredExactTripleLedger.lean` refines the carrier family
   to exactly the **selected active coordinate** and proposes an **equality**
   with the covered-loss Boolean set. The first CI encountered a nested
-  pattern syntax issue; it has been repaired and rerun, result still
-  pending at this entry (**38727782973**).
+  pattern syntax issue; it was repaired and focused CI
+  **38727782973: SUCCESS** confirmed the exact set equality.
 - Two subsequent conditional reductions were submitted:
   `ResidualTerminalTwinExactBlockerCarrierFrontier.lean` rewrites the
   six-source payment exactly in terms of the chosen-carrier union; and
