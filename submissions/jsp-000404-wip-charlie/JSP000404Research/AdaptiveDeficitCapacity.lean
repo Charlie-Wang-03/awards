@@ -58,6 +58,10 @@ theorem deficit_capacity
           apply Finset.sum_le_sum
           intro v _
           apply Nat.pow_le_pow_right (by norm_num : 0 < 2)
+          have hv :
+              (OrderedEdgeColoring.active
+                C.toOrderedEdgeColoring v).card ≤ ell v :=
+            hactive v
           omega
     _ ≤ 2 ^ n := hweighted
 
@@ -82,7 +86,9 @@ theorem exponent_capacity
           apply Finset.sum_congr rfl
           intro v _
           rw [hell v]
-          rw [Nat.sub_sub_cancel (hexp v)]
+          have hv : exponent v ≤ n := hexp v
+          have hsub : n - (n - exponent v) = exponent v := by omega
+          rw [hsub]
     _ ≤ 2 ^ n := h
 
 /-- A directly usable form when the local palette bound is stated as
