@@ -49,14 +49,16 @@ theorem net_first_hit_soft_shortage_forces_three_colours
       have hdiff : d pivot ≠ e pivot :=
         (Finset.mem_filter.mp hmem).2
       exact hdiff hp.2.2
+    change T.card = 2 at hT2
     have hins : (insert pivot T).card = 3 := by
-      rw [Finset.card_insert_of_not_mem hpnot, hT2]
+      rw [Finset.card_insert_of_notMem hpnot, hT2]
     have hbound : (insert pivot T).card ≤ n := by
       have hsub : insert pivot T ⊆ (Finset.univ : Finset (Fin n)) :=
         Finset.subset_univ _
       simpa using Finset.card_le_card hsub
     omega
-  · have hbound : T.card ≤ n := by
+  · change T.card = 4 at hT4
+    have hbound : T.card ≤ n := by
       have hsub : T ⊆ (Finset.univ : Finset (Fin n)) :=
         Finset.subset_univ _
       simpa using Finset.card_le_card hsub
