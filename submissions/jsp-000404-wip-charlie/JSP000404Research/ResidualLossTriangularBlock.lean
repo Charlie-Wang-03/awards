@@ -13,7 +13,7 @@ At v itself disjointness follows from active-coordinate flipping.  On the
 wrong side, any common word would be a translated blocker, contradicting the
 one-sided blocker theorem.
 
-This gives an upper-/lower-triangular support pattern between translated loss
+This gives an upper- and lower-triangular support pattern between translated loss
 blocks and the original completion family.
 -/
 
