@@ -47,7 +47,9 @@ Two further Lean theorems have been submitted:
    two **distinct projected-loss owners** connected by a retained edge
    whose colour equals the chosen flip coordinate of one owner.
 
-Independent CI **38716912640: SUCCESS**. Both witness theorems\nare kernel-certified and omit `sorryAx`. They are necessary witnesses,\nnot converses.
+Independent CI **38716912640: SUCCESS**. Both witness theorems
+are kernel-certified and omit `sorryAx`. They are necessary witnesses,
+not converses.
 
 ## Exact link to the real six-source payment term
 
