@@ -135,7 +135,45 @@ theorem two_mul_translatedLossSliceWords_card
     ((mem_lossCoordinateSlice
       C exponent choice c v).1 hv).1
 
+/-!
+Summing over *all* retained coordinates counts each projected-loss vertex
+exactly once. This is an exact identity for the sum of slice sizes, not
+a disjointness assertion between different coordinate slices.
+-/
+theorem two_mul_total_translatedLossSliceWords_card
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss :
+      ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (choice : V → Fin n) :
+    2 * (∑ c : Fin n,
+      (translatedLossSliceWords C exponent choice c).card) =
+      ∑ v ∈ projectedLossVertices C exponent,
+        2 ^ exponent v := by
+  classical
+  calc
+    2 * (∑ c : Fin n,
+        (translatedLossSliceWords C exponent choice c).card) =
+      ∑ c : Fin n,
+        2 * (translatedLossSliceWords C exponent choice c).card := by
+          rw [Finset.mul_sum]
+    _ = ∑ c : Fin n,
+          ∑ v ∈ lossCoordinateSlice C exponent choice c,
+            2 ^ exponent v := by
+          apply Finset.sum_congr rfl
+          intro c hc
+          exact two_mul_translatedLossSliceWords_card
+            C exponent hexp honeLoss choice c
+    _ = ∑ v ∈ projectedLossVertices C exponent,
+          2 ^ exponent v := by
+          simp only [lossCoordinateSlice, Finset.sum_filter]
+          rw [Finset.sum_comm]
+          simp
+
 #print axioms translatedLossSlice_pairwiseDisjoint
+#print axioms two_mul_total_translatedLossSliceWords_card
 #print axioms translatedLossSliceWords_card
 #print axioms two_mul_translatedLossSliceWords_card
 
