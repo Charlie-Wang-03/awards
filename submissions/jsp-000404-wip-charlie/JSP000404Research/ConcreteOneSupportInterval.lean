@@ -192,7 +192,7 @@ theorem concrete_one_support_interval_certificate
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [List.cons_append, ← hrays']
+        rw [← hrays']
         exact C.theta_sorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
@@ -252,7 +252,7 @@ theorem concrete_one_support_interval_certificate
           ((first :: before) ++ (right :: tail)).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
+        rw [List.cons_append, ← hrays']
         exact C.theta_sorted
       have hpairs :
           (first :: before).Pairwise
