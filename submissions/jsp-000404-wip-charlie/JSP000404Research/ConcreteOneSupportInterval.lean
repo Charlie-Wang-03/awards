@@ -65,7 +65,7 @@ theorem concrete_one_support_interval_certificate
       ∃ first rest, C.rays = first :: rest := by
     cases h : C.rays with
     | nil => exact False.elim (C.nonempty h)
-    | cons first rest => exact ⟨first, rest, h⟩
+    | cons first rest => exact ⟨first, rest, rfl⟩
   let sigma0 : Bool := raySignAt hp i first
   have ht1 : 1 ≤ t :=
     sendov_scale_one_le hn hdelta0 ht
