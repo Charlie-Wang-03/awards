@@ -122,12 +122,8 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        have hsorted :
-            (first :: (before ++ right :: tail)).Pairwise
-              (fun a b => rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-          rw [← hrays']
-          exact C.theta_sorted
-        simpa only [List.cons_append] using hsorted
+        rw [← hrays']
+        exact C.theta_sorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
         intro j
@@ -201,8 +197,12 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
           ((first :: before) ++ (right :: tail)).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
-        exact C.theta_sorted
+        have hsorted :
+            (first :: (before ++ right :: tail)).Pairwise
+              (fun a b => rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
+          rw [← hrays']
+          exact C.theta_sorted
+        simpa only [List.cons_append] using hsorted
       have hpairs :
           (first :: before).Pairwise
               (fun a b =>
