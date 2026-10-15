@@ -151,3 +151,32 @@ colour rigidity have yet to imply the required global
 matching or nonreuse inequality. Consequently the main
 admitted WIP root still has its one executable `sorry`.
 Do not claim a full Lean build from focused successes.
+
+## 8. Additional independent legacy repairs (certified)
+
+The following corrections preserve the original theorem statements,
+add no `sorry`, and have kernel-checked focused CI plus
+`#print axioms` free of `sorryAx`:
+
+- `ResidualDuplicateOrder.lean`, focused CI **38761891017 SUCCESS**,
+  3,116 jobs. The inactive-coordinate witness is converted by
+  `mem_retainedInactive` rather than misused as a function.
+  `last_duplicate_inactive_injects_singleton_right` is certified.
+- `OneSupportHighMultiplicity.lean`, focused CI **38762202967 SUCCESS**,
+  3,442 jobs. Correct `AngleCap` binder scope and use an explicit
+  integer multiplication monotonicity argument to prove that there
+  are at most two high-exponent one-support centres for `n ≥ 4`.
+- `MinimalHallObstruction.lean`, focused CI **38762994962 SUCCESS**,
+  3,093 jobs. Correct strict-subset witness proof using actual
+  subset application instead of equality rewriting.
+  The minimum deficient family has deficit one, deleting any single
+  demand preserves the target neighbourhood, and no target is unique.
+- `WeightedHanselEquality.lean`, focused CI **38763293842 SUCCESS**,
+  3,093 jobs. Correct pinned Mathlib's `sum_erase_add` argument order
+  and include the actual per-vertex cardinal bound in natural
+  exponent comparison. The completion-map bijection and uniqueness
+  theorems are kernel-checked, without `sorryAx`.
+
+These are REAL repairs of separate historical compilation failures.
+They do not imply the entire Fast Incremental Lean workflow passes;
+the independent global payment obstruction remains as above.
