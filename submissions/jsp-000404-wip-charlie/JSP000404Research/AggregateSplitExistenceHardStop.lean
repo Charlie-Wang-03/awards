@@ -1,4 +1,3 @@
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
