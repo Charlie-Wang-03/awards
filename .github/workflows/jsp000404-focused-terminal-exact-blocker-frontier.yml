@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualTerminalTwinExactBlockerCarrierFrontier.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCoveredExactTripleLedger.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossDuplicateDebtLedger.lean"
       - ".github/workflows/jsp000404-focused-terminal-exact-blocker-frontier.yml"
   workflow_dispatch:
