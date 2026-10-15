@@ -58,7 +58,8 @@ theorem critical_anchor_ne_of_irredundant
   let R : I → ℝ := fun q => criticalBadRight (alpha q) delta
   have hmin' :
       IrredundantCover (InClosedInterval L R) S := by
-    simpa [CriticalBadAt, InClosedInterval, L, R] using hmin
+    change IrredundantCover (InClosedInterval L R) S at hmin
+    exact hmin
   have hReq : R i = R j := by
     dsimp [R]
     exact criticalBadRight_eq_of_anchor_eq alpha delta hanchor
