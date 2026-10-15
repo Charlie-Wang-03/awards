@@ -56,8 +56,7 @@ noncomputable def crossLossPairWords
       (translatedCompletionWords C v c ∩
         translatedCompletionWords C w d).Nonempty := by
   classical
-  simp only [crossLossConflictPairs, Finset.mem_filter, Finset.mem_product]
-  tauto
+  simp [crossLossConflictPairs, and_assoc]
 
 theorem crossLossPairWords_pairwiseDisjoint
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -74,6 +73,8 @@ theorem crossLossPairWords_pairwiseDisjoint
       (crossLossPairWords C c d) := by
   intro p hp q hq hpq
   classical
+  change Disjoint (crossLossPairWords C c d p)
+    (crossLossPairWords C c d q)
   rw [Finset.disjoint_left]
   intro word hpWord hqWord
   have hpData :=
