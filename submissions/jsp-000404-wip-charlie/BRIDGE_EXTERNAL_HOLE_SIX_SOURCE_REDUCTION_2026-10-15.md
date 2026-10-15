@@ -161,3 +161,70 @@ In all cases, the global injective allocation of genuine exterior holes and
 unreserved surplus against the five/six non-loss debt terms, actual covered
 blocker carriers and duplicate debt remains unproved. New equivalences
 must not be confused with the truth of the shared payment inequality.
+
+## Continuation — exact source/blocker retained-edge restriction and local capacities
+
+This section records facts verified later than the historical in-progress
+snapshots above; those old snapshots should not be read as current CI status.
+
+### Kernel-checked actual results
+
+- `ResidualTerminalTwinExactBlockerCarrierFrontier.lean` CI
+  **38727817652 SUCCESS**, `PlanarLowerBranchExactCarrierFrontier.lean`
+  CI **38728586815 SUCCESS**, and the sorry-free
+  `VerifiedOverlapRewire.lean` root CI **38728671044 SUCCESS**.
+  The main WIP was subsequently refactored to invoke the exact-carrier
+  planar theorem with its ONE original unproved six-source payment.
+  Its dedicated compilation CI **38731956179 SUCCESS**. This is a
+  compiles-with-one-sorry claim, not a completed proof.
+- `ResidualLossBlockerTripleLocalCapacity.lean` independently passed
+  **38732065805 SUCCESS**: each source/blocker/coordinate intersection
+  has cardinality at most
+  `min (2 ^ projectedFree(source)) (2 ^ projectedFree(blocker))`.
+  It also proves the corresponding upper bound summed over genuinely
+  chosen opposite-bit carrier triples. The sum may overcount overlapping
+  intersections; it is an upper bound, not a hole allocation.
+- `ResidualLossBlockerEdgeColourRigidity.lean` independently passed
+  **38732522439 SUCCESS**: if a projected-loss source `v` has its
+  completion word flipped at retained coordinate `c` and the result
+  belongs to the completion cube of a different blocker `w`, then
+  the ACTUAL source--blocker edge is retained with EXACT colour `c`,
+  whichever of `v<w` or `w<v` holds.
+  The proof uses the loss owner's residual inactivity and the
+  canonical opposite retained edge bits. It makes no claim that such
+  same-colour neighbours are unique.
+- Legacy independent Lean repairs: `ZeroClusterAngle.lean` CI
+  **38732265521 SUCCESS** (real-positive radial parameters) and
+  `TopExponentMultiplicity.lean` CI **38732834714 SUCCESS** (correct
+  AngleCap parameter binder and tailCount module import).
+
+### Pending integration and remaining mathematical work
+
+`ResidualLossActualEdgeCarrierFrontier.lean` (focused CI
+**38733102250 SUCCESS**) strengthens the exact selected carrier union:
+the only contributing triples must be **actual same-colour retained
+source/blocker edges**, not merely opposite-bit shared-active candidate
+pairs. An actual-edge-restricted local dyadic sum bound is also certified.
+
+Corresponding exact terminal and planar conditional fronts are committed
+in `ResidualTerminalTwinActualEdgeCarrierFrontier.lean` and
+`PlanarLowerBranchActualEdgeCarrierFrontier.lean`. Their CI runs
+**38733253482** and **38733316709** were pending at this update;
+do not count these theorems as independently certified until those
+checkers finish successfully.
+
+`AggregateSplitHardStopResolution.lean` repaired the formerly malformed
+set-complement definition and a missing numerical normalization. Its
+focused check **38733732063** was pending.
+
+IMPORTANT: `OrderedEdgeColoring.noMonoTwoPath` forbids same-colour
+increasing two-step paths; it is NOT a proper edge-colouring axiom that
+would make all incident edge colours distinct. Consequently the
+same-colour retained neighbour of a loss vertex need **not** be unique,
+and no such uniqueness shortcut is used.
+
+The remaining unproved inequality is the globally non-reusing
+payment of all other terminal debt, these actual retained-edge
+covered-loss carriers and cross-coordinate loss duplicate debt from
+TRUE holes outside the translated loss union plus genuinely unreserved
+dyadic surplus. No Lean patch has eliminated that obligation.
