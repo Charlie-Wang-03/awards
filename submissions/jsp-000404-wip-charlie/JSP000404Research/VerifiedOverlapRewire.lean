@@ -1,3 +1,4 @@
+import JSP000404Research.ResidualTerminalTwinExactBlockerCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
 import JSP000404Research.ResidualLossCoveredOppositeBitBlocker
 import JSP000404Research.ResidualCompletionOverlapRewire
@@ -396,4 +397,21 @@ the chosen retained-active coordinate. The theorem
 The global non-reusing injection or surplus compensation for covered
 blockers, duplicate debt and the other terminal debt classes is still open.
 The WIP root remains separate and still contains exactly one sorry.
+-/
+
+/-!
+## Exact chosen-coordinate blocker carrier frontier (2026-10-15)
+
+Kernel-verified independently:
+
+- `translatedLossCovered_eq_chosenTriple_union` (CI 38727782973)
+  expresses *all and only* truly covered translated-loss Boolean words as
+  the union of source/blocker intersections at the **actually chosen**
+  retained-active flip coordinate, with opposite canonical bits.
+- `terminalTwinSixSourcePayment_iff_exact_chosenBlockerTripleFrontier`
+  (CI 38727817652) is a literal two-way equivalence of the original
+  terminal six-source debt payment and the exact carrier-union frontier.
+
+No intersection disjointness, unused-hole credit or missing global
+geometric payment has been assumed. The WIP root keeps its sole sorry.
 -/
