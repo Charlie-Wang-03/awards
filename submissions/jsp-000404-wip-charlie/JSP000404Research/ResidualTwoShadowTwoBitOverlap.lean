@@ -77,6 +77,66 @@ theorem shared_two_shadow_two_bit_flip_intersection_card_one
   change (A ∩ B).card = 1
   omega
 
+/-- A shared Hamming-two flip coordinate cannot itself be a coordinate
+where the two Boolean targets differ: among two Boolean values a third
+distinct value is impossible. In the distance-two case the previously
+proved one-coordinate overlap is therefore an *outside* pivot. -/
+theorem shared_two_shadow_common_flip_outside_target_difference
+    {n : ℕ} (s d e : Fin n → Bool) :
+    Disjoint
+      ((Finset.univ.filter (fun i : Fin n => s i ≠ d i)) ∩
+        (Finset.univ.filter (fun i : Fin n => s i ≠ e i)))
+      (Finset.univ.filter (fun i : Fin n => d i ≠ e i)) := by
+  classical
+  apply Finset.disjoint_left.mpr
+  intro i hi hde
+  have hsd : s i ≠ d i := (Finset.mem_filter.mp (Finset.mem_inter.mp hi).1).2
+  have hse : s i ≠ e i := (Finset.mem_filter.mp (Finset.mem_inter.mp hi).2).2
+  have hne : d i ≠ e i := (Finset.mem_filter.mp hde).2
+  cases hs : s i <;> cases hd : d i <;> cases he : e i <;>
+    simp_all
+
+/-- Every distance-two common shadow determines a UNIQUE third-colour
+pivot: both flipped supports contain precisely the same one coordinate
+outside the pairwise target-difference support. -/
+theorem shared_two_shadow_two_bit_unique_outside_pivot
+    {n : ℕ} (s d e : Fin n → Bool)
+    (hsd : (Finset.univ.filter (fun i : Fin n => s i ≠ d i)).card = 2)
+    (hse : (Finset.univ.filter (fun i : Fin n => s i ≠ e i)).card = 2)
+    (hde : (Finset.univ.filter (fun i : Fin n => d i ≠ e i)).card = 2) :
+    ∃! i : Fin n, s i ≠ d i ∧ s i ≠ e i ∧ d i = e i := by
+  classical
+  let A : Finset (Fin n) :=
+    (Finset.univ.filter (fun i : Fin n => s i ≠ d i)) ∩
+      (Finset.univ.filter (fun i : Fin n => s i ≠ e i))
+  have hcard : A.card = 1 := by
+    exact shared_two_shadow_two_bit_flip_intersection_card_one
+      s d e hsd hse hde
+  obtain ⟨i, hi⟩ := Finset.card_eq_one.mp hcard
+  have hmem : i ∈ A := by rw [hi]; simp
+  have hsmem : s i ≠ d i ∧ s i ≠ e i := by
+    have hparts := Finset.mem_inter.mp hmem
+    exact ⟨(Finset.mem_filter.mp hparts.1).2,
+      (Finset.mem_filter.mp hparts.2).2⟩
+  have houtside : d i = e i := by
+    by_contra hne
+    have hdisj :=
+      shared_two_shadow_common_flip_outside_target_difference s d e
+    have hneMem : i ∈ Finset.univ.filter (fun i : Fin n => d i ≠ e i) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, hne⟩
+    exact (Finset.disjoint_left.mp hdisj) hmem hneMem
+  refine ⟨i, ⟨hsmem.1, hsmem.2, houtside⟩, ?_⟩
+  intro j hj
+  have hjmem : j ∈ A := by
+    exact Finset.mem_inter.mpr
+      ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj.1⟩,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj.2.1⟩⟩
+  rw [hi] at hjmem
+  simpa using hjmem
+
+#print axioms shared_two_shadow_common_flip_outside_target_difference
+#print axioms shared_two_shadow_two_bit_unique_outside_pivot
+
 #print axioms shared_two_shadow_two_bit_flip_intersection_card_one
 
 end JSP000404Research
