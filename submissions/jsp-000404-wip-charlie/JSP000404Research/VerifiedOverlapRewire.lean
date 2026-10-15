@@ -1,3 +1,5 @@
+import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
+import JSP000404Research.ResidualLossCoveredOppositeBitBlocker
 import JSP000404Research.ResidualCompletionOverlapRewire
 import JSP000404Research.PlanarCrossingHardOverlapRewire
 import JSP000404Research.ResidualCompletionIntersectionMass
@@ -368,10 +370,30 @@ the separate admitted lower-branch WIP still has one global payment sorry.
                                     + 2 * duplicateDebt.
 
 No extra edge-avoidance condition is imposed. Positive duplicateDebt
-necessarily arises from actual cross-coordinate collisions; the later
-edge-witness theorem (when kernel-verified) localizes each such obstruction
+necessarily arises from actual cross-coordinate collisions; the independently verified
+edge-witness theorem localizes each such obstruction
 to a retained edge between distinct projected-loss vertices.
 
 The duplicate debt is an overcount, not a true-hole credit, and this
 independent import does NOT close the admitted six-source global payment.
+-/
+
+/-!
+## Retained-active external-hole frontier and actual covered blockers
+
+The sorry-free conditional theorem
+`planar_lower_branch_capacity_of_exists_active_external_loss_payment`
+now reduces lower-branch capacity to the **existence of a genuinely
+retained-active loss-flip choice** satisfying the exact global external-hole
+payment. GitHub Actions 38725332989: PASS.
+
+Every translated loss word still globally covered for such an active choice
+has a **different blocker centre** with the **opposite canonical bit** at
+the chosen retained-active coordinate. The theorem
+`translatedLossCoveredWord_has_opposite_active_bits` is kernel-checked
+(GitHub Actions 38725475263: PASS).
+
+The global non-reusing injection or surplus compensation for covered
+blockers, duplicate debt and the other terminal debt classes is still open.
+The WIP root remains separate and still contains exactly one sorry.
 -/
