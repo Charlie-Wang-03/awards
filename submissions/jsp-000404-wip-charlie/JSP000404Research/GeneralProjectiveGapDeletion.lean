@@ -55,24 +55,21 @@ theorem normalizedProjectiveGaps_cons_cons_parent
       firstNormalizedGap a b ::
         (normalizedSuccessiveTail b bs ++
           [lastNormalizedGap a b bs]) := by
-  have hlast : (b :: bs).getLastD a = bs.getLastD b := by
-    cases bs with
-    | nil => simp
-    | cons c cs =>
-      change (c :: cs).getLast?.getD a =
-        (c :: cs).getLast?.getD b
-      induction cs generalizing c with
-      | nil => simp
-      | cons d ds ih =>
-        change (d :: ds).getLast?.getD a =
-          (d :: ds).getLast?.getD b
-        exact ih d
   simp [normalizedProjectiveGaps, projectiveGaps,
     successiveDiffsFrom, normalizedSuccessiveTail,
     firstNormalizedGap, lastNormalizedGap,
     List.map_append]
-  change (b :: bs).getLastD a = bs.getLastD b
-  exact hlast
+  cases bs with
+  | nil => simp
+  | cons c cs =>
+    change (c :: cs).getLast?.getD a =
+      (c :: cs).getLast?.getD b
+    induction cs generalizing c with
+    | nil => simp
+    | cons d ds ih =>
+      change (d :: ds).getLast?.getD a =
+        (d :: ds).getLast?.getD b
+      exact ih d
 
 theorem normalizedProjectiveGaps_delete_first_general
     (a b : ℝ) (bs : List ℝ) :
