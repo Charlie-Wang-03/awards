@@ -84,7 +84,7 @@ theorem childWidthHardStop_one_not_sink :
     ¬ HighSink childWidthHardStopData 3 (1 : Fin 3) := by
   rintro ⟨u, hu, hhigh⟩
   fin_cases u <;>
-    norm_num [childWidthHardStopData, childWidthHardStopValue] at hu hhigh
+    norm_num [childWidthHardStopData, childWidthHardStopValue] at *
 
 theorem childWidthHardStop_pair_not_pred_width :
     ¬ childWidthHardStopData.value (0 : Fin 3) (1 : Fin 3) <
