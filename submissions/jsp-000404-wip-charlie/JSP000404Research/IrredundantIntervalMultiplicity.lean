@@ -25,6 +25,9 @@ hypergraph.
 
 namespace JSP000404Research
 
+-- The interval predicate is real-valued; its finite filter is classical.
+attribute [local instance] Classical.propDecidable
+
 /-- Ordered three-interval form of the multiplicity-two statement. -/
 theorem no_threefold_overlap_of_irredundant_ordered
     {I : Type*} [DecidableEq I]
@@ -52,9 +55,9 @@ theorem no_threefold_overlap_of_irredundant_ordered
     exists_private_phase_of_irredundant
       (InClosedInterval L R) S hmin hj
   have hyNotI : ¬ InClosedInterval L R i y :=
-    hyprivate i hi hij.symm
+    hyprivate i hi hij
   have hyNotK : ¬ InClosedInterval L R k y :=
-    hyprivate k hk hjk
+    hyprivate k hk hjk.symm
   have hyRightI : R i < y := by
     by_contra hnot
     have hyRi : y ≤ R i := le_of_not_gt hnot
@@ -143,7 +146,7 @@ theorem irredundant_interval_point_multiplicity_le_two
   exact no_threefold_overlap_of_irredundant
     L R S hmin
     hiF.1 hjF.1 hkF.1
-    hij hik hjk
+    hij hjk hik
     hiF.2 hjF.2 hkF.2
 
 #print axioms no_threefold_overlap_of_irredundant
