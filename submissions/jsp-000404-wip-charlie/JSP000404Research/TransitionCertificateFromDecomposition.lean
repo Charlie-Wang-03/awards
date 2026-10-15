@@ -86,8 +86,12 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
         rw [← hafterLen, hafter]
         rfl
       have hgpostNil : gpost = [] := by
-        apply List.length_eq_zero.mp
-        rw [hpostGapLen, hpostLen0]
+        cases gpost with
+        | nil => rfl
+        | cons g gs =>
+            have hlen : (g :: gs).length = 0 := by
+              rw [hpostGapLen, hpostLen0]
+            simp at hlen
       have hrestEq : rest = before := by
         rw [hafter] at hrest
         simpa using hrest
@@ -118,8 +122,12 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
           (first :: before).Pairwise
             (fun a b =>
               rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
-        rw [← hrays']
-        exact C.theta_sorted
+        have hsorted :
+            (first :: (before ++ right :: tail)).Pairwise
+              (fun a b => rayThetaAt hp i a ≤ rayThetaAt hp i b) := by
+          rw [← hrays']
+          exact C.theta_sorted
+        simpa only [List.cons_append] using hsorted
       have hcover :
           ∀ j : OtherVertex i, j ∈ first :: before := by
         intro j
@@ -246,8 +254,10 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
             j ∈ first :: before ∨ j ∈ right :: tail := by
         intro j
         have hj := C.mem_rays_iff j
-        rw [hrays', List.mem_append] at hj
-        exact hj
+        have hj' : j ∈ (first :: before) ++ (right :: tail) := by
+          rw [hrays'] at hj
+          simpa only [List.cons_append] using hj
+        exact List.mem_append.mp hj'
       let width : ℝ :=
         rayThetaAt hp i left + Real.pi -
           rayThetaAt hp i right
@@ -273,8 +283,10 @@ theorem exists_highExponentTransitionIntervalCertificate_of_decomposition
                 rayThetaAt hp i left := by
           rw [hgeEq] at hgePos
           have hpi : 0 < Real.pi := Real.pi_pos
-          exact (div_pos_iff.mp hgePos).resolve_right
-            (by linarith : ¬ Real.pi < 0) |>.1
+          rcases div_pos_iff.mp hgePos with h | h
+          · exact h.1
+          · have hpi : 0 < Real.pi := Real.pi_pos
+            linarith
         dsimp [width]
         linarith
       have hrepr0 :=
