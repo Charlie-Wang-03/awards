@@ -49,6 +49,7 @@ theorem finite_degree_first_use_plus_reuse_exact
 
 /-- Exact ACTUAL SOFT shadow incidence decomposition across the
 distinct NET image D: only first-shadow uses count as fresh words. -/
+set_option maxHeartbeats 1200000 in
 theorem net_actual_soft_shadow_incidence_eq_first_uses_plus_reuse
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
