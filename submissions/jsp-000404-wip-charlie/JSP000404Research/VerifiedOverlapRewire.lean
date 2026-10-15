@@ -125,7 +125,7 @@ import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
-import JSP000404Research.ResidualLossDuplicateDebtLedger
+import JSP000404Research.ResidualLossProfileExactUnionLedger
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
