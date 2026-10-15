@@ -93,7 +93,6 @@ theorem actual_angle_eq_pi_sub_s_mul_lam_of_ordinary_transition
       hp i horder hsign]
   rw [hs, hlam]
   field_simp [ne_of_gt ht, Real.pi_ne_zero]
-  ring
 
 /-- Exact actual angle across a lifted cyclic-wrap sign transition. -/
 theorem actual_angle_eq_pi_sub_wrap_gap_of_lifted_sign_ne
@@ -125,9 +124,7 @@ theorem actual_angle_eq_pi_sub_wrap_gap_of_lifted_sign_ne
           signedRayDirection (!raySignAt hp i first)
             (rayThetaAt hp i first + Real.pi) := by
     rw [rayRepAt_eq hp i first]
-    exact same_ray_after_pi_shift_to_common_sign
-      (raySignAt hp i first)
-      (rayThetaAt hp i first)
+    rw [signedRayDirection_not_add_pi]
   change
     InnerProductGeometry.angle
         (p last.1 - p i) (p first.1 - p i) =
@@ -179,7 +176,6 @@ theorem actual_angle_eq_pi_sub_s_mul_lam_of_wrap_transition
       hp i horder hsign]
   rw [hs, hlam]
   field_simp [ne_of_gt ht, Real.pi_ne_zero]
-  ring
 
 /-- Physical bad-width identity for an ordinary critical transition. -/
 theorem ordinary_critical_bad_width_eq_angle_excess
