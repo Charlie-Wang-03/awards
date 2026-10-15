@@ -74,3 +74,62 @@ Its independent CI is in progress and no success is claimed here.
 - Full Fast Incremental Lean CI is NOT green: unrelated legacy Lean modules
   still have errors. Focused CI success must not be conflated with complete
   project compilation or final theorem correctness.
+
+## Continuation 2026-10-15 — active choice, opposite-bit blockers and exact carriers
+
+The following incremental additions are **already kernel-checked** and
+independently pass focused GitHub Actions, without `sorryAx` in the new
+statements:
+
+- `PlanarLowerBranchActiveExternalHoleFrontier.lean`,
+  `planar_lower_branch_capacity_of_exists_active_external_loss_payment`:
+  PASS **38725332989**. The conditional planar proof now accepts an
+  **existential retained-active flip assignment** satisfying the exact
+  external true-hole budget. This is an equivalent *interface* for the
+  outstanding terminal six-source payment, not a derivation of the payment.
+- `ResidualLossCoveredOppositeBitBlocker.lean`:
+  PASS **38725475263**. Every globally covered translated-loss word
+  for a genuinely retained-active flip has a different covering vertex
+  and both endpoints have opposite canonical bits at a shared
+  retained-active coordinate. No global payment injection follows.
+- `BadPhasePositiveExponent.lean`: PASS **38725168302**;
+  explicit summands repaired in the minimum positive bad-phase proof.
+- `OverweightDeletionInduction.lean`: PASS **38725718045**;
+  strict-subset induction now uses reverse inclusion correctly.
+- `GeneralProjectiveGapDeletion.lean`: PASS **38726187095**;
+  noncomputable normalized real gap definitions and `getLast?`
+  successor-list recursion repaired.
+
+The admitted root `PlanarLowerBranchProofAdmittedWIP.lean` now calls the
+new active-choice conditional theorem. Its statement retains all original
+geometric hypotheses and it still has **exactly one executable sorry**.
+Its new focused workflow **38725969587** was still in progress at this
+documentation update; success is not inferred from the pushed code.
+
+Two more precise carrier constructions are **submitted but not yet certified
+at this documentation update**:
+
+1. `ResidualLossCoveredPairBudget.lean`: the set of genuine covered
+   translated-loss words is included in a finite union of
+   source/blocker/retained-coordinate intersections. Every carrier pair
+   is distinct and has opposite bits at a shared active coordinate;
+   the resulting word-count upper bound uses `card_biUnion_le`.
+   Focused CI **38726615158**, pending.
+2. `ResidualLossCoveredExactTripleLedger.lean`: refine those triples
+   to carry the source's **actually chosen** active coordinate, then
+   establish an **exact set equality** between the covered-loss word set
+   and the union of the corresponding source/blocker completion
+   intersections. No disjointness across triples is asserted.
+   Focused CI **38726911804**, pending.
+
+The independent sorry-free `VerifiedOverlapRewire.lean` imports the
+active-choice planar reduction and opposite-bit blocker module. Its
+focused CI **38726331856** was running at this update.
+
+**Mathematical blocker remains:** the residual external-hole payment
+is not proved. In particular, there is no globally non-reusing
+assignment of other terminal debts, opposite-bit covered blockers and
+cross-coordinate duplicate mass to outside-translated TRUE holes and
+actually unreserved dyadic surplus. All conditional reductions and
+exact-cover identities must remain distinguished from a proof of
+that missing inequality.
