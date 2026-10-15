@@ -134,6 +134,7 @@ import JSP000404Research.ResidualLossProfileExactUnionLedger
 import JSP000404Research.ResidualLossCrossSliceCarrier
 import JSP000404Research.ResidualLossPairwiseOvercount
 import JSP000404Research.ResidualLossGlobalDuplicateDyadicBudget
+import JSP000404Research.ResidualLossEarliestActualEdgeGlobalLedger
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -487,4 +488,28 @@ These statements make cross-coordinate duplicate debt a finite,
 auditable budget. They do not provide globally disjoint true-hole
 targets or unreserved surplus. The terminal six-source payment and
 the admitted WIP sorry remain open.
+-/
+
+/-!
+## Exact earliest-coordinate genuine retained-edge duplicate debt (2026-10-15)
+
+Certified focused Lean results:
+
+- `translatedLossDuplicateDebt_eq_sum_earliestPairWords`:
+  duplicate debt equals the exact sum of words whose previous
+  occurrence is at the earliest coordinate j<i.
+  Focused CI 38761014451: SUCCESS.
+- `lossEarliestPairWords_card_eq_actualEdge_sum`:
+  for each pair (i,j), exactly partition earliest-collision words
+  by genuine retained-edge source/blocker carriers.
+  Focused CI 38761677516: SUCCESS.
+- `translatedLossDuplicateDebt_eq_sum_earliest_actual_edges`:
+  the entire original loss duplicate debt equals the exact finite
+  (later coordinate i, earliest predecessor j, real source/blocker p)
+  cardinal sum; not merely the earlier dyadic upper bound.
+  Focused CI 38761851516: SUCCESS. No sorryAx.
+
+This DOES NOT establish that covered-loss blocker debt or any of the
+other five classes can be injected into disjoint true outside holes or
+unreserved surplus. The admitted global six-source payment is OPEN.
 -/
