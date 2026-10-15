@@ -77,12 +77,16 @@ theorem single_zero_gap_scaled_le_delta
     have hterm :
         (if q i = 0 then gap i else 0) ≤
           ∑ j : I, (if q j = 0 then gap j else 0) := by
-      apply Finset.single_le_sum
-      · intro j hj
+      let f : I → ℝ := fun j => if q j = 0 then gap j else 0
+      have hf : ∀ j ∈ (Finset.univ : Finset I), 0 ≤ f j := by
+        intro j hj
+        dsimp [f]
         by_cases hqj : q j = 0
         · simpa [hqj] using hgap0 j
         · simp [hqj]
-      · exact Finset.mem_univ i
+      change f i ≤ ∑ j : I, f j
+      exact Finset.single_le_sum (s := Finset.univ) (f := f)
+        hf (Finset.mem_univ i)
     simpa [hqi] using hterm
   have hscaled :
       t * gap i ≤ t * zeroGapMass gap q :=
