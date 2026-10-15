@@ -32,8 +32,10 @@ theorem natFloor_le_of_lt_nat_succ
     (hx0 : 0 ≤ x)
     (hx : x < (b : ℝ) + 1) :
     Nat.floor x ≤ b := by
-  exact (Nat.floor_lt hx0).mp (by
-    simpa [Nat.cast_add, Nat.cast_one] using hx)
+  have hfloor : Nat.floor x < b + 1 := by
+    apply (Nat.floor_lt hx0).mpr
+    simpa [Nat.cast_add, Nat.cast_one] using hx
+  omega
 
 /-- Exceptional form: x < b+1+delta and delta<1 imply floor x <= b+1. -/
 theorem natFloor_le_add_one_of_lt_long_span
