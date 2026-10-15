@@ -143,7 +143,7 @@ theorem last_duplicate_inactive_injects_singleton_right
       apply blocker_after_other_of_lower_inactive
         C huv hsame
       · intro hc
-        exact c.2
+        exact ((mem_retainedInactive C u c.1).1 c.2)
           ((castSucc_mem_active_iff_mem_retainedActive
             C u c.1).1 hc)
       · exact hchooseBlock c⟩
@@ -162,7 +162,7 @@ theorem last_duplicate_inactive_injects_singleton_right
   intro c x hx
   exact last_duplicate_blocker_code_unique
     C huv hsame hlast
-    (by exact c.2)
+    (by exact (mem_retainedInactive C u c.1).1 c.2)
     (hchooseBlock c)
     x
     (by simpa [f] using hx)
