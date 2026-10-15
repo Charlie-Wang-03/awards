@@ -89,7 +89,7 @@ theorem incomingRetained_card_blocker
     intro hc
     rw [retainedActive_eq_incoming_union_outgoing C u] at hcu
     exact hcu (Finset.mem_union_left _ hc)
-  rw [Finset.card_insert_of_not_mem hcNotIn]
+  rw [Finset.card_insert_of_notMem hcNotIn]
 
 #print axioms retainedBit_false_of_retained_inactive
 #print axioms blocker_retainedBit_true_at
