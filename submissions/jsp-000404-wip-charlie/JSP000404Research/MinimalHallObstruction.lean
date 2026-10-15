@@ -83,7 +83,7 @@ theorem minimalDeficient_neighborhood_card_eq
     · exact Finset.erase_subset x S
     · intro hEq
       have hxNot : x ∉ S.erase x := by simp
-      exact hxNot (by rw [hEq]; exact hxS)
+      exact hxNot (hEq hxS)
   have hTnot : ¬ Deficient targets T :=
     hmin.2 T hTS
   have hTcard :
@@ -118,7 +118,7 @@ theorem minimalDeficient_biUnion_erase_eq
     · exact Finset.erase_subset x S
     · intro hEq
       have hxNot : x ∉ S.erase x := by simp
-      exact hxNot (by rw [hEq]; exact hxS)
+      exact hxNot (hEq hxS)
   have hnot :
       ¬ Deficient targets (S.erase x) :=
     hmin.2 (S.erase x) hproper
