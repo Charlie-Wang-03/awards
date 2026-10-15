@@ -228,3 +228,51 @@ payment of all other terminal debt, these actual retained-edge
 covered-loss carriers and cross-coordinate loss duplicate debt from
 TRUE holes outside the translated loss union plus genuinely unreserved
 dyadic surplus. No Lean patch has eliminated that obligation.
+
+## Continuation — actual-colour frontier successfully certified in Lean
+
+Subsequent focused CI outcomes supersede the in-progress status of the
+preceding section:
+
+- `ResidualTerminalTwinActualEdgeCarrierFrontier.lean`: focused
+  GitHub Actions **38733253482 SUCCESS**. The ORIGINAL terminal
+  six-source payment is **logically equivalent** to an existential
+  retained-active choice whose covered-loss payment term is the EXACT
+  Boolean union indexed only by ACTUAL retained source--blocker edges
+  with colour equal to the selected flip coordinate. The old loss
+  completion mass is handled by the already proven true-hole and
+  duplicate-debt ledger, without double-counting hole credits.
+- `PlanarLowerBranchActualEdgeCarrierFrontier.lean`: focused
+  GitHub Actions **38733316709 SUCCESS**. Under the ORIGINAL AngleCap
+  and normalized lower-branch assumptions, the actual-edge payment
+  condition is sufficient to prove the lower-branch dyadic bound.
+  The terminal payment condition is NOT proved by this theorem.
+- `AggregateSplitHardStopResolution.lean`: repaired the malformed
+  complement operation and an unnormalized power bound; focused
+  GitHub Actions **38733992552 SUCCESS**. This is an arithmetic
+  regression theorem, not a geometric proof of a universal split.
+
+The WIP main source has now been changed to invoke
+`planar_lower_branch_capacity_of_actual_retainedEdge_payment` and
+keeps EXACTLY ONE executable `sorry`. The sorry-free independent
+`VerifiedOverlapRewire.lean` umbrella imports the verified actual-edge
+frontier. Their latest focused CI runs **38734056676** and
+**38734097309** were still in progress when this paragraph was added;
+successful antecedent theorem checks must not be conflated with
+unverified root re-compilation.
+
+An optional stronger numerical certificate
+`ResidualTerminalActualEdgeDyadicSufficient.lean` bounds each
+actual-edge blocker intersection by the minimum of its two endpoint
+projected dyadic capacities. Its hypothesis replaces the cardinality
+of the exact carrier UNION with a SUM of local endpoint minima.
+The resulting hypothesis is STRICTLY SUFFICIENT, **not equivalent**,
+because different source--blocker edges may carry intersecting
+Boolean word sets. Focused CI **38734311244** was pending.
+
+**Open mathematical obstruction remains unchanged in truth value:**
+the genuine outside-translation Boolean holes and genuinely unreserved
+dyadic surplus must globally pay the remaining soft, net hard, twin and
+mixed-rigid obligations, PLUS the exact actual-edge covered-loss UNION
+and cross-coordinate translated-loss duplicate debt. No global
+non-reusing payment or disproving counterexample is established.
