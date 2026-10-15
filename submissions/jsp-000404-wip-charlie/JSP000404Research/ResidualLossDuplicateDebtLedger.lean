@@ -116,6 +116,8 @@ theorem positive_loss_duplicateDebt_has_slice_collision
       (((Finset.univ : Finset (Fin n)) : Set (Fin n))).PairwiseDisjoint
         (fun c => translatedLossSliceWords C exponent choice c) := by
     intro c hc d hd hcd
+    change Disjoint (translatedLossSliceWords C exponent choice c)
+      (translatedLossSliceWords C exponent choice d)
     rw [Finset.disjoint_left]
     intro word hcw hdw
     exact hnone ⟨c, d, hcd, word, hcw, hdw⟩
@@ -139,11 +141,11 @@ theorem positive_loss_duplicateDebt_has_retained_edge
     ∃ v ∈ projectedLossVertices C exponent,
       ∃ w ∈ projectedLossVertices C exponent,
         v ≠ w ∧
-          ((∃ hvw : v < w,
+          ((∃ _hvw : v < w,
               ∃ hret : (C.color v w).val < n,
                 retainedColor C v w hret = choice v ∨
                 retainedColor C v w hret = choice w) ∨
-           (∃ hwv : w < v,
+           (∃ _hwv : w < v,
               ∃ hret : (C.color w v).val < n,
                 retainedColor C w v hret = choice v ∨
                 retainedColor C w v hret = choice w)) := by
