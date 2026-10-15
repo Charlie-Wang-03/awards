@@ -62,7 +62,8 @@ theorem translatedLossDuplicateDebt_le_actualEdge_dyadic_pairBudget
   have hjn : j < n := lt_trans hji hin
   have hcd : (⟨i, hin⟩ : Fin n) ≠ ⟨j, hjn⟩ := by
     intro h
-    have hv := congrArg Fin.val h
+    have hv : i = j := by
+      simpa only [Fin.val_mk] using congrArg Fin.val h
     omega
   have hlocal :=
     crossTranslatedLossSlice_inter_card_le_sum_min_dyadic
