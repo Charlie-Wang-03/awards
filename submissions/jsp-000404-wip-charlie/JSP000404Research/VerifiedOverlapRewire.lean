@@ -131,6 +131,7 @@ import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
 import JSP000404Research.ResidualLossProfileExactUnionLedger
+import JSP000404Research.ResidualLossCrossSliceCarrier
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -439,4 +440,25 @@ all the way back to the planar capacity proof with no extra assumptions.
 
 The globally non-reusing outside-true-hole / unreserved-surplus payment
 remains OPEN and is retained as exactly one admitted WIP sorry.
+-/
+
+/-!
+## Exact cross-coordinate duplicate carriers (2026-10-15)
+
+The independently verified `ResidualLossCrossSliceCarrier` module
+establishes pairwise disjointness of the actual (source, blocker) carrier
+intersections WITHIN each fixed ordered coordinate pair c != d, and
+thus an exact equality
+
+  |translatedLossSliceWords(c) ∩ translatedLossSliceWords(d)|
+    = Σ_(p ∈ crossLossConflictPairs(c,d)) |crossLossPairWords(c,d,p)|.
+
+Every contributing pair has a genuine retained source--blocker edge whose
+actual colour is c or d. No global independence among *different*
+coordinate pairs is asserted. This does not pay the terminal six-source
+duplicate-debt budget; it exposes verifiable finite edge-local inputs
+for a future non-reusing payment argument.
+
+Focused CI 38740700053: SUCCESS; no sorryAx in the four cited
+cross-slice theorems. The WIP root with its sole sorry stays separate.
 -/
