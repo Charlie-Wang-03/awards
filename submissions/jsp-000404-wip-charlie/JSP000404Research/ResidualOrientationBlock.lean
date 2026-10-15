@@ -112,7 +112,7 @@ theorem fixedCompletionWords_card
     Fintype.card_congr
       (fixedCompletionEquivFree bit specified)
   rw [card_freeCoordinates] at hcard
-  simpa using hcard.symm
+  simpa using hcard
 
 namespace OrderedEdgeColoring
 
