@@ -90,8 +90,8 @@ theorem projectiveBandPartition_active_eq_occupied
     {V : Type*} [LinearOrder V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
@@ -162,8 +162,8 @@ theorem projectiveBandPartition_active_card
     {V : Type*} [LinearOrder V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (n : ℕ)
