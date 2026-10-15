@@ -95,15 +95,25 @@ or unreserved surplus is conjured by this rewrite.
 
 ## 5. Planar lower branch bridge and finer local nonreuse
 
-`PlanarLowerBranchEarliestActualEdgeFrontier.lean` has
-been submitted as a conditional consequence of the exact
-terminal iff. Its own focused CI must be checked.
-Likewise `ResidualLossEarliestActualEdgeNonreuse.lean`
-formulates disjointness of earliest-event carriers across
-distinct predecessor coordinates for FIXED later c.
-It is not a cross-later-i global nonreuse result.
-Kernel statuses of these two were not final at this document
-checkpoint; do not infer success from the above results.
+`PlanarLowerBranchEarliestActualEdgeFrontier.lean`
+is now CERTIFIED: `planar_lower_branch_capacity_of_earliest_actualEdge_payment`
+has focused CI **38762579169 SUCCESS**, 3,425 jobs, and only axioms
+`[propext, Classical.choice, Quot.sound]`. This propagates the
+exact earliest-edge PAYMENT HYPOTHESIS to the final planar
+lower-branch capacity conclusion; it does not establish the hypothesis.
+
+`ResidualLossEarliestActualEdgeNonreuse.lean` is also CERTIFIED:
+`lossEarliestActualEdgeCarrier_disjoint_of_distinct_prior`
+has focused CI **38762641380 SUCCESS**, 3,313 jobs, no `sorryAx`.
+It proves disjointness of earliest-event genuine-edge carriers
+across distinct predecessor coordinates for each FIXED later c.
+It is NOT a cross-later-i or cross-debt global payment injection.
+
+The further file `ResidualLossCrossSliceCoordinateRigidity.lean`
+asserts uniquely determined flip-coordinate labels for each actual
+source/blocker pair and no reverse-high-coordinate reuse of
+an unordered edge. Its own independent focused CI **38763344562**
+requires confirmation; no success is asserted here.
 
 ## 6. Legacy Lean repairs
 
