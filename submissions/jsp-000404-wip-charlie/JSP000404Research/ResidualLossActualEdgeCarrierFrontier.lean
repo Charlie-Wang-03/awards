@@ -192,6 +192,70 @@ theorem chosenLossActualEdgeBlockerTriples_one_side
       exact hleft ⟨w, hwv, hw⟩
     exact lt_of_le_of_ne (le_of_not_gt hnleft) hne
 
+/-- The side of an ACTUAL chosen-colour blocker is not merely
+consistent across a source: it is DETERMINED by that source's canonical
+retained bit at its chosen coordinate. The proof uses the true
+ordered-edge path axiom, not proper colouring of stars. -/
+theorem chosenLossActualEdgeBlockerTriples_orientation
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    {v w : V}
+    (h : ((v, w), choice v) ∈
+      chosenLossActualEdgeBlockerTriples C exponent choice) :
+    (retainedBit C v (choice v) = true ∧ w < v) ∨
+    (retainedBit C v (choice v) = false ∧ v < w) := by
+  classical
+  rcases (Finset.mem_filter.mp h).2 with
+    ⟨hvw, hret, hc⟩ | ⟨hwv, hret, hc⟩
+  · right
+    have hcol : C.color v w = (choice v).castSucc := by
+      apply Fin.ext
+      simpa [retainedColor] using (congrArg Fin.val hc)
+    constructor
+    · change bit C v (choice v).castSucc = false
+      rw [← hcol]
+      exact edgeColor_bit_lower_eq_false C hvw
+    · exact hvw
+  · left
+    have hcol : C.color w v = (choice v).castSucc := by
+      apply Fin.ext
+      simpa [retainedColor] using (congrArg Fin.val hc)
+    constructor
+    · change bit C v (choice v).castSucc = true
+      rw [← hcol]
+      exact edgeColor_bit_upper_eq_true C hwv
+    · exact hwv
+
+/-- Bit-determined source orientation is a constructive refinement of
+the one-side existential disjunction: true bits force incoming blockers,
+while false bits force outgoing blockers. -/
+theorem chosenLossActualEdgeBlockerTriples_side_of_bit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (v : V) :
+    (retainedBit C v (choice v) = true →
+      ∀ w, ((v, w), choice v) ∈
+        chosenLossActualEdgeBlockerTriples C exponent choice → w < v) ∧
+    (retainedBit C v (choice v) = false →
+      ∀ w, ((v, w), choice v) ∈
+        chosenLossActualEdgeBlockerTriples C exponent choice → v < w) := by
+  constructor
+  · intro htrue w hw
+    rcases chosenLossActualEdgeBlockerTriples_orientation
+      C exponent choice hw with ⟨_, hwv⟩ | ⟨hfalse, _⟩
+    · exact hwv
+    · simp [htrue] at hfalse
+  · intro hfalse w hw
+    rcases chosenLossActualEdgeBlockerTriples_orientation
+      C exponent choice hw with ⟨htrue, _⟩ | ⟨_, hvw⟩
+    · simp [hfalse] at htrue
+    · exact hvw
+
+#print axioms chosenLossActualEdgeBlockerTriples_orientation
+#print axioms chosenLossActualEdgeBlockerTriples_side_of_bit
+
 #print axioms chosenLossActualEdgeBlockerTriples_no_straddle
 #print axioms chosenLossActualEdgeBlockerTriples_one_side
 
