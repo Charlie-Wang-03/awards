@@ -33,16 +33,17 @@ theorem translated_loss_word_true_of_outgoing
     {word : Fin n → Bool}
     (hword : word ∈ translatedCompletionWords C v c) :
     word c = true := by
-  have hcActive :=
-    outgoingRetained_subset_retainedActive C v hcOut
+  have hcActive : c ∈ retainedActive C v := by
+    rw [retainedActive_eq_incoming_union_outgoing C v]
+    exact Finset.mem_union_right _ hcOut
   have horig :
       flipBoolWordAt word c ∈ retainedCompletionWords C v :=
     (mem_translatedCompletionWords C v c word).1 hword
   have hcomp :=
     (mem_retainedCompletionWords C v
       (flipBoolWordAt word c)).1 horig
-  have hfalse :=
-    retainedBit_false_of_outgoingRetained C hcOut
+  have hfalse : retainedBit C v c = false := by
+    simpa [retainedBit] using (bit_false_of_outgoingRetained C hcOut)
   have hat := hcomp c hcActive
   rw [flipBoolWordAt_at, hfalse] at hat
   cases h : word c <;> simp [h] at hat ⊢
@@ -55,8 +56,9 @@ theorem translated_loss_word_false_of_incoming
     {word : Fin n → Bool}
     (hword : word ∈ translatedCompletionWords C v c) :
     word c = false := by
-  have hcActive :=
-    incomingRetained_subset_retainedActive C v hcIn
+  have hcActive : c ∈ retainedActive C v := by
+    rw [retainedActive_eq_incoming_union_outgoing C v]
+    exact Finset.mem_union_left _ hcIn
   have horig :
       flipBoolWordAt word c ∈ retainedCompletionWords C v :=
     (mem_translatedCompletionWords C v c word).1 hword
