@@ -1,5 +1,4 @@
 import JSP000404Research.BinaryGainSplit
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
