@@ -136,10 +136,11 @@ theorem unitDefectDuplicate_symm
     (h : UnitDefectDuplicate C exponent u v) :
     UnitDefectDuplicate C exponent v u := by
   refine ⟨sameRetained_symm h.1, ?_, h.2.2.2, h.2.2.1⟩
-  unfold NoCommonInactive at h ⊢
+  have hno : NoCommonInactive C u v := h.2.1
+  unfold NoCommonInactive at hno ⊢
   intro hex
   obtain ⟨c, hcv, hcu⟩ := hex
-  exact h.2.1 ⟨c, hcu, hcv⟩
+  exact hno ⟨c, hcu, hcv⟩
 
 #print axioms duplicate_exponent_le_projected_free
 #print axioms duplicate_completion_oneLayer_dichotomy
