@@ -67,26 +67,6 @@ theorem retainedActive_eq_incoming_union_outgoing
   ext c
   simp [retainedActive, incomingRetained, outgoingRetained]
 
-/-- Incoming colours are part of the retained active palette. -/
-theorem incomingRetained_subset_retainedActive
-    {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V (k + 1)) (v : V)
-    {c : Fin k}
-    (hc : c ∈ incomingRetained C v) :
-    c ∈ retainedActive C v := by
-  rw [retainedActive_eq_incoming_union_outgoing C v]
-  exact Finset.mem_union_left _ hc
-
-/-- Outgoing colours are part of the retained active palette. -/
-theorem outgoingRetained_subset_retainedActive
-    {V : Type*} [LinearOrder V] {k : ℕ}
-    (C : OrderedEdgeColoring V (k + 1)) (v : V)
-    {c : Fin k}
-    (hc : c ∈ outgoingRetained C v) :
-    c ∈ retainedActive C v := by
-  rw [retainedActive_eq_incoming_union_outgoing C v]
-  exact Finset.mem_union_right _ hc
-
 /-- Consequently the retained active count is the sum of the two directed
 incidence counts. -/
 theorem card_retainedActive_eq_add
@@ -155,8 +135,6 @@ theorem common_forward_colour_absorbed
 #print axioms common_forward_colour_not_forbidden
 #print axioms common_forward_colour_compatible
 #print axioms common_forward_colour_absorbed
-#print axioms incomingRetained_subset_retainedActive
-#print axioms outgoingRetained_subset_retainedActive
 
 end OrderedEdgeColoring
 end JSP000404Research
