@@ -63,7 +63,6 @@ theorem balancedHardStop_left_card
 theorem balancedHardStop_covers_all_two_subsets :
     ∀ A : Finset (Fin 5), A.card = 2 →
       ∃! r : Fin 10, balancedHardStopLeft r = A := by
-  classical
   intro A hA
   obtain ⟨a, b, hab, hpair⟩ := Finset.card_eq_two.mp hA
   subst A
