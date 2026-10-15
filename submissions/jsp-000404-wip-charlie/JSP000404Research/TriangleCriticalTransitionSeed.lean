@@ -127,7 +127,6 @@ theorem abs_normalizedEdgeTheta_sub_eq_scaled_abs_theta
         Real.pi := by
     ring
   rw [hdiv, abs_div, abs_of_pos hpi]
-  ring
 
 /-- Ordinary parent-arc transition seed for a triangle.
 
@@ -137,8 +136,8 @@ parent arc width S. -/
 theorem triangle_has_critical_transition_seed_in_ordinary_arc
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t L S : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     {i j k : V}
