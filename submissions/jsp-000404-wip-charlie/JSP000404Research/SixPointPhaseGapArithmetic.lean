@@ -62,7 +62,7 @@ theorem exists_gap_ge_pi_div_fifteen_of_sum_pi
   push_neg at hnone
   have hall : ∀ g ∈ gaps, g < Real.pi / 15 := by
     intro g hg
-    exact lt_of_not_ge (hnone g hg)
+    exact hnone g hg
   have hlt :=
     list_sum_lt_length_mul_of_forall_lt
       gaps (Real.pi / 15) hne hall
@@ -75,7 +75,8 @@ theorem exists_gap_ge_pi_div_fifteen_of_sum_pi
     mul_le_mul_of_nonneg_right hlenR hpi15.le
   have hright : 15 * (Real.pi / 15) = Real.pi := by
     field_simp
-  rw [hsum, hright] at hlt hmul
+  rw [hsum, hright] at hlt
+  rw [hright] at hmul
   linarith
 
 /-- Projective-cycle specialization. -/
@@ -90,7 +91,9 @@ theorem exists_projectiveGap_ge_pi_div_fifteen
     have hlen := projectiveGaps_length angles
     rw [h] at hlen
     simp at hlen
-    exact hne (List.length_eq_zero.mp hlen)
+    cases angles with
+    | nil => exact hne rfl
+    | cons a as => simp at hlen
   have hgapsCard :
       (projectiveGaps angles).length ≤ 15 := by
     rw [projectiveGaps_length]

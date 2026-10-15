@@ -80,7 +80,8 @@ theorem strictlyExposedAt_of_sqDistanceFrom_max
     have hj :
         p j - p s = v := by
       rfl
-    rw [sqDistanceFrom, hw, hj] at hfar
+    unfold sqDistanceFrom at hfar
+    rw [hw, hj] at hfar
     have hexpand := norm_add_sq v e
     have hve :
         2 * inner ℝ v e + ‖e‖ ^ 2 ≤ 0 := by
@@ -122,7 +123,7 @@ theorem exists_strictlyExposed_ne_fixed
       (fun x => sqDistanceFrom (p := p) s x)
       hSne
   have hjs : j ≠ s :=
-    (Finset.mem_erase.mp (by simpa [S] using hjS)).1
+    (Finset.mem_erase.mp (show j ∈ Finset.univ.erase s from hjS)).1
   have hmax :
       ∀ k : V, k ≠ s →
         sqDistanceFrom (p := p) s k ≤

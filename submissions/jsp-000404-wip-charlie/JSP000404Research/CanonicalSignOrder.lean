@@ -34,7 +34,7 @@ theorem planeHalfPositive_or_neg_of_ne_zero
       fin_cases k
       · simpa using hx0
       · simpa using hy
-    rcases lt_or_gt_of_ne hx0.symm with hxneg | hxpos
+    rcases lt_or_gt_of_ne hx0 with hxneg | hxpos
     · right
       right
       constructor
