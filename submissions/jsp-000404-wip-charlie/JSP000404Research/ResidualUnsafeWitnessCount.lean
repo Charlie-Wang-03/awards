@@ -84,7 +84,7 @@ theorem incomingRetained_card_le_left
     have heq :
         c.1.castSucc = d.1.castSucc :=
       hcCol.symm.trans hdCol
-    exact congrArg Fin.val heq
+    exact congrArg (fun z : Fin (n + 1) => z.val) heq
   have hcard :=
     Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
@@ -127,7 +127,7 @@ theorem outgoingRetained_card_le_right
     have heq :
         c.1.castSucc = d.1.castSucc :=
       hcCol.symm.trans hdCol
-    exact congrArg Fin.val heq
+    exact congrArg (fun z : Fin (n + 1) => z.val) heq
   have hcard :=
     Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
