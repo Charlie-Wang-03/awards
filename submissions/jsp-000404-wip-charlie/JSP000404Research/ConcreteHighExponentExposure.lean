@@ -54,8 +54,8 @@ theorem concrete_centre_large_exponent_strictlyExposed
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -144,8 +144,7 @@ theorem concrete_centre_large_exponent_strictlyExposed
       have hleftSign :
           raySignAt hp i left = sigma := by
         rcases List.mem_cons.mp hleftMem with hlf | hlt
-        · subst left
-          rfl
+        · simpa [sigma] using congrArg (raySignAt hp i) hlf
         · exact raySign_eq_of_block_map
             hp sigma before hbeforeMapLen left hlt
       have hrightSign :
