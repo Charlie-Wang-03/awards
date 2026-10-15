@@ -66,7 +66,7 @@ noncomputable def lossEarliestActualEdgeCarrier
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) (choice : V → Fin n)
     (c d : Fin n) (p : V × V) : Finset (Fin n → Bool) :=
-  crossLossPairWords C c d p \\
+  crossLossPairWords C c d p \
     lossPrefixUnion (lossSliceAtNat C exponent choice) d.val
 
 /-- Earliest-prior collision words equal a union indexed by the
