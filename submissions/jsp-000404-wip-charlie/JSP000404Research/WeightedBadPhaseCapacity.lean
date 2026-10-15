@@ -142,12 +142,15 @@ theorem badPhaseWeight_le_one_of_bad_zero_unique
       badPhaseWeight n exponent active = S.card := by
     unfold badPhaseWeight
     rw [← Finset.sum_filter]
-    apply Finset.sum_congr rfl
-    intro v hv
-    have hvbad :
-        n - exponent v < active v := by
-      simpa [S] using hv
-    simp [hzero v hvbad]
+    change (∑ v ∈ S, 2 ^ exponent v) = S.card
+    calc
+      (∑ v ∈ S, 2 ^ exponent v) = ∑ _v ∈ S, (1 : ℕ) := by
+        apply Finset.sum_congr rfl
+        intro v hv
+        have hvbad : n - exponent v < active v := by
+          simpa [S] using hv
+        simp [hzero v hvbad]
+      _ = S.card := by simp
   rw [hweight]
   exact hcard
 

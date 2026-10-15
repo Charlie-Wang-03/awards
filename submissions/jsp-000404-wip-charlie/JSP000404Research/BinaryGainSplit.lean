@@ -60,7 +60,7 @@ theorem doubled_sum_le_post_sum_of_pointwise_gain
 
 /-- Main binary split induction step. -/
 theorem binary_gain_split_capacity_step
-    {V : Type*}
+    {V : Type*} [DecidableEq V]
     (S A B : Finset V)
     (old postA postB : V → ℕ)
     (n : ℕ)
@@ -94,7 +94,7 @@ theorem binary_gain_split_capacity_step
 
 /-- Fintype specialization for a full parent split. -/
 theorem binary_gain_split_fintype_capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (A B : Finset V)
     (old postA postB : V → ℕ)
     (n : ℕ)

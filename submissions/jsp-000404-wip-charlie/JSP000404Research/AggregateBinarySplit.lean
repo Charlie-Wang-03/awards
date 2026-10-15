@@ -1,3 +1,4 @@
+import JSP000404Research.BinaryGainSplit
 import Mathlib.Tactic
 
 /-!
@@ -29,7 +30,7 @@ open scoped BigOperators
 
 /-- Main aggregate binary split step. -/
 theorem aggregate_binary_split_capacity_step
-    {V : Type*}
+    {V : Type*} [DecidableEq V]
     (S A B : Finset V)
     (old postA postB : V → ℕ)
     (n : ℕ)
@@ -62,7 +63,7 @@ theorem aggregate_binary_split_capacity_step
 
 /-- Fintype specialization for a full partition. -/
 theorem aggregate_binary_split_fintype_capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (A B : Finset V)
     (old postA postB : V → ℕ)
     (n : ℕ)
