@@ -2,7 +2,7 @@ import JSP000404Research.ExposedSupportIntervalGeneral
 import JSP000404Research.SupportIntervalRestriction
 import JSP000404Research.FourPointConvexSeparation
 import JSP000404Research.FourCentreTransitionCases
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Matrix.Basic
 import Mathlib.Tactic
 
 /-!
