@@ -59,7 +59,7 @@ theorem top_plus_four_third_layer_exact_capacity
       =
     2 ^ n := by
   have h := topLeafBalanced4_kraft_eq n hn
-  simpa [topLeafBalanced4_depths] using h
+  simpa [topLeafBalanced4_depths, add_assoc] using h
 
 /-- This exact Kraft extremizer violates the comb-style third-tail count:
 there are five entries strictly above n-4. -/
@@ -67,8 +67,9 @@ theorem top_plus_four_third_layer_tail_not_comb
     (n : ℕ) (hn : 4 ≤ n) :
     (([n - 1, n - 3, n - 3, n - 3, n - 3].filter
       (fun k => n - 4 < k)).length) = 5 := by
-  simp
-  omega
+  have h1 : n - 4 < n - 1 := by omega
+  have h3 : n - 4 < n - 3 := by omega
+  simp [h1, h3]
 
 #print axioms topLeafBalanced4_kraft_eq
 #print axioms top_plus_four_third_layer_exact_capacity
