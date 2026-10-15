@@ -92,8 +92,10 @@ theorem translatedLossCovered_eq_chosenTriple_union
         hvLoss hcActive hvneq hsource hdest
     apply Finset.mem_biUnion.mpr
     refine ⟨((v, w), c), ?_, ?_⟩
-    · simp [chosenLossCoveredBlockerTriples,
-        hvLoss, hvneq, hvc, hcActive, hcBlocked, hop]
+    · simp only [chosenLossCoveredBlockerTriples,
+        Finset.mem_filter, Finset.mem_univ, true_and,
+        Prod.fst, Prod.snd]
+      exact ⟨hvLoss, hvneq, hvc, hcActive, hcBlocked, hop⟩
     · exact Finset.mem_inter.mpr ⟨hvWord, hwBlock⟩
   · intro word hword
     obtain ⟨((v, w), c), hTriple, hInter⟩ :=
