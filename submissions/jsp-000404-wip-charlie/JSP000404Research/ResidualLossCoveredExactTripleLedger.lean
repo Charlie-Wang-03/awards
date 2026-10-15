@@ -98,7 +98,7 @@ theorem translatedLossCovered_eq_chosenTriple_union
       exact ⟨hvLoss, hvneq, hvc, hcActive, hcBlocked, hop⟩
     · exact Finset.mem_inter.mpr ⟨hvWord, hwBlock⟩
   · intro word hword
-    obtain ⟨((v, w), c), hTriple, hInter⟩ :=
+    obtain ⟨⟨⟨v, w⟩, c⟩, hTriple, hInter⟩ :=
       Finset.mem_biUnion.mp hword
     have hdata :
         v ∈ projectedLossVertices C exponent ∧
