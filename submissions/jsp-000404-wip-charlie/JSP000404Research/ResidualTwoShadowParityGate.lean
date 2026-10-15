@@ -58,9 +58,15 @@ theorem distinct_targets_of_shared_two_shadow_hamming_two_or_four
     intro i hi hj
     exact (Finset.mem_sdiff.mp hi).2 (Finset.mem_sdiff.mp hj).1
   have hcountA : A.card = (A \ B).card + (A ∩ B).card := by
-    rw [hpartA, Finset.card_union_of_disjoint hdisA]
+    calc
+      A.card = ((A \ B) ∪ (A ∩ B)).card := congrArg Finset.card hpartA
+      _ = (A \ B).card + (A ∩ B).card :=
+        Finset.card_union_of_disjoint hdisA
   have hcountB : B.card = (B \ A).card + (A ∩ B).card := by
-    rw [hpartB, Finset.card_union_of_disjoint hdisB]
+    calc
+      B.card = ((B \ A) ∪ (A ∩ B)).card := congrArg Finset.card hpartB
+      _ = (B \ A).card + (A ∩ B).card :=
+        Finset.card_union_of_disjoint hdisB
   have hcountT : T.card = (A \ B).card + (B \ A).card := by
     rw [hT, Finset.card_union_of_disjoint hdisT]
   have hpositive : 0 < T.card := by
