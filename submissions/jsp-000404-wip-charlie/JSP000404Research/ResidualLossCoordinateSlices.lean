@@ -66,8 +66,7 @@ theorem translatedLossSlice_pairwiseDisjoint
       ∀ v, (active C v).card ≤ n - exponent v + 1)
     (choice : V → Fin n)
     (c : Fin n) :
-    ((lossCoordinateSlice C exponent choice c : Finset V) : Set V).
-      PairwiseDisjoint
+    ((lossCoordinateSlice C exponent choice c : Finset V) : Set V).PairwiseDisjoint
         (fun v => translatedCompletionWords C v c) := by
   intro v hv w hw hvw
   have hvData :=
@@ -111,6 +110,7 @@ theorem projectedLoss_completion_card_eq_half_target
       exponent v = projectedFree C v + 1 :=
     (mem_projectedLossVertices C exponent v).1 hvLoss
   rw [retainedCompletionWords_card, hlossEq, pow_succ]
+  simp only [projectedFree]
   omega
 
 theorem two_mul_translatedLossSliceWords_card
