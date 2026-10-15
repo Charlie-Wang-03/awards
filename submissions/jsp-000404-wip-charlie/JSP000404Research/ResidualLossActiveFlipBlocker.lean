@@ -38,7 +38,7 @@ theorem projectedLoss_retainedActive_nonempty
     (mem_projectedLossVertices C exponent v).1 hvLoss
   have hcard :
       (retainedActive C v).card ≤ n := by
-    exact Finset.card_le_univ (retainedActive C v)
+    simpa using Finset.card_le_univ (retainedActive C v)
   have hpos : 0 < (retainedActive C v).card := by
     dsimp [projectedFree] at hdata
     have hvexp := hexp v
