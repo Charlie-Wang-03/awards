@@ -162,6 +162,24 @@ theorem critical_irredundant_on_card_le_slots
   have hcard := Fintype.card_le_of_injective f hf
   simpa [f] using hcard
 
+/-- Concrete consistency check: the singleton interval [0,1]
+is an irredundant cover of the NONEMPTY phase-domain [0,1].
+This would be impossible with an all-real-line cover obligation. -/
+theorem unit_interval_has_irredundant_restricted_cover :
+    IrredundantCoverOn
+      (fun x : ℝ => 0 ≤ x ∧ x ≤ 1)
+      (fun _ : Fin 1 => fun x : ℝ => 0 ≤ x ∧ x ≤ 1)
+      (Finset.univ : Finset (Fin 1)) := by
+  classical
+  constructor
+  · intro x hx
+    exact ⟨0, Finset.mem_univ _, hx⟩
+  · intro i _ hErase
+    obtain ⟨j, hj, _⟩ := hErase (0 : ℝ) (by norm_num)
+    exact (Finset.mem_erase.mp hj).1 (Subsingleton.elim j i)
+
+#print axioms unit_interval_has_irredundant_restricted_cover
+
 #print axioms exists_irredundant_subcover_on
 #print axioms exists_private_phase_of_irredundant_on
 #print axioms irredundant_on_intervals_not_nested
