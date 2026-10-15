@@ -64,11 +64,9 @@ theorem restricted_capacity_of_overweight_deletion
         have hproper : S.erase r ⊂ S := by
           constructor
           · exact Finset.erase_subset r S
-          · intro heq
+          · intro hreverse
             have hrErase : r ∉ S.erase r := by simp
-            exact hrErase (by
-              rw [heq]
-              exact hrS)
+            exact hrErase (hreverse hrS)
         have hchild :
             restrictedDyadicWeight exponent
                 (S.erase r) (S.erase r) ≤ bound :=
