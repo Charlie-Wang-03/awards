@@ -32,8 +32,8 @@ theorem oneSupportHigh_family_card_mul_le_two_n
     [LinearOrder V] [Fintype V] [Fintype I]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -89,8 +89,8 @@ theorem oneSupportHigh_family_card_le_two
     [LinearOrder V] [Fintype V] [Fintype I]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -110,7 +110,12 @@ theorem oneSupportHigh_family_card_le_two
       hp hcap (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hlam
       centre hcentre C hlarge hsupport
-  nlinarith
+  by_contra hcard
+  have hthree : 3 ≤ Fintype.card I := by omega
+  have hmul :
+      3 * (n - 1) ≤ Fintype.card I * (n - 1) :=
+    Nat.mul_le_mul_right (n - 1) hthree
+  omega
 
 /-- At n=3 the same packing gives the weaker sharp bound of three. -/
 theorem oneSupportHigh_family_card_le_three_at_three
@@ -118,8 +123,8 @@ theorem oneSupportHigh_family_card_le_three_at_three
     [LinearOrder V] [Fintype V] [Fintype I]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (3 : ℝ) + delta)
