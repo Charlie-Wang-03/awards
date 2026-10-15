@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossCrossSliceCarrier
+import JSP000404Research.ResidualLossDuplicateDebtLedger
 import Mathlib.Tactic
 
 /-!
@@ -74,6 +75,84 @@ theorem lossSumCard_le_prefixUnion_add_pairwise
         lossPrefixUnion_inter_card_le_pairwise A k
       simp only [Finset.sum_range_succ, hunion]
       omega
+
+/-- Translate the actual chosen-coordinate loss slice to the natural
+index `i`; outside Fin n it is explicitly empty. -/
+noncomputable def lossSliceAtNat
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (i : ℕ) : Finset (Fin n → Bool) :=
+  if hi : i < n then
+    translatedLossSliceWords C exponent choice ⟨i, hi⟩
+  else ∅
+
+/-- Indexing all loss slices by the natural prefix counts every
+original Fin n slice exactly once. -/
+theorem lossSliceAtNat_sum_card_eq_fin_sum
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (∑ i ∈ Finset.range n,
+      (lossSliceAtNat C exponent choice i).card) =
+      ∑ c : Fin n,
+        (translatedLossSliceWords C exponent choice c).card := by
+  classical
+  rw [Finset.sum_fin_eq_sum_range]
+  apply Finset.sum_congr rfl
+  intro i hi
+  have hin : i < n := Finset.mem_range.mp hi
+  simp [lossSliceAtNat, hin]
+
+/-- The union of natural-index slices agrees exactly with the
+already certified Boolean union in the projected-loss ledger. -/
+theorem lossSliceAtNat_prefix_union_eq_loss_union
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    lossPrefixUnion (lossSliceAtNat C exponent choice) n =
+      translatedLossAllCoordinateWords C exponent choice := by
+  classical
+  unfold lossPrefixUnion translatedLossAllCoordinateWords
+  ext word
+  constructor
+  · intro h
+    obtain ⟨i, hi, hword⟩ := Finset.mem_biUnion.mp h
+    have hin : i < n := Finset.mem_range.mp hi
+    apply Finset.mem_biUnion.mpr
+    refine ⟨(⟨i, hin⟩ : Fin n), Finset.mem_univ _, ?_⟩
+    simpa [lossSliceAtNat, hin] using hword
+  · intro h
+    obtain ⟨c, _hc, hword⟩ := Finset.mem_biUnion.mp h
+    apply Finset.mem_biUnion.mpr
+    refine ⟨c.val, Finset.mem_range.mpr c.isLt, ?_⟩
+    simpa [lossSliceAtNat, c.isLt] using hword
+
+/-- The real global duplicate debt is bounded by the sum of
+two-coordinate Boolean-slice intersections, each unordered coordinate
+pair counted exactly once. This is unconditional combinatorial
+bookkeeping, NOT the terminal global true-hole payment. -/
+theorem translatedLossDuplicateDebt_le_pairwise_slices
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    translatedLossDuplicateDebt C exponent choice ≤
+      ∑ i ∈ Finset.range n,
+        ∑ j ∈ Finset.range i,
+          (lossSliceAtNat C exponent choice i ∩
+            lossSliceAtNat C exponent choice j).card := by
+  classical
+  have hbound :=
+    lossSumCard_le_prefixUnion_add_pairwise
+      (lossSliceAtNat C exponent choice) n
+  rw [lossSliceAtNat_sum_card_eq_fin_sum,
+    lossSliceAtNat_prefix_union_eq_loss_union] at hbound
+  unfold translatedLossDuplicateDebt
+  omega
+
+#print axioms lossSliceAtNat_sum_card_eq_fin_sum
+#print axioms lossSliceAtNat_prefix_union_eq_loss_union
+#print axioms translatedLossDuplicateDebt_le_pairwise_slices
 
 #print axioms lossPrefixUnion_inter_card_le_pairwise
 #print axioms lossSumCard_le_prefixUnion_add_pairwise
