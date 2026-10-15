@@ -37,8 +37,8 @@ def TransitionQuotientOccurs (q : ℕ) :
 theorem raySignAt_eq_of_rayThetaAt_eq
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (i : V)
@@ -74,11 +74,13 @@ theorem transitionQuotientOccurs_of_split
       (qPre ++ r :: qPost) := by
   induction signPre generalizing a qPre with
   | nil =>
-      have hqnil : qPre = [] := by
-        apply List.length_eq_zero.mp
-        simpa using hlen.symm
-      subst qPre
-      simp [TransitionQuotientOccurs, boolLastFrom, hchange, hr]
+      cases qPre with
+      | nil =>
+          change (r = q ∧ a ≠ b) ∨
+            TransitionQuotientOccurs q b signPost qPost
+          exact Or.inl ⟨hr, by simpa [boolLastFrom] using hchange⟩
+      | cons q0 qtail =>
+          simp at hlen
   | cons c cs ih =>
       cases qPre with
       | nil =>
@@ -89,7 +91,6 @@ theorem transitionQuotientOccurs_of_split
           right
           apply ih c rs hlen
           · simpa [boolLastFrom] using hchange
-          · exact hr
 
 /-- A transition occurrence survives prepending a same-sign aligned step. -/
 theorem transitionQuotientOccurs_cons_same
@@ -134,7 +135,7 @@ theorem transitionQuotientOccurs_two_blocks_iff
                 intro hbad
                 rcases hbad with hchange | hrest
                 · exact hchange.2 rfl
-                · exact ih (!a) hrest
+                · exact ih a hrest
           exact False.elim (hsame htail)
       · intro heq
         left
