@@ -66,8 +66,9 @@ theorem translatedLossCovered_subset_real_blockerTriple_union
       C exponent hexp honeLoss choice hchoice hcovered
   apply Finset.mem_biUnion.mpr
   refine ⟨((v, w), c), ?_, ?_⟩
-  · simp [lossCoveredBlockerTriples,
-      hv, hvw, hcv, hcw, hop]
+  · simp only [lossCoveredBlockerTriples, Finset.mem_filter,
+      Finset.mem_univ, true_and, Prod.fst, Prod.snd]
+    exact ⟨hv, hvw, hcv, hcw, hop⟩
   · exact Finset.mem_inter.mpr ⟨hsource, hblock⟩
 
 /-- A precise finite *upper* bound for all covered-loss words in terms
