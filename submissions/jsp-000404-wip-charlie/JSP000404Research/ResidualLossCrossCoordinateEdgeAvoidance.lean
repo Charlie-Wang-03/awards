@@ -31,7 +31,7 @@ def LossFlipAvoidsRetainedEdges
   ∀ v w : V,
     v ∈ projectedLossVertices C exponent →
     w ∈ projectedLossVertices C exponent →
-    ∀ (hvw : v < w) (hret : (C.color v w).val < n),
+    ∀ (_hvw : v < w) (hret : (C.color v w).val < n),
       retainedColor C v w hret ≠ choice v ∧
       retainedColor C v w hret ≠ choice w
 
@@ -64,8 +64,8 @@ theorem translatedLossSliceWords_disjoint_of_edge_avoidance
   · have hblocked := havoid w v hwData.1 hvData.1 hwvlt hret
     rw [hwData.2, hvData.2] at hblocked
     rcases heq with heq | heq
-    · exact hblocked.1 heq
     · exact hblocked.2 heq
+    · exact hblocked.1 heq
 
 /-- Exact Boolean union mass, assuming the explicit retained-edge
 avoidance invariant. In particular, the sum of cross-slice intersections
