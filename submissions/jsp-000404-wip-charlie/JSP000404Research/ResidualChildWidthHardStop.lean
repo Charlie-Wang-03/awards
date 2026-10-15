@@ -46,7 +46,7 @@ noncomputable def childWidthHardStopValue : Fin 3 → Fin 3 → ℝ :=
     ![0, 0,    0]
   ]
 
-def childWidthHardStopData :
+noncomputable def childWidthHardStopData :
     DirectionData (Fin 3) (17/5 : ℝ) where
   value := childWidthHardStopValue
   nonnegative := by
