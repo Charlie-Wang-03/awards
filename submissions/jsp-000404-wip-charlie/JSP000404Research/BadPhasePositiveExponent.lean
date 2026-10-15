@@ -34,6 +34,7 @@ theorem floorExcess_one_le_of_two_le_coordinate
   have hsingle :
       q e - 1 ≤ ∑ i : I, (q i - 1) := by
     exact Finset.single_le_sum
+      (f := fun i : I => q i - 1)
       (fun _ _ => Nat.zero_le _)
       (Finset.mem_univ e)
   omega
@@ -79,6 +80,8 @@ theorem two_le_badPhaseWeight_of_exists_bad_positive
         (if n - exponent w < active w
          then 2 ^ exponent w else 0) := by
     exact Finset.single_le_sum
+      (f := fun w : V =>
+        if n - exponent w < active w then 2 ^ exponent w else 0)
       (fun _ _ => Nat.zero_le _)
       (Finset.mem_univ v)
   simp [hv] at hsingle
