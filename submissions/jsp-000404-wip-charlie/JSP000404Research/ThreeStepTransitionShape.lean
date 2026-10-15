@@ -36,7 +36,10 @@ theorem three_step_same_sign_of_ne_transition_value
     simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using h.symm
   have hpreLe : pre.length ≤ 2 := by omega
   interval_cases hpre : pre.length
-  · have hpreNil : pre = [] := List.length_eq_zero.mp hpre
+  · have hpreNil : pre = [] := by
+      cases pre with
+      | nil => rfl
+      | cons x xs => simp at hpre
     subst pre
     have hpostLen : post.length = 2 := by omega
     obtain ⟨u,v,hpost⟩ := List.length_eq_two.mp hpostLen
@@ -44,10 +47,22 @@ theorem three_step_same_sign_of_ne_transition_value
     simp at hq hs ⊢
     aesop
   · have hpreLen : pre.length = 1 := hpre
-    obtain ⟨u,hpreList⟩ := List.length_eq_one.mp hpreLen
+    obtain ⟨u,hpreList⟩ : ∃ u, pre = [u] := by
+      cases pre with
+      | nil => simp at hpreLen
+      | cons u xs =>
+          cases xs with
+          | nil => exact ⟨u, rfl⟩
+          | cons x ys => simp at hpreLen
     subst pre
     have hpostLen : post.length = 1 := by omega
-    obtain ⟨v,hpostList⟩ := List.length_eq_one.mp hpostLen
+    obtain ⟨v,hpostList⟩ : ∃ v, post = [v] := by
+      cases post with
+      | nil => simp at hpostLen
+      | cons v xs =>
+          cases xs with
+          | nil => exact ⟨v, rfl⟩
+          | cons x ys => simp at hpostLen
     subst post
     simp at hq hs ⊢
     aesop
@@ -55,7 +70,10 @@ theorem three_step_same_sign_of_ne_transition_value
     obtain ⟨u,v,hpreList⟩ := List.length_eq_two.mp hpreLen
     subst pre
     have hpostLen : post.length = 0 := by omega
-    have hpostNil : post = [] := List.length_eq_zero.mp hpostLen
+    have hpostNil : post = [] := by
+      cases post with
+      | nil => rfl
+      | cons x xs => simp at hpostLen
     subst post
     simp at hq hs ⊢
     aesop
