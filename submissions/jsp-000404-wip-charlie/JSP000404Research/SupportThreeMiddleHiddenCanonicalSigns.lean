@@ -87,8 +87,10 @@ theorem nonexposed_middle_hidden_canonical_sign_cases
       hp hcap ht htone hlam i C hsupport hnot
 
   have hFirstNe : H.qFirst ≠ 0 := by
+    have hpos := H.qFirst_pos
     omega
   have hLastNe : H.qLast ≠ 0 := by
+    have hpos := H.qLast_pos
     omega
   have hqLen :
       (quotientList t C.gaps).length = 5 :=
