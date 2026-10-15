@@ -39,7 +39,7 @@ a stronger geometric invariant), not a silent whole-child width reduction.
 namespace JSP000404Research
 namespace DirectionData
 
-def childWidthHardStopValue : Fin 3 → Fin 3 → ℝ :=
+noncomputable def childWidthHardStopValue : Fin 3 → Fin 3 → ℝ :=
   ![
     ![0, 14/5, 9/5],
     ![0, 0,    1],
@@ -51,28 +51,28 @@ def childWidthHardStopData :
   value := childWidthHardStopValue
   nonnegative := by
     intro i j hij
-    fin_cases i <;> fin_cases j <;>
-      norm_num [childWidthHardStopValue] at hij ⊢
+    fin_cases i <;> fin_cases j
+    all_goals norm_num [childWidthHardStopValue] at hij ⊢
   belowWidth := by
     intro i j hij
-    fin_cases i <;> fin_cases j <;>
-      norm_num [childWidthHardStopValue] at hij ⊢
+    fin_cases i <;> fin_cases j
+    all_goals norm_num [childWidthHardStopValue] at hij ⊢
   between := by
     intro i j k hij hjk
-    fin_cases i <;> fin_cases j <;> fin_cases k <;>
-      norm_num [childWidthHardStopValue] at hij hjk ⊢
+    fin_cases i <;> fin_cases j <;> fin_cases k
+    all_goals norm_num [childWidthHardStopValue] at hij hjk ⊢
   middleSeparated := by
     intro i j k hij hjk
-    fin_cases i <;> fin_cases j <;> fin_cases k <;>
-      norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    fin_cases i <;> fin_cases j <;> fin_cases k
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
   firstGap := by
     intro i j k hij hjk
-    fin_cases i <;> fin_cases j <;> fin_cases k <;>
-      norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    fin_cases i <;> fin_cases j <;> fin_cases k
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
   lastGap := by
     intro i j k hij hjk
-    fin_cases i <;> fin_cases j <;> fin_cases k <;>
-      norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
+    fin_cases i <;> fin_cases j <;> fin_cases k
+    all_goals norm_num [childWidthHardStopValue, abs_of_nonneg, abs_of_nonpos] at hij hjk ⊢
 
 theorem childWidthHardStop_zero_not_sink :
     ¬ HighSink childWidthHardStopData 3 (0 : Fin 3) := by
