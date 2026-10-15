@@ -67,8 +67,23 @@ theorem balancedHardStop_covers_all_two_subsets :
   obtain ⟨a, b, hab, hpair⟩ := Finset.card_eq_two.mp hA
   subst A
   letI : DecidableEq (Finset (Fin 5)) := inferInstance
-  fin_cases a <;> fin_cases b <;>
-    simp_all <;> native_decide
+  have hcount :
+      ((Finset.univ : Finset (Fin 10)).filter
+        (fun r => balancedHardStopLeft r = ({a,b} : Finset (Fin 5)))).card = 1 := by
+    fin_cases a <;> fin_cases b <;>
+      simp_all <;> native_decide
+  obtain ⟨r, hr⟩ := Finset.card_eq_one.mp hcount
+  have hrmem : r ∈ (Finset.univ : Finset (Fin 10)).filter
+      (fun k => balancedHardStopLeft k = ({a,b} : Finset (Fin 5))) := by
+    rw [hr]
+    simp
+  refine ⟨r, (Finset.mem_filter.mp hrmem).2, ?_⟩
+  intro k hk
+  have hkmem : k ∈ (Finset.univ : Finset (Fin 10)).filter
+      (fun x => balancedHardStopLeft x = ({a,b} : Finset (Fin 5))) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk⟩
+  rw [hr] at hkmem
+  simpa using hkmem
 
 /-- Every one of the ten balanced partitions has at least one zero-gain
 survivor. -/
