@@ -44,7 +44,7 @@ theorem outer_angle_ge_one_sub_delta_mul_lam_of_sharp
   have hcapB :
       EuclideanGeometry.angle (p s) (p b) (p a) ≤
         Real.pi - lam :=
-    hcap s b a hsb hab hsa.symm
+    hcap s b a hsb hsa hab.symm
   have hsum :
       EuclideanGeometry.angle (p a) (p s) (p b) +
         EuclideanGeometry.angle (p s) (p b) (p a) +
@@ -53,7 +53,7 @@ theorem outer_angle_ge_one_sub_delta_mul_lam_of_sharp
     simpa [add_assoc, add_left_comm, add_comm] using
       (EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p s) (p b)
-        (hp.ne hsa.symm))
+        (hp.ne hsa))
   have hcomm :
       EuclideanGeometry.angle (p b) (p a) (p s) =
         EuclideanGeometry.angle (p s) (p a) (p b) :=
