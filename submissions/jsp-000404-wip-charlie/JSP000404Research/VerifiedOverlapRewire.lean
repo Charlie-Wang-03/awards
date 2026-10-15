@@ -135,6 +135,9 @@ import JSP000404Research.ResidualLossCrossSliceCarrier
 import JSP000404Research.ResidualLossPairwiseOvercount
 import JSP000404Research.ResidualLossGlobalDuplicateDyadicBudget
 import JSP000404Research.ResidualLossEarliestActualEdgeGlobalLedger
+import JSP000404Research.ResidualLossEarliestEdgePaymentSeparation
+import JSP000404Research.ResidualLossEarliestEdgeFlipRefundObstruction
+import JSP000404Research.ResidualLossCrossSliceTwoCoveredAncestors
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -512,4 +515,25 @@ Certified focused Lean results:
 This DOES NOT establish that covered-loss blocker debt or any of the
 other five classes can be injected into disjoint true outside holes or
 unreserved surplus. The admitted global six-source payment is OPEN.
+-/
+
+/-!
+## Hole-refund exclusion from exact first-hit collision carriers (2026-10-16)
+
+Certified in focused Lean builds, without `sorryAx`:
+
+- `lossEarliestActualEdgeCarrier_disjoint_outside_trueHoles`
+  (CI 38767513304): every first-hit real-edge debt word belongs to
+  translated-loss U, so it cannot itself be an outside-U true hole.
+- `lossEarliestActualEdgeCarrier_chosenFlip_not_trueHole`
+  (CI 38768459632): undoing the loss coordinate flip returns to
+  a *covered* completion word, not to an eligible hole.
+- `lossEarliestActualEdgeCarrier_two_covered_ancestors`
+  (CI 38768731509): for distinct chosen coordinates c,d, both
+  single chosen-flip neighbours of an actual collision word are
+  covered, and they are distinct.
+
+These are obstructions to naive hole-refund constructions, NOT a
+global injection into outside true holes or genuinely unreserved
+surplus. The sole admitted WIP six-source `sorry` is untouched.
 -/

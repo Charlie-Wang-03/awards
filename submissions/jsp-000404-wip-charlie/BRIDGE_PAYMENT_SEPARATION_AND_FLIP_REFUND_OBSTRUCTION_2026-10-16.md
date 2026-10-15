@@ -75,12 +75,23 @@ multi-flip or global matching cannot produce an outside hole.
 
 ## 4. NEW two-covered-ancestor target (pending independent certificate)
 
-Module `ResidualLossCrossSliceTwoCoveredAncestors.lean` was
-submitted with a focused workflow. It asserts that a real
-cross-slice collision at distinct chosen flip coordinates c,d
-has two distinct COVERED neighbours `flip_c(x)` and
-`flip_d(x)`. **Do not treat it as Lean certified until its
-focused workflow succeeds and axioms are audited.**
+Module `ResidualLossCrossSliceTwoCoveredAncestors.lean` is
+CERTIFIED: focused CI **38768731509 SUCCESS**, 3,319 jobs.
+The theorem `lossEarliestActualEdgeCarrier_two_covered_ancestors`
+has axioms `[propext, Classical.choice, Quot.sound]`; no `sorryAx`.
+
+For any real source/blocker loss collision word x in two
+distinct selected slices c and d:
+
+```text
+flip_c(x) ∈ coveredCompletionWords(C),
+flip_d(x) ∈ coveredCompletionWords(C),
+flip_c(x) ≠ flip_d(x).
+```
+
+Thus both immediate chosen-coordinate flips return to two
+different COVERED original words, not to true holes. An alternative
+matching or multi-coordinate construction is not ruled out.
 
 ## 5. Independent legacy compilation repairs
 
