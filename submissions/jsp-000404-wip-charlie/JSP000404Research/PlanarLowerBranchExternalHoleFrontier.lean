@@ -18,6 +18,7 @@ namespace JSP000404Research
 namespace ProjectionOrdered
 
 open OrderedEdgeColoring
+open DirectionData
 
 theorem planar_lower_branch_capacity_of_external_loss_obstruction
     {V : Type*} [Fintype V]
