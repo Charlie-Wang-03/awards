@@ -31,7 +31,7 @@ def aggregateHardStopLeft : Finset (Fin 5) :=
   balancedHardStopLeft 0
 
 def aggregateHardStopRight : Finset (Fin 5) :=
-  Finset.univ \\ aggregateHardStopLeft
+  Finset.univ \ aggregateHardStopLeft
 
 def aggregateHardStopPostExp : Fin 5 → ℕ :=
   balancedHardStopPostExp 0
