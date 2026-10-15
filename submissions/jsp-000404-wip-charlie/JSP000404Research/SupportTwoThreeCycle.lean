@@ -112,6 +112,8 @@ theorem three_support_two_exists_cyclic_gain
     have hlocal :=
       excess_merge_gain_of_both_pos
         (a := c) (b := a) (c := carry) hca.1 hca.2
+    have hcomm : c + a + carry = a + c + carry := by omega
+    rw [hcomm] at hlocal
     simp only [listExponent_three, listExponent_mergeThreeCA]
     omega
 

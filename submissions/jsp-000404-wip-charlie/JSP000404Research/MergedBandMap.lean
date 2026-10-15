@@ -37,9 +37,9 @@ def mergeWrapBand
 @[simp] theorem mergeWrapBand_zero
     {n : ℕ} (hn : 1 ≤ n) :
     mergeWrapBand hn (0 : Fin (n + 1)) = ⟨0, by omega⟩ := by
+  have hn0 : n ≠ 0 := by omega
   apply Fin.ext
-  simp [mergeWrapBand]
-  omega
+  simp [mergeWrapBand, hn0]
 
 theorem mergeWrapBand_top
     {n : ℕ} (hn : 1 ≤ n) :
@@ -85,6 +85,7 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
   have hx0 : 0 ≤ x := D.nonnegative huv
   have hxTop : x < (n : ℝ) + delta := by
     simpa [x, hwidth] using D.belowWidth huv
+  have hn0 : n ≠ 0 := by omega
   by_cases hlow : x < 1
   · have hfloor0 : Nat.floor x = 0 := by
       exact Nat.floor_eq_zero.mpr hlow
@@ -92,7 +93,7 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
     have hwrap : x < 1 ∨ (n : ℝ) ≤ x := Or.inl hlow
     rw [fixedPhaseEdgeColor_eq_zero_of_wrap D hn huv
       (by simpa [x] using hwrap)]
-    simp [standardBandColor, huv, mergeWrapBand, x, hfloor0]
+    simp [standardBandColor, huv, mergeWrapBand, x, hfloor0, hn0]
   · by_cases hhigh : (n : ℝ) ≤ x
     · have hfloorN : Nat.floor x = n := by
         have hxn1 : x < (n : ℝ) + 1 := by linarith
@@ -252,15 +253,13 @@ theorem mergeWrapBand_injOn_erase_top
     have haeq : a = (⟨n, by omega⟩ : Fin (n + 1)) := by
       apply Fin.ext
       exact h
-    rw [haeq] at ha
-    exact (Finset.not_mem_erase _ _) ha
+    exact (Finset.mem_erase.mp ha).1 haeq
   have hbtop : b.val ≠ n := by
     intro h
     have hbeq : b = (⟨n, by omega⟩ : Fin (n + 1)) := by
       apply Fin.ext
       exact h
-    rw [hbeq] at hb
-    exact (Finset.not_mem_erase _ _) hb
+    exact (Finset.mem_erase.mp hb).1 hbeq
   have halt : a.val < n := by
     have ha_le : a.val ≤ n := by omega
     omega
@@ -301,7 +300,7 @@ theorem image_mergeWrapBand_erase_top_eq_of_zero_mem
           dsimp [top] at hv
           omega
         · exact hzero
-      · simpa [top] using (mergeWrapBand_top hn)
+      · simpa [top] using (mergeWrapBand_top hn).symm
     · exact ⟨x, Finset.mem_erase.mpr ⟨hxtop, hxS⟩, rfl⟩
   · rintro ⟨x, hx, rfl⟩
     exact ⟨x, (Finset.mem_erase.mp hx).2, rfl⟩
