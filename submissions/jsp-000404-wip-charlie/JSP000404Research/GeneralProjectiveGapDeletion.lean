@@ -40,13 +40,13 @@ namespace JSP000404Research
 
 open Real
 
-def normalizedSuccessiveTail (b : ℝ) (bs : List ℝ) : List ℝ :=
+noncomputable def normalizedSuccessiveTail (b : ℝ) (bs : List ℝ) : List ℝ :=
   (successiveDiffsFrom b bs).map (fun g => g / Real.pi)
 
-def firstNormalizedGap (a b : ℝ) : ℝ :=
+noncomputable def firstNormalizedGap (a b : ℝ) : ℝ :=
   (b - a) / Real.pi
 
-def lastNormalizedGap (a b : ℝ) (bs : List ℝ) : ℝ :=
+noncomputable def lastNormalizedGap (a b : ℝ) (bs : List ℝ) : ℝ :=
   (a + Real.pi - bs.getLastD b) / Real.pi
 
 theorem normalizedProjectiveGaps_cons_cons_parent
@@ -55,10 +55,15 @@ theorem normalizedProjectiveGaps_cons_cons_parent
       firstNormalizedGap a b ::
         (normalizedSuccessiveTail b bs ++
           [lastNormalizedGap a b bs]) := by
+  have hlast : (b :: bs).getLastD a = bs.getLastD b := by
+    cases bs with
+    | nil => simp
+    | cons c cs =>
+      simp [List.getLastD_cons]
   simp [normalizedProjectiveGaps, projectiveGaps,
     successiveDiffsFrom, normalizedSuccessiveTail,
     firstNormalizedGap, lastNormalizedGap,
-    List.getLastD_cons, List.map_append]
+    List.map_append, hlast]
 
 theorem normalizedProjectiveGaps_delete_first_general
     (a b : ℝ) (bs : List ℝ) :
