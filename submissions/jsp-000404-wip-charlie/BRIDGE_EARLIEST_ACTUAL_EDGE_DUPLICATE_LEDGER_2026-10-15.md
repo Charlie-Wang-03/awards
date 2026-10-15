@@ -110,10 +110,27 @@ across distinct predecessor coordinates for each FIXED later c.
 It is NOT a cross-later-i or cross-debt global payment injection.
 
 The further file `ResidualLossCrossSliceCoordinateRigidity.lean`
-asserts uniquely determined flip-coordinate labels for each actual
-source/blocker pair and no reverse-high-coordinate reuse of
-an unordered edge. Its own independent focused CI **38763344562**
-requires confirmation; no success is asserted here.
+is CERTIFIED: focused CI **38763344562 SUCCESS**, 3,308 jobs,
+all four new theorems with axioms
+`[propext, Classical.choice, Quot.sound]` and no `sorryAx`:
+
+- `crossLossConflictPair_chosen_labels`
+- `crossLossConflictPair_unique_coordinate_pair`
+- `crossLossConflictPairs_disjoint_of_distinct_labels`
+- `crossLossConflictPairs_no_reverse_high_coordinate`
+
+A fixed ORIENTED true source/blocker pair has unique chosen
+coordinate labels `(choice v, choice w)`, and sets of actual
+ordered source/blocker pairs for DIFFERENT coordinate labels
+are disjoint. For the global strictly later>earlier coordinate
+pair condition, reversing the vertex pair would reverse
+that strict inequality, so a single UNORDERED retained
+edge cannot be charged in both directions.
+
+This is genuine nonreuse of the FINITE EDGE-PAIR INDEX.
+It is NOT disjointness of Boolean-word sets across later
+coordinates, and in particular does NOT imply that those
+Boolean words are true external holes.
 
 ## 6. Legacy Lean repairs
 
