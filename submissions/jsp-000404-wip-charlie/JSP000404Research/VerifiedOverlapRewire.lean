@@ -125,7 +125,7 @@ import JSP000404Research.ResidualNetCollisionCertifiedBlockerClassification
 import JSP000404Research.ResidualNetCollisionCertifiedGlobalLedger
 import JSP000404Research.ResidualNetCollisionCertifiedDiagonalWitness
 import JSP000404Research.ResidualNetCollisionVariableDiagonalLedger
-import JSP000404Research.ResidualLossCrossCoordinateEdgeAvoidance
+import JSP000404Research.ResidualLossDuplicateDebtLedger
 
 /-!
 # Verified local overlap-routing entrypoint for JSP-000404
@@ -357,4 +357,21 @@ The independently kernel-checked
 union cardinality identity under an explicit retained-edge flip-avoidance
 hypothesis. This assumption has NOT been derived from actual planar AngleCap;
 the separate admitted lower-branch WIP still has one global payment sorry.
+-/
+
+/-!
+## Unconditional projected-loss duplicate-debt conservation (2026-10-15)
+
+`ResidualLossDuplicateDebtLedger` provides the exact sum identity
+
+  sum_(projected-loss v) 2^k(v) = 2 * |actual translated-loss union|
+                                    + 2 * duplicateDebt.
+
+No extra edge-avoidance condition is imposed. Positive duplicateDebt
+necessarily arises from actual cross-coordinate collisions; the later
+edge-witness theorem (when kernel-verified) localizes each such obstruction
+to a retained edge between distinct projected-loss vertices.
+
+The duplicate debt is an overcount, not a true-hole credit, and this
+independent import does NOT close the admitted six-source global payment.
 -/
