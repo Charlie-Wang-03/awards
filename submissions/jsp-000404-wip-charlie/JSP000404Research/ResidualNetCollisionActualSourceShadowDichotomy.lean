@@ -68,6 +68,53 @@ theorem net_first_hit_shortage_actual_source_flip_support_dichotomy
         (netCollisionCertifiedDiagonal C exponent hexp honeLoss w₂)
         hsd hse hfour⟩
 
+/-- Strengthened ACTUAL-source conflict gate: the distance-two branch
+comes with a unique shared flipped coordinate outside both target
+difference bits, while the distance-four branch has disjoint supports.
+This is a concrete third-colour geometric obstruction, NOT a hole credit. -/
+theorem net_first_hit_shortage_actual_source_unique_pivot_or_disjoint
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ v, exponent v ≤ n)
+    (honeLoss : ∀ v, (active C v).card ≤ n - exponent v + 1)
+    (hfail :
+      (softOverlapCompletionWords C).card <
+        netCollisionCertifiedDuplicateDebt C exponent hexp honeLoss +
+          (netCollisionCertifiedDiagonalWords C exponent hexp honeLoss).card) :
+    ∃ s ∈ softOverlapCompletionWords C,
+      ∃ w₁ w₂ :
+        {w : Fin n → Bool //
+          w ∈ netActualForwardReverseCollisionWords
+            C exponent hexp honeLoss},
+        let d := netCollisionCertifiedDiagonal C exponent hexp honeLoss w₁
+        let e := netCollisionCertifiedDiagonal C exponent hexp honeLoss w₂
+        let A := Finset.univ.filter (fun i : Fin n => s i ≠ d i)
+        let B := Finset.univ.filter (fun i : Fin n => s i ≠ e i)
+        let T := Finset.univ.filter (fun i : Fin n => d i ≠ e i)
+        d ≠ e ∧ A.card = 2 ∧ B.card = 2 ∧
+          ((T.card = 2 ∧
+              (∃! pivot : Fin n,
+                s pivot ≠ d pivot ∧ s pivot ≠ e pivot ∧
+                  d pivot = e pivot)) ∨
+           (T.card = 4 ∧ Disjoint A B)) := by
+  classical
+  obtain ⟨s, hs, w₁, w₂, hne, hsd, hse, hcase⟩ :=
+    net_first_hit_shortage_actual_source_flip_support_dichotomy
+      C exponent hexp honeLoss hfail
+  refine ⟨s, hs, w₁, w₂, hne, hsd, hse, ?_⟩
+  rcases hcase with htwo | hfour
+  · left
+    exact ⟨htwo.1,
+      shared_two_shadow_two_bit_unique_outside_pivot
+        s
+        (netCollisionCertifiedDiagonal C exponent hexp honeLoss w₁)
+        (netCollisionCertifiedDiagonal C exponent hexp honeLoss w₂)
+        hsd hse htwo.1⟩
+  · exact Or.inr hfour
+
+#print axioms net_first_hit_shortage_actual_source_unique_pivot_or_disjoint
+
 #print axioms net_first_hit_shortage_actual_source_flip_support_dichotomy
 
 end OrderedEdgeColoring
