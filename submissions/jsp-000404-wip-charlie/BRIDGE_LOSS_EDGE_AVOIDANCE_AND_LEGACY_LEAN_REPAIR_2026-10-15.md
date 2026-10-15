@@ -59,9 +59,8 @@ repairs in this research branch:
   **38689363462: SUCCESS**.
 - `OneTransitionSupportInterval.lean`: corrected implicit `lam` binding,
   obsolete list-nil lemma, separate nil/cons ray-list normalizations, and
-  positivity argument; independent CI added (result must be checked).
-- `ConcreteOneSupportInterval.lean`: analogous repairs; independent CI
-  added (result must be checked).
+  positivity argument; independent CI **38713748639: SUCCESS**.
+- `ConcreteOneSupportInterval.lean`: analogous repairs; independent CI **38714189401: SUCCESS**.
 - `GeneralMixedExteriorContradiction.lean`,
   `ThirdLayerTransitionPacking.lean`, and
   `ResidualChildWidthHardStop.lean`: obsolete
@@ -89,3 +88,17 @@ The new loss edge-avoidance reduction isolates a *sufficient* obstruction
 criterion for the translated projected-loss subproblem, not a planar
 proof of avoidance, a global payment theorem, or a closure of the main
 `sorry`.
+
+## Follow-up integration and remaining CI work
+
+The verified loss-edge-avoidance module is now imported by the independent
+`JSP000404Research/VerifiedOverlapRewire.lean` umbrella (commit
+`41650c50ea4c2a3fc8ffc1f05d4728c6c3e76634`). This does not import
+an admitted theorem into the sorry-free umbrella.
+
+`SupportLeTwoTransitionInterval.lean` received the exact missing
+support-one-quotient lemma import, AngleCap binder repair and a correction
+to the dependent-list decomposition proof. A targeted CI workflow exists;
+its final result must be read from GitHub Actions before claiming a pass.
+
+No six-source global payment lemma was discharged in this increment.
