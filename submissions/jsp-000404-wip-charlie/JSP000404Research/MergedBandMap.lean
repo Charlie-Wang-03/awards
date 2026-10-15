@@ -37,9 +37,9 @@ def mergeWrapBand
 @[simp] theorem mergeWrapBand_zero
     {n : ℕ} (hn : 1 ≤ n) :
     mergeWrapBand hn (0 : Fin (n + 1)) = ⟨0, by omega⟩ := by
-  have hn0 : n ≠ 0 := by omega
+  have h0n : 0 ≠ n := by omega
   apply Fin.ext
-  simp [mergeWrapBand, hn0]
+  simp [mergeWrapBand, h0n]
 
 theorem mergeWrapBand_top
     {n : ℕ} (hn : 1 ≤ n) :
@@ -85,7 +85,7 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
   have hx0 : 0 ≤ x := D.nonnegative huv
   have hxTop : x < (n : ℝ) + delta := by
     simpa [x, hwidth] using D.belowWidth huv
-  have hn0 : n ≠ 0 := by omega
+  have h0n : 0 ≠ n := by omega
   by_cases hlow : x < 1
   · have hfloor0 : Nat.floor x = 0 := by
       exact Nat.floor_eq_zero.mpr hlow
@@ -93,7 +93,7 @@ theorem fixedPhaseEdgeColor_eq_merge_standard
     have hwrap : x < 1 ∨ (n : ℝ) ≤ x := Or.inl hlow
     rw [fixedPhaseEdgeColor_eq_zero_of_wrap D hn huv
       (by simpa [x] using hwrap)]
-    simp [standardBandColor, huv, mergeWrapBand, x, hfloor0, hn0]
+    simp [standardBandColor, huv, mergeWrapBand, x, hfloor0, h0n]
   · by_cases hhigh : (n : ℝ) ≤ x
     · have hfloorN : Nat.floor x = n := by
         have hxn1 : x < (n : ℝ) + 1 := by linarith
