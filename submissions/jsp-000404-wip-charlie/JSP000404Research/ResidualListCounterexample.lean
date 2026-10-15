@@ -62,8 +62,10 @@ theorem lowerEndpointColoring5_all_retained_incoming
   · change c.val < 3
     exact c.isLt
   · apply Fin.ext
-    simp [lowerEndpointColoring5, lowerEndpointColor5, a]
-    omega
+    have hc4 : c.val < 4 := by
+      have hc3 := c.isLt
+      omega
+    simpa [lowerEndpointColoring5, lowerEndpointColor5, a, hc4]
 
 /-- Therefore the forbidden list of the residual edge 3--4 is all three
 retained colours. -/
