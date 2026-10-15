@@ -58,7 +58,7 @@ theorem shared_two_shadow_four_bit_flips_disjoint
   intro i hAi hBi
   have hi : i ∈ A ∩ B := Finset.mem_inter.mpr ⟨hAi, hBi⟩
   rw [hempty] at hi
-  exact Finset.not_mem_empty i hi
+  simpa using hi
 
 /-- In the four-coordinate obstruction, the shared SOFT shadow may
 differ from the first NET target ONLY on coordinates where the TWO
