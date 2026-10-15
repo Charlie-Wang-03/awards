@@ -74,12 +74,14 @@ theorem lastSign_eq_entry_of_zero_block
     boolLastFrom a signs = a := by
   rw [changesOnlyOnZero_forces_replicate
       a signs qs hchanges hzero]
-  induction qs with
-  | nil =>
-      simp [boolLastFrom]
-  | cons q qs ih =>
-      simp [boolLastFrom]
-      cases qs <;> simp [boolLastFrom, Nat.add_comm, List.replicate_succ]
+  have hrep :
+      ∀ k : ℕ, boolLastFrom a (List.replicate k a) = a := by
+    intro k
+    induction k with
+    | zero => rfl
+    | succ k ih =>
+        simpa only [List.replicate_succ, boolLastFrom] using ih
+  exact hrep qs.length
 
 #print axioms changesOnlyOnZero_forces_replicate
 #print axioms sign_eq_entry_of_zero_block
