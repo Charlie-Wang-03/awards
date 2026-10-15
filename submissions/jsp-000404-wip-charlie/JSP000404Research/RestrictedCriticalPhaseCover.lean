@@ -21,6 +21,46 @@ that its slot owners pay the final dyadic debts with no reuse.
 
 namespace JSP000404Research
 
+/-- Formal audit: finitely many bounded closed real intervals cannot
+cover the unbounded real line. This is why the legacy global-real
+IrredundantCover model is vacuous for critical bad intervals. -/
+theorem finite_closed_intervals_cannot_cover_real
+    {I : Type*} [DecidableEq I]
+    (L R : I → ℝ) (S : Finset I) :
+    ¬ PredicateCovers (InClosedInterval L R) S := by
+  classical
+  intro hcover
+  let x : ℝ := (∑ i ∈ S, |R i|) + 1
+  obtain ⟨i, hi, hx⟩ := hcover x
+  have hbound : |R i| ≤ ∑ j ∈ S, |R j| := by
+    apply Finset.single_le_sum (s := S) (f := fun j => |R j|)
+    · intro j hj
+      exact abs_nonneg (R j)
+    · exact hi
+  have habs : R i ≤ |R i| := le_abs_self _
+  dsimp [x] at hx
+  linarith [hx.2]
+
+/-- In particular, the old full-real critical bad-interval model
+has no examples for any finite family of critical obstructions. -/
+theorem critical_global_real_irredundant_cover_impossible
+    {I : Type*} [DecidableEq I]
+    (alpha s : I → ℝ) (delta : ℝ) (S : Finset I) :
+    ¬ IrredundantCover
+        (fun i x => criticalBadLeft (alpha i) (s i) ≤ x ∧
+           x ≤ criticalBadRight (alpha i) delta) S := by
+  intro hmin
+  have hcover : PredicateCovers
+      (InClosedInterval
+        (fun i => criticalBadLeft (alpha i) (s i))
+        (fun i => criticalBadRight (alpha i) delta)) S := hmin.1
+  exact finite_closed_intervals_cannot_cover_real
+    (fun i => criticalBadLeft (alpha i) (s i))
+    (fun i => criticalBadRight (alpha i) delta) S hcover
+
+#print axioms finite_closed_intervals_cannot_cover_real
+#print axioms critical_global_real_irredundant_cover_impossible
+
 def PredicateCoversOn
     {I Phase : Type*}
     (Domain : Phase → Prop) (A : I → Phase → Prop)
