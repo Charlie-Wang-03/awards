@@ -58,17 +58,30 @@ theorem critical_gap_eq_one_add_remainder
   · linarith
   · ring
 
+/-- Normalized critical obstruction width, computed from the genuine
+bad-phase endpoints in `CriticalPhaseInterval` at origin zero. -/
+def criticalBadWidth (delta s : ℝ) : ℝ :=
+  criticalBadRight 0 delta - criticalBadLeft 0 s
+
+/-- The normalized critical bad-phase width equals 1 + delta - s,
+regardless of the chosen origin for the interval. -/
+theorem criticalBadWidth_eq (delta s : ℝ) :
+    criticalBadWidth delta s = 1 + delta - s := by
+  unfold criticalBadWidth
+  simpa using critical_bad_width 0 s delta
+
 /-- Its bad-phase width is exactly the complementary part of the same delta
 remainder budget. -/
 theorem critical_gap_remainder_add_badWidth
     {s delta : ℝ} :
     (s - 1) + criticalBadWidth delta s = delta := by
-  unfold criticalBadWidth
+  rw [criticalBadWidth_eq]
   ring
 
 #print axioms critical_gap_floor_eq_one
 #print axioms critical_gap_quotient_eq_one
 #print axioms critical_gap_eq_one_add_remainder
+#print axioms criticalBadWidth_eq
 #print axioms critical_gap_remainder_add_badWidth
 
 end JSP000404Research
