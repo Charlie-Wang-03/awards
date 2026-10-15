@@ -95,7 +95,7 @@ theorem right_refinement_contains_parent
         criticalBadRight (alpha + r) delta := by
   constructor
   · unfold criticalBadLeft
-    ring
+    linarith
   · unfold criticalBadRight
     linarith
 
@@ -111,7 +111,7 @@ theorem exactly_one_transition_after_split
   · right
     exact ⟨h.1.symm, h.2⟩
   · left
-    exact ⟨h.1, h.2⟩
+    exact ⟨h.1.symm, h.2⟩
 
 #print axioms bool_between_opposite_agrees_exactly_one
 #print axioms critical_bad_interval_contained_in_left_refinement
