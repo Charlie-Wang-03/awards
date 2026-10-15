@@ -71,10 +71,10 @@ theorem active_subset_palette
     Finset.mem_univ, true_and] at hc
   rcases hc with ⟨a, hav, hcol⟩ | ⟨w, hvw, hcol⟩
   · have hmem := C.edge_mem_right hav
-    change C.color _ _ = c at hcol
+    change C.color a v = c at hcol
     exact hcol ▸ hmem
   · have hmem := C.edge_mem_left hvw
-    change C.color _ _ = c at hcol
+    change C.color v w = c at hcol
     exact hcol ▸ hmem
 
 /-- Hence the adaptive active palette is bounded by the prescribed deficit. -/
