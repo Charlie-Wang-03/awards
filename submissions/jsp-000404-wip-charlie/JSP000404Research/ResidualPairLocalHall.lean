@@ -116,10 +116,12 @@ theorem saturated_pair_overlap_card_le_pairLocalHoles
       (retainedCompletionWords C u).card =
         2 ^ exponent u := by
     rw [retainedCompletionWords_card, huSat]
+    rfl
   have hcardV :
       (retainedCompletionWords C v).card =
         2 ^ exponent v := by
     rw [retainedCompletionWords_card, hvSat]
+    rfl
   have hunion :=
     Finset.card_union_add_card_inter
       (retainedCompletionWords C u)
@@ -151,6 +153,9 @@ theorem projectedLoss_completion_card_le_vertexLocalHoles
       hfreeLt hfreeLt
   rw [vertexLocalHoles_card,
       retainedCompletionWords_card]
+  -- Normalize the equivalent exponents before Presburger arithmetic.
+  change 2 ^ projectedFree C v ≤
+    2 ^ n - 2 ^ projectedFree C v
   omega
 
 #print axioms saturated_pair_overlap_card_le_pairLocalHoles
