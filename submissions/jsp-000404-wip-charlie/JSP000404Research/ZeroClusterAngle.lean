@@ -85,13 +85,13 @@ theorem angle_le_width_of_two_common_signed_interval
     (hwidth0 : 0 ≤ width)
     (hwidthpi : width < Real.pi)
     (hj :
-      ∃ rho theta,
+      ∃ (rho theta : ℝ),
         0 < rho ∧
         a ≤ theta ∧ theta ≤ a + width ∧
         p j - p i =
           rho • signedRayDirection sigma theta)
     (hk :
-      ∃ rho theta,
+      ∃ (rho theta : ℝ),
         0 < rho ∧
         a ≤ theta ∧ theta ≤ a + width ∧
         p k - p i =
@@ -116,13 +116,13 @@ theorem angle_le_delta_lam_of_zero_cluster_interval
     (hG : t * G ≤ delta)
     (hwidthpi : Real.pi * G < Real.pi)
     (hj :
-      ∃ rho theta,
+      ∃ (rho theta : ℝ),
         0 < rho ∧
         a ≤ theta ∧ theta ≤ a + Real.pi * G ∧
         p j - p i =
           rho • signedRayDirection sigma theta)
     (hk :
-      ∃ rho theta,
+      ∃ (rho theta : ℝ),
         0 < rho ∧
         a ≤ theta ∧ theta ≤ a + Real.pi * G ∧
         p k - p i =
