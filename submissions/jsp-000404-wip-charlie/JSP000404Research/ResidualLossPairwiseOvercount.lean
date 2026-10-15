@@ -76,6 +76,37 @@ theorem lossSumCard_le_prefixUnion_add_pairwise
       simp only [Finset.sum_range_succ, hunion]
       omega
 
+/-- Exact, rather than upper-bound, finite-union overcount:
+each new slice contributes precisely its overlap with the union
+of all earlier slices. There is no pairwise multiple counting in
+this ledger identity. -/
+theorem lossSumCard_eq_prefixUnion_add_priorOverlap
+    {α : Type*} [DecidableEq α]
+    (A : ℕ → Finset α) (k : ℕ) :
+    (∑ i ∈ Finset.range k, (A i).card) =
+      (lossPrefixUnion A k).card +
+        ∑ i ∈ Finset.range k,
+          (A i ∩ lossPrefixUnion A i).card := by
+  classical
+  induction k with
+  | zero =>
+      simp [lossPrefixUnion]
+  | succ k ih =>
+      have hunion :
+          lossPrefixUnion A (k + 1) =
+            lossPrefixUnion A k ∪ A k := by
+        simp [lossPrefixUnion, Finset.range_add_one, Finset.union_comm]
+      have hcard :=
+        Finset.card_union_add_card_inter (lossPrefixUnion A k) (A k)
+      have hcomm :
+          (A k ∩ lossPrefixUnion A k).card =
+            (lossPrefixUnion A k ∩ A k).card := by
+        rw [Finset.inter_comm]
+      simp only [Finset.sum_range_succ, hunion]
+      omega
+
+#print axioms lossSumCard_eq_prefixUnion_add_priorOverlap
+
 /-- Translate the actual chosen-coordinate loss slice to the natural
 index `i`; outside Fin n it is explicitly empty. -/
 noncomputable def lossSliceAtNat
@@ -149,6 +180,29 @@ theorem translatedLossDuplicateDebt_le_pairwise_slices
     lossSliceAtNat_prefix_union_eq_loss_union] at hbound
   unfold translatedLossDuplicateDebt
   omega
+
+/-- Exact first-occurrence decomposition of the ORIGINAL global
+duplicate debt, using increasing natural coordinate indices.
+Repeated words can contribute on successive later coordinate slices;
+no claim about global outside holes or payment is needed. -/
+theorem translatedLossDuplicateDebt_eq_sum_prior_coordinate_overlaps
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    translatedLossDuplicateDebt C exponent choice =
+      ∑ i ∈ Finset.range n,
+        (lossSliceAtNat C exponent choice i ∩
+          lossPrefixUnion (lossSliceAtNat C exponent choice) i).card := by
+  classical
+  have hexact :=
+    lossSumCard_eq_prefixUnion_add_priorOverlap
+      (lossSliceAtNat C exponent choice) n
+  rw [lossSliceAtNat_sum_card_eq_fin_sum,
+    lossSliceAtNat_prefix_union_eq_loss_union] at hexact
+  unfold translatedLossDuplicateDebt
+  omega
+
+#print axioms translatedLossDuplicateDebt_eq_sum_prior_coordinate_overlaps
 
 #print axioms lossSliceAtNat_sum_card_eq_fin_sum
 #print axioms lossSliceAtNat_prefix_union_eq_loss_union
