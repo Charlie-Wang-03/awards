@@ -1,3 +1,4 @@
+import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
 import JSP000404Research.PlanarLowerBranchTerminalTwinNetReduction
@@ -204,10 +205,17 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   -- This application leaves precisely the EXTERNAL-hole payment open:
   -- non-loss debt + translated-covered blockers + duplicate debt
   -- <= TRUE holes OUTSIDE translated loss slices + unreserved surplus.
-  exact planar_lower_branch_capacity_of_exact_oppositeBlocker_payment
+  exact planar_lower_branch_capacity_of_actual_retainedEdge_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
     (by
-      -- SOLE OPEN GEOMETRIC INPUT (kernel-equivalent exact carrier form):
+      -- SOLE OPEN GEOMETRIC INPUT (kernel-equivalent ACTUAL-EDGE form):
+      -- A covered translated-loss word can only be captured by a
+      -- genuinely retained edge whose colour is EXACTLY the chosen
+      -- flip coordinate. The unpaid carrier union is therefore
+      -- indexed by actual matching-colour source/blocker edges
+      -- (never by merely compatible-but-nonincident triples).
+      -- Repeated covered words and duplicate debt must still be
+      -- globally paid WITHOUT reusing outside true-hole credits.
       -- The true covered translated-loss words are exactly the union
       -- of ACTUALLY CHOSEN retained-active source/blocker/coordinate
       -- triple intersections with opposite canonical bits. The sole
