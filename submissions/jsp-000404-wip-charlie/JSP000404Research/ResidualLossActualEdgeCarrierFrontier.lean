@@ -113,6 +113,88 @@ theorem translatedLossCovered_card_le_actualEdgeTriple_dyadic
       intro z hz
       exact lossCoveredBlockerTripleWords_card_le_min_dyadic C z
 
+/-- An actual same-colour retained blocker of a projected-loss source
+cannot occur on both sides of that source. This uses the ORIGINAL
+ordered-colouring no-monochromatic-two-path axiom, not a false
+proper-edge-colouring assumption. -/
+theorem chosenLossActualEdgeBlockerTriples_no_straddle
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    {a v b : V} (hav : a < v) (hvb : v < b)
+    (ha : ((v, a), choice v) ∈
+      chosenLossActualEdgeBlockerTriples C exponent choice)
+    (hb : ((v, b), choice v) ∈
+      chosenLossActualEdgeBlockerTriples C exponent choice) : False := by
+  classical
+  have hleft :
+      ∃ hret : (C.color a v).val < n,
+        retainedColor C a v hret = choice v := by
+    rcases (Finset.mem_filter.mp ha).2 with
+      ⟨hva, _, _⟩ | ⟨_, hret, hc⟩
+    · exact False.elim (lt_asymm hav hva)
+    · exact ⟨hret, hc⟩
+  have hright :
+      ∃ hret : (C.color v b).val < n,
+        retainedColor C v b hret = choice v := by
+    rcases (Finset.mem_filter.mp hb).2 with
+      ⟨_, hret, hc⟩ | ⟨hbv, _, _⟩
+    · exact ⟨hret, hc⟩
+    · exact False.elim (lt_asymm hvb hbv)
+  rcases hleft with ⟨hretA, hcA⟩
+  rcases hright with ⟨hretB, hcB⟩
+  have hvalA : (C.color a v).val = (choice v).val := by
+    simpa [retainedColor] using congrArg Fin.val hcA
+  have hvalB : (C.color v b).val = (choice v).val := by
+    simpa [retainedColor] using congrArg Fin.val hcB
+  have hcol : C.color a v = C.color v b :=
+    Fin.ext (hvalA.trans hvalB.symm)
+  exact C.noMonoTwoPath hav hvb hcol
+
+/-- For each projected-loss source, all actual chosen-colour blocker
+edges lie strictly on ONE side of the source (possibly none).
+There is no assertion that blockers on the same side are unique. -/
+theorem chosenLossActualEdgeBlockerTriples_one_side
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (v : V) :
+    (∀ w, ((v, w), choice v) ∈
+      chosenLossActualEdgeBlockerTriples C exponent choice → w < v) ∨
+    (∀ w, ((v, w), choice v) ∈
+      chosenLossActualEdgeBlockerTriples C exponent choice → v < w) := by
+  classical
+  by_cases hleft :
+      ∃ a, a < v ∧
+        ((v, a), choice v) ∈
+          chosenLossActualEdgeBlockerTriples C exponent choice
+  · left
+    intro w hw
+    by_contra hnot
+    have hne : v ≠ w := by
+      rcases (Finset.mem_filter.mp hw).2 with
+        ⟨hvw, _, _⟩ | ⟨hwv, _, _⟩
+      · exact ne_of_lt hvw
+      · exact ne_of_gt hwv
+    have hvw : v < w := lt_of_le_of_ne (le_of_not_gt hnot) hne
+    rcases hleft with ⟨a, hav, ha⟩
+    exact chosenLossActualEdgeBlockerTriples_no_straddle
+      C exponent choice hav hvw ha hw
+  · right
+    intro w hw
+    have hne : v ≠ w := by
+      rcases (Finset.mem_filter.mp hw).2 with
+        ⟨hvw, _, _⟩ | ⟨hwv, _, _⟩
+      · exact ne_of_lt hvw
+      · exact ne_of_gt hwv
+    have hnleft : ¬ w < v := by
+      intro hwv
+      exact hleft ⟨w, hwv, hw⟩
+    exact lt_of_le_of_ne (le_of_not_gt hnleft) hne
+
+#print axioms chosenLossActualEdgeBlockerTriples_no_straddle
+#print axioms chosenLossActualEdgeBlockerTriples_one_side
+
 #print axioms translatedLossCovered_eq_actualEdgeTriple_union
 #print axioms translatedLossCovered_card_le_actualEdgeTriple_dyadic
 
