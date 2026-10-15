@@ -1,3 +1,5 @@
+import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
+import JSP000404Research.ResidualLossActualEdgeCarrierFrontier
 import JSP000404Research.ResidualTerminalTwinExactBlockerCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
 import JSP000404Research.ResidualLossCoveredOppositeBitBlocker
@@ -414,4 +416,27 @@ Kernel-verified independently:
 
 No intersection disjointness, unused-hole credit or missing global
 geometric payment has been assumed. The WIP root keeps its sole sorry.
+-/
+
+/-!
+## Actual source/blocker edge-colour rigidity (2026-10-15)
+
+`loss_translated_blocker_edge_colour_eq_flip` (focused CI
+38732522439 PASS) proves that if a translated projected-loss completion
+word is captured by a different original completion owner, then their
+ACTUAL retained edge has colour EXACTLY the chosen active flip coordinate.
+
+`translatedLossCovered_eq_actualEdgeTriple_union` (focused CI
+38733102250 PASS) upgrades the previous selected opposite-bit carrier
+union to an exact union indexed only by genuinely colour-matching
+retained edges, not merely co-active pairs.
+
+`terminalTwinSixSourcePayment_iff_actual_retainedEdgeCarrierFrontier`
+(focused CI 38733253482 PASS), and
+`planar_lower_branch_capacity_of_actual_retainedEdge_payment`
+(focused CI 38733316709 PASS) carry this stronger structural interface
+all the way back to the planar capacity proof with no extra assumptions.
+
+The globally non-reusing outside-true-hole / unreserved-surplus payment
+remains OPEN and is retained as exactly one admitted WIP sorry.
 -/
