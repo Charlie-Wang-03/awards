@@ -105,9 +105,15 @@ theorem incoming_left_disjoint_outgoing_right_of_completion_overlap
     {u v : V} {word : Fin n → Bool}
     (huWord : word ∈ retainedCompletionWords C u)
     (hvWord : word ∈ retainedCompletionWords C v) :
-    Disjoint (incomingRetained C u) (outgoingRetained C v) :=
-  incoming_left_disjoint_outgoing_right_of_overlap
-    C huWord hvWord
+    Disjoint (incomingRetained C u) (outgoingRetained C v) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro colour hIncoming hOutgoing
+  have hthrough : colour ∈ residualThroughColours C u v :=
+    (mem_residualThroughColours C u v colour).2
+      ⟨hIncoming, hOutgoing⟩
+  exact not_mem_throughColours_of_completion_overlap
+    C huWord hvWord hthrough
 
 theorem outgoing_left_disjoint_incoming_right_of_completion_overlap
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -117,7 +123,7 @@ theorem outgoing_left_disjoint_incoming_right_of_completion_overlap
     (hvWord : word ∈ retainedCompletionWords C v) :
     Disjoint (outgoingRetained C u) (incomingRetained C v) := by
   have h :=
-    incoming_left_disjoint_outgoing_right_of_overlap
+    incoming_left_disjoint_outgoing_right_of_completion_overlap
       C hvWord huWord
   exact h.symm
 
