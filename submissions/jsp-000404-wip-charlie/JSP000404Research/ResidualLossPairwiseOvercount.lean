@@ -67,7 +67,7 @@ theorem lossSumCard_le_prefixUnion_add_pairwise
       have hunion :
           lossPrefixUnion A (k + 1) =
             lossPrefixUnion A k ∪ A k := by
-        simp [lossPrefixUnion, Finset.range_succ, Finset.union_comm]
+        simp [lossPrefixUnion, Finset.range_add_one, Finset.union_comm]
       have hcard :=
         Finset.card_union_add_card_inter (lossPrefixUnion A k) (A k)
       have hinter :=
