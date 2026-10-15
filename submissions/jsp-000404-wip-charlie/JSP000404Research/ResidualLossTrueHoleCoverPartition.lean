@@ -80,7 +80,6 @@ theorem totalDyadicProfileLoss_eq_trueHoles_plus_covered_plus_duplicate
   rw [totalDyadicProfileLoss_eq_translated_union_plus_duplicate
     C exponent hexp honeLoss choice]
   rw [translatedLossAllCoordinateWords_card_eq_holes_plus_covered]
-  omega
 
 #print axioms translatedLossAllCoordinateWords_card_eq_holes_plus_covered
 #print axioms totalDyadicProfileLoss_eq_trueHoles_plus_covered_plus_duplicate
