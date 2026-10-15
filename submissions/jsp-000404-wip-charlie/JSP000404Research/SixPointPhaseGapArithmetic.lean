@@ -75,7 +75,7 @@ theorem exists_gap_ge_pi_div_fifteen_of_sum_pi
     mul_le_mul_of_nonneg_right hlenR hpi15.le
   have hright : 15 * (Real.pi / 15) = Real.pi := by
     field_simp
-  rw [hsum, hright] at hlt
+  rw [hsum] at hlt
   rw [hright] at hmul
   linarith
 

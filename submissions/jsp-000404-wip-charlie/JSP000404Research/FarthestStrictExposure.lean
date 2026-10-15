@@ -82,7 +82,7 @@ theorem strictlyExposedAt_of_sqDistanceFrom_max
       rfl
     unfold sqDistanceFrom at hfar
     rw [hw, hj] at hfar
-    have hexpand := norm_add_sq v e
+    have hexpand := norm_add_sq_real v e
     have hve :
         2 * inner ℝ v e + ‖e‖ ^ 2 ≤ 0 := by
       rw [hexpand] at hfar
