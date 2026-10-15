@@ -30,6 +30,8 @@ restricted profiles are part of the one fixed-parameter certificate.
 
 namespace JSP000404Research
 
+universe u
+
 open scoped BigOperators
 
 def restrictedDyadicWeight
@@ -39,10 +41,10 @@ def restrictedDyadicWeight
   ∑ v ∈ subset, 2 ^ exponent ambient v
 
 inductive AggregateSplitTree
-    {V : Type*}
+    {V : Type u} [DecidableEq V]
     (exponent : Finset V → V → ℕ)
     (n : ℕ) :
-    Finset V → Type
+    Finset V → Type (u + 1)
   | leaf (S : Finset V)
       (hcap :
         restrictedDyadicWeight exponent S S ≤ 2 ^ n) :
@@ -65,7 +67,7 @@ namespace AggregateSplitTree
 
 /-- Every aggregate split tree certifies the sharp root dyadic capacity. -/
 theorem capacity
-    {V : Type*}
+    {V : Type*} [DecidableEq V]
     {exponent : Finset V → V → ℕ}
     {n : ℕ} {S : Finset V}
     (T : AggregateSplitTree exponent n S) :
@@ -96,7 +98,7 @@ theorem capacity
 
 /-- Convenience form: a certified full finite vertex set has capacity 2^n. -/
 theorem univ_capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [DecidableEq V] [Fintype V]
     {exponent : Finset V → V → ℕ}
     {n : ℕ}
     (T : AggregateSplitTree exponent n Finset.univ) :
@@ -105,7 +107,7 @@ theorem univ_capacity
 
 /-- A two-child one-step constructor with already certified children. -/
 theorem capacity_of_split
-    {V : Type*}
+    {V : Type*} [DecidableEq V]
     {exponent : Finset V → V → ℕ}
     {n : ℕ}
     {S A B : Finset V}
