@@ -114,7 +114,7 @@ theorem planar_lower_branch_capacity_of_exists_active_external_loss_payment
   exact planar_lower_branch_capacity_of_external_loss_obstruction
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hfixed
 
-#print axioms planar_lower_branch_capacity_of_external_loss_obstruction
+#print axioms planar_lower_branch_capacity_of_exists_active_external_loss_payment
 
 end ProjectionOrdered
 end JSP000404Research
