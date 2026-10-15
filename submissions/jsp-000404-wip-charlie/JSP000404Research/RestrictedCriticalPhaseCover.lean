@@ -34,6 +34,31 @@ def IrredundantCoverOn
   PredicateCoversOn Domain A S ∧
     ∀ i, i ∈ S → ¬ PredicateCoversOn Domain A (S.erase i)
 
+/-- Every finite restricted-domain cover contains an irredundant
+restricted subcover. The global cover theorem is used ONLY on the
+subtype of phases in the domain, not on the whole real line. -/
+theorem exists_irredundant_subcover_on
+    {I Phase : Type*} [DecidableEq I]
+    (Domain : Phase → Prop) (A : I → Phase → Prop)
+    (S : Finset I)
+    (hcover : PredicateCoversOn Domain A S) :
+    ∃ T : Finset I, T ⊆ S ∧ IrredundantCoverOn Domain A T := by
+  classical
+  let B : I → {x : Phase // Domain x} → Prop :=
+    fun i x => A i x.1
+  have hcoverSub : PredicateCovers B S := by
+    intro x
+    exact hcover x.1 x.2
+  obtain ⟨T, hTS, hmin⟩ :=
+    exists_irredundant_subcover B S hcoverSub
+  refine ⟨T, hTS, ?_, ?_⟩
+  · intro x hx
+    exact hmin.1 ⟨x, hx⟩
+  · intro i hi hErase
+    apply hmin.2 i hi
+    intro x
+    exact hErase x.1 x.2
+
 /-- A minimal cover of a restricted phase-domain provides a private
 phase within that domain for each selected obstruction. -/
 theorem exists_private_phase_of_irredundant_on
@@ -137,6 +162,7 @@ theorem critical_irredundant_on_card_le_slots
   have hcard := Fintype.card_le_of_injective f hf
   simpa [f] using hcard
 
+#print axioms exists_irredundant_subcover_on
 #print axioms exists_private_phase_of_irredundant_on
 #print axioms irredundant_on_intervals_not_nested
 #print axioms critical_anchor_injective_of_irredundant_on
