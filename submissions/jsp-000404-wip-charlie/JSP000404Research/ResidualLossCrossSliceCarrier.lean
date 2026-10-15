@@ -56,7 +56,8 @@ noncomputable def crossLossPairWords
       (translatedCompletionWords C v c ∩
         translatedCompletionWords C w d).Nonempty := by
   classical
-  simp [crossLossConflictPairs]
+  simp only [crossLossConflictPairs, Finset.mem_filter, Finset.mem_product]
+  tauto
 
 theorem crossLossPairWords_pairwiseDisjoint
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -69,8 +70,8 @@ theorem crossLossPairWords_pairwiseDisjoint
     {c d : Fin n}
     (hcd : c ≠ d) :
     ((crossLossConflictPairs C exponent choice c d :
-        Finset (V × V)) : Set (V × V)).
-      PairwiseDisjoint (crossLossPairWords C c d) := by
+        Finset (V × V)) : Set (V × V)).PairwiseDisjoint
+      (crossLossPairWords C c d) := by
   intro p hp q hq hpq
   classical
   rw [Finset.disjoint_left]
@@ -123,7 +124,7 @@ theorem crossTranslatedLossSlice_inter_eq_biUnion_pairs
       apply (mem_crossLossConflictPairs
         C exponent choice c d v w).2
       exact ⟨hvSlice,hwSlice,
-        ⟨word,hvWord,hwWord⟩⟩
+        ⟨word,Finset.mem_inter.mpr ⟨hvWord,hwWord⟩⟩⟩
     exact Finset.mem_biUnion.mpr
       ⟨(v,w),hp,Finset.mem_inter.mpr ⟨hvWord,hwWord⟩⟩
   · intro hword
@@ -185,7 +186,8 @@ theorem crossLossConflictPair_edge_colour
   have hpData :=
     (mem_crossLossConflictPairs
       C exponent choice c d p.1 p.2).1 hp
-  obtain ⟨word,hvWord,hwWord⟩ := hpData.2.2
+  obtain ⟨word, hword⟩ := hpData.2.2
+  obtain ⟨hvWord, hwWord⟩ := Finset.mem_inter.mp hword
   have hvChoice :=
     ((mem_lossCoordinateSlice
       C exponent choice c p.1).1 hpData.1).2
@@ -193,10 +195,12 @@ theorem crossLossConflictPair_edge_colour
     ((mem_lossCoordinateSlice
       C exponent choice d p.2).1 hpData.2.1).2
   have hne : p.1 ≠ p.2 := by
-    intro h
-    subst p
-    rw [hvChoice] at hwChoice
-    exact hcd hwChoice
+    intro heq
+    apply hcd
+    calc
+      c = choice p.1 := hvChoice.symm
+      _ = choice p.2 := congrArg choice heq
+      _ = d := hwChoice
   have hvLoss :=
     ((mem_lossCoordinateSlice
       C exponent choice c p.1).1 hpData.1).1
