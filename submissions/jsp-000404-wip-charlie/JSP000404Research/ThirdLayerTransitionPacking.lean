@@ -98,20 +98,22 @@ theorem third_layer_packing_forces_two_unit_transitions
   let Cfam : ∀ r : Fin 4,
       CentreProjectiveCycle hp (centre r) := by
     intro r
-    fin_cases r
-    · exact Cs
-    · exact Ca
-    · exact Cb
-    · exact Cc
+    rcases r with ⟨i, hi⟩
+    interval_cases i
+    · simpa [centre] using Cs
+    · simpa [centre] using Ca
+    · simpa [centre] using Cb
+    · simpa [centre] using Cc
   let cert : ∀ r : Fin 4,
       HighExponentTransitionIntervalCertificate
         hp t (centre r) (Cfam r) := by
     intro r
-    fin_cases r
-    · exact HS
-    · exact HA
-    · exact HB
-    · exact HC
+    rcases r with ⟨i, hi⟩
+    interval_cases i
+    · simpa [centre, Cfam] using HS
+    · simpa [centre, Cfam] using HA
+    · simpa [centre, Cfam] using HB
+    · simpa [centre, Cfam] using HC
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
