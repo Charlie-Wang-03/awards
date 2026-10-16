@@ -762,3 +762,37 @@ global true-hole nonreusing payment.
 As of this checkpoint, the main WIP still contains its single root
 executable `sorry` at approximately line 632; full incremental Lean
 CI is not green.
+
+### 29. Exact quantitative overlap excess for two-centre Hall obstruction
+
+Module: `JSP000404Research/ResidualTwoVertexDeficiencySlack.lean`.
+Focused CI [38904818731](https://github.com/Charlie-Wang-03/awards/actions/runs/38904818731):
+**SUCCESS**, 3,317 jobs. Both new theorems are kernel checked,
+with axiom set `[propext, Classical.choice, Quot.sound]` and no
+`sorryAx`:
+
+- `two_vertex_enlarged_deficiency_forces_strict_overlap_excess`
+- `two_vertex_enlarged_not_deficient_of_overlap_slack`
+
+Writing Q_v and Q_w for the ORIGINAL retained completion cubes and
+d_v=2^exponent(v), d_w=2^exponent(w), any actual enlarged-candidate
+`BlockDeficient` on a distinct pair {v,w}, under the same one-layer
+hypotheses as Section 28, necessarily satisfies
+
+```text
+|Q_v intersect Q_w| + d_v + d_w > |Q_v| + |Q_w|.
+```
+
+Equivalently, pairwise completion overlap must STRICTLY EXCEED the sum
+of the individual cardinality slack above the dyadic demands.
+The second theorem certifies that the opposite weak inequality
+EXCLUDES pair deficiency, even when the two centres are connected by
+a residual edge. This is strictly more informative than the mere
+existence of a residual carrier proved in the preceding section.
+
+This does not yet bound the overlap from planar AngleCap geometry,
+nor exclude all nonloss two-centre deficits or any three-plus-centre
+deficient core. Most importantly, it does NOT pay any of the original
+six-source global terminal debt with non-reused outside translated-loss
+true holes or unreserved surplus. The WIP main theorem still has its
+single genuine admitted global payment `sorry`.
