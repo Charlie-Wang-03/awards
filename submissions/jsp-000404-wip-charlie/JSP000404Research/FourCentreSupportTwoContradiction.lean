@@ -53,8 +53,8 @@ configuration it must be the other two outer vertices. -/
 theorem small_pair_at_outer_eq_other_outer_pair
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {delta lam : ℝ}
+    (hcap : AngleCap p lam)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlampos : 0 < lam)
     {s a b c : Fin 4}
@@ -74,7 +74,7 @@ theorem small_pair_at_outer_eq_other_outer_pair
       intro hys
       apply hxy
       apply Subtype.ext
-      simpa [hxs] using hys
+      exact hxs.trans hys.symm
     have hsharp :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
@@ -125,8 +125,8 @@ theorem small_pair_at_outer_eq_other_outer_pair
 theorem no_sharp_with_two_support_two_deficit_two_fin_four
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -152,7 +152,7 @@ theorem no_sharp_with_two_support_two_deficit_two_fin_four
     exact div_pos Real.pi_pos htpos
   have hsSharp :=
     concrete_unit_deficit_is_sharp
-      hp hcap hn hdelta0 hdelta1 ht hlam
+      hp hcap (by omega : 2 ≤ n) hdelta0 hdelta1 ht hlam
       s Cs hS
   obtain ⟨xa, ya, hxya, hsmallA⟩ :=
     exists_small_angle_pair_of_four_centre_deficit_two_support_two
@@ -193,7 +193,7 @@ theorem no_sharp_with_two_support_two_deficit_two_fin_four
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p b) (p₂ := p a) (p c)
-      (hp.ne hab.symm)
+      (hp.ne hab)
   have hcommB :
       EuclideanGeometry.angle (p c) (p b) (p a) =
         EuclideanGeometry.angle (p a) (p b) (p c) :=
