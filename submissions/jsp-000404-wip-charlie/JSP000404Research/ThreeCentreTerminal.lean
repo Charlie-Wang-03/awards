@@ -118,8 +118,8 @@ theorem three_dyadic_terms_le_of_at_most_one_top
 theorem three_centre_fixed_t_capacity
     {p : Fin 3 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -193,7 +193,7 @@ theorem three_centre_fixed_t_capacity
   have harith :=
     three_dyadic_terms_le_of_at_most_one_top
       hn hk0 hk1 hk2 h01 h02 h12
-  simpa [k0, k1, k2, Fin.sum_univ_succ] using harith
+  simpa [k0, k1, k2, Fin.sum_univ_succ, add_assoc] using harith
 
 #print axioms top_plus_two_next_dyadic_eq
 #print axioms three_dyadic_terms_le_of_at_most_one_top
