@@ -105,3 +105,64 @@ geometric construction.
 All new repaired theorems above are `sorry`-free and introduce no
 new custom axioms. No complete-problem, eligibility, priority,
 submission or award claim is made.
+
+
+## Follow-on certified repairs (same research branch, October 16)
+
+### 4. Finite terminal dominator compression
+
+Module: `JSP000404Research/FiniteTerminalDominator.lean`.
+Focused CI [38858324183](https://github.com/Charlie-Wang-03/awards/actions/runs/38858324183):
+**SUCCESS**, 3,097 build jobs, all three `#print axioms` results
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+The injection of minimum covers into their **finite terminal image** and the
+conditional phase-cover contradiction are now checked, rather than blocked
+by erase-cardinality arithmetic and reverse inequality notation.
+
+### 5. Minimal overweight normalized Kraft profile
+
+Module: `JSP000404Research/MinimalOverweightKraftProfile.lean`.
+Focused CI [38858425164](https://github.com/Charlie-Wang-03/awards/actions/runs/38858425164):
+**SUCCESS**, combined 3,130 build jobs, all four audited main
+profile declarations without `sorryAx`.
+
+Under the stated minimum deletion / post-weight bound hypotheses, with
+`a = exponent r`, the normalized total is **exactly**
+`sum_v 2^(exponent(v)-a) = 2^(n-a)+1`.
+This is an exact conditional overweight profile, not a classification
+of all geometric planar exponents.
+
+### 6. Standard residual through-colour promotion
+
+Module: `JSP000404Research/StandardResidualThroughPromotion.lean`.
+The SAME [38858425164](https://github.com/Charlie-Wang-03/awards/actions/runs/38858425164)
+checks all five audited main declarations, without `sorryAx`.
+
+A through-colour in the standard residual colouring, given genuine
+incoming/outgoing same-band outer witnesses and a residual middle edge,
+forces both cross-edge directions to lie at least one whole normalized
+unit above the through-colour; the top retained through-colour yields
+residual cross edges. The correction separates the four independent
+band witness inequalities instead of incorrectly chaining tactical
+`<;>` and `simpa`.
+
+### 7. Residual binary child recursion
+
+Module: `JSP000404Research/ResidualBinaryRecursion.lean`.
+Focused CI [38858699208](https://github.com/Charlie-Wang-03/awards/actions/runs/38858699208):
+**SUCCESS**, 3,094 build jobs, all six `#print axioms`
+declarations without `sorryAx`.
+
+The code now correctly uses classical decidability for high-source and
+high-sink membership in its four weight/exponent definitions and closes
+the natural power multiplication orientation. Conditional child mass
+bounds `<= 2^(n-1)` still must be supplied by geometry before the
+root `<= 2^n` conclusion can be invoked.
+
+### Verification scope
+
+The cited runs are module-specific kernel checks. Do not interpret them
+as a green all-module fast build or as a proof that the final WIP
+global-payment `sorry` is solved. The main theorem retains that hole,
+and the source-closure gate remains open.
