@@ -117,7 +117,6 @@ theorem covers_every_other_nonTop
     rw [Finset.card_erase_of_mem hiMem,
         Finset.card_erase_of_mem (Finset.mem_univ top),
         Finset.card_univ, hcard]
-    norm_num
   have hSsub : S ⊆ U := by
     intro w hw
     dsimp [S] at hw
