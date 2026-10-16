@@ -49,7 +49,15 @@ theorem top_exponent_positiveSupport_eq_one
   have htop : floorExcess q = n - 1 := by
     simpa [q, centreExponent] using hexp
   change floorExcess q + positiveSupport q ≤ n at hcount
-  omega
+  have hupper : positiveSupport q ≤ 1 := by
+    have htopcount : n - 1 + positiveSupport q ≤ n := by
+      rw [← htop]
+      exact hcount
+    omega
+  have hlower : 1 ≤ positiveSupport q :=
+    Nat.one_le_iff_ne_zero.mpr hnozero
+  have hsupport : positiveSupport q = 1 := by omega
+  simpa only [q] using hsupport
 
 /-- At a top centre, every actual high-exponent transition
 certificate carries a quotient gap of the full value n. -/
