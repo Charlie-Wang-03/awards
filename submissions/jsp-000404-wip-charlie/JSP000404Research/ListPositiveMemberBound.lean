@@ -31,7 +31,7 @@ theorem listPositiveCount_pos_of_mem_ne_zero
       by_cases hr : r = 0
       · rcases hqmem with hbad | hmem
         · subst r
-          exact False.elim (hq rfl)
+          exact False.elim (hq hr)
         · simp [listPositiveCount, hr]
           exact ih hmem
       · simp [listPositiveCount, hr]
@@ -62,7 +62,7 @@ theorem positive_member_add_support_pred_le_sum
       by_cases hr : r = 0
       · rcases hqmem with hEq | hmem
         · subst r
-          exact False.elim (hq rfl)
+          exact False.elim (hq hr)
         · have hih := ih hmem
           simpa [listPositiveCount, hr] using hih
       · have hr1 : 1 ≤ r := Nat.one_le_iff_ne_zero.mpr hr
