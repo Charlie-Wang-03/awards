@@ -39,35 +39,39 @@ namespace DirectionData
 
 open scoped BigOperators
 
-def leftChildExponent
+noncomputable def leftChildExponent
     {V : Type*} [LinearOrder V] {width : ℝ}
     (D : DirectionData V width)
     (n : ℕ) (exponent : V → ℕ)
-    (v : V) : ℕ :=
-  if HighSource D n v then exponent v else exponent v - 1
+    (v : V) : ℕ := by
+  classical
+  exact if HighSource D n v then exponent v else exponent v - 1
 
-def rightChildExponent
+noncomputable def rightChildExponent
     {V : Type*} [LinearOrder V] {width : ℝ}
     (D : DirectionData V width)
     (n : ℕ) (exponent : V → ℕ)
-    (v : V) : ℕ :=
-  if HighSink D n v then exponent v else exponent v - 1
+    (v : V) : ℕ := by
+  classical
+  exact if HighSink D n v then exponent v else exponent v - 1
 
-def leftChildWeight
+noncomputable def leftChildWeight
     {V : Type*} [LinearOrder V] {width : ℝ}
     (D : DirectionData V width)
     (n : ℕ) (exponent : V → ℕ)
-    (v : V) : ℕ :=
-  if ¬ HighSink D n v then
+    (v : V) : ℕ := by
+  classical
+  exact if ¬ HighSink D n v then
     2 ^ leftChildExponent D n exponent v
   else 0
 
-def rightChildWeight
+noncomputable def rightChildWeight
     {V : Type*} [LinearOrder V] {width : ℝ}
     (D : DirectionData V width)
     (n : ℕ) (exponent : V → ℕ)
-    (v : V) : ℕ :=
-  if ¬ HighSource D n v then
+    (v : V) : ℕ := by
+  classical
+  exact if ¬ HighSource D n v then
     2 ^ rightChildExponent D n exponent v
   else 0
 
@@ -159,7 +163,7 @@ theorem root_capacity_of_two_child_capacities
     cases n with
     | zero => omega
     | succ m =>
-        simp [pow_succ, Nat.add_comm]
+        simpa [pow_succ] using (Nat.mul_comm (2 ^ m) 2)
   rw [hpow]
   omega
 
