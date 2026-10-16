@@ -1,6 +1,8 @@
 import JSP000404Research.ProjectionLocalCandidateCapacity
 import JSP000404Research.WeightedBlockHallOutlet
 import JSP000404Research.MinimalBlockDeficiency
+
+set_option maxHeartbeats 1000000
 import Mathlib.Tactic
 
 /-!
@@ -38,9 +40,8 @@ variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-local instance projectionOrder :
-    LinearOrder (ProjectionOrdered V) :=
-  projectionLinearOrder hp
+-- The projection order depends on hp; it must be bound locally where used.
+-- A typeclass instance with hp as an uninferable parameter is invalid.
 
 noncomputable def planarLowerCandidateBlock
     {lam t delta : ℝ} {n : ℕ}
@@ -51,11 +52,14 @@ noncomputable def planarLowerCandidateBlock
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V) :
     Finset (Fin n → Bool) := by
   classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   exact Classical.choose
     (planar_lowerBranch_exists_local_candidate_block
       hp hcap hn hdelta0 hdeltaHalf ht hlam C i)
@@ -69,9 +73,13 @@ theorem planarLowerCandidateBlock_spec
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     let htpos : 0 < t :=
       sendov_scale_pos hn hdelta0 ht
     let D :=
@@ -100,6 +108,7 @@ theorem planarLowerCandidateBlock_spec
           = doubledCompletionBlock B i c
     ) := by
   classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   exact Classical.choose_spec
     (planar_lowerBranch_exists_local_candidate_block
       hp hcap hn hdelta0 hdeltaHalf ht hlam C i)
@@ -113,18 +122,25 @@ theorem planar_lowerBranch_capacity_of_candidateBlock_expansion
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hExpansion :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ centreExponent (C i) t)
           ≤
         (S.biUnion
           (planarLowerCandidateBlock
             hp hcap hn hdelta0 hdeltaHalf ht hlam C)).card) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
   classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   apply dyadic_capacity_of_vertex_block_expansion
     (fun i : ProjectionOrdered V =>
       centreExponent (C i) t)
@@ -141,12 +157,17 @@ theorem planar_lowerBranch_candidateBlock_local_capacity
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∀ i : ProjectionOrdered V,
       2 ^ centreExponent (C i) t ≤
         (planarLowerCandidateBlock
           hp hcap hn hdelta0 hdeltaHalf ht hlam C i).card := by
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   intro i
   have hspec :=
     planarLowerCandidateBlock_spec
@@ -167,11 +188,17 @@ theorem planar_lowerBranch_overweight_has_nontrivial_candidate_core
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hover :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       2 ^ n < ∑ i : ProjectionOrdered V,
         2 ^ centreExponent (C i) t) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∃ T : Finset (ProjectionOrdered V),
       2 ≤ T.card ∧
       BlockDeficient
@@ -186,6 +213,7 @@ theorem planar_lowerBranch_overweight_has_nontrivial_candidate_core
           (planarLowerCandidateBlock
             hp hcap hn hdelta0 hdeltaHalf ht hlam C) U := by
   classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   let exponent : ProjectionOrdered V → ℕ :=
     fun i => centreExponent (C i) t
   let blocks : ProjectionOrdered V → Finset (Fin n → Bool) :=
