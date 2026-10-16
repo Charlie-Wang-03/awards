@@ -39,8 +39,8 @@ theorem sub_mem_nnreal_span_of_mem_convexHull_three
   rcases hq with ⟨a, b, ha, hb, hab, hqeq⟩
   rcases hcseg with ⟨r, s, hr, hs, hrs, hceq⟩
   rw [Submodule.mem_span_pair]
-  let ka : ℝ≥0 := ⟨s * a, mul_nonneg hs ha⟩
-  let kb : ℝ≥0 := ⟨s * b, mul_nonneg hs hb⟩
+  let ka : NNReal := ⟨s * a, mul_nonneg hs ha⟩
+  let kb : NNReal := ⟨s * b, mul_nonneg hs hb⟩
   refine ⟨ka, kb, ?_⟩
   dsimp [ka, kb]
   simp only [NNReal.smul_def]
