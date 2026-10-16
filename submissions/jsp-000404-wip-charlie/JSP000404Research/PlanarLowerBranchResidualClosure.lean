@@ -167,7 +167,7 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
 
   have habs' : R.IsAbsorbed := by
     intro u v huv hres
-    exact habs huv (not_lt.mp hres)
+    exact habs huv hres
 
   have hcap' :=
     R.cluster_capacity_of_absorbed_recoloring
