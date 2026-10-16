@@ -26,10 +26,11 @@ chosen vertex. -/
 theorem sub_mem_nnreal_span_of_mem_convexHull_three
     {x y z c : Plane}
     (hc : c ∈ convexHull ℝ ({x, y, z} : Set Plane)) :
-    c - x ∈ Submodule.span ℝ≥0 ({y - x, z - x} : Set Plane) := by
+    c - x ∈ Submodule.span NNReal ({y - x, z - x} : Set Plane) := by
   have hc' :
       c ∈ convexJoin ℝ {x} (segment ℝ y z) := by
-    simpa [convexJoin_singleton_segment] using hc
+    rw [convexJoin_singleton_segment]
+    exact hc
   obtain ⟨x0, hx0, q, hq, hcseg⟩ :=
     (mem_convexJoin.mp hc')
   have hx0eq : x0 = x := by
@@ -79,9 +80,13 @@ theorem angle_split_at_second_of_mem_convexHull_three
     EuclideanGeometry.angle x y z =
       EuclideanGeometry.angle x y c +
         EuclideanGeometry.angle c y z := by
+  have heq : ({x, y, z} : Set Plane) = {y, x, z} := by
+    ext w
+    simp [or_comm, or_left_comm, or_assoc]
   have hc' :
       c ∈ convexHull ℝ ({y, x, z} : Set Plane) := by
-    simpa [Set.insert_comm, Set.insert_left_comm] using hc
+    rw [← heq]
+    exact hc
   exact angle_split_of_mem_convexHull_three hc' hcy
 
 /-- Third-vertex form. -/
@@ -92,9 +97,13 @@ theorem angle_split_at_third_of_mem_convexHull_three
     EuclideanGeometry.angle x z y =
       EuclideanGeometry.angle x z c +
         EuclideanGeometry.angle c z y := by
+  have heq : ({x, y, z} : Set Plane) = {z, x, y} := by
+    ext w
+    simp [or_comm, or_left_comm, or_assoc]
   have hc' :
       c ∈ convexHull ℝ ({z, x, y} : Set Plane) := by
-    simpa [Set.insert_comm, Set.insert_left_comm] using hc
+    rw [← heq]
+    exact hc
   exact angle_split_of_mem_convexHull_three hc' hcz
 
 #print axioms sub_mem_nnreal_span_of_mem_convexHull_three
