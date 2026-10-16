@@ -60,9 +60,9 @@ theorem two_vertex_enlarged_deficiency_forces_residual_carrier
     by_contra hnone
     have hdisj :
         Disjoint (retainedCompletionWords C v)
-          (retainedCompletionWords C w) :=
-      Finset.not_nonempty_iff_eq_empty.mp hnone |>
-        Finset.disjoint_iff_inter_eq_empty.mpr
+          (retainedCompletionWords C w) := by
+      exact Finset.disjoint_iff_inter_eq_empty.mpr
+        (Finset.not_nonempty_iff_eq_empty.mp hnone)
     have hsum :
         (∑ x ∈ ({v,w} : Finset V), 2 ^ exponent x) =
           2 ^ exponent v + 2 ^ exponent w := by
