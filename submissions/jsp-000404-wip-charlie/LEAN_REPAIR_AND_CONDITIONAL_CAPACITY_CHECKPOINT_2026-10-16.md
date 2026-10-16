@@ -644,3 +644,41 @@ connected core success are separately proved, and in no sense
 establish that the all-module Fast Incremental Lean run is green.
 The source-closure gate remains OPEN with the sole root executable
 `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean`.
+
+
+### 26. Genuine two-centre enlarged Hall obstruction excluded if either centre is loss (NEW, verified)
+
+Source: `JSP000404Research/ResidualEnlargedPairLossHall.lean`.
+Focused GitHub Actions [38888157635](https://github.com/Charlie-Wang-03/awards/actions/runs/38888157635):
+**SUCCESS**, 3,313 jobs. The theorem
+`OrderedEdgeColoring.enlargedCandidate_pair_capacity_of_one_loss`
+has audited axioms `[propext, Classical.choice, Quot.sound]` and
+NO `sorryAx`.
+
+For two distinct vertices `v != w`, with one-layer residual
+constraints (`exponent(x)<n`, `exponent(x)<=n`,
+`card(active(x)) <= n-exponent(x)+1`), provided
+at least one endpoint belongs to `projectedLossVertices`, we have:
+
+```text
+card(enlargedProjectedCandidateBlock(v) UNION
+     enlargedProjectedCandidateBlock(w))
+    >= 2^exponent(v) + 2^exponent(w).
+```
+
+The proof uses genuine quantified one-cube extra slack at each
+loss vertex and audited intersection caps:
+- LOSS/NO-LOSS: intersection <= |Q_loss|;
+- LOSS/LOSS: intersection <= |Q_v| + |Q_w|.
+The exact finite-union card identity then gives the combined
+weighted Hall bound. This excludes EVERY two-centre enlarged-candidate
+Hall defect containing a projected-loss centre; any such
+loss-containing minimal deficient core needs >=3 centres.
+
+This conclusion is for the **all-active enlarged family**,
+not an automatic two-centre theorem for the unrelated
+single-choice `planarLowerCandidateBlock` family.
+
+Original JSP-000404 root remains incomplete: no unrestricted
+global non-reusing payment from TRUE external Boolean holes and
+unreserved surplus has been obtained.
