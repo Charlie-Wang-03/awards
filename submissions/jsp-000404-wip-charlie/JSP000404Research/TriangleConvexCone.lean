@@ -50,7 +50,6 @@ theorem sub_mem_nnreal_span_of_mem_convexHull_three
   have hrs' : r = 1 - s := by linarith
   rw [hab', hrs']
   module_nf
-  ring
 
 /-- Affine angle splitting at one outer vertex of a triangle. -/
 theorem angle_split_of_mem_convexHull_three
