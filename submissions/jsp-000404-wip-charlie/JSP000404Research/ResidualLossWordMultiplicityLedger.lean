@@ -100,7 +100,9 @@ theorem lossWordMultiplicity_sum_eq_duplicate_plus_union
       exact hpoint word hw
     _ = (∑ word ∈ U,
           lossWordMultiplicity C exponent choice word - 1) +
-          U.card := by simp [Finset.sum_add_distrib]
+          U.card := by
+            simp only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, mul_one]
+            rfl
 
 /-- Original exact cross-coordinate duplicate debt as a sum of
 TRUE per-word multiplicity excesses. Every word occurring in m
