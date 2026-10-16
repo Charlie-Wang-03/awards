@@ -33,21 +33,8 @@ theorem third_angle_gt_pi_sub_lam_of_two_scaled_small
       EuclideanGeometry.angle (p a) (p b) (p c) ≤ beta * lam) :
     Real.pi - lam <
       EuclideanGeometry.angle (p a) (p c) (p b) := by
-  have htri :=
-    EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := p b) (p₂ := p a) (p c)
-      (hp.ne hab.symm)
-  have hcommA :
-      EuclideanGeometry.angle (p c) (p a) (p b) =
-        EuclideanGeometry.angle (p b) (p a) (p c) :=
-    EuclideanGeometry.angle_comm _ _ _
-  rw [hcommA] at htri
-  have hthird :
-      EuclideanGeometry.angle (p a) (p c) (p b) =
-        EuclideanGeometry.angle (p b) (p c) (p a) :=
-    EuclideanGeometry.angle_comm _ _ _
-  rw [hthird]
-  nlinarith
+  exact third_angle_gt_pi_sub_lam_of_two_weighted_small
+    hp hsumCoeff hlam hab hac hbc ha hb
 
 theorem impossible_two_scaled_small_angles_under_cap
     {V : Type*} {p : V → Plane}
@@ -67,7 +54,7 @@ theorem impossible_two_scaled_small_angles_under_cap
     third_angle_gt_pi_sub_lam_of_two_scaled_small
       hp hsumCoeff hlam hab hac hbc ha hb
   have hle :=
-    hcap a c b hac hbc hab.symm
+    hcap a c b hac hab hbc.symm
   linarith
 
 theorem support_two_coeff_lt_half
