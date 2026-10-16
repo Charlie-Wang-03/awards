@@ -230,10 +230,11 @@ theorem fifth_exponent_le_n_sub_three_of_top_third_saturation
       Cd n delta t (by omega : 1 ≤ n)
       hdelta0 hdelta1 ht
   have hid := floorExcess_add_positiveSupport q
-  have hbudget : centreExponent Cd t + positiveSupport q ≤ n := by
-    unfold centreExponent
+  have hbudget : floorExcess q + positiveSupport q ≤ n := by
     rw [hid]
     exact hsum
+  have hk : centreExponent Cd t = floorExcess q := rfl
+  rw [hk]
   omega
 
 #print axioms no_five_low_support_of_top_and_third_support_one
