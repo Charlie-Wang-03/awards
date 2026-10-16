@@ -139,9 +139,18 @@ theorem third_layer_packing_forces_two_unit_transitions
       hdelta0 hdeltaHalf ht
       centre hcentre Cfam cert
 
+  have hcert0 : (cert (0 : Fin 4)).qe = HS.qe := by
+    rfl
+  have hcert1 : (cert (1 : Fin 4)).qe = HA.qe := by
+    rfl
+  have hcert2 : (cert (2 : Fin 4)).qe = HB.qe := by
+    rfl
+  have hcert3 : (cert (3 : Fin 4)).qe = HC.qe := by
+    rfl
   have hpack' :
       HS.qe + HA.qe + HB.qe + HC.qe ≤ 2 * n := by
-    simpa [cert, Cfam, centre, Fin.sum_univ_succ] using hpack
+    simpa [Fin.sum_univ_succ, hcert0, hcert1, hcert2, hcert3,
+      add_assoc] using hpack
   rw [hqS, hqA] at hpack'
   have hB1 : HB.qe = 1 := by
     have hBpos : 1 ≤ HB.qe := Nat.one_le_iff_ne_zero.mpr hHBpos
