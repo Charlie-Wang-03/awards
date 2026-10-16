@@ -2,6 +2,7 @@ import JSP000404Research.PositiveTransitionAngleAlignment
 import JSP000404Research.SupportThreePinnedMiddleShape
 import JSP000404Research.ConcreteDeficitThree
 import JSP000404Research.CyclicEdgeRotation
+import JSP000404Research.FullQuotientZeroAngleMass
 import Mathlib.Tactic
 
 /-!
@@ -51,7 +52,7 @@ theorem support_three_middle_hidden_large_bridge
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
       SupportThreePinnedMiddleShape hp
-        (show top ≠ i by simpa using hit) C)
+        (show top ≠ i by exact Ne.symm hit) C)
     (hthree :
       ∃ first rest,
         C.rays = first :: rest ∧
@@ -79,8 +80,20 @@ theorem support_three_middle_hidden_large_bridge
       hFirst, hLast, hHidden⟩ := hmiddle
 
   have hlenRays : C.rays.length = 5 := by
-    rw [centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
+    have hlen :
+        C.rays.length = Fintype.card (OtherVertex i) := by
+      calc
+        C.rays.length = C.rays.toFinset.card :=
+          (List.toFinset_card_of_nodup C.nodup).symm
+        _ = Fintype.card (OtherVertex i) := by
+          rw [C.complete]
+          simp
+    have hother : Fintype.card (OtherVertex i) = 5 := by
+      change Fintype.card {j : V // ¬ j = i} = 5
+      rw [Fintype.card_subtype_compl (fun j : V => j = i)]
+      rw [Fintype.card_subtype_eq i]
+      omega
+    omega
   have hlenRot : (C.rays.rotate k).length = 5 := by
     rw [List.length_rotate, hlenRays]
   rw [hrotRays] at hlenRot
@@ -103,7 +116,7 @@ theorem support_three_middle_hidden_large_bridge
           subst rest3
           exact ⟨b,c,d,rfl⟩
 
-  let topRay : OtherVertex i := ⟨top, by simpa using hit⟩
+  let topRay : OtherVertex i := ⟨top, by exact Ne.symm hit⟩
   have hrotShape :
       C.rays.rotate k = topRay :: r :: b :: c :: d :: [] := by
     simpa [topRay, hrest] using hrotRays
@@ -121,45 +134,43 @@ theorem support_three_middle_hidden_large_bridge
 
   have hrTop : r.1 ≠ top := by
     intro h
-    apply htopNotTail
-    left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = r := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hbTop : b.1 ≠ top := by
     intro h
-    apply htopNotTail
-    right; left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = b := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hcTop : c.1 ≠ top := by
     intro h
-    apply htopNotTail
-    right; right; left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = c := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hdTop : d.1 ≠ top := by
     intro h
-    apply htopNotTail
-    right; right; right
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = d := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
 
-  have hrb : r ≠ b :=
-    (List.nodup_cons.mp htailNodup).1 (by simp)
-  have hrc : r ≠ c :=
-    (List.nodup_cons.mp htailNodup).1 (by simp)
-  have hrd : r ≠ d :=
-    (List.nodup_cons.mp htailNodup).1 (by simp)
+  have hrb : r ≠ b := by
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
+  have hrc : r ≠ c := by
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
+  have hrd : r ≠ d := by
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
   have hbcd :
       (b :: c :: d :: []).Nodup :=
     (List.nodup_cons.mp htailNodup).2
-  have hbc : b ≠ c :=
-    (List.nodup_cons.mp hbcd).1 (by simp)
-  have hbd : b ≠ d :=
-    (List.nodup_cons.mp hbcd).1 (by simp)
+  have hbc : b ≠ c := by
+    intro h
+    exact (List.nodup_cons.mp hbcd).1 (by simp [h])
+  have hbd : b ≠ d := by
+    intro h
+    exact (List.nodup_cons.mp hbcd).1 (by simp [h])
   have hcd : c ≠ d := by
+    intro h
     have hcdN := (List.nodup_cons.mp hbcd).2
-    exact (List.nodup_cons.mp hcdN).1 (by simp)
+    exact (List.nodup_cons.mp hcdN).1 (by simp [h])
 
   obtain ⟨firstT,restT,hraysT,htransT⟩ := hthree
   have hrestTLen : restT.length = 4 := by
@@ -182,12 +193,14 @@ theorem support_three_middle_hidden_large_bridge
     rw [← centreQuotient_ofFn C t,
         listPositiveCount_ofFn_eq_positiveSupport]
     exact hsupport
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
-  have htone :
-      1 ≤ t :=
-    sendov_scale_one_le (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (4 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
+  have htone : 1 ≤ t := by
+    rw [ht]
+    have hnR : (4 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
 
   let AsT : List ℝ :=
     cyclicRayAngles (p := p) i firstT restT
