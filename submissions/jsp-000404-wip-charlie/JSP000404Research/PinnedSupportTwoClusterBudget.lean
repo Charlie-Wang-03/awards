@@ -40,30 +40,35 @@ theorem listZeroGapMass_pinned_support_two_eq_middle_sum
         (gFirst :: (gmid ++ [gLast]))
       =
     gmid.sum := by
-  simp only [listZeroGapMass, hFirst, if_false, zero_add]
-  have hmid :
-      listZeroGapMass mid gmid = gmid.sum :=
-    listZeroGapMass_eq_gap_sum_of_all_zero
-      mid gmid hlen hzero
-  induction mid generalizing gmid with
-  | nil =>
-      have hgmid : gmid = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
-      subst gmid
-      simp [listZeroGapMass, hLast]
-  | cons q qs ih =>
-      cases gmid with
-      | nil =>
-          simp at hlen
-      | cons g gs =>
-          simp at hlen
-          have hq0 : q = 0 := hzero q (by simp)
-          have htail : ∀ x ∈ qs, x = 0 := by
-            intro x hx
-            exact hzero x (by simp [hx])
-          subst q
-          simp [listZeroGapMass, hLast,
-            ih gs hlen htail]
+  -- Prove the zero-quotient middle block directly, avoiding an
+  -- unavailable legacy helper and strengthening no hypotheses.
+  have hmid : listZeroGapMass mid gmid = gmid.sum := by
+    induction mid generalizing gmid with
+    | nil =>
+        cases gmid with
+        | nil => simp [listZeroGapMass]
+        | cons g gs => simp at hlen
+    | cons q qs ih =>
+        cases gmid with
+        | nil => simp at hlen
+        | cons g gs =>
+            have hq0 : q = 0 := hzero q (by simp)
+            have hlen' : qs.length = gs.length := by
+              simpa only [List.length_cons, Nat.succ.injEq] using hlen
+            have hzero' : ∀ x ∈ qs, x = 0 := by
+              intro x hx
+              exact hzero x (by simp [hx])
+            simp [listZeroGapMass, hq0, ih gs hlen' hzero']
+  calc
+    listZeroGapMass
+        (qFirst :: (mid ++ [qLast]))
+        (gFirst :: (gmid ++ [gLast]))
+      = listZeroGapMass (mid ++ [qLast]) (gmid ++ [gLast]) := by
+          simp only [listZeroGapMass, if_neg hFirst, zero_add]
+    _ = listZeroGapMass mid gmid + listZeroGapMass [qLast] [gLast] :=
+          listZeroGapMass_append mid [qLast] gmid [gLast] hlen
+    _ = gmid.sum := by
+          simpa [listZeroGapMass, hLast] using hmid
 
 theorem pinned_support_two_middle_scaled_le_delta
     (qFirst qLast : ℕ)
@@ -102,8 +107,13 @@ theorem pinned_support_two_middle_scaled_le_delta
     listZeroGapMass_pinned_support_two_eq_middle_sum
       qFirst qLast mid gFirst gLast gmid
       (by omega) (by omega) hlen hzero
-  rw [hmassEq] at hmass
-  exact hmass
+  have hmass' :
+      t * listZeroGapMass
+          (qFirst :: (mid ++ [qLast]))
+          (gFirst :: (gmid ++ [gLast])) ≤ delta := by
+    simpa only [List.cons_append] using hmass
+  rw [hmassEq] at hmass'
+  exact hmass'
 
 /-- Same conclusion when end positivity is obtained abstractly by excluding
 zero at the two pinned ends. -/
