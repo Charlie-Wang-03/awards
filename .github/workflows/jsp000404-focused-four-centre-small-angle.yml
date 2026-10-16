@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  two-shadow:
+  four-centre-angle:
     name: Kernel-check four-centre support-two small-angle theorem
     runs-on: ubuntu-latest
     timeout-minutes: 25
