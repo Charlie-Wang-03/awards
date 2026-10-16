@@ -106,6 +106,7 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
       let B :=
         standardResidualColoring D n hwidth
       R.IsAbsorbed) :
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
     ∑ i : ProjectionOrdered V, 2 ^ centreExponent (C i) t
       ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
@@ -165,7 +166,7 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
     rfl
 
   have habs' : R.IsAbsorbed := by
-    simpa [B, D] using habs
+    simpa [B, D, OrderedEdgeColoring.IsResidual, not_lt] using habs
 
   have hcap' :=
     R.cluster_capacity_of_absorbed_recoloring
