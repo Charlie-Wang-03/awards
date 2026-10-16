@@ -56,7 +56,8 @@ def depths {V : Type*} (T : LabeledBinaryKraftTree V) : List ℕ :=
       simp [shape, depths, profile, BinaryKraftTree.depths]
   | node L R ihL ihR =>
       simp [shape, depths, profile, BinaryKraftTree.depths,
-        ihL, ihR, List.map_append, List.map_map]
+        ihL, ihR, List.map_append, List.map_map,
+        Function.comp_def, Nat.succ_eq_add_one]
 
 @[simp] theorem profile_labels_eq
     {V : Type*} (T : LabeledBinaryKraftTree V) :
@@ -65,7 +66,8 @@ def depths {V : Type*} (T : LabeledBinaryKraftTree V) : List ℕ :=
   | leaf v =>
       simp [profile, labels]
   | node L R ihL ihR =>
-      simp [profile, labels, List.map_append, List.map_map, ihL, ihR]
+      simp [profile, labels, List.map_append, List.map_map,
+        Function.comp_def, ihL, ihR]
 
 /-- Exact Kraft identity for a labelled tree, after forgetting the labels. -/
 theorem dyadic_profile_sum_eq
@@ -83,7 +85,7 @@ theorem dyadic_profile_sum_eq
   have h :=
     BinaryKraftTree.dyadic_depth_sum_eq T.shape n hshape
   rw [shape_depths_eq] at h
-  simpa [depths, List.map_map] using h
+  simpa [depths, List.map_map, Function.comp_def] using h
 
 /-- Pointwise depth slack decreases the dyadic leaf mass. -/
 theorem profile_target_weight_le
@@ -122,13 +124,14 @@ theorem profile_target_sum_eq_labels
         =
       ((T.profile.map Prod.fst).map
         (fun v => 2 ^ (n - ell v))).sum := by
-          simp [List.map_map]
+          simp only [List.map_map]
+          rfl
     _ = (T.labels.map (fun v => 2 ^ (n - ell v))).sum := by
           rw [hlabels]
 
 /-- Concrete labelled-tree certificate for a finite vertex family. -/
 structure Certificate
-    (V : Type*) [Fintype V]
+    (V : Type*) [Fintype V] [DecidableEq V]
     (n : ℕ) (ell : V → ℕ) where
   tree : LabeledBinaryKraftTree V
   nodup : tree.labels.Nodup
@@ -141,7 +144,7 @@ namespace Certificate
 
 /-- Kraft capacity in leaf-list form. -/
 theorem list_capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     {n : ℕ} {ell : V → ℕ}
     (C : Certificate V n ell) :
     (C.tree.labels.map (fun v => 2 ^ (n - ell v))).sum ≤ 2 ^ n := by
@@ -159,7 +162,7 @@ theorem list_capacity
 
 /-- Main finite-vertex Kraft capacity theorem. -/
 theorem capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     {n : ℕ} {ell : V → ℕ}
     (C : Certificate V n ell) :
     (∑ v : V, 2 ^ (n - ell v)) ≤ 2 ^ n := by
@@ -175,7 +178,7 @@ theorem capacity
 
 /-- Exponent form when ell(v)=n-exponent(v). -/
 theorem exponent_capacity
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     {n : ℕ}
     (exponent ell : V → ℕ)
     (C : Certificate V n ell)
@@ -188,7 +191,9 @@ theorem exponent_capacity
       ∑ v : V, 2 ^ (n - ell v) := by
         apply Finset.sum_congr rfl
         intro v _
-        rw [hell v, Nat.sub_sub_cancel (hexp v)]
+        rw [hell v]
+        congr 1
+        omega
     _ ≤ 2 ^ n := C.capacity
 
 end Certificate
