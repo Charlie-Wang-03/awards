@@ -1,6 +1,7 @@
 import JSP000404Research.ProjectionLossFlipCoordinate
 import JSP000404Research.ResidualLocalCandidateCapacity
 import JSP000404Research.ProjectionStandardBandBudget
+import JSP000404Research.TopExponentSupportOneTransition
 import Mathlib.Tactic
 
 /-!
@@ -43,6 +44,8 @@ theorem planar_lowerBranch_exists_local_candidate_block
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (i : ProjectionOrdered V) :
