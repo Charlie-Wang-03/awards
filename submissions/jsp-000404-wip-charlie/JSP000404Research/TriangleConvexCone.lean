@@ -42,8 +42,8 @@ theorem sub_mem_nnreal_span_of_mem_convexHull_three
   let ka : NNReal := ⟨s * a, mul_nonneg hs ha⟩
   let kb : NNReal := ⟨s * b, mul_nonneg hs hb⟩
   refine ⟨ka, kb, ?_⟩
-  dsimp [ka, kb]
   simp only [NNReal.smul_def]
+  change ((s * a : ℝ) • (y - x) + (s * b : ℝ) • (z - x) = c - x)
   rw [← hceq, ← hqeq]
   module_nf
   have hab' : b = 1 - a := by linarith
