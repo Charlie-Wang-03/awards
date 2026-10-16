@@ -7,6 +7,8 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/FourCentreMixedInteriorContradiction.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TriangleConvexCone.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FourCentreMixedTransitionWitness.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeRayNontransitionPayment.lean"
       - ".github/workflows/jsp000404-focused-mixed-interior-contradiction.yml"
   workflow_dispatch:
 
