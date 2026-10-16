@@ -85,13 +85,13 @@ theorem no_mixed_fourth_outside_triangle
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        a Ca (by rw [hA]; omega))
+        a Ca (by rw [hA]))
   let HB :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        b Cb (by rw [hB]; omega))
+        b Cb (by rw [hB]))
 
   have hqS : HS.qe = n :=
     unit_deficit_transition_qe_eq_n
@@ -213,16 +213,20 @@ theorem no_mixed_fourth_outside_triangle
       SS4 SA4 SB4 SC
 
   have hS4 : (n : ℝ) * lam ≤ SS4.turnLength := by
-    simpa [SS4, SS, p4, e] using hturnS
+    simpa [SS4, SS, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnS
   have hA4 :
       ((n - 1 : ℕ) : ℝ) * lam ≤ SA4.turnLength := by
-    simpa [SA4, SA, p4, e] using hturnA
+    simpa [SA4, SA, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnA
   have hB4 : lam ≤ SB4.turnLength := by
-    simpa [SB4, SB, p4, e] using hturnB
+    simpa [SB4, SB, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnB
 
   have hncast :
       ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 1 ≤ n))
+    have hnat : n - 1 + 1 = n :=
+      Nat.sub_add_cancel (by omega : 1 ≤ n)
+    have hcast : ((n - 1 : ℕ) : ℝ) + 1 = (n : ℝ) := by
+      exact_mod_cast hnat
+    linarith
   have hpi : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
