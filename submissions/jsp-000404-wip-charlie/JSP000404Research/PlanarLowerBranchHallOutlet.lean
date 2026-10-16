@@ -1,4 +1,5 @@
 import JSP000404Research.PlanarLowerBranchHardWordInjection
+import JSP000404Research.CentreExponentBounds
 import Mathlib.Combinatorics.Hall.Basic
 import Mathlib.Tactic
 
@@ -62,9 +63,7 @@ theorem hardProjectionWords_injection_of_hall
     fun x => ⟨g x, hholes x (hgMem x)⟩
   refine ⟨f, ?_⟩
   intro x y hxy
-  apply Subtype.ext
-  apply hgInj
-  exact congrArg Subtype.val hxy
+  exact hgInj (congrArg Subtype.val hxy)
 
 theorem exponent_capacity_of_hall_hard_word_candidates
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -115,6 +114,8 @@ theorem planar_lowerBranch_capacity_of_hall_candidates
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (candidates :
