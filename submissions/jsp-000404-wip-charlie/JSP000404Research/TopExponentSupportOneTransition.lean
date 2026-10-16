@@ -46,6 +46,9 @@ theorem top_exponent_positiveSupport_eq_one
     unfold centreExponent
     rw [hid]
     exact hsum
+  have htop : floorExcess q = n - 1 := by
+    simpa [q, centreExponent] using hexp
+  change floorExcess q + positiveSupport q ≤ n at hcount
   omega
 
 /-- At a top centre, every actual high-exponent transition
