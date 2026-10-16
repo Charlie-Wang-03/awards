@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerNoFifthExposed.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/TopExponentSupportOneTransition.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExposedSupportIntervalFinFour.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExposedSupportIntervalGeneral.lean"
       - ".github/workflows/jsp000404-focused-third-layer-no-fifth.yml"
@@ -20,7 +21,7 @@ concurrency:
 
 jobs:
   two-shadow:
-    name: Kernel-check two retained-edge middle-hidden-rank-bridge Fin coercion fixes
+    name: Kernel-check third-layer no-fifth exposed packing certificate
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
