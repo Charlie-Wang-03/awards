@@ -96,12 +96,22 @@ theorem third_layer_packing_forces_two_unit_transitions
 
   let centre : Fin 4 → V := ![s,a,b,c]
   let Cfam : ∀ r : Fin 4,
-      CentreProjectiveCycle hp (centre r) :=
-    ![Cs,Ca,Cb,Cc]
+      CentreProjectiveCycle hp (centre r) := by
+    intro r
+    fin_cases r
+    · exact Cs
+    · exact Ca
+    · exact Cb
+    · exact Cc
   let cert : ∀ r : Fin 4,
       HighExponentTransitionIntervalCertificate
-        hp t (centre r) (Cfam r) :=
-    ![HS,HA,HB,HC]
+        hp t (centre r) (Cfam r) := by
+    intro r
+    fin_cases r
+    · exact HS
+    · exact HA
+    · exact HB
+    · exact HC
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
