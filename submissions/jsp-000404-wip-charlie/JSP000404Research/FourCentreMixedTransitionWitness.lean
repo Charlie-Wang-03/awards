@@ -20,8 +20,8 @@ namespace JSP000404Research
 theorem mixed_transition_decomposition_qe_eq_one
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -65,7 +65,7 @@ theorem mixed_transition_decomposition_qe_eq_one
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        a Ca (by rw [hA]; omega))
+        a Ca (by rw [hA]))
   obtain ⟨HB, hHB⟩ :=
     exists_highExponentTransitionIntervalCertificate_of_decomposition
       hp htpos b Cb first rest pre post qe
