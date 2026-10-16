@@ -1,5 +1,6 @@
 import JSP000404Research.SupportThreeMiddleHiddenLargeBridge
 import JSP000404Research.MiddleHiddenClusterSeparation
+import JSP000404Research.SupportThreeTransitionDichotomy
 import Mathlib.Tactic
 
 /-!
@@ -200,6 +201,48 @@ theorem support_three_middle_hidden_separated_pattern
     bridge_large := hBridge
     d_top_large := hDTop
   }⟩
+
+/-- A non-strictly-exposed six-point support-three middle-hidden centre
+produces the actual enriched separated-pattern record without an
+independently assumed sign-transition witness. -/
+theorem nonexposed_middle_hidden_has_separated_pattern
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    {top i : V}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : CentreProjectiveCycle hp i)
+    (hcard : Fintype.card V = 6)
+    (hn : 4 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hit : i ≠ top)
+    (hexp : centreExponent C t = n - 3)
+    (hsupport : positiveSupport (centreQuotient C t) = 3)
+    (hmiddle : SupportThreePinnedMiddleShape (t := t) hp
+      (Ne.symm hit) C)
+    (hnot : ¬ StrictlyExposedAt p i) :
+    Nonempty (MiddleHiddenSeparatedPatternAwayFromTop
+      p top i delta lam) := by
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (4 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have htone : 1 ≤ t := by
+    rw [ht]
+    have hnR : (4 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have hthree :=
+    three_transitions_of_support_three_not_strictlyExposed
+      hp hcap htpos htone hlam i C hsupport hnot
+  exact support_three_middle_hidden_separated_pattern
+    hp hcap C hcard hn hdelta0 hdeltaHalf
+    ht hlam hit hexp hsupport hmiddle hthree
+
+#print axioms nonexposed_middle_hidden_has_separated_pattern
 
 #print axioms MiddleHiddenSeparatedPatternAwayFromTop.cluster_separation
 #print axioms support_three_middle_hidden_separated_pattern
