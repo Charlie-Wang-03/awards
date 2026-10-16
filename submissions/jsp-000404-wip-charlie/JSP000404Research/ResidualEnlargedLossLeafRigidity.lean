@@ -88,11 +88,11 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
     minimal_enlargedCandidate_loss_shared_nonempty
       C exponent hdef hmin hvT hvLoss (hexpLt v)
   obtain ⟨sharedWord,hsharedWord⟩ := hsharedNonempty
-  have hsharedData :=
-    sharedBlockWords_has_other_block
-      (enlargedProjectedCandidateBlock C exponent)
-      hsharedWord
-  obtain ⟨hvShared,z,hzT,hzv,hzShared⟩ := hsharedData
+  have hparts := Finset.mem_inter.mp hsharedWord
+  have hvShared := hparts.1
+  obtain ⟨z,hzErase,hzShared⟩ := Finset.mem_biUnion.mp hparts.2
+  have hzT : z ∈ T := (Finset.mem_erase.mp hzErase).2
+  have hzv : z ≠ v := (Finset.mem_erase.mp hzErase).1
   have hzCross : EnlargedBlocksCross C exponent v z := by
     exact ⟨sharedWord,hvShared,hzShared⟩
   have hzw : z = w :=
