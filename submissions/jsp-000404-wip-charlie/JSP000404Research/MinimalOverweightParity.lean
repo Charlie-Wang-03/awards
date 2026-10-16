@@ -215,8 +215,10 @@ theorem odd_finset_one_or_three_or_exists_outside_triple
           ({a, b, c} : Finset V).card ≤ ({b, c} : Finset V).card + 1 :=
             Finset.card_insert_le a _
           _ ≤ ({c} : Finset V).card + 1 + 1 := by
+            have hb :
+                ({b, c} : Finset V).card ≤ ({c} : Finset V).card + 1 :=
+              Finset.card_insert_le b _
             omega
-              -- The first insertion has at most one additional element.
           _ = 3 := by simp
       exact h.trans htriple
     have hmod : S.card % 2 = 1 :=
