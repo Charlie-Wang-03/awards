@@ -381,3 +381,86 @@ a geometry-to-dyadic allocation.
 The historical all-module Fast Incremental Lean workflow is
 **not certified green**. Focused green runs alone do not
 establish global build success or an unconditional solution.
+
+
+## October 16: global-exposure classification and direct Hall repairs
+
+### 16. Odd minimum exponent layer in minimal overweight deletion
+
+Module: `JSP000404Research/MinimalOverweightParity.lean`.
+CI [38879651663](https://github.com/Charlie-Wang-03/awards/actions/runs/38879651663):
+**SUCCESS**, 3,096 build jobs; four audited key declarations show
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
+
+Fixed the obsolete `odd_pow_iff` reference with an actual
+modulo-two proof using positive exponent/evenness, and repaired the
+three-element Finset cardinal bound with two explicit
+`Finset.card_insert_le` inequalities.
+
+Conditional on exact normalized overweight mass and the
+minimum-deletion child bound, the multiplicity of the minimum exponent
+is **odd**, and cannot be exactly two. These child-bound hypotheses
+are not established automatically for arbitrary planar geometry.
+
+### 17. Global exactly-four strict exposure classification
+
+Module: `JSP000404Research/FourExposedCentreSaturation.lean`.
+CI [38880432513](https://github.com/Charlie-Wang-03/awards/actions/runs/38880432513):
+**SUCCESS**, 3,461 build jobs. The one audited iff theorem has only
+`[propext, Classical.choice, Quot.sound]`; no `sorryAx`.
+The first CI attempt failed only because the runner could not resolve
+`release.lean-lang.org`; after retry, a separate Lean error
+(`hds.symm` on function-shaped inequality) was corrected with
+`Ne.symm`, and final focused build passed.
+
+Under the four-centre saturation configuration from the previous
+checkpoint (top n−1 centre s, n−3/support-one centre a, and two other
+support<=2 centres b,c), for EVERY vertex d:
+
+```text
+StrictlyExposedAt p d <-> (d=s or d=a or d=b or d=c).
+```
+
+This is global over the entire finite point set under the **specific**
+saturated configuration. It does NOT assert that every general planar
+configuration has four exposed points, nor does it establish the
+missing global dyadic payment.
+
+### 18. Repaired planar Hall hard-word outlet
+
+Module: `JSP000404Research/PlanarLowerBranchHallOutlet.lean`.
+CI [38880437723](https://github.com/Charlie-Wang-03/awards/actions/runs/38880437723):
+**SUCCESS**, 3,533 build jobs. All three audited declarations have
+only `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+Fixed a misapplied Subtype extensionality, added the projected
+linear order in the cycles binder and final theorem goal, and
+restored the actual scale lemma import. The verified conditional
+Hall route is:
+
+```text
+forall hard word x, candidates(x) subset ACTUAL projectionHoleWords;
+forall finite hard-word subsets S,
+  |S| <= |union_{x in S} candidates(x)|
+==> exists a global injection hardProjectionWords -> projectionHoleWords
+==> sum_v 2^exponent(v) <= 2^n.
+```
+
+The **global Hall expansion** and genuine hole candidate construction
+have NOT been proved from AngleCap. Treating these assumptions as
+unconditional would be circular. This is a restored proof
+interface, not a discharged final `sorry`.
+
+### Still outstanding
+
+The last admitted research-only WIP `sorry` remains in
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`
+(near line 632). The decisive missing geometric step remains
+globally non-reusing payment of translated-loss-covered blockers,
+terminal twin/mixed-rigid/soft debts, and genuine NET duplicate
+debt by TRUE Boolean holes *outside* translated losses plus
+genuinely unreserved dyadic surplus.
+
+Do not conflate these focused build successes with the full
+Fast Incremental Lean workflow: that historical all-module
+build remains red because of unrelated legacy Lean errors.
