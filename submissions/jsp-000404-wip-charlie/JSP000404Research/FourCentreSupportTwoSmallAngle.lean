@@ -155,7 +155,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
   have hgapSum : g0 + g1 + g2 = 1 := by
     have hs := C.gaps_sum
     rw [hgaps] at hs
-    simpa using hs
+    simpa only [add_assoc] using hs
   have hdelta1 : delta < 1 := by linarith
   have hQ :=
     centreQuotient_function_sum_le_n
@@ -181,7 +181,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
   have hqsum :
       q0 + q1 + q2 = n := by
     rw [hqlist] at hqsumList
-    simpa using hqsumList
+    simpa only [add_assoc] using hqsumList
   have hsupportList :
       listPositiveCount [q0,q1,q2] = 2 := by
     have h :
@@ -191,8 +191,10 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
       exact hsupport
     rw [hqlist] at h
     exact h
-  have ht1 : 1 ≤ t :=
-    sendov_scale_one_le (by omega : 1 ≤ n) hdelta0 ht
+  have ht1 : 1 ≤ t := by
+    have hnReal : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    rw [ht]
+    linarith
   have htpos : 0 < t := lt_of_lt_of_le zero_lt_one ht1
   have hg0 : 0 ≤ g0 := by
     have h := C.gaps_nonneg g0
@@ -241,7 +243,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
       r0 ≠ r1 ∧ r0 ≠ r2 ∧ r1 ≠ r2 := by
     have h := C.nodup
     rw [hrays] at h
-    simpa using h
+    simpa only [and_assoc] using h
   have hchanges0 :=
     centre_changesOnlyOnPositive
       hp hcap htpos ht1 hlam i C r0 [r1,r2] hrays
@@ -267,7 +269,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
   · have hs01 :
         raySignAt hp i r0 = raySignAt hp i r1 := by
       by_contra hs
-      exact hq0 (hstep01 hs)
+      exact (hstep01 hs) hq0
     have hang :=
       actual_angle_le_delta_lam_of_ordinary_same_sign_gap
         hp htpos hlam i horder01 hs01 (hsmall.1 hq0)
@@ -276,7 +278,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
     · have hs12 :
           raySignAt hp i r1 = raySignAt hp i r2 := by
         by_contra hs
-        exact hq1 (hstep12 hs)
+        exact (hstep12 hs) hq1
       have hang :=
         actual_angle_le_delta_lam_of_ordinary_same_sign_gap
           hp htpos hlam i horder12 hs12 (hsmall.2.1 hq1)
@@ -287,7 +289,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
       have hs20 :
           raySignAt hp i r2 = !raySignAt hp i r0 := by
         by_contra hs
-        exact hq2 (hstep20 hs)
+        exact (hstep20 hs) hq2
       have hang :=
         actual_angle_le_delta_lam_of_wrap_same_sign_gap
           hp htpos hlam i horder02 hs20 (hsmall.2.2 hq2)
