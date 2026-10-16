@@ -122,8 +122,8 @@ theorem saturated_wrap_failure_unit_subslot
       (saturatedSeamIndex n z : ℝ) +
           s - (Nat.floor s : ℝ) <
         t - z := by
-    rw [hjCast, hs, ht]
-    linarith [haUpper, hqEqCast]
+    rw [hjCast]
+    linarith [haUpper, hqEqCast, hs]
   have hupper :
       t - z ≤
         (saturatedSeamIndex n z : ℝ) + delta := by
