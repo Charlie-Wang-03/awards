@@ -5,7 +5,7 @@ on:
     branches:
       - research/jsp-000404-sharp-centre
     paths:
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research.TwoSmallAngleContradiction.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/TwoSmallAngleContradiction.lean"
       - ".github/workflows/jsp000404-focused-two-small-angle-contradiction.yml"
   workflow_dispatch:
 
