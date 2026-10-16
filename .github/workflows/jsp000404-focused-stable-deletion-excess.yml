@@ -5,7 +5,7 @@ on:
     branches:
       - research/jsp-000404-sharp-centre
     paths:
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research.StableDeletionExcess.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/StableDeletionExcess.lean"
       - ".github/workflows/jsp000404-focused-stable-deletion-excess.yml"
   workflow_dispatch:
 
