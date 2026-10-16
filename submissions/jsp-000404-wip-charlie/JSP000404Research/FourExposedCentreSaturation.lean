@@ -80,8 +80,8 @@ theorem strictlyExposedAt_iff_one_of_four_saturated_centres
     · have hcontra :=
         no_fifth_strictlyExposed_of_top_third_one_two_low_support
           hp hcap hn hdelta0 hdeltaHalf ht hlam
-          hsa hsb hsc hds.symm
-          hab hac hda.symm hbc hdb.symm hdc.symm
+          hsa hsb hsc (Ne.symm hds)
+          hab hac (Ne.symm hda) hbc (Ne.symm hdb) (Ne.symm hdc)
           Cs Ca Cb Cc hS hA hsupA hsupB hsupC hExD
       exact False.elim hcontra
   · intro hcase
