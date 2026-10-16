@@ -76,8 +76,8 @@ theorem lossWordMultiplicity_sum_eq_duplicate_plus_union
     (exponent : V → ℕ) (choice : V → Fin n) :
     (∑ word ∈ translatedLossAllCoordinateWords C exponent choice,
       lossWordMultiplicity C exponent choice word) =
-      (∑ word ∈ translatedLossAllCoordinateWords C exponent choice,
-        lossWordMultiplicity C exponent choice word - 1) +
+      (Finset.sum (translatedLossAllCoordinateWords C exponent choice)
+        (fun word => lossWordMultiplicity C exponent choice word - 1)) +
         (translatedLossAllCoordinateWords C exponent choice).card := by
   classical
   let U := translatedLossAllCoordinateWords C exponent choice
@@ -113,8 +113,8 @@ theorem translatedLossDuplicateDebt_eq_sum_wordMultiplicity_excess
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) (choice : V → Fin n) :
     translatedLossDuplicateDebt C exponent choice =
-      ∑ word ∈ translatedLossAllCoordinateWords C exponent choice,
-        lossWordMultiplicity C exponent choice word - 1 := by
+      Finset.sum (translatedLossAllCoordinateWords C exponent choice)
+        (fun word => lossWordMultiplicity C exponent choice word - 1) := by
   classical
   have hdouble :=
     lossCoordinateSlice_card_sum_eq_wordMultiplicity_sum

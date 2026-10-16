@@ -25,10 +25,10 @@ theorem translatedLossDuplicateDebt_eq_word_excess_covered_plus_trueHole
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ) (choice : V → Fin n) :
     translatedLossDuplicateDebt C exponent choice =
-      (∑ word ∈ translatedLossCoveredWords C exponent choice,
-        lossWordMultiplicity C exponent choice word - 1) +
-      (∑ word ∈ translatedLossTrueHoleWords C exponent choice,
-        lossWordMultiplicity C exponent choice word - 1) := by
+      (Finset.sum (translatedLossCoveredWords C exponent choice)
+        (fun word => lossWordMultiplicity C exponent choice word - 1)) +
+      (Finset.sum (translatedLossTrueHoleWords C exponent choice)
+        (fun word => lossWordMultiplicity C exponent choice word - 1)) := by
   classical
   let U := translatedLossAllCoordinateWords C exponent choice
   let K := coveredCompletionWords C
@@ -42,12 +42,12 @@ theorem translatedLossDuplicateDebt_eq_word_excess_covered_plus_trueHole
     exact (Finset.mem_sdiff.mp ha).2 (Finset.mem_inter.mp hb).2
   rw [translatedLossDuplicateDebt_eq_sum_wordMultiplicity_excess
     C exponent choice]
-  change (∑ word ∈ U,
-      lossWordMultiplicity C exponent choice word - 1) =
-    (∑ word ∈ U ∩ K,
-      lossWordMultiplicity C exponent choice word - 1) +
-    (∑ word ∈ U \ K,
-      lossWordMultiplicity C exponent choice word - 1)
+  change Finset.sum U
+      (fun word => lossWordMultiplicity C exponent choice word - 1) =
+    Finset.sum (U ∩ K)
+      (fun word => lossWordMultiplicity C exponent choice word - 1) +
+    Finset.sum (U \ K)
+      (fun word => lossWordMultiplicity C exponent choice word - 1)
   conv_lhs => rw [hpart]
   rw [Finset.sum_union hdisj]
   omega
