@@ -103,9 +103,10 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+set_option maxHeartbeats 1000000
+
 /-- Saturation gives the full stepwise-tight local cyclic profile, not merely
 the wrap equality. -/
-set_option maxHeartbeats 1000000 in
 theorem genericProjection_saturated_stepwise_rigidity
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -120,7 +121,9 @@ theorem genericProjection_saturated_stepwise_rigidity
     (C :
       letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hexpI : exponent i = centreExponent C t)
+    (hexpI :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      exponent i = centreExponent C t)
     (hsat :
       letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ExactProjectedBudget
@@ -173,7 +176,7 @@ theorem genericProjection_saturated_stepwise_rigidity
     | nil =>
         exact False.elim (L.values_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ L.values := by
     rw [hvalues]
     simp
