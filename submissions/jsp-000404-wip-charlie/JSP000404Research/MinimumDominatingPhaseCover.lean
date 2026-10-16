@@ -53,8 +53,7 @@ theorem exists_minimum_card_subcover
   intro U hUS hUCover
   have hPU : P U.card := ⟨U, hUS, hUCover, rfl⟩
   have hmin : m ≤ U.card := Nat.find_min' hP hPU
-  rw [← hTcard]
-  exact hmin
+  exact hTcard.le.trans hmin
 
 /-- One distinguished obstruction dominates every obstruction in its slot. -/
 structure CommonDominatorSlots
@@ -113,6 +112,7 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
       have he := Finset.card_erase_of_mem hj
       dsimp [U] at hc
       rw [he] at hc
+      have hcardPos : 0 < T.card := Finset.card_pos.mpr ⟨i, hi⟩
       omega
     · let U := T.erase i
       have hUS : U ⊆ S :=
@@ -129,6 +129,7 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
       have he := Finset.card_erase_of_mem hi
       dsimp [U] at hc
       rw [he] at hc
+      have hcardPos : 0 < T.card := Finset.card_pos.mpr ⟨i, hi⟩
       omega
   · let U := insert k ((T.erase i).erase j)
     have hUS : U ⊆ S := by
@@ -148,7 +149,12 @@ theorem slot_injective_on_minimum_cover_of_common_dominator
           exact ⟨k, by simp [U], hdomJ x hrA⟩
         · exact ⟨r, by simp [U, hri, hrj, hrT], hrA⟩
     have hjErase : j ∈ T.erase i :=
-      Finset.mem_erase.mpr ⟨hij.symm, hj⟩
+      Finset.mem_erase.mpr ⟨(fun h => hij h.symm), hj⟩
+    have hcardT2 : 1 < T.card := by
+      have hcardErasePos : 0 < (T.erase i).card :=
+        Finset.card_pos.mpr ⟨j, hjErase⟩
+      rw [Finset.card_erase_of_mem hi] at hcardErasePos
+      omega
     have hkNot : k ∉ (T.erase i).erase j := by
       intro hk
       exact hkT (Finset.mem_of_mem_erase
