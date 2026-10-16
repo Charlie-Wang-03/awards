@@ -193,8 +193,10 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
   let q := (retainedCompletionWords C v).card
   have hdecomp :
       (a + 1) * q = 2 * q + (a - 1) * q := by
-    have ha : a = a - 1 + 1 := by dsimp [a]; omega
-    rw [ha]
+    have heq : a + 1 = (a - 1) + 2 := by
+      dsimp [a]
+      omega
+    rw [heq]
     ring
   dsimp [a, q] at hdecomp
   rw [hdecomp, Nat.add_sub_cancel_left] at hsharedLower
