@@ -235,3 +235,64 @@ In `PlanarLowerBranchProofAdmittedWIP.lean`, the one executable
 inequality. All local or conditional statements above are
 strictly weaker and do not constitute the needed outside-U
 true-hole + unreserved dyadic-surplus global matching.
+
+## Certified resolution of the third-layer extension frontier
+
+The provisional item "### 11. Unverified extension frontier" above has
+now been resolved for the two named modules. The original root global
+payment gap remains open.
+
+### 12. Four-centre transition packing
+
+Module: `JSP000404Research/ThirdLayerTransitionPacking.lean`.
+Focused CI [38860514844](https://github.com/Charlie-Wang-03/awards/actions/runs/38860514844):
+**SUCCESS**, 3,448 build jobs.
+
+Both `third_layer_packing_forces_two_unit_transitions` and
+`no_top_three_deficit_three_support_le_two_with_two_support_one`
+audit to `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+The main proof constructs genuinely dependent `Fin 4` centre/cycle/
+transition-certificate families and normalizes the four actual
+quotient terms individually, rather than treating dependent records
+as a homogeneous `Matrix.vecCons` vector.
+
+The certified packing forces each of two small-support companion
+transition quotients to be exactly one. Consequently, two distinct
+n−3 support-one companions cannot coexist with the specified
+top-centre/support-one configuration under the strict
+`delta < 1/2` geometry.
+
+### 13. Strictly stronger fifth-centre reduction
+
+**New source:** `JSP000404Research/ThirdLayerFifthResidualReduction.lean`.
+Focused CI [38860577454](https://github.com/Charlie-Wang-03/awards/actions/runs/38860577454):
+**SUCCESS**, 3,461 build jobs.
+
+The new theorem
+`fifth_deficit_three_forced_residual_of_two_small_supports`
+audits to `[propext, Classical.choice, Quot.sound]`, no
+`sorryAx`. Under exactly the five distinct-centre, angle-cap,
+n−1/n−3 exponent and one support-one centre hypotheses recorded
+in its source, it replaces the two other n−3 companions'
+old support=2 assumptions by **support ≤2**, yet concludes that
+the fifth n−3 centre has support=3 and exactly three sign
+transitions. The internal support=1 possibilities are excluded by
+the newly certified four-centre packing theorem, while
+support=3 violates the weakened hypotheses.
+
+This is a verified *restricted strengthening*, NOT an arbitrary-
+cardinality classification and NOT a proof of the residual
+six-source global non-reusing external-hole payment. No new
+axioms or executable `sorry` have been introduced.
+
+## Status classification
+
+- The cited focused CI runs each compile their named modules
+  and imported dependencies successfully.
+- The **full all-module Fast Incremental Lean** has not been
+  certified green. Historical modules may still fail independently.
+- `PlanarLowerBranchProofAdmittedWIP.lean` retains exactly one
+  executable `sorry` at the external-hole/unreserved-surplus
+  terminal payment obligation.
+- SOURCE_CLOSURE_GATE remains OPEN.
+- No full JSP-000404 solution, disproof, or award claim is asserted.
