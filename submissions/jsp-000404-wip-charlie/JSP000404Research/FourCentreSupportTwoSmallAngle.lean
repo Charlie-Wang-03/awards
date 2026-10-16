@@ -117,8 +117,8 @@ angle at most delta*lambda. -/
 theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -155,7 +155,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
   have hgapSum : g0 + g1 + g2 = 1 := by
     have hs := C.gaps_sum
     rw [hgaps] at hs
-    simpa only [add_assoc] using hs
+    simpa [List.sum_cons, List.sum_nil, add_assoc] using hs
   have hdelta1 : delta < 1 := by linarith
   have hQ :=
     centreQuotient_function_sum_le_n
@@ -181,7 +181,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
   have hqsum :
       q0 + q1 + q2 = n := by
     rw [hqlist] at hqsumList
-    simpa only [add_assoc] using hqsumList
+    simpa [List.sum_cons, List.sum_nil, add_assoc] using hqsumList
   have hsupportList :
       listPositiveCount [q0,q1,q2] = 2 := by
     have h :
@@ -243,7 +243,7 @@ theorem exists_small_angle_pair_of_four_centre_deficit_two_support_two
       r0 ≠ r1 ∧ r0 ≠ r2 ∧ r1 ≠ r2 := by
     have h := C.nodup
     rw [hrays] at h
-    simpa only [and_assoc] using h
+    simpa [and_assoc] using h
   have hchanges0 :=
     centre_changesOnlyOnPositive
       hp hcap htpos ht1 hlam i C r0 [r1,r2] hrays
