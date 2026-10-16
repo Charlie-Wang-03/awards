@@ -90,7 +90,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle_fin_four
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p s) (p b)
-        (hp.ne hsa.symm)
+        (hp.ne hsa)
     dsimp [As, Aa, Ab]
     have hcomm :
         EuclideanGeometry.angle (p b) (p a) (p s) =
@@ -102,7 +102,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle_fin_four
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p s) (p c)
-        (hp.ne hsa.symm)
+        (hp.ne hsa)
     have hcapC :
         EuclideanGeometry.angle (p s) (p c) (p a) ≤
           Real.pi - lam :=
@@ -118,7 +118,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle_fin_four
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p b) (p c)
-        (hp.ne hab)
+        (hp.ne hab.symm)
     have hcapC :
         EuclideanGeometry.angle (p b) (p c) (p a) ≤
           Real.pi - lam :=
@@ -128,7 +128,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle_fin_four
   exact mixed_four_interior_short_arithmetic_contradiction_weakened
     (by omega : 1 ≤ n)
     hlampos hdelta0 hdeltaHalf ht hpi houter
-    hp0 hsplitA.le hsplitB.le
+    hp0 hsplitA.ge hsplitB.ge
     (by simpa [w] using hhidden)
     hpu hzv
 
