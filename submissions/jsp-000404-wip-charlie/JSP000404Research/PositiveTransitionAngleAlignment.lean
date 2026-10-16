@@ -2,6 +2,7 @@ import JSP000404Research.TransitionQuotientLargeAngle
 import JSP000404Research.TransitionPositiveExactAlignment
 import JSP000404Research.CyclicActualAngles
 import JSP000404Research.ListPositiveMemberBound
+import JSP000404Research.CentreSignPath
 import Mathlib.Data.List.Forall2
 import Mathlib.Data.List.Rotate
 import Mathlib.Tactic

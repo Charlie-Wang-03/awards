@@ -10,6 +10,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CanonicalRankMiddleTerminal.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CanonicalRaySignOrder.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ListPositiveMemberBound.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PositiveTransitionAngleAlignment.lean"
       - ".github/workflows/jsp000404-focused-middle-hidden-rank-bridge.yml"
   workflow_dispatch:
 
