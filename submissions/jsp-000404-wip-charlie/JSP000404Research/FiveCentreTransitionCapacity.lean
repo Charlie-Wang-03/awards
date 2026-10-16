@@ -234,6 +234,7 @@ theorem fifth_exponent_le_n_sub_three_of_top_third_saturation
     rw [hid]
     exact hsum
   have hk : centreExponent Cd t = floorExcess q := rfl
+  change 3 ≤ positiveSupport q at hsupD
   rw [hk]
   omega
 
