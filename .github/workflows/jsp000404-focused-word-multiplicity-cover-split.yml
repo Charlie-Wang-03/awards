@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossWordMultiplicityCoverSplit.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossWordMultiplicityLedger.lean"
       - ".github/workflows/jsp000404-focused-word-multiplicity-cover-split.yml"
   workflow_dispatch:
 
@@ -52,6 +53,6 @@ jobs:
       - name: Restore pinned Mathlib oleans
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
-      - name: Kernel-check finite union pairwise overcount inequality
+      - name: Kernel-check exact word multiplicity covered/uncovered split
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake build JSP000404Research.ResidualLossWordMultiplicityCoverSplit

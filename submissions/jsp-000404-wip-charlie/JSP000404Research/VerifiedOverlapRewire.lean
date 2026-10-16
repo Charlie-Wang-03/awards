@@ -135,6 +135,8 @@ import JSP000404Research.ResidualLossCrossSliceCarrier
 import JSP000404Research.ResidualLossPairwiseOvercount
 import JSP000404Research.ResidualLossGlobalDuplicateDyadicBudget
 import JSP000404Research.ResidualLossEarliestActualEdgeGlobalLedger
+import JSP000404Research.ResidualLossWordMultiplicityLedger
+import JSP000404Research.ResidualLossWordMultiplicityCoverSplit
 import JSP000404Research.ResidualLossEarliestEdgePaymentSeparation
 import JSP000404Research.ResidualLossEarliestEdgeFlipRefundObstruction
 import JSP000404Research.ResidualLossCrossSliceTwoCoveredAncestors
@@ -572,4 +574,23 @@ as an outside-U resource; a covered collision requires third-party
 original completion ownership. None of this supplies a matching into
 globally unreserved TRUE holes or surplus, and the sole admitted
 terminal six-source sorry remains open.
+-/
+
+/-!
+## Word-centric exact duplicate loss ledger (2026-10-16)
+
+New kernel-certified assertions without sorryAx:
+
+- `translatedLossDuplicateDebt_eq_sum_wordMultiplicity_excess`:
+  D_dup = sum over original translated-loss words U of (m(word) - 1),
+  where m(word) is the number of DISTINCT chosen flip-coordinate slices
+  containing it. Focused CI 38841390341: SUCCESS.
+- `translatedLossDuplicateDebt_eq_word_excess_covered_plus_trueHole`:
+  this exact debt partitions over U ∩ original covered K and U \ K.
+  Focused CI 38841390165: SUCCESS.
+
+Neither ledger identifies duplicate instances with spare Boolean holes.
+In fact, these word instances lie INSIDE U; the terminal payment uses
+true holes OUTSIDE U plus genuinely unreserved surplus. This strict
+resource distinction is preserved; the sole WIP six-source sorry remains.
 -/
