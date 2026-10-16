@@ -6,6 +6,8 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerFifthResidualReduction.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerTransitionPacking.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerSaturatedResidual.lean"
       - ".github/workflows/jsp000404-focused-third-layer-fifth-residual-reduction.yml"
   workflow_dispatch:
 
