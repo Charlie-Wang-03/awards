@@ -38,8 +38,8 @@ theorem no_mixed_fourth_outside_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
