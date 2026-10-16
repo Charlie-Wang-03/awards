@@ -1,3 +1,4 @@
+import JSP000404Research.ThirdLayerNoFifthExposed
 import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.ResidualLossActualEdgeCarrierFrontier
 import JSP000404Research.ResidualTerminalTwinExactBlockerCarrierFrontier
@@ -593,4 +594,23 @@ Neither ledger identifies duplicate instances with spare Boolean holes.
 In fact, these word instances lie INSIDE U; the terminal payment uses
 true holes OUTSIDE U plus genuinely unreserved surplus. This strict
 resource distinction is preserved; the sole WIP six-source sorry remains.
+-/
+
+/-!
+## Five exposed support arcs excluded in the 1+2+2 third-layer case
+
+- `top_exponent_positiveSupport_eq_one` and
+  `top_exponent_transition_qe_eq_n` were kernel checked in focused
+  CI 38850183517: SUCCESS, 3443 targets, no sorryAx.
+- `no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree`
+  was kernel checked in focused CI 38850503335: SUCCESS, 3457 targets,
+  no sorryAx. Four distinct centres of exponent/support profile
+  (n-1 / top), (n-3 / 1), (n-3 / 2), (n-3 / 2) exclude any distinct
+  fifth STRICTLY EXPOSED centre for n >= 4 and 0 <= delta < 1/2.
+
+The contradiction is the strict-support-turn packing lower bound
+(n + (n-2) + 1 + 1 + 1)*lam = (2*n+1)*lam > 2*pi.
+This excludes one geometric extremal pattern, not all possible
+third-layer configurations. Global six-source payment remains OPEN,
+and the admitted WIP root still retains its one executable sorry.
 -/
