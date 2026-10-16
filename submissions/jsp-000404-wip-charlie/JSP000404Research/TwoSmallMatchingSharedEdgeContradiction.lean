@@ -25,8 +25,8 @@ namespace JSP000404Research
 theorem impossible_shared_edge_two_small_matchings
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {delta lam : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlam : 0 < lam)
@@ -67,8 +67,8 @@ at one or both centres. -/
 theorem impossible_shared_edge_two_small_matchings_symm
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {delta lam : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (hlam : 0 < lam)
