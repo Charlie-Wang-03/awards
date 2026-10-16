@@ -89,20 +89,21 @@ theorem lossWordMultiplicity_sum_eq_duplicate_plus_union
       (lossWordMultiplicity_pos_iff_mem_union
         C exponent choice word).2 hw
     omega
-  change (∑ word ∈ U, lossWordMultiplicity C exponent choice word) =
-    (∑ word ∈ U, lossWordMultiplicity C exponent choice word - 1) + U.card
+  change
+    Finset.sum U (fun word => lossWordMultiplicity C exponent choice word) =
+      Finset.sum U (fun word => lossWordMultiplicity C exponent choice word - 1) +
+        U.card
   calc
-    (∑ word ∈ U, lossWordMultiplicity C exponent choice word) =
-        ∑ word ∈ U,
-          ((lossWordMultiplicity C exponent choice word - 1) + 1) := by
+    Finset.sum U (fun word => lossWordMultiplicity C exponent choice word) =
+        Finset.sum U (fun word =>
+          (lossWordMultiplicity C exponent choice word - 1) + 1) := by
       apply Finset.sum_congr rfl
       intro word hw
       exact hpoint word hw
-    _ = (∑ word ∈ U,
-          lossWordMultiplicity C exponent choice word - 1) +
-          U.card := by
-            simp only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, mul_one]
-            norm_num
+    _ = Finset.sum U (fun word =>
+          lossWordMultiplicity C exponent choice word - 1) + U.card := by
+      rw [Finset.sum_add_distrib]
+      simp
 
 /-- Original exact cross-coordinate duplicate debt as a sum of
 TRUE per-word multiplicity excesses. Every word occurring in m
