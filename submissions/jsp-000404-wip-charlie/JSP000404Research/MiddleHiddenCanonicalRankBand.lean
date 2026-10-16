@@ -1,4 +1,5 @@
 import JSP000404Research.SupportThreeMiddleHiddenCanonicalSigns
+import JSP000404Research.CanonicalRaySignOrder
 import JSP000404Research.CanonicalRankMiddleTerminal
 import Mathlib.Tactic
 
@@ -150,18 +151,21 @@ theorem nonexposed_middle_hidden_opposite_sign_pair
   have htail :
       (H.r :: H.b :: H.c :: H.d :: []).Nodup :=
     (List.nodup_cons.mp hnd).2
-  have hrb : H.r ≠ H.b :=
-    (List.nodup_cons.mp htail).1 (by simp)
-  have hrc : H.r ≠ H.c :=
-    (List.nodup_cons.mp htail).1 (by simp)
+  have hrb : H.r ≠ H.b := by
+    intro h
+    exact (List.nodup_cons.mp htail).1 (by simp [h])
+  have hrc : H.r ≠ H.c := by
+    intro h
+    exact (List.nodup_cons.mp htail).1 (by simp [h])
   have hbcd :
       (H.b :: H.c :: H.d :: []).Nodup :=
     (List.nodup_cons.mp htail).2
   have hcdTail :
       (H.c :: H.d :: []).Nodup :=
     (List.nodup_cons.mp hbcd).2
-  have hcd : H.c ≠ H.d :=
-    (List.nodup_cons.mp hcdTail).1 (by simp)
+  have hcd : H.c ≠ H.d := by
+    intro h
+    exact (List.nodup_cons.mp hcdTail).1 (by simp [h])
 
   refine ⟨H, ?_⟩
   dsimp only at hcases
@@ -217,7 +221,7 @@ theorem nonexposed_middle_hidden_rank_band
   · left
     have hiTop :
         CanonicalPointLt p i top :=
-      (raySign_true_iff_canonicalPointLt hp htopi).1
+      (raySign_true_iff_canonicalPointLt hp htopi.symm).1
         (by simpa [topRay] using hTopTrue)
     have hxFalse :
         raySignAt hp i x = false := by

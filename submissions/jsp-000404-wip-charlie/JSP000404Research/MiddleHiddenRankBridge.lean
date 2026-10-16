@@ -1,3 +1,4 @@
+import JSP000404Research.CanonicalRaySignOrder
 import JSP000404Research.CanonicalRankMiddleTerminal
 import JSP000404Research.SupportThreeMiddleHiddenSeparatedPattern
 import Mathlib.Tactic
@@ -24,20 +25,6 @@ the purely rank-theoretic contradiction.
 -/
 
 namespace JSP000404Research
-
-theorem raySign_false_iff_reverse_canonicalPointLt
-    {V : Type*} {p : V → Plane}
-    (hp : Function.Injective p)
-    {i j : V}
-    (hij : i ≠ j) :
-    raySignAt hp i (⟨j, hij.symm⟩ : OtherVertex i) = false
-      ↔
-    CanonicalPointLt p j i := by
-  rw [← raySign_true_iff_canonicalPointLt hp hij.symm]
-  rw [raySignAt_reverse_eq_not hp hij]
-  cases h :
-      raySignAt hp i (⟨j, hij.symm⟩ : OtherVertex i) <;>
-    simp
 
 theorem middleHidden_rankSignature_of_sign_groups
     {V : Type*} [Fintype V] [DecidableEq V]
