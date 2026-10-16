@@ -105,6 +105,7 @@ open DirectionData
 
 /-- Saturation gives the full stepwise-tight local cyclic profile, not merely
 the wrap equality. -/
+set_option maxHeartbeats 1000000 in
 theorem genericProjection_saturated_stepwise_rigidity
     {V : Type*} [Fintype V]
     {p : V → Plane}
@@ -116,7 +117,9 @@ theorem genericProjection_saturated_stepwise_rigidity
     (hwidth : t < (n : ℝ) + 1)
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hexpI : exponent i = centreExponent C t)
     (hsat :
       letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
