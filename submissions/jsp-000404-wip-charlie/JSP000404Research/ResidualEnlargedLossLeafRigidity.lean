@@ -94,7 +94,7 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
   have hzT : z ∈ T := (Finset.mem_erase.mp hzErase).2
   have hzv : z ≠ v := (Finset.mem_erase.mp hzErase).1
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨sharedWord,hvShared,hzShared⟩
+    exact ⟨sharedWord,Finset.mem_inter.mpr ⟨hvShared,hzShared⟩⟩
   have hzw : z = w :=
     hunique z hzT hzv hzCross
   have hwT : w ∈ T := by
@@ -136,7 +136,7 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
       loss_allActive_pair_intersection_card_le_sum_cubes
         C exponent hexp honeLoss
         hvLoss hwLoss
-        hwv
+        hwv.symm
     exact hcard.trans hinter
 
   have hwCubeLe :
@@ -164,11 +164,17 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
       (enlargedProjectedCandidateBlock C exponent)
       hdef hmin hvT hlocal
 
+  have htarget :
+      2 ^ exponent v =
+        2 * (retainedCompletionWords C v).card := by
+    have hlossEq :=
+      (mem_projectedLossVertices C exponent v).1 hvLoss
+    rw [hlossEq, pow_succ, retainedCompletionWords_card]
+    simp [projectedFree, Nat.mul_comm]
   rw [enlargedProjectedCandidateBlock_loss
         C exponent hvLoss,
       allActiveLossCandidateBlock_card,
-      projectedLoss_target_eq_two_mul_completion
-        C exponent hvLoss] at hsharedLower
+      htarget] at hsharedLower
 
   have hactiveGe :
       2 ≤ (retainedActive C v).card :=
