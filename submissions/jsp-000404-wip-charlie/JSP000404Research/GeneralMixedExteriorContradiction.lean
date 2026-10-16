@@ -213,12 +213,18 @@ theorem no_mixed_fourth_outside_triangle
       SS4 SA4 SB4 SC
 
   have hS4 : (n : ℝ) * lam ≤ SS4.turnLength := by
-    simpa [SS4, SS, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnS
+    simpa [SS4, SS, p4, e, SupportIntervalCertificate.turnLength,
+      SupportIntervalCertificate.restrictOfInjective, SupportIntervalCertificate.restrict,
+      SupportIntervalCertificate.ofHighExponent] using hturnS
   have hA4 :
       ((n - 1 : ℕ) : ℝ) * lam ≤ SA4.turnLength := by
-    simpa [SA4, SA, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnA
+    simpa [SA4, SA, p4, e, SupportIntervalCertificate.turnLength,
+      SupportIntervalCertificate.restrictOfInjective, SupportIntervalCertificate.restrict,
+      SupportIntervalCertificate.ofHighExponent] using hturnA
   have hB4 : lam ≤ SB4.turnLength := by
-    simpa [SB4, SB, p4, e, SupportIntervalCertificate.turnLength_restrictOfInjective] using hturnB
+    simpa [SB4, SB, p4, e, SupportIntervalCertificate.turnLength,
+      SupportIntervalCertificate.restrictOfInjective, SupportIntervalCertificate.restrict,
+      SupportIntervalCertificate.ofHighExponent] using hturnB
 
   have hncast :
       ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1 := by
