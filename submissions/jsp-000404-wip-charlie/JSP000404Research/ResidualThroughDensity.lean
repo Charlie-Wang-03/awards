@@ -70,7 +70,10 @@ theorem residualThroughColours_card_le_left
             = C.color (chooseLeft c) u := (hchoose c).2.symm
         _ = C.color (chooseLeft d) u := by rw [had]
         _ = d.1.castSucc := (hchoose d).2
-    exact Fin.ext (congrArg Fin.val hcol)
+    have hval : (c.1 : Fin n).val = (d.1 : Fin n).val := by
+      have h := congrArg (fun (x : Fin (n + 1)) => x.val) hcol
+      simpa only [Fin.val_castSucc] using h
+    exact Fin.ext hval
   have hcard := Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
 
@@ -114,7 +117,10 @@ theorem residualThroughColours_card_le_right
             = C.color v (chooseRight c) := (hchoose c).2.symm
         _ = C.color v (chooseRight d) := by rw [hwd]
         _ = d.1.castSucc := (hchoose d).2
-    exact Fin.ext (congrArg Fin.val hcol)
+    have hval : (c.1 : Fin n).val = (d.1 : Fin n).val := by
+      have h := congrArg (fun (x : Fin (n + 1)) => x.val) hcol
+      simpa only [Fin.val_castSucc] using h
+    exact Fin.ext hval
   have hcard := Fintype.card_le_of_injective f hf
   simpa only [Fintype.card_coe] using hcard
 
@@ -125,11 +131,14 @@ theorem incomingRetained_eq_empty_of_no_left
     (hleft : ∀ a : V, ¬ a < u) :
     incomingRetained C u = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c hc
+  ext c
+  constructor
+  · intro hc
   obtain ⟨a, hau, _⟩ :=
     (mem_incomingRetained_iff C u c).1 hc
-  exact hleft a hau
+  exact (hleft a hau).elim
+  · intro hc
+    exact (Finset.not_mem_empty c hc).elim
 
 theorem outgoingRetained_eq_empty_of_no_right
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -138,11 +147,14 @@ theorem outgoingRetained_eq_empty_of_no_right
     (hright : ∀ w : V, ¬ v < w) :
     outgoingRetained C v = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
-  intro c hc
+  ext c
+  constructor
+  · intro hc
   obtain ⟨w, hvw, _⟩ :=
     (mem_outgoingRetained_iff C v c).1 hc
-  exact hright w hvw
+  exact (hright w hvw).elim
+  · intro hc
+    exact (Finset.not_mem_empty c hc).elim
 
 /-- Unsafe residual edge from the global left boundary forces zero exponent at
 the upper endpoint. -/
