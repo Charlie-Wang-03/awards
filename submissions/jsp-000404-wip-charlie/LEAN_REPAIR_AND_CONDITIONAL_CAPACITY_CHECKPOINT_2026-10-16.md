@@ -166,3 +166,72 @@ The cited runs are module-specific kernel checks. Do not interpret them
 as a green all-module fast build or as a proof that the final WIP
 global-payment `sorry` is solved. The main theorem retains that hole,
 and the source-closure gate remains open.
+
+### 8. Saturated projected endpoint: full stepwise rigidity
+
+Module: `JSP000404Research/ProjectionSaturatedStepRigidity.lean`.
+Focused CI [38859295158](https://github.com/Charlie-Wang-03/awards/actions/runs/38859295158):
+**SUCCESS**, 3,310 build jobs; theorem
+`ProjectionOrdered.genericProjection_saturated_stepwise_rigidity`
+has axioms `[propext, Classical.choice, Quot.sound]`, with
+no `sorryAx`.
+
+Given exact projected endpoint saturation and activity of the top
+residual colour, the local sorted direction cycle is stepwise tight,
+its last direction has floor n, and its wrap gap satisfies the
+exact excess/floor identity. This is endpoint-local rigidity,
+NOT global non-reuse among debt words or source/blocker carriers.
+
+### 9. Fifth n−3 layer centre: three-transition rigidity
+
+Module: `JSP000404Research/ThirdLayerSaturatedResidual.lean`.
+Focused CI [38859461067](https://github.com/Charlie-Wang-03/awards/actions/runs/38859461067):
+**SUCCESS**, 3,459 build jobs;
+`fifth_deficit_three_forced_support_three_three_transitions`
+has axioms `[propext, Classical.choice, Quot.sound]`, without
+`sorryAx`.
+
+For a fixed arrangement containing one top (n−1) centre, one
+third-layer n−3 support-one centre, and two third-layer n−3
+support-two centres, a fifth distinct n−3 centre cannot be
+strictly exposed. It must have positive quotient support exactly
+three and three sign transitions. This does NOT exclude every
+fifth nonexposed centre, nor does it prove the terminal six-source
+payment.
+
+### 10. Conditional planar residual recolouring closure
+
+Module: `JSP000404Research/PlanarLowerBranchResidualClosure.lean`.
+Focused CI [38860040371](https://github.com/Charlie-Wang-03/awards/actions/runs/38860040371):
+**SUCCESS**, 3,266 build jobs, and the theorem
+`ProjectionOrdered.planar_lowerBranch_capacity_of_absorbed_residual`
+has axioms `[propext, Classical.choice, Quot.sound]`, without
+`sorryAx`.
+
+This establishes the actual planar dyadic capacity **conditional**
+on the stated one-layer bad-residual implication, a valid residual
+recolouring and its safe absorption. The hypotheses do NOT
+follow here from arbitrary planar `AngleCap`, and residual
+absorption cannot simply be postulated as an unconditional fact.
+
+### 11. Unverified extension frontier
+
+`ThirdLayerTransitionPacking.lean` implements four-centre
+transition quotient packing. Its dependent `Fin 4` certificate
+and sum normalization were repaired in several iterations,
+but until the latest focused run is independently successful it
+is NOT listed as certified.
+
+The new `ThirdLayerFifthResidualReduction.lean` aims to
+weaken two support-two equalities to support ≤ 2 in the
+certified fifth-centre theorem. Its verification depends on
+`ThirdLayerTransitionPacking`; no completion claim is
+permitted until both build and axiom audit succeed.
+
+## Frozen open mathematical input
+
+In `PlanarLowerBranchProofAdmittedWIP.lean`, the one executable
+`sorry` remains at the global six-source terminal debt
+inequality. All local or conditional statements above are
+strictly weaker and do not constitute the needed outside-U
+true-hole + unreserved dyadic-surplus global matching.
