@@ -96,7 +96,7 @@ theorem fifth_deficit_three_forced_support_three_three_transitions
     · have hexposed :=
         strictlyExposedAt_of_positiveSupport_le_two
           hp hcap htpos htone hlam d Cd
-          (by rw [h2.1]; omega)
+          (by omega)
       exact False.elim (hnotExpose hexposed)
     · exact h3.1
 
