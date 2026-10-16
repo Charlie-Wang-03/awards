@@ -734,3 +734,31 @@ families, and does NOT rule out all larger cores.
 The original `PlanarLowerBranchProofAdmittedWIP` STILL has exactly
 one admitted global hole/unreserved-surplus nonreuse payment,
 so the full JSP-000404 proof remains open. 
+
+
+### 26. Two-vertex deficient enlarged core forces a real residual carrier
+
+Module `JSP000404Research/ResidualTwoVertexDeficiencyResidualCarrier.lean`.
+Focused CI [38902623903](https://github.com/Charlie-Wang-03/awards/actions/runs/38902623903)
+**SUCCESS**, 3,316 jobs, new theorem
+`two_vertex_enlarged_deficiency_forces_residual_carrier`
+has no `sorryAx`.
+
+Under the residual one-layer assumptions, any deficient *two-vertex*
+enlarged candidate family `{v,w}` with `v != w` has both endpoints
+non-projected-loss (certified previously by
+`two_vertex_enlarged_deficiency_forces_both_nonloss`), and therefore
+their enlarged blocks equal actual retained completion cubes.
+If these cubes were disjoint, their union would contain the sum of
+the individual target masses, contradicting deficiency. Hence their
+completion cubes intersect, forcing the joining edge to be an
+*actual residual edge* in one of the two ordered orientations.
+
+This is a strict structural refinement of the two-centre necessary
+conditions. It DOES NOT establish the impossibility of all non-loss
+residual-edge overlap deficits, any three-plus-centre deficit, or the
+global true-hole nonreusing payment.
+
+As of this checkpoint, the main WIP still contains its single root
+executable `sorry` at approximately line 632; full incremental Lean
+CI is not green.
