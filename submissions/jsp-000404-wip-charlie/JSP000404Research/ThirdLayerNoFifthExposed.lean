@@ -86,10 +86,10 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
       hp hcap htpos htone hlam a Ca (by rw [hsupA]; omega)
   obtain ⟨HB, hHBpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
-      hp hcap htpos htone hlam b Cb (by rw [hsupB]; omega)
+      hp hcap htpos htone hlam b Cb (by simp [hsupB])
   obtain ⟨HC, hHCpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
-      hp hcap htpos htone hlam c Cc (by rw [hsupC]; omega)
+      hp hcap htpos htone hlam c Cc (by simp [hsupC])
   obtain ⟨SD, hturnD⟩ :=
     exists_supportIntervalCertificate_of_strictlyExposed
       hp hcap htpos htone hlam
@@ -180,12 +180,13 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
   let cert : ∀ r : Fin 5,
       SupportIntervalCertificate (p := p) (centre r) := by
     intro r
-    fin_cases r
-    · exact SS
-    · exact SA
-    · exact SB
-    · exact SC
-    · exact SD
+    rcases r with ⟨i, hi⟩
+    interval_cases i
+    · simpa [centre] using SS
+    · simpa [centre] using SA
+    · simpa [centre] using SB
+    · simpa [centre] using SC
+    · simpa [centre] using SD
 
   have hpack :
       (∑ r : Fin 5, (cert r).turnLength) ≤
@@ -199,11 +200,16 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
         lam + lam + lam
         ≤
       ∑ r : Fin 5, (cert r).turnLength := by
+    have hc0 : cert (0 : Fin 5) = SS := rfl
+    have hc1 : cert (1 : Fin 5) = SA := rfl
+    have hc2 : cert (2 : Fin 5) = SB := rfl
+    have hc3 : cert (3 : Fin 5) = SC := rfl
+    have hc4 : cert (4 : Fin 5) = SD := rfl
     have hsum :
         (∑ r : Fin 5, (cert r).turnLength) =
           SS.turnLength + SA.turnLength + SB.turnLength +
             SC.turnLength + SD.turnLength := by
-      simp [cert, centre, Fin.sum_univ_succ]
+      simp [Fin.sum_univ_succ, hc0, hc1, hc2, hc3, hc4, add_assoc] <;> rfl
     rw [hsum]
     linarith
 
