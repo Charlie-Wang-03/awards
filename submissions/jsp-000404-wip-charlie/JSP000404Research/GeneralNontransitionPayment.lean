@@ -205,7 +205,8 @@ theorem sameSignQuotient_pays_angle
         cases rest with
         | nil => exact (hrest rfl).elim
         | cons x xs =>
-            change xs.getLastD x ∈ x :: xs
+            dsimp [last]
+            rw [List.getLastD_cons]
             exact List.getLastD_mem_cons
       have hnodup :
           (first :: rest).Nodup := by
