@@ -56,7 +56,7 @@ theorem six_point_weight_lower_of_one_min_exception
   let S : Finset V := (Finset.univ.erase top).erase bad
   have hbadMemErase :
       bad ∈ (Finset.univ.erase top : Finset V) := by
-    simp [htb]
+    exact Finset.mem_erase.mpr ⟨htb.symm, Finset.mem_univ bad⟩
   have hScard : S.card = 4 := by
     dsimp [S]
     rw [Finset.card_erase_of_mem hbadMemErase,
@@ -100,12 +100,11 @@ theorem six_point_weight_lower_of_one_min_exception
           2 ^ (n - active bad) +
           ∑ v ∈ S, 2 ^ (n - active v) := by
     rw [← Finset.sum_erase_add
-      (fun v => 2 ^ (n - active v))
-      (Finset.mem_univ top)]
+      (Finset.univ : Finset V) top (Finset.mem_univ top)]
     have hbadIn :
         bad ∈ (Finset.univ.erase top : Finset V) := hbadMemErase
     rw [← Finset.sum_erase_add
-      (fun v => 2 ^ (n - active v)) hbadIn]
+      (Finset.univ.erase top : Finset V) bad hbadIn]
     dsimp [S]
     omega
   have hlower :
@@ -154,6 +153,8 @@ theorem no_six_point_partition_with_one_min_exception
     norm_num
     omega
   rw [hpow] at hupper
+  have hpositive : 0 < 2 ^ (n - 4) := by
+    exact pow_pos (by norm_num : 0 < (2 : ℕ)) _
   omega
 
 #print axioms six_point_weight_lower_of_one_min_exception
