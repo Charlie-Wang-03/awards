@@ -1,4 +1,5 @@
 import JSP000404Research.FourCentreTransitionCases
+import JSP000404Research.TransitionCertificateFromDecomposition
 import JSP000404Research.UniqueTransitionGap
 import Mathlib.Tactic
 
@@ -47,7 +48,7 @@ theorem sameSignQuotientOccurs_replicate
       simp only [List.length_cons, List.replicate_succ,
         SameSignQuotientOccurs]
       rcases hq with rfl | hq
-      · exact Or.inl ⟨rfl, rfl⟩
+      · exact Or.inl ⟨rfl, trivial⟩
       · exact Or.inr (ih a hq)
 
 theorem sameSignQuotientOccurs_of_two_blocks
@@ -107,8 +108,8 @@ theorem support_two_unit_transition_hidden_sameSign
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
