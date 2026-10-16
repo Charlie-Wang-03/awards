@@ -1,6 +1,7 @@
 
 import JSP000404Research.ProjectionSaturatedBandEquality
 import JSP000404Research.ResidualSaturatedOverlapDecomposition
+import JSP000404Research.TopExponentSupportOneTransition
 import Mathlib.Tactic
 
 /-!
@@ -46,10 +47,14 @@ theorem saturatedSaturatedWord_has_two_wrap_rigid_endpoints
     (htEq : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {word : Fin n → Bool}
     (hword :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       let B :=
         genericResidualColoring
           hp hcap
