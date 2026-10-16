@@ -193,6 +193,7 @@ theorem exponent_capacity
         intro v _
         rw [hell v]
         congr 1
+        have hv := hexp v
         omega
     _ ≤ 2 ^ n := C.capacity
 
