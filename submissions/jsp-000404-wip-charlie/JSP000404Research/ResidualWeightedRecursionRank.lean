@@ -55,6 +55,10 @@ theorem weightedHardStateRank_lt_of_payload_lt
         (payload' + 1) * (n + 1) ≤
           payload * (n + 1) :=
       Nat.mul_le_mul_right (n + 1) hstep
+    have hlinear :
+        payload' * (n + 1) + (n + 1) ≤
+          payload * (n + 1) := by
+      simpa [Nat.add_mul] using hmul
     omega
   have hleft :
       payload' * (n + 1) + (n - freeDim') ≤
@@ -92,9 +96,10 @@ theorem weightedHardStateRank_lt_of_progress
   rcases hprogress with hpayload | hfull
   · exact weightedHardStateRank_lt_of_payload_lt
       hfree hfree' hpayload
-  · subst payload'
+  · rcases hfull with ⟨hEq, hDim⟩
+    subst payload'
     exact weightedHardStateRank_lt_of_dimension_growth
-      hfree hfree' hfull.2
+      hfree hfree' hDim
 
 theorem payload_strictly_decreases_of_half_capture
     {payload captured : ℕ}
@@ -130,6 +135,10 @@ theorem lossLayerHardStateRank_lt_of_payload_lt
         (payload' + 1) * (n + 1) ≤
           payload * (n + 1) :=
       Nat.mul_le_mul_right (n + 1) hstep
+    have hlinear :
+        payload' * (n + 1) + (n + 1) ≤
+          payload * (n + 1) := by
+      simpa [Nat.add_mul] using hmul
     omega
   have hleft :
       payload' * (n + 1) + exponent'
