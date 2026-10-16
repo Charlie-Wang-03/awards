@@ -296,3 +296,88 @@ axioms or executable `sorry` have been introduced.
   terminal payment obligation.
 - SOURCE_CLOSURE_GATE remains OPEN.
 - No full JSP-000404 solution, disproof, or award claim is asserted.
+
+
+## New sharp five-centre transition/exposure frontier (October 16, follow-on)
+
+### 13. Five-centre transition capacity with arbitrary companion exponents
+
+Source: `JSP000404Research/FiveCentreTransitionCapacity.lean`.
+Focused CI [38877905379](https://github.com/Charlie-Wang-03/awards/actions/runs/38877905379):
+**SUCCESS** (3,449 build jobs). All three audited declarations use only
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+Under planar `AngleCap`, `n >= 4`, `0 <= delta < 1/2`, one top
+`n-1` centre `s`, and one distinct `n-3` / support-one centre
+`a`, three further **distinct** support-at-most-two centres cannot
+exist. The quotient packing obstruction is exact:
+
+```text
+q(s) = n; q(a) = n-2;
+q(b), q(c), q(d) >= 1;
+sum q >= 2*n+1 > 2*n, contradicts planar transition packing.
+```
+
+Most importantly, `b,c,d` need not have exponent `n-3` and their
+supports need not equal two. If two distinct support<=2 companions
+`b,c` exist, **every** further centre `d` obeys
+`positiveSupport(d) >= 3` and `centreExponent(d) <= n-3`.
+The final exponent inequality uses exact quotient conservation,
+not an assumption of a particular fifth-centre layer.
+
+### 14. No extra strictly exposed point, without third-layer conditions
+
+Source: `JSP000404Research/FiveCentreStrictExposure.lean`.
+Focused CI [38877905336](https://github.com/Charlie-Wang-03/awards/actions/runs/38877905336):
+**SUCCESS** (3,460 build jobs). Axiom audit
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+The same `s,a,b,c` configuration, with **no exponent assumption**
+on `b,c` besides support<=2, has no fifth distinct strictly
+exposed centre. The five lower turn contributions would be
+`n + (n-2) + 1 + 1 + 1 = 2n+1` units, while the strict-support
+arc packing bound is `2*pi = 2*(n+delta)*lambda` with
+`2*delta < 1`.
+
+### 15. General fifth-centre residual profile
+
+Source: `JSP000404Research/FiveCentreResidualClassification.lean`.
+Focused CI [38877944269](https://github.com/Charlie-Wang-03/awards/actions/runs/38877944269):
+**SUCCESS** (3,462 build jobs), one audited theorem,
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+Theorem `fifth_general_residual_profile_of_top_third_saturation`:
+for any fifth distinct centre `d`, even when the two companions
+`b,c` have arbitrary exponents,
+
+```text
+positiveSupport(d) >= 3;
+centreExponent(d) <= n-3;
+NOT StrictlyExposedAt(d);
+if centreExponent(d) = n-3 then:
+  positiveSupport(d) = 3;
+  the canonical lifted sign path has exactly 3 transitions.
+```
+
+This is strictly stronger in hypotheses than the previous
+`fifth_deficit_three_forced_residual_of_two_small_supports`
+theorem: it **removes both** `n-3` exponent assumptions on
+the companion centres, and classifies arbitrary fifth centres
+outside that layer as well.
+
+### Scope, limits, verification
+
+The preceding three modules are separately Lean kernel-checked.
+The sole allowed executable `sorry` in
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`
+is **not closed**. Its open task remains genuine globally
+non-reusing payment for terminal twin, mixed-rigid,
+soft/covered translated blockers and NET duplicate debt by
+Boolean holes **outside** translated loss, plus legitimately
+unreserved dyadic surplus. These new geometric third-layer
+restrictions do not automatically provide that payment or
+a geometry-to-dyadic allocation.
+
+The historical all-module Fast Incremental Lean workflow is
+**not certified green**. Focused green runs alone do not
+establish global build success or an unconditional solution.
