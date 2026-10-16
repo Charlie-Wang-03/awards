@@ -464,3 +464,32 @@ genuinely unreserved dyadic surplus.
 Do not conflate these focused build successes with the full
 Fast Incremental Lean workflow: that historical all-module
 build remains red because of unrelated legacy Lean errors.
+
+
+### 19. Enlarged-loss unique Hall collision neighbour
+
+Module: `JSP000404Research/ResidualEnlargedLossCollisionGraph.lean`.
+Focused CI [38881237514](https://github.com/Charlie-Wang-03/awards/actions/runs/38881237514):
+**SUCCESS**, 3,323 build jobs. The audited main declaration
+`OrderedEdgeColoring.minimal_enlargedCandidate_loss_unique_neighbor_is_loss`
+depends only on `[propext, Classical.choice, Quot.sound]`,
+without `sorryAx`.
+
+Lean repairs: reconstruct the shared-block source via the explicit
+`Finset.mem_inter` and `Finset.mem_biUnion` witnesses, replace the
+unimported `BlocksCross` predicate with a concrete nonempty finite-block
+intersection, and resolve the external-vertex inequality with a typed
+`v != w` proof rather than a failing dependent `subst`/rewrite.
+
+**Actual consequence:** For a minimal deficient enlarged-projected
+candidate family, if a loss vertex v has a **unique collision neighbour**
+w and `exponent(v) < n`, then w must itself be a projected-loss
+vertex. If w were non-loss, its candidate block would be Q_w and its
+intersection with the entire enlarged-loss block of v would have at
+most |Q_v| words, contradicting the certified minimum-deficiency
+shared-block lower bound |Q_v|+1.
+
+This reduces a possible Hall obstruction to at least two interacting
+loss vertices, but does NOT rule out multiple loss neighbours or
+pay the global terminal/NET/translated debts. It is a conditional
+structural exclusion, not a proof of all Hall expansion instances.
