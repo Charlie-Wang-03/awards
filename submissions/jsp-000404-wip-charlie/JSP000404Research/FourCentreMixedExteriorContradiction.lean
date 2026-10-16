@@ -75,13 +75,13 @@ theorem no_mixed_fourth_outside_triangle_fin_four
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        a Ca (by rw [hA]; omega))
+        a Ca (by rw [hA]))
   let Hb :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        b Cb (by rw [hB]; omega))
+        b Cb (by rw [hB]))
   have hqs : Hs.qe = n := by
     exact unit_deficit_transition_qe_eq_n
       Cs Hs (by omega) hdelta0 hdelta1 ht hS
