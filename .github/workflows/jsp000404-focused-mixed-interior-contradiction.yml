@@ -9,6 +9,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TriangleConvexCone.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/FourCentreMixedTransitionWitness.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeRayNontransitionPayment.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FourCentreMixedInteriorHiddenAngle.lean"
       - ".github/workflows/jsp000404-focused-mixed-interior-contradiction.yml"
   workflow_dispatch:
 
