@@ -1,5 +1,6 @@
 import JSP000404Research.ProjectionLocalCandidateCapacity
 import JSP000404Research.WeightedBlockHallOutlet
+import JSP000404Research.MinimalBlockDeficiency
 import Mathlib.Tactic
 
 /-!
@@ -223,10 +224,8 @@ theorem planar_lowerBranch_overweight_has_nontrivial_candidate_core
     subst T
     have hbound := hlocal v
     unfold BlockDeficient at hdefT
-    simpa [exponent, blocks] using
-      (show False by
-        simp only [Finset.sum_singleton, Finset.biUnion_singleton] at hdefT
-        omega)
+    simp only [Finset.sum_singleton, Finset.biUnion_singleton] at hdefT
+    omega
   have htwo : 2 ≤ T.card := by omega
   exact ⟨T, htwo,
     (by simpa only [exponent, blocks] using hdefT),
