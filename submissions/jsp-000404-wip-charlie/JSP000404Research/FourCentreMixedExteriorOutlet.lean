@@ -94,8 +94,14 @@ theorem no_mixed_fourth_support_arc_of_one_cap_unit
       (((2 * n + 1 : ℕ) : ℕ) : ℝ) * lam ≤
         Ss.turnLength + Sa.turnLength +
           Sb.turnLength + Cc.turnLength := by
-    push_cast
-    nlinarith
+    calc
+      (((2 * n + 1 : ℕ) : ℝ) * lam) =
+          ((2 * n : ℕ) : ℝ) * lam + lam := by
+        push_cast
+        ring
+      _ ≤ Ss.turnLength + Sa.turnLength +
+            Sb.turnLength + Cc.turnLength := by
+        linarith [hhigh, hcturn]
   have hpiBase : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
@@ -103,10 +109,13 @@ theorem no_mixed_fourth_support_arc_of_one_cap_unit
       2 * Real.pi =
         2 * ((n : ℝ) + delta) * lam := by
     rw [hpiBase, ht]
+    ring
   have hstrict :
       2 * ((n : ℝ) + delta) * lam <
         ((2 * n + 1 : ℕ) : ℝ) * lam := by
     push_cast
+    have hgap : 0 < 1 - 2 * delta := by linarith
+    have hprod : 0 < (1 - 2 * delta) * lam := mul_pos hgap hlampos
     nlinarith
   rw [hpi] at hpack
   nlinarith
@@ -136,15 +145,14 @@ theorem no_mixed_fourth_support_arc_of_canonical_costs
     (Cc : SupportIntervalCertificate (p := p) c)
     (hcturn : lam ≤ Cc.turnLength) :
     False := by
-  apply no_mixed_fourth_support_arc_of_one_cap_unit
+  have hqsum : Hs.qe + Ha.qe + Hb.qe = 2 * n := by
+    rw [hqs, hqa, hqb]
+    omega
+  exact no_mixed_fourth_support_arc_of_one_cap_unit
     hsa hsb hsc hab hac hbc
     (by omega : 1 ≤ n)
     hdelta0 hdeltaHalf ht hlam
-    Cs Ca Cb Hs Ha Hb
-  · rw [hqs, hqa, hqb]
-    omega
-  · exact Cc
-  · exact hcturn
+    Cs Ca Cb Hs Ha Hb hqsum Cc hcturn
 
 #print axioms no_mixed_fourth_support_arc_of_one_cap_unit
 #print axioms no_mixed_fourth_support_arc_of_canonical_costs
