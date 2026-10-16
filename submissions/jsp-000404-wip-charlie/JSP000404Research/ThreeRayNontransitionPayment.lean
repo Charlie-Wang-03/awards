@@ -89,7 +89,7 @@ theorem exists_actual_angle_paying_nontransition_quotient_fin_four
       (q0 : ℝ) ≤ t * g0 ∧
       (q1 : ℝ) ≤ t * g1 ∧
       (q2 : ℝ) ≤ t * g2 := by
-    simpa [QuotientGapAligned, hqlist, hgaps] using halign0
+    simpa [QuotientGapAligned, quotientList, hgaps, q0, q1, q2] using halign0
   have hpair :
       [r0,r1,r2].Pairwise
         (fun a b =>
@@ -110,7 +110,7 @@ theorem exists_actual_angle_paying_nontransition_quotient_fin_four
       r0 ≠ r1 ∧ r0 ≠ r2 ∧ r1 ≠ r2 := by
     have h := C.nodup
     rw [hrays] at h
-    simpa using h
+    simpa [and_assoc] using h
   rw [hqlist] at hqmem
   simp only [List.mem_cons, List.mem_singleton] at hqmem
   rcases hqmem with hq0 | hq1 | hq2
@@ -158,10 +158,12 @@ theorem exists_actual_angle_paying_nontransition_quotient_fin_four
         field_simp [Real.pi_ne_zero]
       _ = EuclideanGeometry.angle (p r1.1) (p i) (p r2.1) :=
         hang.symm
-  · have hq2ne : q2 ≠ qe := by
+  · have hq2eq : q = q2 := by
+      simpa using hq2
+    have hq2ne : q2 ≠ qe := by
       intro h
       apply hqne
-      rw [hq2, h]
+      rw [hq2eq, h]
     have hs20 :
         raySignAt hp i r2 = !raySignAt hp i r0 :=
       hshape.2.2 hq2ne
@@ -172,7 +174,7 @@ theorem exists_actual_angle_paying_nontransition_quotient_fin_four
       quotient_mul_lam_le_pi_mul_gap
         ht halign.2.2 hlam
     refine ⟨r2, r0, hnod.2.1.symm, ?_⟩
-    rw [hq2]
+    rw [hq2eq]
     calc
       (q2 : ℝ) * lam ≤ Real.pi * g2 := hpay
       _ =
