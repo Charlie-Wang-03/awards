@@ -38,6 +38,7 @@ theorem enlargedCandidate_pair_capacity_of_one_loss
         enlargedProjectedCandidateBlock C exponent w).card := by
   classical
   let B := enlargedProjectedCandidateBlock C exponent
+  change 2 ^ exponent v + 2 ^ exponent w ≤ (B v ∪ B w).card
   have hcardUnion :=
     Finset.card_union_add_card_inter (B v) (B w)
   have hlocalV :=
