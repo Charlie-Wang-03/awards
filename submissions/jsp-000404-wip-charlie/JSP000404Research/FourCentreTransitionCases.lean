@@ -60,27 +60,27 @@ theorem three_transition_quotient_sum_le_two_n
     intro r
     by_cases h0 : r = 0
     · subst r
-      simpa [centre] using Cs
+      exact Cs
     by_cases h1 : r = 1
     · subst r
-      simpa [centre] using Ca
+      exact Ca
     have h2 : r = 2 := by
       fin_cases r <;> simp_all
     subst r
-    simpa [centre] using Cb
+    exact Cb
   let cert : ∀ r : Fin 3,
       HighExponentTransitionIntervalCertificate hp t (centre r) (C r) := by
     intro r
     by_cases h0 : r = 0
     · subst r
-      simpa [centre, C] using certS
+      exact certS
     by_cases h1 : r = 1
     · subst r
-      simpa [centre, C] using certA
+      exact certA
     have h2 : r = 2 := by
       fin_cases r <;> simp_all
     subst r
-    simpa [centre, C] using certB
+    exact certB
   have h :=
     highTransition_quotient_sum_le_two_n
       hp hn hdelta0 hdeltaHalf ht
