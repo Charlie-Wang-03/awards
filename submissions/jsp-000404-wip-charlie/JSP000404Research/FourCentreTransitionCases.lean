@@ -233,7 +233,23 @@ theorem mixed_deficit_two_transition_qe_eq_one
   rw [hqS, hqA] at hpack
   omega
 
-/-- A list with exactly one positive entry contains its positive sum. -/
+/-- Zero positive entries force zero total quotient mass. -/
+private theorem list_sum_eq_zero_of_positiveCount_eq_zero
+    (qs : List ℕ) (hcount : listPositiveCount qs = 0) :
+    qs.sum = 0 := by
+  induction qs with
+  | nil => rfl
+  | cons q rest ih =>
+      by_cases hq : q = 0
+      · subst q
+        have htail : listPositiveCount rest = 0 := by
+          simpa [listPositiveCount] using hcount
+        simpa [List.sum_cons] using ih htail
+      · have hpositive : 0 < listPositiveCount (q :: rest) := by
+          simp [listPositiveCount, hq]
+        omega
+
+/-- Exactly one positive entry equals the total positive sum. -/
 theorem list_sum_mem_of_positiveCount_one
     (qs : List ℕ)
     (hsupport : listPositiveCount qs = 1)
@@ -242,22 +258,49 @@ theorem list_sum_mem_of_positiveCount_one
   induction qs with
   | nil =>
       simp at hsumpos
-  | cons q qs ih =>
+  | cons q rest ih =>
       by_cases hq : q = 0
       · subst q
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hsupport
+        have htail : listPositiveCount rest = 1 := by
+          simpa [listPositiveCount] using hsupport
+        have hpositive : 0 < rest.sum := by
+          simpa [List.sum_cons] using hsumpos
         simp only [List.sum_cons, zero_add, List.mem_cons]
-        right
-        exact ih hsupport hsumpos
-      · have hqpos : 0 < q := Nat.pos_of_ne_zero hq
-        simp only [listPositiveCount, if_neg hq] at hsupport
-        have htail0 : listPositiveCount qs = 0 := by omega
-        have htailSum :=
-          list_sum_eq_zero_of_positiveCount_eq_zero qs htail0
-        simp [htailSum, hq]
+        exact Or.inr (ih htail hpositive)
+      · have htail0 : listPositiveCount rest = 0 := by
+          simp [listPositiveCount, hq] at hsupport
+          omega
+        have hz := list_sum_eq_zero_of_positiveCount_eq_zero rest htail0
+        simp [hz, hq]
 
-/-- If exactly two list entries are positive, one of them is 1, and the total
-sum is n>=3, then the other positive entry is n-1. -/
+/-- A singleton positive support which contains one has total mass one. -/
+private theorem list_sum_eq_one_of_positiveCount_one_mem
+    (qs : List ℕ)
+    (hcount : listPositiveCount qs = 1)
+    (hone : 1 ∈ qs) : qs.sum = 1 := by
+  induction qs with
+  | nil => simp at hone
+  | cons q rest ih =>
+      rcases List.mem_cons.mp hone with hhead | htailmem
+      · subst q
+        have htail0 : listPositiveCount rest = 0 := by
+          simp [listPositiveCount] at hcount
+          omega
+        have hz := list_sum_eq_zero_of_positiveCount_eq_zero rest htail0
+        simp [hz]
+      · by_cases hq : q = 0
+        · subst q
+          have htail : listPositiveCount rest = 1 := by
+            simpa [listPositiveCount] using hcount
+          simpa [List.sum_cons] using ih htail htailmem
+        · have htail0 : listPositiveCount rest = 0 := by
+            simp [listPositiveCount, hq] at hcount
+            omega
+          have hz := list_sum_eq_zero_of_positiveCount_eq_zero rest htail0
+          have hle : 1 ≤ rest.sum := List.le_sum_of_mem htailmem
+          omega
+
+/-- Two positive entries, one equal to 1, sum to n only if the other is n-1. -/
 theorem n_sub_one_mem_of_positiveCount_two_and_one_mem
     (qs : List ℕ) (n : ℕ)
     (hn : 3 ≤ n)
@@ -268,70 +311,36 @@ theorem n_sub_one_mem_of_positiveCount_two_and_one_mem
   induction qs with
   | nil =>
       simp at hone
-  | cons q qs ih =>
-      rw [List.mem_cons] at hone
-      by_cases hq0 : q = 0
+  | cons q rest ih =>
+      rcases List.mem_cons.mp hone with hhead | htailmem
       · subst q
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hsupport
-        simp only [List.sum_cons, zero_add] at hsum
-        rcases hone with hbad | hone
-        · omega
-        · exact ih hn hsupport hsum hone
-      · simp only [listPositiveCount, if_neg hq0] at hsupport
-        have htailSupport : listPositiveCount qs = 1 := by omega
-        rcases hone with hq1 | honeTail
+        have htailCount : listPositiveCount rest = 1 := by
+          simp [listPositiveCount] at hsupport
+          omega
+        have htailSum : rest.sum = n - 1 := by
+          simp only [List.sum_cons] at hsum
+          omega
+        have htailPos : 0 < rest.sum := by omega
+        have hmem :=
+          list_sum_mem_of_positiveCount_one rest htailCount htailPos
+        exact List.mem_cons_of_mem _ (by simpa [htailSum] using hmem)
+      · by_cases hq : q = 0
         · subst q
-          have htailSum : qs.sum = n - 1 := by
+          have htailCount : listPositiveCount rest = 2 := by
+            simpa [listPositiveCount] using hsupport
+          have htailSum : rest.sum = n := by
+            simpa [List.sum_cons] using hsum
+          exact List.mem_cons_of_mem _ (ih htailCount htailSum htailmem)
+        · have htailCount : listPositiveCount rest = 1 := by
+            simp [listPositiveCount, hq] at hsupport
+            omega
+          have htailSum : rest.sum = 1 :=
+            list_sum_eq_one_of_positiveCount_one_mem
+              rest htailCount htailmem
+          have hqEq : q = n - 1 := by
             simp only [List.sum_cons] at hsum
             omega
-          have htailPos : 0 < qs.sum := by
-            rw [htailSum]
-            omega
-          have hmem :=
-            list_sum_mem_of_positiveCount_one
-              qs htailSupport htailPos
-          rw [htailSum] at hmem
-          exact List.mem_cons_of_mem _ hmem
-        · have honeOnly :
-              qs.sum = 1 := by
-            have hsumMem :=
-              list_sum_mem_of_positiveCount_one
-                qs htailSupport (by
-                  have : 0 < qs.sum := by
-                    by_contra hzero
-                    have hz : qs.sum = 0 := Nat.eq_zero_of_not_pos hzero
-                    have hallzero : ∀ x ∈ qs, x = 0 := by
-                      intro x hx
-                      have hxle : x ≤ qs.sum :=
-                        List.single_le_sum (fun _ _ => Nat.zero_le _) hx
-                      omega
-                    exact (by simpa [hallzero 1 honeTail] using honeTail)
-                  exact this)
-            have hsumLower : 1 ≤ qs.sum := by
-              exact List.le_sum_of_mem honeTail
-            have hsupportOne := htailSupport
-            -- With one positive entry and 1 present, the whole sum is 1.
-            have hsumEq :
-                qs.sum = 1 := by
-              have hmemsum :=
-                list_sum_mem_of_positiveCount_one
-                  qs hsupportOne (by omega)
-              have huniq :
-                  ∀ x ∈ qs, x ≠ 0 → x = 1 := by
-                intro x hx hx0
-                -- two distinct positive values would force count >=2
-                by_contra hx1
-                induction qs with
-                | nil => simp at hx
-                | cons y ys =>
-                    simp_all [listPositiveCount]
-              exact huniq qs.sum hmemsum (by omega)
-            exact hsumEq
-          have hqEq : q = n - 1 := by
-            simp only [List.sum_cons, honeOnly] at hsum
-            omega
-          rw [hqEq]
-          exact List.mem_cons_self
+          simp [hqEq]
 
 /-- Mixed four-centre arithmetic: the support-two centre contains a second
 positive quotient equal to n-1. -/
