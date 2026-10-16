@@ -71,11 +71,11 @@ theorem standardResidual_throughColour_witnesses
       D (n + 1) (Nat.succ_pos n)
       (by exact_mod_cast hwidth)
       hvw c.castSucc).1 hcolVW
-  refine ⟨a, w, hau, hvw, ?_, ?_, ?_, ?_⟩ <;>
-    simpa using hbandAU.1 <;>
-    try simpa using hbandAU.2 <;>
-    try simpa using hbandVW.1 <;>
-    try simpa using hbandVW.2
+  refine ⟨a, w, hau, hvw, ?_, ?_, ?_, ?_⟩
+  · simpa using hbandAU.1
+  · simpa using hbandAU.2
+  · simpa using hbandVW.1
+  · simpa using hbandVW.2
 
 /-- The residual middle edge has normalized direction at least n. -/
 theorem standardResidual_value_ge_n
