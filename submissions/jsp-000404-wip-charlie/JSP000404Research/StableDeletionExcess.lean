@@ -95,7 +95,7 @@ theorem selected_weight_add_excess_le_total_matrix_bonus
 
 /-- Sharp compensated-deletion criterion retaining all excess row bonus. -/
 theorem exists_compensated_deletion_of_stable_weight_lt_card_add_excess
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
     (weight post : V → ℕ)
     (bonus : V → V → ℕ)
     (unstable : Finset V)
@@ -123,13 +123,17 @@ theorem exists_compensated_deletion_of_stable_weight_lt_card_add_excess
       (∑ i : V, weight i) =
         (∑ i ∈ unstable, weight i) +
           (∑ i ∈ (Finset.univ : Finset V) \ unstable, weight i) := by
-    rw [← Finset.sum_union]
-    · apply Finset.sum_congr
-      · ext i
-        simp
-      · intro i hi
-        rfl
-    · exact Finset.disjoint_sdiff_right
+    have hdisj :
+        Disjoint unstable ((Finset.univ : Finset V) \\ unstable) := by
+      apply Finset.disjoint_left.mpr
+      intro i hi hdiff
+      exact (Finset.mem_sdiff.mp hdiff).2 hi
+    rw [← Finset.sum_union hdisj]
+    apply Finset.sum_congr
+    · ext i
+      simp
+    · intro i hi
+      rfl
   apply exists_compensated_deletion_of_bonus_threshold
     weight post (fun r => ∑ i : V, bonus i r) hpoint
   rw [hsplit]
@@ -137,7 +141,7 @@ theorem exists_compensated_deletion_of_stable_weight_lt_card_add_excess
 
 /-- Dyadic specialization. -/
 theorem exists_compensated_deletion_of_dyadic_stable_weight_lt_card_add_excess
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
     (exponent : V → ℕ)
     (post : V → ℕ)
     (bonus : V → V → ℕ)
