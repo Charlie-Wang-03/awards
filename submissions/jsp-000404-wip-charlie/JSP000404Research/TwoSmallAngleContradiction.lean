@@ -33,17 +33,12 @@ theorem third_angle_gt_pi_sub_lam_of_two_weighted_small
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p b) (p₂ := p a) (p c)
-      (hp.ne hab.symm)
-  have hcommA :
-      EuclideanGeometry.angle (p c) (p a) (p b) =
-        EuclideanGeometry.angle (p b) (p a) (p c) :=
+      (hp.ne hab)
+  have hcommB :
+      EuclideanGeometry.angle (p c) (p b) (p a) =
+        EuclideanGeometry.angle (p a) (p b) (p c) :=
     EuclideanGeometry.angle_comm _ _ _
-  rw [hcommA] at hsum
-  have hthirdComm :
-      EuclideanGeometry.angle (p a) (p c) (p b) =
-        EuclideanGeometry.angle (p b) (p c) (p a) :=
-    EuclideanGeometry.angle_comm _ _ _
-  rw [hthirdComm]
+  rw [hcommB] at hsum
   nlinarith
 
 theorem impossible_two_weighted_small_angles_under_cap
@@ -64,7 +59,7 @@ theorem impossible_two_weighted_small_angles_under_cap
     third_angle_gt_pi_sub_lam_of_two_weighted_small
       hp habSum hlam hab hac hbc ha hb
   have hle :=
-    hcap a c b hac hbc hab.symm
+    hcap a c b hac hab hbc.symm
   linarith
 
 theorem third_angle_gt_pi_sub_lam_of_two_delta_small
@@ -84,21 +79,12 @@ theorem third_angle_gt_pi_sub_lam_of_two_delta_small
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p b) (p₂ := p a) (p c)
-      (hp.ne hab.symm)
-  have hcommA :
-      EuclideanGeometry.angle (p c) (p a) (p b) =
-        EuclideanGeometry.angle (p b) (p a) (p c) :=
-    EuclideanGeometry.angle_comm _ _ _
+      (hp.ne hab)
   have hcommB :
-      EuclideanGeometry.angle (p a) (p b) (p c) =
-        EuclideanGeometry.angle (p c) (p b) (p a) :=
+      EuclideanGeometry.angle (p c) (p b) (p a) =
+        EuclideanGeometry.angle (p a) (p b) (p c) :=
     EuclideanGeometry.angle_comm _ _ _
-  rw [hcommA] at hsum
-  have hthirdComm :
-      EuclideanGeometry.angle (p a) (p c) (p b) =
-        EuclideanGeometry.angle (p b) (p c) (p a) :=
-    EuclideanGeometry.angle_comm _ _ _
-  rw [hthirdComm]
+  rw [hcommB] at hsum
   nlinarith
 
 theorem impossible_two_delta_small_angles_under_cap
@@ -119,7 +105,7 @@ theorem impossible_two_delta_small_angles_under_cap
     third_angle_gt_pi_sub_lam_of_two_delta_small
       hp hdelta hlam hab hac hbc ha hb
   have hle :=
-    hcap a c b hac hbc hab.symm
+    hcap a c b hac hab hbc.symm
   linarith
 
 #print axioms third_angle_gt_pi_sub_lam_of_two_weighted_small
