@@ -202,15 +202,19 @@ theorem sameSignQuotient_pays_angle
       simp [boolLastFrom] at hlastLift
     · let last : OtherVertex i := rest.getLastD first
       have hlastMem : last ∈ rest := by
-        dsimp [last]
-        exact List.getLastD_mem hrest
+        cases rest with
+        | nil => exact (hrest rfl).elim
+        | cons x xs =>
+            change xs.getLastD x ∈ x :: xs
+            exact List.getLastD_mem_cons
       have hnodup :
           (first :: rest).Nodup := by
         simpa [hrays] using C.nodup
       have hfirstLast : first ≠ last := by
         intro h
-        subst last
-        exact (List.nodup_cons.mp hnodup).1 hlastMem
+        apply (List.nodup_cons.mp hnodup).1
+        rw [h]
+        exact hlastMem
       have hsorted :
           (first :: rest).Pairwise
             (fun a b =>
@@ -226,7 +230,6 @@ theorem sameSignQuotient_pays_angle
             =
           raySignAt hp i last := by
         rw [boolLastFrom_eq_getLastD, map_getLastD]
-        rfl
       have hsign :
           raySignAt hp i last =
             !raySignAt hp i first := by
@@ -281,8 +284,8 @@ theorem support_two_unit_transition_hidden_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
