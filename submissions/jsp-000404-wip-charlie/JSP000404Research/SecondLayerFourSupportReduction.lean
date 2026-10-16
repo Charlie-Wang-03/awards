@@ -1,6 +1,6 @@
 import JSP000404Research.SecondLayerNoTopReduction
 import JSP000404Research.HighExponentTransitionPacking
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Fin.VecNotation
 import Mathlib.Tactic
 
 /-!
