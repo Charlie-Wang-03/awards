@@ -682,3 +682,26 @@ single-choice `planarLowerCandidateBlock` family.
 Original JSP-000404 root remains incomplete: no unrestricted
 global non-reusing payment from TRUE external Boolean holes and
 unreserved surplus has been obtained.
+
+
+### 27. Maximal loss leaf rigidity restored without sorry (NEW, verified)
+
+Source: `JSP000404Research/ResidualEnlargedLossLeafRigidity.lean`.
+Focused CI [38888804586](https://github.com/Charlie-Wang-03/awards/actions/runs/38888804586):
+**SUCCESS**, 3,327 jobs. Both audited declarations use only
+`[propext, Classical.choice, Quot.sound]` and NO `sorryAx`.
+
+For an inclusion-minimal deficient enlarged candidate family and a
+LOSS centre whose completion cube is maximal among loss centres, if
+the vertex has a unique collision neighbour inside the deficient
+core, then its retained-active palette has EXACTLY TWO colours,
+and `exponent(v)=n-1`. Lower-exponent maximal loss leaves are excluded.
+Fixes comprised explicit intersection/biUnion membership certificates,
+correct reversed inequality orientation for distinct endpoints,
+deriving the loss target from the actual `projectedFree` identity,
+and ring/omega-safe factor decomposition with natural subtraction.
+
+Together with the new genuine pairwise loss expansion (Section 26),
+the two-centre loss case is eliminated entirely and a loss leaf
+in a larger deficient core is restricted to the top exponent.
+No unconditional global hole/surplus nonreuse exists.
