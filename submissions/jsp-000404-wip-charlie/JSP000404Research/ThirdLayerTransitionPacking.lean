@@ -1,6 +1,7 @@
 import JSP000404Research.SupportLeTwoTransitionInterval
 import JSP000404Research.ConcreteDeficitThree
 import JSP000404Research.HighExponentTransitionPacking
+import JSP000404Research.TopExponentSupportOneTransition
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Tactic
 
@@ -35,8 +36,8 @@ theorem third_layer_packing_forces_two_unit_transitions
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -83,9 +84,9 @@ theorem third_layer_packing_forces_two_unit_transitions
       hp hcap htpos htone hlam c Cc hsupC
 
   have hqS : HS.qe = n :=
-    unit_deficit_transition_qe_eq_n
-      Cs HS (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hS
+    top_exponent_transition_qe_eq_n
+      Cs (by omega : 2 ≤ n)
+      hdelta0 hdelta1 ht hS HS
   have hqA : HA.qe = n - 2 := by
     have h :=
       support_one_transitionInterval_qe_eq_exponent_add_one
@@ -146,8 +147,8 @@ theorem no_top_three_deficit_three_support_le_two_with_two_support_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
