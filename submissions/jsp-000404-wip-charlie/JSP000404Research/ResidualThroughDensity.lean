@@ -138,7 +138,7 @@ theorem incomingRetained_eq_empty_of_no_left
       (mem_incomingRetained_iff C u c).1 hc
     exact (hleft a hau).elim
   · intro hc
-    exact (Finset.not_mem_empty c hc).elim
+    simp at hc
 
 theorem outgoingRetained_eq_empty_of_no_right
     {V : Type*} [LinearOrder V] {n : ℕ}
@@ -154,7 +154,7 @@ theorem outgoingRetained_eq_empty_of_no_right
       (mem_outgoingRetained_iff C v c).1 hc
     exact (hright w hvw).elim
   · intro hc
-    exact (Finset.not_mem_empty c hc).elim
+    simp at hc
 
 /-- Unsafe residual edge from the global left boundary forces zero exponent at
 the upper endpoint. -/
