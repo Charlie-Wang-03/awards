@@ -124,7 +124,7 @@ theorem exists_compensated_deletion_of_stable_weight_lt_card_add_excess
         (∑ i ∈ unstable, weight i) +
           (∑ i ∈ (Finset.univ : Finset V) \ unstable, weight i) := by
     have hdisj :
-        Disjoint unstable ((Finset.univ : Finset V) \\ unstable) := by
+        Disjoint unstable ((Finset.univ : Finset V) \ unstable) := by
       apply Finset.disjoint_left.mpr
       intro i hi hdiff
       exact (Finset.mem_sdiff.mp hdiff).2 hi
