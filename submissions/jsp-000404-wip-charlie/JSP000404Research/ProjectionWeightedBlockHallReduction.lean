@@ -1,9 +1,9 @@
 import JSP000404Research.ProjectionLocalCandidateCapacity
 import JSP000404Research.WeightedBlockHallOutlet
 import JSP000404Research.MinimalBlockDeficiency
+import Mathlib.Tactic
 
 set_option maxHeartbeats 1000000
-import Mathlib.Tactic
 
 /-!
 # Planar lower branch reduced to vertex-block expansion
