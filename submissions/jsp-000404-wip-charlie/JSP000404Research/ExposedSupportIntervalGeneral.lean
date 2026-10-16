@@ -47,10 +47,10 @@ theorem boolTransitionCountFrom_eq_zero_of_all_eq
   | cons b bs ih =>
       have hb : b = a := hall b (by simp)
       subst b
-      simp only [boolTransitionCountFrom, if_pos rfl, zero_add]
-      apply ih a
-      intro c hc
-      exact hall c (by simp [hc])
+      have htailAll : ∀ c ∈ bs, c = a := by
+        intro c hc
+        exact hall c (by simp [hc])
+      simpa [boolTransitionCountFrom] using ih a htailAll
 
 theorem boolTransitionCountFrom_le_one_of_noReturn
     (a : Bool) (xs : List Bool)
@@ -63,15 +63,15 @@ theorem boolTransitionCountFrom_le_one_of_noReturn
       rcases h with ⟨hhead, htail⟩
       by_cases hab : b = a
       · subst b
-        simp only [boolTransitionCountFrom, if_pos rfl, zero_add]
-        exact ih a htail
+        simpa [boolTransitionCountFrom] using ih a htail
       · have hallB : ∀ c ∈ bs, c = b := by
           intro c hc
           exact bool_eq_of_ne_same hab (hhead hab c hc)
         have hzero :
             boolTransitionCountFrom b bs = 0 :=
           boolTransitionCountFrom_eq_zero_of_all_eq b bs hallB
-        simp [boolTransitionCountFrom, hab, hzero]
+        simp only [boolTransitionCountFrom, hzero, Nat.add_zero]
+        split_ifs <;> omega
 
 theorem boolNoReturnFrom_append_not
     (a : Bool) (xs : List Bool)
@@ -176,7 +176,7 @@ theorem one_sign_transition_of_strictlyExposed
     | nil =>
         exact False.elim (C.nonempty h)
     | cons first rest =>
-        exact ⟨first, rest, h⟩
+        exact ⟨first, rest, rfl⟩
   obtain ⟨u, hu⟩ := hExpose
   have hsorted :
       (first :: rest).Pairwise
@@ -217,8 +217,8 @@ theorem exists_supportIntervalCertificate_of_strictlyExposed
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
