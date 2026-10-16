@@ -600,3 +600,47 @@ sufficiency, forced minimal non-singleton Hall cores, conditional
 connectedness, and termination rankings DO NOT prove the actual
 global Boolean hole and unreserved dyadic-surplus payments. Historical
 Fast Incremental Lean still has unrelated legacy compilation errors.
+
+
+### 25. Connected non-singleton ACTUAL planar Hall obstruction (verified)
+
+Source: `JSP000404Research/ProjectionConnectedHallCore.lean`.
+Focused CI [38885806510](https://github.com/Charlie-Wang-03/awards/actions/runs/38885806510):
+**SUCCESS**, 3,534 build jobs; one audited theorem using only
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+If the actual planar lower-branch dyadic mass is overweight, then the
+canonical single-flip block family possesses an inclusion-minimal
+deficient core `T` with `2 <= |T|` such that for EVERY partition
+`T=A union B` into nonempty disjoint parts the candidate unions
+INTERSECT:
+
+```text
+NOT Disjoint (union_{v in A} candidateBlock(v))
+             (union_{w in B} candidateBlock(w)).
+```
+
+Thus the candidate-block intersection graph on T is connected.
+This is a strictly stronger NORMAL FORM for a hypothetical
+counterexample than the standalone minimal non-singleton Hall core.
+It reduces the possible global obstruction to connected collisions,
+but does not prove that those collisions cannot exist.
+
+### Legacy focused-build blocker accounting
+
+The restored newline source
+`ProjectionEnlargedCandidateHallGraphFree.lean` is syntactically
+readable but [CI 38884935035](https://github.com/Charlie-Wang-03/awards/actions/runs/38884935035)
+FAILED because its deep imports were red
+(`SecondLayerFourSupportReduction`,
+`FourCentreTransitionCases`, legacy recursion dependencies, etc.).
+Fixing the invalid old Matrix.Notation import exposed additional
+`FourCentreTransitionCases.lean` errors;
+[CI 38885709550](https://github.com/Charlie-Wang-03/awards/actions/runs/38885709550)
+remains FAILED. These files are **NOT** certified Lean-green.
+
+Four meaningful focused successes this continuation plus the
+connected core success are separately proved, and in no sense
+establish that the all-module Fast Incremental Lean run is green.
+The source-closure gate remains OPEN with the sole root executable
+`sorry` in `PlanarLowerBranchProofAdmittedWIP.lean`.
