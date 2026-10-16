@@ -78,16 +78,24 @@ theorem middle_hidden_cluster_separation
         ≤ delta * lam := by
     linarith
 
+  -- Reverse triangle inequality: bound the LARGE top-r angle
+  -- above by the desired top-b angle plus the SMALL b-r gap.
   have hTopBPath :=
     EuclideanGeometry.angle_le_angle_add_angle
-      (p i) (p top) (p r) (p b)
+      (p i) (p top) (p b) (p r)
+  have hcommBR :
+      EuclideanGeometry.angle (p b) (p i) (p r) =
+        EuclideanGeometry.angle (p r) (p i) (p b) :=
+    EuclideanGeometry.angle_comm _ _ _
+  rw [hcommBR] at hTopBPath
   have hTopB :
       lam < EuclideanGeometry.angle (p top) (p i) (p b) := by
     nlinarith
 
+  -- Likewise bound the LARGE d-top angle by c-top plus c-d.
   have hTopCPath :=
     EuclideanGeometry.angle_le_angle_add_angle
-      (p i) (p top) (p d) (p c)
+      (p i) (p top) (p c) (p d)
   have hcommTopD :
       EuclideanGeometry.angle (p top) (p i) (p d) =
         EuclideanGeometry.angle (p d) (p i) (p top) :=
@@ -96,7 +104,7 @@ theorem middle_hidden_cluster_separation
       EuclideanGeometry.angle (p d) (p i) (p c) =
         EuclideanGeometry.angle (p c) (p i) (p d) :=
     EuclideanGeometry.angle_comm _ _ _
-  rw [hcommTopD, hcommDC] at hTopCPath
+  rw [hcommTopD] at hTopCPath
   have hTopC :
       lam < EuclideanGeometry.angle (p top) (p i) (p c) := by
     nlinarith
