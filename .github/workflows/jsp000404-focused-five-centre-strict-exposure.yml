@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/FiveCentreStrictExposure.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FiveCentreTransitionCapacity.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerTransitionPacking.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerSaturatedResidual.lean"
       - ".github/workflows/jsp000404-focused-five-centre-strict-exposure.yml"
