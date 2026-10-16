@@ -123,6 +123,11 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle_fin_four
         EuclideanGeometry.angle (p b) (p c) (p a) ≤
           Real.pi - lam :=
       hcap b c a hbc hab.symm hac.symm
+    have hcommB :
+        EuclideanGeometry.angle (p a) (p b) (p c) =
+          EuclideanGeometry.angle (p c) (p b) (p a) :=
+      EuclideanGeometry.angle_comm _ _ _
+    rw [hcommB] at hsum
     dsimp [z, v]
     linarith
   exact mixed_four_interior_short_arithmetic_contradiction_weakened
