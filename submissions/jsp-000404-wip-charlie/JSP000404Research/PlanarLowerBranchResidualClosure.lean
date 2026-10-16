@@ -166,7 +166,8 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
     rfl
 
   have habs' : R.IsAbsorbed := by
-    simpa [B, D, OrderedEdgeColoring.IsResidual, not_lt] using habs
+    intro u v huv hres
+    exact habs huv (not_lt.mp hres)
 
   have hcap' :=
     R.cluster_capacity_of_absorbed_recoloring
