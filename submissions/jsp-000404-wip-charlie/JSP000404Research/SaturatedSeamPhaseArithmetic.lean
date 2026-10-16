@@ -42,7 +42,7 @@ subslots inside its positive quotient gap, with bad width at most delta.
 
 namespace JSP000404Research
 
-def saturatedSeamIndex
+noncomputable def saturatedSeamIndex
     (n : ℕ) (z : ℝ) : ℕ :=
   n - Nat.floor z
 
@@ -110,12 +110,14 @@ theorem saturated_wrap_failure_unit_subslot
         (n : ℝ) - (Nat.floor z : ℝ) := by
     unfold saturatedSeamIndex
     rw [Nat.cast_sub hzN]
-    push_cast
   have hqEqCast :
       (Nat.floor s : ℝ) - 1 =
         (n : ℝ) - (Nat.floor z : ℝ) +
           (Nat.floor a : ℝ) := by
-    exact_mod_cast hqEq
+    have hqOne : 1 ≤ Nat.floor s := by omega
+    have hqEqReal := congrArg (fun k : ℕ => (k : ℝ)) hqEq
+    simpa only [Nat.cast_add, Nat.cast_sub hqOne,
+      Nat.cast_sub hzN, Nat.cast_one] using hqEqReal
   have hlower :
       (saturatedSeamIndex n z : ℝ) +
           s - (Nat.floor s : ℝ) <
