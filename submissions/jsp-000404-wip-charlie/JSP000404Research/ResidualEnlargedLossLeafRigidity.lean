@@ -183,6 +183,23 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
       0 < (retainedCompletionWords C v).card := by
     rw [retainedCompletionWords_card]
     positivity
+  let a := (retainedActive C v).card
+  let q := (retainedCompletionWords C v).card
+  have hdecomp :
+      (a + 1) * q = 2 * q + (a - 1) * q := by
+    have ha : a = a - 1 + 1 := by dsimp [a]; omega
+    rw [ha]
+    ring
+  dsimp [a, q] at hdecomp
+  rw [hdecomp, Nat.add_sub_cancel_left] at hsharedLower
+  have hmultiple :
+      2 * (retainedCompletionWords C v).card ≤
+      ((retainedActive C v).card - 1) *
+        (retainedCompletionWords C v).card := by
+    have htwo : 2 ≤ (retainedActive C v).card - 1 := by omega
+    have hmul := Nat.mul_le_mul_right
+      (retainedCompletionWords C v).card htwo
+    simpa [Nat.mul_comm] using hmul
   omega
 
 theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_exponent_eq_n_sub_one
@@ -229,6 +246,8 @@ theorem minimal_enlargedCandidate_maxLoss_unique_neighbor_exponent_eq_n_sub_one
   have hloss :=
     (mem_projectedLossVertices C exponent v).1 hvLoss
   unfold projectedFree at hloss
+  have hcard : (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
   omega
 
 #print axioms minimal_enlargedCandidate_maxLoss_unique_neighbor_active_card_eq_two
