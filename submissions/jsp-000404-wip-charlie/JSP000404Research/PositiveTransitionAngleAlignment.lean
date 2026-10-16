@@ -298,11 +298,12 @@ theorem centre_three_transition_positive_angles_large
   let last := rest.getLastD first
   have hlastMem : last ∈ rest := by
     dsimp [last]
-    exact List.getLastD_mem hrest
+    rw [List.getLastD_eq_getLast?, List.getLast?_eq_some_getLast hrest]
+    simpa using (List.getLast_mem hrest)
   have hfirstLast : first ≠ last := by
     intro hEq
-    subst last
-    exact (List.nodup_cons.mp hnodup).1 hlastMem
+    have hfirstMem : first ∈ rest := hEq.symm ▸ hlastMem
+    exact (List.nodup_cons.mp hnodup).1 hfirstMem
   have horder :
       rayThetaAt hp i first ≤ rayThetaAt hp i last :=
     (List.pairwise_cons.mp hsorted).1 last hlastMem
