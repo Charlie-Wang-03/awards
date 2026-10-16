@@ -1,5 +1,6 @@
 import JSP000404Research.OneTransitionSupportInterval
 import JSP000404Research.FinFourCentreCycle
+import JSP000404Research.CanonicalRayReversal
 import Mathlib.Tactic
 
 /-!
@@ -52,9 +53,7 @@ theorem alternating_signedRay_sine_combo
         Real.sin (c - a) • signedRayDirection (!sigma) b +
         Real.sin (b - a) • signedRayDirection sigma c =
       0 := by
-  cases sigma <;>
-  ext k
-  fin_cases k <;>
+  cases sigma <;> ext k <;> fin_cases k <;>
     simp [signedRayDirection, rayDirection, Real.sin_sub] <;>
     ring
 
@@ -236,8 +235,17 @@ theorem one_sign_transition_of_strictlyExposed_fin_four
           (liftedCentreSignPath hp i first rest) = 1 := by
   obtain ⟨r0, r1, r2, hrays⟩ :=
     exists_three_rays_of_fin4_cycle i C
-  have hord :=
-    three_ray_theta_order C r0 r1 r2 hrays
+  have hord :
+      rayThetaAt hp i r0 ≤ rayThetaAt hp i r1 ∧
+        rayThetaAt hp i r1 ≤ rayThetaAt hp i r2 := by
+    have hsorted := C.theta_sorted
+    rw [hrays] at hsorted
+    have h01 :=
+      (List.pairwise_cons.mp hsorted).1 r1 (by simp)
+    have htail := (List.pairwise_cons.mp hsorted).2
+    have h12 :=
+      (List.pairwise_cons.mp htail).1 r2 (by simp)
+    exact ⟨h01, h12⟩
   have hcases :=
     lifted_three_transition_count_one_or_three
       (raySignAt hp i r0)
@@ -276,8 +284,8 @@ configuration owns a support interval of turn at least lambda. -/
 theorem exists_supportIntervalCertificate_of_strictlyExposed_fin_four
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
