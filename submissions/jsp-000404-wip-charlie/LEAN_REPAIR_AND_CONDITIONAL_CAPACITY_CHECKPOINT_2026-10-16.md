@@ -796,3 +796,39 @@ deficient core. Most importantly, it does NOT pay any of the original
 six-source global terminal debt with non-reused outside translated-loss
 true holes or unreserved surplus. The WIP main theorem still has its
 single genuine admitted global payment `sorry`.
+
+### 30. Four-centre support-two actual small angle Lean repair
+
+Module: `JSP000404Research/FourCentreSupportTwoSmallAngle.lean`.
+Independent focused CI [38905403546](https://github.com/Charlie-Wang-03/awards/actions/runs/38905403546):
+**SUCCESS**, 3,233 jobs, verified at revised source commit
+`e42aa237f2f28a9582fba1c8f08c59b87d2a7750`.
+The theorem
+`exists_small_angle_pair_of_four_centre_deficit_two_support_two`
+is kernel checked with `[propext, Classical.choice, Quot.sound]`,
+without `sorryAx`.
+
+Repairs were made to the ACTUAL pre-existing geometric theorem:
+explicit finite-list sum unfolding and association, a direct
+positive-scale proof in lieu of a missing helper, correct
+conjunction normalization from list nodup, correct use of the
+positive-support implication as a contradiction, and declaration
+binder ordering so that `AngleCap p lam` and `lam = pi/t`
+share the SAME scale parameter.
+
+Mathematical scope: for a genuine four-point injective planar
+configuration, a centre with deficit-two exponent and quotient
+support exactly two possesses a pair of distinct other vertices
+whose actual Euclidean angle at the centre is at most
+`delta * lam`. This is a four-centre geometric fact, not an
+unconditional all-centre capacity bound.
+
+An exploratory repair of the separate
+`TriangleConvexCone.lean` module was NOT kernel-verified and was
+reverted to its exact pre-attempt contents. The experimental focused
+workflow was also removed. The historical all-module incremental
+workflow still has unresolved legacy compilation failures; no
+full-workspace GREEN claim is made.
+
+The global six-source non-reusing outside-hole/unreserved-surplus
+payment remains the one executable main-theorem `sorry`.
