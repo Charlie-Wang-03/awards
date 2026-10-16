@@ -493,3 +493,110 @@ This reduces a possible Hall obstruction to at least two interacting
 loss vertices, but does NOT rule out multiple loss neighbours or
 pay the global terminal/NET/translated debts. It is a conditional
 structural exclusion, not a proof of all Hall expansion instances.
+
+
+## October 16 continuation: actual canonical candidate and rank repairs
+
+### 20. Planar local Boolean candidate capacity
+
+Source `JSP000404Research/ProjectionLocalCandidateCapacity.lean`.
+Focused CI [38883162408](https://github.com/Charlie-Wang-03/awards/actions/runs/38883162408):
+**SUCCESS**, 3,522 jobs, no `sorryAx` in audited theorem.
+
+The concrete lower-branch geometric hypotheses imply for **each**
+projected centre a finite Boolean candidate block `B_v` with
+`2^exponent(v) <= |B_v|`: retained completion cube for
+non-loss centres, retained-active single-coordinate doubled completion
+block for loss centres. Repair was explicit projected linear order
+in the cycle binder and the actual Sendov scale-lemma import.
+This closes LOCAL block sufficiency only; global Hall expansion remains
+open.
+
+### 21. Saturated hard overlap to TWO planar rigid endpoint certificates
+
+Source `JSP000404Research/ProjectionSaturatedOverlapRigidity.lean`.
+Focused CI [38883928522](https://github.com/Charlie-Wang-03/awards/actions/runs/38883928522):
+**SUCCESS**, 3,533 jobs, audited axioms
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+
+`saturatedSaturatedWord_has_two_wrap_rigid_endpoints` reconstructs
+the ordered actual residual carrier `u < v` from a simultaneously
+saturated hard overlap Boolean word. Both endpoints admit concrete
+local cut-rotated cycles with top floor band n and exact wrap-gap
+equality. Restored projected typeclass scope and natural-to-real
+`n+1` coercions. This is geometric evidence but not a nonreuse
+allocation for the remaining Boolean hole debt.
+
+### 22. Overweight implies a genuinely MINIMAL NONSINGLETON Hall core
+
+Source `JSP000404Research/ProjectionWeightedBlockHallReduction.lean`.
+Focused CI [38885289459](https://github.com/Charlie-Wang-03/awards/actions/runs/38885289459):
+**SUCCESS**, 3,533 jobs; new theorem
+`planar_lowerBranch_overweight_has_nontrivial_candidate_core`
+audited `[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+Three prior declarations in same module also audited sorry-free.
+
+For the actual chosen single-flip candidate family, if the dyadic
+mass really exceeds `2^n`, there must exist an inclusion-minimal
+deficient set T with **|T| >= 2**:
+
+```text
+card (union_{i in T} B_i) < sum_{i in T} 2^k(i);
+forall U strict-subset T: NOT BlockDeficient(U).
+```
+
+This is an unconditional NECESSARY obstruction under AngleCap and
+lower-branch hypotheses, obtained by contrapositive of the certified
+weighted block capacity outlet and by excluding singleton deficit
+using the newly certified local candidate bounds. It is NOT a proof
+that this core cannot exist; a global collision/Hall expansion
+exclusion is still missing.
+
+Repair details: eliminated invalid parameter-dependent projected-order
+`local instance`, explicitly bound the order for each `C` family,
+proposition and proof, repaired import ordering, and proved the
+singleton `biUnion` equality by `Finset.ext`.
+
+### 23. Well-founded weighted hard recursion rank
+
+Source `JSP000404Research/ResidualWeightedRecursionRank.lean`.
+Focused CI [38885649486](https://github.com/Charlie-Wang-03/awards/actions/runs/38885649486):
+**SUCCESS**, 3,092 jobs. Five audits only
+`[propext, Quot.sound]`, no `sorryAx`.
+
+Exact rank `payload*(n+1) + (n-freeDim)` decreases when payload
+strictly drops or payload holds constant while free dimension
+strictly grows, under the stated dimension bounds. Separate
+`payload*(n+1) + exponent` rank similarly decreases under
+strict payload or exponent descent. Repairs made multiplication
+distributivity explicit rather than incorrectly asking `omega`
+to reason over opaque nonlinear atoms, and opened a conjunctive
+equality before substitution.
+
+These are VALID well-founded ranking functions conditional on
+actually constructed progress steps; geometric existence of
+a valid globally nonreusing payment step is NOT yet established.
+
+### 24. Source encoding and remaining legacy build work
+
+`JSP000404Research/ProjectionEnlargedCandidateHallGraphFree.lean`
+contained **129 literal escaped newline strings** and zero real
+newlines. Repaired 130 actual source lines, commit
+`e4c58334801aa3949f96e12563f1efd33bcb6143`.
+Focused job [38884935035](https://github.com/Charlie-Wang-03/awards/actions/runs/38884935035)
+was RED from existing *upstream dependency* errors,
+including the invalid legacy Mathlib import of
+`SecondLayerFourSupportReduction`. The latter import was replaced
+by `Mathlib.Data.Fin.VecNotation`, commit
+`3bc0dbda25cfb8010d1a6a2c4b9bd31f7024a99c`.
+Neither target is declared fully Lean-verified until its focused
+build succeeds.
+
+### Mathematical scope
+
+Main WIP `PlanarLowerBranchProofAdmittedWIP.lean` retains its sole
+executable `sorry` (line 632 in checked HEAD). Local candidate
+sufficiency, forced minimal non-singleton Hall cores, conditional
+connectedness, and termination rankings DO NOT prove the actual
+global Boolean hole and unreserved dyadic-surplus payments. Historical
+Fast Incremental Lean still has unrelated legacy compilation errors.
