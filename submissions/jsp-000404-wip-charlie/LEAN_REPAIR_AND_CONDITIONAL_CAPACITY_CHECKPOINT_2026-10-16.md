@@ -705,3 +705,32 @@ Together with the new genuine pairwise loss expansion (Section 26),
 the two-centre loss case is eliminated entirely and a loss leaf
 in a larger deficient core is restricted to the top exponent.
 No unconditional global hole/surplus nonreuse exists.
+
+
+### 28. Certified two-vertex deficient core is NONLOSS-ONLY
+
+Source: `JSP000404Research/ResidualEnlargedTwoVertexDeficiency.lean`.
+Focused CI [38888919527](https://github.com/Charlie-Wang-03/awards/actions/runs/38888919527):
+**SUCCESS**, 3,315 jobs; audited
+`two_vertex_enlarged_deficiency_forces_both_nonloss` uses only
+`[propext, Classical.choice, Quot.sound]`, NO `sorryAx`.
+
+For any `v != w`, under actual one-layer profile hypotheses,
+an actual `BlockDeficient` witness for `{v,w}` of the enlarged
+all-active residual candidate family entails
+`v notin projectedLossVertices` AND
+`w notin projectedLossVertices`.
+The kernel proof opens the literal `BlockDeficient` predicate,
+proves exact two-element `biUnion` and demand-sum identities,
+and contradicts Section 26's audited weighted pair bound.
+
+As a result, the two-centre loss branch is NOT merely verbally
+dismissed; it has a reusable Lean theorem in the exact global
+obstruction vocabulary. A loss-containing enlarged minimal deficient
+core must involve THREE OR MORE distinct centres.
+This does NOT apply without proof to other (single-choice) candidate
+families, and does NOT rule out all larger cores.
+
+The original `PlanarLowerBranchProofAdmittedWIP` STILL has exactly
+one admitted global hole/unreserved-surplus nonreuse payment,
+so the full JSP-000404 proof remains open. 
