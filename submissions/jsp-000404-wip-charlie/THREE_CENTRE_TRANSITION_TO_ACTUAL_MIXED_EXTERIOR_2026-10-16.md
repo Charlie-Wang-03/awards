@@ -81,7 +81,7 @@ The proof fixed the `AngleCap` lambda binder and eliminated
 two obsolete `omega` commands after `rw` had already solved
 their goals.
 
-## 3. Direct hull-facing interface (verification separately pending)
+## 3. Direct hull-facing interface — kernel verified
 
 New file:
 `JSP000404Research/FourCentreMixedExteriorActualHull.lean`,
@@ -93,10 +93,12 @@ Section 2, exposing the convex hull conclusion to the mixed
 interior branch. It is NOT a mathematically independent exclusion
 theorem or additional solution to the six-source payment.
 
-Its focused CI, at the time this checkpoint is created:
-[38916707659](https://github.com/Charlie-Wang-03/awards/actions/runs/38916707659).
-Do not mark this item kernel-verified without reading that run's
-conclusion and axiom audit.
+Its focused CI:
+[38916707659](https://github.com/Charlie-Wang-03/awards/actions/runs/38916707659)
+**SUCCESS**, 3,463 jobs. The headline theorem's axiom report contains
+only `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`.
+This is a verified, positive hull-membership interface that retains
+exactly the original exponent/support hypotheses of Section 2.
 
 ## 4. Open mathematical and engineering frontier
 
