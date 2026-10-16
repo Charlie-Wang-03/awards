@@ -50,13 +50,17 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (hbadResidual :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        (by
+          rw [ht]
+          have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          linarith)
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -74,7 +78,10 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        (by
+          rw [ht]
+          have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          linarith)
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -86,7 +93,10 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       let htpos : 0 < t :=
-        sendov_scale_pos hn hdelta0 ht
+        (by
+          rw [ht]
+          have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          linarith)
       let D :=
         genericDirectionData_sendov hp hcap htpos hlam
       let hwidth : t < (n + 1 : ℕ) := by
@@ -102,7 +112,10 @@ theorem planar_lowerBranch_capacity_of_absorbed_residual
     projectionLinearOrder hp
 
   have htpos : 0 < t :=
-    sendov_scale_pos hn hdelta0 ht
+    (by
+          rw [ht]
+          have hnReal : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          linarith)
   have hwidthR : t < (n : ℝ) + 1 := by
     rw [ht]
     linarith
