@@ -152,6 +152,90 @@ theorem planar_lowerBranch_candidateBlock_local_capacity
       hp hcap hn hdelta0 hdeltaHalf ht hlam C i
   simpa using hspec.1
 
+
+/-- Every genuine failure of the planar lower-branch dyadic capacity
+produces an inclusion-minimal deficient subset of the *actual chosen*
+single-flip completion blocks.  Local capacity rules out singleton cores,
+so the obstruction necessarily involves at least two distinct centres. -/
+theorem planar_lowerBranch_overweight_has_nontrivial_candidate_core
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 1 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C :
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (hover :
+      2 ^ n < ∑ i : ProjectionOrdered V,
+        2 ^ centreExponent (C i) t) :
+    ∃ T : Finset (ProjectionOrdered V),
+      2 ≤ T.card ∧
+      BlockDeficient
+        (fun i => 2 ^ centreExponent (C i) t)
+        (planarLowerCandidateBlock
+          hp hcap hn hdelta0 hdeltaHalf ht hlam C) T
+      ∧
+      ∀ U : Finset (ProjectionOrdered V),
+        U ⊂ T →
+        ¬ BlockDeficient
+          (fun i => 2 ^ centreExponent (C i) t)
+          (planarLowerCandidateBlock
+            hp hcap hn hdelta0 hdeltaHalf ht hlam C) U := by
+  classical
+  let exponent : ProjectionOrdered V → ℕ :=
+    fun i => centreExponent (C i) t
+  let blocks : ProjectionOrdered V → Finset (Fin n → Bool) :=
+    planarLowerCandidateBlock
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C
+  have hfail :
+      ¬ ∀ S : Finset (ProjectionOrdered V),
+        (∑ i ∈ S, 2 ^ exponent i) ≤ (S.biUnion blocks).card := by
+    intro hexpansion
+    have hcap' :=
+      planar_lowerBranch_capacity_of_candidateBlock_expansion
+        hp hcap hn hdelta0 hdeltaHalf ht hlam C
+        (by simpa [exponent, blocks] using hexpansion)
+    omega
+  push_neg at hfail
+  obtain ⟨S, hS⟩ := hfail
+  have hdefS :
+      BlockDeficient (fun i => 2 ^ exponent i) blocks S := by
+    exact hS
+  obtain ⟨T, _hTS, hdefT, hminT⟩ :=
+    exists_minimal_deficient_subset
+      (fun i : ProjectionOrdered V => 2 ^ exponent i)
+      blocks hdefS
+  have hnonempty : T.Nonempty := by
+    exact deficient_set_nonempty_of_positive_demands
+      (fun i : ProjectionOrdered V => 2 ^ exponent i)
+      blocks (fun i => by positivity) hdefT
+  have hpos : 0 < T.card := Finset.card_pos.mpr hnonempty
+  have hlocal : ∀ i, 2 ^ exponent i ≤ (blocks i).card := by
+    intro i
+    exact planar_lowerBranch_candidateBlock_local_capacity
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C i
+  have hnotone : T.card ≠ 1 := by
+    intro hcard
+    obtain ⟨v, hv⟩ := Finset.card_eq_one.mp hcard
+    subst T
+    have hbound := hlocal v
+    unfold BlockDeficient at hdefT
+    simpa [exponent, blocks] using
+      (show False by
+        simp only [Finset.sum_singleton, Finset.biUnion_singleton] at hdefT
+        omega)
+  have htwo : 2 ≤ T.card := by omega
+  exact ⟨T, htwo,
+    (by simpa only [exponent, blocks] using hdefT),
+    (by
+      intro U hUT
+      simpa only [exponent, blocks] using hminT U hUT)⟩
+
+#print axioms planar_lowerBranch_overweight_has_nontrivial_candidate_core
+
 #print axioms planarLowerCandidateBlock_spec
 #print axioms planar_lowerBranch_capacity_of_candidateBlock_expansion
 #print axioms planar_lowerBranch_candidateBlock_local_capacity
