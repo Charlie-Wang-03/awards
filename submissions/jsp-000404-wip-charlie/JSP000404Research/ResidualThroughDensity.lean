@@ -134,9 +134,9 @@ theorem incomingRetained_eq_empty_of_no_left
   ext c
   constructor
   · intro hc
-  obtain ⟨a, hau, _⟩ :=
-    (mem_incomingRetained_iff C u c).1 hc
-  exact (hleft a hau).elim
+    obtain ⟨a, hau, _⟩ :=
+      (mem_incomingRetained_iff C u c).1 hc
+    exact (hleft a hau).elim
   · intro hc
     exact (Finset.not_mem_empty c hc).elim
 
@@ -150,9 +150,9 @@ theorem outgoingRetained_eq_empty_of_no_right
   ext c
   constructor
   · intro hc
-  obtain ⟨w, hvw, _⟩ :=
-    (mem_outgoingRetained_iff C v c).1 hc
-  exact (hright w hvw).elim
+    obtain ⟨w, hvw, _⟩ :=
+      (mem_outgoingRetained_iff C v c).1 hc
+    exact (hright w hvw).elim
   · intro hc
     exact (Finset.not_mem_empty c hc).elim
 
