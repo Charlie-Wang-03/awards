@@ -42,9 +42,12 @@ theorem sharedBlockWords_subset_single_neighbor_intersection
     sharedBlockWords blocks T v ⊆
       blocks v ∩ blocks w := by
   intro word hshared
-  have hdata :=
-    sharedBlockWords_has_other_block blocks hshared
-  obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
+  have hparts := Finset.mem_inter.mp hshared
+  have hvWord : word ∈ blocks v := hparts.1
+  obtain ⟨z, hzErase, hzWord⟩ :=
+    Finset.mem_biUnion.mp hparts.2
+  have hzT : z ∈ T := (Finset.mem_erase.mp hzErase).2
+  have hzv : z ≠ v := (Finset.mem_erase.mp hzErase).1
   have hcross : BlocksCross blocks v z := by
     exact ⟨word,hvWord,hzWord⟩
   have hzw := hunique z hzT hzv hcross
@@ -118,8 +121,9 @@ theorem minimal_enlargedCandidate_loss_unique_neighbor_is_loss
       C exponent hexp honeLoss hvLoss
       (by
         intro hvw
-        subst w
-        exact hwLoss hvLoss)
+        apply hwLoss
+        rw [← hvw]
+        exact hvLoss)
   have hrequired :=
     minimal_enlargedCandidate_loss_shared_card_ge_cube_add_one
       C exponent hdef hmin hvT hvLoss hvLt
