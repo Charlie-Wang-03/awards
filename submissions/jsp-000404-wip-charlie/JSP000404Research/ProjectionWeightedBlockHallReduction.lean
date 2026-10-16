@@ -252,7 +252,17 @@ theorem planar_lowerBranch_overweight_has_nontrivial_candidate_core
     subst T
     have hbound := hlocal v
     unfold BlockDeficient at hdefT
-    simp only [Finset.sum_singleton, Finset.biUnion_singleton] at hdefT
+    simp only [Finset.sum_singleton] at hdefT
+    have hblockEq :
+        ({v} : Finset (ProjectionOrdered V)).biUnion blocks = blocks v := by
+      ext word
+      simp only [Finset.mem_biUnion, Finset.mem_singleton]
+      constructor
+      · rintro ⟨u, rfl, hw⟩
+        exact hw
+      · intro hw
+        exact ⟨v, rfl, hw⟩
+    rw [hblockEq] at hdefT
     omega
   have htwo : 2 ≤ T.card := by omega
   exact ⟨T, htwo,
