@@ -70,8 +70,19 @@ theorem odd_two_pow_normalizedExponent_iff_minimum
     have hne :
         normalizedExponent exponent r i ≠ 0 :=
       Nat.ne_of_gt hpos
-    rw [odd_pow_iff hne]
-    norm_num
+    have hEven : Even (2 ^ normalizedExponent exponent r i) :=
+      even_two.pow_of_ne_zero hne
+    constructor
+    · intro hOdd
+      have hOddMod :
+          (2 ^ normalizedExponent exponent r i) % 2 = 1 :=
+        Nat.odd_iff.mp hOdd
+      have hEvenMod :
+          (2 ^ normalizedExponent exponent r i) % 2 = 0 :=
+        Nat.even_iff.mp hEven
+      omega
+    · intro heq
+      exact (hi heq).elim
 
 /-- The normalized full overweight mass is odd whenever the minimum exponent
 lies strictly below n. -/
@@ -200,8 +211,13 @@ theorem odd_finset_one_or_three_or_exists_outside_triple
         Finset.card_le_card hsub
       have htriple :
           ({a, b, c} : Finset V).card ≤ 3 := by
-        simp
-        omega
+        calc
+          ({a, b, c} : Finset V).card ≤ ({b, c} : Finset V).card + 1 :=
+            Finset.card_insert_le a _
+          _ ≤ ({c} : Finset V).card + 1 + 1 := by
+            omega
+              -- The first insertion has at most one additional element.
+          _ = 3 := by simp
       exact h.trans htriple
     have hmod : S.card % 2 = 1 :=
       Nat.odd_iff.mp hodd
