@@ -27,8 +27,8 @@ namespace JSP000404Research
 theorem impossible_cross_incident_small_pairs
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam alpha beta : ℝ}
+    (hcap : AngleCap p lam)
     (hlam : 0 < lam)
     (hsum : alpha + beta < 1)
     {a b z : V}
@@ -54,8 +54,8 @@ theorem support_three_three_coeff_sum_lt_one
 theorem impossible_support_two_two_cross_incidence
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam delta : ℝ}
+    (hcap : AngleCap p lam)
     (hlam : 0 < lam)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     {a b z : V}
@@ -77,8 +77,8 @@ theorem impossible_support_two_two_cross_incidence
 theorem impossible_support_two_three_cross_incidence
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam delta : ℝ}
+    (hcap : AngleCap p lam)
     (hlam : 0 < lam)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     {a b z : V}
@@ -100,8 +100,8 @@ theorem impossible_support_two_three_cross_incidence
 theorem impossible_support_three_two_cross_incidence
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam delta : ℝ}
+    (hcap : AngleCap p lam)
     (hlam : 0 < lam)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     {a b z : V}
@@ -126,8 +126,8 @@ theorem impossible_support_three_two_cross_incidence
 theorem impossible_support_three_three_cross_incidence
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam delta : ℝ}
+    (hcap : AngleCap p lam)
     (hlam : 0 < lam)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     {a b z : V}
