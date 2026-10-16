@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThirdLayerNoFifthExposed.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExposedSupportIntervalFinFour.lean"
       - ".github/workflows/jsp000404-focused-third-layer-no-fifth.yml"
   workflow_dispatch:
 
