@@ -114,9 +114,11 @@ three-way choice: both endpoints avoid `s`, or the pair is
 an independent geometric impossibility theorem.
 
 Focused run:
-[38929417377](https://github.com/Charlie-Wang-03/awards/actions/runs/38929417377).
-Its final status and axiom report must be inspected before calling
-the combined declaration kernel verified.
+[38929417377](https://github.com/Charlie-Wang-03/awards/actions/runs/38929417377):
+**SUCCESS, 3,477 jobs**. The combined theorem's kernel axiom
+audit is exactly `[propext, Classical.choice, Quot.sound]`,
+with no `sorryAx`. This is an honest original-vertex witness
+trichotomy, not a proof that either survivor is impossible.
 
 ## Remaining mathematical barrier
 
