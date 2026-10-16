@@ -1,5 +1,6 @@
 import JSP000404Research.PlanarLowerBranchHardWordInjection
 import JSP000404Research.CentreExponentBounds
+import JSP000404Research.TopExponentSupportOneTransition
 import Mathlib.Combinatorics.Hall.Basic
 import Mathlib.Tactic
 
@@ -171,6 +172,8 @@ theorem planar_lowerBranch_capacity_of_hall_candidates
         {word : Fin n → Bool //
           word ∈ hardProjectionWords B exponent},
         s.card ≤ (s.biUnion candidates).card) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
     ∑ i : ProjectionOrdered V, 2 ^ centreExponent (C i) t
       ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
