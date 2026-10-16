@@ -44,7 +44,7 @@ theorem strictSupportsAt_of_not_mem_other_triangle_fin_four
   have hconv : Convex ℝ (convexHull ℝ S) :=
     convex_convexHull ℝ S
   have hclosed : IsClosed (convexHull ℝ S) :=
-    hfinite.isClosed_convexHull
+    hfinite.isClosed_convexHull (𝕜 := ℝ)
   have hout' : p c ∉ convexHull ℝ S := by
     simpa [S] using hout
   obtain ⟨f, level, hfS, hfc⟩ :=
