@@ -26,8 +26,9 @@ namespace JSP000404Research
 
 noncomputable def canonicalRank
     {V : Type*} [Fintype V]
-    (p : V → Plane) (i : V) : ℕ :=
-  (Finset.univ.filter (fun v => CanonicalPointLt p v i)).card
+    (p : V → Plane) (i : V) : ℕ := by
+  classical
+  exact (Finset.univ.filter (fun v => CanonicalPointLt p v i)).card
 
 theorem canonicalRank_lt_of_lt
     {V : Type*} [Fintype V]
@@ -54,8 +55,8 @@ theorem canonicalRank_lt_of_lt
     simp [A, canonicalPointLt_irrefl]
   have hcard := Finset.card_le_card hsub
   rw [Finset.card_insert_of_notMem haA] at hcard
-  change A.card < B.card
-  omega
+  have hstrict : A.card < B.card := by omega
+  simpa [canonicalRank, A, B] using hstrict
 
 theorem canonicalRank_add_two_le_of_chain
     {V : Type*} [Fintype V]
