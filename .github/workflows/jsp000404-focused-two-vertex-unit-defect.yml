@@ -5,7 +5,7 @@ on:
     branches:
       - research/jsp-000404-sharp-centre
     paths:
-      - "submissions/jsp-000404-wip-charlie/JSP000404Research.ResidualTwoVertexUnitDefect.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualTwoVertexUnitDefect.lean"
       - ".github/workflows/jsp000404-focused-two-vertex-unit-defect.yml"
   workflow_dispatch:
 
