@@ -96,7 +96,7 @@ theorem mixed_inside_hidden_angle_weakened_fin_four
     concrete_centre_large_exponent_has_positive_transition_gap
       hp hcap (by omega : 1 ≤ n)
       hdelta0 hdelta1 ht hlam
-      b Cb (by rw [hB]; omega)
+      b Cb (by rw [hB])
   have hqeOne :
       qe = 1 :=
     mixed_transition_decomposition_qe_eq_one
@@ -116,7 +116,14 @@ theorem mixed_inside_hidden_angle_weakened_fin_four
     mixed_support_two_has_hidden_n_sub_one
       Cb HB hn hdelta0 hdeltaHalf ht
       hB hsupB hHBOne
-  have hlen := centreProjectiveCycle_rays_length_fin4 b Cb
+  have hlen : Cb.rays.length = 3 := by
+    classical
+    have hcard : Fintype.card (OtherVertex b) = 3 := by
+      fin_cases b <;> decide
+    have hfinite : Cb.rays.toFinset.card = 3 := by
+      rw [Cb.complete, Finset.card_univ]
+      exact hcard
+    exact (List.toFinset_card_of_nodup Cb.nodup).symm.trans hfinite
   rw [hrays] at hlen
   have hrestLen : rest.length = 2 := by
     simpa using hlen
