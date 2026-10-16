@@ -61,6 +61,7 @@ theorem saturatedSaturatedWord_has_two_wrap_rigid_endpoints
           (sendov_scale_pos hn hdelta0 htEq)
           hlam n
           (by
+            push_cast
             rw [htEq]
             linarith)
       let exponent :=
@@ -77,6 +78,7 @@ theorem saturatedSaturatedWord_has_two_wrap_rigid_endpoints
         hp hcap (sendov_scale_pos hn hdelta0 htEq)
         hlam n
         (by
+          push_cast
           rw [htEq]
           linarith)
     let exponent :=
@@ -118,7 +120,7 @@ theorem saturatedSaturatedWord_has_two_wrap_rigid_endpoints
   let D :=
     genericDirectionData_sendov hp hcap htPos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
-    genericResidualColoring hp hcap htPos hlam n hwidth
+    genericResidualColoring hp hcap htPos hlam n (by push_cast; exact hwidth)
   let exponent : ProjectionOrdered V → ℕ :=
     fun i => centreExponent (C i) t
   have hword' :
