@@ -163,8 +163,8 @@ theorem support_three_middle_hidden_separated_pattern
     (hsupport :
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp
-        (show top ≠ i by simpa using hit) C)
+      SupportThreePinnedMiddleShape (t := t) hp
+        (Ne.symm hit) C)
     (hthree :
       ∃ first rest,
         C.rays = first :: rest ∧
