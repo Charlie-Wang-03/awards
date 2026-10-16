@@ -50,7 +50,9 @@ theorem general_mixed_large_angle_sharp_endpoint_forces_support_one
     intro hsy
     apply hxy
     exact Subtype.ext (hx.trans hsy)
-  have hac : a ≠ y.1 := hya.symm
+  have hac : a ≠ y.1 := by
+    intro hay
+    exact hya hay.symm
   have hbc : b ≠ y.1 := y.2.symm
   have hupper :=
     general_mixed_hidden_angle_strict_upper
