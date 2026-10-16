@@ -56,19 +56,31 @@ theorem three_transition_quotient_sum_le_two_n
     · exact False.elim (hab hxy)
     · exact False.elim (hsb hxy.symm)
     · exact False.elim (hab hxy.symm)
-  let C : ∀ r : Fin 3, CentreProjectiveCycle hp (centre r) :=
-    fun r => by
-      fin_cases r
-      · simpa [centre] using Cs
-      · simpa [centre] using Ca
-      · simpa [centre] using Cb
+  let C : ∀ r : Fin 3, CentreProjectiveCycle hp (centre r) := by
+    intro r
+    by_cases h0 : r = 0
+    · subst r
+      simpa [centre] using Cs
+    by_cases h1 : r = 1
+    · subst r
+      simpa [centre] using Ca
+    have h2 : r = 2 := by
+      fin_cases r <;> simp_all
+    subst r
+    simpa [centre] using Cb
   let cert : ∀ r : Fin 3,
-      HighExponentTransitionIntervalCertificate hp t (centre r) (C r) :=
-    fun r => by
-      fin_cases r
-      · simpa [centre, C] using certS
-      · simpa [centre, C] using certA
-      · simpa [centre, C] using certB
+      HighExponentTransitionIntervalCertificate hp t (centre r) (C r) := by
+    intro r
+    by_cases h0 : r = 0
+    · subst r
+      simpa [centre, C] using certS
+    by_cases h1 : r = 1
+    · subst r
+      simpa [centre, C] using certA
+    have h2 : r = 2 := by
+      fin_cases r <;> simp_all
+    subst r
+    simpa [centre, C] using certB
   have h :=
     highTransition_quotient_sum_le_two_n
       hp hn hdelta0 hdeltaHalf ht
@@ -103,10 +115,9 @@ theorem concrete_unit_deficit_support_one
 theorem unit_deficit_transition_qe_eq_n
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
-    {i : V}
+    {i : V} {t delta : ℝ} {n : ℕ}
     (C : CentreProjectiveCycle hp i)
     (cert : HighExponentTransitionIntervalCertificate hp t i C)
-    {t delta : ℝ} {n : ℕ}
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -126,10 +137,9 @@ theorem unit_deficit_transition_qe_eq_n
 theorem deficit_two_support_one_transition_qe_eq
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
-    {i : V}
+    {i : V} {t : ℝ} {n : ℕ}
     (C : CentreProjectiveCycle hp i)
     (cert : HighExponentTransitionIntervalCertificate hp t i C)
-    {n : ℕ}
     (hn : 3 ≤ n)
     (hexp : centreExponent C t = n - 2)
     (hsupport :
@@ -328,10 +338,9 @@ positive quotient equal to n-1. -/
 theorem mixed_support_two_has_hidden_n_sub_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
-    {i : V}
+    {i : V} {t delta : ℝ} {n : ℕ}
     (C : CentreProjectiveCycle hp i)
     (cert : HighExponentTransitionIntervalCertificate hp t i C)
-    {t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
