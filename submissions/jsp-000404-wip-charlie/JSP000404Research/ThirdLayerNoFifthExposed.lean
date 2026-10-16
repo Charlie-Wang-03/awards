@@ -1,4 +1,5 @@
 import JSP000404Research.SupportLeTwoTransitionInterval
+import JSP000404Research.TopExponentSupportOneTransition
 import JSP000404Research.ConcreteDeficitThree
 import JSP000404Research.ExposedSupportIntervalGeneral
 import JSP000404Research.SupportIntervalCertificate
@@ -38,8 +39,8 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -107,9 +108,8 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
     SupportIntervalCertificate.ofHighExponent HC
 
   have hqS : HS.qe = n :=
-    unit_deficit_transition_qe_eq_n
-      Cs HS (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hS
+    top_exponent_transition_qe_eq_n
+      Cs (by omega : 2 ≤ n) hdelta0 hdelta1 ht hS HS
   have hqA : HA.qe = n - 2 := by
     have h :=
       support_one_transitionInterval_qe_eq_exponent_add_one
@@ -137,8 +137,8 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
     have hq : 1 ≤ HB.qe :=
       Nat.one_le_iff_ne_zero.mpr hHBpos
     have hmul : lam ≤ (HB.qe : ℝ) * lam := by
-      exact mul_le_mul_of_nonneg_right
-        (by exact_mod_cast hq) hlampos.le
+      have hqReal : (1 : ℝ) ≤ (HB.qe : ℝ) := by exact_mod_cast hq
+      nlinarith
     exact hmul.trans h
   have hturnC : lam ≤ SC.turnLength := by
     have h :=
@@ -147,8 +147,8 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
     have hq : 1 ≤ HC.qe :=
       Nat.one_le_iff_ne_zero.mpr hHCpos
     have hmul : lam ≤ (HC.qe : ℝ) * lam := by
-      exact mul_le_mul_of_nonneg_right
-        (by exact_mod_cast hq) hlampos.le
+      have hqReal : (1 : ℝ) ≤ (HC.qe : ℝ) := by exact_mod_cast hq
+      nlinarith
     exact hmul.trans h
 
   let centre : Fin 5 → V := ![s,a,b,c,d]
@@ -178,8 +178,14 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
       try { exact False.elim (hcd hxy.symm) }
 
   let cert : ∀ r : Fin 5,
-      SupportIntervalCertificate (p := p) (centre r) :=
-    ![SS,SA,SB,SC,SD]
+      SupportIntervalCertificate (p := p) (centre r) := by
+    intro r
+    fin_cases r
+    · exact SS
+    · exact SA
+    · exact SB
+    · exact SC
+    · exact SD
 
   have hpack :
       (∑ r : Fin 5, (cert r).turnLength) ≤
@@ -193,20 +199,25 @@ theorem no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
         lam + lam + lam
         ≤
       ∑ r : Fin 5, (cert r).turnLength := by
-    simpa [cert, centre, Fin.sum_univ_succ] using
-      add_le_add
-        (add_le_add
-          (add_le_add hturnS hturnA)
-          hturnB)
-        (add_le_add hturnC hturnD)
+    have hsum :
+        (∑ r : Fin 5, (cert r).turnLength) =
+          SS.turnLength + SA.turnLength + SB.turnLength +
+            SC.turnLength + SD.turnLength := by
+      simp [cert, centre, Fin.sum_univ_succ]
+    rw [hsum]
+    linarith
 
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    rw [Nat.cast_sub (by omega : 2 ≤ n)]
+    norm_num
   have hpi : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
-  rw [hncast, hpi, ht] at hpack hlower
+  rw [hncast] at hlower
+  rw [hpi, ht] at hpack
+  have hgap : 0 < (1 - 2 * delta) * lam :=
+    mul_pos (by linarith) hlampos
   nlinarith
 
 #print axioms no_fifth_strictlyExposed_of_top_supportOne_two_supportTwo_deficitThree
