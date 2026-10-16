@@ -78,7 +78,7 @@ theorem small_pair_at_outer_eq_other_outer_pair
     have hsharp :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
-        hsa hyns.symm y.2 hs
+        hsa hyns.symm y.2.symm hs
     rw [hxs] at hsmall
     linarith
   have hyns : y.1 ≠ s := by
@@ -87,7 +87,7 @@ theorem small_pair_at_outer_eq_other_outer_pair
     have hsharp :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
-        hsa hxns'.symm x.2 hs
+        hsa hxns'.symm x.2.symm hs
     have hsmall' :
         EuclideanGeometry.angle (p s) (p a) (p x.1) ≤
           delta * lam := by
