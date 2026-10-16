@@ -85,7 +85,7 @@ theorem three_transition_quotient_sum_le_two_n
     highTransition_quotient_sum_le_two_n
       hp hn hdelta0 hdeltaHalf ht
       centre hcentre C cert
-  simpa [cert, C, centre, Fin.sum_univ_succ] using h
+  simpa [cert, C, centre, Fin.sum_univ_succ, add_assoc] using h
 
 /-- Concrete unit deficit forces quotient support one. -/
 theorem concrete_unit_deficit_support_one
