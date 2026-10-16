@@ -86,7 +86,7 @@ Module `JSP000404Research/StableDeletionExcess.lean`.
 `sorryAx`. The decidability parameter is constructive/computational,
 not a mathematical hypothesis on the planar configuration.
 
-## 4. Additional targeted legacy repairs — verification not yet claimed
+## 4. Additional targeted legacy repairs — subsequently CI-certified
 
 * `ResidualThroughDensity.lean`: repairs the colour-cast injection
   argument and both empty boundary-palette proofs. The first focused
@@ -141,3 +141,40 @@ claim about complete public priority or award eligibility.
 classification that excludes the remaining saturated singleton-defect
 pair or pays its exact word cost, then extend the accounting to
 three-plus-centre cores without reusing Boolean holes or surplus.
+
+## 7. Confirmed follow-on focused CI outcomes (same day)
+
+The two results previously recorded as pending in Section 4 have
+now passed their own exact-source kernel builds:
+
+**Residual through-colour density:**
+[38909531761](https://github.com/Charlie-Wang-03/awards/actions/runs/38909531761)
+**SUCCESS**, 3,123 jobs. The repaired
+`residualThroughColours_card_le_left/right` injections and both
+zero-exponent boundary theorems depend only on
+`[propext, Classical.choice, Quot.sound]`. There is no `sorryAx`
+in those four declarations. Final source commit:
+`e1161119106d8764a4fea51f734d66613b14eb5a`.
+
+**Four-centre genuine geometry exclusion:**
+[38909539248](https://github.com/Charlie-Wang-03/awards/actions/runs/38909539248)
+**SUCCESS**, 3,252 jobs. The theorem
+`no_sharp_with_two_support_two_deficit_two_fin_four` now
+kernel-checks with only the three standard axioms. It excludes,
+for a genuine injective four-point planar configuration satisfying
+the stated `AngleCap` and normalized parameters, one
+`n-1` sharp centre coexisting with two distinct `n-2`
+quotient-support-two centres. This is a real geometric exclusion
+of a small exceptional branch. It does NOT establish the full
+arbitrary-cardinality planar lower bound or final global nonreuse
+payment. Final source commit:
+`04ebb1d752960446ca89ab220bc866e049cc4fb1`.
+
+Both repaired modules preserve the original mathematical theorem
+statements. In total, this checkpoint now references **five**
+independent focused successful kernel checks (two-centre unit defect,
+two-small-angle contradiction, stable deletion excess, residual
+through-density, and four-centre support-two terminal).
+
+The root `PlanarLowerBranchProofAdmittedWIP.lean` still has one
+executable `sorry`. The full-workspace build is not certified green.
