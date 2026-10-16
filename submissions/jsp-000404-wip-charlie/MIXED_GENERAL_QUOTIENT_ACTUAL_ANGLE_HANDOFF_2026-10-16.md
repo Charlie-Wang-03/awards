@@ -133,7 +133,7 @@ original root `sorry`.
 
 The latest observed broad incremental baseline
 [38924708823](https://github.com/Charlie-Wang-03/awards/actions/runs/38924708823)
-failed with 504 Lean errors across 36 legacy modules. That
+failed with 337 Lean errors across 34 legacy modules. That
 historical count is not a fresh census after the above scoped
 repairs, and targeted PASS runs cannot be used to assert an
 all-module green build.
