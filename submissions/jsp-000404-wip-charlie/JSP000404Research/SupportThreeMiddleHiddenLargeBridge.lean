@@ -51,7 +51,7 @@ theorem support_three_middle_hidden_large_bridge
     (hsupport :
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp
+      SupportThreePinnedMiddleShape (t := t) hp
         (show top ≠ i by exact Ne.symm hit) C)
     (hthree :
       ∃ first rest,
