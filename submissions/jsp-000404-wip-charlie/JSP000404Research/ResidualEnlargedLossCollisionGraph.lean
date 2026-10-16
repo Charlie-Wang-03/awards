@@ -37,7 +37,7 @@ theorem sharedBlockWords_subset_single_neighbor_intersection
       ∀ z : V,
         z ∈ T →
         z ≠ v →
-        BlocksCross blocks v z →
+        (blocks v ∩ blocks z).Nonempty →
         z = w) :
     sharedBlockWords blocks T v ⊆
       blocks v ∩ blocks w := by
@@ -48,7 +48,7 @@ theorem sharedBlockWords_subset_single_neighbor_intersection
     Finset.mem_biUnion.mp hparts.2
   have hzT : z ∈ T := (Finset.mem_erase.mp hzErase).2
   have hzv : z ≠ v := (Finset.mem_erase.mp hzErase).1
-  have hcross : BlocksCross blocks v z := by
+  have hcross : (blocks v ∩ blocks z).Nonempty := by
     exact ⟨word,hvWord,hzWord⟩
   have hzw := hunique z hzT hzv hcross
   subst z
@@ -121,9 +121,7 @@ theorem minimal_enlargedCandidate_loss_unique_neighbor_is_loss
       C exponent hexp honeLoss hvLoss
       (by
         intro hvw
-        apply hwLoss
-        rw [← hvw]
-        exact hvLoss)
+        exact hwLoss (hvw ▸ hvLoss))
   have hrequired :=
     minimal_enlargedCandidate_loss_shared_card_ge_cube_add_one
       C exponent hdef hmin hvT hvLoss hvLt
