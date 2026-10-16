@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/BinaryKraftTree.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/LabeledBinaryKraftTree.lean"
       - ".github/workflows/jsp000404-focused-binary-kraft-tree.yml"
   workflow_dispatch:
 
@@ -18,7 +19,7 @@ concurrency:
 
 jobs:
   two-shadow:
-    name: Kernel-check repaired full binary-tree Kraft identities
+    name: Kernel-check unlabelled and vertex-labelled binary Kraft capacity
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -54,4 +55,4 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check binary Kraft tree capacity
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.BinaryKraftTree
+        run: lake build JSP000404Research.BinaryKraftTree JSP000404Research.LabeledBinaryKraftTree
