@@ -39,11 +39,12 @@ def normalizedExponent
     (r i : V) : ℕ :=
   exponent i - exponent r
 
-def normalizedOldDeletionWeight
+noncomputable def normalizedOldDeletionWeight
     {V : Type*} [Fintype V]
     (exponent : V → ℕ)
-    (r : V) : ℕ :=
-  ∑ i ∈ Finset.univ.erase r,
+    (r : V) : ℕ := by
+  classical
+  exact ∑ i ∈ Finset.univ.erase r,
     2 ^ normalizedExponent exponent r i
 
 def normalizedTotalDyadicWeight
