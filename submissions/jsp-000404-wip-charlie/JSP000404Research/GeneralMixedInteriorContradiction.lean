@@ -25,8 +25,8 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle
     {V : Type*}
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -42,9 +42,10 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle
       (((n - 1 : ℕ) : ℝ) - delta) * lam ≤
         EuclideanGeometry.angle (p s) (p b) (p c)) :
     False := by
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    have hnreal : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    rw [ht]
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -99,7 +100,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p s) (p b)
-        (hp.ne hsa.symm)
+        (hp.ne hsa)
     dsimp [As, Aa, Ab]
     have hcomm :
         EuclideanGeometry.angle (p b) (p a) (p s) =
@@ -112,7 +113,7 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p s) (p c)
-        (hp.ne hsa.symm)
+        (hp.ne hsa)
     have hcapC :
         EuclideanGeometry.angle (p s) (p c) (p a) ≤
           Real.pi - lam :=
@@ -129,18 +130,23 @@ theorem no_mixed_fourth_inside_of_weakened_hidden_angle
     have hsum :=
       EuclideanGeometry.angle_add_angle_add_angle_eq_pi
         (p₁ := p a) (p₂ := p b) (p c)
-        (hp.ne hab)
+        (hp.ne hab.symm)
     have hcapC :
         EuclideanGeometry.angle (p b) (p c) (p a) ≤
           Real.pi - lam :=
       hcap b c a hbc hab.symm hac.symm
+    have hcommB :
+        EuclideanGeometry.angle (p a) (p b) (p c) =
+          EuclideanGeometry.angle (p c) (p b) (p a) :=
+      EuclideanGeometry.angle_comm _ _ _
+    rw [hcommB] at hsum
     dsimp [z, v]
     linarith
 
   exact mixed_four_interior_short_arithmetic_contradiction_weakened
     (by omega : 1 ≤ n)
     hlampos hdelta0 hdeltaHalf ht hpi houter
-    hp0 hsplitA.le hsplitB.le
+    hp0 hsplitA.ge hsplitB.ge
     (by simpa [w] using hhidden)
     hpu hzv
 
