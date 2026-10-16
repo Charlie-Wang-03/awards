@@ -130,13 +130,15 @@ theorem left_cross_value_ge_succ_of_through
       have habs :
           |D.value a v - D.value v w| =
             D.value v w - D.value a v := by
-        rw [abs_of_nonpos]
-        linarith
+        rw [abs_of_nonpos (sub_nonpos.mpr (le_of_lt hlt))]
+        ring
       rw [habs] at hsep
       have hlow : D.value a v ≤ D.value v w - 1 := by
         linarith
       exact False.elim (hNotLow hlow)
-  linarith
+  have hcLower : (c : ℝ) ≤ D.value v w := by
+    simpa only [Fin.val_castSucc] using hbandVW.1
+  exact (add_le_add_right hcLower 1).trans hhigh
 
 /-- Right cross diagonal moves at least one full band upward. -/
 theorem right_cross_value_ge_succ_of_through
@@ -205,8 +207,8 @@ theorem right_cross_value_ge_succ_of_through
     · have habs :
           |D.value a u - D.value u w| =
             D.value u w - D.value a u := by
-        rw [abs_of_nonpos]
-        linarith
+        rw [abs_of_nonpos (sub_nonpos.mpr horder)]
+        ring
       rw [habs] at hsep
       linarith
     · have hlt : D.value u w < D.value a u := lt_of_not_ge horder
@@ -219,7 +221,9 @@ theorem right_cross_value_ge_succ_of_through
       have hlow : D.value u w ≤ D.value a u - 1 := by
         linarith
       exact False.elim (hNotLow hlow)
-  linarith
+  have hcLower : (c : ℝ) ≤ D.value a u := by
+    simpa only [Fin.val_castSucc] using hbandAU.1
+  exact (add_le_add_right hcLower 1).trans hhigh
 
 /-- Package both cross-diagonal ladder bounds. -/
 theorem through_four_chain_cross_values_ge_succ
