@@ -6,6 +6,8 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/GeneralMixedOtherRaySeparation.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/GeneralMixedBaseAngleLarge.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/GeneralMixedHiddenAngleFrontier.lean"
       - ".github/workflows/jsp000404-focused-general-mixed-ray-separation.yml"
   workflow_dispatch:
 
