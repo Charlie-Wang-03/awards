@@ -103,7 +103,52 @@ theorem no_top_with_two_third_support_one_n_ge_five
     hp hcap hn hdelta0 hdeltaHalf ht hlam
     hsa hsb hab hsharp (C a) (C b) hA hB hsupA hsupB
 
+/-- Actual geometric multiplicity bound: with a true top n-1 centre
+in the lower branch and n>=5, at most ONE OTHER centre may
+simultaneously have exponent n-3 and quotient support one. -/
+theorem top_third_support_one_count_le_one_n_ge_five
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hs : centreExponent (C s) t = n - 1) :
+    ((Finset.univ : Finset V).filter
+      (fun i => i ≠ s ∧
+        centreExponent (C i) t = n - 3 ∧
+        positiveSupport (centreQuotient (C i) t) = 1)).card ≤ 1 := by
+  classical
+  let S : Finset V :=
+    (Finset.univ : Finset V).filter
+      (fun i => i ≠ s ∧
+        centreExponent (C i) t = n - 3 ∧
+        positiveSupport (centreQuotient (C i) t) = 1)
+  by_contra hnot
+  change ¬ S.card ≤ 1 at hnot
+  have hgt : 1 < S.card := by omega
+  rcases Finset.one_lt_card.mp hgt with ⟨a, ha, b, hb, hab⟩
+  have ha' : a ≠ s ∧
+      centreExponent (C a) t = n - 3 ∧
+      positiveSupport (centreQuotient (C a) t) = 1 := by
+    simpa [S] using ha
+  have hb' : b ≠ s ∧
+      centreExponent (C b) t = n - 3 ∧
+      positiveSupport (centreQuotient (C b) t) = 1 := by
+    simpa [S] using hb
+  exact no_top_with_two_third_support_one_n_ge_five
+    hp hcap hn hdelta0 hdeltaHalf ht hlam C
+    ha'.1.symm hb'.1.symm hab
+    hs ha'.2.1 hb'.2.1 ha'.2.2 hb'.2.2
+
 #print axioms no_two_third_support_one_around_sharp_n_ge_five
 #print axioms no_top_with_two_third_support_one_n_ge_five
+#print axioms top_third_support_one_count_le_one_n_ge_five
 
 end JSP000404Research
