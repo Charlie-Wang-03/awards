@@ -216,9 +216,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     simp only [cyclicRayAngles, consecutiveRayAngles,
       AFirst, Amid, ALast, lastRay, List.singleton_append,
       List.cons_append]
-    simpa only [rs] using congrArg
-      (fun x : OtherVertex i =>
-        EuclideanGeometry.angle (p x.1) (p i) (p s)) hget
+    rw [hget]
 
   have hrotNodup :
       (rs :: r :: rest).Nodup := by
