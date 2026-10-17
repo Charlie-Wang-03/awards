@@ -55,8 +55,9 @@ capacity is overweight, at least one centre has exponent
 `n-1` or `n-2`. It is logically derived from the prior
 kernel-verified eight-centre result; its own new focused
 run is https://github.com/Charlie-Wang-03/awards/actions/runs/39031460978.
-At the time of drafting this report, this later run had not
-returned a final conclusion.
+That later focused CI has now been independently verified:
+**SUCCESS**, 3224 Lake jobs, the new theorem's printed axioms exactly
+`[propext, Classical.choice, Quot.sound]` and NO `sorryAx`.
 
 ## C. Sole admitted root further restricted
 
