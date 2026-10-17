@@ -50,6 +50,10 @@ theorem four_dyadic_terms_le_of_sharp_structure
       ∀ {a b : ℕ}, a ≤ b → 2 ^ a ≤ 2 ^ b := by
     intro a b hab
     exact Nat.pow_le_pow_right (by norm_num : 0 < 2) hab
+  have hk0 : k 0 < n := hk 0
+  have hk1 : k 1 < n := hk 1
+  have hk2 : k 2 < n := hk 2
+  have hk3 : k 3 < n := hk 3
   by_cases h0 : k 0 = n - 1
   · have h1lt : k 1 < n - 1 := by
       have hne : k 1 ≠ n - 1 := by
@@ -96,8 +100,9 @@ theorem four_dyadic_terms_le_of_sharp_structure
     have hdouble :
         2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ n := by
       have hn1 : n - 1 + 1 = n := by omega
-      rw [← pow_succ, hn1]
-      ring
+      calc
+        2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ (n - 1) * 2 := by ring
+        _ = 2 ^ n := by rw [← pow_succ, hn1]
     linarith
   · by_cases h1 : k 1 = n - 1
     · have h0lt : k 0 < n - 1 := by omega
@@ -140,8 +145,11 @@ theorem four_dyadic_terms_le_of_sharp_structure
       have hdouble :
           2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ n := by
         have hn1 : n - 1 + 1 = n := by omega
-        rw [← pow_succ, hn1]
-        ring
+        calc
+
+          2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ (n - 1) * 2 := by ring
+
+          _ = 2 ^ n := by rw [← pow_succ, hn1]
       linarith
     · by_cases h2 : k 2 = n - 1
       · have h0lt : k 0 < n - 1 := by omega
@@ -179,8 +187,11 @@ theorem four_dyadic_terms_le_of_sharp_structure
         have hdouble :
             2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ n := by
           have hn1 : n - 1 + 1 = n := by omega
-          rw [← pow_succ, hn1]
-          ring
+          calc
+
+            2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ (n - 1) * 2 := by ring
+
+            _ = 2 ^ n := by rw [← pow_succ, hn1]
         linarith
       · by_cases h3 : k 3 = n - 1
         · have h0lt : k 0 < n - 1 := by omega
@@ -213,8 +224,11 @@ theorem four_dyadic_terms_le_of_sharp_structure
           have hdouble :
               2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ n := by
             have hn1 : n - 1 + 1 = n := by omega
-            rw [← pow_succ, hn1]
-            ring
+            calc
+
+              2 ^ (n - 1) + 2 ^ (n - 1) = 2 ^ (n - 1) * 2 := by ring
+
+              _ = 2 ^ n := by rw [← pow_succ, hn1]
           linarith
         · have hk0' : k 0 ≤ n - 2 := by omega
           have hk1' : k 1 ≤ n - 2 := by omega
