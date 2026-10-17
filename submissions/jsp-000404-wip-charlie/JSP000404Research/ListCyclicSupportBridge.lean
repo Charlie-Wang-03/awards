@@ -49,21 +49,24 @@ theorem listPositiveCount_le_half_length_of_cyclicSeparated
       qs hsep
   omega
 
-/-- The finite-function centre quotient agrees pointwise with the canonical
-quotient list. -/
+/-- Finite-function and quotient-list index types are only
+propositionally equal in the Lean kernel. Transport the index by the
+proved length equality before comparing the same genuine gap entry. -/
 theorem centreQuotient_eq_quotientList_get
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
     (t : ℝ) :
     centreQuotient C t =
-      (quotientList t C.gaps).get := by
+      (fun r : Fin C.gaps.length =>
+        (quotientList t C.gaps).get
+          (Fin.cast (quotientList_length t C.gaps).symm r)) := by
   funext r
-  unfold centreQuotient quotientList
-  simp
+  simp [centreQuotient, quotientList, Fin.cast]
 
-/-- Hence concrete cyclic separation can be stated interchangeably on the
-centreQuotient function or on the quotient-list get-function. -/
+/-- The cyclic support predicate is unchanged after exactly the
+canonical Fin index transport, never by assuming two list lengths
+definitionally identical. -/
 theorem cyclicSeparated_centreQuotient_iff_list_get
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
@@ -71,7 +74,9 @@ theorem cyclicSeparated_centreQuotient_iff_list_get
     (t : ℝ) :
     CyclicSeparatedPositive (centreQuotient C t) ↔
       CyclicSeparatedPositive
-        (quotientList t C.gaps).get := by
+        (fun r : Fin C.gaps.length =>
+          (quotientList t C.gaps).get
+            (Fin.cast (quotientList_length t C.gaps).symm r)) := by
   rw [centreQuotient_eq_quotientList_get]
 
 /-- Concrete list support count is exactly concrete finite support. -/
@@ -82,7 +87,7 @@ theorem listPositiveCount_centreQuotientList
     (t : ℝ) :
     listPositiveCount (quotientList t C.gaps) =
       positiveSupport (centreQuotient C t) := by
-  rw [centreQuotient_ofFn C t,
+  rw [← centreQuotient_ofFn C t,
       listPositiveCount_ofFn_eq_positiveSupport]
 
 
@@ -101,6 +106,8 @@ theorem cyclicSeparated_get_of_linear_and_wrap
   intro i hi
   by_cases hilast : i = Fin.last rest.length
   · subst i
+    change (q0 :: rest).get
+      (finRotate (rest.length + 1) (Fin.last rest.length)) = 0
     rw [finRotate_last]
     simpa using hwrap hi
   · have hval :
