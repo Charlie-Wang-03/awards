@@ -51,7 +51,7 @@ theorem no_two_supportOne_deficitTwo_around_top
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        s Cs (by rw [hS]))
+        s Cs (by rw [hS]; omega))
   let HA :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
@@ -123,6 +123,7 @@ theorem secondLayer_companion_card_le_two
     (Finset.univ : Finset V).filter
       (fun i => i ≠ s ∧
         centreExponent (C i) t = n - 2)
+  change S.card ≤ 2
   by_contra hcard
   have hgt : 2 < S.card := by omega
   rcases (Finset.two_lt_card.mp hgt) with
