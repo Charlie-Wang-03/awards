@@ -130,29 +130,35 @@ Local cardinality sufficient conditions or geometric exclusions
 cannot be substituted for that global payment.
 JSP-000404 is NOT yet proved or disproved.
 
-## F. New geometric corollary: seven-centre top/no-next support-one
+## F. New geometric corollary: eight-centre top/no-next support-one
 
-New `JSP000404Research/SevenCentreTopThirdSupportOneCapacity.lean`
-combines the ACTUAL planar top-centre uniqueness theorem,
+Module `JSP000404Research/SevenCentreTopThirdSupportOneCapacity.lean`
+retains a seven-centre named corollary but now establishes the stronger
+`planar_eight_centre_top_no_next_third_support_one_capacity`.
+
+It combines the ACTUAL planar top uniqueness theorem,
 `top_third_support_one_count_le_one_n_ge_five`, and the top-inclusive
-three-layer weighted budget. In an injective real `AngleCap`
-configuration with `n>=5`, `3<=card V<=7`, an actual exponent
-`n-1` top centre, NO exponent `n-2` centre, and every
-exponent-`n-3` centre having quotient support exactly ONE, geometry
-implies the three high-layer counts `r=1, q=0, u<=1`. Hence
-`m+7*r+3*q+u<=7+7+1=15<=16`, proving the true dyadic
-capacity. This is a GEOMETRIC sufficient subcase; it does not
-silently assume that every third-layer centre universally has
-support one.
+three-level dyadic budget. In an injective real `AngleCap`
+configuration with `n>=5`, `3<=card V<=8`, an actual exponent
+`n-1` top centre, NO exponent `n-2` centre, and every exponent
+`n-3` centre having quotient support exactly ONE, geometry forces
+the count values `r=1,q=0,u<=1`. Consequently
+`m+7*r+3*q+u<=8+7+1=16`, which PROVES the original dyadic capacity
+without six-source TRUE-hole payment.
 
-Dedicated kernel check initiated:
-https://github.com/Charlie-Wang-03/awards/actions/runs/39039257910.
-The newer check was still IN PROGRESS at report update; the new
-corollary must NOT be marked certified until CI succeeds and the
-printed axioms are checked.
+This is a real geometric sufficient subcase; it does NOT claim all
+third-layer centres universally have quotient support one. It is a
+geometric COROLLARY of the root's top-inclusive numerical census
+branch, not an additional logically disjoint root case.
 
-The corollary is logically already subsumed by the earlier numerical
-profile branch in the root; it is a transparent geometric explanation
-of why those numerical conditions hold here. No additional main-root
-by_cases is needed. The unresolved global six-source payment remains
-the UNIQUE original `sorry`.
+Dedicated check of initial seven-centre draft:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39039257910
+FAILED for an invalid old Finset lemma name, not for a mathematical
+counterexample. The exact zero-count obligation was replaced with
+`simp [M, hnoNext]`, while the bound was sharpened to eight centres.
+New targeted check:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39039536716.
+It was still pending at time of this report revision. Until verified,
+do NOT mark this eight-centre geometric corollary as kernel certified.
+
+The main original six-source payment remains the ONE original `sorry`.
