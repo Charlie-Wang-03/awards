@@ -74,9 +74,7 @@ theorem unitGainDeletionBonus_eq_zero_of_no_gain
     unitGainDeletionBonus exponent after i r = 0 := by
   classical
   unfold unitGainDeletionBonus
-  split_ifs with h
-  · exact (hno h).elim
-  · rfl
+  exact if_neg hno
 
 /-- Survivor monotonicity makes the canonical one-unit bonus pointwise valid. -/
 theorem old_add_unitGainBonus_le_after_weight
