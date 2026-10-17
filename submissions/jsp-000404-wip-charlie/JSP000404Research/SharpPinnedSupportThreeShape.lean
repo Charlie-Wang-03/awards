@@ -81,9 +81,10 @@ theorem exists_sharp_pinned_support_three_shape_with_split
             (⟨s, hsi⟩ : OtherVertex i) (r :: rest) := by
   classical
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (4 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have htone : 1 ≤ t := by
     rw [ht]
     have hnR : (4 : ℝ) ≤ n := by exact_mod_cast hn
@@ -98,7 +99,7 @@ theorem exists_sharp_pinned_support_three_shape_with_split
     | nil =>
         exact False.elim (C.nonempty hR)
     | cons first rest =>
-        exact ⟨first, rest, hR⟩
+        exact ⟨first, rest, rfl⟩
 
   let qs : List ℕ := quotientList t C.gaps
   let As : List ℝ :=
@@ -153,6 +154,7 @@ theorem exists_sharp_pinned_support_three_shape_with_split
     dsimp [qR]
     rw [List.length_rotate, hqLen]
     rw [← List.length_rotate C.rays k, hrotRays]
+    simp
 
   have hqAR :
       qR.length = AR.length := by
@@ -213,7 +215,7 @@ theorem exists_sharp_pinned_support_three_shape_with_split
     | nil =>
         exact False.elim (htailNonempty hT)
     | cons r rest =>
-        exact ⟨r, rest, hT⟩
+        exact ⟨r, rest, rfl⟩
 
   let AFirst : ℝ :=
     EuclideanGeometry.angle (p s) (p i) (p r.1)
@@ -227,8 +229,15 @@ theorem exists_sharp_pinned_support_three_shape_with_split
   have hARShape :
       AR = AFirst :: (Amid ++ [ALast]) := by
     rw [hARpin, htail]
-    simp [cyclicRayAngles, consecutiveRayAngles,
-      AFirst, Amid, ALast, lastRay, rs]
+    have hget :
+        (r :: rest).getLastD rs = (r :: rest).getLastD r := by
+      cases rest with
+      | nil => rfl
+      | cons t ts => simp [List.getLastD]
+    simp only [cyclicRayAngles, consecutiveRayAngles,
+      AFirst, Amid, ALast, lastRay, List.singleton_append,
+      List.cons_append]
+    rw [hget]
 
   have hrotNodup :
       (rs :: r :: rest).Nodup := by
@@ -238,7 +247,8 @@ theorem exists_sharp_pinned_support_three_shape_with_split
     exact hnd
 
   have hrsr : rs ≠ r := by
-    exact (List.nodup_cons.mp hrotNodup).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp hrotNodup).1 (by simp [h])
   have hsr : s ≠ r.1 := by
     intro h
     apply hrsr
@@ -247,7 +257,7 @@ theorem exists_sharp_pinned_support_three_shape_with_split
 
   have hlastMem : lastRay ∈ r :: rest := by
     dsimp [lastRay]
-    exact List.getLastD_mem (by simp)
+    exact getLastD_mem_of_ne_nil r (r :: rest) (by simp)
   have hrsLast : rs ≠ lastRay := by
     intro h
     have htailNo := (List.nodup_cons.mp hrotNodup).1
@@ -260,7 +270,7 @@ theorem exists_sharp_pinned_support_three_shape_with_split
 
   cases hqR : qR with
   | nil =>
-      have : qR.length = 0 := by rw [hqR]
+      have : qR.length = 0 := by simp [hqR]
       rw [hqRLen, htail] at this
       simp at this
   | cons qFirst qrest =>
@@ -369,8 +379,9 @@ theorem exists_sharp_pinned_support_three_shape_with_split
       have hsupportShape :
           listPositiveCount
               (qFirst :: qmid ++ [qLast]) = 3 := by
-        rw [← hqShape]
-        exact hsupportR
+        have h := hsupportR
+        rw [hqShape] at h
+        simpa only [List.cons_append] using h
       have hmidCount :
           listPositiveCount qmid = 1 :=
         support_three_middle_count_one_of_end_ne_zero
