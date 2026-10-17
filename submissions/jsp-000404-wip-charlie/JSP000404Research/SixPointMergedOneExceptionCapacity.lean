@@ -100,11 +100,14 @@ theorem six_point_weight_lower_of_one_min_exception
           2 ^ (n - active bad) +
           ∑ v ∈ S, 2 ^ (n - active v) := by
     rw [← Finset.sum_erase_add
-      (Finset.univ : Finset V) top (Finset.mem_univ top)]
+      (Finset.univ : Finset V)
+      (fun v => 2 ^ (n - active v))
+      (Finset.mem_univ top)]
     have hbadIn :
         bad ∈ (Finset.univ.erase top : Finset V) := hbadMemErase
     rw [← Finset.sum_erase_add
-      (Finset.univ.erase top : Finset V) bad hbadIn]
+      (Finset.univ.erase top : Finset V)
+      (fun v => 2 ^ (n - active v)) hbadIn]
     dsimp [S]
     omega
   have hlower :

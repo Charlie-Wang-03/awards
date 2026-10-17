@@ -138,7 +138,7 @@ theorem left_cross_value_ge_succ_of_through
       exact False.elim (hNotLow hlow)
   have hcLower : (c : ℝ) ≤ D.value v w := by
     simpa only [Fin.val_castSucc] using hbandVW.1
-  exact (add_le_add_right hcLower 1).trans hhigh
+  linarith only [hcLower, hhigh]
 
 /-- Right cross diagonal moves at least one full band upward. -/
 theorem right_cross_value_ge_succ_of_through
@@ -223,7 +223,7 @@ theorem right_cross_value_ge_succ_of_through
       exact False.elim (hNotLow hlow)
   have hcLower : (c : ℝ) ≤ D.value a u := by
     simpa only [Fin.val_castSucc] using hbandAU.1
-  exact (add_le_add_right hcLower 1).trans hhigh
+  linarith only [hcLower, hhigh]
 
 /-- Package both cross-diagonal ladder bounds. -/
 theorem through_four_chain_cross_values_ge_succ
