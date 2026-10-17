@@ -32,7 +32,7 @@ theorem dyadic_capacity_of_top_and_four_low
   have huniv : insert s S = (Finset.univ : Finset V) := by
     simp [S]
   have hcardS : S.card ≤ 4 := by
-    have h := Finset.card_insert_of_not_mem hsnot
+    have h : (insert s S).card = S.card + 1 := by simp [hsnot]
     rw [huniv, Finset.card_univ] at h
     omega
   have hlow : (∑ i ∈ S, 2 ^ k i) ≤ S.card * 2 ^ (n - 3) := by
