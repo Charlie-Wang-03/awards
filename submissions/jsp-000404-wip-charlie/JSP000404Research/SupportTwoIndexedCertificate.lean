@@ -38,7 +38,11 @@ theorem positiveIndexSet_card
     (positiveIndexSet q).card = positiveSupport q := by
   classical
   unfold positiveIndexSet positiveSupport
-  simp [Finset.card_eq_sum_ones]
+  rw [Finset.card_eq_sum_ones]
+  rw [Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro i hi
+  by_cases hq : q i = 0 <;> simp [hq]
 
 structure SupportTwoUnitTransitionIndexedCertificate
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -71,8 +75,8 @@ theorem exists_supportTwoUnitTransitionIndexedCertificate
     (hp : Function.Injective p)
     {i : V}
     (C : CentreProjectiveCycle hp i)
-    (cert : HighExponentTransitionIntervalCertificate hp t i C)
     {t delta : ℝ} {n : ℕ}
+    (cert : HighExponentTransitionIntervalCertificate hp t i C)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -128,9 +132,9 @@ theorem exists_supportTwoUnitTransitionIndexedCertificate
   obtain ⟨rh, hrh⟩ := hhiddenMem
 
   have hrtVal :
-      centreQuotient C t rt = 1 := hrt.symm
+      centreQuotient C t rt = 1 := hrt
   have hrhVal :
-      centreQuotient C t rh = n - 1 := hrh.symm
+      centreQuotient C t rh = n - 1 := hrh
   have hrne : rt ≠ rh := by
     intro h
     subst rh
@@ -157,6 +161,7 @@ theorem exists_supportTwoUnitTransitionIndexedCertificate
       ({rt, rh} : Finset _).card = 2 := by
     simp [hrne]
   have hSeq : S = {rt, rh} := by
+    symm
     apply Finset.eq_of_subset_of_card_le hpairSub
     rw [hpairCard, hcardS]
 
