@@ -1,4 +1,4 @@
-import JSP000404Research.ProjectionFourCentreCapacity
+import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
@@ -174,19 +174,20 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  -- Genuine already-closed slice of this exact global statement:
-  -- four ORIGINAL projection-ordered centres, n >= 3. This uses the
-  -- independently kernel-checked arbitrary-four-centre capacity theorem,
-  -- not the formerly assumed six-source debt-payment lemma.
+  -- All independently kernel-closed ORIGINAL projected small-centre
+  -- cases are discharged without consulting the six-source payment:
+  -- <=2 centres at n>=1; 3 centres at n>=2; 4 centres at n>=3.
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
-  by_cases hfourClosed :
-      Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n
-  · exact planar_lower_branch_card_four_dyadic_capacity
-      hp hcap hfourClosed.1 hfourClosed.2
-      hdelta0 hdeltaHalf ht hlam cycles
-  · -- The unique residual sorry now has the STRICTER genuine premise
-    -- NOT(card ProjectionOrdered V = 4 AND 3 <= n). No fake hole or
-    -- already-reserved surplus is added by this branch split.
+  by_cases hknownClosed :
+      Fintype.card (ProjectionOrdered V) ≤ 2 ∨
+      (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
+      (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)
+  · exact planar_lower_branch_known_small_centre_dyadic_capacity
+      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hknownClosed
+  · -- SOLE residual global payment remains under the STRICTER
+    -- negation of ALL three kernel-proved small-centre branches.
+    -- No covered sink is relabelled a TRUE hole, nor does any
+    -- previously reserved dyadic mass become an unused surplus.
     have hmobile :=
       planar_mobile_hard_mass_le_singleton_soft_bridge_dyadic
         hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
