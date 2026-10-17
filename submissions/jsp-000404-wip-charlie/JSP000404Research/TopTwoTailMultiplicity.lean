@@ -1,5 +1,6 @@
 import JSP000404Research.SharpSecondLayerMultiplicity
 import JSP000404Research.CentreExponentBounds
+import JSP000404Research.TailMajorizationCapacity
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
@@ -88,7 +89,7 @@ theorem topExponent_eq_fixed_top
       i (C i) hI
   exact two_sharp_no_third_small_delta
     hp hcap hdeltaHalf hlampos
-    his.symm hcs.symm hci.symm
+    (Ne.symm his) (Ne.symm hcs) (Ne.symm hci)
     hsSharp hiSharp
 
 theorem topTwo_tailCount_le_three
