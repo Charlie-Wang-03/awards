@@ -105,3 +105,33 @@ allocation.
 
 No admitted proof hole other than the pre-existing single WIP
 `sorry` was intentionally created. No new axioms are used.
+
+## 6. Further historical Lean repair: support-two indexed certificate
+
+`JSP000404Research/SupportTwoIndexedCertificate.lean` had SIX
+historical error diagnostics.  Their causes were a recursively-expanding
+simp lemma on cardinality, an accidental shadowed `t` parameter
+between the high-exponent certificate and the theorem itself, two
+reversed equality proofs after `List.mem_ofFn'`, and a reversed
+`Finset.eq_of_subset_of_card_le` target.
+
+The certificate binder was moved AFTER the actual `{t delta : ℝ}`
+parameter declarations, so its mathematical scaling datum is exactly
+the same `t` as the target exponent. The positive index set equality
+is now an explicit filter-sum and finite-set congruence argument.
+All originally intended certificate fields are retained.
+
+Focused CI https://github.com/Charlie-Wang-03/awards/actions/runs/39029229892:
+**SUCCESS**, 3444 Lake jobs; both
+`positiveIndexSet_card` and
+`exists_supportTwoUnitTransitionIndexedCertificate`
+print axioms exactly
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+This certifies that all SIX historical diagnostics for this module
+were removed without weakening its theorem conclusions.
+
+Together with the EIGHT previously repaired diagnostics in
+`AdjacentProjectiveGapIndex.lean`, this turn kernel-closed
+14 concrete historical Lean compilation diagnostics across two
+separately focused modules. That number is not the remaining
+full-tree error count.
