@@ -1,4 +1,5 @@
 import JSP000404Research.GeneralMixedContradiction
+import JSP000404Research.NoTopTwoNextMultiplicity
 import JSP000404Research.SharpSecondLayerMultiplicity
 import JSP000404Research.TopTwoTailMultiplicity
 import Mathlib.Data.Finset.Card
@@ -40,7 +41,7 @@ theorem exists_fourth_of_fintype_card_ge_four
     · simp [hxa]
     have hxb : x = b := by
       by_contra hxb
-      exact h x hxs hxa hxb
+      exact hxb (h x hxs hxa)
     simp [hxb]
   have hle := Finset.card_le_card hsub
   have htri :
@@ -53,8 +54,8 @@ theorem no_top_with_two_deficitTwo_companions_of_card_ge_four
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 4 ≤ Fintype.card V)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -69,46 +70,11 @@ theorem no_top_with_two_deficitTwo_companions_of_card_ge_four
     (hB : centreExponent (C b) t = n - 2) :
     False := by
   obtain ⟨c, hcs, hca, hcb⟩ :=
-    exists_fourth_of_fintype_card_ge_four
-      hcard hsa hsb hab
-  have hsc : s ≠ c := hcs.symm
-  have hac : a ≠ c := hca.symm
-  have hbc : b ≠ c := hcb.symm
-  have hdelta1 : delta < 1 := by linarith
-  have hs :
-      SharpAt p delta lam s :=
-    concrete_unit_deficit_is_sharp
-      hp hcap (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hlam
-      s (C s) hS
-  have hsupA :=
-    deficit_two_support_one_or_two_concrete
-      (C a) hn hdelta0 hdeltaHalf ht hA
-  have hsupB :=
-    deficit_two_support_one_or_two_concrete
-      (C b) hn hdelta0 hdeltaHalf ht hB
-  rcases hsupA with hA1 | hA2 <;>
-    rcases hsupB with hB1 | hB2
-  · exact no_two_supportOne_deficitTwo_around_top
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hab
-      (C s) (C a) (C b)
-      hS hA hB hA1 hB1
-  · exact no_top_mixed_deficitTwo_with_fourth
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      (C s) (C a) (C b)
-      hS hA hB hA1 hB2
-  · exact no_top_mixed_deficitTwo_with_fourth
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsb hsa hsc hab.symm hbc hac
-      (C s) (C b) (C a)
-      hS hB hA hB1 hA2
-  · exact no_two_supportTwo_deficitTwo_around_sharp
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      hs (C a) (C b)
-      hA hB hA2 hB2
+    exists_fourth_of_fintype_card_ge_four hcard hsa hsb hab
+  exact no_top_and_two_next_with_fourth
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hcs.symm hab hca.symm hcb.symm
+    (C s) (C a) (C b) hS hA hB
 
 /-- Relative to a fixed top centre, at most one other centre can occupy the
 second exponent layer once the configuration has at least four points. -/
@@ -116,8 +82,8 @@ theorem secondLayer_companion_card_le_one_of_card_ge_four
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 4 ≤ Fintype.card V)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -156,8 +122,8 @@ theorem topTwo_tailCount_le_two_of_card_ge_four
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 4 ≤ Fintype.card V)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
