@@ -43,59 +43,31 @@ theorem four_transition_quotient_sum_le_two_n
     (certC : HighExponentTransitionIntervalCertificate hp t c Cc)
     (certD : HighExponentTransitionIntervalCertificate hp t d Cd) :
     certA.qe + certB.qe + certC.qe + certD.qe ≤ 2 * n := by
-  let centre : Fin 4 → V := ![a,b,c,d]
+  -- Package each ORIGINAL cycle with its actual transition certificate in
+  -- a nondependent Fin 4 vector. Sigma projections then reduce definitionally
+  -- at 0/1/2/3; dependent by_cases would introduce opaque Eq.mpr casts and
+  -- fail to identify the certificate masses in the four-term sum.
+  let data : Fin 4 →
+      (Σ i : V, Σ D : CentreProjectiveCycle hp i,
+        HighExponentTransitionIntervalCertificate hp t i D) :=
+    ![⟨a, Ca, certA⟩, ⟨b, Cb, certB⟩,
+      ⟨c, Cc, certC⟩, ⟨d, Cd, certD⟩]
+  let centre : Fin 4 → V := fun r => (data r).1
+  let C : ∀ r : Fin 4, CentreProjectiveCycle hp (centre r) :=
+    fun r => (data r).2.1
+  let cert : ∀ r : Fin 4,
+      HighExponentTransitionIntervalCertificate hp t (centre r) (C r) :=
+    fun r => (data r).2.2
   have hcentre : Function.Injective centre := by
     intro x y hxy
     fin_cases x <;> fin_cases y <;>
-      simp [centre] at hxy ⊢
-    · exact False.elim (hab hxy)
-    · exact False.elim (hac hxy)
-    · exact False.elim (had hxy)
-    · exact False.elim (hab hxy.symm)
-    · exact False.elim (hbc hxy)
-    · exact False.elim (hbd hxy)
-    · exact False.elim (hac hxy.symm)
-    · exact False.elim (hbc hxy.symm)
-    · exact False.elim (hcd hxy)
-    · exact False.elim (had hxy.symm)
-    · exact False.elim (hbd hxy.symm)
-    · exact False.elim (hcd hxy.symm)
-  let C : ∀ r : Fin 4, CentreProjectiveCycle hp (centre r) :=
-    fun r => by
-      by_cases h0 : r = 0
-      · subst r
-        simpa [centre] using Ca
-      by_cases h1 : r = 1
-      · subst r
-        simpa [centre] using Cb
-      by_cases h2 : r = 2
-      · subst r
-        simpa [centre] using Cc
-      have h3 : r = 3 := by
-        fin_cases r <;> simp_all
-      subst r
-      simpa [centre] using Cd
-  let cert : ∀ r : Fin 4,
-      HighExponentTransitionIntervalCertificate hp t (centre r) (C r) :=
-    fun r => by
-      by_cases h0 : r = 0
-      · subst r
-        simpa [centre, C] using certA
-      by_cases h1 : r = 1
-      · subst r
-        simpa [centre, C] using certB
-      by_cases h2 : r = 2
-      · subst r
-        simpa [centre, C] using certC
-      have h3 : r = 3 := by
-        fin_cases r <;> simp_all
-      subst r
-      simpa [centre, C] using certD
+      simp_all [centre, data]
   have h :=
     highTransition_quotient_sum_le_two_n
       hp hn hdelta0 hdeltaHalf ht
       centre hcentre C cert
-  simpa [cert,C,centre,Fin.sum_univ_succ] using h
+  simpa [cert, C, centre, data, Fin.sum_univ_succ, add_assoc]
+    using h
 
 theorem no_three_supportOne_secondLayer_among_four_n3
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -244,14 +216,14 @@ theorem four_secondLayer_has_two_supportTwo_of_three_le_n
     · exact False.elim
         (no_three_supportOne_secondLayer_among_four_n3
           hp hcap hdelta0 hdeltaHalf ht hlam
-          hab hac had hbc hbd hcd
+          hab had hac hbd hbc hcd.symm
           (C a) (C b) (C d) (C c)
           haSecond hbSecond hdSecond hcSecond ha1 hb1 hd1)
     · exact ⟨c,d,hcd,by simp,by simp,hc2,hd2⟩
     · exact False.elim
         (no_three_supportOne_secondLayer_among_four_n3
           hp hcap hdelta0 hdeltaHalf ht hlam
-          hac hab had hbc.symm hcd hbd
+          hac had hab hcd hbc.symm hbd.symm
           (C a) (C c) (C d) (C b)
           haSecond hcSecond hdSecond hbSecond ha1 hc1 hd1)
     · exact ⟨b,d,hbd,by simp,by simp,hb2,hd2⟩
@@ -260,7 +232,7 @@ theorem four_secondLayer_has_two_supportTwo_of_three_le_n
     · exact False.elim
         (no_three_supportOne_secondLayer_among_four_n3
           hp hcap hdelta0 hdeltaHalf ht hlam
-          hbc hab.symm hbd hac.symm hcd had
+          hbc hbd hab.symm hcd hac.symm had.symm
           (C b) (C c) (C d) (C a)
           hbSecond hcSecond hdSecond haSecond hb1 hc1 hd1)
     · exact ⟨a,d,had,by simp,by simp,ha2,hd2⟩
