@@ -125,10 +125,14 @@ theorem directionOrientationPair_theta
         projectiveDirectionRepresentative hp theta
     directedNonloopEdgeTheta hp e = theta.1 := by
   dsimp
-  cases b
-  · simpa using projectiveDirectionRepresentative_theta hp theta
-  · rw [directedNonloopEdgeTheta_reverse]
-    exact projectiveDirectionRepresentative_theta hp theta
+  cases b with
+  | false =>
+      simpa using projectiveDirectionRepresentative_theta hp theta
+  | true =>
+      simpa using
+        (directedNonloopEdgeTheta_reverse hp
+          (projectiveDirectionRepresentative hp theta)).trans
+          (projectiveDirectionRepresentative_theta hp theta)
 
 theorem directionOrientationPair_injective
     {V : Type*} [Fintype V]
@@ -166,8 +170,8 @@ theorem directionOrientationPair_injective
     have heqTheta :
         directedNonloopEdgeTheta hp ex =
           directedNonloopEdgeTheta hp ey := by
-      unfold directedNonloopEdgeTheta
-      rw [hpair]
+      have he : ex = ey := Subtype.ext hpair
+      exact congrArg (directedNonloopEdgeTheta hp) he
     rw [hthetaX, hthetaY] at heqTheta
     exact heqTheta
   subst phi
@@ -206,12 +210,16 @@ theorem mem_nonloopOrderedPairs_iff
     (e : V × V) :
     e ∈ nonloopOrderedPairs V ↔ e.1 ≠ e.2 := by
   classical
-  simp [nonloopOrderedPairs, diagonalOrderedPairs]
+  simp only [nonloopOrderedPairs, diagonalOrderedPairs,
+    Finset.mem_sdiff, Finset.mem_univ, true_and, Finset.mem_image]
   constructor
-  · intro h
-    exact h
-  · intro h
-    exact h
+  · intro h hEq
+    apply h
+    exact ⟨e.1, Finset.mem_univ _, Prod.ext rfl hEq⟩
+  · rintro h ⟨v, _hv, hpair⟩
+    apply h
+    exact (congrArg Prod.fst hpair).symm.trans
+      (congrArg Prod.snd hpair)
 
 theorem diagonalOrderedPairs_card
     (V : Type*) [Fintype V] :
