@@ -65,7 +65,7 @@ Module `JSP000404Research/FourCentreArithmetic.lean`:
   **SUCCESS**, 3,249 Lake build tasks.
 - Axiom audit contains no `sorryAx`.
 
-## Additional research-only Lean repair pending certificate
+## Verified list/function cyclic support repair
 
 `JSP000404Research/ListCyclicSupportBridge.lean` was updated to
 explicitly transport between `Fin C.gaps.length` and
@@ -77,8 +77,11 @@ rewrite direction and cyclic wrap rotation normalization.
 Focused CI:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39005753781
 
-**At document authoring time this last fix is PENDING Lean certification.**
-No PASS assertion is made here until GitHub Actions completes.
+**SUCCESS**: focused CI completed with 3,223 Lake build tasks.
+The `#print axioms` audits for cyclic list support, linear-and-wrap
+separation, explicit `Fin.cast` quotient transport, and centre quotient
+support count contain only `[propext, Classical.choice, Quot.sound]`,
+without `sorryAx`.
 
 ## Precisely remaining original problem
 
