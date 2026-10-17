@@ -137,6 +137,7 @@ theorem planar_five_centre_top_next_no_third_capacity
   have hpaircard : ({s, a} : Finset V).card = 2 :=
     Finset.card_pair hsa
   have hTeq : T = ({s, a} : Finset V) := by
+    symm
     exact Finset.eq_of_subset_of_card_le hsub
       (by simpa [hpaircard] using hTcard)
   have hother :
