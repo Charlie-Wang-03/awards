@@ -45,8 +45,7 @@ theorem dyadic_capacity_of_no_top_next_count_tradeoff
           (if k i = n - 2 then 2 ^ (n - 3) else 0) := by
     intro i
     by_cases hi : k i = n - 2
-    · simp only [hi, if_pos rfl]
-      omega
+    · simpa [hi] using (le_of_eq hpowNext)
     · have hsmall : k i ≤ n - 3 := by
         have hle := hmax i
         omega
