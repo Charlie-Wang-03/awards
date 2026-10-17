@@ -140,7 +140,62 @@ theorem planar_top_no_next_support_one_overweight_requires_fourth_trade_excess
       C s hs hnoNext hThirdSupportOne hTrade
   exact (not_lt_of_ge hcapacity) hover
 
+/-- An unrestricted-cardinality ACTUAL geometric overweight dichotomy
+(with a true top n-1 centre and no n-2 centres).
+Either a true n-3 centre has quotient support 2/3, or the
+original vertex count plus exact n-4 count is at least 15.
+No upper bound on ambient vertex count is required. -/
+theorem planar_top_no_next_overweight_support_two_three_or_fourth_trade_excess
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard3 : 3 ≤ Fintype.card V)
+    (hn : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hs : centreExponent (C s) t = n - 1)
+    (hnoNext : ∀ i : V, centreExponent (C i) t ≠ n - 2)
+    (hover : 2 ^ n < ∑ i : V, 2 ^ centreExponent (C i) t) :
+    (∃ i : V, centreExponent (C i) t = n - 3 ∧
+      (positiveSupport (centreQuotient (C i) t) = 2 ∨
+       positiveSupport (centreQuotient (C i) t) = 3)) ∨
+    14 < Fintype.card V +
+      ((Finset.univ : Finset V).filter
+        (fun i => centreExponent (C i) t = n - 4)).card := by
+  classical
+  by_cases hfourth :
+      Fintype.card V +
+        ((Finset.univ : Finset V).filter
+          (fun i => centreExponent (C i) t = n - 4)).card ≤ 14
+  · left
+    by_contra hnone
+    have hdelta1 : delta < 1 := by linarith
+    have hThirdSupportOne :
+        ∀ i : V, centreExponent (C i) t = n - 3 →
+          positiveSupport (centreQuotient (C i) t) = 1 := by
+      intro i hi
+      rcases concrete_deficit_three_structure
+          (C i) (by omega : 4 ≤ n) hdelta0 hdelta1 ht hi
+        with h1 | h2 | h3
+      · exact h1.1
+      · exact False.elim (hnone ⟨i, hi, Or.inl h2.1⟩)
+      · exact False.elim (hnone ⟨i, hi, Or.inr h3.1⟩)
+    have hcapacity :=
+      planar_top_no_next_support_one_fourth_trade_capacity
+        hp hcap hcard3 hn hdelta0 hdeltaHalf ht hlam
+        C s hs hnoNext hThirdSupportOne hfourth
+    exact (not_lt_of_ge hcapacity) hover
+  · right
+    omega
+
 #print axioms planar_top_no_next_support_one_fourth_trade_capacity
 #print axioms planar_top_no_next_support_one_overweight_requires_fourth_trade_excess
+#print axioms planar_top_no_next_overweight_support_two_three_or_fourth_trade_excess
 
 end JSP000404Research
