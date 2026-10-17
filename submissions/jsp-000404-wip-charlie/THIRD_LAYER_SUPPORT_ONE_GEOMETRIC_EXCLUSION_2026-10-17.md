@@ -63,9 +63,10 @@ This was fixed by importing `NoTopTwoNextMultiplicity`.
 The explicit cardinality corollary was then added.
 Latest dedicated run:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39035606774.
-**This newer run was still IN PROGRESS at time of writing**;
-do not mark the new three-theorem module kernel-verified until its
-successful conclusion and `#print axioms` audit.
+**SUCCESS**, 3495 Lake jobs. All THREE new geometric theorems,
+including the actual top-exponent theorem and the genuine finite
+third-layer support-one cardinality bound, printed exactly
+`[propext, Classical.choice, Quot.sound]`. No `sorryAx`.
 
 ## Existing WIP root, not a full proof
 
@@ -91,3 +92,19 @@ and genuinely UNRESERVED dyadic surplus is NOT closed.
 The newly excluded top/third-layer support-one pattern is a
 true geometric exclusion, but cannot yet discharge every other
 profile or the general six-source allocation.
+
+## Main admitted residual ledger integration
+
+Commit `17129ff3fa838635fbee8bb244622c360be0df30`
+imports `ThirdLayerTwoSupportOneExclusion` into the sole WIP
+main root and establishes a LOCAL universally quantified
+`hthirdSupportOneCountBound` at the remaining six-source frontier.
+For any actual top centre and `n>=5`, the count of distinct
+other third-layer support-one centres is <=1. This is a real
+proved geometric invariant, not a hypothecated hole/soft credit.
+
+The one explicit global six-source `sorry` is still present
+(now near line 763). This imported geometric invariant has not
+by itself proved global nonreusable TRUE-hole payment. Check the
+main-root focused CI independently before describing its newest
+insertion as successfully integrated.
