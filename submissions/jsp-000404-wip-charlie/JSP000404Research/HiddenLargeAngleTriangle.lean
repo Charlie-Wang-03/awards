@@ -60,7 +60,8 @@ theorem triangle_other_angles_sum_le_one_add_delta_lam
   rw [hcommY] at hsum
   have hncast :
       (((n - 1 : ℕ) : ℝ)) = (n : ℝ) - 1 := by
-    simpa using (Nat.cast_sub hn : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - (1 : ℝ))
+    simpa only [Nat.cast_one] using
+      (Nat.cast_sub hn : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - ((1 : ℕ) : ℝ))
   rw [hpi, ht] at hsum
   rw [hncast] at hlarge
   nlinarith
