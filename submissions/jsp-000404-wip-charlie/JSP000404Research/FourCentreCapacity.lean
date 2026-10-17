@@ -1,8 +1,20 @@
-import JSP000404Research.FourCentreSharpTerminal
 import JSP000404Research.FourCentreArithmetic
+import JSP000404Research.NoTopTwoNextMultiplicity
+import JSP000404Research.GenericTopExponentMultiplicity
 import JSP000404Research.CentreExponentBounds
-import JSP000404Research.ConcreteSharpCentre
 import Mathlib.Tactic
+
+/-!
+# Full genuine planar Fin4 lower-branch dyadic capacity
+
+The four-centre theorem now depends only on the verified arbitrary-finite
+top multiplicity, the actual top-plus-two-next exclusion, and the independently
+verified four-term dyadic arithmetic bound. It no longer imports the legacy
+inside/outside mixed terminal nor treats any conditional payment as available.
+
+This is a REAL theorem for four original planar points, but is not the
+unrestricted JSP-000404 global six-source proof.
+-/
 
 namespace JSP000404Research
 
@@ -12,36 +24,17 @@ theorem exists_fourth_fin_four
     (s a b : Fin 4)
     (hsa : s ≠ a) (hsb : s ≠ b) (hab : a ≠ b) :
     ∃ c : Fin 4, c ≠ s ∧ c ≠ a ∧ c ≠ b := by
-  classical
-  let S0 : Finset (Fin 4) := Finset.univ.erase s
-  let S1 : Finset (Fin 4) := S0.erase a
-  let S2 : Finset (Fin 4) := S1.erase b
-  have hs : s ∈ (Finset.univ : Finset (Fin 4)) := by simp
-  have ha0 : a ∈ S0 := by
-    simp [S0, hsa.symm]
-  have hb1 : b ∈ S1 := by
-    simp [S1, S0, hsb.symm, hab.symm]
-  have hcard0 : S0.card = 3 := by
-    change ((Finset.univ : Finset (Fin 4)).erase s).card = 3
-    rw [Finset.card_erase_of_mem hs]
-    simp
-  have hcard1 : S1.card = 2 := by
-    change (S0.erase a).card = 2
-    rw [Finset.card_erase_of_mem ha0, hcard0]
-  have hcard2 : S2.card = 1 := by
-    change (S1.erase b).card = 1
-    rw [Finset.card_erase_of_mem hb1, hcard1]
-  have hne : S2.Nonempty := Finset.card_pos.mp (by omega)
-  obtain ⟨c, hc⟩ := hne
-  have hc' : c ≠ b ∧ c ≠ a ∧ c ≠ s := by
-    simpa [S2, S1, S0] using hc
-  exact ⟨c, hc'.2.2, hc'.2.1, hc'.1⟩
+  obtain ⟨c, hsc, hac, hbc⟩ :=
+    exists_fourth_of_card_ge_four
+      (by decide : 4 ≤ Fintype.card (Fin 4))
+      hsa hsb hab
+  exact ⟨c, hsc.symm, hac.symm, hbc.symm⟩
 
 theorem four_centre_dyadic_capacity
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -50,37 +43,30 @@ theorem four_centre_dyadic_capacity
     (C : ∀ i : Fin 4, CentreProjectiveCycle hp i) :
     (∑ i : Fin 4, 2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
-  have hlampos : 0 < lam := by
-    rw [hlam]
-    exact div_pos Real.pi_pos htpos
   let k : Fin 4 → ℕ := fun i => centreExponent (C i) t
   have hk : ∀ i, k i < n := by
     intro i
     exact centreExponent_lt_n
-      (C i) n delta t (by omega) hdelta0 hdelta1 ht
+      (C i) n delta t (by omega : 1 ≤ n)
+      hdelta0 hdelta1 ht
+  have htopCard :
+      ((Finset.univ : Finset (Fin 4)).filter
+        (fun i => k i = n - 1)).card ≤ 1 := by
+    simpa only [k] using
+      (generic_topExponent_filter_card_le_one
+        hp hcap
+        (by decide : 3 ≤ Fintype.card (Fin 4))
+        (by omega : 2 ≤ n)
+        hdelta0 hdeltaHalf ht hlam C)
   have htop :
       ∀ {a b : Fin 4}, a ≠ b →
         ¬ (k a = n - 1 ∧ k b = n - 1) := by
     intro a b hab hboth
-    obtain ⟨c, hca, hcb⟩ :=
-      Fin.exists_ne_and_ne_of_two_lt a b (by omega : 2 < 4)
-    have haSharp :=
-      concrete_unit_deficit_is_sharp
-        hp hcap (by omega : 2 ≤ n)
-        hdelta0 hdelta1 ht hlam
-        a (C a) (by simpa [k] using hboth.1)
-    have hbSharp :=
-      concrete_unit_deficit_is_sharp
-        hp hcap (by omega : 2 ≤ n)
-        hdelta0 hdelta1 ht hlam
-        b (C b) (by simpa [k] using hboth.2)
-    exact two_sharp_no_third_small_delta
-      hp hcap hdeltaHalf hlampos
-      hab hca.symm hcb.symm
-      haSharp hbSharp
+    have habEq : a = b :=
+      Finset.card_le_one.mp htopCard a
+        (by simp [hboth.1])
+        b (by simp [hboth.2])
+    exact hab habEq
   have hnext :
       ∀ {s a b : Fin 4},
         s ≠ a → s ≠ b → a ≠ b →
@@ -89,7 +75,7 @@ theorem four_centre_dyadic_capacity
     intro s a b hsa hsb hab hs habnext
     obtain ⟨c, hcs, hca, hcb⟩ :=
       exists_fourth_fin_four s a b hsa hsb hab
-    exact no_sharp_with_two_deficit_two_fin_four
+    exact no_top_and_two_next_with_fourth
       hp hcap hn hdelta0 hdeltaHalf ht hlam
       hsa hsb hcs.symm hab hca.symm hcb.symm
       (C s) (C a) (C b)
