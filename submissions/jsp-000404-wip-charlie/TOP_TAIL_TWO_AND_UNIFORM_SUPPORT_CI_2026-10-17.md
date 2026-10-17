@@ -103,3 +103,43 @@ Unresolved:
 
 No research WIP merge to upstream or claim of reward eligibility
 is justified at this point.
+
+
+## Follow-on 2026-10-17 — independent repair of three previously broken modules
+
+The prior fast incremental workflow (run `39012531077`) reported errors
+in numerous legacy modules. The following three files were repaired without
+changing their theorem statements or introducing proof holes:
+
+- `JSP000404Research/GlobalProjectiveDirectionCount.lean`:
+  repaired the Bool orientation case, proof-irrelevant subtype equality,
+  and diagonal-image membership. The sharp six-vertex bound
+  `projectiveEdgeDirections_card_le_fifteen_of_card_six` is now checked.
+- `JSP000404Research/CentreCycleRestrictionAngles.lean`:
+  supplied classical decidability for the deleted parent ray and completed
+  the exact angle-list filterMap/delete formula.
+- `JSP000404Research/LinearBandSaturation.lean`:
+  repaired the sorted-list last-element induction, implicit membership
+  proof arguments and nonempty-tail getLastD default independence.
+
+The focused verification workflow
+`.github/workflows/jsp000404-focused-oct17-legacy-repair.yml`
+checked all three modules on branch source SHA
+`ea3809d1099207945252ea5ea289333834944fee`.
+
+- Workflow run: https://github.com/Charlie-Wang-03/awards/actions/runs/39023681708
+- Job ID: `117370608344`
+- Conclusion: **success**.
+- Build: **3276 Lake jobs**, completed successfully.
+- Executable proof-hole audit: exactly the previously admitted WIP
+  `PlanarLowerBranchProofAdmittedWIP.lean:647` remains; zero
+  executable `sorry`/`admit` outside the allowed WIP source.
+- Axiom audit for the repaired target theorems:
+  `[propext, Classical.choice, Quot.sound]`; **no sorryAx**.
+
+This is a verified historical-code repair milestone, NOT a clean build of
+`JSP000404Research` and NOT a completed proof of JSP-000404. The
+unproved arbitrary-centre global six-source external-true-hole/unreserved
+surplus allocation remains exactly one genuine mathematical obligation.
+The corrected `GlobalProjectiveDirectionCount` bound and cyclic deletion
+lemmas do not independently discharge that obligation.
