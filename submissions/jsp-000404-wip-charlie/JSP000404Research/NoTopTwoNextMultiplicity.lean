@@ -94,12 +94,12 @@ theorem no_top_and_two_next_with_fourth
       Classical.choice
         (exists_highExponentTransitionIntervalCertificate
           hp hcap (by omega : 1 ≤ n) hdelta0 hdelta1 ht hlam
-          a Ca (by rw [hA]; omega))
+          a Ca (by rw [hA]))
     let HB :=
       Classical.choice
         (exists_highExponentTransitionIntervalCertificate
           hp hcap (by omega : 1 ≤ n) hdelta0 hdelta1 ht hlam
-          b Cb (by rw [hB]; omega))
+          b Cb (by rw [hB]))
     exact no_sharp_with_two_support_one_deficit_two
       hp hn hdelta0 hdeltaHalf ht
       hsa hsb hab Cs Ca Cb HS HA HB hS hA hB hA1 hB1
