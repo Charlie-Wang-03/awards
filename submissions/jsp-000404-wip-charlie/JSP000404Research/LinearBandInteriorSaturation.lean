@@ -89,7 +89,7 @@ theorem interior_saturation_head_step
         listExponent, List.map_cons, List.sum_cons] at hsat
       rw [hbands, hq0] at hsat
       simp [excess, hEq] at hsat
-      exact hsat
+      simpa only [listExponent, List.map_map] using hsat
     exact ⟨hsatTail, Or.inl ⟨hEq, hq0⟩⟩
   · have hLt :
         Nat.floor a < Nat.floor b := by
@@ -103,13 +103,15 @@ theorem interior_saturation_head_step
       have hBx :
           Nat.floor b ≤ Nat.floor x :=
         head_floor_le_of_mem_sorted htail hx
-      rw [← hxFloor] at hBx
+      have hxa : Nat.floor x = Nat.floor a := by
+        simpa using hxFloor
+      rw [hxa] at hBx
       omega
     have hbands :
         (occupiedNatBands (a :: b :: bs)).card =
           (occupiedNatBands (b :: bs)).card + 1 := by
       rw [occupiedNatBands_cons,
-          Finset.card_insert_of_not_mem hnotmem]
+          Finset.card_insert_of_notMem hnotmem]
     have hstep :
         excess (Nat.floor (b - a)) + 1 ≤
           Nat.floor b - Nat.floor a :=
@@ -122,8 +124,12 @@ theorem interior_saturation_head_step
           ((occupiedNatBands (b :: bs)).card + 1)
         =
         Nat.floor (bs.getLastD b) - Nat.floor a + 1 := by
-      simpa [successiveDiffsFrom, listExponent,
-        hbands, add_assoc, add_left_comm, add_comm] using hsat
+      simp only [successiveDiffsFrom, List.map_cons,
+        listExponent, List.sum_cons, List.map_map] at hsat ⊢
+      rw [hbands] at hsat
+      omega
+    have hBLast : Nat.floor b ≤ Nat.floor (bs.getLastD b) :=
+      floor_head_le_floor_getLastD_of_pairwise b bs htail
     have hstepEq :
         excess (Nat.floor (b - a)) + 1 =
           Nat.floor b - Nat.floor a := by
