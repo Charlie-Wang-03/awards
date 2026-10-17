@@ -60,7 +60,11 @@ theorem mem_le_getLastD_of_pairwise
           ih b htail (by simpa using hx)
         cases bs with
         | nil => simpa using hrec
-        | cons c cs => simpa using hrec
+        | cons c cs =>
+            cases hlast : (c :: cs).getLast? with
+            | none => simp at hlast
+            | some z =>
+                simpa [List.getLastD_cons, List.getLastD, hlast] using hrec
 
 theorem floor_getLastD_eq_n_of_sorted_occupied_n
     {t : ℝ} {n : ℕ}
