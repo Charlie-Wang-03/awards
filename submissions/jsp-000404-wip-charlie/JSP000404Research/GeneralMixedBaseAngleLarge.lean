@@ -92,13 +92,13 @@ theorem general_mixed_every_vertex_in_base_triangle
   intro c hcb
   by_cases hcs : c = s
   · subst c
-    exact subset_convexHull ℝ (by simp)
+    exact (subset_convexHull ℝ ({p s, p a, p b} : Set Plane)) (by simp)
   · by_cases hca : c = a
     · subst c
-      exact subset_convexHull ℝ (by simp)
+      exact (subset_convexHull ℝ ({p s, p a, p b} : Set Plane)) (by simp)
     · exact mixed_fourth_mem_triangle_of_actual_pattern
         hp hcap hn hdelta0 hdeltaHalf ht hlam
-        hsa hsb hcs.symm hab hca.symm hcb.symm
+        hsa hsb (Ne.symm hcs) hab (Ne.symm hca) (Ne.symm hcb)
         Cs Ca Cb hS hA hB hsupA hsupB
 
 /-- A real large quotient angle in the mixed support-two cycle must force
