@@ -63,10 +63,7 @@ theorem planar_eight_centre_top_no_next_third_support_one_capacity
       exact hs
   have hTopCard : H.card = 1 := by simp [hTopEq]
   have hNextCard : M.card = 0 := by
-    apply Finset.card_eq_zero.mpr
-    apply Finset.eq_empty_iff_forall_not_mem.mpr
-    intro i hi
-    exact hnoNext i ((Finset.mem_filter.mp hi).2)
+    simp [M, hnoNext]
   have hThirdCard : L.card ≤ 1 := by
     have hsubset : L ⊆
         (Finset.univ : Finset V).filter
