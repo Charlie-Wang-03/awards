@@ -37,9 +37,10 @@ theorem exists_third_of_fintype_card_ge_three
       (Finset.univ : Finset V) ⊆ {a,b} := by
     intro x hx
     have hx' := h x
-    rcases hx' with hxa | hxb
+    by_cases hxa : x = a
     · simp [hxa]
-    · simp [hxb]
+    · have hxb : x = b := hx' hxa
+      simp [hxb]
   have hle :=
     Finset.card_le_card hsub
   have hpair : ({a,b} : Finset V).card = 2 :=
@@ -51,8 +52,8 @@ theorem topExponent_eq_fixed_top
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 3 ≤ Fintype.card V)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -94,8 +95,8 @@ theorem topTwo_tailCount_le_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 3 ≤ Fintype.card V)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
