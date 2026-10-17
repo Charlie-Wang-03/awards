@@ -32,9 +32,11 @@ The FIRST focused fix passed with an explicit `DecidableEq V` typeclass
 parameter, but adding that premise changed the exported signatures.
 A subsequent refactor (commit `d72294bcc36f5c5b66b51d083c7ec16991e1a772`)
 restores ALL original generic signatures and supplies `classical`
-decidability locally in the two relevant proofs. Its own targeted
-CI #39045429530 must be checked before this stronger repair is
-counted as accepted.
+decidability locally in the two relevant proofs. Final focused CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/39045429530
+**SUCCESS**. The generic mathematical theorem signatures
+are unchanged and the local proof employs only classical
+decidability. No `sorryAx` is introduced.
 
 Focused CI https://github.com/Charlie-Wang-03/awards/actions/runs/39044614169
 **SUCCESS**, 3097 Lake jobs. All three printed theorem axioms:
@@ -142,3 +144,15 @@ and **genuinely unreserved dyadic surplus**, with no reuse.
 None of the conditional dyadic subcases or necessary overweight
 forks above proves this unrestricted geometric payment. No actual
 counterexample to JSP-000404 was certified.
+
+## Latest SecondDeletionSlack clarification
+
+After the second attempt (#39044945632), two local type/tactic
+errors remained: the equivalent `2*2^k` versus `2^k+2^k`
+and the improper unfolding of negation via deprecated
+`push_neg`. Both have been replaced by
+`simpa only [two_mul]` and `intro h; exact hgain h.2`
+while preserving ALL four existing theorem statements.
+
+Third CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39045562067
+was still in progress at this update.
