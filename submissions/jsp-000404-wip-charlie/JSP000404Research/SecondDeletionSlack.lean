@@ -69,13 +69,12 @@ theorem unitGainDeletionBonus_selected_column_bound
   by_cases hgain : exponent i + 1 ≤ after s i
   · rw [unitGainDeletionBonus_eq_weight_of_gain
       exponent after his hgain]
-    exact two_mul_pow_le_pow_of_succ_le hgain
+    simpa only [two_mul] using two_mul_pow_le_pow_of_succ_le hgain
   · have hbonus :
         unitGainDeletionBonus exponent after i s = 0 := by
       apply unitGainDeletionBonus_eq_zero_of_no_gain
-      push_neg
-      intro _
-      exact hgain
+      intro h
+      exact hgain h.2
     rw [hbonus, add_zero]
     exact Nat.pow_le_pow_right
       (by norm_num : 0 < 2)
