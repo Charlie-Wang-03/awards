@@ -214,6 +214,7 @@ theorem planar_nine_centre_top_no_next_third_support_one_fourth_at_most_five
   have hdelta1 : delta < 1 := by linarith
   have hmax : ∀ i : V, k i ≤ n - 1 := by
     intro i
+    change centreExponent (C i) t ≤ n - 1
     have hlt : centreExponent (C i) t < n :=
       centreExponent_lt_n (C i) n delta t
         (by omega : 1 ≤ n) hdelta0 hdelta1 ht
