@@ -1,4 +1,4 @@
-import JSP000404Research.DeficitThreeSupportOneGeometry
+import JSP000404Research.ThirdLayerTwoSupportOneExclusion
 import JSP000404Research.ConcreteSharpCentre
 import Mathlib.Tactic
 
@@ -31,8 +31,8 @@ theorem no_sharp_with_two_deficit_three_support_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -54,41 +54,12 @@ theorem no_sharp_with_two_deficit_three_support_one
       positiveSupport (centreQuotient Cb t) = 1) :
     False := by
   have hdelta1 : delta < 1 := by linarith
-  have hSharp :
-      SharpAt p delta lam s :=
+  have hSharp : SharpAt p delta lam s :=
     concrete_unit_deficit_is_sharp
-      hp hcap (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hlam s Cs hS
-  have hlower :
-      (((n - 2 : ℕ) : ℝ) - delta) * lam ≤
-        EuclideanGeometry.angle (p s) (p b) (p a) :=
-    sharp_and_deficit_three_support_one_force_large_outer_angle
-      hp hcap (by omega : 4 ≤ n)
-      hdelta0 ht hlam
-      hsa hsb hab hSharp Ca hA hsupA
-  have hupper :
-      EuclideanGeometry.angle (p s) (p b) (p a) ≤
-        (2 + delta) * lam :=
-    deficit_three_support_one_all_angles_le
-      hp hcap (by omega : 4 ≤ n)
-      hdelta0 ht hlam
-      Cb hB hsupB s a hsb hab hsa
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
-  have hlampos : 0 < lam := by
-    rw [hlam]
-    exact div_pos Real.pi_pos htpos
-  have hcoef :
-      (2 + delta) <
-        ((n - 2 : ℕ) : ℝ) - delta := by
-    have hncast :
-        ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-      exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
-    rw [hncast]
-    have hnR : (5 : ℝ) ≤ n := by exact_mod_cast hn
-    nlinarith
-  nlinarith
+      hp hcap (by omega : 2 ≤ n) hdelta0 hdelta1 ht hlam s Cs hS
+  exact no_two_third_support_one_around_sharp_n_ge_five
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hab hSharp Ca Cb hA hB hsupA hsupB
 
 #print axioms no_sharp_with_two_deficit_three_support_one
 
