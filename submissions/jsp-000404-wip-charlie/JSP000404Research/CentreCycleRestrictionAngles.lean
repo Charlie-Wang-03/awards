@@ -214,10 +214,9 @@ theorem restrictDelete_angles_of_parent_split
   have hdel :
       ¬ (deletedParentRay r i hir).1 ≠ r := by
     simp [deletedParentRay]
-  simp only [parentAngleAfterDeleteOption, hdel, dif_neg,
-    List.filterMap_none]
   rw [filterMap_parentAngle_eq_map_of_all_ne
       hp r i post hne.2]
+  simp [parentAngleAfterDeleteOption, deletedParentRay, hdel]
 
 #print axioms restrictDelete_angles_eq_filterMap_parent
 #print axioms exists_parent_cycle_split_at_deleted
