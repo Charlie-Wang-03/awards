@@ -73,7 +73,10 @@ theorem unitGainDeletionBonus_eq_zero_of_no_gain
     (hno : ¬ (i ≠ r ∧ exponent i + 1 ≤ after r i)) :
     unitGainDeletionBonus exponent after i r = 0 := by
   classical
-  simp [unitGainDeletionBonus, hno]
+  unfold unitGainDeletionBonus
+  split_ifs with h
+  · exact (hno h).elim
+  · rfl
 
 /-- Survivor monotonicity makes the canonical one-unit bonus pointwise valid. -/
 theorem old_add_unitGainBonus_le_after_weight
@@ -132,8 +135,17 @@ theorem unitGainDeletionBonus_column_bound
         (Finset.mem_univ r)
     rw [unitGainDeletionBonus_self_zero] at h
     simpa [add_zero] using h.symm
-  rw [hbonusErase, ← Finset.sum_add_distrib]
-  unfold deletionPostWeight
+  have hpost :
+      deletionPostWeight after r =
+        ∑ i ∈ (Finset.univ : Finset V).erase r,
+          2 ^ after r i := by
+    unfold deletionPostWeight
+    apply Finset.sum_congr
+    · ext i
+      simp
+    · intro i hi
+      rfl
+  rw [hbonusErase, ← Finset.sum_add_distrib, hpost]
   apply Finset.sum_le_sum
   intro i hi
   have hir : i ≠ r := by
