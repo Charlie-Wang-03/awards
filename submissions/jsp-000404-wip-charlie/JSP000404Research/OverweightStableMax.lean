@@ -41,7 +41,7 @@ def BonusStable
 /-- If a deletion is not compensated, its total bonus is smaller than the
 weight of the deleted centre. -/
 theorem total_bonus_lt_deleted_weight_of_no_compensated
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent post : V → ℕ)
     (bonus : V → V → ℕ)
     (r : V)
@@ -60,13 +60,12 @@ theorem total_bonus_lt_deleted_weight_of_no_compensated
       (Finset.univ : Finset V)
       (fun i => 2 ^ exponent i)
       (Finset.mem_univ r)]
-    omega
   rw [hsplit] at hnocomp
   omega
 
 /-- Pointwise form under a global no-compensated-deletion hypothesis. -/
 theorem every_bonus_column_lt_deleted_weight
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent post : V → ℕ)
     (bonus : V → V → ℕ)
     (hpoint : ∀ r,
@@ -83,7 +82,7 @@ theorem every_bonus_column_lt_deleted_weight
 /-- A centre with maximal exponent is bonus-stable whenever no deletion is
 compensated. -/
 theorem bonusStable_of_max_exponent_of_no_compensated
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent post : V → ℕ)
     (bonus : V → V → ℕ)
     (hpoint : ∀ r,
@@ -102,6 +101,8 @@ theorem bonusStable_of_max_exponent_of_no_compensated
   have hterm :
       bonus i r ≤ ∑ j : V, bonus j r := by
     exact Finset.single_le_sum
+      (s := (Finset.univ : Finset V))
+      (f := fun j : V => bonus j r)
       (fun _ _ => Nat.zero_le _)
       (Finset.mem_univ i)
   by_contra hnot
@@ -113,14 +114,17 @@ theorem bonusStable_of_max_exponent_of_no_compensated
     hself.trans_lt (hterm.trans_lt hcol)
   have hexp :
       exponent i < exponent r := by
-    exact (Nat.pow_lt_pow_iff_right₀
-      (by norm_num : 1 < 2)).1 hp
+    by_contra hnot
+    have hre : exponent r ≤ exponent i := by omega
+    have hpow : 2 ^ exponent r ≤ 2 ^ exponent i :=
+      Nat.pow_le_pow_right (by decide : 0 < 2) hre
+    omega
   exact (not_lt_of_ge (hmax r)) hexp
 
 /-- Contrapositive: if a maximal-exponent centre has one full self-weight
 bonus in some deletion, that deletion must already be compensated. -/
 theorem exists_compensated_deletion_of_max_exponent_self_bonus
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (exponent post : V → ℕ)
     (bonus : V → V → ℕ)
     (hpoint : ∀ r,
