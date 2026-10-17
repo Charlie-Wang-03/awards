@@ -4,22 +4,16 @@ import JSP000404Research.NoTopTwoNextMultiplicity
 import Mathlib.Tactic
 
 /-!
-# Four-centre sharp case reduces uniquely to mixed support 1/2
+# Legacy four-centre support classification, now closed by stronger exclusion
 
-Assume one centre s has exponent n-1 and two other centres a,b both have
-exponent n-2 in a four-point lower-branch configuration.
+A centre with exponent n-2 has genuine quotient support 1 or 2.
+The historical Fin 4 theorem below stated that top+two-next-layer
+forces a mixed support pair. It is retained unchanged for compatibility.
 
-DeficitTwo forces each of a,b to have quotient support either one or two.
-
-* support 1 / support 1 is impossible by global transition-quotient packing;
-* support 2 / support 2 is impossible by the small-angle triangle contradiction.
-
-Therefore the only surviving possibility is mixed support:
-
-  (support(a), support(b)) = (1,2) or (2,1).
-
-This file packages that exact reduction so the remaining four-centre geometry
-can focus exclusively on the mixed branch.
+The newer sorry-free `no_top_and_two_next_with_fourth` theorem excludes
+ALL four support combinations in any finite configuration with a fourth
+distinct centre. Consequently the historical mixed-only conclusion now
+follows by contradiction. No unproved geometry is reintroduced.
 -/
 
 namespace JSP000404Research
