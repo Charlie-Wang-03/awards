@@ -42,8 +42,9 @@ noncomputable def parentAngleAfterDeleteOption
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (r i : V)
-    (j : OtherVertex i) : Option ℝ :=
-  if hjr : j.1 ≠ r then
+    (j : OtherVertex i) : Option ℝ := by
+  classical
+  exact if hjr : j.1 ≠ r then
     some (rayThetaAt hp i j)
   else
     none
@@ -61,6 +62,7 @@ theorem parentRayToChildOption_map_theta
           (survivingCentre r i hir))
       =
     parentAngleAfterDeleteOption hp r i j := by
+  classical
   by_cases hjr : j.1 ≠ r
   · unfold parentRayToChildOption parentAngleAfterDeleteOption
     simp only [dif_pos hjr, Option.map_some]
@@ -116,6 +118,7 @@ theorem filterMap_parentAngle_eq_map_of_all_ne
     (hne : ∀ j ∈ l, j.1 ≠ r) :
     l.filterMap (parentAngleAfterDeleteOption hp r i) =
       l.map (rayThetaAt hp i) := by
+  classical
   induction l with
   | nil =>
       simp
