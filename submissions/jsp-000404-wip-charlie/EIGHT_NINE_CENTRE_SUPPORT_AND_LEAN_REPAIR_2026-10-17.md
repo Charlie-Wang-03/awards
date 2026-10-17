@@ -151,6 +151,33 @@ two-times-weight equation, and non-brittle fully applied
 maximal-centre stable/compensated deletion theorems.
 The original bonus-matrix conclusions were kept.
 
-Focused check https://github.com/Charlie-Wang-03/awards/actions/runs/39041976745
-was still IN PROGRESS at the checkpoint. It must not be counted
-as a completed Lean proof until the actual CI concludes successfully.
+Initial focused check #39041976745 failed, and the subsequent
+retry #39042248581 identified a final conditional-split script
+issue. Final correction used `if_neg` and kept the exact
+nondecrease / compensated deletion mathematical contracts.
+
+Final focused CI
+https://github.com/Charlie-Wang-03/awards/actions/runs/39042413343
+**SUCCESS**, 3096 Lake jobs. All FOUR printed theorems depend
+only on `[propext, Classical.choice, Quot.sound]`, no
+`sorryAx`. The 11 historical diagnostics of this module
+were removed without weakening its conclusions.
+
+## Independently submitted further actual nine-centre obstruction
+
+`JSP000404Research/NineCentreOverweightSupportOrFourthObstruction.lean`
+strengthens the nine-centre conditional capacity certificate
+to an explicit necessary dichotomy without an assumed fourth-layer
+count: with n>=5, 3<=card V<=9, a true top centre n-1,
+and no second layer n-2, ANY actual overweight configuration
+must EITHER possess a third-layer n-3 centre of quotient
+support TWO or THREE, OR have at least SIX actual n-4 centres.
+
+This is derived from actual centre exponent/support constraints and
+the prior kernel-verified nine-centre certificate. It is not
+a construction of an overweight set and does not close the
+unrestricted six-source payment.
+
+Focused CI https://github.com/Charlie-Wang-03/awards/actions/runs/39042547507
+was still in progress at this checkpoint; do not count this
+new dichotomy as verified until `#print axioms` and Lake pass.
