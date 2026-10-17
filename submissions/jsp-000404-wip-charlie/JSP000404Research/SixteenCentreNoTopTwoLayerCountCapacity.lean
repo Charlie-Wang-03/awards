@@ -86,6 +86,7 @@ theorem dyadic_capacity_of_no_top_two_layer_count_tradeoff
         (Fintype.card V + 3 * H.card + M.card) * B := by
     rw [Finset.sum_add_distrib, Finset.sum_add_distrib, hH, hM]
     simp [add_mul, mul_assoc, mul_left_comm, mul_comm]
+    ring
   have hBudget : 16 * B = 2 ^ n := by
     dsimp [B]
     calc
