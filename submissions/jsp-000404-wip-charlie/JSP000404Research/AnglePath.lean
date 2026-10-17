@@ -90,7 +90,7 @@ theorem angle_head_le_anglePathLength
           EuclideanGeometry.angle_le_angle_add_angle
             (p i) (p a) (p b) (p y)
         have htail :=
-          ih b hnonTail (List.mem_cons.mpr hyTail)
+          ih b hnonTail hyTail
         change
           EuclideanGeometry.angle (p a) (p i) (p y) ≤
             EuclideanGeometry.angle (p a) (p i) (p b) +
@@ -172,7 +172,11 @@ theorem anglePathLength_map_val_eq_consecutiveRayAngles_sum
   | cons r rs ih =>
       simp only [List.map_cons, anglePathLength,
         consecutiveRayAngles, List.sum_cons]
-      rw [ih r]
+      simpa only [List.map_cons] using
+        congrArg
+          (fun v : ℝ =>
+            EuclideanGeometry.angle (p first.1) (p i) (p r.1) + v)
+          (ih r)
 
 /-- Any two underlying vertices in an OtherVertex path have angle bounded by
 the sum of its consecutiveRayAngles. -/
