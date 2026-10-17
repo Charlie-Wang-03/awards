@@ -63,9 +63,7 @@ theorem rayIndex_injective
     (C : CentreProjectiveCycle hp i) :
     Function.Injective C.rayIndex := by
   intro j k h
-  have :=
-    congrArg (fun q => C.rays.get q) h
-  simpa using this
+  exact C.rayEquiv.symm.injective h
 
 theorem rayIndex_ne_of_ne
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -88,10 +86,7 @@ theorem rayIndex_lt_of_theta_lt
   have hne :
       C.rayIndex j ≠ C.rayIndex k := by
     intro hidx
-    have hget :=
-      congrArg (fun q => C.rays.get q) hidx
-    have hjk : j = k := by
-      simpa using hget
+    have hjk : j = k := C.rayIndex_injective hidx
     subst k
     exact (lt_irrefl _) htheta
   rcases lt_or_gt_of_ne hne with hlt | hgt
@@ -116,7 +111,8 @@ theorem theta_le_of_rayIndex_le
       lt_of_le_of_ne hidx hEq
     have hrel :=
       C.theta_sorted.rel_get_of_lt hlt
-    simpa using hrel
+    rw [C.get_rayIndex, C.get_rayIndex] at hrel
+    exact hrel
 
 /-- Strict index order implies weak theta order. -/
 theorem theta_le_of_rayIndex_lt
