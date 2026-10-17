@@ -1,3 +1,4 @@
+import JSP000404Research.CentreQuotientData
 
 import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Data.List.Rotate
