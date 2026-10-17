@@ -19,7 +19,7 @@ namespace JSP000404Research
 
 /-- A finite nonempty natural-valued profile attains its maximum. -/
 theorem exists_maximal_exponent
-    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    {V : Type*} [Fintype V] [Nonempty V]
     (exponent : V → ℕ) :
     ∃ i : V, ∀ j : V, exponent j ≤ exponent i := by
   exact Finite.exists_max exponent
@@ -27,7 +27,7 @@ theorem exists_maximal_exponent
 /-- There exists a maximal exponent centre with no one-unit survivor gain in
 any deletion, provided no deletion is compensated. -/
 theorem exists_maximal_no_unit_gain_of_no_compensated
-    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    {V : Type*} [Fintype V] [Nonempty V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (hmono :
@@ -40,6 +40,7 @@ theorem exists_maximal_no_unit_gain_of_no_compensated
       (∀ j : V, exponent j ≤ exponent i) ∧
       (∀ r : V, i ≠ r →
         ¬ exponent i + 1 ≤ after r i) := by
+  classical
   obtain ⟨i, hmax⟩ :=
     exists_maximal_exponent exponent
   refine ⟨i, hmax, ?_⟩
@@ -49,7 +50,7 @@ theorem exists_maximal_no_unit_gain_of_no_compensated
 /-- Contrapositive existence form: if every maximal centre has at least one
 unit-gain deletion, then some deletion is compensated. -/
 theorem exists_compensated_deletion_of_every_max_has_unit_gain
-    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    {V : Type*} [Fintype V] [Nonempty V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (hmono :
@@ -62,6 +63,7 @@ theorem exists_compensated_deletion_of_every_max_has_unit_gain
     ∃ r : V,
       (∑ j : V, 2 ^ exponent j) ≤
         deletionPostWeight after r := by
+  classical
   obtain ⟨i, hmax⟩ :=
     exists_maximal_exponent exponent
   obtain ⟨r, hir, hgain⟩ :=
