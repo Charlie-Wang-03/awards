@@ -26,8 +26,8 @@ theorem no_two_supportTwo_deficitTwo_around_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -46,9 +46,10 @@ theorem no_two_supportTwo_deficitTwo_around_sharp
     (hsupB :
       positiveSupport (centreQuotient Cb t) = 2) :
     False := by
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnReal : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
