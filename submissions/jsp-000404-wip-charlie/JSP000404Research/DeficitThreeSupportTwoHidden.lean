@@ -1,6 +1,8 @@
 import JSP000404Research.SupportLeTwoTransitionInterval
 import JSP000404Research.GeneralNontransitionPayment
 import JSP000404Research.ConcreteDeficitThree
+import JSP000404Research.SupportTwoPinnedCycle
+import JSP000404Research.ListPositiveMemberBound
 import Mathlib.Tactic
 
 /-!
@@ -46,8 +48,8 @@ theorem hidden_sum_sub_qe_mem_internal_of_positiveCount_two
     omega
   have hposSum :
       0 < (post ++ pre).sum :=
-    list_sum_pos_of_positiveCount_pos
-      (post ++ pre) (by omega)
+    lt_of_lt_of_le (by omega : 0 < listPositiveCount (post ++ pre))
+      (listPositiveCount_le_sum (post ++ pre))
   have hpos : 0 < N - qe := by
     rwa [hinternalSum] at hposSum
   have hmemSum :
@@ -84,7 +86,7 @@ theorem sameSignQuotientOccurs_of_mem_outside_transition
       · simp only [List.mem_cons] at hpre
         rcases hpre with hr | hrs
         · left
-          exact ⟨hr.symm, rfl⟩
+          exact ⟨hr.symm, trivial⟩
         · right
           exact ih a (Or.inl hrs)
       · right
@@ -128,8 +130,8 @@ theorem exists_deficit_three_support_two_hidden_sameSign
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
