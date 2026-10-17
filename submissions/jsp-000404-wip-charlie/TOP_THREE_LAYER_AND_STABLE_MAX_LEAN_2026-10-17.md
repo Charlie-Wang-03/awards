@@ -129,3 +129,30 @@ Boolean TRUE holes and genuinely unreserved dyadic surplus.
 Local cardinality sufficient conditions or geometric exclusions
 cannot be substituted for that global payment.
 JSP-000404 is NOT yet proved or disproved.
+
+## F. New geometric corollary: seven-centre top/no-next support-one
+
+New `JSP000404Research/SevenCentreTopThirdSupportOneCapacity.lean`
+combines the ACTUAL planar top-centre uniqueness theorem,
+`top_third_support_one_count_le_one_n_ge_five`, and the top-inclusive
+three-layer weighted budget. In an injective real `AngleCap`
+configuration with `n>=5`, `3<=card V<=7`, an actual exponent
+`n-1` top centre, NO exponent `n-2` centre, and every
+exponent-`n-3` centre having quotient support exactly ONE, geometry
+implies the three high-layer counts `r=1, q=0, u<=1`. Hence
+`m+7*r+3*q+u<=7+7+1=15<=16`, proving the true dyadic
+capacity. This is a GEOMETRIC sufficient subcase; it does not
+silently assume that every third-layer centre universally has
+support one.
+
+Dedicated kernel check initiated:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39039257910.
+The newer check was still IN PROGRESS at report update; the new
+corollary must NOT be marked certified until CI succeeds and the
+printed axioms are checked.
+
+The corollary is logically already subsumed by the earlier numerical
+profile branch in the root; it is a transparent geometric explanation
+of why those numerical conditions hold here. No additional main-root
+by_cases is needed. The unresolved global six-source payment remains
+the UNIQUE original `sorry`.
