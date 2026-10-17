@@ -1,20 +1,16 @@
-import JSP000404Research.FourCentreMixedExteriorContradiction
-import JSP000404Research.FourCentreMixedInteriorContradiction
-import JSP000404Research.FourCentreSharpReduction
+import JSP000404Research.NoTopTwoNextMultiplicity
 import Mathlib.Tactic
 
 /-!
-# Complete closure of the sharp four-centre terminal
+# Sharp Fin 4 terminal follows from genuine arbitrary-finite exclusion
 
-For one unit-deficit centre s and two deficit-two centres a,b, the support
-reduction leaves only the mixed patterns (1,2) or (2,1).
+The original two legacy theorems are retained, with the same hypotheses and
+conclusions. Their previous proofs split the fourth point into inside/outside
+geometric cases and the support patterns into mixed cases. The stronger
+kernel-checked `no_top_and_two_next_with_fourth` excludes the entire
+configuration immediately, without an auxiliary inside/outside assumption.
 
-For a fixed mixed orientation, the fourth point c is either outside the outer
-triangle conv{s,a,b}, where the exposed-support packing contradiction applies,
-or inside that triangle, where the hidden-angle contradiction applies.
-
-Therefore no sharp centre in a four-point lower-branch configuration can have
-two distinct deficit-two companions.
+The global six-source dyadic payment remains a separate open obligation.
 -/
 
 namespace JSP000404Research
@@ -22,8 +18,8 @@ namespace JSP000404Research
 theorem no_sharp_mixed_support_one_two_fin_four
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -41,25 +37,18 @@ theorem no_sharp_mixed_support_one_two_fin_four
     (hsupA : positiveSupport (centreQuotient Ca t) = 1)
     (hsupB : positiveSupport (centreQuotient Cb t) = 2) :
     False := by
-  by_cases hinside :
-      p c ∈ convexHull ℝ
-        ({p s, p a, p b} : Set Plane)
-  · exact no_mixed_fourth_inside_fin_four
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      Cs Ca Cb hS hA hB hsupA hsupB hinside
-  · exact no_mixed_fourth_outside_triangle_fin_four
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      Cs Ca Cb hS hA hB hsupA hsupB hinside
+  exact no_top_and_two_next_with_fourth
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hsc hab hac hbc Cs Ca Cb hS hA hB
+
 
 /-- Final structural statement for four centres: a unit-deficit centre cannot
 have two distinct deficit-two companions. -/
 theorem no_sharp_with_two_deficit_two_fin_four
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -75,20 +64,10 @@ theorem no_sharp_with_two_deficit_two_fin_four
     (hA : centreExponent Ca t = n - 2)
     (hB : centreExponent Cb t = n - 2) :
     False := by
-  rcases sharp_two_deficit_two_force_mixed_support_fin_four
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      Cs Ca Cb hS hA hB with h12 | h21
-  · exact no_sharp_mixed_support_one_two_fin_four
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      Cs Ca Cb hS hA hB
-      h12.1 h12.2
-  · exact no_sharp_mixed_support_one_two_fin_four
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsb hsa hsc hab.symm hbc hac
-      Cs Cb Ca hS hB hA
-      h21.2 h21.1
+  exact no_top_and_two_next_with_fourth
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hsc hab hac hbc Cs Ca Cb hS hA hB
+
 
 #print axioms no_sharp_mixed_support_one_two_fin_four
 #print axioms no_sharp_with_two_deficit_two_fin_four
