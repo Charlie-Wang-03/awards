@@ -43,8 +43,8 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -391,7 +391,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
       have hk := hcomplete k' hki hks
       have hpair :=
         angle_mem_otherVertex_path_le_consecutive_sum
-          (p := p) i r rest hj hk
+          (p := p) hp i r rest hj hk
       dsimp [Amid] at hAmid
       exact hpair.trans hAmid
 
