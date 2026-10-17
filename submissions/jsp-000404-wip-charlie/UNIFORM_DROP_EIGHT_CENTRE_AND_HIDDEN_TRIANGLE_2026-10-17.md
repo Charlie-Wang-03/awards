@@ -117,3 +117,66 @@ mobile/soft terms, reverse rigid and twin/mixed terms, NET
 duplicate debt, and projected profile loss. The conditional
 profile and geometric finite-cardinality closures above
 do not prove or refute that general claim.
+
+## F. New sharp no-top / next-layer-count trade-off
+
+File: `JSP000404Research/EightCentreNoTopNextCountCapacity.lean`.
+
+`dyadic_capacity_of_no_top_next_count_tradeoff`:
+For any finite natural exponent profile `k`, `n>=3`, if
+`forall i, k i <= n-2` and the number `m` of centres plus
+the number `r` of actual exponent-`n-2` centres obeys
+`m+r<=8`, then `sum_i 2^(k i)<=2^n`. Indeed, all non-next
+centres have exponent at most `n-3`, yielding the sharp bound
+`(m+r)*2^(n-3)<=2^n`.
+
+`planar_no_top_next_count_tradeoff_capacity` derives the
+required `k<=n-2` bound from the *actual geometric*
+`centreExponent_lt_n` theorem and the explicit exclusion
+of all exponent-`n-1` original centres, under true
+injective planar `AngleCap` conditions.
+The condition `m+r<=8` is a stated extra profile assumption;
+it is NOT shown to be universal for arbitrary planar data.
+For instance it covers 6 centres with up to 2 next-layer
+centres, or 7 centres with 1 such centre.
+
+Focused CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39032359375
+**SUCCESS**, 3225 Lake jobs. Both new theorems printed
+`[propext, Classical.choice, Quot.sound]` and NO `sorryAx`.
+
+The admitted root additionally dispatches this new branch BEFORE
+the uniform-drop branch. Current root WIP path:
+`JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean`,
+commit `927268513e47e3a729a94c2122d3d107fc2f315a`.
+Its exactly ONE original executable `sorry` shifted to about
+line 729, only in the complement of the newly dispatched profile.
+Main WIP integration checks launched:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39032577196,
+https://github.com/Charlie-Wang-03/awards/actions/runs/39032577144,
+https://github.com/Charlie-Wang-03/awards/actions/runs/39032577133 .
+At the point of this addition the latest final conclusions for
+these exact new-root runs were not yet available.
+
+## G. Historical SharpSecondLayerFourPlus repaired without proof duplication
+
+The old `JSP000404Research/SharpSecondLayerFourPlus.lean`
+had SIX historical Lean errors. The predecessor
+`NoTopTwoNextMultiplicity.lean` ALREADY independently
+proved the same top-plus-two-next geometric exclusion with
+a fourth real centre. We reused
+`no_top_and_two_next_with_fourth` to provide the old theorem's
+full original statement, rather than maintaining a broken
+duplicate argument. We also corrected a fourth-vertex
+negation, introduced the correct `lam` binder ordering,
+and normalized the named finite set's card inequality.
+
+Focused CI https://github.com/Charlie-Wang-03/awards/actions/runs/39032066369:
+**SUCCESS**, 3499 Lake jobs; all four printed old
+theorems only depend on `[propext, Classical.choice, Quot.sound]`,
+and no `sorryAx`.
+
+Together with the earlier SIX historical errors removed from
+`HiddenLargeAngleTriangle.lean`, this turn has independently
+verified TWELVE historical Lean error removals across two
+modules. Do not equate this sum with the changing diagnostics
+of the full optional Lean target build.
