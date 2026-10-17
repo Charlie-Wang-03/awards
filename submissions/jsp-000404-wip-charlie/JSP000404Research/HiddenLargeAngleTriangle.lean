@@ -52,7 +52,7 @@ theorem triangle_other_angles_sum_le_one_add_delta_lam
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p x) (p₂ := p i) (p y)
-      (hp.ne hix.symm)
+      (hp.ne hix)
   have hcommY :
       EuclideanGeometry.angle (p y) (p x) (p i) =
         EuclideanGeometry.angle (p i) (p x) (p y) :=
@@ -60,8 +60,9 @@ theorem triangle_other_angles_sum_le_one_add_delta_lam
   rw [hcommY] at hsum
   have hncast :
       (((n - 1 : ℕ) : ℝ)) = (n : ℝ) - 1 := by
-    exact_mod_cast (Nat.sub_add_cancel hn)
-  rw [hncast, hpi, ht] at hsum hlarge
+    simpa using (Nat.cast_sub hn : ((n - 1 : ℕ) : ℝ) = (n : ℝ) - (1 : ℝ))
+  rw [hpi, ht] at hsum
+  rw [hncast] at hlarge
   nlinarith
 
 theorem triangle_other_angles_sum_lt_three_halves_lam
@@ -97,8 +98,8 @@ theorem support_two_unit_transition_skinny_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
