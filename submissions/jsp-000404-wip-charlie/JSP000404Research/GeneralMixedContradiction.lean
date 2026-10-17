@@ -1,34 +1,26 @@
-import JSP000404Research.GeneralMixedExteriorContradiction
-import JSP000404Research.GeneralMixedInteriorContradiction
-import JSP000404Research.SharpSupportTwoLargeAngle
-import JSP000404Research.TransitionCertificateFromDecomposition
+import JSP000404Research.GeneralMixedDiameterObstruction
+import JSP000404Research.SharpPinnedSupportTwoCluster
+import JSP000404Research.ConcreteSharpCentre
 import Mathlib.Tactic
 
 /-!
-# Complete cardinality-free mixed contradiction with one fourth point
+# Complete mixed four-centre obstruction in arbitrary finite configurations
 
-Fix distinct s,a,b,c in an arbitrary finite configuration.  Suppose
+The original geometric AngleCap and three-centre quotient profile (one sharp
+source s, support-one a, support-two b) force both:
 
-* s has exponent n-1;
-* a has exponent n-2 and quotient support one;
-* b has exponent n-2 and quotient support two.
+  * a non-sharp-ray diameter ≤ delta * lambda at b (pinned sharp ray,
+    precisely two positive quotient gaps, and zero-gap angle mass);
+  * the actual fourth ray c to support-one ray a has angle
+    angle(c,b,a) > delta * lambda (base triangle angle diameter and exact
+    sharp hidden-angle restriction).
 
-The support-two transition quotient is forced to one by the transition-arc
-packing of s,a,b.
+Their contradiction proves the original no-top-mixed-with-fourth theorem
+without restricting to Fin 4, without replacing actual Euclidean angles,
+and without introducing any new unproved payment or axiom.
 
-If c lies outside conv{s,a,b}, GeneralMixedExteriorContradiction closes the
-branch by restricting all support certificates to the four-point
-subconfiguration.
-
-If c lies inside the triangle, the unit transition at b plus the sharp centre
-s gives the lower bound
-
-  ((n-1)-delta)*lambda <= angle(s,b,c),
-
-and GeneralMixedInteriorContradiction closes the branch.
-
-Hence a top centre cannot coexist with one support-one and one support-two
-deficit-two companion as soon as any fourth distinct point exists.
+This is a geometric *subcase* theorem, not the original all-configuration
+global dyadic capacity theorem.
 -/
 
 namespace JSP000404Research
@@ -37,8 +29,8 @@ theorem no_top_mixed_deficitTwo_with_fourth
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -53,77 +45,23 @@ theorem no_top_mixed_deficitTwo_with_fourth
     (hS : centreExponent Cs t = n - 1)
     (hA : centreExponent Ca t = n - 2)
     (hB : centreExponent Cb t = n - 2)
-    (hsupA :
-      positiveSupport (centreQuotient Ca t) = 1)
-    (hsupB :
-      positiveSupport (centreQuotient Cb t) = 2) :
+    (hsupA : positiveSupport (centreQuotient Ca t) = 1)
+    (hsupB : positiveSupport (centreQuotient Cb t) = 2) :
     False := by
-  by_cases hinside :
-      p c ∈ convexHull ℝ
-        ({p s, p a, p b} : Set Plane)
-  · have hdelta1 : delta < 1 := by linarith
-    have htpos :
-        0 < t :=
-      sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
-    have hs :
-        SharpAt p delta lam s :=
-      concrete_unit_deficit_is_sharp
-        hp hcap (by omega : 2 ≤ n)
-        hdelta0 hdelta1 ht hlam
-        s Cs hS
-
-    obtain ⟨first, rest, pre, post, qe,
-        hrays, hqe, hq, hsignLift⟩ :=
-      concrete_centre_large_exponent_has_positive_transition_gap
-        hp hcap (by omega : 1 ≤ n)
-        hdelta0 hdelta1 ht hlam
-        b Cb (by rw [hB]; omega)
-
-    let HS :=
-      Classical.choice
-        (exists_highExponentTransitionIntervalCertificate
-          hp hcap (by omega : 1 ≤ n)
-          hdelta0 hdelta1 ht hlam
-          s Cs (by rw [hS]; omega))
-    let HA :=
-      Classical.choice
-        (exists_highExponentTransitionIntervalCertificate
-          hp hcap (by omega : 1 ≤ n)
-          hdelta0 hdelta1 ht hlam
-          a Ca (by rw [hA]; omega))
-    obtain ⟨HB, hHB⟩ :=
-      exists_highExponentTransitionIntervalCertificate_of_decomposition
-        hp htpos b Cb first rest pre post qe
-        hrays hqe hq hsignLift
-    have hqeOneHB :
-        HB.qe = 1 :=
-      mixed_deficit_two_transition_qe_eq_one
-        hp hn hdelta0 hdeltaHalf ht
-        hsa hsb hab
-        Cs Ca Cb HS HA HB
-        hS hA hsupA
-    have hqeOne : qe = 1 := by
-      rw [hHB] at hqeOneHB
-      exact hqeOneHB
-
-    have hhidden :
-        (((n - 1 : ℕ) : ℝ) - delta) * lam ≤
-          EuclideanGeometry.angle (p s) (p b) (p c) :=
-      sharp_supportTwo_unit_transition_angle_lower
-        hp hcap hn hdelta0 hdeltaHalf ht hlam
-        hsb hbc hsc.symm
-        hs Cb hB hsupB
-        first rest pre post qe
-        hrays hqe hq hsignLift hqeOne
-
-    exact no_mixed_fourth_inside_of_weakened_hidden_angle
+  have hdelta1 : delta < 1 := by linarith
+  have hsharp : SharpAt p delta lam s :=
+    concrete_unit_deficit_is_sharp
+      hp hcap (by omega : 2 ≤ n)
+      hdelta0 hdelta1 ht hlam
+      s Cs hS
+  have hcluster : OuterSmallAwayFrom p delta lam s b :=
+    supportTwo_outerSmallAwayFrom_sharp
       hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      hinside hhidden
-  · exact no_mixed_fourth_outside_triangle
-      hp hcap hn hdelta0 hdeltaHalf ht hlam
-      hsa hsb hsc hab hac hbc
-      Cs Ca Cb hS hA hB hsupA hsupB hinside
+      hsb hsharp Cb hB hsupB
+  exact no_general_mixed_fourth_of_outerSmallAwayFrom
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hsc hab hac hbc
+    Cs Ca Cb hS hA hB hsupA hsupB hcluster
 
 #print axioms no_top_mixed_deficitTwo_with_fourth
 
