@@ -62,7 +62,7 @@ theorem deficit_three_support_one_all_angles_le
       ((n - 2 : ℕ) : ℝ) / t ≤ ge := by
     rw [div_le_iff₀ htpos]
     rw [← hqe]
-    exact hqeLe
+    simpa only [mul_comm] using hqeLe
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
     simpa only [Nat.cast_ofNat] using
@@ -82,20 +82,38 @@ theorem deficit_three_support_one_all_angles_le
       rw [div_eq_mul_inv] at hge ⊢
       have htinv : 0 < 1 / t := one_div_pos.mpr htpos
       have hone :
-          1 - (t - (2 + delta)) * (1 / t) =
-            (2 + delta) * (1 / t) := by
+          1 - (t - (2 + delta)) * t⁻¹ =
+            (2 + delta) * t⁻¹ := by
         field_simp [ne_of_gt htpos]
         ring
       rw [← hone]
       linarith
     have hmul :=
       mul_le_mul_of_nonneg_left hbound Real.pi_pos.le
-    simpa [div_eq_mul_inv] using hmul
+    simpa [div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using hmul
   intro j k hja hka hjk
-  exact
-    (angle_le_width_of_common_signed_interval
-      hwidthNonneg hwidthLtPi
-      hja hka hrepr).trans hwidth
+  obtain ⟨rhoJ, thetaJ, hrhoJ, hJlo, hJhi, hJrepr⟩ :=
+    hrepr j hja
+  obtain ⟨rhoK, thetaK, hrhoK, hKlo, hKhi, hKrepr⟩ :=
+    hrepr k hka
+  have htheta : |thetaJ - thetaK| ≤ width := by
+    rcases le_total thetaJ thetaK with hJK | hKJ
+    · rw [abs_of_nonpos (sub_nonpos.mpr hJK)]
+      linarith
+    · rw [abs_of_nonneg (sub_nonneg.mpr hKJ)]
+      linarith
+  have hdiff : |thetaJ - thetaK| ≤ Real.pi :=
+    htheta.trans hwidthLtPi.le
+  have hangle :
+      EuclideanGeometry.angle (p j) (p a) (p k) ≤ width := by
+    change InnerProductGeometry.angle
+      (p j - p a) (p k - p a) ≤ width
+    rw [hJrepr, hKrepr,
+      angle_positive_smul_signedRay hrhoJ hrhoK
+        sigma sigma thetaJ thetaK,
+      angle_signedRayDirection_eq_of_sign_eq rfl hdiff]
+    exact htheta
+  exact hangle.trans hwidth
 
 theorem sharp_and_deficit_three_support_one_force_large_outer_angle
     {V : Type*} [LinearOrder V] [Fintype V]
