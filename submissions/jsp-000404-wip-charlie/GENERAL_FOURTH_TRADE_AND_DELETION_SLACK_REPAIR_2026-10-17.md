@@ -154,5 +154,14 @@ and the improper unfolding of negation via deprecated
 `simpa only [two_mul]` and `intro h; exact hgain h.2`
 while preserving ALL four existing theorem statements.
 
-Third CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39045562067
-was still in progress at this update.
+Third focused CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39045562067
+**SUCCESS**, 3098 Lake jobs. ALL FOUR original deletion-slack
+theorems printed exactly `[propext, Classical.choice, Quot.sound]`;
+zero `sorryAx`. The old 19 diagnostics are fully repaired.
+
+In particular the real dyadic second-deletion slack theorem bounds
+the sum of all canonical gain bonuses by the exact deleted minimum
+weight `2^a`. This prohibits full-unit gains in any higher layer
+and simultaneous full-unit gains of two distinct minimum-layer
+survivors. The separately unresolved six-source payment is NOT
+implied by these conditional deletion rigidity theorems.
