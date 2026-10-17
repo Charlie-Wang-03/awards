@@ -102,6 +102,7 @@ theorem secondLayer_companion_card_le_one_of_card_ge_four
       (fun i => i ≠ s ∧
         centreExponent (C i) t = n - 2)
   by_contra hnot
+  change ¬ S.card ≤ 1 at hnot
   have hgt : 1 < S.card := by omega
   rcases (Finset.one_lt_card.mp hgt) with
     ⟨a, ha, b, hb, hab⟩
