@@ -1,6 +1,7 @@
 import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.FiveCentreNoSecondLayerCapacity
 import JSP000404Research.FiveCentreTopNextNoThirdCapacity
+import JSP000404Research.FiveCentreTopNextAtMostOneThirdCapacity
 import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
@@ -201,25 +202,27 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
         (by omega : 3 ≤ Fintype.card (ProjectionOrdered V))
         (by omega : Fintype.card (ProjectionOrdered V) ≤ 5)
         hn3 hdelta0 hdeltaHalf ht hlam cycles s hs hnoSecond
-    · by_cases hfiveTopNextNoThird :
+    · by_cases hfiveTopNextOneThird :
           4 ≤ n ∧
           Fintype.card (ProjectionOrdered V) = 5 ∧
           ∃ s a : ProjectionOrdered V,
             s ≠ a ∧
             centreExponent (cycles s) t = n - 1 ∧
             centreExponent (cycles a) t = n - 2 ∧
-            (∀ i : ProjectionOrdered V, i ≠ s → i ≠ a →
-              centreExponent (cycles i) t ≠ n - 3)
-      · rcases hfiveTopNextNoThird with
-          ⟨hn4, hcardFive, ⟨s, a, hsa, hs, ha, hnoThird⟩⟩
+            (∀ i j : ProjectionOrdered V, i ≠ s → i ≠ a →
+              j ≠ s → j ≠ a →
+              centreExponent (cycles i) t = n - 3 →
+              centreExponent (cycles j) t = n - 3 → i = j)
+      · rcases hfiveTopNextOneThird with
+          ⟨hn4, hcardFive, ⟨s, a, hsa, hs, ha, hthirdUnique⟩⟩
         have hcapRe : AngleCap (reindexedPoint p) lam :=
           angleCap_reindexedPoint hp hcap
-        exact planar_five_centre_top_next_no_third_capacity
+        exact planar_five_centre_top_next_at_most_one_third_capacity
           (reindexedPoint_injective hp) hcapRe
           (by omega : 4 ≤ Fintype.card (ProjectionOrdered V))
           (by omega : Fintype.card (ProjectionOrdered V) ≤ 5)
-          hn4 hdelta0 hdeltaHalf ht hlam cycles s a hsa hs ha hnoThird
-      · -- SOLE residual six-source payment excludes both five-centre slices
+          hn4 hdelta0 hdeltaHalf ht hlam cycles s a hsa hs ha hthirdUnique
+      · -- SOLE residual six-source payment excludes the wider five-centre slice
         -- genuine five-centre top/no-next geometric subcase.
         -- No covered sink is relabelled a TRUE hole, nor does any
         -- previously reserved dyadic mass become an unused surplus.
