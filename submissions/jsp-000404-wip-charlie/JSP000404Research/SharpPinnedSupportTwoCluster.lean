@@ -3,6 +3,7 @@ import JSP000404Research.CyclicEdgeRotation
 import JSP000404Research.AnglePath
 import JSP000404Research.SupportTwoPinnedCycle
 import JSP000404Research.PinnedCycleRotation
+import JSP000404Research.SharpOuterAngles
 import Mathlib.Tactic
 
 /-!
@@ -60,9 +61,10 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     OuterSmallAwayFrom p delta lam s i := by
   classical
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
+    linarith
   have htone : 1 ≤ t := by
     rw [ht]
     have hnR : (3 : ℝ) ≤ n := by exact_mod_cast hn
@@ -77,7 +79,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     | nil =>
         exact False.elim (C.nonempty hR)
     | cons first rest =>
-        exact ⟨first, rest, hR⟩
+        exact ⟨first, rest, rfl⟩
 
   let qs : List ℕ := quotientList t C.gaps
   let As : List ℝ :=
@@ -131,6 +133,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     dsimp [qR]
     rw [List.length_rotate, hqLen]
     rw [← List.length_rotate C.rays k, hrotRays]
+    simp
 
   have hqAR :
       qR.length = AR.length := by
@@ -191,7 +194,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     | nil =>
         exact False.elim (htailNonempty hT)
     | cons r rest =>
-        exact ⟨r, rest, hT⟩
+        exact ⟨r, rest, rfl⟩
 
   let AFirst : ℝ :=
     EuclideanGeometry.angle (p s) (p i) (p r.1)
@@ -205,8 +208,17 @@ theorem supportTwo_outerSmallAwayFrom_sharp
   have hARShape :
       AR = AFirst :: (Amid ++ [ALast]) := by
     rw [hARpin, htail]
-    simp [cyclicRayAngles, consecutiveRayAngles,
-      AFirst, Amid, ALast, lastRay, rs]
+    have hget :
+        (r :: rest).getLastD rs = (r :: rest).getLastD r := by
+      cases rest with
+      | nil => rfl
+      | cons t ts => simp [List.getLastD]
+    simp only [cyclicRayAngles, consecutiveRayAngles,
+      AFirst, Amid, ALast, lastRay, List.singleton_append,
+      List.cons_append]
+    simpa only [rs] using congrArg
+      (fun x : OtherVertex i =>
+        EuclideanGeometry.angle (p x.1) (p i) (p s)) hget
 
   have hrotNodup :
       (rs :: r :: rest).Nodup := by
@@ -216,7 +228,8 @@ theorem supportTwo_outerSmallAwayFrom_sharp
     exact hnd
 
   have hrsr : rs ≠ r := by
-    exact (List.nodup_cons.mp hrotNodup).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp hrotNodup).1 (by simp [h])
   have hsr : s ≠ r.1 := by
     intro h
     apply hrsr
@@ -225,7 +238,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
 
   have hlastMem : lastRay ∈ r :: rest := by
     dsimp [lastRay]
-    exact List.getLastD_mem (by simp)
+    exact getLastD_mem_of_ne_nil r (r :: rest) (by simp)
   have hrsLast : rs ≠ lastRay := by
     intro h
     have htailNo := (List.nodup_cons.mp hrotNodup).1
@@ -238,7 +251,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
 
   cases hqR : qR with
   | nil =>
-      have : qR.length = 0 := by rw [hqR]
+      have : qR.length = 0 := by simp [hqR]
       rw [hqRLen, htail] at this
       simp at this
   | cons qFirst qrest =>
@@ -345,8 +358,9 @@ theorem supportTwo_outerSmallAwayFrom_sharp
       have hsupportShape :
           listPositiveCount
               (qFirst :: qmid ++ [qLast]) = 2 := by
-        rw [← hqShape]
-        exact hsupportR
+        have h := hsupportR
+        rw [hqShape] at h
+        simpa only [List.cons_append] using h
 
       have hshape :=
         pinned_support_two_shape_of_end_zero_impossible
@@ -384,7 +398,7 @@ theorem supportTwo_outerSmallAwayFrom_sharp
         · have hval := congrArg Subtype.val hjo
           dsimp [jo, rs] at hval
           exact False.elim (hjs hval)
-        · exact List.mem_map.mpr ⟨jo, hjTail, rfl⟩
+        · exact List.mem_map.mpr ⟨jo, (List.mem_cons.mpr hjTail), rfl⟩
 
       intro j k' hji hki hjs hks hjk
       have hj := hcomplete j hji hjs
