@@ -13,7 +13,7 @@ centre_gap_eq_ordinary_cut:
 For cyclic pinning arguments it is more convenient to expose an ordinary
 adjacent pair directly:
 
-  prefix ++ left :: right :: suffix.
+  prefixRays ++ left :: right :: suffix.
 
 This file translates between the two forms.  It also provides the corresponding
 sharp-ray avoidance wrapper.
@@ -25,8 +25,8 @@ theorem adjacent_zero_gap_actual_angle_le_delta_lam
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdelta1 : delta < 1)
@@ -37,19 +37,19 @@ theorem adjacent_zero_gap_actual_angle_le_delta_lam
     (hexp : centreExponent C t = n - 2)
     (hsupport :
       positiveSupport (centreQuotient C t) = 2)
-    (prefix suffix : List (OtherVertex i))
+    (prefixRays suffix : List (OtherVertex i))
     (left right : OtherVertex i)
     (hrays :
-      C.rays = prefix ++ left :: right :: suffix)
+      C.rays = prefixRays ++ left :: right :: suffix)
     (qpre qpost : List ℕ)
     (hq :
       quotientList t C.gaps = qpre ++ 0 :: qpost)
-    (hlen : qpre.length = prefix.length)
+    (hlen : qpre.length = prefixRays.length)
     (hlr : left ≠ right) :
     EuclideanGeometry.angle
         (p left.1) (p i) (p right.1)
       ≤ delta * lam := by
-  cases prefix with
+  cases prefixRays with
   | nil =>
       exact displayed_ordinary_zero_gap_actual_angle_le_delta_lam
         hp hcap hn hdelta0 hdelta1 ht hlam
@@ -83,8 +83,8 @@ theorem adjacent_zero_gap_endpoints_ne_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -97,27 +97,28 @@ theorem adjacent_zero_gap_endpoints_ne_sharp
     (hexp : centreExponent C t = n - 2)
     (hsupport :
       positiveSupport (centreQuotient C t) = 2)
-    (prefix suffix : List (OtherVertex i))
+    (prefixRays suffix : List (OtherVertex i))
     (left right : OtherVertex i)
     (hrays :
-      C.rays = prefix ++ left :: right :: suffix)
+      C.rays = prefixRays ++ left :: right :: suffix)
     (qpre qpost : List ℕ)
     (hq :
       quotientList t C.gaps = qpre ++ 0 :: qpost)
-    (hlen : qpre.length = prefix.length)
+    (hlen : qpre.length = prefixRays.length)
     (hlr : left ≠ right) :
     left.1 ≠ s ∧ right.1 ≠ s := by
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnReal : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
   have hsmall :=
     adjacent_zero_gap_actual_angle_le_delta_lam
       hp hcap hn hdelta0 hdelta1 ht hlam
-      i C hexp hsupport prefix suffix left right
+      i C hexp hsupport prefixRays suffix left right
       hrays qpre qpost hq hlen hlr
   constructor
   · intro hleft
