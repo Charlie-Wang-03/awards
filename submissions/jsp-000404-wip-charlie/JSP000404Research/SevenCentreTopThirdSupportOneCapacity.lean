@@ -116,7 +116,55 @@ theorem planar_seven_centre_top_no_next_third_support_one_capacity
     hp hcap hcard3 (by omega : Fintype.card V ≤ 8)
     hn hdelta0 hdeltaHalf ht hlam C s hs hnoNext hThirdSupportOne
 
+/-- An overweight actual eight-centre top/no-next configuration (n >= 5)
+must have a third-layer centre with positive quotient support TWO or THREE.
+This is a necessary geometric obstruction, not a constructed counterexample:
+it combines the proved eight-centre capacity subcase and the independently
+certified deficit-three support classification. -/
+theorem planar_eight_centre_overweight_requires_third_support_two_or_three
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard3 : 3 ≤ Fintype.card V)
+    (hcard8 : Fintype.card V ≤ 8)
+    (hn : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hs : centreExponent (C s) t = n - 1)
+    (hnoNext : ∀ i : V, centreExponent (C i) t ≠ n - 2)
+    (hover : 2 ^ n < ∑ i : V, 2 ^ centreExponent (C i) t) :
+    ∃ i : V, centreExponent (C i) t = n - 3 ∧
+      (positiveSupport (centreQuotient (C i) t) = 2 ∨
+       positiveSupport (centreQuotient (C i) t) = 3) := by
+  classical
+  have hdelta1 : delta < 1 := by linarith
+  by_contra hnot
+  have hThirdSupportOne :
+      ∀ i : V, centreExponent (C i) t = n - 3 →
+        positiveSupport (centreQuotient (C i) t) = 1 := by
+    intro i hi
+    rcases concrete_deficit_three_structure
+        (C i) (by omega : 4 ≤ n) hdelta0 hdelta1 ht hi
+      with h1 | h2 | h3
+    · exact h1.1
+    · exfalso
+      exact hnot ⟨i, hi, Or.inl h2.1⟩
+    · exfalso
+      exact hnot ⟨i, hi, Or.inr h3.1⟩
+  have hcapacity :=
+    planar_eight_centre_top_no_next_third_support_one_capacity
+      hp hcap hcard3 hcard8 hn hdelta0 hdeltaHalf ht hlam
+      C s hs hnoNext hThirdSupportOne
+  exact (not_lt_of_ge hcapacity) hover
+
 #print axioms planar_eight_centre_top_no_next_third_support_one_capacity
 #print axioms planar_seven_centre_top_no_next_third_support_one_capacity
+#print axioms planar_eight_centre_overweight_requires_third_support_two_or_three
 
 end JSP000404Research
