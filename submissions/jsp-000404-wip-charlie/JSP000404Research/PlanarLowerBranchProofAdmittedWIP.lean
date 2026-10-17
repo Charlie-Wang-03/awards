@@ -6,6 +6,7 @@ import JSP000404Research.SixCentreTopNextNoThirdCapacity
 import JSP000404Research.EightCentreNoHighLayerCapacity
 import JSP000404Research.EightCentreNoTopNextCountCapacity
 import JSP000404Research.SixteenCentreNoTopTwoLayerCountCapacity
+import JSP000404Research.ThirdLayerTwoSupportOneExclusion
 import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
 import JSP000404Research.PlanarLowerBranchActiveExternalHoleFrontier
@@ -286,6 +287,23 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
                 -- genuine five-centre top/no-next geometric subcase.
                 -- No covered sink is relabelled a TRUE hole, nor does any
                 -- previously reserved dyadic mass become an unused surplus.
+                -- GENUINE AngelCap exclusion derived from actual planar geometry:
+                -- Above a top n-1 (n>=5), at most one OTHER n-3 centre
+                -- can have positive quotient support exactly ONE.
+                have hthirdSupportOneCountBound :
+                    ∀ s : ProjectionOrdered V,
+                      5 ≤ n →
+                      centreExponent (cycles s) t = n - 1 →
+                      ((Finset.univ : Finset (ProjectionOrdered V)).filter
+                        (fun i => i ≠ s ∧
+                          centreExponent (cycles i) t = n - 3 ∧
+                          positiveSupport (centreQuotient (cycles i) t) = 1)).card ≤ 1 := by
+                  intro s hn5 hs
+                  have hcapRe : AngleCap (reindexedPoint p) lam :=
+                    angleCap_reindexedPoint hp hcap
+                  exact top_third_support_one_count_le_one_n_ge_five
+                    (reindexedPoint_injective hp) hcapRe
+                    hn5 hdelta0 hdeltaHalf ht hlam cycles s hs
                 have hmobile :=
                   planar_mobile_hard_mass_le_singleton_soft_bridge_dyadic
                     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles
