@@ -33,7 +33,9 @@ theorem projection_top_forces_next_card_le_one
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     (s : ProjectionOrdered V)
-    (hs : centreExponent (C s) t = n - 1) :
+    (hs :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      centreExponent (C s) t = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
     ((Finset.univ : Finset (ProjectionOrdered V)).filter
       (fun i => centreExponent (C i) t = n - 2)).card ≤ 1 := by
