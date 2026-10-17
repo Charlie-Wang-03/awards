@@ -54,7 +54,8 @@ theorem dyadic_capacity_of_top_next_three_low
         have his : i ≠ s := by
           intro h
           subst i
-          exact (by simpa [S] using hi : s ∉ S)
+          have hsNot : s ∉ S := by simp [S]
+          exact hsNot hi
         have hia : i ≠ a := by
           intro h
           subst i
