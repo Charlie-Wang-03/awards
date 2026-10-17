@@ -38,11 +38,8 @@ theorem getLastD_append_cons
     (xs : List α) (b : α) (bs : List α) (d : α) :
     (xs ++ b :: bs).getLastD d =
       bs.getLastD b := by
-  induction xs generalizing d with
-  | nil =>
-      simp [List.getLastD_cons]
-  | cons x xs ih =>
-      simp [List.getLastD_cons, ih]
+  simp [List.getLastD_eq_getLast?, List.getLast?_append_cons,
+    List.getLast?_cons]
 
 theorem getLastD_map_add
     (xs : List ℝ) (a c : ℝ) :
@@ -51,7 +48,8 @@ theorem getLastD_map_add
   induction xs generalizing a with
   | nil => simp
   | cons x xs ih =>
-      simp [List.getLastD_cons, ih]
+      simp only [List.map_cons, List.getLastD_cons]
+      exact ih x
 
 theorem successiveDiffsFrom_map_add
     (a c : ℝ) (xs : List ℝ) :
@@ -119,7 +117,8 @@ theorem successiveDiffsFrom_append_cons
   | cons x xs ih =>
       simp only [List.cons_append, successiveDiffsFrom]
       rw [ih]
-      simp [List.getLastD_cons]
+      simpa only [List.getLastD_eq_getLast?] using
+        (List.getLastD_cons (a := a) (b := x) (l := xs)).symm
 
 /-- Gap decomposition into the pre block and post block. -/
 theorem projectiveGaps_two_block_decomp
@@ -136,7 +135,7 @@ theorem projectiveGaps_two_block_decomp
   rw [getLastD_append_cons]
   simp [List.append_assoc]
 
-def anglesAfterProjectiveCut
+noncomputable def anglesAfterProjectiveCut
     (c : ℝ)
     (pre post : List ℝ) : List ℝ :=
   post.map (fun x => x - c) ++
@@ -203,6 +202,9 @@ theorem projectiveGaps_after_cut_eq_rotate
       B ++ A := by
     rw [anglesAfterProjectiveCut]
     simp only [List.map_cons, List.cons_append]
+    change projectiveGaps
+      (((b - c) :: bs.map (fun x => x - c)) ++
+        ((a + Real.pi - c) :: as.map (fun x => x + Real.pi - c))) = B ++ A
     rw [projectiveGaps_two_block_decomp]
     rw [hpostDiff, hpreDiff,
         hpostLast, hpreLast]
@@ -213,7 +215,7 @@ theorem projectiveGaps_after_cut_eq_rotate
       A.length = (a :: as).length := by
     simp [A, successiveDiffsFrom_length]
   rw [← hlen]
-  exact List.rotate_append_length_eq A B
+  exact (List.rotate_append_length_eq A B).symm
 
 /-- Normalized gaps obey the same cut rotation. -/
 theorem normalizedProjectiveGaps_after_cut_eq_rotate
