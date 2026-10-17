@@ -117,11 +117,7 @@ theorem successiveDiffsFrom_append_cons
   | cons x xs ih =>
       simp only [List.cons_append, successiveDiffsFrom]
       rw [ih]
-      have hlast :
-          xs.getLast?.getD x = (x :: xs).getLast?.getD a := by
-        simpa only [List.getLastD_eq_getLast?] using
-          (List.getLastD_cons (a := a) (b := x) (l := xs)).symm
-      rw [hlast]
+      rw [List.getLastD_cons]
 
 /-- Gap decomposition into the pre block and post block. -/
 theorem projectiveGaps_two_block_decomp
