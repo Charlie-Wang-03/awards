@@ -29,7 +29,7 @@ noncomputable def rayEquiv
     Fin C.rays.length ≃ OtherVertex i := by
   classical
   exact C.nodup.getEquivOfForallMemList
-    (fun j => C.mem_rays_iff j)
+    C.rays (fun j => C.mem_rays_iff j)
 
 noncomputable def rayIndex
     {V : Type*} [LinearOrder V] [Fintype V]
