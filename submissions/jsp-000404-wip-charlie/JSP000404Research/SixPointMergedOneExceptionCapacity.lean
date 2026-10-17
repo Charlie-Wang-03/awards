@@ -116,14 +116,23 @@ theorem six_point_weight_lower_of_one_min_exception
         ≤
       ∑ v : V, 2 ^ (n - active v) := by
     rw [hdecomp]
-    rw [← hScard] at hsumS
+    have hfour :
+        4 * 2 ^ (n - 3) ≤
+          ∑ v ∈ S, 2 ^ (n - active v) := by
+      simpa only [hScard] using hsumS
     omega
   have hn1 : n - 1 = (n - 4) + 3 := by omega
   have hn3 : n - 3 = (n - 4) + 1 := by omega
-  rw [hn1, hn3, pow_add, pow_add] at hlower
-  norm_num at hlower
-  simpa [Nat.mul_add, Nat.add_mul, Nat.mul_assoc,
-    Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hlower
+  have hidentity :
+      2 ^ (n - 1) + 2 ^ (n - 4) +
+          4 * 2 ^ (n - 3) = 17 * 2 ^ (n - 4) := by
+    rw [hn1, hn3, pow_add, pow_add]
+    norm_num <;> omega
+  calc
+    17 * 2 ^ (n - 4) =
+        2 ^ (n - 1) + 2 ^ (n - 4) + 4 * 2 ^ (n - 3) :=
+      hidentity.symm
+    _ ≤ ∑ v : V, 2 ^ (n - active v) := hlower
 
 /-- No n-colour binary edge partition can realize the relaxed six-point
 one-exception palette profile. -/
