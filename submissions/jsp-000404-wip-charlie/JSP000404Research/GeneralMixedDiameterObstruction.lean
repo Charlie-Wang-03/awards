@@ -47,7 +47,7 @@ theorem no_general_mixed_fourth_of_outerSmallAwayFrom
       Cs Ca Cb hS hA hB hsupA hsupB
   have hsmall :
       EuclideanGeometry.angle (p c) (p b) (p a) ≤ delta * lam :=
-    houter c a hbc.symm hab.symm hsc.symm hsa.symm hac.symm
+    houter c a hbc.symm hab hsc.symm hsa.symm hac
   exact not_lt_of_ge hsmall hlarge
 
 #print axioms no_general_mixed_fourth_of_outerSmallAwayFrom
