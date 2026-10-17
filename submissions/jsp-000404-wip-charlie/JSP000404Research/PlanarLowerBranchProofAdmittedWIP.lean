@@ -8,7 +8,7 @@ import JSP000404Research.EightCentreNoTopNextCountCapacity
 import JSP000404Research.SixteenCentreNoTopTwoLayerCountCapacity
 import JSP000404Research.TopLayerThreeLevelDyadicCapacity
 import JSP000404Research.SevenCentreTopThirdSupportOneCapacity
-import JSP000404Research.NineCentreTopFourthLayerCapacity
+import JSP000404Research.TopFourthLayerCardinalityTradeCapacity
 import JSP000404Research.ThirdLayerTwoSupportOneExclusion
 import JSP000404Research.PlanarLowerBranchActualEdgeCarrierFrontier
 import JSP000404Research.PlanarLowerBranchExactCarrierFrontier
@@ -248,10 +248,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
             (by omega : 4 ≤ Fintype.card (ProjectionOrdered V))
             (by omega : Fintype.card (ProjectionOrdered V) ≤ 6)
             hn4 hdelta0 hdeltaHalf ht hlam cycles s a hsa hs ha hnoThird
-        · by_cases hNineTopFourthBudget :
+        · by_cases hTopFourthTrade :
               5 ≤ n ∧
               3 ≤ Fintype.card (ProjectionOrdered V) ∧
-              Fintype.card (ProjectionOrdered V) ≤ 9 ∧
               ∃ s : ProjectionOrdered V,
                 centreExponent (cycles s) t = n - 1 ∧
                 (∀ i : ProjectionOrdered V,
@@ -259,17 +258,17 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
                 (∀ i : ProjectionOrdered V,
                   centreExponent (cycles i) t = n - 3 →
                   positiveSupport (centreQuotient (cycles i) t) = 1) ∧
-                ((Finset.univ : Finset (ProjectionOrdered V)).filter
-                  (fun i => centreExponent (cycles i) t = n - 4)).card ≤ 5
-          · rcases hNineTopFourthBudget with
-              ⟨hn5, hcard3, hcard9,
-                ⟨s, hs, hnoNext, hthirdOne, hfourthCard⟩⟩
+                (Fintype.card (ProjectionOrdered V) +
+                  ((Finset.univ : Finset (ProjectionOrdered V)).filter
+                    (fun i => centreExponent (cycles i) t = n - 4)).card ≤ 14)
+          · rcases hTopFourthTrade with
+              ⟨hn5, hcard3, ⟨s, hs, hnoNext, hthirdOne, hfourthTrade⟩⟩
             have hcapRe : AngleCap (reindexedPoint p) lam :=
               angleCap_reindexedPoint hp hcap
-            exact planar_nine_centre_top_no_next_third_support_one_fourth_at_most_five
+            exact planar_top_no_next_support_one_fourth_trade_capacity
               (reindexedPoint_injective hp) hcapRe
-              hcard3 hcard9 hn5 hdelta0 hdeltaHalf ht hlam
-              cycles s hs hnoNext hthirdOne hfourthCard
+              hcard3 hn5 hdelta0 hdeltaHalf ht hlam
+              cycles s hs hnoNext hthirdOne hfourthTrade
           · by_cases hEightTopThirdSupportOne :
                 5 ≤ n ∧
                 3 ≤ Fintype.card (ProjectionOrdered V) ∧
