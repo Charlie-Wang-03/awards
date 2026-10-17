@@ -1,6 +1,7 @@
 import JSP000404Research.FourCentreArithmetic
 import JSP000404Research.NoTopTwoNextMultiplicity
 import JSP000404Research.GenericTopExponentMultiplicity
+import JSP000404Research.TopForcesNextMultiplicity
 import JSP000404Research.CentreExponentBounds
 import Mathlib.Tactic
 
@@ -85,7 +86,7 @@ theorem four_centre_dyadic_capacity
   have hfour :=
     four_dyadic_terms_le_of_sharp_structure
       hn k hk htop hnext
-  simpa [k, Fin.sum_univ_succ] using hfour
+  simpa [k, Fin.sum_univ_succ, add_assoc] using hfour
 
 #print axioms exists_fourth_fin_four
 #print axioms four_centre_dyadic_capacity
