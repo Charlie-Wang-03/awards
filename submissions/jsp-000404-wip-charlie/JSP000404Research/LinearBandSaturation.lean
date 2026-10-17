@@ -49,15 +49,18 @@ theorem mem_le_getLastD_of_pairwise
   | cons b bs ih =>
       have hpair := List.pairwise_cons.mp hsorted
       simp only [List.mem_cons] at hx
-      rcases hx with rfl | hx
-      · exact head_le_getLastD_of_pairwise
+      rcases hx with hxa | hx
+      · subst x
+        exact head_le_getLastD_of_pairwise
           a (b :: bs) hsorted
       · have htail :
             (b :: bs).Pairwise (· ≤ ·) :=
           hpair.2
         have hrec :=
           ih b htail (by simpa using hx)
-        simpa [List.getLastD_cons] using hrec
+        cases bs with
+        | nil => simpa using hrec
+        | cons c cs => simpa using hrec
 
 theorem floor_getLastD_eq_n_of_sorted_occupied_n
     {t : ℝ} {n : ℕ}
@@ -76,7 +79,7 @@ theorem floor_getLastD_eq_n_of_sorted_occupied_n
       Nat.floor (xs.getLastD a) ≤ n := by
     have hlt :
         xs.getLastD a < ((n + 1 : ℕ) : ℝ) := by
-      have hz := hall _ (List.getLastD_mem_cons a xs)
+      have hz := hall _ ((List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs))
       push_cast
       linarith
     have hf :
@@ -131,7 +134,7 @@ theorem linear_cyclic_saturation_component_equalities
   have hwrap :=
     wrap_gap_excess_le_outer_empty_band_count
       ha0 haz
-      (hall _ (List.getLastD_mem_cons a xs))
+      (hall _ ((List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)))
       ht
   have hfloorAZ :=
     floor_head_le_floor_getLastD_of_pairwise
@@ -142,7 +145,7 @@ theorem linear_cyclic_saturation_component_equalities
       Nat.floor (xs.getLastD a) ≤ n := by
     have hlt :
         xs.getLastD a < ((n + 1 : ℕ) : ℝ) := by
-      have hz := hall _ (List.getLastD_mem_cons a xs)
+      have hz := hall _ ((List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs))
       push_cast
       linarith
     have hf :
