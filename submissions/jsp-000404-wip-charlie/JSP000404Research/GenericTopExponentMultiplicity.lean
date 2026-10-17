@@ -24,8 +24,8 @@ theorem generic_topExponent_filter_card_le_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 3 ≤ Fintype.card V)
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -73,9 +73,10 @@ theorem generic_topExponent_filter_card_le_one
       hp hcap hn hdelta0 hdelta1 ht hlam
       b (C b) hb
 
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnReal : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -115,8 +116,8 @@ theorem projectionOrdered_topExponent_filter_card_le_one
     {V : Type*} [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 3 ≤ Fintype.card (ProjectionOrdered V))
     (hn : 2 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -124,6 +125,8 @@ theorem projectionOrdered_topExponent_filter_card_le_one
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
