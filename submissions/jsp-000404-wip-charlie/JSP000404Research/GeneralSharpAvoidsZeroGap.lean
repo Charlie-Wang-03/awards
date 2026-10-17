@@ -24,8 +24,8 @@ theorem displayed_ordinary_zero_gap_endpoints_ne_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -51,9 +51,11 @@ theorem displayed_ordinary_zero_gap_endpoints_ne_sharp
     ((first :: before).getLast (by simp)).1 ≠ s ∧
       right.1 ≠ s := by
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnreal : (3 : ℝ) ≤ (n : ℝ) := by
+      exact_mod_cast hn
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
@@ -105,8 +107,8 @@ theorem displayed_wrap_zero_gap_endpoints_ne_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -132,9 +134,11 @@ theorem displayed_wrap_zero_gap_endpoints_ne_sharp
     first.1 ≠ s ∧
       ((first :: rest).getLast (by simp)).1 ≠ s := by
   have hdelta1 : delta < 1 := by linarith
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnreal : (3 : ℝ) ≤ (n : ℝ) := by
+      exact_mod_cast hn
+    linarith
   have hlampos : 0 < lam := by
     rw [hlam]
     exact div_pos Real.pi_pos htpos
