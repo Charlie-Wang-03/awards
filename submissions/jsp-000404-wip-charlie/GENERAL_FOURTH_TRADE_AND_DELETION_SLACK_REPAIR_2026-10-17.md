@@ -28,8 +28,13 @@ SUCCESS.
 
 `JSP000404Research/MaxStableCentre.lean` failed to synthesize
 `DecidableEq V` in two deletion-bonus theorems.
-Added the typeclass parameter in the relevant existing generic
-signatures (without modifying their mathematical conclusions).
+The FIRST focused fix passed with an explicit `DecidableEq V` typeclass
+parameter, but adding that premise changed the exported signatures.
+A subsequent refactor (commit `d72294bcc36f5c5b66b51d083c7ec16991e1a772`)
+restores ALL original generic signatures and supplies `classical`
+decidability locally in the two relevant proofs. Its own targeted
+CI #39045429530 must be checked before this stronger repair is
+counted as accepted.
 
 Focused CI https://github.com/Charlie-Wang-03/awards/actions/runs/39044614169
 **SUCCESS**, 3097 Lake jobs. All three printed theorem axioms:
@@ -101,7 +106,10 @@ of an overweight configuration.
 
 New focused CI:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39045139179
-was still in progress when drafted. Check `#print axioms`.
+**SUCCESS**, 3510 Lake jobs. All THREE printed theorem axioms
+exactly `[propext, Classical.choice, Quot.sound]`, NO `sorryAx`.
+This independently verifies the genuine unbounded-cardinality
+overweight necessary fork.
 
 ## Historical SecondDeletionSlack repair progress
 
