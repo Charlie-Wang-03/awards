@@ -21,14 +21,14 @@ No six-source TRUE-hole payment is invoked.
 namespace JSP000404Research
 open scoped BigOperators
 
-theorem planar_seven_centre_top_no_next_third_support_one_capacity
+theorem planar_eight_centre_top_no_next_third_support_one_capacity
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
     {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (hcard3 : 3 ≤ Fintype.card V)
-    (hcard7 : Fintype.card V ≤ 7)
+    (hcard8 : Fintype.card V ≤ 8)
     (hn : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -92,6 +92,34 @@ theorem planar_seven_centre_top_no_next_third_support_one_capacity
     hp hcap (by omega : 4 ≤ n) hdelta0 hdeltaHalf ht hlam C
     (by simpa [H,M,L] using htrade)
 
+/-- The original seven-centre statement follows immediately from the
+strictly stronger eight-centre actual planar capacity certificate. -/
+theorem planar_seven_centre_top_no_next_third_support_one_capacity
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard3 : 3 ≤ Fintype.card V)
+    (hcard7 : Fintype.card V ≤ 7)
+    (hn : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hs : centreExponent (C s) t = n - 1)
+    (hnoNext : ∀ i : V, centreExponent (C i) t ≠ n - 2)
+    (hThirdSupportOne : ∀ i : V,
+      centreExponent (C i) t = n - 3 →
+      positiveSupport (centreQuotient (C i) t) = 1) :
+    (∑ i : V, 2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
+  exact planar_eight_centre_top_no_next_third_support_one_capacity
+    hp hcap hcard3 (by omega : Fintype.card V ≤ 8)
+    hn hdelta0 hdeltaHalf ht hlam C s hs hnoNext hThirdSupportOne
+
+#print axioms planar_eight_centre_top_no_next_third_support_one_capacity
 #print axioms planar_seven_centre_top_no_next_third_support_one_capacity
 
 end JSP000404Research
