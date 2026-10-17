@@ -1,5 +1,6 @@
 
 import JSP000404Research.MinimalOverweightDyadicRigidity
+import JSP000404Research.UnitGainDeletionBonus
 import Mathlib.Tactic
 
 /-!
