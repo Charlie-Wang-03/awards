@@ -1,5 +1,6 @@
 import JSP000404Research.FourCentreTransitionCases
 import JSP000404Research.DeficitTwo
+import JSP000404Research.NoTopTwoNextMultiplicity
 import Mathlib.Tactic
 
 /-!
@@ -21,8 +22,8 @@ theorem no_three_supportOne_secondLayer_of_four_le_n
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -96,8 +97,8 @@ theorem four_secondLayer_has_two_supportTwo
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -122,19 +123,19 @@ theorem four_secondLayer_has_two_supportTwo
       positiveSupport (centreQuotient (C x) t) = 2 ∧
       positiveSupport (centreQuotient (C y) t) = 2 := by
   have ha :=
-    deficit_two_support_one_or_two_concrete
+    actual_deficit_two_support_one_or_two
       (C a) (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht haSecond
   have hb :=
-    deficit_two_support_one_or_two_concrete
+    actual_deficit_two_support_one_or_two
       (C b) (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hbSecond
   have hc :=
-    deficit_two_support_one_or_two_concrete
+    actual_deficit_two_support_one_or_two
       (C c) (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hcSecond
   have hd :=
-    deficit_two_support_one_or_two_concrete
+    actual_deficit_two_support_one_or_two
       (C d) (by omega : 3 ≤ n)
       hdelta0 hdeltaHalf ht hdSecond
   rcases ha with ha1 | ha2 <;>
