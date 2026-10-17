@@ -134,7 +134,44 @@ theorem planar_no_top_two_layer_count_tradeoff_capacity
   exact dyadic_capacity_of_no_top_two_layer_count_tradeoff
     (fun i : V => centreExponent (C i) t) n hn hmax htrade
 
+/-- Necessary two-high-layer census for an actual overweight configuration
+whose top n-1 exponent layer is empty. This is the rigorous
+contrapositive obstruction, not an assertion that such configurations
+exist or satisfy AngleCap. -/
+theorem planar_no_top_overweight_forces_two_layer_count_excess
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 4 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hnoTop : ∀ i : V, centreExponent (C i) t ≠ n - 1)
+    (hover : 2 ^ n < ∑ i : V, 2 ^ centreExponent (C i) t) :
+    16 < Fintype.card V +
+      3 * ((Finset.univ : Finset V).filter
+        (fun i => centreExponent (C i) t = n - 2)).card +
+      ((Finset.univ : Finset V).filter
+        (fun i => centreExponent (C i) t = n - 3)).card := by
+  classical
+  by_contra hnot
+  have htrade : Fintype.card V +
+      3 * ((Finset.univ : Finset V).filter
+        (fun i => centreExponent (C i) t = n - 2)).card +
+      ((Finset.univ : Finset V).filter
+        (fun i => centreExponent (C i) t = n - 3)).card ≤ 16 := by
+    omega
+  have hcapacity :=
+    planar_no_top_two_layer_count_tradeoff_capacity
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C hnoTop htrade
+  exact (not_lt_of_ge hcapacity) hover
+
 #print axioms dyadic_capacity_of_no_top_two_layer_count_tradeoff
 #print axioms planar_no_top_two_layer_count_tradeoff_capacity
+#print axioms planar_no_top_overweight_forces_two_layer_count_excess
 
 end JSP000404Research
