@@ -88,9 +88,10 @@ theorem interior_saturation_head_step
       simp only [successiveDiffsFrom, List.map_cons,
         listExponent, List.map_cons, List.sum_cons] at hsat
       rw [hbands, hq0] at hsat
-      simp [excess, hEq] at hsat
-      simpa only [listExponent, List.map_map, occupiedNatBands_cons,
-        List.getLastD] using hsat
+      have hexcessZero : excess 0 = 0 := by simp [excess]
+      rw [hexcessZero] at hsat
+      simp only [zero_add, hEq] at hsat
+      simpa only [listExponent, List.map_map, occupiedNatBands_cons] using hsat
     exact ⟨hsatTail, Or.inl ⟨hEq, hq0⟩⟩
   · have hLt :
         Nat.floor a < Nat.floor b := by
