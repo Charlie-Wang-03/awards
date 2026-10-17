@@ -84,7 +84,9 @@ normalization. Current repairs use `List.getLastD_cons`,
 and explicit block-append rotation.
 Dedicated check:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39041568250
-**PENDING final kernel result** at the time of this report.
+**SUCCESS**, 3218 Lake jobs; all EIGHT printed theorems with only
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+All seven previously counted diagnostics in this module are repaired.
 
 ### A four-layer capacity census and true nine-centre subcase
 
@@ -110,8 +112,18 @@ First CI identified a normalization oversight for the abbreviation
 without adding a `sorry`.
 Second focused check:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39041607212
-**PENDING final kernel result** at the time of this report.
-Do not integrate as "verified" without checking this run first.
+**SUCCESS**, 3509 Lake jobs. Both printed theorems have only
+`[propext, Classical.choice, Quot.sound]` and NO `sorryAx`.
+The nine-centre capacity theorem was dispatched as an explicit
+conditional geometric branch before the eight-centre branch in the
+admitted WIP main root in commit
+`daa2644221914f36e386180aa605129fb788cc5b`.
+Exactly ONE original root `sorry` remains (near line 822).
+Main-root targeted integration CI was launched at that SHA; verify
+its conclusion independently before marking this insertion as green:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39042018472
+https://github.com/Charlie-Wang-03/awards/actions/runs/39042018468
+https://github.com/Charlie-Wang-03/awards/actions/runs/39042018515
 
 ## Full tree and remaining mathematical obligation
 
@@ -128,3 +140,17 @@ duplicate liabilities plus projected profile loss to LITERAL external
 TRUE holes and GENUINELY unreserved dyadic surplus. Existing finite
 cardinality slices, arithmetic profile lemmas, sharp-centre exclusions
 and older conditional ledgers have not closed the general payment.
+
+## Further work submitted: genuine deletion-bonus implementation
+
+`JSP000404Research/UnitGainDeletionBonus.lean` has been repaired
+with an explicitly classical noncomputable `unitGainDeletionBonus`
+for arbitrary vertex types, an explicit `DecidableEq V` typeclass
+for actual Finset erasure operations, proof of the dyadic
+two-times-weight equation, and non-brittle fully applied
+maximal-centre stable/compensated deletion theorems.
+The original bonus-matrix conclusions were kept.
+
+Focused check https://github.com/Charlie-Wang-03/awards/actions/runs/39041976745
+was still IN PROGRESS at the checkpoint. It must not be counted
+as a completed Lean proof until the actual CI concludes successfully.
