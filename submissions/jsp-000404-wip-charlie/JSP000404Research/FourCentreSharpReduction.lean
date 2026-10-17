@@ -1,5 +1,6 @@
 import JSP000404Research.FourCentreTransitionCases
 import JSP000404Research.FourCentreSupportTwoContradiction
+import JSP000404Research.NoTopTwoNextMultiplicity
 import Mathlib.Tactic
 
 /-!
@@ -55,8 +56,8 @@ theorem deficit_two_support_one_or_two_concrete
 theorem sharp_two_deficit_two_force_mixed_support_fin_four
     {p : Fin 4 → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -79,42 +80,10 @@ theorem sharp_two_deficit_two_force_mixed_support_fin_four
       positiveSupport (centreQuotient Ca t) = 2 ∧
       positiveSupport (centreQuotient Cb t) = 1
     ) := by
-  have hdelta1 : delta < 1 := by linarith
-  have hsupA :=
-    deficit_two_support_one_or_two_concrete
-      Ca hn hdelta0 hdeltaHalf ht hA
-  have hsupB :=
-    deficit_two_support_one_or_two_concrete
-      Cb hn hdelta0 hdeltaHalf ht hB
-  rcases hsupA with hA1 | hA2 <;>
-    rcases hsupB with hB1 | hB2
-  · have HS :=
-      Classical.choice
-        (exists_highExponentTransitionIntervalCertificate
-          hp hcap (by omega : 1 ≤ n) hdelta0 hdelta1 ht hlam
-          s Cs (by rw [hS]; omega))
-    have HA :=
-      Classical.choice
-        (exists_highExponentTransitionIntervalCertificate
-          hp hcap (by omega : 1 ≤ n) hdelta0 hdelta1 ht hlam
-          a Ca (by rw [hA]; omega))
-    have HB :=
-      Classical.choice
-        (exists_highExponentTransitionIntervalCertificate
-          hp hcap (by omega : 1 ≤ n) hdelta0 hdelta1 ht hlam
-          b Cb (by rw [hB]; omega))
-    exact False.elim
-      (no_sharp_with_two_support_one_deficit_two
-        hp hn hdelta0 hdeltaHalf ht
-        hsa hsb hab
-        Cs Ca Cb HS HA HB hS hA hB hA1 hB1)
-  · exact Or.inl ⟨hA1, hB2⟩
-  · exact Or.inr ⟨hA2, hB1⟩
-  · exact False.elim
-      (no_sharp_with_two_support_two_deficit_two_fin_four
-        hp hcap hn hdelta0 hdeltaHalf ht hlam
-        hsa hsb hsc hab hac hbc
-        Cs Ca Cb hS hA hB hA2 hB2)
+  exact False.elim
+    (no_top_and_two_next_with_fourth
+      hp hcap hn hdelta0 hdeltaHalf ht hlam
+      hsa hsb hsc hab hac hbc Cs Ca Cb hS hA hB)
 
 #print axioms deficit_two_support_one_or_two_concrete
 #print axioms sharp_two_deficit_two_force_mixed_support_fin_four
