@@ -62,19 +62,35 @@ theorem four_transition_quotient_sum_le_two_n
     · exact False.elim (hcd hxy.symm)
   let C : ∀ r : Fin 4, CentreProjectiveCycle hp (centre r) :=
     fun r => by
-      fin_cases r
-      · simpa [centre] using Ca
-      · simpa [centre] using Cb
-      · simpa [centre] using Cc
-      · simpa [centre] using Cd
+      by_cases h0 : r = 0
+      · subst r
+        simpa [centre] using Ca
+      by_cases h1 : r = 1
+      · subst r
+        simpa [centre] using Cb
+      by_cases h2 : r = 2
+      · subst r
+        simpa [centre] using Cc
+      have h3 : r = 3 := by
+        fin_cases r <;> simp_all
+      subst r
+      simpa [centre] using Cd
   let cert : ∀ r : Fin 4,
       HighExponentTransitionIntervalCertificate hp t (centre r) (C r) :=
     fun r => by
-      fin_cases r
-      · simpa [centre,C] using certA
-      · simpa [centre,C] using certB
-      · simpa [centre,C] using certC
-      · simpa [centre,C] using certD
+      by_cases h0 : r = 0
+      · subst r
+        simpa [centre, C] using certA
+      by_cases h1 : r = 1
+      · subst r
+        simpa [centre, C] using certB
+      by_cases h2 : r = 2
+      · subst r
+        simpa [centre, C] using certC
+      have h3 : r = 3 := by
+        fin_cases r <;> simp_all
+      subst r
+      simpa [centre, C] using certD
   have h :=
     highTransition_quotient_sum_le_two_n
       hp hn hdelta0 hdeltaHalf ht
@@ -85,8 +101,8 @@ theorem no_three_supportOne_secondLayer_among_four_n3
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (3 : ℝ) + delta)
@@ -161,8 +177,8 @@ theorem four_secondLayer_has_two_supportTwo_of_three_le_n
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
+    {lam t delta : ℝ}
+    (hcap : AngleCap p lam) {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -194,19 +210,19 @@ theorem four_secondLayer_has_two_supportTwo_of_three_le_n
   · have hnEq : n = 3 := by omega
     subst n
     have ha :=
-      deficit_two_support_one_or_two_concrete
+      actual_deficit_two_support_one_or_two
         (C a) (by omega : 3 ≤ 3)
         hdelta0 hdeltaHalf ht haSecond
     have hb :=
-      deficit_two_support_one_or_two_concrete
+      actual_deficit_two_support_one_or_two
         (C b) (by omega : 3 ≤ 3)
         hdelta0 hdeltaHalf ht hbSecond
     have hc :=
-      deficit_two_support_one_or_two_concrete
+      actual_deficit_two_support_one_or_two
         (C c) (by omega : 3 ≤ 3)
         hdelta0 hdeltaHalf ht hcSecond
     have hd :=
-      deficit_two_support_one_or_two_concrete
+      actual_deficit_two_support_one_or_two
         (C d) (by omega : 3 ≤ 3)
         hdelta0 hdeltaHalf ht hdSecond
     rcases ha with ha1 | ha2 <;>
@@ -267,8 +283,8 @@ theorem twoSupportOne_twoSupportTwo_transition_qe_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
+    {lam t delta : ℝ}
+    (hcap : AngleCap p lam) {n : ℕ}
     (hn3 : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -300,25 +316,25 @@ theorem twoSupportOne_twoSupportTwo_transition_qe_eq_one
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        a Ca (by rw [haSecond]; omega))
+        a Ca (by rw [haSecond]))
   let certB :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        b Cb (by rw [hbSecond]; omega))
+        b Cb (by rw [hbSecond]))
   let certC :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        c Cc (by rw [hcSecond]; omega))
+        c Cc (by rw [hcSecond]))
   let certD :=
     Classical.choice
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        d Cd (by rw [hdSecond]; omega))
+        d Cd (by rw [hdSecond]))
   have hqa :
       certA.qe = n - 1 :=
     deficit_two_support_one_transition_qe_eq
