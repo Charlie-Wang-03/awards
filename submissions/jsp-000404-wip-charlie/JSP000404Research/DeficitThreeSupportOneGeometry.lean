@@ -33,8 +33,8 @@ theorem deficit_three_support_one_all_angles_le
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -48,35 +48,37 @@ theorem deficit_three_support_one_all_angles_le
       j ≠ a → k ≠ a → j ≠ k →
       EuclideanGeometry.angle (p j) (p a) (p k) ≤
         (2 + delta) * lam := by
-  let cert :=
-    Classical.choice
-      (exists_oneSupportIntervalCertificate
-        hp hcap (by omega : 1 ≤ n)
-        hdelta0 ht hlam a Ca hsupA)
-  have hqe : cert.qe = n - 2 := by
-    rw [cert.qe_eq, hA]
+  obtain ⟨qe, ge, low, width, sigma, hqe0, hqeExp,
+      hqeLe, hgePos, hwidthEq, hwidthNonneg, hwidthLtPi, hrepr⟩ :=
+    concrete_one_support_interval_certificate
+      hp hcap (by omega : 1 ≤ n) hdelta0 ht hlam a Ca hsupA
+  have hqe : qe = n - 2 := by
+    rw [hqeExp, hA]
     omega
   have htpos :
       0 < t :=
     sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
   have hge :
-      ((n - 2 : ℕ) : ℝ) / t ≤ cert.ge := by
+      ((n - 2 : ℕ) : ℝ) / t ≤ ge := by
     rw [div_le_iff₀ htpos]
     rw [← hqe]
-    exact cert.qe_le
+    exact hqeLe
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    simpa only [Nat.cast_ofNat] using
+      (Nat.cast_sub (by omega : 2 ≤ n) :
+        ((n - 2 : ℕ) : ℝ) = (n : ℝ) - ((2 : ℕ) : ℝ))
   have hwidth :
-      cert.width ≤ (2 + delta) * lam := by
-    rw [cert.width_eq, hlam, hncast] at *
+      width ≤ (2 + delta) * lam := by
+    rw [hwidthEq, hlam]
+    rw [hncast] at hge
     have hpi := Real.pi_pos
     have htEq : (n : ℝ) - 2 = t - (2 + delta) := by
       rw [ht]
       ring
     rw [htEq] at hge
     have hbound :
-        1 - cert.ge ≤ (2 + delta) / t := by
+        1 - ge ≤ (2 + delta) / t := by
       rw [div_eq_mul_inv] at hge ⊢
       have htinv : 0 < 1 / t := one_div_pos.mpr htpos
       have hone :
@@ -92,15 +94,15 @@ theorem deficit_three_support_one_all_angles_le
   intro j k hja hka hjk
   exact
     (angle_le_width_of_common_signed_interval
-      cert.width_nonneg cert.width_lt_pi
-      hja hka cert.repr).trans hwidth
+      hwidthNonneg hwidthLtPi
+      hja hka hrepr).trans hwidth
 
 theorem sharp_and_deficit_three_support_one_force_large_outer_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -123,11 +125,11 @@ theorem sharp_and_deficit_three_support_one_force_large_outer_angle
         (2 + delta) * lam :=
     deficit_three_support_one_all_angles_le
       hp hcap hn hdelta0 ht hlam
-      Ca hA hsupA s b hsa hab hsb
+      Ca hA hsupA s b hsa hab.symm hsb
   have hsum :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := p a) (p₂ := p s) (p b)
-      (hp.ne hsa.symm)
+      (hp.ne hsa)
   have hcomm :
       EuclideanGeometry.angle (p b) (p a) (p s) =
         EuclideanGeometry.angle (p s) (p a) (p b) :=
@@ -141,8 +143,11 @@ theorem sharp_and_deficit_three_support_one_force_large_outer_angle
     field_simp [ne_of_gt htpos]
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
-  rw [hpi, ht, hncast] at hsum ⊢
+    simpa only [Nat.cast_ofNat] using
+      (Nat.cast_sub (by omega : 2 ≤ n) :
+        ((n - 2 : ℕ) : ℝ) = (n : ℝ) - ((2 : ℕ) : ℝ))
+  rw [hpi, ht] at hsum
+  rw [hncast]
   nlinarith
 
 theorem one_add_delta_lam_lt_large_outer
@@ -154,7 +159,9 @@ theorem one_add_delta_lam_lt_large_outer
       (((n - 2 : ℕ) : ℝ) - delta) * lam := by
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    simpa only [Nat.cast_ofNat] using
+      (Nat.cast_sub (by omega : 2 ≤ n) :
+        ((n - 2 : ℕ) : ℝ) = (n : ℝ) - ((2 : ℕ) : ℝ))
   rw [hncast]
   have hnR : (4 : ℝ) ≤ n := by exact_mod_cast hn
   nlinarith
