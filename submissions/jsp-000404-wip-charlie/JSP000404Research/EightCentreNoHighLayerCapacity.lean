@@ -74,7 +74,41 @@ theorem planar_eight_centre_no_high_layers_capacity
     (fun i : V => centreExponent (C i) t) n 3
     (by omega) (by norm_num at *; omega) hmax
 
+/-- Necessary high-exponent obstruction for an overweight configuration
+with at most eight original centres. This is a genuine geometric
+contrapositive of the kernel-certified eight-centre capacity slice. -/
+theorem planar_eight_centre_overweight_has_high_layer
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard : Fintype.card V ≤ 8)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hover : 2 ^ n < ∑ i : V, 2 ^ centreExponent (C i) t) :
+    ∃ i : V, centreExponent (C i) t = n - 1 ∨
+      centreExponent (C i) t = n - 2 := by
+  classical
+  by_contra h
+  have hnoTop : ∀ i : V, centreExponent (C i) t ≠ n - 1 := by
+    intro i heq
+    exact h ⟨i, Or.inl heq⟩
+  have hnoNext : ∀ i : V, centreExponent (C i) t ≠ n - 2 := by
+    intro i heq
+    exact h ⟨i, Or.inr heq⟩
+  have hcapBound :=
+    planar_eight_centre_no_high_layers_capacity
+      hp hcap hcard hn hdelta0 hdeltaHalf ht hlam
+      C hnoTop hnoNext
+  omega
+
 #print axioms dyadic_capacity_of_uniform_exponent_drop
 #print axioms planar_eight_centre_no_high_layers_capacity
+#print axioms planar_eight_centre_overweight_has_high_layer
 
 end JSP000404Research
