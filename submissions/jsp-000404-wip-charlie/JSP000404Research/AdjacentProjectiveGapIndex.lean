@@ -24,8 +24,9 @@ theorem successiveDiffsFrom_getElem_eq_adjacent_diff
     (a : ℝ) (xs : List ℝ)
     (m : ℕ)
     (hm : m < xs.length) :
-    (successiveDiffsFrom a xs)[m] =
-      (a :: xs)[m + 1] - (a :: xs)[m] := by
+    (successiveDiffsFrom a xs)[m]'(by simpa [successiveDiffsFrom_length] using hm) =
+      (a :: xs)[m + 1]'(by simp; omega) -
+      (a :: xs)[m]'(by simp; omega) := by
   induction xs generalizing a m with
   | nil =>
       simp at hm
@@ -49,12 +50,12 @@ theorem adjacent_diff_mem_projectiveGaps
       projectiveGaps (a :: xs) := by
   have hmTail : m < xs.length := by
     simpa using hm
+  have hbound : m < (successiveDiffsFrom a xs).length := by
+    simpa [successiveDiffsFrom_length] using hmTail
   have hmem :
-      (successiveDiffsFrom a xs)[m] ∈
-        successiveDiffsFrom a xs :=
-    List.getElem_mem
-      (successiveDiffsFrom a xs) m
-      (by simpa [successiveDiffsFrom_length] using hmTail)
+      (successiveDiffsFrom a xs)[m]'hbound ∈
+        successiveDiffsFrom a xs := by
+    exact List.getElem_mem hbound
   have heq :=
     successiveDiffsFrom_getElem_eq_adjacent_diff
       a xs m hmTail
@@ -113,11 +114,10 @@ theorem centre_adjacent_angle_quotient_mem
     | nil =>
         exact False.elim (C.angles_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
-  rw [CentreProjectiveCycle.gaps, hangles]
+        exact ⟨a, xs, rfl⟩
   have hm' : m + 1 < (a :: xs).length := by
-    simpa [hangles] using hm
-  simpa [hangles] using
+    simpa only [hangles] using hm
+  simpa [CentreProjectiveCycle.gaps, hangles] using
     adjacent_quotient_mem_quotientList
       t a xs m hm'
 
