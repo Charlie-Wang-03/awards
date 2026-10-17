@@ -59,8 +59,9 @@ theorem unitGainDeletionBonus_selected_column_bound
         (Finset.mem_univ s)
     rw [unitGainDeletionBonus_self_zero] at h
     simpa [add_zero] using h.symm
-  rw [hbonusErase, ← Finset.sum_add_distrib]
+  rw [hbonusErase]
   unfold oldDeletionWeight deletionPostWeight
+  rw [← Finset.sum_add_distrib]
   apply Finset.sum_le_sum
   intro i hi
   have his : i ≠ s :=
@@ -177,6 +178,7 @@ theorem no_two_secondDeletion_min_unit_gains
     (hk : exponent k = a) :
     ¬ (exponent j + 1 ≤ after s j ∧
        exponent k + 1 ≤ after s k) := by
+  classical
   rintro ⟨hgainJ, hgainK⟩
   have hbonusJ :
       unitGainDeletionBonus exponent after j s = 2 ^ a := by
