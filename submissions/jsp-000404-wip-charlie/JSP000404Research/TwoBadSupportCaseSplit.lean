@@ -20,9 +20,9 @@ remaining five unordered support types:
 namespace JSP000404Research
 
 theorem deficit_three_support_mem_one_two_three
-    {V : Type*} {p : V → Plane}
+    {V : Type*} [LinearOrder V] {p : V → Plane}
     (hp : Function.Injective p)
-    {t delta : ℝ} {n : ℕ}
+    {t delta : ℝ} {n : ℕ} {i : V}
     (C : CentreProjectiveCycle hp i)
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -42,8 +42,8 @@ theorem two_bad_minima_support_five_cases
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
