@@ -21,7 +21,7 @@ namespace JSP000404Research
 
 open Real
 
-def anglePathLength
+noncomputable def anglePathLength
     {V : Type*} (p : V → Plane) (i : V) :
     List V → ℝ
   | [] => 0
@@ -43,75 +43,93 @@ theorem anglePathLength_nonneg
     (xs : List V) :
     0 ≤ anglePathLength p i xs := by
   induction xs with
-  | nil =>
-      simp
+  | nil => simp
   | cons a xs ih =>
       cases xs with
-      | nil =>
-          simp [anglePathLength]
+      | nil => simp [anglePathLength]
       | cons b bs =>
-          simp only [anglePathLength]
-          have hangle :
-              0 ≤ EuclideanGeometry.angle (p a) (p i) (p b) :=
-            EuclideanGeometry.angle_nonneg _ _ _
-          have htail := anglePathLength_nonneg p i (b :: bs)
-          linarith
+          change 0 ≤
+            EuclideanGeometry.angle (p a) (p i) (p b) +
+              anglePathLength p i (b :: bs)
+          exact add_nonneg
+            (EuclideanGeometry.angle_nonneg _ _ _) ih
 
-/-- From the head of a path to any member, the angle is bounded by the full
-path length. -/
+/-- Angular head-to-member control is only valid for paths that never
+contain the centre as a vertex; otherwise angle(a,i,a) need not be zero. -/
 theorem angle_head_le_anglePathLength
     {V : Type*} (p : V → Plane) (i : V)
     (a : V) (xs : List V)
+    (hnoncentre : ∀ z ∈ a :: xs, p z ≠ p i)
     {y : V} (hy : y ∈ a :: xs) :
     EuclideanGeometry.angle (p a) (p i) (p y) ≤
       anglePathLength p i (a :: xs) := by
   induction xs generalizing a with
   | nil =>
-      simp at hy
+      have hya : y = a := by simpa using hy
       subst y
-      simp [anglePathLength]
+      have ha : p a ≠ p i := hnoncentre a (by simp)
+      simpa [anglePathLength, EuclideanGeometry.angle_self_of_ne ha]
   | cons b bs ih =>
-      simp only [List.mem_cons] at hy
-      rcases hy with hya | hyTail
+      have ha : p a ≠ p i := hnoncentre a (by simp)
+      have hnonTail : ∀ z ∈ b :: bs, p z ≠ p i := by
+        intro z hz
+        exact hnoncentre z (by simp [hz])
+      rcases List.mem_cons.mp hy with hya | hyTail
       · subst y
-        simp [anglePathLength]
-        exact anglePathLength_nonneg p i (b :: bs)
+        have hzero :
+            EuclideanGeometry.angle (p a) (p i) (p a) = 0 :=
+          EuclideanGeometry.angle_self_of_ne ha
+        rw [hzero]
+        change 0 ≤
+          EuclideanGeometry.angle (p a) (p i) (p b) +
+            anglePathLength p i (b :: bs)
+        exact add_nonneg
+          (EuclideanGeometry.angle_nonneg _ _ _)
+          (anglePathLength_nonneg p i (b :: bs))
       · have htri :=
           EuclideanGeometry.angle_le_angle_add_angle
             (p i) (p a) (p b) (p y)
         have htail :=
-          ih b hyTail
-        simp only [anglePathLength]
+          ih b hnonTail (List.mem_cons.mpr hyTail)
+        change
+          EuclideanGeometry.angle (p a) (p i) (p y) ≤
+            EuclideanGeometry.angle (p a) (p i) (p b) +
+              anglePathLength p i (b :: bs)
         linarith
 
-/-- Any two vertices occurring in one path have mutual angle bounded by the
-full path length. -/
+/-- Any pair in a path avoiding its centre has angular distance bounded
+by the total consecutive actual-angle path length. -/
 theorem angle_mem_mem_le_anglePathLength
     {V : Type*} (p : V → Plane) (i : V)
     (xs : List V)
+    (hnoncentre : ∀ z ∈ xs, p z ≠ p i)
     {x y : V}
     (hx : x ∈ xs) (hy : y ∈ xs) :
     EuclideanGeometry.angle (p x) (p i) (p y) ≤
       anglePathLength p i xs := by
   induction xs with
-  | nil =>
-      simp at hx
+  | nil => simp at hx
   | cons a xs ih =>
-      simp only [List.mem_cons] at hx hy
-      rcases hx with rfl | hxTail
-      · exact angle_head_le_anglePathLength
-          p i a xs (by simp [hy])
-      · rcases hy with rfl | hyTail
-        · rw [EuclideanGeometry.angle_comm]
-          exact angle_head_le_anglePathLength
-            p i a xs (by simp [hxTail])
-        · have htail :=
-            ih hxTail hyTail
+      have hnonTail : ∀ z ∈ xs, p z ≠ p i := by
+        intro z hz
+        exact hnoncentre z (by simp [hz])
+      rcases List.mem_cons.mp hx with hxa | hxTail
+      · subst x
+        exact angle_head_le_anglePathLength p i a xs
+          hnoncentre hy
+      · rcases List.mem_cons.mp hy with hya | hyTail
+        · subst y
+          rw [EuclideanGeometry.angle_comm]
+          exact angle_head_le_anglePathLength p i a xs
+            hnoncentre (List.mem_cons.mpr (Or.inr hxTail))
+        · have htail := ih hnonTail hxTail hyTail
           cases xs with
-          | nil =>
-              simp at hxTail
+          | nil => simp at hxTail
           | cons b bs =>
-              simp only [anglePathLength]
+              change
+                EuclideanGeometry.angle (p x) (p i) (p y) ≤
+                  EuclideanGeometry.angle (p a) (p i) (p b) +
+                    anglePathLength p i (b :: bs)
               have hfirst :
                   0 ≤ EuclideanGeometry.angle (p a) (p i) (p b) :=
                 EuclideanGeometry.angle_nonneg _ _ _
@@ -124,6 +142,7 @@ theorem angle_le_of_complete_path
     {s i : V} (xs : List V)
     (hcomplete :
       ∀ j, j ≠ i → j ≠ s → j ∈ xs)
+    (hnoncentre : ∀ z ∈ xs, p z ≠ p i)
     {W : ℝ}
     (hW : anglePathLength p i xs ≤ W) :
     ∀ j k,
@@ -135,7 +154,7 @@ theorem angle_le_of_complete_path
   have hj := hcomplete j hji hjs
   have hk := hcomplete k hki hks
   exact (angle_mem_mem_le_anglePathLength
-    p i xs hj hk).trans hW
+    p i xs hnoncentre hj hk).trans hW
 
 
 /-- For an OtherVertex path, anglePathLength is exactly the sum of the
@@ -151,12 +170,15 @@ theorem anglePathLength_map_val_eq_consecutiveRayAngles_sum
   | nil =>
       simp [anglePathLength, consecutiveRayAngles]
   | cons r rs ih =>
-      simp [anglePathLength, consecutiveRayAngles, ih]
+      simp only [List.map_cons, anglePathLength,
+        consecutiveRayAngles, List.sum_cons]
+      rw [ih r]
 
 /-- Any two underlying vertices in an OtherVertex path have angle bounded by
 the sum of its consecutiveRayAngles. -/
 theorem angle_mem_otherVertex_path_le_consecutive_sum
     {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
     (i : V)
     (first : OtherVertex i)
     (rest : List (OtherVertex i))
@@ -167,8 +189,13 @@ theorem angle_mem_otherVertex_path_le_consecutive_sum
       (consecutiveRayAngles (p := p) i first rest).sum := by
   rw [← anglePathLength_map_val_eq_consecutiveRayAngles_sum
       (p := p) i first rest]
+  have hnoncentre :
+      ∀ z ∈ (first :: rest).map Subtype.val, p z ≠ p i := by
+    intro z hz
+    obtain ⟨w, hw, rfl⟩ := List.mem_map.mp hz
+    exact hp.ne w.2
   exact angle_mem_mem_le_anglePathLength
-    p i ((first :: rest).map Subtype.val) hx hy
+    p i ((first :: rest).map Subtype.val) hnoncentre hx hy
 
 #print axioms angle_head_le_anglePathLength
 #print axioms anglePathLength_map_val_eq_consecutiveRayAngles_sum
