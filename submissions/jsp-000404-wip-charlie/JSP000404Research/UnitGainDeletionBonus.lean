@@ -33,12 +33,13 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-def unitGainDeletionBonus
+noncomputable def unitGainDeletionBonus
     {V : Type*}
     (exponent : V → ℕ)
     (after : V → V → ℕ)
-    (i r : V) : ℕ :=
-  if i ≠ r ∧ exponent i + 1 ≤ after r i then
+    (i r : V) : ℕ := by
+  classical
+  exact if i ≠ r ∧ exponent i + 1 ≤ after r i then
     2 ^ exponent i
   else
     0
@@ -49,6 +50,7 @@ theorem unitGainDeletionBonus_self_zero
     (after : V → V → ℕ)
     (r : V) :
     unitGainDeletionBonus exponent after r r = 0 := by
+  classical
   simp [unitGainDeletionBonus]
 
 theorem unitGainDeletionBonus_eq_weight_of_gain
@@ -60,6 +62,7 @@ theorem unitGainDeletionBonus_eq_weight_of_gain
     (hgain : exponent i + 1 ≤ after r i) :
     unitGainDeletionBonus exponent after i r =
       2 ^ exponent i := by
+  classical
   simp [unitGainDeletionBonus, hir, hgain]
 
 theorem unitGainDeletionBonus_eq_zero_of_no_gain
@@ -69,6 +72,7 @@ theorem unitGainDeletionBonus_eq_zero_of_no_gain
     {i r : V}
     (hno : ¬ (i ≠ r ∧ exponent i + 1 ≤ after r i)) :
     unitGainDeletionBonus exponent after i r = 0 := by
+  classical
   simp [unitGainDeletionBonus, hno]
 
 /-- Survivor monotonicity makes the canonical one-unit bonus pointwise valid. -/
@@ -87,13 +91,13 @@ theorem old_add_unitGainBonus_le_after_weight
   by_cases hgain : exponent i + 1 ≤ after r i
   · rw [unitGainDeletionBonus_eq_weight_of_gain
       exponent after hir hgain]
-    exact two_mul_pow_le_pow_of_succ_le hgain
+    simpa only [two_mul] using
+      (two_mul_pow_le_pow_of_succ_le hgain)
   · have hbonus :
         unitGainDeletionBonus exponent after i r = 0 := by
       apply unitGainDeletionBonus_eq_zero_of_no_gain
-      push_neg
-      intro _
-      exact hgain
+      intro h
+      exact hgain h.2
     rw [hbonus, add_zero]
     exact Nat.pow_le_pow_right
       (by norm_num : 0 < 2)
@@ -102,7 +106,7 @@ theorem old_add_unitGainBonus_le_after_weight
 /-- Column form: old survivor mass plus all canonical gain bonuses is bounded
 by the actual post-deletion survivor mass. -/
 theorem unitGainDeletionBonus_column_bound
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (hmono :
@@ -164,7 +168,7 @@ mass, then any maximal-exponent centre has zero full-unit gain under deletion
 of every other centre.
 -/
 theorem maximal_exponent_no_unit_gain_of_no_compensated
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (hmono :
@@ -180,21 +184,18 @@ theorem maximal_exponent_no_unit_gain_of_no_compensated
   have hstable :
       BonusStable exponent
         (unitGainDeletionBonus exponent after) i := by
-    apply bonusStable_of_max_exponent_of_no_compensated
+    exact bonusStable_of_max_exponent_of_no_compensated
       exponent (deletionPostWeight after)
       (unitGainDeletionBonus exponent after)
-  · intro r
-    exact unitGainDeletionBonus_column_bound
-      exponent after hmono r
-  · exact hnocomp
-  · exact hmax
+      (unitGainDeletionBonus_column_bound exponent after hmono)
+      hnocomp i hmax
   exact no_unit_gain_of_unitGainBonusStable
     exponent after hstable
 
 /-- Contrapositive: one full gain at a maximal centre forces some compensated
 deletion. -/
 theorem exists_compensated_deletion_of_maximal_unit_gain
-    {V : Type*} [Fintype V] [Nonempty V]
+    {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
     (hmono :
@@ -207,16 +208,15 @@ theorem exists_compensated_deletion_of_maximal_unit_gain
       (∑ j : V, 2 ^ exponent j) ≤
         deletionPostWeight after r := by
   obtain ⟨r, hir, hgainIR⟩ := hgain
-  apply exists_compensated_deletion_of_max_exponent_self_bonus
+  exact exists_compensated_deletion_of_max_exponent_self_bonus
     exponent
     (deletionPostWeight after)
     (unitGainDeletionBonus exponent after)
-    (unitGainDeletionBonus_column_bound
-      exponent after hmono)
+    (unitGainDeletionBonus_column_bound exponent after hmono)
     i hmax
-  exact ⟨r, by
-    rw [unitGainDeletionBonus_eq_weight_of_gain
-      exponent after hir hgainIR]⟩
+    ⟨r, by
+      rw [unitGainDeletionBonus_eq_weight_of_gain
+        exponent after hir hgainIR]⟩
 
 #print axioms unitGainDeletionBonus_column_bound
 #print axioms no_unit_gain_of_unitGainBonusStable
