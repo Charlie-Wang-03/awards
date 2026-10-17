@@ -215,8 +215,8 @@ theorem mem_nonloopOrderedPairs_iff
   constructor
   · intro h hEq
     apply h
-    exact ⟨e.1, Finset.mem_univ _, Prod.ext rfl hEq⟩
-  · rintro h ⟨v, _hv, hpair⟩
+    exact ⟨e.1, Prod.ext rfl hEq⟩
+  · rintro h ⟨v, hpair⟩
     apply h
     exact (congrArg Prod.fst hpair).symm.trans
       (congrArg Prod.snd hpair)
