@@ -39,12 +39,13 @@ def exponentLayer
 
 /-- Vertices in the minimum layer, different from the second deleted vertex,
 which acquire a full unit gain in that deletion column. -/
-def secondGainMinima
+noncomputable def secondGainMinima
     {V : Type*} [Fintype V]
     (exponent : V → ℕ)
     (after : V → V → ℕ)
-    (a : ℕ) (s : V) : Finset V :=
-  Finset.univ.filter fun v =>
+    (a : ℕ) (s : V) : Finset V := by
+  classical
+  exact Finset.univ.filter fun v =>
     v ≠ s ∧ exponent v = a ∧ exponent v + 1 ≤ after s v
 
 @[simp] theorem mem_secondGainMinima
@@ -114,7 +115,7 @@ theorem exists_two_minimum_survivors_without_second_gain
   let M := exponentLayer exponent a
   let G := secondGainMinima exponent after a s
   let T := M.erase s
-  let Z := T  G
+  let Z := T.sdiff G
   have hsM : s ∈ M := by
     simpa [M] using hs
   have hTcard :
