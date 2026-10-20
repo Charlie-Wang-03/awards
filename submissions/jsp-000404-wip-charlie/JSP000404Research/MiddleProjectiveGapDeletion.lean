@@ -47,9 +47,7 @@ theorem getLastD_append_general
   | nil =>
       simp [List.getLastD_nil]
   | cons x xs ih =>
-      change (xs ++ ys).getLastD x =
-        ys.getLastD (xs.getLastD x)
-      exact ih x
+      simpa only [List.cons_append, List.getLastD_cons] using ih x
 
 theorem successiveDiffsFrom_append_general
     (a : ℝ) (xs ys : List ℝ) :
@@ -60,8 +58,8 @@ theorem successiveDiffsFrom_append_general
   | nil =>
       simp [successiveDiffsFrom, List.getLastD_nil]
   | cons x xs ih =>
-      simp only [List.cons_append, successiveDiffsFrom, ih]
-      rfl
+      simp only [List.cons_append, successiveDiffsFrom, ih,
+        List.getLastD_cons]
 
 theorem projectiveGaps_interior_parent_decompose
     (a : ℝ) (pre : List ℝ) (x y : ℝ) (tail : List ℝ) :
@@ -137,7 +135,7 @@ theorem normalizedProjectiveGaps_interior_child
   rw [normalizedProjectiveGaps,
       projectiveGaps_interior_child_decompose]
   simp [normalizedPrefixGaps, normalizedSuffixGaps,
-    List.map_append] <;> exact hlocal
+    List.map_append] <;> simpa using hlocal
 
 /-- Quotient-list deletion formula for an interior angle. -/
 theorem quotientList_delete_interior
