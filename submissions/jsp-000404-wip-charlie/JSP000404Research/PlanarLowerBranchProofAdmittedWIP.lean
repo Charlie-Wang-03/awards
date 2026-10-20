@@ -219,8 +219,9 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       · rcases htwoFourNoTop with ⟨hnTwo, hcardFour, hnoTop⟩
         have htTwo : t = (2 : ℝ) + delta := by
           simpa [hnTwo] using ht
-        exact planar_lower_branch_n_two_four_no_top_capacity
-          hp hcap hcardFour hdelta0 hdeltaHalf htTwo hlam cycles hnoTop
+        simpa [hnTwo] using
+          (planar_lower_branch_n_two_four_no_top_capacity
+            hp hcap hcardFour hdelta0 hdeltaHalf htTwo hlam cycles hnoTop)
   · by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
