@@ -28,10 +28,10 @@ namespace JSP000404Research
 
 open Real
 
-def scaleProjectiveAngle (t theta : ℝ) : ℝ :=
+noncomputable def scaleProjectiveAngle (t theta : ℝ) : ℝ :=
   t * theta / Real.pi
 
-def scaleProjectiveGap (t g : ℝ) : ℝ :=
+noncomputable def scaleProjectiveGap (t g : ℝ) : ℝ :=
   t * (g / Real.pi)
 
 theorem getLastD_map_scaleProjectiveAngle
@@ -44,7 +44,7 @@ theorem getLastD_map_scaleProjectiveAngle
   | nil =>
       simp
   | cons b bs ih =>
-      simpa [List.getLastD_cons] using ih b
+      simpa only [List.map_cons, List.getLastD_cons] using ih b
 
 theorem successiveDiffsFrom_scaleProjectiveAngle
     (t a : ℝ) (xs : List ℝ) :
