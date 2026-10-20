@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutProjectiveBandBudget.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutProjectiveBandPartition.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutProjectiveBandOccupancy.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ScaledCyclicBandBudget.lean"
       - ".github/workflows/jsp000404-focused-cut-projective-band-budget.yml"
   workflow_dispatch:
