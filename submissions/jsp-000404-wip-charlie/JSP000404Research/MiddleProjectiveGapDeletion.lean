@@ -1,6 +1,7 @@
 import JSP000404Research.CyclicProjectiveGaps
 import JSP000404Research.PinnedCyclicDeletionGain
 import JSP000404Research.FloorMergeCarry
+import JSP000404Research.CentreQuotientData
 import Mathlib.Tactic
 
 /-!
@@ -23,11 +24,11 @@ is its predecessor.
 
 Then the parent physical cyclic gaps decompose as
 
-  prefix ++ [x-prev, y-x] ++ suffix ++ [wrap],
+  prefix ++ [x-prev, y-x] ++ qSuffix ++ [wrap],
 
 while the child list obtained by deleting x has gaps
 
-  prefix ++ [y-prev] ++ suffix ++ [wrap].
+  prefix ++ [y-prev] ++ qSuffix ++ [wrap].
 
 Thus only two adjacent gaps merge.  At the normalized/floor level the usual
 binary floor carry applies.
@@ -46,7 +47,9 @@ theorem getLastD_append_general
   | nil =>
       simp [List.getLastD_nil]
   | cons x xs ih =>
-      simpa [List.getLastD_cons] using ih (a := x)
+      change (xs ++ ys).getLastD x =
+        ys.getLastD (xs.getLastD x)
+      exact ih x
 
 theorem successiveDiffsFrom_append_general
     (a : ℝ) (xs ys : List ℝ) :
@@ -57,7 +60,8 @@ theorem successiveDiffsFrom_append_general
   | nil =>
       simp [successiveDiffsFrom, List.getLastD_nil]
   | cons x xs ih =>
-      simp [successiveDiffsFrom, ih]
+      simp only [List.cons_append, successiveDiffsFrom, ih]
+      rfl
 
 theorem projectiveGaps_interior_parent_decompose
     (a : ℝ) (pre : List ℝ) (x y : ℝ) (tail : List ℝ) :
@@ -133,7 +137,7 @@ theorem normalizedProjectiveGaps_interior_child
   rw [normalizedProjectiveGaps,
       projectiveGaps_interior_child_decompose]
   simp [normalizedPrefixGaps, normalizedSuffixGaps,
-    List.map_append, hlocal]
+    List.map_append] <;> exact hlocal
 
 /-- Quotient-list deletion formula for an interior angle. -/
 theorem quotientList_delete_interior
@@ -211,9 +215,9 @@ theorem listExponent_gain_delete_interior
   obtain ⟨carry, _hcarry, hparent, hchild⟩ :=
     quotientList_delete_interior
       ht hgLeft hgRight
-  let prefix :=
+  let qPrefix :=
     quotientList t (normalizedPrefixGaps a pre)
-  let suffix :=
+  let qSuffix :=
     quotientList t (normalizedSuffixGaps y tail) ++
       [Nat.floor
         (t * ((a + Real.pi - tail.getLastD y) / Real.pi))]
@@ -228,16 +232,16 @@ theorem listExponent_gain_delete_interior
           (normalizedProjectiveGaps
             (a :: (pre ++ x :: y :: tail)))
         =
-      prefix ++ [qLeft, qRight] ++ suffix := by
-    simpa [prefix, suffix, qLeft, qRight,
+      qPrefix ++ [qLeft, qRight] ++ qSuffix := by
+    simpa [qPrefix, qSuffix, qLeft, qRight,
       List.append_assoc] using hparent
   have hc :
       quotientList t
           (normalizedProjectiveGaps
             (a :: (pre ++ y :: tail)))
         =
-      prefix ++ [qLeft + qRight + carry] ++ suffix := by
-    simpa [prefix, suffix, qLeft, qRight,
+      qPrefix ++ [qLeft + qRight + carry] ++ qSuffix := by
+    simpa [qPrefix, qSuffix, qLeft, qRight,
       List.append_assoc] using hchild
   rw [hp, hc]
   repeat rw [listExponent_append]
