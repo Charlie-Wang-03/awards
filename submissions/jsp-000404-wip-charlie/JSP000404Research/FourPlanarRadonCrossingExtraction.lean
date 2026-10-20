@@ -44,7 +44,7 @@ theorem four_planar_hull_exclusions_force_crossing
           rcases hRadon with ⟨x, hxI, hxNotI⟩
           have he : x ∈ (convexHull ℝ (∅ : Set Plane)) := by
             simpa [hIset, hComp] using hxNotI
-          simpa using he
+          simp at he
         ·
           have hIset : I = ({0,1,2} : Set (Fin 4)) := by
             ext v
@@ -274,7 +274,7 @@ theorem four_planar_hull_exclusions_force_crossing
           rcases hRadon with ⟨x, hxI, hxNotI⟩
           have he : x ∈ (convexHull ℝ (∅ : Set Plane)) := by
             simpa [hIset, hComp] using hxI
-          simpa using he
+          simp at he
 
 #print axioms four_planar_hull_exclusions_force_crossing
 
