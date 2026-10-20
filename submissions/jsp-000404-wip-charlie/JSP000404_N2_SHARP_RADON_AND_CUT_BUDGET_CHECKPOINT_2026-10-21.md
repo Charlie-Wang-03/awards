@@ -67,10 +67,16 @@ The paper-source validation gate is separately still open.
   failed at a **deterministic heartbeat limit in its historical quadrilateral
   angle-sum dependency**, not a fabricated theorem; the dependency's budget
   was raised and a newer focused run was triggered. Treat as pending until PASS.
-- `FourPlanarRadonDependence.lean` aims to certify the finite-dimensional
-  `Convex.radon_partition` input. Its target CI is
-  [#39462935746](https://github.com/Charlie-Wang-03/awards/actions/runs/39462935746).
-  Do not claim it has passed until verified.
+- `FourPlanarRadonDependence.lean` NOW CERTIFIED: four planar points
+  are not affinely independent and have a genuine Radon convex-hull
+  partition. [CI #39462935746](https://github.com/Charlie-Wang-03/awards/actions/runs/39462935746)
+  **PASS**, 3204 jobs, axioms `[propext, Classical.choice, Quot.sound]`.
+- `FourPlanarRadonCrossingExtraction.lean` is the next step: enumerate the
+  sixteen possible Fin4 membership patterns in a Radon partition,
+  reject empty and singleton sides using the genuine convex-hull
+  exclusions, and yield one of the three true pairwise crossing
+  perfect matchings. Dedicated CI launched and not yet certified.
+
 
 ### Exact geometric bridge needed for an unconditional n=2 / four-centre result
 
