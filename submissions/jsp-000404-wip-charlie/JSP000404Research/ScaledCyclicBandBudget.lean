@@ -55,6 +55,17 @@ theorem floorBandList_cons
       Nat.floor a :: floorBandList xs := by
   rfl
 
+/-- Mapping real coordinates through natural floor commutes with the
+last-element operation, including the empty-list fallback. -/
+theorem floorBandList_getLastD
+    (a : ℝ) (xs : List ℝ) :
+    (floorBandList xs).getLastD (Nat.floor a) =
+      Nat.floor (xs.getLastD a) := by
+  induction xs generalizing a with
+  | nil => rfl
+  | cons b bs ih =>
+      simpa only [floorBandList, List.map_cons, List.getLastD_cons] using ih b
+
 /-- Ordinary consecutive-gap exponent is bounded by ordinary empty bands. -/
 theorem listExponent_floor_successiveDiffs_le_linearBandMissing
     (a : ℝ) (xs : List ℝ)
@@ -112,7 +123,7 @@ theorem floorBandList_pairwise
             ∃ x ∈ b :: bs, Nat.floor x = m := by
           change m ∈ (b :: bs).map Nat.floor at hm
           obtain ⟨x, hx, hxm⟩ := List.mem_map.mp hm
-          exact ⟨x, hx, hxm.symm⟩
+          exact ⟨x, hx, hxm⟩
         obtain ⟨x, hx, rfl⟩ := hmReal
         have hax : a ≤ x :=
           hpair.1 x hx
@@ -186,11 +197,8 @@ theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
         Nat.floor a)
   have hgetLast :
       (floorBandList xs).getLastD (Nat.floor a) =
-        Nat.floor (xs.getLastD a) := by
-    induction xs generalizing a with
-    | nil => simp [floorBandList]
-    | cons b bs ih =>
-        simp [floorBandList]
+        Nat.floor (xs.getLastD a) :=
+    floorBandList_getLastD a xs
   rw [hgetLast]
   have hwrap' :
       excess (Nat.floor (a + t - xs.getLastD a))
@@ -206,6 +214,7 @@ theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
   exact Nat.add_le_add hlin hwrap'
 
 #print axioms listExponent_floor_successiveDiffs_le_linearBandMissing
+#print axioms floorBandList_getLastD
 #print axioms floorBandList_pairwise
 #print axioms listExponent_floor_cyclicGaps_le_cyclicBandMissing
 
