@@ -74,7 +74,7 @@ theorem normalizedProjectiveGaps_last_child
     ring
   rw [normalizedProjectiveGaps,
       projectiveGaps_last_child_decompose]
-  simp [normalizedPrefixGaps, List.map_append, hlocal]
+  simp [normalizedPrefixGaps, List.map_append] <;> simpa using hlocal
 
 theorem quotientList_delete_last
     {t a x : ℝ} {pre : List ℝ}
@@ -137,7 +137,7 @@ theorem listExponent_gain_delete_last
   obtain ⟨carry, _hcarry, hparent, hchild⟩ :=
     quotientList_delete_last
       ht hgLeft hgWrap
-  let prefix :=
+  let qPrefix :=
     quotientList t (normalizedPrefixGaps a pre)
   let qLeft :=
     Nat.floor
@@ -150,14 +150,14 @@ theorem listExponent_gain_delete_last
           (normalizedProjectiveGaps
             (a :: (pre ++ [x])))
         =
-      prefix ++ [qLeft, qWrap] := by
-    simpa [prefix, qLeft, qWrap] using hparent
+      qPrefix ++ [qLeft, qWrap] := by
+    simpa [qPrefix, qLeft, qWrap] using hparent
   have hc :
       quotientList t
           (normalizedProjectiveGaps (a :: pre))
         =
-      prefix ++ [qLeft + qWrap + carry] := by
-    simpa [prefix, qLeft, qWrap] using hchild
+      qPrefix ++ [qLeft + qWrap + carry] := by
+    simpa [qPrefix, qLeft, qWrap] using hchild
   rw [hp, hc, listExponent_append,
       listExponent_append]
   simp only [listExponent, List.map_cons, List.map_nil,
