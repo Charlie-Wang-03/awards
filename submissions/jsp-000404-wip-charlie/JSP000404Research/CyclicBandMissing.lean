@@ -1,7 +1,7 @@
 
 import JSP000404Research.PinnedCyclicDeletionGain
 import Mathlib.Data.List.Pairwise
-import Mathlib.Data.List.ToFinset
+import Mathlib
 import Mathlib.Tactic
 
 /-!

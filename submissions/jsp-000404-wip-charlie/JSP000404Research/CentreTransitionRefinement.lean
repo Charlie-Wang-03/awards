@@ -1,6 +1,6 @@
 import JSP000404Research.CentreRayIndex
 import JSP000404Research.CanonicalSignGap
-import Mathlib.Data.Finset.Min
+import Mathlib
 import Mathlib.Tactic
 
 /-!

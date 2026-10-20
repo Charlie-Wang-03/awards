@@ -1,5 +1,5 @@
 import JSP000404Research.CutCentreRayCycle
-import Mathlib.Data.Finset.Min
+import Mathlib
 import Mathlib.Tactic
 
 /-!
