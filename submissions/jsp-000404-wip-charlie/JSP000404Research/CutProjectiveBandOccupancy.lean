@@ -64,7 +64,7 @@ theorem cutProjectiveBandColor_eq_of_ray_mem
       Nat.floor (cutNormalizedRayTheta hp t c i j) < b.val + 1 := by
     apply (Nat.floor_lt hx0).2
     simpa using hj.2
-  omega
+  exact Nat.le_antisymm (Nat.lt_succ_iff.mp hfloorHi) hfloorLo
 
 theorem cutProjectiveBandColor_eq_of_upper_ray_mem
     {V : Type*} {p : V → Plane}
@@ -122,7 +122,7 @@ theorem cutProjectiveBandPartition_active_eq_occupied
           hp ht hc0 hcpi n htop (ne_of_lt hai)
       have hcol' :
           cutProjectiveBandColor hp ht hc0 hcpi n htop a i = b := by
-        simpa [P] using hcol
+        simpa [P, cutProjectiveBandPartition] using hcol
       simpa [a', hcol'] using hmem
     · let w' : OtherVertex i := ⟨w, ne_of_gt hiw⟩
       refine ⟨w', ?_⟩
@@ -131,7 +131,7 @@ theorem cutProjectiveBandPartition_active_eq_occupied
           hp ht hc0 hcpi n htop (ne_of_lt hiw)
       have hcol' :
           cutProjectiveBandColor hp ht hc0 hcpi n htop i w = b := by
-        simpa [P] using hcol
+        simpa [P, cutProjectiveBandPartition] using hcol
       simpa [w', hcol'] using hmem
   · intro hb
     obtain ⟨j, hjBand⟩ :=
@@ -146,7 +146,7 @@ theorem cutProjectiveBandPartition_active_eq_occupied
       have :
           (∃ a, a < i ∧ P.edgeColor a i = b) ∨
           (∃ w, i < w ∧ P.edgeColor i w = b) :=
-        Or.inr ⟨j.1, hijlt, by simpa [P] using hcol⟩
+        Or.inr ⟨j.1, hijlt, by simpa [P, cutProjectiveBandPartition] using hcol⟩
       simpa [BinaryEdgePartition.active, P] using this
     · have hcol :
           cutProjectiveBandColor
@@ -157,7 +157,7 @@ theorem cutProjectiveBandPartition_active_eq_occupied
       have :
           (∃ a, a < i ∧ P.edgeColor a i = b) ∨
           (∃ w, i < w ∧ P.edgeColor i w = b) :=
-        Or.inl ⟨j.1, hjilt, by simpa [P] using hcol⟩
+        Or.inl ⟨j.1, hjilt, by simpa [P, cutProjectiveBandPartition] using hcol⟩
       simpa [BinaryEdgePartition.active, P] using this
 
 
@@ -252,7 +252,7 @@ theorem occupiedCutProjectiveBands_eq_centreBandList_toFinset
       hp t c n i b).2
     refine ⟨j, ?_⟩
     rw [← hjeq]
-    unfold RayInCutProjectiveBand
+    unfold RayInCutProjectiveBand cutRayProjectiveBand
     rw [cutProjectiveBandColor_val
       hp ht hc0 hcpi n htop j.2.symm]
     exact ⟨
