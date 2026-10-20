@@ -1,5 +1,6 @@
 import JSP000404Research.CutProjectiveBandPartition
 import JSP000404Research.BinaryEdgePartition
+import JSP000404Research.CentreProjectiveCycle
 import Mathlib.Tactic
 
 /-!
@@ -17,12 +18,13 @@ namespace JSP000404Research
 
 open BinaryEdgePartition
 
-def occupiedCutProjectiveBands
+noncomputable def occupiedCutProjectiveBands
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (t c : ℝ) (n : ℕ) (i : V) :
-    Finset (Fin (n + 1)) :=
-  Finset.univ.filter fun b =>
+    Finset (Fin (n + 1)) := by
+  classical
+  exact Finset.univ.filter fun b =>
     ∃ j : OtherVertex i,
       RayInCutProjectiveBand hp t c i j b
 
@@ -56,7 +58,7 @@ theorem cutProjectiveBandColor_eq_of_ray_mem
   have hfloorLo :
       b.val ≤
         Nat.floor (cutNormalizedRayTheta hp t c i j) := by
-    exact (Nat.le_floor hx0).2 (by
+    exact Nat.le_floor (by
       exact_mod_cast hj.1)
   have hfloorHi :
       Nat.floor (cutNormalizedRayTheta hp t c i j) < b.val + 1 := by
@@ -86,8 +88,8 @@ theorem cutProjectiveBandPartition_active_eq_occupied
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -118,21 +120,19 @@ theorem cutProjectiveBandPartition_active_eq_occupied
       have hmem :=
         cutProjectiveBandColor_mem_upper
           hp ht hc0 hcpi n htop (ne_of_lt hai)
-      change
-        RayInCutProjectiveBand hp t c i a'
-          (cutProjectiveBandColor
-            hp ht hc0 hcpi n htop a i)
-      simpa [P, a', hcol] using hmem
+      have hcol' :
+          cutProjectiveBandColor hp ht hc0 hcpi n htop a i = b := by
+        simpa [P] using hcol
+      simpa [a', hcol'] using hmem
     · let w' : OtherVertex i := ⟨w, ne_of_gt hiw⟩
       refine ⟨w', ?_⟩
       have hmem :=
         cutProjectiveBandColor_mem_lower
           hp ht hc0 hcpi n htop (ne_of_lt hiw)
-      change
-        RayInCutProjectiveBand hp t c i w'
-          (cutProjectiveBandColor
-            hp ht hc0 hcpi n htop i w)
-      simpa [P, w', hcol] using hmem
+      have hcol' :
+          cutProjectiveBandColor hp ht hc0 hcpi n htop i w = b := by
+        simpa [P] using hcol
+      simpa [w', hcol'] using hmem
   · intro hb
     obtain ⟨j, hjBand⟩ :=
       (mem_occupiedCutProjectiveBands hp t c n i b).1 hb
@@ -184,7 +184,7 @@ noncomputable def cutCentreBandList
   C.rays.map
     (cutRayProjectiveBand hp ht hc0 hcpi n htop i)
 
-def cutFloorBandList
+noncomputable def cutFloorBandList
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
@@ -243,8 +243,11 @@ theorem occupiedCutProjectiveBands_eq_centreBandList_toFinset
     have hbList :
         b ∈ cutCentreBandList C ht hc0 hcpi n htop := by
       simpa using hb
-    obtain ⟨j, hjRay, hjeq⟩ := by
-      simpa [cutCentreBandList] using hbList
+    obtain ⟨j, hjRay, hjeq⟩ :
+        ∃ j : OtherVertex i, j ∈ C.rays ∧
+          cutRayProjectiveBand hp ht hc0 hcpi n htop i j = b := by
+      exact List.mem_map.mp (by
+        simpa only [cutCentreBandList] using hbList)
     apply (mem_occupiedCutProjectiveBands
       hp t c n i b).2
     refine ⟨j, ?_⟩
