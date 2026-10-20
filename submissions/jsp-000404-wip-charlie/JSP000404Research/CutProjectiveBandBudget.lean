@@ -365,6 +365,7 @@ theorem centreExponent_le_missing_cutProjectiveBands
     exact hcut'.trans
       (listExponent_quotientList_eq_centreExponent' C t)
   rw [hExpCut] at hcyc
+  rw [hscaledEq] at hcyc
   have hfloorSorted :
       (floorBandList (aa :: xxs)).Pairwise (· ≤ ·) :=
     floorBandList_pairwise aa xxs haa0 hscaledSorted
@@ -437,6 +438,13 @@ theorem cutProjectiveBandPartition_active_card_le_deficit
   have hmissing :=
     centreExponent_le_missing_cutProjectiveBands
       hp (C i) htpos ht hdelta0 hdelta1 hc0 hcpi
+  have hoccupiedBound :
+      (occupiedCutProjectiveBands hp t c n i).card ≤ n + 1 := by
+    calc
+      (occupiedCutProjectiveBands hp t c n i).card
+          ≤ (Finset.univ : Finset (Fin (n + 1))).card :=
+            Finset.card_le_card (Finset.subset_univ _)
+      _ = n + 1 := by simp
   omega
 
 #print axioms exists_cut_decomposition_of_pairwise
