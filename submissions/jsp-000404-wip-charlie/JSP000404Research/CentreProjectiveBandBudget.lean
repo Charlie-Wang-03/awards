@@ -57,14 +57,14 @@ noncomputable def centreProjectiveBandList
     List (Fin (n + 1)) :=
   C.rays.map (rayProjectiveBand hp ht n htop i)
 
-def scaledCentreAngles
+noncomputable def scaledCentreAngles
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
     (t : ℝ) : List ℝ :=
   C.angles.map (scaleProjectiveAngle t)
 
-def centreFloorBandList
+noncomputable def centreFloorBandList
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
@@ -115,8 +115,11 @@ theorem occupiedProjectiveBands_eq_centreBandList_toFinset
     have hcList :
         c ∈ centreProjectiveBandList C ht n htop := by
       simpa using hc
-    obtain ⟨j, hjRay, hjeq⟩ := by
-      simpa [centreProjectiveBandList] using hcList
+    obtain ⟨j, hjRay, hjeq⟩ :
+        ∃ j : OtherVertex i, j ∈ C.rays ∧
+          rayProjectiveBand hp ht n htop i j = c := by
+      exact List.mem_map.mp (by
+        simpa only [centreProjectiveBandList] using hcList)
     apply (mem_occupiedProjectiveBands hp t n i c).2
     refine ⟨j, ?_⟩
     rw [← hjeq]
@@ -182,12 +185,11 @@ theorem scaledCentreAngles_pairwise
     (scaledCentreAngles C t).Pairwise (· ≤ ·) := by
   unfold scaledCentreAngles
   rw [List.pairwise_map]
-  intro a ha b hb hab
-  unfold scaleProjectiveAngle
-  have hpi : 0 < Real.pi := Real.pi_pos
-  exact
-    (div_le_div_iff_of_pos_right hpi).2
-      (mul_le_mul_of_nonneg_left hab ht.le)
+  exact (C.angles_pairwise).imp (by
+    intro a b hab
+    unfold scaleProjectiveAngle
+    exact (div_le_div_iff_of_pos_right Real.pi_pos).2
+      (mul_le_mul_of_nonneg_left hab ht.le))
 
 theorem scaledCentreAngles_mem_nonneg
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -240,7 +242,7 @@ theorem centreExponent_le_cyclicBandMissing
     | nil =>
         exact False.elim (C.angles_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   let A := scaleProjectiveAngle t a
   let XS := xs.map (scaleProjectiveAngle t)
   have hscaled :
@@ -291,7 +293,7 @@ theorem centreExponent_le_cyclicBandMissing
         centreFloorBandList C t := by
     simpa [centreFloorBandList] using
       congrArg floorBandList hscaled.symm
-  rwa [hfloor] at hcyc
+  simpa [centreFloorBandList, scaledCentreAngles, hangles] using hcyc
 
 /-- Main local budget: centre exponent is at most the number of missing
 projective bands among n+1 bands. -/
@@ -322,7 +324,7 @@ theorem centreExponent_le_missing_projectiveBands
       simp [C.angles_nonempty]
     cases h : centreFloorBandList C t with
     | nil => exact False.elim (hne h)
-    | cons a xs => exact ⟨a, xs, h⟩
+    | cons a xs => exact ⟨a, xs, rfl⟩
   have hscaledSorted :
       (scaledCentreAngles C t).Pairwise (· ≤ ·) :=
     scaledCentreAngles_pairwise C htpos
@@ -336,7 +338,7 @@ theorem centreExponent_le_missing_projectiveBands
       simp [C.angles_nonempty]
     cases h : scaledCentreAngles C t with
     | nil => exact False.elim (hne h)
-    | cons A XS => exact ⟨A, XS, h⟩
+    | cons A XS => exact ⟨A, XS, rfl⟩
   have hA0 : 0 ≤ A :=
     hscaledNonneg A (by rw [hscaled]; simp)
   have hfloorSorted :
@@ -373,8 +375,8 @@ theorem centreExponent_le_missing_projectiveBands
 theorem projectiveBandPartition_active_card_le_deficit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t delta lam : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
     (ht : t = (n : ℝ) + delta)
