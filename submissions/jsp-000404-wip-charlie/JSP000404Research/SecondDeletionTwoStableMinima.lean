@@ -125,7 +125,7 @@ theorem secondStableMinima_card_add_two_ge_layer_card
     (Finset.card_le_card Finset.inter_subset_right).trans hGcard
   have hsplit :=
     Finset.card_sdiff_add_card_inter (M.erase s) G
-  change ((M.erase s) \\ G).card + 2 ≥ M.card
+  change ((M.erase s) \ G).card + 2 ≥ M.card
   omega
 
 /-- If the minimum layer has at least four vertices including s, then after
