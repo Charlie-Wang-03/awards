@@ -1,4 +1,5 @@
 import JSP000404Research.PlanarKnownSmallCentreCapacity
+import JSP000404Research.PlanarFirstBranchNoThree
 import JSP000404Research.FiveCentreNoSecondLayerCapacity
 import JSP000404Research.FiveCentreTopNextNoThirdCapacity
 import JSP000404Research.FiveCentreTopNextAtMostOneThirdCapacity
@@ -190,11 +191,25 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   -- <=2 centres at n>=1; 3 centres at n>=2; 4 centres at n>=3.
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   by_cases hknownClosed :
+      n = 1 ∨
       Fintype.card (ProjectionOrdered V) ≤ 2 ∨
       (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
       (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)
-  · exact planar_lower_branch_known_small_centre_dyadic_capacity
-      hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hknownClosed
+  · rcases hknownClosed with hnOne | hsmall
+    · -- Genuine AngleCap geometry rules out three points for n = 1.
+      -- The previously admitted global payment is not needed here.
+      have hcapRe : AngleCap (reindexedPoint p) lam :=
+        angleCap_reindexedPoint hp hcap
+      have htOne : t = (1 : ℝ) + delta := by
+        simpa [hnOne] using ht
+      have hcard : Fintype.card (ProjectionOrdered V) ≤ 2 :=
+        original_card_le_two_of_lower_one
+          (reindexedPoint_injective hp) hcapRe
+          hdelta0 hdeltaHalf htOne hlam
+      exact planar_lower_branch_known_small_centre_dyadic_capacity
+        hp hcap hn hdelta0 hdeltaHalf ht hlam cycles (Or.inl hcard)
+    · exact planar_lower_branch_known_small_centre_dyadic_capacity
+        hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
   · by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
