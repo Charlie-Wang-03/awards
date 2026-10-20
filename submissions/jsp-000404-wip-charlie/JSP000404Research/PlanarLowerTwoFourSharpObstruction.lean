@@ -34,7 +34,7 @@ theorem saturated_dyadic_capacity_iff_all_zero
       cases he : e i with
       | zero => exact False.elim (hnonzero he)
       | succ k =>
-          rw [he, pow_succ]
+          rw [pow_succ]
           have hp : 0 < (2 : ℕ) ^ k := pow_pos (by norm_num) _
           omega
     have hstrictSum :
@@ -55,7 +55,7 @@ theorem saturated_dyadic_capacity_iff_all_zero
         intro i _
         simp [hzero i]
       _ = Fintype.card V := by simp
-      _ = (2 : ℕ) ^ n := hcard
+      _ ≤ (2 : ℕ) ^ n := le_of_eq hcard
 
 namespace ProjectionOrdered
 
