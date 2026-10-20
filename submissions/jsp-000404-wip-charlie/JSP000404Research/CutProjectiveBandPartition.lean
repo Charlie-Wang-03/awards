@@ -333,7 +333,7 @@ noncomputable def cutProjectiveBandColor
   intro u v
   by_cases huv : u = v
   · exact ⟨0, Nat.succ_pos n⟩
-  · let j : OtherVertex u := ⟨v, huv.symm⟩
+  · let j : OtherVertex u := ⟨v, Ne.symm huv⟩
     let q := Nat.floor (cutNormalizedRayTheta hp t c u j)
     have hx0 :
         0 ≤ cutNormalizedRayTheta hp t c u j :=
