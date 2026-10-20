@@ -1,5 +1,6 @@
 
 import JSP000404Research.CyclicBandMissing
+import JSP000404Research.CyclicProjectiveGaps
 import Mathlib.Tactic
 
 /-!
@@ -109,7 +110,9 @@ theorem floorBandList_pairwise
       · intro m hm
         have hmReal :
             ∃ x ∈ b :: bs, Nat.floor x = m := by
-          simpa [floorBandList] using hm
+          change m ∈ (b :: bs).map Nat.floor at hm
+          obtain ⟨x, hx, hxm⟩ := List.mem_map.mp hm
+          exact ⟨x, hx, hxm.symm⟩
         obtain ⟨x, hx, rfl⟩ := hmReal
         have hax : a ≤ x :=
           hpair.1 x hx
