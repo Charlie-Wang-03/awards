@@ -242,7 +242,7 @@ theorem listExponent_floor_cyclicGaps_add_occupied_le
     have hx0 : 0 ≤ x := by
       rcases List.mem_cons.mp hx with hxa | hxTail
       · simpa [hxa] using ha0
-      · exact ha0.trans (List.pairwise_cons.mp hsorted).1 x hxTail
+      · exact ha0.trans ((List.pairwise_cons.mp hsorted).1 x hxTail)
     have htTop : t < (n : ℝ) + 1 := by
       rw [ht]
       linarith
