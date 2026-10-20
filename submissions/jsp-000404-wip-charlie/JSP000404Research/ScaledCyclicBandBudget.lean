@@ -39,13 +39,13 @@ capacity bridge.
 
 namespace JSP000404Research
 
-def cyclicGapsAt (t : ℝ) : List ℝ → List ℝ
+noncomputable def cyclicGapsAt (t : ℝ) : List ℝ → List ℝ
   | [] => []
   | a :: xs =>
       successiveDiffsFrom a xs ++
         [a + t - xs.getLastD a]
 
-def floorBandList (xs : List ℝ) : List ℕ :=
+noncomputable def floorBandList (xs : List ℝ) : List ℕ :=
   xs.map Nat.floor
 
 theorem floorBandList_cons
@@ -136,7 +136,7 @@ theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
       a xs ha0 hsorted
   have hlastMem :
       xs.getLastD a ∈ a :: xs :=
-    List.getLastD_mem_cons a xs
+    List.getLastD_mem_cons
   have hlastT :
       xs.getLastD a < t :=
     hall _ hlastMem
@@ -145,12 +145,13 @@ theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
     cases xs with
     | nil => simp
     | cons b bs =>
+        have hlastMemTail :
+            (b :: bs).getLastD a ∈ b :: bs := by
+          simpa only [List.getLastD_cons] using
+            (List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs)
         exact
           (List.pairwise_cons.mp hsorted).1
-            ((b :: bs).getLastD a)
-            (by
-              simpa using
-                (List.getLastD_mem_cons a (b :: bs)))
+            ((b :: bs).getLastD a) hlastMemTail
   have hwrap :=
     excess_floor_wrap_le_band_missing
       ha0 haLast hlastT ht hdelta0 hdelta1
