@@ -1,6 +1,7 @@
 
 import JSP000404Research.ScaledCyclicBandBudget
 import JSP000404Research.CentreQuotientData
+import JSP000404Research.ProjectiveBandSignRigidity
 import Mathlib.Tactic
 
 /-!
@@ -75,6 +76,7 @@ theorem cyclicGapsAt_scaleProjectiveAngle
   simp only [List.map_cons, cyclicGapsAt, projectiveGaps]
   rw [successiveDiffsFrom_scaleProjectiveAngle]
   rw [getLastD_map_scaleProjectiveAngle]
+  simp only [List.map_append, List.map_singleton]
   congr 1
   unfold scaleProjectiveAngle scaleProjectiveGap
   field_simp [Real.pi_ne_zero]
