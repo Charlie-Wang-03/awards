@@ -94,7 +94,7 @@ theorem linearBandMissing_add_toFinset_card
           simpa using haNot
         simp only [linearBandMissing]
         rw [List.toFinset_cons]
-        simp [haNotFin]
+        rw [Finset.card_insert_of_notMem haNotFin]
         have hlastGe :
             b ≤ bs.getLastD b := by
           cases bs with
@@ -107,6 +107,7 @@ theorem linearBandMissing_add_toFinset_card
               exact
                 (List.pairwise_cons.mp htail).1
                   ((c :: cs).getLastD b) hmem
+        simp only [List.getLastD_eq_getLast?] at hih hlastGe ⊢
         omega
 
 /-- Exact cyclic missing-band count. -/
