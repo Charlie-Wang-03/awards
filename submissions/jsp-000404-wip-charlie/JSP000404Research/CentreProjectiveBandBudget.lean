@@ -402,6 +402,13 @@ theorem projectiveBandPartition_active_card_le_deficit
   have hmissing :=
     centreExponent_le_missing_projectiveBands
       hp (C i) htpos ht hdelta0 hdelta1
+  have hoccupiedBound :
+      (occupiedProjectiveBands hp t n i).card ≤ n + 1 := by
+    calc
+      (occupiedProjectiveBands hp t n i).card
+          ≤ (Finset.univ : Finset (Fin (n + 1))).card :=
+            Finset.card_le_card (Finset.subset_univ _)
+      _ = n + 1 := by simp
   omega
 
 #print axioms occupiedProjectiveBands_eq_centreBandList_toFinset
