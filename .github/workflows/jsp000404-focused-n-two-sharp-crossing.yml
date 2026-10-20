@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarLowerTwoFourSharpCrossingObstruction.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/CrossingDiagonalsQuadrilateralAngleSum.lean"
       - ".github/workflows/jsp000404-focused-n-two-sharp-crossing.yml"
   workflow_dispatch:
 
