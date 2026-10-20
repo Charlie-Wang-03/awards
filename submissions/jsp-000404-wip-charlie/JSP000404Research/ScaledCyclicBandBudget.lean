@@ -213,9 +213,63 @@ theorem listExponent_floor_cyclicGaps_le_cyclicBandMissing
   rw [hcyc]
   exact Nat.add_le_add hlin hwrap'
 
+/-- The dyadic gap exponent and the number of genuinely occupied
+integer bands fit inside the full n+1 circular band budget. This is an
+unconditional one-dimensional consequence of the previously verified exact
+empty-band count and the cyclic floor-gap upper bound. -/
+theorem listExponent_floor_cyclicGaps_add_occupied_le
+    {t delta : ℝ} {n : ℕ}
+    (a : ℝ) (xs : List ℝ)
+    (ha0 : 0 ≤ a)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·))
+    (hall : ∀ x ∈ a :: xs, x < t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdelta1 : delta < 1) :
+    listExponent
+        ((cyclicGapsAt t (a :: xs)).map Nat.floor) +
+      (floorBandList (a :: xs)).toFinset.card ≤ n + 1 := by
+  have hsortedFloor :
+      (Nat.floor a :: floorBandList xs).Pairwise (· ≤ ·) := by
+    simpa [floorBandList] using
+      floorBandList_pairwise a xs ha0 hsorted
+  have hboundFloor :
+      ∀ m ∈ Nat.floor a :: floorBandList xs, m < n + 1 := by
+    intro m hm
+    have hmMapped : m ∈ (a :: xs).map Nat.floor := by
+      simpa [floorBandList] using hm
+    obtain ⟨x, hx, hxm⟩ := List.mem_map.mp hmMapped
+    have hx0 : 0 ≤ x := by
+      rcases List.mem_cons.mp hx with hxa | hxTail
+      · simpa [hxa] using ha0
+      · exact ha0.trans (List.pairwise_cons.mp hsorted).1 x hxTail
+    have htTop : t < (n : ℝ) + 1 := by
+      rw [ht]
+      linarith
+    have hxBound : x < ((n + 1 : ℕ) : ℝ) := by
+      simpa only [Nat.cast_add, Nat.cast_one] using
+        (lt_trans (hall x hx) htTop)
+    have hFloor : Nat.floor x < n + 1 :=
+      (Nat.floor_lt hx0).2 hxBound
+    simpa [hxm] using hFloor
+  have hsum :
+      cyclicBandMissing (n + 1)
+          (Nat.floor a :: floorBandList xs) +
+        (Nat.floor a :: floorBandList xs).toFinset.card =
+          n + 1 :=
+    cyclicBandMissing_add_toFinset_card
+      (n + 1) (Nat.floor a) (floorBandList xs)
+      hsortedFloor hboundFloor
+  have hgap :=
+    listExponent_floor_cyclicGaps_le_cyclicBandMissing
+      a xs ha0 hsorted hall ht hdelta0 hdelta1
+  simp only [floorBandList_cons] at hgap ⊢
+  omega
+
 #print axioms listExponent_floor_successiveDiffs_le_linearBandMissing
 #print axioms floorBandList_getLastD
 #print axioms floorBandList_pairwise
 #print axioms listExponent_floor_cyclicGaps_le_cyclicBandMissing
+#print axioms listExponent_floor_cyclicGaps_add_occupied_le
 
 end JSP000404Research
