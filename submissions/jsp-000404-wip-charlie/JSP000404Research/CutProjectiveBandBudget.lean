@@ -1,4 +1,5 @@
 import JSP000404Research.CutProjectiveBandOccupancy
+import JSP000404Research.CentreExponent
 import JSP000404Research.ProjectiveCutRotation
 import JSP000404Research.ProjectiveGapScaling
 import JSP000404Research.ScaledCyclicBandBudget
@@ -34,7 +35,7 @@ namespace JSP000404Research
 open Real
 open BinaryEdgePartition
 
-def cutProjectiveAngle (c theta : ℝ) : ℝ :=
+noncomputable def cutProjectiveAngle (c theta : ℝ) : ℝ :=
   if theta < c then theta + Real.pi - c else theta - c
 
 theorem cutRayTheta_eq_cutProjectiveAngle
@@ -274,12 +275,13 @@ theorem centreExponent_le_missing_cutProjectiveBands
     have : C.angles.length = 0 := by
       rw [← hlen, hnil]
       rfl
-    exact C.angles_nonempty (List.length_eq_zero.mp this)
+    exact C.angles_nonempty (by
+      simpa using this)
   obtain ⟨a, xs, hAcons⟩ :
       ∃ a xs, A = a :: xs := by
     cases hAeq : A with
     | nil => exact False.elim (hAne hAeq)
-    | cons a xs => exact ⟨a, xs, hAeq⟩
+    | cons a xs => exact ⟨a, xs, rfl⟩
   let SA : List ℝ := A.map (scaleProjectiveAngle t)
   let aa := scaleProjectiveAngle t a
   let xxs := xs.map (scaleProjectiveAngle t)
@@ -355,9 +357,12 @@ theorem centreExponent_le_missing_cutProjectiveBands
     have hleft :
         anglesAfterProjectiveCut c low high = a :: xs := by
       exact hAcons
-    rw [hleft, ← hdecomp,
-      CentreProjectiveCycle.gaps] at hcut
-    exact hcut.trans
+    have hcut' :
+        listExponent (quotientList t
+          (normalizedProjectiveGaps (a :: xs))) =
+        listExponent (quotientList t C.gaps) := by
+      simpa [hleft, CentreProjectiveCycle.gaps, hdecomp] using hcut
+    exact hcut'.trans
       (listExponent_quotientList_eq_centreExponent' C t)
   rw [hExpCut] at hcyc
   have hfloorSorted :
@@ -408,8 +413,8 @@ theorem centreExponent_le_missing_cutProjectiveBands
 theorem cutProjectiveBandPartition_active_card_le_deficit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t delta lam c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
     (ht : t = (n : ℝ) + delta)
