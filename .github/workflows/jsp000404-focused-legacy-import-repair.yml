@@ -8,7 +8,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CentreTransitionRefinement.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutCentreTransitionRefinement.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CyclicBandMissing.lean"
-      - ".github/workflows/jsp000404-focused-legacy-import-repair-minima.yml"
+      - ".github/workflows/jsp000404-focused-legacy-import-repair.yml"
   workflow_dispatch:
 
 permissions:
