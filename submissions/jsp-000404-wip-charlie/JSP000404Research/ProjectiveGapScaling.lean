@@ -79,8 +79,7 @@ theorem cyclicGapsAt_scaleProjectiveAngle
   simp only [List.map_append, List.map_singleton]
   congr 1
   unfold scaleProjectiveAngle scaleProjectiveGap
-  field_simp [Real.pi_ne_zero]
-  ring
+  field_simp [Real.pi_ne_zero] <;> ring
 
 /-- Natural floors of the scaled cyclic gaps are exactly the concrete
 quotient list. -/
