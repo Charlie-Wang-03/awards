@@ -1,5 +1,6 @@
 import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.PlanarFirstBranchNoThree
+import JSP000404Research.PlanarLowerTwoFourNoTopCapacity
 import JSP000404Research.FiveCentreNoSecondLayerCapacity
 import JSP000404Research.FiveCentreTopNextNoThirdCapacity
 import JSP000404Research.FiveCentreTopNextAtMostOneThirdCapacity
@@ -192,9 +193,13 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   by_cases hknownClosed :
       n = 1 ∨
-      Fintype.card (ProjectionOrdered V) ≤ 2 ∨
-      (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
-      (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)
+      (Fintype.card (ProjectionOrdered V) ≤ 2 ∨
+        (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
+        (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)) ∨
+      (n = 2 ∧
+        Fintype.card (ProjectionOrdered V) = 4 ∧
+        (∀ i : ProjectionOrdered V,
+          centreExponent (cycles i) t ≠ 1))
   · rcases hknownClosed with hnOne | hsmall
     · -- Genuine AngleCap geometry rules out three points for n = 1.
       -- The previously admitted global payment is not needed here.
@@ -208,8 +213,14 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
           hdelta0 hdeltaHalf htOne hlam
       exact planar_lower_branch_known_small_centre_dyadic_capacity
         hp hcap hn hdelta0 hdeltaHalf ht hlam cycles (Or.inl hcard)
-    · exact planar_lower_branch_known_small_centre_dyadic_capacity
-        hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
+    · rcases hsmall with hknown | htwoFourNoTop
+      · exact planar_lower_branch_known_small_centre_dyadic_capacity
+          hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hknown
+      · rcases htwoFourNoTop with ⟨hnTwo, hcardFour, hnoTop⟩
+        have htTwo : t = (2 : ℝ) + delta := by
+          simpa [hnTwo] using ht
+        exact planar_lower_branch_n_two_four_no_top_capacity
+          hp hcap hcardFour hdelta0 hdeltaHalf htTwo hlam cycles hnoTop
   · by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
