@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ProjectiveGapScaling.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ScaledCyclicBandBudget.lean"
       - ".github/workflows/jsp000404-focused-projective-gap-scaling.yml"
   workflow_dispatch:
 
