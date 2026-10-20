@@ -74,7 +74,7 @@ theorem linearBandMissing_add_toFinset_card
         ih b htail
       by_cases habEq : a = b
       · subst b
-        simpa [linearBandMissing] using hih
+        simpa [linearBandMissing, List.getLastD_cons] using hih
       · have habLt : a < b := lt_of_le_of_ne hab habEq
         have haNot :
             a ∉ b :: bs := by
@@ -92,8 +92,8 @@ theorem linearBandMissing_add_toFinset_card
             a ∉ (b :: bs).toFinset := by
           simpa using haNot
         simp only [linearBandMissing]
-        rw [List.toFinset_cons,
-            Finset.card_insert_of_not_mem haNotFin]
+        rw [List.toFinset_cons]
+        simp [haNotFin]
         rw [List.getLastD_cons]
         have hlastGe :
             b ≤ bs.getLastD b := by
@@ -102,7 +102,7 @@ theorem linearBandMissing_add_toFinset_card
           | cons c cs =>
               have hmem :
                   bs.getLastD b ∈ b :: c :: cs := by
-                exact List.getLastD_mem_cons b (c :: cs)
+                exact List.getLastD_mem_cons
               exact
                 (List.pairwise_cons.mp htail).1
                   (bs.getLastD b) (by
@@ -125,7 +125,7 @@ theorem cyclicBandMissing_add_toFinset_card
     hbound a (by simp)
   have hlastK :
       xs.getLastD a < K := by
-    exact hbound _ (List.getLastD_mem_cons a xs)
+    exact hbound _ List.getLastD_mem_cons
   have haLast :
       a ≤ xs.getLastD a := by
     cases xs with
@@ -133,11 +133,13 @@ theorem cyclicBandMissing_add_toFinset_card
     | cons b bs =>
         have hmem :
             (b :: bs).getLastD a ∈ a :: b :: bs :=
-          List.getLastD_mem_cons a (b :: bs)
+          by
+             simpa only [List.getLastD_cons] using
+               (List.getLastD_mem_cons : bs.getLastD b ∈ b :: bs)
         exact
           (List.pairwise_cons.mp hsorted).1
             ((b :: bs).getLastD a)
-            (by simpa using hmem)
+            (by simpa only [List.mem_cons] using hmem)
   unfold cyclicBandMissing
   omega
 
@@ -176,7 +178,9 @@ theorem natFloor_sub_le_floor_sub_floor
       exact Nat.cast_sub hab
     rw [hcast]
     linarith
-  exact natFloor_le_of_lt_count_succ hgap0 hgap
+  have hfloor : Nat.floor (y - x) < (b - a) + 1 :=
+    (Nat.floor_lt hgap0).2 hgap
+  omega
 
 /-- Ordinary quotient excess is paid by strictly intermediate empty bands. -/
 theorem excess_floor_sub_le_band_missing
@@ -233,11 +237,17 @@ theorem natFloor_wrap_le
         (((n + 1) - b : ℕ) : ℝ) =
           ((n + 1 : ℕ) : ℝ) - (b : ℝ) := by
       exact Nat.cast_sub (by omega : b ≤ n + 1)
-    push_cast
-    rw [hsubCast]
-    rw [ht]
+    have hcast :
+        (((n + 1) - b + a : ℕ) : ℝ) =
+          (n : ℝ) + 1 - (b : ℝ) + (a : ℝ) := by
+      rw [Nat.cast_add, Nat.cast_sub (by omega : b ≤ n + 1)]
+      push_cast
+      ring
+    rw [hcast, ht]
     linarith
-  exact natFloor_le_of_lt_count_succ hgap0 hgap
+  have hfloor : Nat.floor (t + x - y) < (n + 1 - b + a) + 1 :=
+    (Nat.floor_lt hgap0).2 hgap
+  omega
 
 /-- Wrap quotient excess is paid by the cyclic empty bands. -/
 theorem excess_floor_wrap_le_band_missing
