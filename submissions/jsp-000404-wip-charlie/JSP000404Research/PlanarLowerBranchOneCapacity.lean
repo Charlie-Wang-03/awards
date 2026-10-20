@@ -43,7 +43,8 @@ theorem planar_lower_branch_n_one_dyadic_capacity
       hdelta0 hdeltaHalf ht hlam
   exact planar_lower_branch_known_small_centre_dyadic_capacity
     hp hcap (by omega : 1 ≤ 1)
-    hdelta0 hdeltaHalf ht hlam cycles (Or.inl hcard)
+    hdelta0 hdeltaHalf (by simpa only [Nat.cast_one] using ht)
+    hlam cycles (Or.inl hcard)
 
 #print axioms planar_lower_branch_n_one_dyadic_capacity
 
