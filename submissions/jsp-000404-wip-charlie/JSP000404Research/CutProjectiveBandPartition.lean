@@ -275,8 +275,9 @@ noncomputable def cutProjectiveBandBit
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ)
-    (i : V) (b : Fin (n + 1)) : Bool :=
-  decide (∃ j : OtherVertex i,
+    (i : V) (b : Fin (n + 1)) : Bool := by
+  classical
+  exact decide (∃ j : OtherVertex i,
     RayInCutProjectiveBand hp t c i j b ∧
       cutRaySign hp c i j = true)
 
