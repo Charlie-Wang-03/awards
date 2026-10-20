@@ -118,6 +118,8 @@ theorem exists_two_minimum_survivors_without_second_gain
   let Z := T \ G
   have hsM : s ∈ M := by
     simpa [M] using hs
+  have hMcard : 4 ≤ M.card := by
+    simpa [M] using hlayer
   have hTcard :
       3 ≤ T.card := by
     dsimp [T]
@@ -172,6 +174,40 @@ theorem exists_two_minimum_survivors_without_second_gain
   exact ⟨j, k, hjk, hjs, hks,
     hjExp, hkExp, hjNo, hkNo⟩
 
+/-- The two minimum-layer survivors obtained from bounded second deletion
+are genuinely unchanged, not merely free of full-unit increases.
+The conclusion uses integer-valued exponent monotonicity. -/
+theorem exists_two_minimum_survivors_with_unchanged_exponents
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (exponent : V → ℕ)
+    (after : V → V → ℕ)
+    (n a : ℕ)
+    (s : V)
+    (htotal :
+      (∑ i : V, 2 ^ exponent i) = 2 ^ n)
+    (hs : exponent s = a)
+    (hmono :
+      ∀ i, i ≠ s → exponent i ≤ after s i)
+    (hpost :
+      deletionPostWeight after s ≤ 2 ^ n)
+    (hlayer :
+      4 ≤ (exponentLayer exponent a).card) :
+    ∃ j k : V,
+      j ≠ k ∧ j ≠ s ∧ k ≠ s ∧
+      exponent j = a ∧ exponent k = a ∧
+      after s j = exponent j ∧
+      after s k = exponent k := by
+  obtain ⟨j, k, hjk, hjs, hks, hjExp, hkExp, hjNo, hkNo⟩ :=
+    exists_two_minimum_survivors_without_second_gain
+      exponent after n a s htotal hs hmono hpost hlayer
+  have hjEq : after s j = exponent j := by
+    have hle := hmono j hjs
+    omega
+  have hkEq : after s k = exponent k := by
+    have hle := hmono k hks
+    omega
+  exact ⟨j, k, hjk, hjs, hks, hjExp, hkExp, hjEq, hkEq⟩
+
 /-- Five root minimum vertices remain sufficient after one first minimum
 deletion: the first child has at least four vertices in the same minimum
 layer, so a second bounded minimum deletion leaves two no-gain minimum
@@ -196,6 +232,7 @@ theorem exists_two_no_gain_minima_after_first_minimum_removed
 
 #print axioms secondGainMinima_card_le_one
 #print axioms exists_two_minimum_survivors_without_second_gain
+#print axioms exists_two_minimum_survivors_with_unchanged_exponents
 #print axioms exists_two_no_gain_minima_after_first_minimum_removed
 
 end JSP000404Research
