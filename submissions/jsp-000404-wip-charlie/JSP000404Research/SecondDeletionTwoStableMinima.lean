@@ -89,6 +89,45 @@ theorem secondGainMinima_card_le_one
       hj'.1 hk'.1 hjk hj'.2.1 hk'.2.1)
       ⟨hj'.2.2, hk'.2.2⟩
 
+/-- Quantitative second-deletion stability: at most the deleted minimum
+vertex and one surviving minimum vertex can be lost from the no-unit-gain
+minimum layer. This does not require a minimum-layer cardinality assumption. -/
+theorem secondStableMinima_card_add_two_ge_layer_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (exponent : V → ℕ)
+    (after : V → V → ℕ)
+    (n a : ℕ)
+    (s : V)
+    (htotal :
+      (∑ i : V, 2 ^ exponent i) = 2 ^ n)
+    (hs : exponent s = a)
+    (hmono :
+      ∀ i, i ≠ s → exponent i ≤ after s i)
+    (hpost :
+      deletionPostWeight after s ≤ 2 ^ n) :
+    ((exponentLayer exponent a).erase s \
+      secondGainMinima exponent after a s).card + 2 ≥
+      (exponentLayer exponent a).card := by
+  classical
+  let M := exponentLayer exponent a
+  let G := secondGainMinima exponent after a s
+  have hsM : s ∈ M := by
+    simpa [M] using hs
+  have hMpos : 0 < M.card :=
+    Finset.card_pos.mpr ⟨s, hsM⟩
+  have hErase : (M.erase s).card + 1 = M.card := by
+    rw [Finset.card_erase_of_mem hsM]
+    omega
+  have hGcard : G.card ≤ 1 :=
+    secondGainMinima_card_le_one
+      exponent after n a s htotal hs hmono hpost
+  have hInter : ((M.erase s) ∩ G).card ≤ 1 :=
+    (Finset.card_le_card Finset.inter_subset_right).trans hGcard
+  have hsplit :=
+    Finset.card_sdiff_add_card_inter (M.erase s) G
+  change ((M.erase s) \\ G).card + 2 ≥ M.card
+  omega
+
 /-- If the minimum layer has at least four vertices including s, then after
 deleting s at least two surviving minimum vertices have no unit gain. -/
 theorem exists_two_minimum_survivors_without_second_gain
@@ -231,6 +270,7 @@ theorem exists_two_no_gain_minima_after_first_minimum_removed
   omega
 
 #print axioms secondGainMinima_card_le_one
+#print axioms secondStableMinima_card_add_two_ge_layer_card
 #print axioms exists_two_minimum_survivors_without_second_gain
 #print axioms exists_two_minimum_survivors_with_unchanged_exponents
 #print axioms exists_two_no_gain_minima_after_first_minimum_removed
