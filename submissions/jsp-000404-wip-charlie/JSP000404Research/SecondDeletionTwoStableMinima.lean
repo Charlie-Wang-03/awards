@@ -115,7 +115,7 @@ theorem exists_two_minimum_survivors_without_second_gain
   let M := exponentLayer exponent a
   let G := secondGainMinima exponent after a s
   let T := M.erase s
-  let Z := T.sdiff G
+  let Z := T \ G
   have hsM : s ∈ M := by
     simpa [M] using hs
   have hTcard :
