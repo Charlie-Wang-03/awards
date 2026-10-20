@@ -42,6 +42,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have he : x ∈ (convexHull ℝ (∅ : Set Plane)) := by
             simpa [hIset, hComp] using hxNotI
           simp at he
@@ -54,6 +55,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 3 := by
             simpa [hIset, hComp] using hxNotI
           have hrest : x ∈ convexHull ℝ ({p 0,p 1,p 2} : Set Plane) := by
@@ -70,6 +72,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 2 := by
             simpa [hIset, hComp] using hxNotI
           have hrest : x ∈ convexHull ℝ ({p 0,p 1,p 3} : Set Plane) := by
@@ -84,6 +87,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 1) := by
             simpa [hIset, hComp, convexHull_pair] using hxI
           have hright : x ∈ segment ℝ (p 2) (p 3) := by
@@ -102,6 +106,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 1 := by
             simpa [hIset, hComp] using hxNotI
           have hrest : x ∈ convexHull ℝ ({p 0,p 2,p 3} : Set Plane) := by
@@ -116,6 +121,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 2) := by
             simpa [hIset, hComp, convexHull_pair] using hxI
           have hright : x ∈ segment ℝ (p 1) (p 3) := by
@@ -132,6 +138,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 3) := by
             simpa [hIset, hComp, convexHull_pair] using hxI
           have hright : x ∈ segment ℝ (p 1) (p 2) := by
@@ -146,6 +153,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 0 := by
             simpa [hIset, hComp] using hxI
           have hrest : x ∈ convexHull ℝ ({p 1,p 2,p 3} : Set Plane) := by
@@ -166,6 +174,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 0 := by
             simpa [hIset, hComp] using hxNotI
           have hrest : x ∈ convexHull ℝ ({p 1,p 2,p 3} : Set Plane) := by
@@ -180,6 +189,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 3) := by
             simpa [hIset, hComp, convexHull_pair] using hxNotI
           have hright : x ∈ segment ℝ (p 1) (p 2) := by
@@ -196,6 +206,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 2) := by
             simpa [hIset, hComp, convexHull_pair] using hxNotI
           have hright : x ∈ segment ℝ (p 1) (p 3) := by
@@ -210,6 +221,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 1 := by
             simpa [hIset, hComp] using hxI
           have hrest : x ∈ convexHull ℝ ({p 0,p 2,p 3} : Set Plane) := by
@@ -228,6 +240,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hleft : x ∈ segment ℝ (p 0) (p 1) := by
             simpa [hIset, hComp, convexHull_pair] using hxNotI
           have hright : x ∈ segment ℝ (p 2) (p 3) := by
@@ -242,6 +255,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 2 := by
             simpa [hIset, hComp] using hxI
           have hrest : x ∈ convexHull ℝ ({p 0,p 1,p 3} : Set Plane) := by
@@ -258,6 +272,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have hsingle : x = p 3 := by
             simpa [hIset, hComp] using hxI
           have hrest : x ∈ convexHull ℝ ({p 0,p 1,p 2} : Set Plane) := by
@@ -272,6 +287,7 @@ theorem four_planar_hull_exclusions_force_crossing
             ext v
             fin_cases v <;> decide
           rcases hRadon with ⟨x, hxI, hxNotI⟩
+          rw [hComp] at hxNotI
           have he : x ∈ (convexHull ℝ (∅ : Set Plane)) := by
             simpa [hIset, hComp] using hxI
           simp at he
