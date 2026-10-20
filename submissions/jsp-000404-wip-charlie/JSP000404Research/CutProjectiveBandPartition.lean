@@ -50,7 +50,7 @@ noncomputable def cutRaySign
   else
     raySignAt hp i j
 
-def cutNormalizedRayTheta
+noncomputable def cutNormalizedRayTheta
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (t c : ℝ) (i : V) (j : OtherVertex i) : ℝ :=
@@ -89,7 +89,9 @@ theorem cutNormalizedRayTheta_nonneg
     (i : V) (j : OtherVertex i) :
     0 ≤ cutNormalizedRayTheta hp t c i j := by
   unfold cutNormalizedRayTheta
-  positivity
+  exact div_nonneg
+    (mul_nonneg ht (cutRayTheta_nonneg hp hc0 hcpi i j))
+    Real.pi_pos.le
 
 theorem cutNormalizedRayTheta_lt_t
     {V : Type*} {p : V → Plane}
@@ -99,8 +101,9 @@ theorem cutNormalizedRayTheta_lt_t
     (i : V) (j : OtherVertex i) :
     cutNormalizedRayTheta hp t c i j < t := by
   unfold cutNormalizedRayTheta
-  have htheta := cutRayTheta_lt_pi hp hc0 hcpi i j
-  nlinarith [Real.pi_pos]
+  exact (div_lt_iff₀ Real.pi_pos).2
+    (mul_lt_mul_of_pos_left
+      (cutRayTheta_lt_pi hp hc0 hcpi i j) ht)
 
 theorem cutNormalizedRayTheta_eq_div_lam
     {V : Type*} {p : V → Plane}
@@ -113,10 +116,16 @@ theorem cutNormalizedRayTheta_eq_div_lam
       cutRayTheta hp c i j / lam := by
   unfold cutNormalizedRayTheta
   rw [hlam]
-  field_simp [ne_of_gt ht, Real.pi_ne_zero]
-  ring
+  field_simp [ne_of_gt ht, Real.pi_ne_zero] <;> ring
 
 /-- The cut-adjusted signed parameter represents the same actual ray. -/
+theorem signedRayDirection_not_add_pi
+    (sigma : Bool) (theta : ℝ) :
+    signedRayDirection (!sigma) (theta + Real.pi) =
+      signedRayDirection sigma theta := by
+  rw [signedRayDirection_not_eq_neg]
+  cases sigma <;> simp [signedRayDirection, rayDirection_add_pi_base]
+
 theorem cutRayRepAt_eq
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
@@ -140,8 +149,8 @@ theorem cutRayRepAt_eq
 theorem cutRaySign_eq_of_same_band
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -193,7 +202,9 @@ theorem cutRaySign_eq_of_same_band
       EuclideanGeometry.angle (p j.1) (p i) (p k.1)
         ≤ Real.pi - lam :=
     hcap j.1 i k.1 j.2
-      (otherVertex_val_ne hjk) k.2.symm
+      (by
+        intro h
+        exact hjk (Subtype.ext h)) k.2.symm
   change
     InnerProductGeometry.angle
         (p j.1 - p i) (p k.1 - p i)
@@ -258,8 +269,8 @@ def RayInCutProjectiveBand
 noncomputable def cutProjectiveBandBit
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -272,8 +283,8 @@ noncomputable def cutProjectiveBandBit
 theorem cutProjectiveBandBit_eq_cutRaySign
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -416,8 +427,8 @@ noncomputable def cutProjectiveBandPartition
     {V : Type*} [LinearOrder V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
