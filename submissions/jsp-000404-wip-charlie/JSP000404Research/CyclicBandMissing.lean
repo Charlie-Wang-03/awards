@@ -101,12 +101,12 @@ theorem linearBandMissing_add_toFinset_card
           | nil => simp
           | cons c cs =>
               have hmem :
-                  bs.getLastD b ∈ b :: c :: cs := by
-                exact List.getLastD_mem_cons
+                  (c :: cs).getLastD b ∈ c :: cs := by
+                simpa only [List.getLastD_cons] using
+                  (List.getLastD_mem_cons : cs.getLastD c ∈ c :: cs)
               exact
                 (List.pairwise_cons.mp htail).1
-                  (bs.getLastD b) (by
-                    simpa using hmem)
+                  ((c :: cs).getLastD b) hmem
         omega
 
 /-- Exact cyclic missing-band count. -/
@@ -138,7 +138,10 @@ theorem cyclicBandMissing_add_toFinset_card
         exact
           (List.pairwise_cons.mp hsorted).1
             ((b :: bs).getLastD a) hmem
-  unfold cyclicBandMissing
+  change
+    linearBandMissing (a :: xs) +
+      (K - 1 - xs.getLastD a + a) +
+      (a :: xs).toFinset.card = K
   omega
 
 theorem cyclicBandMissing_eq_complement_card
