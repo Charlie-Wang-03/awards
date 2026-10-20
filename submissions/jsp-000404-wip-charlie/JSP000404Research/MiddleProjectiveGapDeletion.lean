@@ -87,12 +87,12 @@ theorem projectiveGaps_interior_child_decompose
     getLastD_append_general, List.getLastD_cons]
   rfl
 
-def normalizedPrefixGaps
+noncomputable def normalizedPrefixGaps
     (a : ℝ) (pre : List ℝ) : List ℝ :=
   (successiveDiffsFrom a pre).map
     (fun d => d / Real.pi)
 
-def normalizedSuffixGaps
+noncomputable def normalizedSuffixGaps
     (y : ℝ) (tail : List ℝ) : List ℝ :=
   (successiveDiffsFrom y tail).map
     (fun d => d / Real.pi)
@@ -207,7 +207,7 @@ theorem listExponent_gain_delete_interior
     listExponent
         (quotientList t
           (normalizedProjectiveGaps
-            (a :: (pre ++ y :: tail))) := by
+            (a :: (pre ++ y :: tail)))) := by
   obtain ⟨carry, _hcarry, hparent, hchild⟩ :=
     quotientList_delete_interior
       ht hgLeft hgRight
