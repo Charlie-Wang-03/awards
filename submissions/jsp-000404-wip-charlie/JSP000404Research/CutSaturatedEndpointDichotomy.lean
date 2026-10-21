@@ -365,7 +365,7 @@ theorem saturated_boundaryActive_or_zeroUnitStep
       refine ⟨z, ?_, ?_⟩
       · rw [hvalues]
         exact (show z ∈ a :: xs from List.getLastD_mem_cons)
-      · simpa [z, List.getLastD] using hboundary.2
+      · simpa [z, List.getLastD_eq_getLast?] using hboundary.2
     exact ⟨
       R.active_of_normalizedValue_floor
         hp hcap htpos hlam hc0 hcpi n htop
