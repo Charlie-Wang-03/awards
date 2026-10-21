@@ -83,11 +83,11 @@ theorem listExponent_delete_interior_mono
           (normalizedProjectiveGaps
             (a :: (pre ++ y :: tail)))) := by
   obtain ⟨carry, _hcarry, hparent, hchild⟩ :=
-    quotientList_delete_interior
+    quotientList_delete_interior (tail := tail)
       ht hgLeft hgRight
-  let prefix :=
+  let preQuot :=
     quotientList t (normalizedPrefixGaps a pre)
-  let suffix :=
+  let tailQuot :=
     quotientList t (normalizedSuffixGaps y tail) ++
       [Nat.floor
         (t * ((a + Real.pi - tail.getLastD y) / Real.pi))]
@@ -102,8 +102,8 @@ theorem listExponent_delete_interior_mono
           (normalizedProjectiveGaps
             (a :: (pre ++ x :: y :: tail)))
         =
-      prefix ++ qLeft :: qRight :: suffix := by
-    simpa [prefix, suffix, qLeft, qRight,
+      preQuot ++ qLeft :: qRight :: tailQuot := by
+    simpa [preQuot, tailQuot, qLeft, qRight,
       List.append_assoc] using hparent
   have hc :
       quotientList t
@@ -111,13 +111,13 @@ theorem listExponent_delete_interior_mono
             (a :: (pre ++ y :: tail)))
         =
       mergeDisplayedAdjacent
-        prefix qLeft qRight carry suffix := by
-    simpa [prefix, suffix, qLeft, qRight,
+        preQuot qLeft qRight carry tailQuot := by
+    simpa [preQuot, tailQuot, qLeft, qRight,
       mergeDisplayedAdjacent, List.append_assoc]
       using hchild
   rw [hp, hc]
   exact listExponent_merge_mono
-    prefix suffix qLeft qRight carry
+    preQuot tailQuot qLeft qRight carry
 
 /-- Last-position list deletion is monotone. -/
 theorem listExponent_delete_last_mono
@@ -138,7 +138,7 @@ theorem listExponent_delete_last_mono
   obtain ⟨carry, _hcarry, hparent, hchild⟩ :=
     quotientList_delete_last
       ht hgLeft hgWrap
-  let prefix :=
+  let preQuot :=
     quotientList t (normalizedPrefixGaps a pre)
   let qLeft :=
     Nat.floor
@@ -151,21 +151,21 @@ theorem listExponent_delete_last_mono
           (normalizedProjectiveGaps
             (a :: (pre ++ [x])))
         =
-      prefix ++ qLeft :: qWrap :: [] := by
-    simpa [prefix, qLeft, qWrap,
+      preQuot ++ qLeft :: qWrap :: [] := by
+    simpa [preQuot, qLeft, qWrap,
       List.append_assoc] using hparent
   have hc :
       quotientList t
           (normalizedProjectiveGaps (a :: pre))
         =
       mergeDisplayedAdjacent
-        prefix qLeft qWrap carry [] := by
-    simpa [prefix, qLeft, qWrap,
+        preQuot qLeft qWrap carry [] := by
+    simpa [preQuot, qLeft, qWrap,
       mergeDisplayedAdjacent, List.append_assoc]
       using hchild
   rw [hp, hc]
   exact listExponent_merge_mono
-    prefix [] qLeft qWrap carry
+    preQuot [] qLeft qWrap carry
 
 /-- First-position concrete deletion never decreases the survivor exponent. -/
 theorem centreExponent_mono_delete_first_ray
