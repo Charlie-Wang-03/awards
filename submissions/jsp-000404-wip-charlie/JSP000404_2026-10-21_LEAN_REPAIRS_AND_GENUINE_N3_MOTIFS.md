@@ -392,3 +392,33 @@ Compilation was recovered by binder ordering, explicit dependent `Fin 3` familie
 1. Neither n=3, five-centre overweight motif A nor B has a proved geometric contradiction. The new exact-quotient and narrow-angle necessary conditions restrict them.
 2. The primary lower-branch theorem retains the **one executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean:900`, representing the original-source-disjoint global six-source NET debt payment for arbitrary n and >=5 original centres.
 3. The broad historical research module graph remains subject to other independent compilation errors. A collection of focused successful Lake targets is not a full-tree success, and no upstream complete-proof assertion has been made.
+
+
+## 2026-10-22 continuation: five-centre angular mass and six-point ledger
+
+### Kernel-checked in this continuation
+
+| Lean module | Focused GitHub Actions | Results | Axiom condition |
+|---|---|---|---|
+| `SixPointSupportMultiplicityReduction.lean` | [#39641998656](https://github.com/Charlie-Wang-03/awards/actions/runs/39641998656) | **PASS**, 3,452 Lake jobs | no `sorryAx` |
+| `ThreeFiveNoTopNarrowZeroGaps.lean` | [#39642407423](https://github.com/Charlie-Wang-03/awards/actions/runs/39642407423) | **PASS**, 3,506 jobs | no `sorryAx` |
+| `CutActiveFloorEquiv.lean` | [#39643251956](https://github.com/Charlie-Wang-03/awards/actions/runs/39643251956) | **PASS**, 8,977 jobs | no `sorryAx` |
+| `SharpSupportThreeTwoClusters.lean` | [#39643449196](https://github.com/Charlie-Wang-03/awards/actions/runs/39643449196) | **PASS**, 3,461 jobs | no `sorryAx` |
+| `SixPointTopDeletionWeight.lean` | [#39643449236](https://github.com/Charlie-Wang-03/awards/actions/runs/39643449236) | **PASS**, 3,524 jobs | no `sorryAx` |
+| `ThreeScaleZeroGapAggregateBudget.lean` | [#39643593257](https://github.com/Charlie-Wang-03/awards/actions/runs/39643593257) | **PASS**, 3,507 jobs | no `sorryAx` |
+| `ProjectiveBandLastMergeCapacity.lean` | [#39643764365](https://github.com/Charlie-Wang-03/awards/actions/runs/39643764365) | **PASS**, 8,960 jobs | no `sorryAx` |
+
+**Mathematical content.** At `n=3` and `t=3+delta`, in the actual planar five-centre no-top motif A, among any four genuine exponent-one next-layer centres at least two have:
+- exact positive quotient support two, integer quotient mass three and every integer quotient at most two (thus two positive quotients `{1,2}`);
+- every zero-floor gap `r` satisfies `t*g_r<=delta` (proved using the actual `CentreProjectiveCycle`).
+Further, for *any subset of zero-floor gaps at such a saturated centre*, the **sum** of their scaled widths is `<=delta`, not `delta` separately per gap. This is the strict local **one-remainder, no duplicate angular credit** principle; it does not pay other original-vertex NET debts.
+
+The sharp-centre conditional support-three two-zero-angle-block lemma is also kernel-checked: the two surviving zero-quotient actual-angle blocks together have mass `<=delta*lam`. The conditional `n+1 -> n` projective-band last-colour merge capacity theorem was restored, but requires a real wrap bit and saturation-boundary conditions; it is not a standalone universal planar solution.
+
+**Other repaired interfaces.** `CutActiveFloorEquiv` now uses correct `CentreCutRayCycle` namespace, original centre cycle `C`, and explicit cut witness `R`. `SixPointSupportMultiplicityReduction` uses current Mathlib Finset subset-cardinality and pair-existence lemmas. `SixPointTopDeletionWeight` uses checked natural-number dyadic arithmetic and a corrected finset sum decomposition. `ProjectiveBandLastMergeCapacity` resolves Lean `Fin n` zero construction, pairwise active colour image equality, and the proof-irrelevant projective-band instantiation.
+
+### Pending acceptance and principal open gap
+
+- `GeneralSaturatedZeroGapBudget.lean` generalizes the aggregate angular-budget proposition to arbitrary `n` for any exponent-`n-3`, support-three centre. It remains **unverified until its own focused CI and axiom audit pass**.
+- The fast full incremental check at the previous branch head reported **241 historical Lean diagnostics in 24 files**. That is not a full-tree compilation PASS; several more focused modules are now repaired, but a fresh completed full-tree error count is needed.
+- `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean` still has exactly its deliberately retained global source-nonreusing six-source NET payment `sorry` at line 900. No theorem in this continuation justifies removing it. Both true five-centre overweight motifs A and B remain geometrically unexcluded.
