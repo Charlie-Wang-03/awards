@@ -55,8 +55,8 @@ theorem cutRayTheta_abs_sub_lt_lam_of_same_band
 theorem actual_angle_lt_lam_of_same_cut_band
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
