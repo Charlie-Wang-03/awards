@@ -91,10 +91,10 @@ theorem crossing_diagonals_four_angles_sum_two_pi
       (p₁ := b) (p₂ := a) q hab
   have hBCQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := b) (p₂ := c) q hbc
+      (p₁ := b) (p₂ := c) q hbc.symm
   have hCDQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := c) (p₂ := d) q hcd
+      (p₁ := c) (p₂ := d) q hcd.symm
   have hDAQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
       (p₁ := d) (p₂ := a) q had
@@ -139,17 +139,17 @@ theorem crossing_diagonals_four_angles_sum_two_pi
       EuclideanGeometry.angle q b c +
         EuclideanGeometry.angle b c q +
         EuclideanGeometry.angle b q c = Real.pi := by
-    simpa [EuclideanGeometry.angle_comm] using hBCQ
+    simpa [EuclideanGeometry.angle_comm, add_comm, add_left_comm, add_assoc] using hBCQ
   have hCDQ' :
       EuclideanGeometry.angle q c d +
         EuclideanGeometry.angle c d q +
         EuclideanGeometry.angle c q d = Real.pi := by
-    simpa [EuclideanGeometry.angle_comm] using hCDQ
+    simpa [EuclideanGeometry.angle_comm, add_comm, add_left_comm, add_assoc] using hCDQ
   have hDAQ' :
       EuclideanGeometry.angle q d a +
-        EuclideanGeometry.angle q a d +
+        EuclideanGeometry.angle d a q +
         EuclideanGeometry.angle d q a = Real.pi := by
-    simpa [EuclideanGeometry.angle_comm] using hDAQ
+    simpa [EuclideanGeometry.angle_comm, add_comm, add_left_comm, add_assoc] using hDAQ
 
   have hVertex :
       (EuclideanGeometry.angle b a q + EuclideanGeometry.angle q a d) +
@@ -184,6 +184,7 @@ theorem crossing_diagonals_four_angles_sum_two_pi
         = 2 * Real.pi := by
     linarith only [hQ1, hQ2]
 
+  rw [EuclideanGeometry.angle_comm d a q] at hTriangles
   linarith only [hVertex, hTriangles, hQ]
 
 #print axioms crossing_diagonals_four_angles_sum_two_pi
