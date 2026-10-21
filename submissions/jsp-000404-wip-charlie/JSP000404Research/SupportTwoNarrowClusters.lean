@@ -35,7 +35,19 @@ theorem quotientGapAligned_append
     (h₁ : QuotientGapAligned t q₁ g₁)
     (h₂ : QuotientGapAligned t q₂ g₂) :
     QuotientGapAligned t (q₁ ++ q₂) (g₁ ++ g₂) := by
-  exact List.Forall₂.append h₁ h₂
+  unfold QuotientGapAligned at h₁ h₂ ⊢
+  induction q₁ generalizing g₁ with
+  | nil =>
+      cases g₁ with
+      | nil => simpa using h₂
+      | cons g gs => cases h₁
+  | cons q qs ih =>
+      cases g₁ with
+      | nil => cases h₁
+      | cons g gs =>
+          cases h₁ with
+          | cons hqg hrest =>
+              exact List.Forall₂.cons hqg (ih hrest)
 
 /-- Positivity support is additive across list concatenation. -/
 theorem listPositiveCount_append
@@ -87,6 +99,7 @@ theorem listZeroGapMass_eq_gap_sum_of_all_zero
           simp only [listZeroGapMass, if_pos rfl, zero_add,
             List.sum_cons]
           rw [ih gs hlen' htail]
+          simp
 
 theorem listPositiveCount_eq_zero_forall
     (qs : List ℕ)
