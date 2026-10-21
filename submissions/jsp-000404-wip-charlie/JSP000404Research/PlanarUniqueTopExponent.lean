@@ -1,4 +1,5 @@
 import JSP000404Research.ConcreteSharpCentre
+import JSP000404Research.NoTopTwoNextMultiplicity
 import Mathlib.Tactic
 
 /-!
@@ -97,7 +98,63 @@ theorem top_exponent_unique_of_card_ge_three
     hp hcap hn hdelta0 hdeltaHalf ht hlam C
     hsa hbs.symm hba.symm hs ha
 
+
+/-- With a genuine top centre and at least four original centres,
+two other distinct next-layer centres are geometrically impossible. The
+fourth-centre witness is derived from actual cardinality, not assumed. -/
+theorem no_two_next_exponents_beside_top_of_card_ge_four
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hcard : 4 ≤ Fintype.card V)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {s a b : V}
+    (hsa : s ≠ a) (hsb : s ≠ b) (hab : a ≠ b)
+    (hs : centreExponent (C s) t = n - 1)
+    (ha : centreExponent (C a) t = n - 2)
+    (hb : centreExponent (C b) t = n - 2) :
+    False := by
+  classical
+  have hfourth : ∃ c : V, c ≠ s ∧ c ≠ a ∧ c ≠ b := by
+    by_contra hnot
+    have hcovered : ∀ c : V, c = s ∨ c = a ∨ c = b := by
+      intro c
+      by_cases hcs : c = s
+      · exact Or.inl hcs
+      · by_cases hca : c = a
+        · exact Or.inr (Or.inl hca)
+        · have hcb : c = b := by
+            by_contra hcb
+            exact hnot ⟨c, hcs, hca, hcb⟩
+          exact Or.inr (Or.inr hcb)
+    have hsub : (Finset.univ : Finset V) ⊆ ({s, a, b} : Finset V) := by
+      intro c _
+      rcases hcovered c with hcs | hca | hcb
+      · simp [hcs]
+      · simp [hca]
+      · simp [hcb]
+    have hc : Fintype.card V ≤ 3 := by
+      calc
+        Fintype.card V = (Finset.univ : Finset V).card := by simp
+        _ ≤ ({s, a, b} : Finset V).card :=
+          Finset.card_le_card hsub
+        _ ≤ 3 := by simp [hsa, hsb, hab]
+    omega
+  obtain ⟨c, hcs, hca, hcb⟩ := hfourth
+  exact no_top_and_two_next_with_fourth
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hcs.symm hab hca.symm hcb.symm
+    (C s) (C a) (C b) hs ha hb
+
 #print axioms no_two_top_exponents_with_third
 #print axioms top_exponent_unique_of_card_ge_three
+#print axioms no_two_next_exponents_beside_top_of_card_ge_four
 
 end JSP000404Research
