@@ -316,3 +316,22 @@ The proof adds the integer statement `floorExcess q = 0 -> forall i, q(i) <= 1`,
 Consequently its positive integer quotient entries are **exactly three unit entries**, while the remaining entries are zero. This narrows the genuine geometric profile B but does not demonstrate its impossibility. Source-level cardinality exactly five yields four non-centre rays; a no-top original-centre exclusion and the globally non-reusing six-source payment are still absent.
 
 The WIP main theorem still has the same one admitted `sorry` at `PlanarLowerBranchProofAdmittedWIP.lean:900`, not closed by this local certificate.
+
+
+## Fifth continuation: zero-gap slack and historical module compile restoration (2026-10-21)
+
+### Verified Lean kernel certificates
+
+- `SupportThreeZeroAngleBlocks.lean`: [CI #39629572024](https://github.com/Charlie-Wang-03/awards/actions/runs/39629572024), **SUCCESS**, 3,451 Lake jobs. Four previously failing Lean elaborations were repaired: nonexistent `List.length_eq_zero.mp`, a list-recursive `simp`, and the list-length arithmetic missing `congrArg List.length hsplit`. The four named `#print axioms` results exclude `sorryAx`.
+- `ZeroExponentMinimalDeletionRigidity.lean`: [CI #39629571906](https://github.com/Charlie-Wang-03/awards/actions/runs/39629571906), **SUCCESS**, 3,589 Lake jobs. Removed two invalid extra tactic branches after the goals had already been solved. Its three printed declarations use no `sorryAx`.
+- `ThreeScaleZeroGapSlack.lean` (first two theorems): [CI #39630320897](https://github.com/Charlie-Wang-03/awards/actions/runs/39630320897), **SUCCESS**, 3,503 Lake jobs. Exact finite-floor remainder identity: for `t=3+delta`, unit-sum nonnegative normalized gaps and quotient sum three, `sum_r(t*g_r-floor(t*g_r))=delta`. Hence each true zero quotient gap has `t*g_r<=delta`. Combined with the previously verified exact support-three rigidity, this holds for an actual planar centre at the n=3 five-centre top-plus-next motif B. The corresponding new direct five-centre existential corollary has been submitted in the same module; **its own later CI result is independently required**.
+
+### Repairs still requiring their own acceptance
+
+- `TransitionGapRayAlignment.lean`: an actual source-graph duplicate declaration `successiveDiffsFrom_append_cons` was renamed to `transitionRay_successiveDiffsFrom_append_cons`; this avoids collision with the already defined theorem in `ProjectiveCutRotation.lean`. Dedicated composite-import check `CutSupportInvariant` revealed further unrelated historical source errors, not a residual duplicate-name error.
+- `CutSupportInvariant.lean`: candidate repairs for list cyclic permutation, pairwise map transport, an empty-list length witness and an append-nil witness; pending kernel retest.
+- `CutQuotientRotation.lean`: corrected unsupported `~` permutation syntax to explicit `List.Perm`, and candidate follow-on fixes to permutation, sorted transport, and cut-list cases; pending kernel retest.
+
+### Strict outstanding goal
+
+The main `PlanarLowerBranchProofAdmittedWIP.lean` still retains its one explicit `sorry` at line 900. This is the globally source-unique six-source NET debt payment (true Boolean holes, no reuse of reserved dyadic slack, original-vertex NET duplicate debt, covered/mixed/soft/rigid/twin debts) and **is not discharged** by zero-gap angular slack or focused build repair. Exact planar n=3 five-centre motifs A and B are still not excluded; full module graph build still fails independently on historical files. These modules are research, not a complete proof submission.
