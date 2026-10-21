@@ -83,12 +83,22 @@ theorem transition_qe_le_two_beside_top_and_support_one
 
   let centre : Fin 3 → V := ![top,a,b]
   let Cfam : ∀ r : Fin 3,
-      CentreProjectiveCycle hp (centre r) :=
-    ![Ctop,Ca,Cb]
+      CentreProjectiveCycle hp (centre r) := by
+    intro r
+    rcases r with ⟨j, hj⟩
+    interval_cases j
+    · simpa [centre] using Ctop
+    · simpa [centre] using Ca
+    · simpa [centre] using Cb
   let cert : ∀ r : Fin 3,
       HighExponentTransitionIntervalCertificate
-        hp t (centre r) (Cfam r) :=
-    ![HTop,HA,H]
+        hp t (centre r) (Cfam r) := by
+    intro r
+    rcases r with ⟨j, hj⟩
+    interval_cases j
+    · simpa [centre, Cfam] using HTop
+    · simpa [centre, Cfam] using HA
+    · simpa [centre, Cfam] using H
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
