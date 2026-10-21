@@ -100,7 +100,7 @@ theorem planar_three_five_overweight_profile_dichotomy
       exact no_two_next_exponents_beside_top_of_card_ge_four
         hp hcap (by omega : 3 ≤ (3 : ℕ)) hcard4
         hdelta0 hdeltaHalf ht hlam C
-        hsa hbs hba
+        hsa hbs.symm hba.symm
         (by simpa [k] using hs)
         (by simpa [k] using ha)
         (by simpa [k] using hb)
