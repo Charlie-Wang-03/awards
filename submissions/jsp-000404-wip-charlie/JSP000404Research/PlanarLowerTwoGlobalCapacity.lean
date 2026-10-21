@@ -70,7 +70,7 @@ theorem lower_two_original_card_le_four
       (Fintype.card V : ℝ) * lam ≤ 2 * Real.pi := hsum
       _ = (2 * t) * lam := by rw [hpi]; ring
   have hcount : (Fintype.card V : ℝ) ≤ 2 * t :=
-    (mul_le_mul_right hlampos).mp hscaled
+    (mul_le_mul_iff_of_pos_right hlampos).mp hscaled
   have hreal : (Fintype.card V : ℝ) < 5 := by
     rw [ht] at hcount
     linarith
