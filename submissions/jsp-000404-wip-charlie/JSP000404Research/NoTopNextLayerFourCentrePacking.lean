@@ -60,7 +60,7 @@ theorem no_three_next_support_one_with_fourth_low_support
       (exists_highExponentTransitionIntervalCertificate
         hp hcap (by omega : 1 ≤ n)
         hdelta0 hdelta1 ht hlam
-        s Cs (by rw [hS]; omega))
+        s Cs (by rw [hS]))
   obtain ⟨HA, hHApos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam a Ca (by omega)
