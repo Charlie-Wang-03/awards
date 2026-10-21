@@ -97,7 +97,7 @@ theorem crossing_diagonals_four_angles_sum_two_pi
       (p₁ := c) (p₂ := d) q hcd
   have hDAQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := d) (p₂ := a) q had.symm
+      (p₁ := d) (p₂ := a) q had
 
   have hQ1 :=
     EuclideanGeometry.angle_add_angle_eq_pi_of_angle_eq_pi b hacPi
