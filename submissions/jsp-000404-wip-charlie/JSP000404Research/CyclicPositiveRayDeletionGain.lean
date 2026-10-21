@@ -128,7 +128,7 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
           let a := rayThetaAt hp i first
           let preA := mid.map (rayThetaAt hp i)
           let x := rayThetaAt hp i del
-          let prefix :=
+          let qPrefix :=
             quotientList t (normalizedPrefixGaps a preA)
           let qLeft :=
             Nat.floor
@@ -142,34 +142,34 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
             simp [CentreProjectiveCycle.angles, hrays,
               a, preA, x, del]
           have hqParent :
-              qs = prefix ++ [qLeft, qWrap] := by
+              qs = qPrefix ++ [qLeft, qWrap] := by
             dsimp [qs]
             rw [CentreProjectiveCycle.gaps, hAngles,
               normalizedProjectiveGaps_last_parent]
-            simp [prefix, qLeft, qWrap,
+            simp [qPrefix, qLeft, qWrap,
               quotientList, List.map_append]
 
           have hkLen :
               (first :: mid).length =
-                (prefix ++ [qLeft]).length := by
-            dsimp [prefix, preA]
+                (qPrefix ++ [qLeft]).length := by
+            dsimp [qPrefix, preA]
             simp [quotientList, normalizedPrefixGaps,
               successiveDiffsFrom_length]
           have hrotParent :
               qs.rotate (first :: mid).length =
-                qWrap :: (prefix ++ [qLeft]) := by
+                qWrap :: (qPrefix ++ [qLeft]) := by
             rw [hqParent, hkLen]
             rw [List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
-              qWrap :: (prefix ++ [qLeft]) =
+              qWrap :: (qPrefix ++ [qLeft]) =
                 qOut :: qmid ++ [qIn] := by
             rw [← hrotParent]
             simpa using hqrot
           have hwrapEq : qWrap = qOut :=
             (List.cons.inj hrotEq).1
           have htailEq :
-              prefix ++ [qLeft] =
+              qPrefix ++ [qLeft] =
                 qmid ++ [qIn] :=
             (List.cons.inj hrotEq).2
           have hleftEq : qLeft = qIn := by
@@ -198,7 +198,7 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
           let x := rayThetaAt hp i del
           let y := rayThetaAt hp i next
           let tailA := tail.map (rayThetaAt hp i)
-          let prefix :=
+          let qPrefix :=
             quotientList t (normalizedPrefixGaps a preA)
           let suffix :=
             quotientList t (normalizedSuffixGaps y tailA) ++
@@ -219,43 +219,43 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
               hrays, a, preA, x, y, tailA]
           have hqParent :
               qs =
-                prefix ++ [qLeft, qRight] ++ suffix := by
+                qPrefix ++ [qLeft, qRight] ++ suffix := by
             dsimp [qs]
             rw [CentreProjectiveCycle.gaps, hAngles,
               normalizedProjectiveGaps_interior_parent]
-            simp [prefix, suffix, qLeft, qRight,
+            simp [qPrefix, suffix, qLeft, qRight,
               quotientList, List.map_append,
               List.append_assoc]
 
           have hkLen :
               (first :: mid).length =
-                (prefix ++ [qLeft]).length := by
-            dsimp [prefix, preA]
+                (qPrefix ++ [qLeft]).length := by
+            dsimp [qPrefix, preA]
             simp [quotientList, normalizedPrefixGaps,
               successiveDiffsFrom_length]
           have hqRegroup :
               qs =
-                (prefix ++ [qLeft]) ++
+                (qPrefix ++ [qLeft]) ++
                   qRight :: suffix := by
             rw [hqParent]
             simp [List.append_assoc]
           have hrotParent :
               qs.rotate (first :: mid).length =
                 qRight ::
-                  (suffix ++ prefix ++ [qLeft]) := by
+                  (suffix ++ qPrefix ++ [qLeft]) := by
             rw [hqRegroup, hkLen]
             rw [List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
               qRight ::
-                  (suffix ++ prefix ++ [qLeft]) =
+                  (suffix ++ qPrefix ++ [qLeft]) =
                 qOut :: qmid ++ [qIn] := by
             rw [← hrotParent]
             simpa using hqrot
           have hrightEq : qRight = qOut :=
             (List.cons.inj hrotEq).1
           have htailEq :
-              suffix ++ prefix ++ [qLeft] =
+              suffix ++ qPrefix ++ [qLeft] =
                 qmid ++ [qIn] :=
             (List.cons.inj hrotEq).2
           have hleftEq : qLeft = qIn := by
