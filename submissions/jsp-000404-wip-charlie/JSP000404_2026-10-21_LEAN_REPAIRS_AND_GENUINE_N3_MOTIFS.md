@@ -291,3 +291,12 @@ Applied to the genuine five-centre top-plus-next motif B (one exponent-2 centre,
 `ThreeFiveCompanionUnitQuotients.lean` has also been submitted as a separate proof obligation: zero floor excess forces each quotient <=1, implying the candidate companion has exactly three unit-positive quotient entries. Its focused CI outcome must be checked separately before promotion to certified.
 
 The only admitted WIP headline still contains its exact one executable `sorry`; all source-unique global payments remain open.
+
+
+### Fourth continuation: restored two-narrow-cluster list proof (verified)
+
+`SupportTwoNarrowClusters.lean` passed dedicated [CI #39618261703](https://github.com/Charlie-Wang-03/awards/actions/runs/39618261703): `lake build JSP000404Research.SupportTwoNarrowClusters`, **3,445 Lake jobs, SUCCESS**. `#print axioms` on `split_unique_positive_of_count_one`, `listZeroGapMass_two_zero_blocks` and `exists_two_narrow_zero_blocks` returned `[propext, Classical.choice, Quot.sound]` without `sorryAx`.
+
+The restoration explicitly proves finite-list append support identities, zero-positive-support quotient sums, and zero-quotient aligned gap mass, then completes the previously invalid indexed induction and its conditional simplification. The earlier DNS failure during `lake exe cache get` was an infrastructure problem, distinct from the subsequently repaired two Lean source errors.
+
+No all-tree PASS is implied. The unique principal global `sorry` remains as recorded above.
