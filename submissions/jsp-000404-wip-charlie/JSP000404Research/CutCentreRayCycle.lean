@@ -123,7 +123,7 @@ theorem pairwise_cutRayTheta_of_all_ge_cut
       · intro b hb
         rw [cutRayTheta_eq_sub_of_ge hp (hall a (by simp)),
             cutRayTheta_eq_sub_of_ge hp (hall b (by simp [hb]))]
-        exact hp0.1 b hb
+        linarith [hp0.1 b hb]
       · apply ih hp0.2
         intro b hb
         exact hall b (by simp [hb])
@@ -151,7 +151,7 @@ theorem pairwise_cutRayTheta_of_all_lt_cut
       · intro b hb
         rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hall a (by simp)),
             cutRayTheta_eq_add_pi_sub_of_lt hp (hall b (by simp [hb]))]
-        exact hp0.1 b hb
+        linarith [hp0.1 b hb]
       · apply ih hp0.2
         intro b hb
         exact hall b (by simp [hb])
@@ -173,7 +173,7 @@ theorem exists_centreCutRayCycle
   have hperm : C.rays.Perm rays := by
     dsimp [rays]
     rw [hdecomp]
-    exact List.Perm.append_comm low high
+    exact List.perm_append_comm low high
 
   have hnodup : rays.Nodup := by
     exact (hperm.nodup_iff).mp C.nodup
@@ -193,7 +193,11 @@ theorem exists_centreCutRayCycle
     have hlen := hperm.length_eq
     rw [hnil] at hlen
     have : C.rays.length = 0 := by simpa using hlen
-    exact C.nonempty (List.length_eq_zero.mp this)
+    have hcNil : C.rays = [] := by
+      cases hc : C.rays with
+      | nil => rfl
+      | cons a as => simp [hc] at this
+    exact C.nonempty hcNil
 
   have hcanonPair :
       low.Pairwise
@@ -287,7 +291,7 @@ noncomputable def rayEquiv
     Fin R.rays.length ≃ OtherVertex i := by
   classical
   exact R.nodup.getEquivOfForallMemList
-    R.rays R.nodup (fun j => R.mem_rays j)
+    R.rays (fun j => R.mem_rays j)
 
 noncomputable def rayIndex
     {V : Type*} [LinearOrder V] [Fintype V]
