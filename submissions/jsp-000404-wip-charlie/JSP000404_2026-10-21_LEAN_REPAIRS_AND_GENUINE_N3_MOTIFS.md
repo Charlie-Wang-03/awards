@@ -435,3 +435,16 @@ The sharp-centre conditional support-three two-zero-angle-block lemma is also ke
 This is a useful all-n local geometric/spectral budget, but cannot itself prove source-native globally injective payment of true Boolean holes, covered diagonals or NET duplicate sources. Global `PlanarLowerBranchProofAdmittedWIP.lean:900` still retains its one intentional `sorry`.
 
 `CutZeroUnitStep.lean` also received an independently constructed list-inductive witness proof and correct namespace resolution in this continuation; its own focused CI remains the required acceptance gate, and **must not be counted as PASS until verified**.
+
+
+### Further 2026-10-22 continuation: deletion witnesses and exact-minimum selection
+
+The following two real deletion proof chains were restored with successful independent kernel-checking and `#print axioms` free of `sorryAx`:
+
+- `CutZeroUnitStep.lean`: [focused CI #39645417370](https://github.com/Charlie-Wang-03/awards/actions/runs/39645417370) **PASS**, 8,977 Lake jobs. The genuine projective cut-ray adjacent zero-quotient unit-step witness and its same-sign consequence now compile using an explicit list induction with physical ray membership, not an unverified numeric pseudo-witness.
+- `CyclicPositiveRayDeletionGain.lean`: [focused CI #39646325606](https://github.com/Charlie-Wang-03/awards/actions/runs/39646325606) **PASS**, 3,233 jobs. Positive incoming/outgoing quotient endpoints under cyclic rotation imply actual concrete deletion exponent growth by at least one. Both printed theorems use only `[propext, Classical.choice, Quot.sound]`.
+- `ExactMinimumDeletionCandidate.lean`: [focused CI #39646616563](https://github.com/Charlie-Wang-03/awards/actions/runs/39646616563) **PASS**, 3,524 jobs. The four printed theorems, including witness-outside-minimum selection and exact-normalization-preserving rigid minimum deletion conditional on the child capacity hypothesis, exclude `sorryAx`. The larger minimum-layer pair selection and parity arithmetic also compile.
+
+The `ConcreteSecondDeletionBridge.lean` subtype Fintype and first-child dyadic mass identification has been amended (including a second explicit subtype/erase sum attempt), but **its latest focused CI #39647110514 must still be inspected before acceptance**.
+
+**Important proof status:** these local and conditional results make genuine geometric deletion and arithmetic subarguments available; they do **not** derive an unconditional global NET source nonreusing allocation. The sole executable `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` at line 900 remains, as does the unresolved geometric exclusion of actual n=3 five-centre motifs A and B. No claim of full all-module compilation or final JSP-000404 proof.
