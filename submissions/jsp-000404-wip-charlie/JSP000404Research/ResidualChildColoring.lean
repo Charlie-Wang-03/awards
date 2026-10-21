@@ -52,6 +52,24 @@ def RightResidualChild
     (D : DirectionData V width) (n : ℕ) :=
   {v : V // ¬ HighSource D n v}
 
+/-- The recursive child inherits the original vertex order. The high-band
+predicate is noncomputable, so construct the subtype order classically. -/
+noncomputable instance leftResidualChildLinearOrder
+    {V : Type*} [LinearOrder V] {width : ℝ}
+    (D : DirectionData V width) (n : ℕ) :
+    LinearOrder (LeftResidualChild D n) := by
+  classical
+  dsimp [LeftResidualChild]
+  infer_instance
+
+noncomputable instance rightResidualChildLinearOrder
+    {V : Type*} [LinearOrder V] {width : ℝ}
+    (D : DirectionData V width) (n : ℕ) :
+    LinearOrder (RightResidualChild D n) := by
+  classical
+  dsimp [RightResidualChild]
+  infer_instance
+
 theorem width_lt_succ_of_eq_add_delta
     {width delta : ℝ} {n : ℕ}
     (hwidth : width = (n : ℝ) + delta)
