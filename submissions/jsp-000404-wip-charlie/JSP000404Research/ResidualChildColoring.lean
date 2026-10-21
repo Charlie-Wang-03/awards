@@ -70,6 +70,24 @@ noncomputable instance rightResidualChildLinearOrder
   dsimp [RightResidualChild]
   infer_instance
 
+/-- Every actual residual edge witnesses activity of the old high
+coordinate at both endpoints. The previous version of this legacy module
+referred to this fact without importing or stating it. -/
+theorem residualCoord_mem_active_of_isResidual
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    {u v : V} (huv : u < v)
+    (hres : IsResidual C u v) :
+    residualCoord n ∈ active C u ∧ residualCoord n ∈ active C v := by
+  have hcolor : C.color u v = residualCoord n := by
+    apply Fin.ext
+    simpa [residualCoord] using (residual_val_eq C hres)
+  constructor
+  · simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact Or.inr ⟨v, huv, hcolor⟩
+  · simp only [active, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact Or.inl ⟨u, huv, hcolor⟩
+
 theorem width_lt_succ_of_eq_add_delta
     {width delta : ℝ} {n : ℕ}
     (hwidth : width = (n : ℝ) + delta)
@@ -246,13 +264,13 @@ theorem leftChild_active_subset_parent_retained
     refine ⟨a.1, hav, ?_⟩
     apply Fin.ext
     have hval := congrArg Fin.val hcol
-    simpa [C, leftChildColoring, hav, retainedColor] using hval.symm
+    simpa [C, leftChildColoring, hav, retainedColor] using hval
   · apply Finset.mem_union_right
     apply (mem_outgoingRetained_iff C v.1 c).2
     refine ⟨w.1, hvw, ?_⟩
     apply Fin.ext
     have hval := congrArg Fin.val hcol
-    simpa [C, leftChildColoring, hvw, retainedColor] using hval.symm
+    simpa [C, leftChildColoring, hvw, retainedColor] using hval
 
 theorem rightChild_active_subset_parent_retained
     {V : Type*} [LinearOrder V]
@@ -281,13 +299,13 @@ theorem rightChild_active_subset_parent_retained
     refine ⟨a.1, hav, ?_⟩
     apply Fin.ext
     have hval := congrArg Fin.val hcol
-    simpa [C, rightChildColoring, hav, retainedColor] using hval.symm
+    simpa [C, rightChildColoring, hav, retainedColor] using hval
   · apply Finset.mem_union_right
     apply (mem_outgoingRetained_iff C v.1 c).2
     refine ⟨w.1, hvw, ?_⟩
     apply Fin.ext
     have hval := congrArg Fin.val hcol
-    simpa [C, rightChildColoring, hvw, retainedColor] using hval.symm
+    simpa [C, rightChildColoring, hvw, retainedColor] using hval
 
 /-- The left child satisfies the next-stage one-layer palette budget. -/
 theorem leftChild_active_card_le_next_budget
@@ -320,6 +338,7 @@ theorem leftChild_active_card_le_next_budget
         D hwidth hdelta hn v)
   by_cases hsrc : HighSource D n v.1
   · obtain ⟨w, hvw, hhigh⟩ := hsrc
+    have hsrcWitness : HighSource D n v.1 := ⟨w, hvw, hhigh⟩
     have hres : IsResidual C v.1 w :=
       (standardResidual_iff_high
         D n
@@ -334,8 +353,7 @@ theorem leftChild_active_card_le_next_budget
           n - exponent v.1 :=
       retainedActive_card_le_of_active_le_add_one_of_residual_mem
         C v.1 (honeLoss v.1) hresActive
-    simp [leftChildExponent, hsrc]
-    exact hsub.trans hret
+    simpa [leftChildExponent, hsrcWitness] using (hsub.trans hret)
   · have hretAct :
         (retainedActive C v.1).card ≤
           (active C v.1).card :=
@@ -384,6 +402,7 @@ theorem rightChild_active_card_le_next_budget
         D hwidth hdelta hn v)
   by_cases hsink : HighSink D n v.1
   · obtain ⟨u, huv, hhigh⟩ := hsink
+    have hsinkWitness : HighSink D n v.1 := ⟨u, huv, hhigh⟩
     have hres : IsResidual C u v.1 :=
       (standardResidual_iff_high
         D n
@@ -398,8 +417,7 @@ theorem rightChild_active_card_le_next_budget
           n - exponent v.1 :=
       retainedActive_card_le_of_active_le_add_one_of_residual_mem
         C v.1 (honeLoss v.1) hresActive
-    simp [rightChildExponent, hsink]
-    exact hsub.trans hret
+    simpa [rightChildExponent, hsinkWitness] using (hsub.trans hret)
   · have hretAct :
         (retainedActive C v.1).card ≤
           (active C v.1).card :=
