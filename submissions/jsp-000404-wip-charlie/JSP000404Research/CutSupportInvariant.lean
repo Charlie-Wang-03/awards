@@ -59,7 +59,7 @@ theorem exists_gapQuotients_rotation
     have hRC := R.rays_perm_canonical
     have hCE : C.rays.Perm explicitRays := by
       rw [hdecomp]
-      exact List.Perm.append_comm low high
+      exact List.perm_append_comm low high
     exact hRC.trans hCE
 
   have hpermValues :
@@ -117,11 +117,12 @@ theorem exists_gapQuotients_rotation
       explicitValues.Pairwise (· ≤ ·) := by
     unfold explicitValues
     rw [List.pairwise_map]
-    intro a ha b hb hab
-    unfold cutNormalizedRayTheta
-    have hdiv :=
-      div_le_div_of_nonneg_right hab Real.pi_pos.le
-    exact mul_le_mul_of_nonneg_left hdiv ht.le
+    exact hexplicitSortedRays.imp (by
+      intro a b hab
+      unfold cutNormalizedRayTheta
+      have hdiv :=
+        div_le_div_of_nonneg_right hab Real.pi_pos.le
+      exact mul_le_mul_of_nonneg_left hdiv ht.le)
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
@@ -153,8 +154,11 @@ theorem exists_gapQuotients_rotation
     have hlenR :
         (R.normalizedValues t).length = 0 := by
       rw [hvaluesEq, hlen0]
-    exact R.normalizedValues_nonempty t
-      (List.length_eq_zero.mp hlenR)
+    have hnil : R.normalizedValues t = [] := by
+      cases h : R.normalizedValues t with
+      | nil => rfl
+      | cons a as => simp [h] at hlenR
+    exact R.normalizedValues_nonempty t hnil
 
   have hqCut :
       R.gapQuotients t =
@@ -222,7 +226,7 @@ theorem exists_gapQuotients_rotation
             have hcanon :
                 C.angles = a :: as := by
               rw [← hangleDecomp, hlowList, hhighList]
-              rfl
+              simp
             rw [hcanon]
             simpa [sub_eq_add_neg, add_assoc] using htrans
         | cons b bs =>
