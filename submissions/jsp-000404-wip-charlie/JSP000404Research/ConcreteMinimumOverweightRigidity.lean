@@ -193,8 +193,10 @@ theorem minimum_deleted_ray_adjacent_zero_at_survivor_of_child_bound
           ((C i).restrictDelete r hir hother) t := by
     rw [heq]
     omega
-  exact adjacent_zero_of_no_unit_gain
-    (C i) hir hother pre post hsplit ht hno
+  cases pre <;> cases post <;>
+    simpa using
+      (adjacent_zero_of_no_unit_gain
+        (C i) hir hother _ _ hsplit ht hno)
 
 /-- Concrete fixed-t deletion of a minimum-exponent centre leaves every
 survivor exponent unchanged. -/
@@ -371,8 +373,10 @@ theorem minimum_deleted_ray_adjacent_zero_at_survivor
           ((C i).restrictDelete r hir hother) t := by
     rw [heq]
     omega
-  exact adjacent_zero_of_no_unit_gain
-    (C i) hir hother pre post hsplit ht hno
+  cases pre <;> cases post <;>
+    simpa using
+      (adjacent_zero_of_no_unit_gain
+        (C i) hir hother _ _ hsplit ht hno)
 
 /-- Strong negative form: at every survivor, the deleted minimum-centre ray
 cannot have positive quotient gaps on both cyclic sides. -/
