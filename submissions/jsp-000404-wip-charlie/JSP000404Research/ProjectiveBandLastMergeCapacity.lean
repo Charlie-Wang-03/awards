@@ -48,14 +48,14 @@ def mergeLastColor
 @[simp] theorem mergeLastColor_last
     {n : ℕ} (hn : 1 ≤ n) :
     mergeLastColor hn (Fin.last n) =
-      (0 : Fin n) := by
+      (⟨0, by omega⟩ : Fin n) := by
   apply Fin.ext
   simp [mergeLastColor]
 
 @[simp] theorem mergeLastColor_zero
     {n : ℕ} (hn : 1 ≤ n) :
     mergeLastColor hn (0 : Fin (n + 1)) =
-      (0 : Fin n) := by
+      (⟨0, by omega⟩ : Fin n) := by
   apply Fin.ext
   simp [mergeLastColor, hn]
 
@@ -90,7 +90,7 @@ noncomputable def mergeLastPartition
     let old := P.edgeColor u v
     by_cases hlast : old.val = n
     · have hmerged :
-          mergeLastColor hn old = (0 : Fin n) := by
+          mergeLastColor hn old = (⟨0, by omega⟩ : Fin n) := by
         apply Fin.ext
         simp [mergeLastColor, hlast]
       rw [hmerged]
@@ -230,6 +230,7 @@ theorem mergeLastPartition_active_card_add_one_le
     Finset.card_le_card hsub
   have hSpos : 1 ≤ S.card := by
     exact Finset.card_pos.mpr ⟨Fin.last n, hlast⟩
+  dsimp [S] at hcardImage hSpos
   omega
 
 /-- Generic n+1 to n weighted compression theorem. -/
@@ -258,12 +259,16 @@ theorem cluster_capacity_of_last_merge
   have hactive :
       ∀ v, (active M v).card ≤ n - exponent v := by
     intro v
+    have hexpv := hexponent v
     by_cases hsat :
         (active P v).card = (n + 1) - exponent v
     · have hb := hsaturated v hsat
       have hdrop :=
         mergeLastPartition_active_card_add_one_le
           hn P wrapBit hwrap v hb.1 hb.2
+      have hdrop' :
+          (active M v).card + 1 ≤ (active P v).card := by
+        simpa [M] using hdrop
       omega
     · have holdv := hold v
       have hstrict :
@@ -272,6 +277,9 @@ theorem cluster_capacity_of_last_merge
       have hmono :=
         mergeLastPartition_active_card_le
           hn P wrapBit hwrap v
+      have hmono' :
+          (active M v).card ≤ (active P v).card := by
+        simpa [M] using hmono
       omega
   exact BinaryEdgePartition.cluster_capacity_of_active_le
     M exponent (fun v => n - exponent v)
@@ -289,8 +297,8 @@ outlet. -/
 theorem projectiveBand_capacity_of_last_merge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t delta lam : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
