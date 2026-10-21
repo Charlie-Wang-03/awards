@@ -1,7 +1,6 @@
 import JSP000404Research.FourPlanarRadonCrossingExtraction
 import JSP000404Research.PlanarLowerTwoFourSharpCrossingObstruction
 import JSP000404Research.StrictExposureConvexHull
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
@@ -42,7 +41,11 @@ theorem lower_two_no_sharp_with_three_other_centres
     four_strictlyExposed_convexHull_exclusions
       hsu hsv hsw huv huw hvw
       (hExposure s) (hExposure u) (hExposure v) (hExposure w)
-  let f : Fin 4 → Plane := ![p s, p u, p v, p w]
+  let f : Fin 4 → Plane := fun k =>
+    if k = 0 then p s
+    else if k = 1 then p u
+    else if k = 2 then p v
+    else p w
   have hS :
       f 0 ∉ convexHull ℝ ({f 1, f 2, f 3} : Set Plane) := by
     simpa [f] using hHullS
