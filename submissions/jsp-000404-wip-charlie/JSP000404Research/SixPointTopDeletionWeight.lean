@@ -59,7 +59,7 @@ theorem five_survivor_weight_ge_six_point_profile_of_four_gains
         Finset.card_univ, hcard]
   have hRcard : R.card = 1 := by
     dsimp [R]
-    rw [Finset.card_sdiff hgoodSub, hScard, hgoodCard]
+    rw [Finset.card_sdiff_of_subset hgoodSub, hScard, hgoodCard]
   have hgoodLower :
       4 * 2 ^ (n - 2)
         ≤
@@ -96,10 +96,12 @@ theorem five_survivor_weight_ge_six_point_profile_of_four_gains
         =
       (∑ v ∈ good, 2 ^ childExponent v) +
       (∑ v ∈ R, 2 ^ childExponent v) := by
-    have hsd :=
-      Finset.sum_sdiff hgoodSub
-        (fun v => 2 ^ childExponent v)
-    dsimp [R]
+    have hsd :
+        (∑ v ∈ R, 2 ^ childExponent v) +
+          (∑ v ∈ good, 2 ^ childExponent v) =
+        ∑ v ∈ S, 2 ^ childExponent v := by
+      simpa [R] using
+        (Finset.sum_sdiff (f := fun v => 2 ^ childExponent v) hgoodSub)
     omega
   have hchild :
       4 * 2 ^ (n - 2) + 2 ^ (n - 3)
@@ -109,10 +111,12 @@ theorem five_survivor_weight_ge_six_point_profile_of_four_gains
     omega
   have hn2 : n - 2 = (n - 3) + 1 := by omega
   have hn1 : n - 1 = (n - 3) + 2 := by omega
-  rw [hn2, hn1, pow_add, pow_add] at hchild ⊢
+  rw [hn2, pow_add] at hchild
+  rw [hn1, pow_add]
   norm_num at hchild ⊢
-  simpa [S, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc]
-    using hchild
+  simpa [S, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc,
+    Nat.left_distrib, Nat.right_distrib, Nat.add_assoc, Nat.add_comm,
+    Nat.add_left_comm] using hchild
 
 #print axioms five_survivor_weight_ge_six_point_profile_of_four_gains
 
