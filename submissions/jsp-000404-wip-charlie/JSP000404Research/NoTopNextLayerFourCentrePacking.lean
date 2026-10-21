@@ -153,6 +153,49 @@ theorem no_three_next_support_one_with_fourth_low_support
   omega
 
 
+/-- Unconditional four-next-layer geometric form: the fourth next-layer
+centre automatically has quotient support one or two, by the genuine
+deficit-two classification. Hence any four distinct next-layer centres
+cannot contain three support-one centres. In particular, this restriction
+applies to the no-top n=3 five-centre overweight profile. -/
+theorem no_three_support_one_among_four_second_layer_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {s a b c : V}
+    (hsa : s ≠ a) (hsb : s ≠ b) (hsc : s ≠ c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (Cs : CentreProjectiveCycle hp s)
+    (Ca : CentreProjectiveCycle hp a)
+    (Cb : CentreProjectiveCycle hp b)
+    (Cc : CentreProjectiveCycle hp c)
+    (hS : centreExponent Cs t = n - 2)
+    (hA : centreExponent Ca t = n - 2)
+    (hB : centreExponent Cb t = n - 2)
+    (hC : centreExponent Cc t = n - 2)
+    (hsupS : positiveSupport (centreQuotient Cs t) = 1)
+    (hsupA : positiveSupport (centreQuotient Ca t) = 1)
+    (hsupB : positiveSupport (centreQuotient Cb t) = 1) :
+    False := by
+  have hCclass :=
+    actual_deficit_two_support_one_or_two
+      Cc hn hdelta0 hdeltaHalf ht hC
+  have hsupC : positiveSupport (centreQuotient Cc t) ≤ 2 := by
+    rcases hCclass with h | h <;> omega
+  exact no_three_next_support_one_with_fourth_low_support
+    hp hcap hn hdelta0 hdeltaHalf ht hlam
+    hsa hsb hsc hab hac hbc
+    Cs Ca Cb Cc
+    hS hA hB hsupS hsupA hsupB hsupC
+
 #print axioms no_three_next_support_one_with_fourth_low_support
+#print axioms no_three_support_one_among_four_second_layer_centres
 
 end JSP000404Research
