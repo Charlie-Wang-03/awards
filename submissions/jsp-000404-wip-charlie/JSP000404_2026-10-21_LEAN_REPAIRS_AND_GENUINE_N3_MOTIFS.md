@@ -335,3 +335,20 @@ The WIP main theorem still has the same one admitted `sorry` at `PlanarLowerBran
 ### Strict outstanding goal
 
 The main `PlanarLowerBranchProofAdmittedWIP.lean` still retains its one explicit `sorry` at line 900. This is the globally source-unique six-source NET debt payment (true Boolean holes, no reuse of reserved dyadic slack, original-vertex NET duplicate debt, covered/mixed/soft/rigid/twin debts) and **is not discharged** by zero-gap angular slack or focused build repair. Exact planar n=3 five-centre motifs A and B are still not excluded; full module graph build still fails independently on historical files. These modules are research, not a complete proof submission.
+
+
+### Fifth continuation: direct B-profile narrow-gap corollary VERIFIED
+
+Following the first zero-gap slack certificate, the strengthened direct five-centre theorem
+`top_next_three_has_narrow_unit_gap_companion` passed [CI #39630941142](https://github.com/Charlie-Wang-03/awards/actions/runs/39630941142), 3,503 Lake jobs, `#print axioms` without `sorryAx`.
+
+For five *distinct actual planar centres* with an exponent-2 top and exponent-1 next centre at `n=3`, some one of the other three genuine centres has simultaneously
+`positiveSupport(q)=3`, `forall r, q(r)<=1`, and
+`forall r, q(r)=0 -> t*g(r)<=delta`.
+Since the support is three and every positive quotient equals one, this is an exact three-unit-quotient centre with every zero quotient angular gap bounded by `delta/t` when `t>0`.
+
+The statement is only a **necessary profile for unresolved B**, not a contradiction, and does not close the five-centre global dyadic capacity.
+
+### Fifth continuation: continuing historical compile repairs
+
+Changes additionally repair/attempt compile gates for `CutSupportInvariant.lean`, `CutQuotientRotation.lean`, `MixedSupportTransitionCeiling.lean`, and `ThirdLayerSupportOneMultiplicity.lean`. Each requires its own later focused CI success before being described as certified. All are orthogonal to the WIP's single remaining global `sorry`.
