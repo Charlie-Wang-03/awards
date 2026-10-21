@@ -1,5 +1,6 @@
 import JSP000404Research.SharpPinnedSupportThreeShape
 import JSP000404Research.ConcreteCentreDeletionGain
+import JSP000404Research.ConcreteMaxStableCentre
 import Mathlib.Tactic
 
 /-!
@@ -166,7 +167,7 @@ theorem sharp_support_three_delete_sharp_gain
           let a := rayThetaAt hp i first
           let preA := mid.map (rayThetaAt hp i)
           let x := rayThetaAt hp i del
-          let prefix := quotientList t (normalizedPrefixGaps a preA)
+          let qPrefix := quotientList t (normalizedPrefixGaps a preA)
           let qLeft :=
             Nat.floor
               (t * ((x - preA.getLastD a) / Real.pi))
@@ -178,33 +179,33 @@ theorem sharp_support_three_delete_sharp_gain
             simp [CentreProjectiveCycle.angles,
               hsplitLast, a, preA, x]
           have hqParent :
-              qs = prefix ++ [qLeft, qWrap] := by
+              qs = qPrefix ++ [qLeft, qWrap] := by
             dsimp [qs]
             rw [CentreProjectiveCycle.gaps, hParentAngles,
               normalizedProjectiveGaps_last_parent]
-            simp [prefix, qLeft, qWrap,
+            simp [qPrefix, qLeft, qWrap,
               quotientList, List.map_append]
           have hkLen :
               (first :: mid).length =
-                (prefix ++ [qLeft]).length := by
-            dsimp [prefix, preA]
+                (qPrefix ++ [qLeft]).length := by
+            dsimp [qPrefix, preA]
             simp [quotientList, normalizedPrefixGaps,
               successiveDiffsFrom_length]
           have hrotParent :
               qs.rotate (first :: mid).length =
-                qWrap :: (prefix ++ [qLeft]) := by
+                qWrap :: (qPrefix ++ [qLeft]) := by
             rw [hqParent, hkLen]
             rw [List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
-              qWrap :: (prefix ++ [qLeft]) =
+              qWrap :: (qPrefix ++ [qLeft]) =
                 qFirst :: (qmid ++ [qLast]) := by
             rw [← hrotParent]
             simpa using hqrot'
           have hWrapEq : qWrap = qFirst :=
             (List.cons.inj hrotEq).1
           have htailEq :
-              prefix ++ [qLeft] =
+              qPrefix ++ [qLeft] =
                 qmid ++ [qLast] :=
             (List.cons.inj hrotEq).2
           have hLeftEq : qLeft = qLast := by
@@ -232,7 +233,7 @@ theorem sharp_support_three_delete_sharp_gain
           let x := rayThetaAt hp i del
           let y := rayThetaAt hp i next
           let tailA := tail.map (rayThetaAt hp i)
-          let prefix := quotientList t (normalizedPrefixGaps a preA)
+          let qPrefix := quotientList t (normalizedPrefixGaps a preA)
           let suffix :=
             quotientList t (normalizedSuffixGaps y tailA) ++
               [Nat.floor
@@ -251,40 +252,40 @@ theorem sharp_support_three_delete_sharp_gain
               hsplitInterior, a, preA, x, y, tailA]
           have hqParent :
               qs =
-                prefix ++ [qLeft, qRight] ++ suffix := by
+                qPrefix ++ [qLeft, qRight] ++ suffix := by
             dsimp [qs]
             rw [CentreProjectiveCycle.gaps, hParentAngles,
               normalizedProjectiveGaps_interior_parent]
-            simp [prefix, suffix, qLeft, qRight,
+            simp [qPrefix, suffix, qLeft, qRight,
               quotientList, List.map_append,
               List.append_assoc]
           have hkLen :
               (first :: mid).length =
-                (prefix ++ [qLeft]).length := by
-            dsimp [prefix, preA]
+                (qPrefix ++ [qLeft]).length := by
+            dsimp [qPrefix, preA]
             simp [quotientList, normalizedPrefixGaps,
               successiveDiffsFrom_length]
           have hqRegroup :
               qs =
-                (prefix ++ [qLeft]) ++
+                (qPrefix ++ [qLeft]) ++
                   qRight :: suffix := by
             rw [hqParent]
             simp [List.append_assoc]
           have hrotParent :
               qs.rotate (first :: mid).length =
-                qRight :: (suffix ++ prefix ++ [qLeft]) := by
+                qRight :: (suffix ++ qPrefix ++ [qLeft]) := by
             rw [hqRegroup, hkLen]
             rw [List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
-              qRight :: (suffix ++ prefix ++ [qLeft]) =
+              qRight :: (suffix ++ qPrefix ++ [qLeft]) =
                 qFirst :: (qmid ++ [qLast]) := by
             rw [← hrotParent]
             simpa using hqrot'
           have hRightEq : qRight = qFirst :=
             (List.cons.inj hrotEq).1
           have htailEq :
-              suffix ++ prefix ++ [qLeft] =
+              suffix ++ qPrefix ++ [qLeft] =
                 qmid ++ [qLast] :=
             (List.cons.inj hrotEq).2
           have hLeftEq : qLeft = qLast := by
