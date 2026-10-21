@@ -55,6 +55,7 @@ theorem quotientList_anglesAfterProjectiveCut_perm
             simpa [sub_eq_add_neg] using
               normalizedProjectiveGaps_map_add b (-c) bs
           rw [hgaps]
+           simp
   | cons a as =>
       cases high with
       | nil =>
@@ -71,6 +72,7 @@ theorem quotientList_anglesAfterProjectiveCut_perm
                 a (Real.pi - c) as
             simpa [sub_eq_add_neg, add_assoc] using h
           rw [hgaps]
+           simp
       | cons b bs =>
           have hrot :=
             normalizedProjectiveGaps_after_cut_eq_rotate
@@ -104,7 +106,7 @@ theorem gapQuotients_perm_canonical
     have hRC := R.rays_perm_canonical
     have hCE : C.rays.Perm explicitRays := by
       rw [hdecomp]
-      exact List.Perm.append_comm low high
+      exact List.perm_append_comm low high
     exact hRC.trans hCE
 
   have hpermValues :
@@ -160,11 +162,12 @@ theorem gapQuotients_perm_canonical
       explicitValues.Pairwise (· ≤ ·) := by
     unfold explicitValues
     rw [List.pairwise_map]
-    intro a ha b hb hab
-    unfold cutNormalizedRayTheta
-    have hdiv :=
-      div_le_div_of_nonneg_right hab Real.pi_pos.le
-    exact mul_le_mul_of_nonneg_left hdiv ht.le
+    exact hexplicitSortedRays.imp (by
+      intro a b hab
+      unfold cutNormalizedRayTheta
+      have hdiv :=
+        div_le_div_of_nonneg_right hab Real.pi_pos.le
+      exact mul_le_mul_of_nonneg_left hdiv ht.le)
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
@@ -189,8 +192,11 @@ theorem gapQuotients_perm_canonical
     have hlenR :
         (R.normalizedValues t).length = 0 := by
       rw [hvaluesEq, hlen0]
-    exact R.normalizedValues_nonempty t
-      (List.length_eq_zero.mp hlenR)
+    have hnil : R.normalizedValues t = [] := by
+      cases h : R.normalizedValues t with
+      | nil => rfl
+      | cons a as => simp [h] at hlenR
+    exact R.normalizedValues_nonempty t hnil
 
   have hcutQuot :
       linearCyclicGapQuotients t
@@ -202,7 +208,7 @@ theorem gapQuotients_perm_canonical
         ∃ a as, cutAngles = a :: as := by
       cases h : cutAngles with
       | nil => exact False.elim (hcutNe h)
-      | cons a as => exact ⟨a, as, h⟩
+      | cons a as => exact ⟨a, as, rfl⟩
     rw [hcut]
     rw [linearCyclicGapQuotients_eq_floor_cyclicGapsAt]
     exact floor_scaled_cyclicGaps_eq_quotientList t a as
@@ -214,10 +220,9 @@ theorem gapQuotients_perm_canonical
     rfl
 
   have hpermCut :
-      quotientList t
-          (normalizedProjectiveGaps cutAngles)
-        ~
-      quotientList t C.gaps := by
+(quotientList t
+          (normalizedProjectiveGaps cutAngles)).Perm
+      (quotientList t C.gaps) := by
     have h :=
       quotientList_anglesAfterProjectiveCut_perm
         t c lowAngles highAngles
