@@ -64,7 +64,7 @@ theorem lower_two_no_sharp_with_three_other_centres
     exact lower_two_no_sharp_of_crossing_diagonals
       (s := s) (b := v) (c := u) (d := w)
       hp hcap hdelta0 hdeltaHalf ht hlam C
-      hsu hsv hsw huv.symm hvw huw.symm hcross hexp
+      hsv hsu hsw huv.symm hvw huw hcross hexp
   · have hcross :
         (segment ℝ (p s) (p v) ∩
           segment ℝ (p u) (p w)).Nonempty := by
