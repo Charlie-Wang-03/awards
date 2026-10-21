@@ -80,9 +80,8 @@ theorem normalizedValues_pairwise
   exact R.cutTheta_sorted.imp (by
     intro a b hab
     unfold cutNormalizedRayTheta
-    have hdiv :=
-      div_le_div_of_nonneg_right hab Real.pi_pos.le
-    exact mul_le_mul_of_nonneg_left hdiv ht0)
+    exact div_le_div_of_nonneg_right
+      (mul_le_mul_of_nonneg_left hab ht0) Real.pi_pos.le)
 
 theorem normalizedValues_mem_bounds
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -165,7 +164,7 @@ theorem occupiedNatBands_normalizedValues_card_eq_occupiedCut
         (fun j : OtherVertex i =>
           Nat.floor (cutNormalizedRayTheta hp t c i j))
   have hfin :
-      (R.normalizedValues t).map Nat.floor |>.toFinset =
+      ((R.normalizedValues t).map Nat.floor).toFinset =
         (cutFloorBandList C t c).toFinset := by
     ext m
     exact hpermFloor.mem_iff
@@ -209,11 +208,13 @@ theorem normalizedValues_explicit_cut_rotation
     intro j hj
     unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_sub_of_ge hp (hhigh j hj)]
+    simp only [Function.comp_apply]
     ring
   · apply List.map_congr_left
     intro j hj
     unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hlow j hj)]
+    simp only [Function.comp_apply]
     ring
 
 /-- Main list-exponent invariance at an arbitrary cut-sorted centre cycle. -/
@@ -295,9 +296,8 @@ theorem exponent_eq_centreExponent
     exact hexplicitSorted.imp (by
       intro a b hab
       unfold cutNormalizedRayTheta
-      have hdiv :=
-        div_le_div_of_nonneg_right hab Real.pi_pos.le
-      exact mul_le_mul_of_nonneg_left hdiv ht.le)
+      exact div_le_div_of_nonneg_right
+        (mul_le_mul_of_nonneg_left hab ht.le) Real.pi_pos.le)
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
