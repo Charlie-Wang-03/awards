@@ -42,7 +42,7 @@ theorem ternary_dyadic_sum_exact
     _ = Fintype.card V +
           ((Finset.univ : Finset V).filter (fun i => k i = 1)).card +
           3 * ((Finset.univ : Finset V).filter (fun i => k i = 2)).card := by
-            simp [Finset.sum_add_distrib, Finset.mul_sum]
+            simp [Finset.sum_add_distrib, Finset.sum_ite, mul_comm]
 
 /-- The actual planar n=3 five-centre mass has an exact finite census.
 No extra geometric assumptions beyond AngleCap are introduced. -/
