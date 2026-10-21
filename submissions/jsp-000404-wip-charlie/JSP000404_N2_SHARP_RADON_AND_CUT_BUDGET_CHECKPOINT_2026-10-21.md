@@ -109,3 +109,47 @@ much larger unrestricted six-source payment for n>=3.
 - The old full-tree Fast Incremental Lean still has unrelated historical
   module failures; do not conflate them with extra admitted root `sorry`s.
 - No new root axioms or unapproved hole/surplus credits were introduced.
+
+
+## Addendum — 2026-10-21 Radon and sharp-centre closure
+
+The statements above saying that Radon 2+2 extraction or the
+crossing-diagonal sharp obstruction were still outstanding are
+superseded by the following **independently kernel-audited** evidence:
+
+- `FourPlanarRadonCrossingExtraction.lean`:
+  `four_planar_hull_exclusions_force_crossing` proves a genuine
+  crossing pair among three possible pairings from the four *actual*
+  convex-hull exclusions, via sixteen exhaustive Radon-membership
+  branches. [CI #39464265535](https://github.com/Charlie-Wang-03/awards/actions/runs/39464265535)
+  **PASS**, 3209 Lake jobs; no `sorryAx`.
+- `CrossingDiagonalsQuadrilateralAngleSum.lean` was repaired in the
+  genuine triangle-angle-sum proof (in particular, the meeting point
+  may coincide with one of the other diagonal endpoints).
+  `crossing_diagonals_four_angles_sum_two_pi` and
+  `PlanarLowerTwoFourSharpCrossingObstruction.lean`'s
+  `lower_two_no_sharp_of_crossing_diagonals` both pass
+  [CI #39551313684](https://github.com/Charlie-Wang-03/awards/actions/runs/39551313684),
+  3456 jobs and printed axioms `[propext, Classical.choice, Quot.sound]`.
+- The actual `Fin 4` geometric theorem
+  `lower_two_four_no_sharp_fin_four` closes the three crossing
+  configurations for EVERY proposed exponent-one vertex using the
+  genuine `CentreProjectiveCycle` data.
+  [CI #39551313787](https://github.com/Charlie-Wang-03/awards/actions/runs/39551313787)
+  **PASS**, 3460 jobs, printed axioms
+  `[propext, Classical.choice, Quot.sound]`.
+
+The next, **not yet certified at this addendum**, bridge is to avoid
+transporting centre cycles when converting an arbitrary type `V`
+with `Fintype.card V = 4` into `Fin 4`. The new file
+`PlanarLowerTwoFourActualQuartet.lean` uses the Fin4 Radon partition
+ONLY for the selected four point positions, while keeping all quotient
+and exponent data on the original `V`. The subsequent
+`PlanarLowerTwoFourUnconditionalCapacity.lean` derives the genuine
+unconditional capacity from this quartet theorem and an equivalence
+`Fin 4 ≃ V`. Do not count either theorem as kernel-certified
+until its dedicated CI succeeds.
+
+The sole unrestricted six-source global `sorry` in the root WIP
+remains open. Even complete closure of n=2 with four vertices is a
+subcase, not the original JSP-000404 proof.
