@@ -218,7 +218,28 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
           hp hcap hdelta0 hdeltaHalf htTwo hlam cycles)
     · exact planar_lower_branch_known_small_centre_dyadic_capacity
         hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
-  · by_cases hfiveNoSecond :
+  · -- At this point the first two genuine planar branches and every
+    -- configuration of at most four centres have been eliminated.
+    -- The unique admitted six-source payment is therefore needed only
+    -- for n >= 3 and at least five actual projected centres.
+    have hn3 : 3 ≤ n := by
+      have hnOne : n ≠ 1 := by
+        intro h
+        exact hknownClosed (Or.inl h)
+      have hnTwo : n ≠ 2 := by
+        intro h
+        exact hknownClosed (Or.inr (Or.inl h))
+      omega
+    have hcard5 : 5 ≤ Fintype.card (ProjectionOrdered V) := by
+      by_contra h
+      have hcard4 : Fintype.card (ProjectionOrdered V) ≤ 4 := by omega
+      have hsmall :
+          Fintype.card (ProjectionOrdered V) ≤ 2 ∨
+          (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
+          (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n) := by
+        omega
+      exact hknownClosed (Or.inr (Or.inr hsmall))
+    by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
         ∃ s : ProjectionOrdered V,
