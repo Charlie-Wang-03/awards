@@ -90,7 +90,7 @@ theorem top_exponent_unique_of_card_ge_three
         Fintype.card V = (Finset.univ : Finset V).card := by simp
         _ ≤ ({s, a} : Finset V).card :=
           Finset.card_le_card hsub
-        _ ≤ 2 := by simp
+        _ ≤ 2 := by simp [hsa, Ne.symm hsa]
     omega
   obtain ⟨b, hbs, hba⟩ := hthird
   exact no_two_top_exponents_with_third
