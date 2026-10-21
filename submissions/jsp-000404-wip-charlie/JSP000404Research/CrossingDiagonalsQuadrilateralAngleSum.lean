@@ -82,7 +82,7 @@ theorem crossing_diagonals_four_angles_sum_two_pi
       hbc.symm hcd hqbdW
   have hD :=
     EuclideanGeometry.angle_add_of_ne_of_ne
-      hcd.symm had.symm hqacW
+      hcd.symm had.symm hqacW.symm
 
   have hABQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
