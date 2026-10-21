@@ -137,9 +137,13 @@ theorem no_top_with_two_support_one_deficit_three
     rw [certB.qe_eq, hB]
     omega
 
+  have hcert0 : (cert (0 : Fin 3)).qe = certTop.qe := by rfl
+  have hcert1 : (cert (1 : Fin 3)).qe = certA.qe := by rfl
+  have hcert2 : (cert (2 : Fin 3)).qe = certB.qe := by rfl
   have hqsum' :
       certTop.qe + certA.qe + certB.qe ≤ 2 * n := by
-    simpa [cert, Cfam, centre, Fin.sum_univ_succ] using hqsum
+    simpa [Fin.sum_univ_succ, hcert0, hcert1, hcert2,
+      add_assoc] using hqsum
   rw [hqTop, hqA, hqB] at hqsum'
   omega
 
