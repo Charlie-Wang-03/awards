@@ -107,8 +107,12 @@ theorem centreExponent_gain_delete_first_ray
   rw [hParentAngles, hChildAngles]
   exact listExponent_delete_first_general_gain
     ht horder hdel0 hlastPi
-    (by simpa [del] using hFirst)
-    (by simpa [del] using hLast)
+    (by
+      simpa [del, firstNormalizedGap] using
+        (Nat.one_le_floor_iff _).mp hFirst)
+    (by
+      simpa [del, lastNormalizedGap] using
+        (Nat.one_le_floor_iff _).mp hLast)
 
 /-- Interior-position deletion. -/
 theorem centreExponent_gain_delete_interior_ray
