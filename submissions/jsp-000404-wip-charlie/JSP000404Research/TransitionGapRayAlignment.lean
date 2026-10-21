@@ -27,7 +27,7 @@ namespace JSP000404Research
 open Real
 
 /-- Successive differences split cleanly at an appended nonempty tail. -/
-theorem successiveDiffsFrom_append_cons
+theorem transitionRay_successiveDiffsFrom_append_cons
     (a b : ℝ) (xs bs : List ℝ) :
     successiveDiffsFrom a (xs ++ b :: bs) =
       successiveDiffsFrom a xs ++
@@ -62,7 +62,7 @@ theorem projectiveGaps_append_cons
         (b - xs.getLastD a) ::
           (successiveDiffsFrom b bs ++
             [a + Real.pi - bs.getLastD b]) := by
-  rw [projectiveGaps, successiveDiffsFrom_append_cons]
+  rw [projectiveGaps, transitionRay_successiveDiffsFrom_append_cons]
   rw [gapRay_getLastD_append_cons a xs b bs]
   simpa [List.append_assoc]
 
@@ -331,7 +331,7 @@ theorem centre_gap_eq_wrap_cut
     rw [List.getLast_eq_getLastD]
   rw [heq, hlast]
 
-#print axioms successiveDiffsFrom_append_cons
+#print axioms transitionRay_successiveDiffsFrom_append_cons
 #print axioms distinguished_entry_eq_of_decompositions
 #print axioms centre_gap_eq_ordinary_cut
 #print axioms centre_gap_eq_wrap_cut
