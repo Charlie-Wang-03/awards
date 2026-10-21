@@ -97,3 +97,63 @@ of all JSP-000404 submissions and does not assert competitive priority.
 
 No new axioms, no added `sorry`, no mathematical solver or complete-formalization
 credit claim, and no upstream submission of the incomplete original theorem.
+
+
+## Follow-up: exact profile equivalence and verified historical repairs
+
+New Lean source changes on the same research branch, verified by dedicated GitHub
+Actions on 2026-10-21:
+
+| Scope | Lean file / fully qualified theorem | Status and evidence |
+|---|---|---|
+| Geometry-to-Hansel one-extra-band capacity | `ProjectiveBandOneLayerCapacity.lean`: `projectiveBand_oneLayer_capacity` | [focused success #39592787355](https://github.com/Charlie-Wang-03/awards/actions/runs/39592787355) |
+| Concrete deletion exponent monotonicity | `ConcreteCentreDeletionMonotone.lean`: `centreExponent_mono_restrictDelete`, plus seven related deletion lemmas | [focused success #39593267711](https://github.com/Charlie-Wang-03/awards/actions/runs/39593267711), 3232 build jobs; all eight audited declarations without `sorryAx` |
+| Exact n=3 five-centre obstruction *iff* | `ThreeFiveExactOverweightEquivalence.lean`: `ternary_dyadic_sum_exact`, `planar_three_five_dyadic_mass_exact`, `planar_three_five_overweight_iff_two_motifs` | [focused success #39593612361](https://github.com/Charlie-Wang-03/awards/actions/runs/39593612361), 3503 build jobs; all three declarations only `[propext, Classical.choice, Quot.sound]` |
+| Arbitrarily rotated projective-cut ray cycle | `CutCentreRayCycle.lean`: `exists_centreCutRayCycle`, `CentreCutRayCycle.get_rayIndex`, `CentreCutRayCycle.cutTheta_le_of_rayIndex_le` | [focused success #39594239731](https://github.com/Charlie-Wang-03/awards/actions/runs/39594239731), 3237 build jobs; no `sorryAx` in these three declarations |
+
+### Mathematical status of the exact equivalence
+
+For the actual five-centre planar setup with `n=3`, `0 <= delta < 1/2`,
+`t=3+delta`, `lam=pi/t` and the genuine `AngleCap`, write
+`k(i)=centreExponent (C i) t`. The new kernel-checked identity is
+
+`sum_i 2^k(i) = 5 + #{i : k(i)=1} + 3 * #{i : k(i)=2}`.
+
+The actual geometric top-layer rigidity from earlier certified modules
+then yields the **logical equivalence**:
+
+`sum_i 2^k(i) > 8` if and only if either
+
+* **A (no top):** `forall i, k(i)<=1` and at least four `k(i)=1`; or
+* **B (top and next):** one `k(s)=2` and exactly one `k(a)=1`.
+
+There are **no added profile assumptions in the theorem**: all cases are
+directly quantified over the genuine planar AngleCap centre cycles.
+Neither A nor B has been geometrically ruled out. Hence the theorem
+does not prove `sum_i 2^k(i) <= 8`, and it is not a proof of the
+full JSP-000404 classification.
+
+The one-extra-band theorem establishes the weaker genuine global bound
+`sum_i 2^k(i) <= 2^(n+1)`; it does not pay for the extra band.
+Concrete centre deletion monotonicity provides `k_parent <= k_child`
+at surviving centres and therefore does not alone control the aggregate
+potential. The rotated-cut ray cycle is an auxiliary geometric transport
+tool, not the missing globally non-reusing six-source allocation.
+
+### Remaining proof and build obligations
+
+1. Geometrically exclude both exact A and B motifs (or supply a sound
+   non-reusing capacity payment for them) to close `n=3`, five centres.
+2. Close the global non-reusing six-source payment for arbitrary
+   `n>=3` and at least five centres; the WIP headline in
+   `PlanarLowerBranchProofAdmittedWIP.lean` retains exactly one deliberate
+   `sorry` and thus depends on `sorryAx`.
+3. Continue repairing other historical modules from the repository's
+   fast-incremental full-target compile: independently successful focused
+   CI does **not** imply the entire research module graph passes.
+4. Keep upstream prize submission and full-proof authorship claims
+   gated on statement equivalence, mathematical closure, complete build,
+   and a `#print axioms` free of `sorryAx`.
+
+No upstream PR was opened by this follow-up, and no new axiom or proof
+admission was introduced.
