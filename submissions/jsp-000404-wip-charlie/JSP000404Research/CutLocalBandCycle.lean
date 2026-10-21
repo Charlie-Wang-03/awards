@@ -30,7 +30,7 @@ namespace JSP000404Research
 
 namespace CentreCutRayCycle
 
-def normalizedValues
+noncomputable def normalizedValues
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
@@ -39,7 +39,7 @@ def normalizedValues
     (t : ℝ) : List ℝ :=
   R.rays.map (cutNormalizedRayTheta hp t c i)
 
-def gapQuotients
+noncomputable def gapQuotients
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
@@ -48,7 +48,7 @@ def gapQuotients
     (t : ℝ) : List ℕ :=
   linearCyclicGapQuotients t (R.normalizedValues t)
 
-def exponent
+noncomputable def exponent
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V} {c : ℝ}
@@ -77,12 +77,12 @@ theorem normalizedValues_pairwise
     (R.normalizedValues t).Pairwise (· ≤ ·) := by
   unfold normalizedValues
   rw [List.pairwise_map]
-  intro a ha b hb hab
-  unfold cutNormalizedRayTheta
-  have hpi : 0 < Real.pi := Real.pi_pos
-  have hdiv :=
-    div_le_div_of_nonneg_right hab hpi.le
-  exact mul_le_mul_of_nonneg_left hdiv ht0
+  exact R.cutTheta_sorted.imp (by
+    intro a b hab
+    unfold cutNormalizedRayTheta
+    have hdiv :=
+      div_le_div_of_nonneg_right hab Real.pi_pos.le
+    exact mul_le_mul_of_nonneg_left hdiv ht0)
 
 theorem normalizedValues_mem_bounds
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -157,9 +157,8 @@ theorem occupiedNatBands_normalizedValues_card_eq_occupiedCut
   classical
   have hpermRay := R.rays_perm_canonical
   have hpermFloor :
-      (R.normalizedValues t).map Nat.floor
-        ~
-      cutFloorBandList C t c := by
+      ((R.normalizedValues t).map Nat.floor).Perm
+        (cutFloorBandList C t c) := by
     unfold normalizedValues cutFloorBandList
     simpa [List.map_map, Function.comp_def] using
       hpermRay.map
@@ -208,12 +207,14 @@ theorem normalizedValues_explicit_cut_rotation
   apply congrArg₂ (· ++ ·)
   · apply List.map_congr_left
     intro j hj
+    unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_sub_of_ge hp (hhigh j hj)]
-    rfl
+    ring
   · apply List.map_congr_left
     intro j hj
+    unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hlow j hj)]
-    rfl
+    ring
 
 /-- Main list-exponent invariance at an arbitrary cut-sorted centre cycle. -/
 theorem exponent_eq_centreExponent
@@ -235,7 +236,7 @@ theorem exponent_eq_centreExponent
     have hRC := R.rays_perm_canonical
     have hCE : C.rays.Perm explicitRays := by
       rw [hdecomp]
-      exact List.Perm.append_comm low high
+      exact List.perm_append_comm
     exact hRC.trans hCE
 
   have hpermValues :
@@ -291,11 +292,12 @@ theorem exponent_eq_centreExponent
       explicitValues.Pairwise (· ≤ ·) := by
     unfold explicitValues
     rw [List.pairwise_map]
-    intro a ha b hb hab
-    unfold cutNormalizedRayTheta
-    have hdiv :=
-      div_le_div_of_nonneg_right hab Real.pi_pos.le
-    exact mul_le_mul_of_nonneg_left hdiv ht.le
+    exact hexplicitSorted.imp (by
+      intro a b hab
+      unfold cutNormalizedRayTheta
+      have hdiv :=
+        div_le_div_of_nonneg_right hab Real.pi_pos.le
+      exact mul_le_mul_of_nonneg_left hdiv ht.le)
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
@@ -325,8 +327,11 @@ theorem exponent_eq_centreExponent
     have hlenR :
         (R.normalizedValues t).length = 0 := by
       rw [hvaluesEq, hlen0]
-    exact R.normalizedValues_nonempty t
-      (List.length_eq_zero.mp hlenR)
+    have hnil : R.normalizedValues t = [] := by
+      cases h : R.normalizedValues t with
+      | nil => rfl
+      | cons a as => simp [h] at hlenR
+    exact R.normalizedValues_nonempty t hnil
 
   have hcutExponent :
       listExponent
@@ -340,7 +345,7 @@ theorem exponent_eq_centreExponent
         ∃ a as, cutAngles = a :: as := by
       cases h : cutAngles with
       | nil => exact False.elim (hcutNe h)
-      | cons a as => exact ⟨a, as, h⟩
+      | cons a as => exact ⟨a, as, rfl⟩
     rw [hcut]
     rw [linearCyclicGapQuotients_eq_floor_cyclicGapsAt]
     rw [floor_scaled_cyclicGaps_eq_quotientList]
