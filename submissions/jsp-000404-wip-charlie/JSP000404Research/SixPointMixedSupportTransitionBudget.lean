@@ -1,7 +1,6 @@
 import JSP000404Research.ThirdLayerTransitionPacking
 import JSP000404Research.SupportOneExposureBudget
 import JSP000404Research.ConcreteDeficitThree
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!

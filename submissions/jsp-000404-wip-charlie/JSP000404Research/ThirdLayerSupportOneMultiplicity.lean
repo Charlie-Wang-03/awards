@@ -1,6 +1,5 @@
 import JSP000404Research.OneSupportGlobalBound
 import JSP000404Research.ConcreteSharpCentre
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!

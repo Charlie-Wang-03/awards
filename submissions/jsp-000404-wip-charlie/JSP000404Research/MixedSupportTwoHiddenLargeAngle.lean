@@ -1,7 +1,6 @@
 import JSP000404Research.SixPointMixedSupportTransitionBudget
 import JSP000404Research.DeficitThreeSupportTwoHidden
 import JSP000404Research.GeneralNontransitionPayment
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!

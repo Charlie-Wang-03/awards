@@ -1,7 +1,6 @@
 import JSP000404Research.HighExponentTransitionPacking
 import JSP000404Research.SupportLeTwoTransitionInterval
 import JSP000404Research.ExposedSupportIntervalGeneral
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
