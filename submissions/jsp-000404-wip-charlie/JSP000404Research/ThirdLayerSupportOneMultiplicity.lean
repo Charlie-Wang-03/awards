@@ -96,11 +96,21 @@ theorem no_top_with_two_support_one_deficit_three
       try { exact False.elim (htb huv.symm) } <;>
       try { exact False.elim (hab huv.symm) }
 
-  let Cfam : ∀ r : Fin 3, CentreProjectiveCycle hp (centre r) :=
-    ![C top,C a,C b]
+  let Cfam : ∀ r : Fin 3, CentreProjectiveCycle hp (centre r) := by
+    intro r
+    rcases r with ⟨j, hj⟩
+    interval_cases j
+    · simpa [centre] using C top
+    · simpa [centre] using C a
+    · simpa [centre] using C b
   let cert : ∀ r : Fin 3,
-      OneSupportIntervalCertificate hp t (centre r) (Cfam r) :=
-    ![certTop,certA,certB]
+      OneSupportIntervalCertificate hp t (centre r) (Cfam r) := by
+    intro r
+    rcases r with ⟨j, hj⟩
+    interval_cases j
+    · simpa [centre, Cfam] using certTop
+    · simpa [centre, Cfam] using certA
+    · simpa [centre, Cfam] using certB
 
   have hgap :
       (∑ r : Fin 3, (cert r).ge) ≤ 2 :=
