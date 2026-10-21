@@ -114,9 +114,9 @@ theorem five_survivor_weight_ge_six_point_profile_of_four_gains
   rw [hn2, pow_add] at hchild
   rw [hn1, pow_add]
   norm_num at hchild ⊢
-  simpa [S, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc,
-    Nat.left_distrib, Nat.right_distrib, Nat.add_assoc, Nat.add_comm,
-    Nat.add_left_comm] using hchild
+  simpa [S] using (show
+    2 ^ (n - 3) * 4 + 2 ^ (n - 3) * 5 ≤
+      ∑ v ∈ S, 2 ^ childExponent v from by omega)
 
 #print axioms five_survivor_weight_ge_six_point_profile_of_four_gains
 
