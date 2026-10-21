@@ -26,9 +26,9 @@ theorem six_point_support_multiplicity_reduction
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -81,12 +81,12 @@ theorem six_point_support_multiplicity_reduction
     have hcardLow :
         low.card = minima.card - support3.card := by
       dsimp [low]
-      rw [Finset.card_sdiff hsub]
+      rw [Finset.card_sdiff_of_subset hsub]
     rw [hcardLow, hminCard]
     omega
 
   obtain ⟨a,ha,b,hb,hab⟩ :=
-    Finset.two_le_card.mp hlowCard
+    Finset.one_lt_card.mp (by omega : 1 < low.card)
 
   have haMin : a ∈ minima := (Finset.mem_sdiff.mp ha).1
   have hbMin : b ∈ minima := (Finset.mem_sdiff.mp hb).1
