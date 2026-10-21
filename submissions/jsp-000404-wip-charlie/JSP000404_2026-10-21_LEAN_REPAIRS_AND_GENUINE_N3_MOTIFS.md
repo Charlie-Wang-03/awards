@@ -157,3 +157,60 @@ tool, not the missing globally non-reusing six-source allocation.
 
 No upstream PR was opened by this follow-up, and no new axiom or proof
 admission was introduced.
+
+
+## Second continuation: both n=3 motif support constraints and cut-cycle compiler closure
+
+Verification is through the linked **completed successful** dedicated GitHub
+Actions. All source files are on `research/jsp-000404-sharp-centre`.
+
+| Deliverable | Proof/Lean meaning | Verification |
+|---|---|---|
+| `ExplicitCutRayCycle.lean` | Repairs historical missing List permutation and length-zero lemmas; constructs a canonical projective-cut sorted ray cycle with explicit retained `low ++ high` split | [CI #39605503450 — SUCCESS](https://github.com/Charlie-Wang-03/awards/actions/runs/39605503450), 3,238 Lake jobs, both audited declarations without `sorryAx` |
+| `CutLocalBandCycle.lean` | Repairs noncomputable declarations, `List.Perm` membership, normalized-angle arithmetic, and implicit centre; proves `CentreCutRayCycle.exponent_eq_centreExponent`: actual canonical centre exponent is invariant under changing the projective cut | [CI #39607077023 — SUCCESS](https://github.com/Charlie-Wang-03/awards/actions/runs/39607077023), 8,973 Lake jobs, three audited declarations without `sorryAx` |
+| `TopNextSupportOneFourCentrePacking.lean` | NEW geometry: `no_top_next_support_one_with_two_low_support_companions` and `top_next_support_one_low_support_card_le_one` | [CI #39605740503 — SUCCESS](https://github.com/Charlie-Wang-03/awards/actions/runs/39605740503), 3,449 Lake jobs, only `propext`, `Classical.choice`, `Quot.sound` |
+| `NoTopNextLayerFourCentrePacking.lean` | NEW geometry: `no_three_next_support_one_with_fourth_low_support` and its unconditional next-layer consequence `no_three_support_one_among_four_second_layer_centres` | [CI #39607838427 — SUCCESS](https://github.com/Charlie-Wang-03/awards/actions/runs/39607838427), 3,499 Lake jobs, both declarations without `sorryAx` |
+
+### New geometric necessary conditions in the first unresolved n=3, five-centre case
+
+Let `k_i = centreExponent (C i) t`, with `t=3+delta`,
+`0<=delta<1/2`, `lam=pi/t`, and genuine planar `AngleCap`.
+
+The previously certified exact equivalence
+`sum_i 2^k_i > 8 <=> A or B` remains valid.
+
+* **A: no exponent-2 centre, at least four exponent-1 centres.**
+  The new theorem proves no four *distinct exponent-1 centres* can
+  include three with quotient positive support one. The previously
+  kernel-checked deficit-two support classification says such
+  exponent-1 centres have positive support either one or two.
+  **Therefore at least two of any four exponent-1 centres in A
+  have positive support exactly two.** This is a necessary condition,
+  not yet an exclusion of A.
+* **B: one exponent-2 centre and exactly one exponent-1 centre.**
+  If the unique exponent-1 centre has positive support one,
+  the new cardinal theorem proves that at most ONE of the other
+  original centres can have positive support at most two.
+  For exactly five centres, at least TWO of the three lower-exponent
+  centres must therefore have positive support at least three.
+  The alternative where the unique exponent-1 centre has
+  positive support two is **not removed** by this theorem;
+  B remains open.
+
+These use the genuine global transition-quotient packing
+`sum cert.qe <= 2*n`, not an assumed or fictional payment.
+The four-centre contradictions are `n+(n-1)+1+1>2*n`
+(top-next support-one) and `3(n-1)+1>2*n`
+(three next-layer support-one), respectively.
+
+### Honest unresolved gates
+
+The two exact planar n=3 five-centre configurations A and B are
+NOT fully excluded. Arbitrary n>=3/card>=5 global source-unique
+six-source payment, exact true Boolean holes, nonreserved slack,
+NET duplicates, fifth-centre/twin/mixed/soft debts remain OPEN.
+The principal `PlanarLowerBranchProofAdmittedWIP.lean` still has
+its original deliberate one `sorry` (`sorryAx` in the headline).
+The full historical research module graph still has other compilation
+errors. Success of the **focused** jobs is not full-tree acceptance.
+No added axiom, no new proof admission, and no upstream submission.
