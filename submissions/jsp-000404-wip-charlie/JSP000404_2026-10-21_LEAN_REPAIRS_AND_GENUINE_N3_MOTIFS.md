@@ -251,3 +251,24 @@ Two historically noncompiling geometry modules have now reached independently su
 - `ExactWitnessShortArc.lean`: [Actions #39612971496](https://github.com/Charlie-Wang-03/awards/actions/runs/39612971496), **SUCCESS**, 3229 Lake jobs. The corrected ordinary/wrap projective short-arc conclusions use actual ray-angle nonnegativity; the audited local declarations do not rely on `sorryAx`.
 
 These results do not change the principal WIP theorem's single admitted six-source payment or certify the full module tree.
+
+
+## Fourth continuation: five-centre transition obstruction and cut-saturation repair (2026-10-21)
+
+### Certified successes
+
+- **CutSaturatedEndpointDichotomy.lean**: [focused CI #39616691044](https://github.com/Charlie-Wang-03/awards/actions/runs/39616691044) **SUCCESS**; 8,976 Lake jobs, its three printed declarations have no `sorryAx`. The previously failing file required fixes to `lam` binder order, actual centre-cycle arguments, normalization/floor witness rewrites, dependent list splitting, and the precise `List.getLastD_eq_getLast?` theorem.
+- **ThreeFiveTopLowSupportPacking.lean**: [focused CI #39616347027](https://github.com/Charlie-Wang-03/awards/actions/runs/39616347027) **SUCCESS**; 3,500 Lake jobs. The new theorems `no_top_three_with_four_low_support` and `top_next_three_companions_one_support_ge_three` both report exactly `[propext, Classical.choice, Quot.sound]`, without `sorryAx`.
+
+The second theorem is a **genuine planar** restriction on the n=3, five-centre top-plus-next overweight motif B. For one true exponent-2 top centre and one true exponent-1 next centre, at least one of the other three distinct centres has positive quotient support >=3. Why: a genuine top transition costs exactly 3 units, each further support<=2 centre has a positive transition certificate, and the proved packing total is <=6; 3+4>6. The next exponent-1 centre automatically has support<=2, so all three remaining low centres cannot also have support<=2.
+
+This **does not** geometrically exclude B, prove the five-centre capacity, or pay the full six-source debt.
+
+### Unverified continuation and environment incidents
+
+- `ThreeFiveSupportThreeRigidity.lean` is a newly submitted follow-on: from `sum(q)<=3` and `centreExponent + positiveSupport = sum(q)`, support>=3 should yield exact support 3, exponent 0 and sum(q)=3. The corollary applies this to one of the other three B-companion centres. These are **pending focused Lean acceptance**, not counted as certified here.
+- `SupportTwoNarrowClusters.lean` has been revised to restore local list-alignment, support-count, and all-zero gap-mass lemmas. The initial [focused run #39617025832](https://github.com/Charlie-Wang-03/awards/actions/runs/39617025832) failed at `lake exe cache get` due to runner DNS resolution of `release.lean-lang.org`, before source compilation; the failed job was rerun. No mathematical/Lean success is inferred from an infrastructure failure.
+
+### Global closure gate
+
+The full original lower-branch theorem **still has one intentional executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean`; it still depends on `sorryAx`. The globally source-unique six-source payment for arbitrary n and original-centre cardinality remains open. Focused successful modules are not an all-tree build or a solution of JSP-000404.
