@@ -153,3 +153,33 @@ until its dedicated CI succeeds.
 The sole unrestricted six-source global `sorry` in the root WIP
 remains open. Even complete closure of n=2 with four vertices is a
 subcase, not the original JSP-000404 proof.
+
+
+## Addendum — arbitrary original labels: unconditional n=2/four closure
+
+The pending arbitrary-label bridge mentioned above is NOW kernel certified:
+- `PlanarLowerTwoFourActualQuartet.lean`:
+  `lower_two_no_sharp_with_three_other_centres`, actual original
+  finite-label centre cycles and arbitrary distinct quartet.
+- `PlanarLowerTwoFourUnconditionalCapacity.lean`:
+  `lower_two_four_original_centre_dyadic_capacity`, no `hnoTop`
+  premise, gives `sum_i (2:Nat)^(centreExponent (C i) t) <= 2^2`
+  for `Fintype.card V = 4`, actual AngleCap and t=2+delta.
+
+Both are proven by [CI #39552056989](https://github.com/Charlie-Wang-03/awards/actions/runs/39552056989),
+**PASS**, 3461 jobs; printed axioms
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`.
+The stronger original-type proof uses a `Fin4 ≃ V` ONLY to obtain
+four distinct vertex labels, not to reconstruct or transport the
+geometric ray cycles.
+
+Commit [`f1009a4d34056528c0a2d203e0c3bb0615b20830`](https://github.com/Charlie-Wang-03/awards/commit/f1009a4d34056528c0a2d203e0c3bb0615b20830)
+replaces the **conditional** `n=2 ∧ card V=4 ∧ noTop` root WIP
+branch with the **unconditional** `n=2 ∧ card V=4` branch, applying
+the verified original-type theorem directly to actual `ProjectionOrdered V`
+data and genuine `angleCap_reindexedPoint`.
+
+The three focused root WIP checks are triggered but should not be
+called PASS before their independent logs are checked.
+The final single unrestricted six-source payment `sorry` is still open:
+this is a strict reduction of its case split, not a full JSP-000404 proof.
