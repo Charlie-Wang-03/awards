@@ -34,7 +34,7 @@ noncomputable def centreCutRayCycleOfSplit
   have hperm : C.rays.Perm rays := by
     dsimp [rays]
     rw [hdecomp]
-    exact List.Perm.append_comm low high
+    exact List.perm_append_comm
   have hnodup : rays.Nodup :=
     (hperm.nodup_iff).mp C.nodup
   have hcomplete : rays.toFinset = Finset.univ := by
@@ -50,7 +50,11 @@ noncomputable def centreCutRayCycleOfSplit
     have hlen := hperm.length_eq
     rw [hnil] at hlen
     have : C.rays.length = 0 := by simpa using hlen
-    exact C.nonempty (List.length_eq_zero.mp this)
+    have hcNil : C.rays = [] := by
+      cases hc : C.rays with
+      | nil => rfl
+      | cons a as => simp [hc] at this
+    exact C.nonempty hcNil
   have hcanonPair :
       low.Pairwise
           (fun a b =>
