@@ -67,7 +67,6 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
             congrArg List.length hqrot
           rw [List.length_rotate, hqLen] at hrotLen
           simp at hrotLen
-          omega
       | cons b bs =>
           have hrays :
               C.rays = del :: b :: bs := by
@@ -104,7 +103,7 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
             rw [hqParent] at hqEq
             have h :=
               congrArg (fun l => l.getLastD 0) hqEq
-            simpa using h
+            simpa [List.getLastD_eq_getLast?, List.getLast?_append_cons, List.getLast?_cons] using h
           have hRight : 1 ≤ qRight := by
             rw [hfirst]
             exact hOut
@@ -159,7 +158,11 @@ theorem parentSplitBothAdjacentPositive_of_rotated_ends
               qs.rotate (first :: mid).length =
                 qWrap :: (qPrefix ++ [qLeft]) := by
             rw [hqParent, hkLen]
-            rw [List.rotate_append_length_eq]
+            have hregroup :
+                qPrefix ++ [qLeft, qWrap] =
+                  (qPrefix ++ [qLeft]) ++ [qWrap] := by
+              simp [List.append_assoc]
+            rw [hregroup, List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
               qWrap :: (qPrefix ++ [qLeft]) =
