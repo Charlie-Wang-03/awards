@@ -379,3 +379,16 @@ Current historical source improvements include extra dependent `Fin 3` certifica
 - `ThirdLayerSupportOneMultiplicity.lean`: [CI #39633031649](https://github.com/Charlie-Wang-03/awards/actions/runs/39633031649), **SUCCESS**, 3,448 Lake jobs. The restored `no_top_with_two_support_one_deficit_three` theorem is printed with `[propext, Classical.choice, Quot.sound]` only. This conditional n>=5 third-layer obstruction was repaired by explicit dependent Fin 3 family/certificate indexing and certificate-quotient projection; it is NOT the global six-source payment theorem.
 
 `MixedSupportTransitionCeiling.lean` has received the analogous dependent-family and projection repairs; independent acceptance still must be read from its focused run. The entire source graph is not claimed to compile and the principal WIP still retains its one admitted `sorry`.
+
+
+### Fifth continuation: mixed support transition ceiling ACCEPTED
+
+`MixedSupportTransitionCeiling.lean`: [focused CI #39633102373](https://github.com/Charlie-Wang-03/awards/actions/runs/39633102373), **SUCCESS**, 3,498 Lake jobs. `transition_qe_le_two_beside_top_and_support_one` has the ordinary kernel axioms `[propext, Classical.choice, Quot.sound]` and no `sorryAx`. Its actual result is conditional: in the n>=5 profile with one n-1 top centre and a distinct support-one n-3 centre, any third distinct centre's transition-certificate quotient is at most two. This is a genuine local transition ceiling, not arbitrary-cardinality source-unique payment.
+
+Compilation was recovered by binder ordering, explicit dependent `Fin 3` families/certificates, and pointwise certificate quotient equality before arithmetic projection.
+
+### Explicit remaining top-level blockers
+
+1. Neither n=3, five-centre overweight motif A nor B has a proved geometric contradiction. The new exact-quotient and narrow-angle necessary conditions restrict them.
+2. The primary lower-branch theorem retains the **one executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean:900`, representing the original-source-disjoint global six-source NET debt payment for arbitrary n and >=5 original centres.
+3. The broad historical research module graph remains subject to other independent compilation errors. A collection of focused successful Lake targets is not a full-tree success, and no upstream complete-proof assertion has been made.
