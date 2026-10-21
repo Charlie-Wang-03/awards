@@ -54,12 +54,15 @@ theorem exists_minimum_outside_triple_of_three_lt_card
       (mem_minimumExponentVertices exponent r0 r).1 hr
     have hcases := hnone r hrmin
     simp only [Finset.mem_insert, Finset.mem_singleton]
-    exact hcases
+    by_cases hra : r = a
+    · exact Or.inl hra
+    by_cases hrb : r = b
+    · exact Or.inr (Or.inl hrb)
+    · exact Or.inr (Or.inr (hcases hra hrb))
   have hle :=
     Finset.card_le_card hsub
-  have htriple : ({a,b,c} : Finset V).card ≤ 3 := by
-    simp
-    omega
+  have htriple : ({a,b,c} : Finset V).card ≤ 3 :=
+    Finset.card_le_three
   omega
 
 /-- Exact-witness specialization of the preceding selection theorem. -/
@@ -199,10 +202,9 @@ theorem minimum_layer_le_three_or_exact_rigid_deletion
         (fun i => centreExponent (C i) t) r0).card ≤ 3
   · exact Or.inl hsmall
   · right
-    apply exists_exact_minimum_deletion_rigidity
+    exact exists_exact_minimum_deletion_rigidity
       hcap W C hV ht0 n r0 hexp hover hmin
-  · omega
-  · exact hchild
+      (by omega) hchild
 
 
 /-- Five minimum-layer vertices force two distinct minima outside any prescribed
@@ -227,8 +229,7 @@ theorem exists_two_minimum_outside_triple_of_five_le_card
   let O := M \ T
   have hTcard : T.card ≤ 3 := by
     dsimp [T]
-    simp
-    omega
+    exact Finset.card_le_three
   have hInter :
       (M ∩ T).card ≤ 3 := by
     have hle :
@@ -238,7 +239,10 @@ theorem exists_two_minimum_outside_triple_of_five_le_card
   have hsplit :=
     Finset.card_sdiff_add_card_inter M T
   have hOcard : 1 < O.card := by
-    dsimp [O]
+    have hMcard : 5 ≤ M.card := by
+      simpa [M] using hcard
+    have hsplit' : O.card + (M ∩ T).card = M.card := by
+      simpa [O] using hsplit
     omega
   obtain ⟨r, hrO, s, hsO, hrs⟩ :=
     Finset.one_lt_card.mp hOcard
