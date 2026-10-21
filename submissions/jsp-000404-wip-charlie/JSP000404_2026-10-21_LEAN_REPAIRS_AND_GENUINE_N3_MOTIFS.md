@@ -422,3 +422,16 @@ The sharp-centre conditional support-three two-zero-angle-block lemma is also ke
 - `GeneralSaturatedZeroGapBudget.lean` generalizes the aggregate angular-budget proposition to arbitrary `n` for any exponent-`n-3`, support-three centre. It remains **unverified until its own focused CI and axiom audit pass**.
 - The fast full incremental check at the previous branch head reported **241 historical Lean diagnostics in 24 files**. That is not a full-tree compilation PASS; several more focused modules are now repaired, but a fresh completed full-tree error count is needed.
 - `JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean` still has exactly its deliberately retained global source-nonreusing six-source NET payment `sorry` at line 900. No theorem in this continuation justifies removing it. Both true five-centre overweight motifs A and B remain geometrically unexcluded.
+
+
+### 2026-10-22: arbitrary-n aggregate angular slack ACCEPTED
+
+`GeneralSaturatedZeroGapBudget.lean` is independently kernel-checked: [CI #39644288636](https://github.com/Charlie-Wang-03/awards/actions/runs/39644288636), **SUCCESS**, 3,508 Lake jobs. All three reported declarations have exactly `[propext, Classical.choice, Quot.sound]` and **no `sorryAx`**:
+
+1. `general_saturated_zero_floor_subset_sum_le_slack`: at `t=n+delta`, real nonnegative scaled unit-sum gaps with *floor sum n* have **total zero-floor mass on any subset <= delta**. This is the one-remainder, no-reuse invariant for each local gap list, for arbitrary `n`.
+2. `saturated_centre_zero_gap_total_le_slack`: same for the actual complete zero-floor subset of one `CentreProjectiveCycle`.
+3. `third_layer_support_three_all_zero_gaps_le_slack`: if `n>=3`, `centreExponent C t = n-3` and `positiveSupport(centreQuotient C t)=3`, the arithmetic identity `floorExcess + positiveSupport = sum(quotient)` forces `sum(q)=n`. Therefore **ALL zero-quotient geometric gaps at this genuine third-layer centre share one <= delta slack**; no sharp-centre hypothesis or global source payability is assumed.
+
+This is a useful all-n local geometric/spectral budget, but cannot itself prove source-native globally injective payment of true Boolean holes, covered diagonals or NET duplicate sources. Global `PlanarLowerBranchProofAdmittedWIP.lean:900` still retains its one intentional `sorry`.
+
+`CutZeroUnitStep.lean` also received an independently constructed list-inductive witness proof and correct namespace resolution in this continuation; its own focused CI remains the required acceptance gate, and **must not be counted as PASS until verified**.
