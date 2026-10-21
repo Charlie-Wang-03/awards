@@ -118,7 +118,7 @@ theorem active_of_normalizedValue_floor
       (b.val : ℝ) ≤
         cutNormalizedRayTheta hp t c i j := by
     have h := Nat.floor_le hx0
-    rw [hfloor] at h
+    rw [hjx, hfloor] at h
     exact h
   have hhi :
       cutNormalizedRayTheta hp t c i j <
@@ -126,7 +126,7 @@ theorem active_of_normalizedValue_floor
     have h :=
       Nat.lt_floor_add_one
         (cutNormalizedRayTheta hp t c i j)
-    rw [hfloor] at h
+    rw [hjx, hfloor] at h
     exact h
   have hocc :
       b ∈ occupiedCutProjectiveBands hp t c n i := by
@@ -213,7 +213,7 @@ theorem saturated_topBand_zeroFirst_or_zeroUnitStep
     | nil =>
         exact False.elim (R.normalizedValues_nonempty t h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ R.normalizedValues t := by
     rw [hvalues]
     simp
@@ -236,7 +236,7 @@ theorem saturated_topBand_zeroFirst_or_zeroUnitStep
     R.local_band_equality_of_active_saturated
       hp hcap htpos hlam hc0 hcpi n
       (by rw [ht]; push_cast; linarith)
-      hsat
+      C hsat
   have heq :
       listExponent
           (linearCyclicGapQuotients t (a :: xs)) +
@@ -311,7 +311,7 @@ theorem saturated_boundaryActive_or_zeroUnitStep
     | nil =>
         exact False.elim (R.normalizedValues_nonempty t h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ R.normalizedValues t := by
     rw [hvalues]
     simp
@@ -334,7 +334,7 @@ theorem saturated_boundaryActive_or_zeroUnitStep
     R.local_band_equality_of_active_saturated
       hp hcap htpos hlam hc0 hcpi n
       (by rw [ht]; push_cast; linarith)
-      hsat
+      C hsat
   have heq :
       listExponent
           (linearCyclicGapQuotients t (a :: xs)) +
@@ -422,7 +422,7 @@ theorem zeroUnitStep_of_saturated_boundary_collision_failure
       HasZeroQuotientUnitStep a xs := by
   rcases R.saturated_boundaryActive_or_zeroUnitStep
       hp hcap hn htpos hlam ht hdeltaHalf
-      hc0 hcpi hsat with hboundary | hstep
+      hc0 hcpi C hsat with hboundary | hstep
   · exact False.elim (hfail hboundary)
   · exact hstep
 
@@ -486,7 +486,7 @@ theorem saturated_failure_has_wrap_unit_subslot_data
     | nil =>
         exact False.elim (R.normalizedValues_nonempty t h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ R.normalizedValues t := by
     rw [hvalues]
     simp
@@ -509,12 +509,12 @@ theorem saturated_failure_has_wrap_unit_subslot_data
   have haz : a ≤ z :=
     head_le_getLastD_of_pairwise a xs hsorted
   have hzt : z < t :=
-    hall z (List.getLastD_mem_cons a xs)
+    hall z (show z ∈ a :: xs from List.getLastD_mem_cons)
   have heqR :=
     R.local_band_equality_of_active_saturated
       hp hcap htpos hlam hc0 hcpi n
       (by rw [ht]; push_cast; linarith)
-      hsat
+      C hsat
   have heq :
       listExponent
           (linearCyclicGapQuotients t (a :: xs)) +
@@ -610,7 +610,7 @@ theorem saturated_top_without_zero_forces_zeroUnitStep
   obtain ⟨a, xs, hvalues, hzero | hstep⟩ :=
     R.saturated_topBand_zeroFirst_or_zeroUnitStep
       hp hcap hn htpos hlam ht hdeltaHalf
-      hc0 hcpi hsat hTopActive
+      hc0 hcpi C hsat hTopActive
   · exfalso
     have haMem : a ∈ R.normalizedValues t := by
       rw [hvalues]
