@@ -103,7 +103,7 @@ theorem exists_sharp_support_three_two_zero_angle_blocks
         =
       AFirst :: (Amid ++ [ALast]) := by
     simp [cyclicRayAngles, consecutiveRayAngles,
-      AFirst, Amid, ALast, lastRay]
+      AFirst, Amid, ALast, lastRay, List.getLastD_cons]
 
   have htotalEqMiddle :
       listZeroAngleMass
