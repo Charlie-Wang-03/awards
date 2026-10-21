@@ -80,7 +80,7 @@ theorem lower_two_no_sharp_with_three_other_centres
     exact lower_two_no_sharp_of_crossing_diagonals
       (s := s) (b := u) (c := w) (d := v)
       hp hcap hdelta0 hdeltaHalf ht hlam C
-      hsu hsv hsw huw huv hvw.symm hcross hexp
+      hsu hsw hsv huw huv hvw.symm hcross hexp
 
 #print axioms lower_two_no_sharp_with_three_other_centres
 
