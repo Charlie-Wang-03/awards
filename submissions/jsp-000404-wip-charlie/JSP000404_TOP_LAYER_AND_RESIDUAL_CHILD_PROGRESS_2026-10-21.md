@@ -49,11 +49,12 @@ exactly ONE intentional executable `sorry` (line 900 in that commit).
 The two focused WIP checks were still running when this checkpoint was
 written; do not count them as passed without verifying their conclusions.
 
-Additional census-form theorem declarations,
+The stronger directly usable Finset-cardinality theorems
 `actual_top_exponent_layer_card_le_one` and
-`actual_next_exponent_layer_card_le_one_of_top`, were committed after
-the first PASS. Their own CI is pending; their kernel status must be
-checked separately from the previously certified witness lemmas.
+`actual_next_exponent_layer_card_le_one_of_top` are ALSO independently
+kernel verified by [CI #39567835007](https://github.com/Charlie-Wang-03/awards/actions/runs/39567835007):
+**SUCCESS**, 3491 Lake jobs; both printed axioms are exactly
+`[propext, Classical.choice, Quot.sound]`, without `sorryAx`.
 
 ### First unresolved n=3, five-centre shapes (deduced classification)
 
