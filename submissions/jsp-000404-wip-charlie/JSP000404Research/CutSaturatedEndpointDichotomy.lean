@@ -119,7 +119,7 @@ theorem active_of_normalizedValue_floor
         cutNormalizedRayTheta hp t c i j := by
     have h := Nat.floor_le hx0
     rw [hjx, hfloor] at h
-    exact h
+    simpa [hjx] using h
   have hhi :
       cutNormalizedRayTheta hp t c i j <
         (b.val : ℝ) + 1 := by
@@ -127,7 +127,7 @@ theorem active_of_normalizedValue_floor
       Nat.lt_floor_add_one
         (cutNormalizedRayTheta hp t c i j)
     rw [hjx, hfloor] at h
-    exact h
+    simpa [hjx] using h
   have hocc :
       b ∈ occupiedCutProjectiveBands hp t c n i := by
     apply (mem_occupiedCutProjectiveBands
@@ -249,7 +249,7 @@ theorem saturated_topBand_zeroFirst_or_zeroUnitStep
     R.exists_normalizedValue_floor_eq_top_of_top_active
       hp hcap htpos hlam hc0 hcpi n
       (by rw [ht]; push_cast; linarith)
-      hTopActive
+      C hTopActive
   have htopMem :
       ∃ x ∈ a :: xs, Nat.floor x = n := by
     simpa [hvalues] using htopVal
@@ -364,15 +364,15 @@ theorem saturated_boundaryActive_or_zeroUnitStep
       let z := xs.getLastD a
       refine ⟨z, ?_, ?_⟩
       · rw [hvalues]
-        exact List.getLastD_mem_cons a xs
-      · simpa using hboundary.2
+        exact (show z ∈ a :: xs from List.getLastD_mem_cons)
+      · simpa [z, List.getLastD] using hboundary.2
     exact ⟨
       R.active_of_normalizedValue_floor
         hp hcap htpos hlam hc0 hcpi n htop
-        (0 : Fin (n + 1)) hzeroMem,
+        C (0 : Fin (n + 1)) hzeroMem,
       R.active_of_normalizedValue_floor
         hp hcap htpos hlam hc0 hcpi n htop
-        (Fin.last n) hlastMem⟩
+        C (Fin.last n) hlastMem⟩
   · right
     exact ⟨a, xs, hvalues, hstep⟩
 
@@ -547,16 +547,16 @@ theorem saturated_failure_has_wrap_unit_subslot_data
         ∃ x ∈ R.normalizedValues t,
           Nat.floor x = (Fin.last n).val := by
       exact ⟨z,
-        by rw [hvalues]; exact List.getLastD_mem_cons a xs,
+        by rw [hvalues]; exact (show z ∈ a :: xs from List.getLastD_mem_cons),
         by simpa [z] using hb.2⟩
     apply hfail
     exact ⟨
       R.active_of_normalizedValue_floor
         hp hcap htpos hlam hc0 hcpi n htop
-        (0 : Fin (n + 1)) hzeroMem,
+        C (0 : Fin (n + 1)) hzeroMem,
       R.active_of_normalizedValue_floor
         hp hcap htpos hlam hc0 hcpi n htop
-        (Fin.last n) hlastMem⟩
+        C (Fin.last n) hlastMem⟩
   have hseam :=
     saturated_wrap_failure_unit_subslot
       ha0 haz hzt ht hdelta0
