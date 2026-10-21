@@ -35,11 +35,58 @@ theorem quotientGapAligned_append
     (h₁ : QuotientGapAligned t q₁ g₁)
     (h₂ : QuotientGapAligned t q₂ g₂) :
     QuotientGapAligned t (q₁ ++ q₂) (g₁ ++ g₂) := by
-  induction h₁ with
+  exact List.Forall₂.append h₁ h₂
+
+/-- Positivity support is additive across list concatenation. -/
+theorem listPositiveCount_append
+    (left right : List ℕ) :
+    listPositiveCount (left ++ right) =
+      listPositiveCount left + listPositiveCount right := by
+  induction left with
+  | nil => simp [listPositiveCount]
+  | cons q qs ih =>
+      by_cases hq : q = 0 <;>
+        simp [listPositiveCount, hq, ih, add_assoc]
+
+/-- A nonnegative integer list with no positive entries has zero sum. -/
+theorem list_sum_eq_zero_of_positiveCount_eq_zero
+    (qs : List ℕ)
+    (hcount : listPositiveCount qs = 0) : qs.sum = 0 := by
+  induction qs with
+  | nil => rfl
+  | cons q rest ih =>
+      by_cases hq : q = 0
+      · subst q
+        have htail : listPositiveCount rest = 0 := by
+          simpa [listPositiveCount] using hcount
+        simpa [List.sum_cons] using ih htail
+      · have hpos : 0 < listPositiveCount (q :: rest) := by
+          simp [listPositiveCount, hq]
+        omega
+
+/-- All-zero quotient positions contribute their full aligned gap sum. -/
+theorem listZeroGapMass_eq_gap_sum_of_all_zero
+    (qs : List ℕ) (gs : List ℝ)
+    (hlen : qs.length = gs.length)
+    (hzero : ∀ q ∈ qs, q = 0) :
+    listZeroGapMass qs gs = gs.sum := by
+  induction qs generalizing gs with
   | nil =>
-      simpa using h₂
-  | cons hqg hrest ih =>
-      exact List.Forall₂.cons hqg (ih h₂)
+      cases gs <;> simp_all [listZeroGapMass]
+  | cons q qs ih =>
+      cases gs with
+      | nil => simp at hlen
+      | cons g gs =>
+          have hq : q = 0 := hzero q (by simp)
+          have htail : ∀ z ∈ qs, z = 0 := by
+            intro z hz
+            exact hzero z (by simp [hz])
+          have hlen' : qs.length = gs.length := by
+            simpa using hlen
+          subst q
+          simp only [listZeroGapMass, if_pos rfl, zero_add,
+            List.sum_cons]
+          rw [ih gs hlen' htail]
 
 theorem listPositiveCount_eq_zero_forall
     (qs : List ℕ)
@@ -69,9 +116,9 @@ theorem split_unique_positive_of_count_one
       rw [List.mem_cons] at hqmem
       by_cases ha0 : a = 0
       · subst a
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hsupport
+        simp [listPositiveCount] at hsupport
         rcases hqmem with hbad | htail
-        · exact False.elim (hq0 hbad.symm)
+        · exact False.elim (hq0 hbad)
         · obtain ⟨left, right, hsplit, hleft, hright⟩ :=
             ih hsupport htail
           refine ⟨0 :: left, right, ?_, ?_, hright⟩
@@ -188,7 +235,7 @@ theorem exists_two_narrow_zero_blocks
     rcases hhidden with hpre | hmid
     · exact Or.inr hpre
     · rcases hmid with hmid | hpost
-      · exact False.elim (hne hmid.symm)
+      · exact False.elim (hne hmid)
       · exact Or.inl hpost
 
   obtain ⟨leftQ, rightQ, hsplitQ, hleftZero, hrightZero⟩ :=
@@ -258,7 +305,7 @@ theorem list_sum_pos_of_positiveCount_pos
   | cons q qs ih =>
       by_cases hq0 : q = 0
       · subst q
-        simp only [listPositiveCount, if_pos rfl, zero_add] at hpos
+        simp [listPositiveCount] at hpos
         simp only [List.sum_cons, zero_add]
         exact ih hpos
       · have hqpos : 0 < q := Nat.pos_of_ne_zero hq0
