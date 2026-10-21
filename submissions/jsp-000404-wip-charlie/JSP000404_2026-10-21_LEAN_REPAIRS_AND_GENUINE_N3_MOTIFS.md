@@ -241,3 +241,13 @@ For four *distinct actual planar* centres of exponent `n-2`, their quotient posi
 3. Produce full source-graph Lean build, theorem correspondence audit, and an axiom audit free of `sorryAx` **before** any claim of complete formalization.
 
 The main `PlanarLowerBranchProofAdmittedWIP.lean` still contains the same single admitted `sorry`. No upstream complete-proof submission or prize claim has been made in this continuation.
+
+
+### Follow-up verified kernel certificates
+
+Two historically noncompiling geometry modules have now reached independently successful focused builds:
+
+- `JSP000404Research.sharp_support_three_delete_sharp_gain` in `SharpSupportThreeDeletionGain.lean`: [Actions #39612859159](https://github.com/Charlie-Wang-03/awards/actions/runs/39612859159), **SUCCESS**, 3523 Lake jobs. The theorem's audited axioms are exactly `[propext, Classical.choice, Quot.sound]`; no `sorryAx`. The completed code includes import, binder, list-append, list-rotation, and identifier repairs.
+- `ExactWitnessShortArc.lean`: [Actions #39612971496](https://github.com/Charlie-Wang-03/awards/actions/runs/39612971496), **SUCCESS**, 3229 Lake jobs. The corrected ordinary/wrap projective short-arc conclusions use actual ray-angle nonnegativity; the audited local declarations do not rely on `sorryAx`.
+
+These results do not change the principal WIP theorem's single admitted six-source payment or certify the full module tree.
