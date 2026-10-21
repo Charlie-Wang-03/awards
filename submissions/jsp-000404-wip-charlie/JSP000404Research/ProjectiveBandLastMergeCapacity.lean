@@ -57,7 +57,8 @@ def mergeLastColor
     mergeLastColor hn (0 : Fin (n + 1)) =
       (⟨0, by omega⟩ : Fin n) := by
   apply Fin.ext
-  simp [mergeLastColor, hn]
+  have hn0 : 0 < n := by omega
+  simp [mergeLastColor, hn0]
 
 @[simp] theorem mergeLastColor_castSucc
     {n : ℕ} (hn : 1 ≤ n)
@@ -230,7 +231,7 @@ theorem mergeLastPartition_active_card_add_one_le
     Finset.card_le_card hsub
   have hSpos : 1 ≤ S.card := by
     exact Finset.card_pos.mpr ⟨Fin.last n, hlast⟩
-  dsimp [S] at hcardImage hSpos
+  dsimp [S] at hcardImage hSpos hnew
   omega
 
 /-- Generic n+1 to n weighted compression theorem. -/
@@ -354,8 +355,8 @@ theorem projectiveBand_capacity_of_last_merge
   apply BinaryEdgePartition.cluster_capacity_of_last_merge
     hn P (fun i => centreExponent (C i) t)
     hexp hold wrapBit
-  · simpa [P, htop] using hwrap
-  · simpa [P, htop] using hsaturated
+  · exact hwrap
+  · exact hsaturated
 
 #print axioms projectiveBand_capacity_of_last_merge
 
