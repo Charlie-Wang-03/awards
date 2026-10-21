@@ -362,3 +362,12 @@ Changes additionally repair/attempt compile gates for `CutSupportInvariant.lean`
 The separate n>=5 six-point `MixedSupportTransitionCeiling.lean` and `ThirdLayerSupportOneMultiplicity.lean` require focused acceptance after fixing dependent three-centre certificate vectors and their quotient-sum projection; the last commit does **not** independently certify them.
 
 This restores historical invariants, not the original global six-source `sorry`.
+
+
+### Fifth continuation: profile A exact next-layer quotient rigidity — candidate
+
+New `ThreeFiveNextSupportTwoRigidity.lean` introduces `exponent_one_support_two_exact_mass`: at an exponent-one next-layer centre, positive support two forces **quotient sum three** and `forall r, quotient(r)<=2` by the exact floor-excess plus support identity. This is elementary local arithmetic, not an additional geometry hypothesis.
+
+The second theorem, `two_saturated_next_among_four_n3`, applies the previously kernel-checked genuine four-centre transition-packing restriction: in the n=3 no-top four-next motif A, among any four distinct actual exponent-one centres at least two have the exact (exponent 1, support 2, quotient sum 3, quotient entries <=2) profile. Its new focused [CI #39632912015](https://github.com/Charlie-Wang-03/awards/actions/runs/39632912015) is the acceptance gate. This statement is **not marked verified until CI succeeds**, and does not exclude A.
+
+Current historical source improvements include extra dependent `Fin 3` certificate-function elaboration fixes for `MixedSupportTransitionCeiling` and `ThirdLayerSupportOneMultiplicity`. The large original global source payment remains admitted once in the WIP root.
