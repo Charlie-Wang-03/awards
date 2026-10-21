@@ -153,8 +153,65 @@ theorem no_two_next_exponents_beside_top_of_card_ge_four
     hsa hsb hcs.symm hab hca.symm hcb.symm
     (C s) (C a) (C b) hs ha hb
 
+
+/-- Quantitative form of the actual planar unique-top theorem, suitable
+for direct use in dyadic layer censuses. -/
+theorem actual_top_exponent_layer_card_le_one
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hcard : 3 ≤ Fintype.card V)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i) :
+    ((Finset.univ : Finset V).filter
+      (fun i => centreExponent (C i) t = n - 1)).card ≤ 1 := by
+  classical
+  apply Finset.card_le_one.mpr
+  intro s hs a ha
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ha
+  by_contra hne
+  exact top_exponent_unique_of_card_ge_three
+    hp hcap hn hcard hdelta0 hdeltaHalf ht hlam C
+    s a hne hs ha
+
+/-- Given a true top exponent, there is at most one DIFFERENT centre
+in the next exponent layer, whenever four actual centres exist. -/
+theorem actual_next_exponent_layer_card_le_one_of_top
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hcard : 4 ≤ Fintype.card V)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (s : V)
+    (hs : centreExponent (C s) t = n - 1) :
+    ((Finset.univ : Finset V).filter
+      (fun i => i ≠ s ∧ centreExponent (C i) t = n - 2)).card ≤ 1 := by
+  classical
+  apply Finset.card_le_one.mpr
+  intro a ha b hb
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+  by_contra hab
+  exact no_two_next_exponents_beside_top_of_card_ge_four
+    hp hcap hn hcard hdelta0 hdeltaHalf ht hlam C
+    ha.1.symm hb.1.symm hab hs ha.2 hb.2
+
 #print axioms no_two_top_exponents_with_third
 #print axioms top_exponent_unique_of_card_ge_three
 #print axioms no_two_next_exponents_beside_top_of_card_ge_four
+#print axioms actual_top_exponent_layer_card_le_one
+#print axioms actual_next_exponent_layer_card_le_one_of_top
 
 end JSP000404Research
