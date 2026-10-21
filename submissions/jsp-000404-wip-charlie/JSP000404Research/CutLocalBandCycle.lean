@@ -167,7 +167,10 @@ theorem occupiedNatBands_normalizedValues_card_eq_occupiedCut
       ((R.normalizedValues t).map Nat.floor).toFinset =
         (cutFloorBandList C t c).toFinset := by
     ext m
-    exact hpermFloor.mem_iff
+    simpa only [List.mem_toFinset] using
+      (hpermFloor.mem_iff :
+        m ∈ (R.normalizedValues t).map Nat.floor ↔
+          m ∈ cutFloorBandList C t c)
   unfold occupiedNatBands
   rw [hfin,
       cutFloorBandList_toFinset_card_eq_occupied
@@ -209,13 +212,11 @@ theorem normalizedValues_explicit_cut_rotation
     unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_sub_of_ge hp (hhigh j hj)]
     simp only [Function.comp_apply]
-    ring
   · apply List.map_congr_left
     intro j hj
     unfold cutNormalizedRayTheta scaleProjectiveAngle
     rw [cutRayTheta_eq_add_pi_sub_of_lt hp (hlow j hj)]
     simp only [Function.comp_apply]
-    ring
 
 /-- Main list-exponent invariance at an arbitrary cut-sorted centre cycle. -/
 theorem exponent_eq_centreExponent
@@ -315,7 +316,7 @@ theorem exponent_eq_centreExponent
         cutAngles.map (scaleProjectiveAngle t) := by
     dsimp [explicitValues, explicitRays, cutAngles,
       lowAngles, highAngles]
-    exact normalizedValues_explicit_cut_rotation
+    exact normalizedValues_explicit_cut_rotation (C := C)
       hp low high hlow hhigh
 
   have hcutNe : cutAngles ≠ [] := by
