@@ -105,6 +105,43 @@ theorem exists_cutRay_pair_of_zeroUnitStep
       Nat.floor
         (cutNormalizedRayTheta hp t c i k -
           cutNormalizedRayTheta hp t c i j) = 0 := by
+  have aux :
+      ∀ (js : List (OtherVertex i)) (head : OtherVertex i),
+        (head :: js).Pairwise
+          (fun x y =>
+            cutNormalizedRayTheta hp t c i x ≤
+              cutNormalizedRayTheta hp t c i y) →
+        HasZeroQuotientUnitCutRayStepFrom hp t c i head js →
+        ∃ u v : OtherVertex i,
+          u ∈ head :: js ∧
+          v ∈ head :: js ∧
+          cutNormalizedRayTheta hp t c i u ≤
+            cutNormalizedRayTheta hp t c i v ∧
+          Nat.floor (cutNormalizedRayTheta hp t c i v) =
+            Nat.floor (cutNormalizedRayTheta hp t c i u) + 1 ∧
+          Nat.floor
+            (cutNormalizedRayTheta hp t c i v -
+              cutNormalizedRayTheta hp t c i u) = 0 := by
+    intro js
+    induction js with
+    | nil =>
+        intro head hsorted hstep
+        simp [HasZeroQuotientUnitCutRayStepFrom] at hstep
+    | cons k ks ih =>
+        intro head hsorted hstep
+        have hs := List.pairwise_cons.mp hsorted
+        have hhk :
+            cutNormalizedRayTheta hp t c i head ≤
+              cutNormalizedRayTheta hp t c i k :=
+          hs.1 k (by simp)
+        rcases
+          (hasZeroQuotientUnitCutRayStepFrom_cons
+            hp t c i head k ks).1 hstep with hfirst | htail
+        · exact ⟨head, k, by simp, by simp, hhk, hfirst.1, hfirst.2⟩
+        · obtain ⟨u,v,hu,hv,huv,hfloor,hzero⟩ :=
+            ih k hs.2 htail
+          exact ⟨u,v,by simp [hu],by simp [hv],
+            huv,hfloor,hzero⟩
   cases hrays : R.rays with
   | nil =>
       exact False.elim (R.nonempty hrays)
@@ -131,34 +168,21 @@ theorem exists_cutRay_pair_of_zeroUnitStep
           HasZeroQuotientUnitCutRayStepFrom hp t c i j js :=
         (hasZeroQuotientUnitStep_map_cut_iff_rayStep
           hp t c i j js).1 hstep
+      have hsortedValues :
+          (List.map (cutNormalizedRayTheta hp t c i) (j :: js)).
+            Pairwise (· ≤ ·) := by
+        simpa [CentreCutRayCycle.normalizedValues, hrays] using
+          (R.normalizedValues_pairwise ht0)
       have hsorted :
           (j :: js).Pairwise
             (fun x y =>
               cutNormalizedRayTheta hp t c i x ≤
                 cutNormalizedRayTheta hp t c i y) := by
-        have h :=
-          R.normalizedValues_pairwise ht0
-        simpa [CentreCutRayCycle.normalizedValues, hrays] using h
-      induction js generalizing j with
-      | nil =>
-          simp [HasZeroQuotientUnitCutRayStepFrom] at hrayStep
-      | cons k ks ih =>
-          have hp0 := List.pairwise_cons.mp hsorted
-          have hjk :
-              cutNormalizedRayTheta hp t c i j ≤
-                cutNormalizedRayTheta hp t c i k :=
-            hp0.1 k (by simp)
-          rw [hasZeroQuotientUnitCutRayStepFrom_cons] at hrayStep
-          rcases hrayStep with hhead | htail
-          · exact ⟨j, k, by simp [hrays], by simp [hrays],
-              hjk, hhead.1, hhead.2⟩
-          · obtain ⟨u, v, hu, hv, huv,
-              hfloor, hzero⟩ :=
-              ih k hp0.2 htail
-            exact ⟨u, v,
-              by simpa [hrays] using hu,
-              by simpa [hrays] using hv,
-              huv, hfloor, hzero⟩
+        simpa only [List.pairwise_map] using hsortedValues
+      obtain ⟨u,v,hu,hv,huv,hfloor,hzero⟩ :=
+        aux js j hsorted hrayStep
+      exact ⟨u,v,by simpa [hrays] using hu,
+        by simpa [hrays] using hv,huv,hfloor,hzero⟩
 
 /-- In the genuine positive Sendov scale, a zero-quotient unit step cannot
 change the adjusted cut sign. -/
@@ -189,7 +213,7 @@ theorem exists_sameSign_cutRay_pair_of_zeroUnitStep
         cutRaySign hp c i k := by
   obtain ⟨j, k, _hj, _hk, hjkLe,
       hfloor, hzero⟩ :=
-    R.exists_cutRay_pair_of_zeroUnitStep
+    exists_cutRay_pair_of_zeroUnitStep R
       ht.le hvalues hstep
   have hjk : j ≠ k := by
     intro heq
