@@ -24,8 +24,8 @@ theorem cutNormalizedRayTheta_eq_normalized_sub_phase_of_ge
     cutNormalizedRayTheta hp t c i j =
       normalizedRayTheta hp t i j -
         t * c / Real.pi := by
-  rw [cutRayTheta_eq_sub_of_ge hp hge]
   unfold cutNormalizedRayTheta normalizedRayTheta
+  simp only [cutRayTheta, if_neg (not_lt.mpr hge)]
   ring
 
 theorem cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
@@ -37,8 +37,8 @@ theorem cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
     cutNormalizedRayTheta hp t c i j =
       normalizedRayTheta hp t i j + t -
         t * c / Real.pi := by
-  rw [cutRayTheta_eq_add_pi_sub_of_lt hp hlt]
   unfold cutNormalizedRayTheta normalizedRayTheta
+  simp only [cutRayTheta, if_pos hlt]
   field_simp [Real.pi_ne_zero]
   ring
 
