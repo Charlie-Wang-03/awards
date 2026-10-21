@@ -85,6 +85,64 @@ theorem three_scale_high_support_zero_gap_le_slack
     (fun j => C.gaps.get j) t delta ht hg0 hgsum hqsum
     r (by simpa [centreQuotient] using hzero)
 
+/-- In a genuine five-centre top-plus-next configuration, at least one of
+the three remaining centres has three unit-positive quotients, and *every*
+zero-quotient projective gap at that centre has scaled width <= delta. -/
+theorem top_next_three_has_narrow_unit_gap_companion
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (3 : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    {s a b c d : V}
+    (hsa : s ≠ a) (hsb : s ≠ b) (hsc : s ≠ c) (hsd : s ≠ d)
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (Cs : CentreProjectiveCycle hp s)
+    (Ca : CentreProjectiveCycle hp a)
+    (Cb : CentreProjectiveCycle hp b)
+    (Cc : CentreProjectiveCycle hp c)
+    (Cd : CentreProjectiveCycle hp d)
+    (hs : centreExponent Cs t = 2)
+    (ha : centreExponent Ca t = 1) :
+    (positiveSupport (centreQuotient Cb t) = 3 ∧
+     (∀ r, centreQuotient Cb t r ≤ 1) ∧
+     (∀ r, centreQuotient Cb t r = 0 →
+       t * Cb.gaps.get r ≤ delta)) ∨
+    (positiveSupport (centreQuotient Cc t) = 3 ∧
+     (∀ r, centreQuotient Cc t r ≤ 1) ∧
+     (∀ r, centreQuotient Cc t r = 0 →
+       t * Cc.gaps.get r ≤ delta)) ∨
+    (positiveSupport (centreQuotient Cd t) = 3 ∧
+     (∀ r, centreQuotient Cd t r ≤ 1) ∧
+     (∀ r, centreQuotient Cd t r = 0 →
+       t * Cd.gaps.get r ≤ delta)) := by
+  rcases top_next_three_has_unit_quotient_companion
+    hp hcap hdelta0 hdeltaHalf ht hlam
+    hsa hsb hsc hsd hab hac had hbc hbd hcd
+    Cs Ca Cb Cc Cd hs ha with hb | hc | hd
+  · left
+    refine ⟨hb.1, hb.2, ?_⟩
+    intro r hz
+    exact three_scale_high_support_zero_gap_le_slack Cb
+      hdelta0 hdeltaHalf ht (by omega) r hz
+  · right; left
+    refine ⟨hc.1, hc.2, ?_⟩
+    intro r hz
+    exact three_scale_high_support_zero_gap_le_slack Cc
+      hdelta0 hdeltaHalf ht (by omega) r hz
+  · right; right
+    refine ⟨hd.1, hd.2, ?_⟩
+    intro r hz
+    exact three_scale_high_support_zero_gap_le_slack Cd
+      hdelta0 hdeltaHalf ht (by omega) r hz
+
+#print axioms top_next_three_has_narrow_unit_gap_companion
+
 #print axioms scaled_zero_floor_gap_le_three_slack
 #print axioms three_scale_high_support_zero_gap_le_slack
 
