@@ -1,6 +1,7 @@
 import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.PlanarFirstBranchNoThree
 import JSP000404Research.PlanarLowerTwoFourUnconditionalCapacity
+import JSP000404Research.PlanarLowerTwoGlobalCapacity
 import JSP000404Research.FiveCentreNoSecondLayerCapacity
 import JSP000404Research.FiveCentreTopNextNoThirdCapacity
 import JSP000404Research.FiveCentreTopNextAtMostOneThirdCapacity
@@ -187,20 +188,17 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       projectionLinearOrder hp
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (cycles i) t) ≤ 2 ^ n := by
-  -- All independently kernel-closed ORIGINAL projected small-centre
-  -- cases are discharged without consulting the six-source payment:
-  -- <=2 centres at n>=1; 3 centres at n>=2; 4 centres at n>=2.
+  -- The genuinely complete n=1 and n=2 cases are closed directly by
+  -- planar geometry, independent of how many original centres there are.
+  -- For n>=3, retain the previously certified small-cardinality cases.
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   by_cases hknownClosed :
-      n = 1 ∨
+      n = 1 ∨ n = 2 ∨
       (Fintype.card (ProjectionOrdered V) ≤ 2 ∨
         (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
-        (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)) ∨
-      (n = 2 ∧
-        Fintype.card (ProjectionOrdered V) = 4)
-  · rcases hknownClosed with hnOne | hsmall
-    · -- Genuine AngleCap geometry rules out three points for n = 1.
-      -- The previously admitted global payment is not needed here.
+        (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n))
+  · rcases hknownClosed with hnOne | hnTwo | hsmall
+    · -- n = 1: AngleCap forbids three original points.
       have hcapRe : AngleCap (reindexedPoint p) lam :=
         angleCap_reindexedPoint hp hcap
       have htOne : t = (1 : ℝ) + delta := by
@@ -211,18 +209,15 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
           hdelta0 hdeltaHalf htOne hlam
       exact planar_lower_branch_known_small_centre_dyadic_capacity
         hp hcap hn hdelta0 hdeltaHalf ht hlam cycles (Or.inl hcard)
-    · rcases hsmall with hknown | htwoFour
-      · exact planar_lower_branch_known_small_centre_dyadic_capacity
-          hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hknown
-      · rcases htwoFour with ⟨hnTwo, hcardFour⟩
-        have hcapRe : AngleCap (reindexedPoint p) lam :=
-          angleCap_reindexedPoint hp hcap
-        have htTwo : t = (2 : ℝ) + delta := by
-          simpa [hnTwo] using ht
-        simpa [hnTwo] using
-          (lower_two_four_original_centre_dyadic_capacity
-            (reindexedPoint_injective hp) hcapRe
-            hcardFour hdelta0 hdeltaHalf htTwo hlam cycles)
+    · -- n = 2: quantitative strictly-exposed support-arc packing forces
+      -- cardinality <=4; the actual four-centre geometry is kernel-closed.
+      have htTwo : t = (2 : ℝ) + delta := by
+        simpa [hnTwo] using ht
+      simpa [hnTwo] using
+        (planar_lower_branch_n_two_all_centre_dyadic_capacity
+          hp hcap hdelta0 hdeltaHalf htTwo hlam cycles)
+    · exact planar_lower_branch_known_small_centre_dyadic_capacity
+        hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
   · by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
