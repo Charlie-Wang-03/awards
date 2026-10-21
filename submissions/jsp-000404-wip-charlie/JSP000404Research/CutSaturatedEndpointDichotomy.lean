@@ -38,8 +38,8 @@ n. -/
 theorem exists_normalizedValue_floor_eq_top_of_top_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -88,8 +88,8 @@ partition colour at the centre. -/
 theorem active_of_normalizedValue_floor
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -142,8 +142,8 @@ for the cut-sorted values. -/
 theorem local_band_equality_of_active_saturated
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -176,8 +176,8 @@ list. -/
 theorem saturated_topBand_zeroFirst_or_zeroUnitStep
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -264,8 +264,8 @@ unit-band crossing. -/
 theorem saturated_boundaryActive_or_zeroUnitStep
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -381,8 +381,8 @@ the 0/n merge does not collide must carry a zero-quotient unit step. -/
 theorem zeroUnitStep_of_saturated_boundary_collision_failure
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -433,8 +433,8 @@ window. -/
 theorem saturated_failure_has_wrap_unit_subslot_data
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -570,8 +570,8 @@ carries a zero-quotient unit-band crossing. -/
 theorem saturated_top_without_zero_forces_zeroUnitStep
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
