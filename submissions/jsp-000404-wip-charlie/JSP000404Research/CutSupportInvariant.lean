@@ -142,7 +142,7 @@ theorem exists_gapQuotients_rotation
         cutAngles.map (scaleProjectiveAngle t) := by
     dsimp [explicitValues, explicitRays, cutAngles,
       lowAngles, highAngles]
-    exact normalizedValues_explicit_cut_rotation
+    exact normalizedValues_explicit_cut_rotation (C := C)
       hp low high hlow hhigh
 
   have hcutNe : cutAngles ≠ [] := by
