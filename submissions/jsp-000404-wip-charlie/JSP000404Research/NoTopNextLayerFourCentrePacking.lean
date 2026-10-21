@@ -45,7 +45,7 @@ theorem no_three_next_support_one_with_fourth_low_support
     (hsupA :
       positiveSupport (centreQuotient Ca t) = 1)
     (hsupB :
-      positiveSupport (centreQuotient Cb t) ≤ 2)
+      positiveSupport (centreQuotient Cb t) = 1)
     (hsupC :
       positiveSupport (centreQuotient Cc t) ≤ 2) :
     False := by
@@ -66,7 +66,7 @@ theorem no_three_next_support_one_with_fourth_low_support
       hp hcap htpos htone hlam a Ca (by omega)
   obtain ⟨HB, hHBpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
-      hp hcap htpos htone hlam b Cb hsupB
+      hp hcap htpos htone hlam b Cb (by rw [hsupB]; omega)
   obtain ⟨HC, hHCpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam c Cc hsupC
