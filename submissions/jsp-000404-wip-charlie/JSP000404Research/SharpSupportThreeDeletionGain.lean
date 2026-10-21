@@ -124,6 +124,7 @@ theorem sharp_support_three_delete_sharp_gain
               qRight :: (middle ++ [qWrap]) =
                 qFirst :: (qmid ++ [qLast]) := by
             rw [← hqParent, hqrot0]
+            simp only [List.cons_append]
           have hRightEq : qRight = qFirst :=
             (List.cons.inj hcons).1
           have htailEq :
@@ -195,7 +196,11 @@ theorem sharp_support_three_delete_sharp_gain
               qs.rotate (first :: mid).length =
                 qWrap :: (qPrefix ++ [qLeft]) := by
             rw [hqParent, hkLen]
-            rw [List.rotate_append_length_eq]
+            have hregroup :
+                qPrefix ++ [qLeft, qWrap] =
+                  (qPrefix ++ [qLeft]) ++ [qWrap] := by
+              simp [List.append_assoc]
+            rw [hregroup, List.rotate_append_length_eq]
             simp [List.append_assoc]
           have hrotEq :
               qWrap :: (qPrefix ++ [qLeft]) =
