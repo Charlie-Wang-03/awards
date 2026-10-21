@@ -118,9 +118,13 @@ theorem transition_qe_le_two_beside_top_and_support_one
       hdelta0 hdeltaHalf ht
       centre hcentre Cfam cert
 
+  have hcert0 : (cert (0 : Fin 3)).qe = HTop.qe := by rfl
+  have hcert1 : (cert (1 : Fin 3)).qe = HA.qe := by rfl
+  have hcert2 : (cert (2 : Fin 3)).qe = H.qe := by rfl
   have hpack' :
       HTop.qe + HA.qe + H.qe ≤ 2 * n := by
-    simpa [cert,Cfam,centre,Fin.sum_univ_succ] using hpack
+    simpa [Fin.sum_univ_succ, hcert0, hcert1, hcert2,
+      add_assoc] using hpack
 
   rw [hqTop,hqA] at hpack'
   omega
