@@ -300,3 +300,19 @@ The only admitted WIP headline still contains its exact one executable `sorry`; 
 The restoration explicitly proves finite-list append support identities, zero-positive-support quotient sums, and zero-quotient aligned gap mass, then completes the previously invalid indexed induction and its conditional simplification. The earlier DNS failure during `lake exe cache get` was an infrastructure problem, distinct from the subsequently repaired two Lean source errors.
 
 No all-tree PASS is implied. The unique principal global `sorry` remains as recorded above.
+
+
+### Fourth continuation: three unit-positive quotients in an actual n=3 B-companion — VERIFIED
+
+`ThreeFiveCompanionUnitQuotients.lean` passed [focused CI #39618465324](https://github.com/Charlie-Wang-03/awards/actions/runs/39618465324), 3,502 Lake jobs. All three printed theorem axiom reports are exactly `[propext, Classical.choice, Quot.sound]` and do **not** contain `sorryAx`.
+
+The proof adds the integer statement `floorExcess q = 0 -> forall i, q(i) <= 1`, using a nonnegative summand bound and the definition of `floorExcess`. Together with the previous verified five-centre top-plus-next transition packing and support-three rigidity, **at least one of the other three actual original centres** in the n=3 B-motif has all of:
+
+- `centreExponent = 0`;
+- `positiveSupport = 3`;
+- `sum(centreQuotient) = 3`;
+- `forall r, centreQuotient(r) <= 1`.
+
+Consequently its positive integer quotient entries are **exactly three unit entries**, while the remaining entries are zero. This narrows the genuine geometric profile B but does not demonstrate its impossibility. Source-level cardinality exactly five yields four non-centre rays; a no-top original-centre exclusion and the globally non-reusing six-source payment are still absent.
+
+The WIP main theorem still has the same one admitted `sorry` at `PlanarLowerBranchProofAdmittedWIP.lean:900`, not closed by this local certificate.
