@@ -40,7 +40,6 @@ theorem cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
   unfold cutNormalizedRayTheta normalizedRayTheta
   simp only [cutRayTheta, if_pos hlt]
   field_simp [Real.pi_ne_zero]
-  ring
 
 #print axioms cutNormalizedRayTheta_eq_normalized_sub_phase_of_ge
 #print axioms cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt
