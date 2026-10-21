@@ -59,7 +59,7 @@ theorem exists_gapQuotients_rotation
     have hRC := R.rays_perm_canonical
     have hCE : C.rays.Perm explicitRays := by
       rw [hdecomp]
-      exact List.perm_append_comm low high
+      exact List.perm_append_comm
     exact hRC.trans hCE
 
   have hpermValues :
@@ -122,7 +122,7 @@ theorem exists_gapQuotients_rotation
       unfold cutNormalizedRayTheta
       have hdiv :=
         div_le_div_of_nonneg_right hab Real.pi_pos.le
-      exact mul_le_mul_of_nonneg_left hdiv ht.le)
+      simpa [mul_div_assoc] using (mul_le_mul_of_nonneg_left hdiv ht.le))
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by

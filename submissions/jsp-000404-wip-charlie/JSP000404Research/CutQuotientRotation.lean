@@ -55,7 +55,7 @@ theorem quotientList_anglesAfterProjectiveCut_perm
             simpa [sub_eq_add_neg] using
               normalizedProjectiveGaps_map_add b (-c) bs
           rw [hgaps]
-           simp
+          simp
   | cons a as =>
       cases high with
       | nil =>
@@ -72,7 +72,7 @@ theorem quotientList_anglesAfterProjectiveCut_perm
                 a (Real.pi - c) as
             simpa [sub_eq_add_neg, add_assoc] using h
           rw [hgaps]
-           simp
+          simp
       | cons b bs =>
           have hrot :=
             normalizedProjectiveGaps_after_cut_eq_rotate
@@ -106,7 +106,7 @@ theorem gapQuotients_perm_canonical
     have hRC := R.rays_perm_canonical
     have hCE : C.rays.Perm explicitRays := by
       rw [hdecomp]
-      exact List.perm_append_comm low high
+      exact List.perm_append_comm
     exact hRC.trans hCE
 
   have hpermValues :
@@ -162,12 +162,12 @@ theorem gapQuotients_perm_canonical
       explicitValues.Pairwise (· ≤ ·) := by
     unfold explicitValues
     rw [List.pairwise_map]
-    exact hexplicitSortedRays.imp (by
+    exact hexplicitSorted.imp (by
       intro a b hab
       unfold cutNormalizedRayTheta
       have hdiv :=
         div_le_div_of_nonneg_right hab Real.pi_pos.le
-      exact mul_le_mul_of_nonneg_left hdiv ht.le)
+      simpa [mul_div_assoc] using (mul_le_mul_of_nonneg_left hdiv ht.le))
 
   have hvaluesEq :
       R.normalizedValues t = explicitValues := by
@@ -226,7 +226,6 @@ theorem gapQuotients_perm_canonical
     have h :=
       quotientList_anglesAfterProjectiveCut_perm
         t c lowAngles highAngles
-    dsimp [cutAngles] at h
     rw [hangleDecomp] at h
     simpa [CentreProjectiveCycle.gaps] using h
 
