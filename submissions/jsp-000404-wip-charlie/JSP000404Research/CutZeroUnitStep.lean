@@ -169,8 +169,8 @@ theorem exists_cutRay_pair_of_zeroUnitStep
         (hasZeroQuotientUnitStep_map_cut_iff_rayStep
           hp t c i j js).1 hstep
       have hsortedValues :
-          (List.map (cutNormalizedRayTheta hp t c i) (j :: js)).
-            Pairwise (· ≤ ·) := by
+          (List.map (cutNormalizedRayTheta hp t c i) (j :: js)).Pairwise
+            (· ≤ ·) := by
         simpa [CentreCutRayCycle.normalizedValues, hrays] using
           (R.normalizedValues_pairwise ht0)
       have hsorted :
@@ -189,8 +189,8 @@ change the adjusted cut sign. -/
 theorem exists_sameSign_cutRay_pair_of_zeroUnitStep
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -245,7 +245,13 @@ theorem exists_sameSign_cutRay_pair_of_zeroUnitStep
           (t / Real.pi) * cutRayTheta hp c i k := by
       simpa [div_eq_mul_inv, mul_assoc, mul_left_comm,
         mul_comm] using hjkLe
-    exact (mul_le_mul_left hcoef).mp hjkLe'
+    by_contra hnot
+    have hlt :
+        cutRayTheta hp c i k < cutRayTheta hp c i j :=
+      lt_of_not_ge hnot
+    have hmul :=
+      mul_lt_mul_of_pos_left hlt hcoef
+    exact (not_lt_of_ge hjkLe') hmul
   have hsign :
       cutRaySign hp c i j =
         cutRaySign hp c i k := by
