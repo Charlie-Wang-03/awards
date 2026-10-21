@@ -31,12 +31,11 @@ the original quotient list, including empty-side degenerate cuts. -/
 theorem quotientList_anglesAfterProjectiveCut_perm
     (t c : ℝ)
     (low high : List ℝ) :
-    quotientList t
+    (quotientList t
         (normalizedProjectiveGaps
-          (anglesAfterProjectiveCut c low high))
-      ~
-    quotientList t
-        (normalizedProjectiveGaps (low ++ high)) := by
+          (anglesAfterProjectiveCut c low high))).Perm
+      (quotientList t
+        (normalizedProjectiveGaps (low ++ high))) := by
   cases low with
   | nil =>
       cases high with
@@ -88,7 +87,7 @@ theorem gapQuotients_perm_canonical
     {C : CentreProjectiveCycle hp i}
     (R : CentreCutRayCycle hp C c)
     (ht : 0 < t) :
-    R.gapQuotients t ~ quotientList t C.gaps := by
+    (R.gapQuotients t).Perm (quotientList t C.gaps) := by
   obtain ⟨low, high, hdecomp, hlow, hhigh⟩ :=
     exists_ray_split_at_cut hp C.rays C.theta_sorted c
 
