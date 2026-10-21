@@ -2,6 +2,7 @@ import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.PlanarFirstBranchNoThree
 import JSP000404Research.PlanarLowerTwoFourUnconditionalCapacity
 import JSP000404Research.PlanarLowerTwoGlobalCapacity
+import JSP000404Research.PlanarUniqueTopExponent
 import JSP000404Research.FiveCentreNoSecondLayerCapacity
 import JSP000404Research.FiveCentreTopNextNoThirdCapacity
 import JSP000404Research.FiveCentreTopNextAtMostOneThirdCapacity
@@ -239,6 +240,40 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
           (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n) := by
         omega
       exact hknownClosed (Or.inr (Or.inr hsmall))
+    -- Genuine all-cardinality geometry: at least five actual centres
+    -- exclude two distinct top exponent n-1 vertices, since each is
+    -- sharp and any third centre violates the AngleCap triangle sum.
+    have hTopUnique :
+        ∀ s a : ProjectionOrdered V,
+          s ≠ a →
+          centreExponent (cycles s) t = n - 1 →
+          centreExponent (cycles a) t = n - 1 →
+          False := by
+      have hcapRe : AngleCap (reindexedPoint p) lam :=
+        angleCap_reindexedPoint hp hcap
+      intro s a hsa hs ha
+      exact top_exponent_unique_of_card_ge_three
+        (reindexedPoint_injective hp) hcapRe hn3
+        (by omega : 3 ≤ Fintype.card (ProjectionOrdered V))
+        hdelta0 hdeltaHalf ht hlam cycles s a hsa hs ha
+    -- If a top exponent exists, no TWO other n-2 exponents can coexist:
+    -- the genuinely present fourth centre activates the certified
+    -- top+two-next geometric exclusion (not a synthetic surplus).
+    have hTopNextUnique :
+        ∀ s a b : ProjectionOrdered V,
+          s ≠ a → s ≠ b → a ≠ b →
+          centreExponent (cycles s) t = n - 1 →
+          centreExponent (cycles a) t = n - 2 →
+          centreExponent (cycles b) t = n - 2 →
+          False := by
+      have hcapRe : AngleCap (reindexedPoint p) lam :=
+        angleCap_reindexedPoint hp hcap
+      intro s a b hsa hsb hab hs ha hb
+      exact no_two_next_exponents_beside_top_of_card_ge_four
+        (reindexedPoint_injective hp) hcapRe hn3
+        (by omega : 4 ≤ Fintype.card (ProjectionOrdered V))
+        hdelta0 hdeltaHalf ht hlam cycles
+        hsa hsb hab hs ha hb
     by_cases hfiveNoSecond :
         3 ≤ n ∧
         Fintype.card (ProjectionOrdered V) = 5 ∧
