@@ -96,7 +96,8 @@ theorem exactWitness_ordered_short_gap_or_wrap_eq_lam
       rayThetaAt hp W.b kc - rayThetaAt hp W.b ja := by
     rw [abs_of_nonpos]
     · ring
-    · exact horder
+    · dsimp [ja, kc]
+      linarith
   dsimp [ja, kc] at hdist ⊢
   rw [projectiveRayDistance, habs] at hdist
   by_cases hshort :
@@ -455,11 +456,12 @@ theorem no_ray_strictly_inside_exactWitness_wrap_short_arc
           hp hcap htpos hlam W.b
           hxjRay (by linarith) hxjNe
       have hkcPi := rayThetaAt_lt_pi hp W.b kc
+      have hxNonneg := rayThetaAt_nonneg hp W.b x
       have hsub :
           rayThetaAt hp W.b ja -
               rayThetaAt hp W.b x < lam := by
         dsimp [ja, kc] at hlow hwrap hkcPi ⊢
-        linarith
+        linarith [hxNonneg]
       have hlt :=
         scaled_gap_lt_one_of_lt_lam htpos hlam hsub
       linarith
