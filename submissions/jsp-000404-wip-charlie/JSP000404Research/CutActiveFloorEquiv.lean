@@ -58,7 +58,7 @@ theorem active_iff_exists_normalizedValue_floor
       simpa [x, RayInCutProjectiveBand] using hjBand
     exact ⟨x, hxMem, hfloor⟩
   · intro hb
-    exact active_of_normalizedValue_floor
+    exact CentreCutRayCycle.active_of_normalizedValue_floor
       hp hcap ht hlam hc0 hcpi n htop C R b hb
 
 #print axioms active_iff_exists_normalizedValue_floor
