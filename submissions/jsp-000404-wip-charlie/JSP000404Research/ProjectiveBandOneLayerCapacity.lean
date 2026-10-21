@@ -28,8 +28,8 @@ open scoped BigOperators
 theorem projectiveBand_oneLayer_capacity
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t delta lam : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
     (ht : t = (n : ℝ) + delta)
@@ -57,12 +57,11 @@ theorem projectiveBand_oneLayer_capacity
   have hexponent :
       ∀ i, exponent i ≤ n + 1 := by
     intro i
-    have h := hactive i
-    have hnonneg :
-        0 ≤ (BinaryEdgePartition.active P i).card :=
-      Nat.zero_le _
-    dsimp [ell] at h
-    omega
+    have hmissing :=
+      centreExponent_le_missing_projectiveBands
+        hp (C i) htpos ht hdelta0 hdelta1
+    dsimp [exponent]
+    exact hmissing.trans (Nat.sub_le _ _)
   have hell :
       ∀ i, ell i = (n + 1) - exponent i := by
     intro i
