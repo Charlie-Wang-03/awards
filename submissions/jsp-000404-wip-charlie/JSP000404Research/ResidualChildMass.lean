@@ -71,7 +71,10 @@ theorem leftChildWeight_sum_eq_subtype_mass
     intro v _
     simp [leftChildWeight, v.2]
   rw [hzero, zero_add] at h
-  exact h.symm
+  refine h.symm.trans ?_
+  apply Finset.sum_congr rfl
+  intro v _
+  simp [leftChildWeight, v.2]
 
 theorem rightChildWeight_sum_eq_subtype_mass
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -93,7 +96,10 @@ theorem rightChildWeight_sum_eq_subtype_mass
     intro v _
     simp [rightChildWeight, v.2]
   rw [hzero, zero_add] at h
-  exact h.symm
+  refine h.symm.trans ?_
+  apply Finset.sum_congr rfl
+  intro v _
+  simp [rightChildWeight, v.2]
 
 /-- Root mass is bounded by the genuine two child subtype masses. -/
 theorem root_mass_le_child_subtype_masses
