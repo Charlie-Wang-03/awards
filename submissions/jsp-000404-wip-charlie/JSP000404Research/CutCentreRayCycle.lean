@@ -173,7 +173,7 @@ theorem exists_centreCutRayCycle
   have hperm : C.rays.Perm rays := by
     dsimp [rays]
     rw [hdecomp]
-    exact List.perm_append_comm low high
+    exact List.perm_append_comm
 
   have hnodup : rays.Nodup := by
     exact (hperm.nodup_iff).mp C.nodup
@@ -333,9 +333,7 @@ theorem rayIndex_injective
     (R : CentreCutRayCycle hp C c) :
     Function.Injective R.rayIndex := by
   intro j k h
-  have hget :=
-    congrArg (fun q => R.rays.get q) h
-  simpa using hget
+  exact R.rayEquiv.symm.injective h
 
 theorem rayIndex_lt_of_cutTheta_lt
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -351,9 +349,7 @@ theorem rayIndex_lt_of_cutTheta_lt
   have hne :
       R.rayIndex j ≠ R.rayIndex k := by
     intro hidx
-    have hget :=
-      congrArg (fun q => R.rays.get q) hidx
-    have hjk : j = k := by simpa using hget
+    have hjk : j = k := R.rayIndex_injective hidx
     subst k
     exact (lt_irrefl _) htheta
   rcases lt_or_gt_of_ne hne with hlt | hgt
@@ -381,7 +377,7 @@ theorem cutTheta_le_of_rayIndex_le
       lt_of_le_of_ne hidx heq
     have hrel :=
       R.cutTheta_sorted.rel_get_of_lt hlt
-    simpa using hrel
+    simpa only [R.get_rayIndex] using hrel
 
 #print axioms exists_centreCutRayCycle
 #print axioms CentreCutRayCycle.get_rayIndex
