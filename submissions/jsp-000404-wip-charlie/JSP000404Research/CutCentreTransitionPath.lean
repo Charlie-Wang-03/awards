@@ -28,8 +28,8 @@ normalized unit. -/
 theorem one_le_t_mul_cutRay_gap_of_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c)
@@ -79,7 +79,7 @@ theorem one_le_t_mul_cutRay_gap_of_sign_ne
   convert hscaled using 1 <;> ring
 
 /-- Consecutive normalized gaps along a displayed cut-ordered ray path. -/
-def consecutiveCutRayGaps
+noncomputable def consecutiveCutRayGaps
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (t c : ℝ) (i : V) :
@@ -146,8 +146,8 @@ transition lower-bound predicate used by AdjacentTransitionDominator. -/
 theorem cutOrderedRayPath_transitionGapLowerBound
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c)
