@@ -31,7 +31,7 @@ open scoped BigOperators
 
 /-- Deleting one vertex reduces finite cardinality by exactly one. -/
 theorem card_deletedVertexType
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (r : V) :
     Fintype.card (DeletedVertexType r) =
       Fintype.card V - 1 := by
@@ -44,7 +44,7 @@ theorem card_deletedVertexType
 /-- A parent with at least four vertices leaves a child with at least three,
 so the uniform concrete deletion table can be used again inside the child. -/
 theorem three_le_card_deletedVertexType
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (r : V)
     (hcard : 4 ≤ Fintype.card V) :
     3 ≤ Fintype.card (DeletedVertexType r) := by
@@ -116,7 +116,7 @@ theorem deletedCycleFamily_exponent_eq_concreteDeletionAfter
 /-- Generic finite sum over the deleted subtype equals the erase-sum over the
 parent vertex set. -/
 theorem sum_deletedVertexType_eq_sum_erase
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (f : V → ℕ)
     (r : V) :
     (∑ j : DeletedVertexType r, f j.1)
@@ -166,7 +166,7 @@ theorem deletedCycleFamily_dyadicMass_eq_deletionPostWeight
     _ =
       deletionPostWeight
         (concreteDeletionAfter C hcard t) r := by
-          rfl
+          simp only [deletionPostWeight]
 
 /-- Root-column pointwise rigidity transports to exact equality of child and
 parent exponents. -/
