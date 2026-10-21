@@ -123,12 +123,17 @@ theorem sum_deletedVertexType_eq_sum_erase
       =
     ∑ i ∈ (Finset.univ : Finset V).erase r, f i := by
   classical
-  have hsub :=
-    Fintype.sum_eq_add_sum_subtype_ne f r
-  have herase :=
-    Finset.add_sum_erase
-      (Finset.univ : Finset V) f
-      (Finset.mem_univ r)
+  have hsub :
+      (∑ i : V, f i) =
+        f r + (∑ j : DeletedVertexType r, f j.1) := by
+    simpa only [DeletedVertexType] using
+      (Fintype.sum_eq_add_sum_subtype_ne f r)
+  have herase :
+      f r + (∑ i ∈ (Finset.univ : Finset V).erase r, f i) =
+        ∑ i : V, f i := by
+    simpa using
+      (Finset.add_sum_erase
+        (Finset.univ : Finset V) f (Finset.mem_univ r))
   omega
 
 /-- Exact first-child mass identity. -/
@@ -167,6 +172,7 @@ theorem deletedCycleFamily_dyadicMass_eq_deletionPostWeight
       deletionPostWeight
         (concreteDeletionAfter C hcard t) r := by
           simp only [deletionPostWeight]
+          rfl
 
 /-- Root-column pointwise rigidity transports to exact equality of child and
 parent exponents. -/
