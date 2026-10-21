@@ -84,30 +84,20 @@ theorem crossing_diagonals_four_angles_sum_two_pi
     EuclideanGeometry.angle_add_of_ne_of_ne
       hcd.symm had.symm hqacW.symm
 
+  -- Choose a known distinct first edge for each triangle. The intersection
+  -- point may coincide with b or d; the triangle-sum theorem allows this.
   have hABQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := b) (p₂ := a) q hab.symm
+      (p₁ := b) (p₂ := a) q hab
   have hBCQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := q) (p₂ := b) c
-      (by
-        intro h
-        subst q
-        exact hqbdW.left_ne_right_of_ne_left hbd)
+      (p₁ := b) (p₂ := c) q hbc
   have hCDQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := q) (p₂ := c) d
-      (by
-        intro h
-        subst q
-        exact hqacW.left_ne_right_of_ne_left hac.symm)
+      (p₁ := c) (p₂ := d) q hcd
   have hDAQ :=
     EuclideanGeometry.angle_add_angle_add_angle_eq_pi
-      (p₁ := q) (p₂ := d) a
-      (by
-        intro h
-        subst q
-        exact hqbdW.left_ne_right_of_ne_right hbd)
+      (p₁ := d) (p₂ := a) q had.symm
 
   have hQ1 :=
     EuclideanGeometry.angle_add_angle_eq_pi_of_angle_eq_pi b hacPi
@@ -115,8 +105,7 @@ theorem crossing_diagonals_four_angles_sum_two_pi
     EuclideanGeometry.angle_add_angle_eq_pi_of_angle_eq_pi d hacPi
 
   rw [EuclideanGeometry.angle_comm b q a] at hQ1
-  rw [EuclideanGeometry.angle_comm d q a,
-      EuclideanGeometry.angle_comm d q c] at hQ2
+  rw [EuclideanGeometry.angle_comm d q c] at hQ2
 
   -- Normalize the four split-angle identities to the exact boundary angles.
   have hA' :
@@ -158,7 +147,7 @@ theorem crossing_diagonals_four_angles_sum_two_pi
     simpa [EuclideanGeometry.angle_comm] using hCDQ
   have hDAQ' :
       EuclideanGeometry.angle q d a +
-        EuclideanGeometry.angle d a q +
+        EuclideanGeometry.angle q a d +
         EuclideanGeometry.angle d q a = Real.pi := by
     simpa [EuclideanGeometry.angle_comm] using hDAQ
 
