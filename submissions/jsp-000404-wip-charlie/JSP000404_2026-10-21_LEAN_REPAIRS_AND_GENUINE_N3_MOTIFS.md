@@ -272,3 +272,22 @@ This **does not** geometrically exclude B, prove the five-centre capacity, or pa
 ### Global closure gate
 
 The full original lower-branch theorem **still has one intentional executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean`; it still depends on `sorryAx`. The globally source-unique six-source payment for arbitrary n and original-centre cardinality remains open. Focused successful modules are not an all-tree build or a solution of JSP-000404.
+
+
+### Fourth continuation: exact n=3 high-support profile — verified
+
+`ThreeFiveSupportThreeRigidity.lean` passed [dedicated CI #39617482643](https://github.com/Charlie-Wang-03/awards/actions/runs/39617482643), 3,501 Lake jobs. Both `three_scale_high_support_exact_rigidity` and `top_next_three_exact_support_three_companion` have the ordinary kernel axioms `[propext, Classical.choice, Quot.sound]` and no `sorryAx`.
+
+For any genuine centre at `t=3+delta`, `0<=delta<1/2`, the certified quotient sum bound is `sum(q)<=3`, and `sum(q)=centreExponent+positiveSupport`. Therefore `positiveSupport>=3` implies the **exact** equalities:
+
+```text
+centreExponent = 0
+positiveSupport = 3
+sum(quotients) = 3
+```
+
+Applied to the genuine five-centre top-plus-next motif B (one exponent-2 centre, one exponent-1 centre), at least one of the three remaining original centres has that exact profile. This is a structural **necessary condition**, not a planar exclusion, and not full dyadic capacity.
+
+`ThreeFiveCompanionUnitQuotients.lean` has also been submitted as a separate proof obligation: zero floor excess forces each quotient <=1, implying the candidate companion has exactly three unit-positive quotient entries. Its focused CI outcome must be checked separately before promotion to certified.
+
+The only admitted WIP headline still contains its exact one executable `sorry`; all source-unique global payments remain open.
