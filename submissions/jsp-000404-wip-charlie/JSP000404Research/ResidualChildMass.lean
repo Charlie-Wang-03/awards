@@ -32,6 +32,25 @@ namespace DirectionData
 
 open scoped BigOperators
 
+/-- The residual predicate is geometric and generally noncomputable.
+Materialize its finite subtype classically so the mass statements elaborate
+without synthetic sorry-based placeholder instances. -/
+noncomputable instance leftResidualChildFintype
+    {V : Type*} [LinearOrder V] [Fintype V] {width : ℝ}
+    (D : DirectionData V width) (n : ℕ) :
+    Fintype (LeftResidualChild D n) := by
+  classical
+  dsimp [LeftResidualChild]
+  infer_instance
+
+noncomputable instance rightResidualChildFintype
+    {V : Type*} [LinearOrder V] [Fintype V] {width : ℝ}
+    (D : DirectionData V width) (n : ℕ) :
+    Fintype (RightResidualChild D n) := by
+  classical
+  dsimp [RightResidualChild]
+  infer_instance
+
 theorem leftChildWeight_sum_eq_subtype_mass
     {V : Type*} [LinearOrder V] [Fintype V]
     {width : ℝ} {n : ℕ}
@@ -123,7 +142,7 @@ theorem root_capacity_of_child_subtype_capacities
     cases n with
     | zero => omega
     | succ m =>
-        simp [pow_succ, Nat.add_comm]
+        simp [pow_succ, mul_comm]
   rw [hpow]
   omega
 
