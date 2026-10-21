@@ -32,8 +32,8 @@ theorem sharp_support_three_delete_sharp_gain
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 3 ≤ Fintype.card V)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
