@@ -352,3 +352,13 @@ The statement is only a **necessary profile for unresolved B**, not a contradict
 ### Fifth continuation: continuing historical compile repairs
 
 Changes additionally repair/attempt compile gates for `CutSupportInvariant.lean`, `CutQuotientRotation.lean`, `MixedSupportTransitionCeiling.lean`, and `ThirdLayerSupportOneMultiplicity.lean`. Each requires its own later focused CI success before being described as certified. All are orthogonal to the WIP's single remaining global `sorry`.
+
+
+### Fifth continuation: independently certified cut-rotation modules
+
+- `CutQuotientRotation.lean`: [CI #39632494161](https://github.com/Charlie-Wang-03/awards/actions/runs/39632494161), **SUCCESS**, 8,974 Lake jobs. The full canonical-to-cut quotient permutation bridge is restored; the three printed axioms exclude `sorryAx`.
+- `CutSupportInvariant.lean`: [CI #39632556417](https://github.com/Charlie-Wang-03/awards/actions/runs/39632556417), **SUCCESS**, 8,985 Lake jobs. The cut-independent positive-support list rotation and its dependent sorted-ray transport now compile. These fixes also remove the formerly conflicting duplicate gap-split identifier from the import graph.
+
+The separate n>=5 six-point `MixedSupportTransitionCeiling.lean` and `ThirdLayerSupportOneMultiplicity.lean` require focused acceptance after fixing dependent three-centre certificate vectors and their quotient-sum projection; the last commit does **not** independently certify them.
+
+This restores historical invariants, not the original global six-source `sorry`.
