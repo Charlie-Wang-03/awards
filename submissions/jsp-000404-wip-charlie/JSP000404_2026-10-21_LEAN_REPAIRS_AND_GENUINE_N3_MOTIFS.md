@@ -214,3 +214,30 @@ its original deliberate one `sorry` (`sorryAx` in the headline).
 The full historical research module graph still has other compilation
 errors. Success of the **focused** jobs is not full-tree acceptance.
 No added axiom, no new proof admission, and no upstream submission.
+
+
+## Third continuation: targeted historical repairs and an actual four-centre support-two certificate
+
+This continuation is deliberately scoped to source repairs and a genuine geometric **necessary condition**. It is **not** closure of the full JSP-000404 theorem.
+
+### Kernel-checked outcomes
+
+- `ConcreteMinimumOverweightRigidity.lean`: fixed two dependent `match` eliminations by explicit cases on deleted-ray prefix and suffix lists. Focused [Actions #39610641661](https://github.com/Charlie-Wang-03/awards/actions/runs/39610641661) **SUCCESS**; `lake build JSP000404Research.ConcreteMinimumOverweightRigidity`, 3519 jobs.
+- **New** `NoTopNextLayerTwoSupportTwo.lean`: `JSP000404Research.two_support_two_among_four_second_layer_centres`, focused [Actions #39611067539](https://github.com/Charlie-Wang-03/awards/actions/runs/39611067539) **SUCCESS**, 3500 Lake jobs. `#print axioms` reports only `[propext, Classical.choice, Quot.sound]`, not `sorryAx`.
+
+For four *distinct actual planar* centres of exponent `n-2`, their quotient positive support is in `{1,2}`. The existing real `AngleCap` four-centre transition-packing theorem excludes every triple with support one. By exhaustive disjunction, **at least two of the four necessarily have support two**. This refines the no-top / four-next (`n=3`, five-centre) overweight motif; it does NOT exclude it.
+
+### Compiler-repair and verification status
+
+- Removed five nonexistent `Mathlib.Data.Matrix.Notation` imports, without changing theorem statements: commit `ec94c907d7f616a03754e8da2d7376f00403a1a8`.
+- Repaired the historically broken sharp support-three deletion-gain module's missing `ConcreteMaxStableCentre` import, `prefix` identifier, shadowed `lam` binder, and two list-rotation goals. Dedicated workflow: `jsp000404-focused-sharp-support-three-deletion-gain.yml`. A final successful focused kernel check is required before recording this repair as accepted.
+- Reordered shadowed `lam` binders in `CutSaturatedEndpointDichotomy.lean` (eight theorem sites) and `ExactWitnessShortArc.lean` (three theorem sites), and subsequently repaired two exact-short-arc local proof obligations. Dedicated focused workflows are the acceptance gates; unverified source edits are not counted as verified mathematical closure.
+- Full-target incremental compilation has numerous **independent historical errors**; no full-tree PASS is claimed.
+
+### Remaining proof obligations (unchanged full-scope gate)
+
+1. Exclude both actual five-centre `n=3` overweight motifs, including the no-top four-next profile **with at least two support-two centres** and the top-plus-unique-next profile.
+2. Establish the original-vertex-level, globally non-reusing six-source net-payment inequality for every `n>=3` and at least five original centres, accounting separately for true Boolean holes, NET duplicate debt, already reserved dyadic mass, mixed rigid debts and equal-exponent twin rigid debt.
+3. Produce full source-graph Lean build, theorem correspondence audit, and an axiom audit free of `sorryAx` **before** any claim of complete formalization.
+
+The main `PlanarLowerBranchProofAdmittedWIP.lean` still contains the same single admitted `sorry`. No upstream complete-proof submission or prize claim has been made in this continuation.
