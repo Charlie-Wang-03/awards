@@ -23,8 +23,10 @@ theorem listZeroAngleMass_append
         listZeroAngleMass q₂ A₂ := by
   induction q₁ generalizing A₁ with
   | nil =>
-      have hnil : A₁ = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
+      have hnil : A₁ = [] := by
+        cases A₁ with
+        | nil => rfl
+        | cons a as => simp at hlen
       subst A₁
       simp [listZeroAngleMass]
   | cons q qs ih =>
@@ -44,8 +46,10 @@ theorem listZeroAngleMass_eq_angle_sum_of_all_zero
     listZeroAngleMass qs As = As.sum := by
   induction qs generalizing As with
   | nil =>
-      have hnil : As = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
+      have hnil : As = [] := by
+        cases As with
+        | nil => rfl
+        | cons a as => simp at hlen
       subst As
       simp [listZeroAngleMass]
   | cons q qs ih =>
@@ -97,7 +101,10 @@ theorem listZeroAngleMass_positive_ends_eq_middle
         (AFirst :: Amid ++ [ALast])
       =
     listZeroAngleMass mid Amid := by
-  simp only [listZeroAngleMass, if_neg hFirst, zero_add]
+  change (if qFirst = 0 then AFirst else 0) +
+      listZeroAngleMass (mid ++ [qLast]) (Amid ++ [ALast]) =
+        listZeroAngleMass mid Amid
+  simp only [if_neg hFirst, zero_add]
   rw [listZeroAngleMass_append
       mid [qLast] Amid [ALast] hlen]
   simp [listZeroAngleMass, hLast]
@@ -140,8 +147,8 @@ theorem exists_two_zero_angle_blocks_of_positiveCount_one
   have hrightLen :
       right.length = rightA.length := by
     have hfull := congrArg List.length hsplitA
-    simp at hfull
-    rw [hleftLen] at hfull
+    have hquot := congrArg List.length hsplit
+    simp only [List.length_append, List.length_cons] at hfull hquot
     omega
   have hmass :
       listZeroAngleMass mid Amid =

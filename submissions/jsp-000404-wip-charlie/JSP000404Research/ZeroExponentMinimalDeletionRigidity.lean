@@ -96,7 +96,6 @@ theorem zero_centre_deletion_survivor_exponent_eq_of_child_bound
       C hcard ht n r i hexp hover hchildR
   · exact zero_exponent_is_minimum
       (fun j => centreExponent (C j) t) hrZero
-  · exact hir
 
 /-- Geometric specialization: at every survivor, the ray to a deleted
 zero-exponent centre has a zero quotient on at least one adjacent cyclic side. -/
@@ -161,7 +160,6 @@ theorem zero_deleted_ray_adjacent_zero_at_survivor_of_child_bound
       C hcard ht n r i hexp hover hchildR
   · exact zero_exponent_is_minimum
       (fun j => centreExponent (C j) t) hrZero
-  · exact hir
 
 #print axioms zero_minimum_overweight_excess_eq_one_of_child_bound
 #print axioms zero_centre_deletion_survivor_exponent_eq_of_child_bound
