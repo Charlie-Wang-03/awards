@@ -1640,3 +1640,6 @@ import JSP000404Research.SixPointNFourUnconditionalSameSignSlot
 
 -- Kernel-checked indexed n=4 exact-witness slot and conditional nine-slot branch.
 import JSP000404Research.SixPointNFourActualSameSignSlot
+
+-- Kernel-verified direct n4 conditional phase-cover contradiction.
+import JSP000404Research.SixPointNFourDirectNoCover
