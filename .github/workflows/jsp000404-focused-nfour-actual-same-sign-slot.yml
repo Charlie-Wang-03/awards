@@ -9,6 +9,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourActualSameSignSlot.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessTransitionPosition.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessTransitionOccurrence.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessSupportThreeTransition.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessDeficitTwo.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessCentreBound.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourAllThreeTransitions.lean"
