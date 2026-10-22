@@ -48,7 +48,6 @@ theorem listUnitCount_ofFn_eq_unitSupport
         ih (fun i : Fin m => q i.succ)
       unfold unitSupport at htail
       rw [htail]
-      rfl
 
 theorem centre_listUnitCount_eq_unitSupport
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -61,6 +60,26 @@ theorem centre_listUnitCount_eq_unitSupport
   exact listUnitCount_ofFn_eq_unitSupport
     (centreQuotient C t)
 
+theorem listUnitCount_eq_zero_of_one_not_mem
+    (qs : List ℕ) (h : 1 ∉ qs) :
+    listUnitCount qs = 0 := by
+  have hrec : ∀ xs : List ℕ, 1 ∉ xs → listUnitCount xs = 0 := by
+    intro xs
+    induction xs with
+    | nil =>
+        intro _
+        rfl
+    | cons q ys ih =>
+        intro hno
+        have hq : q ≠ 1 := by
+          intro heq
+          exact hno (by simp [heq])
+        have hys : 1 ∉ ys := by
+          intro hy
+          exact hno (by simp [hy])
+        simp [listUnitCount, hq, ih hys]
+  exact hrec qs h
+
 /-- If pre ++ [1] ++ post contains exactly two unit entries, one further unit
 lies in pre or post. -/
 theorem extra_unit_mem_side_of_two_units
@@ -69,7 +88,7 @@ theorem extra_unit_mem_side_of_two_units
       listUnitCount (pre ++ 1 :: post) = 2) :
     1 ∈ pre ∨ 1 ∈ post := by
   rw [listUnitCount_append] at hcount
-  simp only [listUnitCount] at hcount
+  simp [listUnitCount] at hcount
   have hside :
       listUnitCount pre + listUnitCount post = 1 := by
     omega
@@ -77,32 +96,10 @@ theorem extra_unit_mem_side_of_two_units
   · exact Or.inl hpre
   · right
     by_contra hpost
-    have hpre0 : listUnitCount pre = 0 := by
-      induction pre with
-      | nil => rfl
-      | cons q qs ih =>
-          have hq : q ≠ 1 := by
-            intro h
-            apply hpre
-            simp [h]
-          have htail : 1 ∉ qs := by
-            intro h
-            apply hpre
-            simp [h]
-          simp [listUnitCount, hq, ih htail]
-    have hpost0 : listUnitCount post = 0 := by
-      induction post with
-      | nil => rfl
-      | cons q qs ih =>
-          have hq : q ≠ 1 := by
-            intro h
-            apply hpost
-            simp [h]
-          have htail : 1 ∉ qs := by
-            intro h
-            apply hpost
-            simp [h]
-          simp [listUnitCount, hq, ih htail]
+    have hpre0 : listUnitCount pre = 0 :=
+      listUnitCount_eq_zero_of_one_not_mem pre hpre
+    have hpost0 : listUnitCount post = 0 :=
+      listUnitCount_eq_zero_of_one_not_mem post hpost
     omega
 
 /-- Any quotient occurring in the left constant-sign block is a same-sign
