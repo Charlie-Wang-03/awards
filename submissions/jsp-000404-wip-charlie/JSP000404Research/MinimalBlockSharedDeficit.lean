@@ -393,6 +393,84 @@ theorem minimal_deficient_pairwise_collision_degree_budget
 #print axioms minimal_deficient_pairwise_collision_degree_budget
 
 
+
+/-- The actual collision neighbours of v inside T, retaining only other
+blocks with a genuinely nonempty candidate intersection. -/
+noncomputable def collisionBlockNeighbours
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (blocks : V → Finset W)
+    (T : Finset V)
+    (v : V) : Finset V :=
+  (T.erase v).filter (fun z => (blocks v ∩ blocks z).Nonempty)
+
+/-- Pairwise intersection incidences are supported exactly on the
+actual collision neighbours, with all zero-intersection vertices removed. -/
+theorem sum_pairwise_intersections_eq_collisionNeighbours
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (blocks : V → Finset W)
+    (T : Finset V)
+    (v : V) :
+    (∑ z ∈ T.erase v, (blocks v ∩ blocks z).card) =
+      ∑ z ∈ collisionBlockNeighbours blocks T v,
+        (blocks v ∩ blocks z).card := by
+  classical
+  symm
+  apply Finset.sum_subset
+  · intro z hz
+    exact (Finset.mem_filter.mp hz).1
+  · intro z hz hzNot
+    have hzero : (blocks v ∩ blocks z).card = 0 := by
+      by_contra hpositive
+      have hpos : 0 < (blocks v ∩ blocks z).card := by omega
+      have hnon : (blocks v ∩ blocks z).Nonempty :=
+        Finset.card_pos.mp hpos
+      exact hzNot (Finset.mem_filter.mpr ⟨hz, hnon⟩)
+    exact hzero
+
+/-- Unlike the ambient (|T|-1)-factor bound, this budget charges only
+distinct *actual collision neighbours*. It still counts repeated words
+with multiplicity and supplies no unproved global nonreuse injection. -/
+theorem minimal_deficient_actual_collision_degree_budget
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card)
+    (k : ℕ)
+    (hpair :
+      ∀ z ∈ collisionBlockNeighbours blocks T v,
+        (blocks v ∩ blocks z).card ≤ k) :
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤
+    (collisionBlockNeighbours blocks T v).card * k := by
+  classical
+  calc
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤ ∑ z ∈ T.erase v, (blocks v ∩ blocks z).card :=
+        minimal_deficient_pairwise_collision_budget
+          demand blocks hdef hmin hv hlocal
+    _ = ∑ z ∈ collisionBlockNeighbours blocks T v,
+          (blocks v ∩ blocks z).card :=
+        sum_pairwise_intersections_eq_collisionNeighbours blocks T v
+    _ ≤ ∑ _z ∈ collisionBlockNeighbours blocks T v, k := by
+      apply Finset.sum_le_sum
+      intro z hz
+      exact hpair z hz
+    _ = (collisionBlockNeighbours blocks T v).card * k := by simp
+
+#print axioms sum_pairwise_intersections_eq_collisionNeighbours
+#print axioms minimal_deficient_actual_collision_degree_budget
+
+
 noncomputable def deletedVertexTransfer
     {V W : Type*} [DecidableEq V] [DecidableEq W]
     (demand : V → ℕ)
