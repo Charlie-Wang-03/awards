@@ -60,7 +60,7 @@ theorem centre_adjacent_quotient_getElem_eq
   have hmDiff :
       m < (successiveDiffsFrom a xs).length := by
     simpa [successiveDiffsFrom_length] using hmTail
-  rw [CentreProjectiveCycle.gaps, hangles]
+  simp only [CentreProjectiveCycle.gaps, hangles]
   simp [quotientList, normalizedProjectiveGaps, projectiveGaps,
     hmDiff,
     successiveDiffsFrom_getElem_eq_adjacent_diff
@@ -153,13 +153,9 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
         rest.map sign =
           (rest.take m).map sign ++
             sign rest[m] :: (rest.drop (m + 1)).map sign := by
-      calc
-        rest.map sign =
-            (rest.take m ++ rest[m] :: rest.drop (m + 1)).map sign :=
-          congrArg (List.map sign) hrestSplit
-        _ = (rest.take m).map sign ++
-              sign rest[m] :: (rest.drop (m + 1)).map sign := by
-          simp [List.map_append]
+      have h := congrArg (List.map sign) hrestSplit
+      simpa only [List.map_append, List.map_cons,
+        List.map_take, List.map_drop] using h
     change rest.map sign ++ [!sign first] =
       (rest.take m).map sign ++
         sign rest[m] ::
@@ -205,14 +201,24 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     dsimp [sign]
     simp [hrays, List.getElem_cons_succ]
 
-  rw [hsignSplit, hqSplit]
-  apply transitionQuotientOccurs_of_split
-      qs[m] (raySignAt hp i first) (sign (rest[m]))
-      signPre signPost qPre qPost qs[m]
-      hpreLen
-  · rw [hprev, hnext]
-    exact hchange
-  · rfl
+  have hocc :
+      TransitionQuotientOccurs
+        qs[m] (raySignAt hp i first)
+        (signPre ++ sign (rest[m]) :: signPost)
+        (qPre ++ qs[m] :: qPost) := by
+    apply transitionQuotientOccurs_of_split
+        qs[m] (raySignAt hp i first) (sign (rest[m]))
+        signPre signPost qPre qPost qs[m]
+        hpreLen
+    · rw [hprev, hnext]
+      exact hchange
+    · rfl
+  rw [← hqSplit] at hocc
+  change TransitionQuotientOccurs
+    qs[m] (raySignAt hp i first)
+    (liftedCentreSignPath hp i first rest) qs
+  rw [hsignSplit]
+  exact hocc
 
 theorem centre_consecutiveRayQuotients_length
     {V : Type*} {p : V → Plane}
