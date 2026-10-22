@@ -8,6 +8,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourSameSignUnit.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/UnitSameSignOccurrence.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CentreAdjacentDirectionBoundary.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessUnitQuotient.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SameSignUnitGapSlot.lean"
       - ".github/workflows/jsp000404-focused-nfour-same-sign-witness.yml"
   workflow_dispatch:
