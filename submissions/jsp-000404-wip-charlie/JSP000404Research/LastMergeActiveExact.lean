@@ -74,7 +74,7 @@ theorem mergeLastColor_injOn_of_not_both_boundary
         apply Fin.ext
         have hv := congrArg Fin.val hab
         simp [mergeLastColor, ha, hb] at hv
-        exact hv
+        exact congrArg Fin.val hv
       exfalso
       apply hboundary
       exact ⟨by simpa [haZero] using haS,

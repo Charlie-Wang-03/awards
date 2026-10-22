@@ -172,7 +172,11 @@ theorem deletedCycleFamily_dyadicMass_eq_deletionPostWeight
       deletionPostWeight
         (concreteDeletionAfter C hcard t) r := by
           simp only [deletionPostWeight]
-          rfl
+          apply Finset.sum_congr
+          · ext x
+            simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+          · intro x hx
+            rfl
 
 /-- Root-column pointwise rigidity transports to exact equality of child and
 parent exponents. -/
