@@ -103,9 +103,11 @@ theorem direct_secondDeletion_exponent_eq_above_min
     simpa [childVertex, survivingCentre] using
       deletedCycleFamily_at_survivingCentre_eq_restrictDelete
         C hparent3 r i hir
-  simpa [childC, sChild, iChild, hchild3, hparent3,
-    childVertex, survivingCentre, hChildEq]
-    using hEqFamily
+  change centreExponent
+      ((childC iChild).restrictDelete sChild _ _) t =
+      centreExponent (childC iChild) t at hEqFamily
+  rw [hChildEq] at hEqFamily
+  convert hEqFamily using 1
 
 /-- Main high-survivor adjacent-ray rigidity theorem. -/
 theorem adjacent_minimum_rays_at_high_survivor_force_sparse_triple
