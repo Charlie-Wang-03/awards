@@ -146,10 +146,12 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
     dsimp [q]
     omega
   have hqLtR : q < r := by
-    exact Fin.mk_lt_mk.mpr (by omega)
+    change r.val - 1 < r.val
+    omega
   have hjLeQ : R.rayIndex j ≤ q := by
     have hjr : (R.rayIndex j).val < r.val := hrData.1
-    exact Fin.mk_le_mk.mpr (by omega)
+    change (R.rayIndex j).val ≤ r.val - 1
+    omega
   have hqSign :
       cutRaySign hp c i (R.rays.get q) =
         cutRaySign hp c i j := by
@@ -163,8 +165,11 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
       have hqLeK : q ≤ R.rayIndex k :=
         hqLtR.le.trans hrData.2.1
       have hqS : q ∈ S := by
-        simp [S, firstChangedCutSignIndices,
-          hjLtQ, hqLeK, hne]
+        change q ∈ (Finset.univ.filter (fun idx : Fin R.rays.length =>
+          R.rayIndex j < idx ∧ idx ≤ R.rayIndex k ∧
+          cutRaySign hp c i (R.rays.get idx) ≠ cutRaySign hp c i j))
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_univ _, hjLtQ, hqLeK, hne⟩
       have hrLeQ : r ≤ q :=
         Finset.min'_le S q hqS
       exact (not_lt_of_ge hrLeQ) hqLtR
