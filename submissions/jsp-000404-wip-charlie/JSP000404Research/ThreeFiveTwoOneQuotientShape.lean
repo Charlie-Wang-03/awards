@@ -60,6 +60,7 @@ theorem next_saturated_support_two_has_exact_two_one_units
   have hfloor :
       floorExcess (centreQuotient C t) = 1 := by
     have hmass := hsat.2.1
+    have hsupport := hsat.1
     have hsum := floorExcess_add_positiveSupport
       (centreQuotient C t)
     omega
