@@ -83,3 +83,84 @@ or close the admitted lower branch.
 - General cardinality: discharge the genuinely global non-reused six-source true-hole/surplus payment; do not rebrand soft covered words or duplicate diagonal targets as Boolean holes.
 
 None of these three mathematical endpoints are currently closed by the results above. No new hypotheses were silently added to the admitted root theorem.
+
+
+## Follow-on session: 2026-10-22 — strict-exposure, half-cap, concrete-gain trichotomy
+
+### Certified mathematical advance (kernel PASS)
+
+New `JSP000404Research/SixPointExposedOrTwoHalfCapBridgesOrGain.lean` contains the actual AngleCap trichotomy
+`six_point_support_three_exposed_or_two_halfcap_bridges_or_actual_gain`.
+
+Given a genuine six-original-point configuration with sharp top, n>=4,
+0<=delta<1/2, a distinct minimum centre i with
+`centreExponent C t = n-3` and `positiveSupport (centreQuotient C t) = 3`,
+ONE of the following is necessary:
+
+1. `StrictlyExposedAt p i`.
+2. `TwoSeparatedHalfCapBridges (p := p) top i lam` — four distinct
+   actual neighbouring original rays form TWO disjoint pairs, each pair's
+   angle at i < lam/2, while all four angles from the top to those rays,
+   and all four cross-pair angles at i, are strictly > lam.
+3. There exists an ACTUAL original non-top deleted vertex r, r != i,
+   with `centreExponent C t + 1 <= centreExponent (C.restrictDelete r ...) t`.
+
+The theorem composes the preexisting certified middle-hidden cross-cluster
+geometry and genuine local deletion gains, and uses no extra geometric
+hypothesis beyond its stated AngleCap/SharpAt assumptions.
+
+**CI PASS**
+https://github.com/Charlie-Wang-03/awards/actions/runs/39768836560
+3551 Lake jobs. `#print axioms`: `[propext, Classical.choice, Quot.sound]`;
+**no `sorryAx`**. The theorem is imported in `JSP000404Research.lean`.
+
+It reduces the open local geometry to a narrowly constrained exposed
+case or two disjoint short bridges when direct deletion gain is unavailable.
+Neither alternative has yet been proved impossible, nor paid by genuinely
+unreserved global Boolean holes.
+
+### Certified legacy compiler repairs
+
+**CI PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/39768836464
+(3544 Lake jobs), for:
+- `AdjacentMinimumRayRigidity.lean`
+- `MinimumAdjacentDoubleDeletion.lean`
+- `SupportThreeMiddleOrDeletionGain.lean`
+
+These restore direct second-deletion exponent equality and the formal
+three-gap sparsity of adjacent concrete minimum deletions. The middle-hidden
+vs actual non-top deletion alternative in the older named module compiles
+without `sorryAx`; these are NOT closed global payment obligations.
+
+**CI PASS:** https://github.com/Charlie-Wang-03/awards/actions/runs/39769193728
+(8962 Lake jobs), for `MergeLastPalettePullback.lean`.
+All five printed theorems have no `sorryAx`.
+The exact fibre of `mergeLastColor` identifies old 0/n and NOTHING ELSE:
+equal merged palettes coincide at all positive interior colours and can
+differ only through the 0/n boundary representative, under the stated
+per-palette no-double-boundary premise.
+
+### Still pending at this checkpoint
+
+`UnitSameSignOccurrence.lean` was repaired and has a focused build at
+https://github.com/Charlie-Wang-03/awards/actions/runs/39769762710.
+Status at writing: **in progress, NOT yet claimed kernel certified**.
+Earlier run #39769065818 failed on three concrete tactic/elaboration errors
+(missing `TransitionQuotientOccurs` simp symbol, incorrect induction
+argument, reversed natural-number equality). All three were corrected
+in commit `c83fd73d02989548609a0bbfdc981284ed2fb3f9`.
+
+The full `JSP000404Research` import closure remains unverified because the
+most recently completed full-tree incremental run
+https://github.com/Charlie-Wang-03/awards/actions/runs/39763615218
+failed on many LEGACY modules. A newer run
+https://github.com/Charlie-Wang-03/awards/actions/runs/39769762762
+is still in progress at this checkpoint. Do NOT treat focused PASS as full
+repository compilation.
+
+The sole executable admitted theorem remains
+`PlanarLowerBranchProofAdmittedWIP.lean` — **exactly one genuine
+`sorry`, with `sorryAx`**. The global nonreused six-source payment,
+real Boolean true holes, mixed/soft/twin sources, projected loss and
+collision-fibre compensation are NOT closed. No mathematical proof or
+counterexample to JSP-000404 is claimed.
