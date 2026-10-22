@@ -117,7 +117,7 @@ theorem exists_centreUnitGap_sameSign_of_occurs
       (quotientList t C.gaps).length =
         qPre.length + 1 + qPost.length := by
     rw [hqs]
-    simp [Nat.add_assoc]
+    simp [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
   have hmGap :
       qPre.length < C.gaps.length := by
     rw [quotientList_length] at hqLen
