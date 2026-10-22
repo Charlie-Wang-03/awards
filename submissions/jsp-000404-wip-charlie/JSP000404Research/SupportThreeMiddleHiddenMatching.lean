@@ -112,49 +112,43 @@ theorem support_three_middle_hidden_small_matching
 
   have hrTop : r.1 ≠ top := by
     intro h
-    apply htopNotTail
-    simp only [List.mem_cons, List.mem_singleton]
-    left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = r := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hbTop : b.1 ≠ top := by
     intro h
-    apply htopNotTail
-    simp only [List.mem_cons, List.mem_singleton]
-    right; left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = b := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hcTop : c.1 ≠ top := by
     intro h
-    apply htopNotTail
-    simp only [List.mem_cons, List.mem_singleton]
-    right; right; left
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = c := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
   have hdTop : d.1 ≠ top := by
     intro h
-    apply htopNotTail
-    simp only [List.mem_cons, List.mem_singleton]
-    right; right; right
-    apply Subtype.ext
-    simpa [topRay] using h.symm
+    have heq : topRay = d := Subtype.ext (by simpa [topRay] using h.symm)
+    exact htopNotTail (by simp [heq])
 
   have hrb : r ≠ b := by
-    exact (List.nodup_cons.mp htailNodup).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
   have hrc : r ≠ c := by
-    exact (List.nodup_cons.mp htailNodup).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
   have hrd : r ≠ d := by
-    exact (List.nodup_cons.mp htailNodup).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [h])
   have hbcd :
       (b :: c :: d :: []).Nodup :=
     (List.nodup_cons.mp htailNodup).2
   have hbc : b ≠ c := by
-    exact (List.nodup_cons.mp hbcd).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp hbcd).1 (by simp [h])
   have hbd : b ≠ d := by
-    exact (List.nodup_cons.mp hbcd).1 (by simp)
+    intro h
+    exact (List.nodup_cons.mp hbcd).1 (by simp [h])
   have hcd : c ≠ d := by
+    intro h
     have hcdN := (List.nodup_cons.mp hbcd).2
-    exact (List.nodup_cons.mp hcdN).1 (by simp)
+    exact (List.nodup_cons.mp hcdN).1 (by simp [h])
 
   let qs : List ℕ := quotientList t C.gaps
   let As0 : List ℝ :=
