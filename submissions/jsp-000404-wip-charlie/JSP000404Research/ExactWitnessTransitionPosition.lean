@@ -26,7 +26,7 @@ namespace JSP000404Research
 open Real
 
 /-- The actual cyclic wrap quotient of the first and last rays. -/
-def wrapRayQuotient
+noncomputable def wrapRayQuotient
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t : ℝ)
