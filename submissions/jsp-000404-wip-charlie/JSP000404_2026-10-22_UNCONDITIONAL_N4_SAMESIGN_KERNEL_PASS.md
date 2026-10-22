@@ -116,3 +116,29 @@ A further short direct phase-cover composition was added in
 `SixPointNFourDirectNoCover.lean`. Verify its independent focused
 CI before claiming it kernel-certified; its coverage hypotheses
 are still explicit and are not consequences of AngleCap yet.
+
+## Direct n=4 conditional phase-cover route — kernel PASS
+
+Focused CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39808570239
+Result: **SUCCESS**, 3546 Lake jobs.
+Source: `JSP000404Research/SixPointNFourDirectNoCover.lean`.
+Export:
+`six_point_n_four_equality_no_transition_only_phase_cover_direct`
+uses exactly `[propext, Classical.choice, Quot.sound]`,
+with **no `sorryAx`**.
+
+This bypasses the prior conditional all-five-minima three-transition
+classification by composing:
+1. The genuine original-centre indexed same-sign unit gap, proved from
+   the six-point ten-unit equality setting without `ExactAngleWitness`;
+2. `no_six_point_n_four_globalUnitGapSlot_cover_of_unusable`.
+
+The global phase-cover lower bound `hcoverLower` and predicate exclusion
+`hSameUnusable` remain EXPLICIT hypotheses. In particular, no theorem
+now proves that actual AngleCap geometry supplies the requisite
+transition-only cover or resolves the general six-source payment.
+
+Both `JSP000404Research/SixPointNFourActualSameSignSlot.lean` and
+`JSP000404Research/SixPointNFourDirectNoCover.lean` are imported
+in the research umbrella. A focused success does not certify the
+all-module import closure.
