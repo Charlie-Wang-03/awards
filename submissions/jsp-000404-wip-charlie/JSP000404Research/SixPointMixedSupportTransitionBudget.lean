@@ -101,28 +101,20 @@ theorem mixed_support_one_one_support_two_transition_le_two
   let Cfam : ∀ r : Fin 3,
       CentreProjectiveCycle hp (centre r) := by
     intro r
-    refine Fin.cases ?_ ?_ r
+    rcases r with ⟨k, hk⟩
+    interval_cases k
     · simpa [centre] using Ctop
-    · intro r1
-      refine Fin.cases ?_ ?_ r1
-      · simpa [centre] using Ca
-      · intro r2
-        refine Fin.cases ?_ ?_ r2
-        · simpa [centre] using Cb
-        · exact Fin.elim0 r2
+    · simpa [centre] using Ca
+    · simpa [centre] using Cb
   let cert : ∀ r : Fin 3,
       HighExponentTransitionIntervalCertificate
         hp t (centre r) (Cfam r) := by
     intro r
-    refine Fin.cases ?_ ?_ r
+    rcases r with ⟨k, hk⟩
+    interval_cases k
     · simpa [Cfam, centre] using HTop
-    · intro r1
-      refine Fin.cases ?_ ?_ r1
-      · simpa [Cfam, centre] using HA
-      · intro r2
-        refine Fin.cases ?_ ?_ r2
-        · simpa [Cfam, centre] using HB
-        · exact Fin.elim0 r2
+    · simpa [Cfam, centre] using HA
+    · simpa [Cfam, centre] using HB
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
