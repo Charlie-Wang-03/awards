@@ -128,15 +128,23 @@ theorem mixed_support_one_one_support_two_transition_le_two
       try { exact False.elim (hab hxy.symm) }
 
   have hpack :
+      (∑ r : Fin 3, (cert r).qe) ≤ 2 * n :=
+    highTransition_quotient_sum_le_two_n
+      hp (by omega : 1 ≤ n)
+      hdelta0 hdeltaHalf ht
+      centre hcentre Cfam cert
+  have hcert0 : (cert (0 : Fin 3)).qe = HTop.qe := by
+    rfl
+  have hcert1 : (cert (1 : Fin 3)).qe = HA.qe := by
+    rfl
+  have hcert2 : (cert (2 : Fin 3)).qe = HB.qe := by
+    rfl
+  have hpack' :
       HTop.qe + HA.qe + HB.qe ≤ 2 * n := by
-    have h :=
-      highTransition_quotient_sum_le_two_n
-        hp (by omega : 1 ≤ n)
-        hdelta0 hdeltaHalf ht
-        centre hcentre Cfam cert
-    simpa [cert, Cfam, centre, Fin.sum_univ_succ] using h
+    simpa [Fin.sum_univ_succ, hcert0, hcert1, hcert2,
+      add_assoc] using hpack
 
-  rw [hqTop, hqA] at hpack
+  rw [hqTop, hqA] at hpack'
   exact ⟨HB, by omega⟩
 
 theorem mixed_support_one_two_support_two_transitions_eq_one
@@ -169,7 +177,7 @@ theorem mixed_support_one_two_support_two_transitions_eq_one
     hta htb htc hab hac hbc
     Ctop Ca Cb Cc hTop hA hsupA
     (by simpa [hsupB])
-    (by undefined)
+    (by simpa [hsupC])
 
 #print axioms mixed_support_one_one_support_two_transition_le_two
 #print axioms mixed_support_one_two_support_two_transitions_eq_one
