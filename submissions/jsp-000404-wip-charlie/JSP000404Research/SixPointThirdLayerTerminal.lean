@@ -36,7 +36,7 @@ open scoped BigOperators
 
 /-- Pure normalized dyadic arithmetic behind the six-point terminal. -/
 theorem normalized_three_layer_profile_eq_six
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (k : V → ℕ)
     (n : ℕ)
     (hn : 3 ≤ n)
@@ -90,7 +90,9 @@ theorem normalized_three_layer_profile_eq_six
     intro i hiM hiS
     have hm : k i = n - 3 := by simpa [M] using hiM
     have hs2 : k i = n - 2 := by
-      exact (by simpa [S2] using hiS).2
+      have hS2data : i ≠ s ∧ k i = n - 2 := by
+        simpa [S2] using hiS
+      exact hS2data.2
     omega
 
   have huniv :
@@ -156,7 +158,9 @@ theorem normalized_three_layer_profile_eq_six
                   apply Finset.sum_congr rfl
                   intro i hi
                   have hiK : k i = n - 2 := by
-                    exact (by simpa [S2] using hi).2
+                    have hS2data : i ≠ s ∧ k i = n - 2 := by
+                      simpa [S2] using hi
+                    exact hS2data.2
                   have hsub : n - 2 = (n - 3) + 1 := by omega
                   rw [hiK, hsub, pow_add]
                   norm_num
@@ -206,8 +210,8 @@ column; the top-two multiplicity theorem removes any n-2 companion. -/
 theorem large_n_sub_three_minimum_with_top_forces_six_points
     {V : Type*} [LinearOrder V] [Fintype V] [Nonempty V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : 4 ≤ Fintype.card V)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)

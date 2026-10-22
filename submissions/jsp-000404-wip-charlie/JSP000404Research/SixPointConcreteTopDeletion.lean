@@ -63,9 +63,9 @@ theorem exponent_le_after_delete_top
 theorem exponent_add_one_le_after_delete_top_of_support_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard3 : 3 ≤ Fintype.card V)
     (hn4 : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -103,9 +103,9 @@ have support three. -/
 theorem six_point_top_deletion_compensated_of_four_support_three
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
