@@ -22,8 +22,8 @@ theorem six_point_n_four_exactWitness_one_transition_has_sameSign_unit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
@@ -78,8 +78,8 @@ theorem six_point_n_four_exactWitness_sameSign_unit_or_three_transitions
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
