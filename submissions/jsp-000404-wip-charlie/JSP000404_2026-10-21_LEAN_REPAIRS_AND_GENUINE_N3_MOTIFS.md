@@ -448,3 +448,44 @@ The following two real deletion proof chains were restored with successful indep
 The `ConcreteSecondDeletionBridge.lean` subtype Fintype and first-child dyadic mass identification has been amended (including a second explicit subtype/erase sum attempt), but **its latest focused CI #39647110514 must still be inspected before acceptance**.
 
 **Important proof status:** these local and conditional results make genuine geometric deletion and arithmetic subarguments available; they do **not** derive an unconditional global NET source nonreusing allocation. The sole executable `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` at line 900 remains, as does the unresolved geometric exclusion of actual n=3 five-centre motifs A and B. No claim of full all-module compilation or final JSP-000404 proof.
+
+
+## 2026-10-22 follow-on: six-point minimum-terminal-to-actual-deletion closure
+
+The following modules have been repaired and **independently kernel-checked with printed axioms containing no `sorryAx`**:
+
+| Module | Focused CI | Actual Lake results |
+|---|---|---|
+| `LastMergeActiveExact.lean` | [#39726198823](https://github.com/Charlie-Wang-03/awards/actions/runs/39726198823) | PASS; 8,961 jobs |
+| `ConcreteSecondDeletionBridge.lean` | [#39726198834](https://github.com/Charlie-Wang-03/awards/actions/runs/39726198834) | PASS; 3,521 jobs |
+| `SixPointConcreteTopDeletion.lean` | [#39726392376](https://github.com/Charlie-Wang-03/awards/actions/runs/39726392376) | PASS; 3,525 jobs |
+| `SixPointThirdLayerTerminal.lean` | [#39726855154](https://github.com/Charlie-Wang-03/awards/actions/runs/39726855154) | PASS; 3,524 jobs |
+| `SixPointTopDeletionExceptionReduction.lean` | [#39726760841](https://github.com/Charlie-Wang-03/awards/actions/runs/39726760841) | PASS; 3,529 jobs |
+| `LargeMinimumTopDeletionExceptionalMotifs.lean` | [#39727402483](https://github.com/Charlie-Wang-03/awards/actions/runs/39727402483) | PASS; 3,537 jobs |
+
+### Precise new conditional geometric reduction (NO `sorry`)
+
+`large_minimum_top_deletion_overweight_or_low_support` is a genuine point-configuration theorem, with assumptions including:
+- `n >= 5`; `delta >= 0`, `delta < 1/2`, `t=n+delta`, `lam=pi/t`; genuine injective planar `p` satisfying `AngleCap p lam`;
+- a minimum original centre `r0` has exponent `n-3`, and its minimum layer has at least five centres;
+- a top original centre has exponent `n-1`;
+- the ORIGINAL total dyadic weight is strictly greater than `2^n`;
+- the **specific deletion column at the minimum** `r0` is bounded by `2^n`.
+
+These hypotheses alone (no independently assumed six-point cardinality or five-survivor profile) entail the disjunction:
+
+1. **the actual top-deleted original-centre family has dyadic weight STRICTLY greater than `2^n`**;
+2. two different surviving original centres have quotient support `(1,2)`;
+3. two different surviving original centres have quotient support `(2,2)`.
+
+The six-point terminal is derived *internally* by `large_n_sub_three_minimum_with_top_forces_six_points`: exactly five minima of exponent `n-3`, no `n-2` survivor, exactly one `n-1` top. For any four original minima of quotient support 3, their REAL top deletion provides a compensating exponent-unit gain at each such survivor; the checked ledger gives
+`W_child >= 2^(n-1)+5*2^(n-3) = 9*2^(n-3) > 2^n`.
+If a **separate** hypothesis bounds this exact top-deleted child by `2^n`, the first disjunct is impossible; both genuinely low-support exceptions remain to be geometrically excluded or paid. Neither the top deletion child bound nor the remaining two exceptions is silently postulated or claimed proved.
+
+This materially shortens the SIX-POINT branch but does NOT prove the universal `n>=3` original-centre nonreusing six-source NET payment theorem. The remaining admitted term in `PlanarLowerBranchProofAdmittedWIP.lean:900` is not removed.
+
+### Pending independent rebuilds and error census
+
+- `SixPointMinimumDeletionWeight.lean`: fixed missing genuine deletion imports, an orientation of a disequality, and normalized natural dyadic arithmetic; focused CI [#39727654634](https://github.com/Charlie-Wang-03/awards/actions/runs/39727654634) requires acceptance.
+- `CentreTransitionRefinement.lean`: revised extraction of actual adjacent sign transitions from Fin-index minima and ray-equivalence; focused CI [#39727792103](https://github.com/Charlie-Wang-03/awards/actions/runs/39727792103) requires acceptance.
+- The completed Fast Incremental Lean build from the previous handoff head (`74b13680...`) reported **183 Lean diagnostics across 17 source files** before this batch of module repairs; this is not a successful full-project compilation. A latest-HEAD completed global error count is still required.
