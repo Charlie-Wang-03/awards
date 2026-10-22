@@ -31,8 +31,8 @@ open scoped BigOperators
 theorem mixed_support_one_one_support_two_transition_le_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -71,10 +71,25 @@ theorem mixed_support_one_one_support_two_transition_le_two
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam b Cb hsupB
 
-  have hqTop : HTop.qe = n :=
-    unit_deficit_transition_qe_eq_n
-      Ctop HTop (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hTop
+  have hsumTop :=
+    centreQuotient_function_sum_le_n
+      Ctop n delta t (by omega : 1 ≤ n) hdelta0 hdelta1 ht
+  have hdefTop :
+      n - floorExcess (centreQuotient Ctop t) = 1 := by
+    change n - centreExponent Ctop t = 1
+    rw [hTop]
+    omega
+  have hsupportTop :
+      positiveSupport (centreQuotient Ctop t) = 1 :=
+    (unit_deficit_structure
+      (centreQuotient Ctop t) n
+      (by omega : 2 ≤ n) hsumTop hdefTop).1
+  have hqTop : HTop.qe = n := by
+    have h :=
+      highTransition_qe_eq_exponent_add_one_of_support_one
+        Ctop HTop hsupportTop
+    rw [hTop] at h
+    omega
   have hqA : HA.qe = n - 2 := by
     have h :=
       support_one_transitionInterval_qe_eq_exponent_add_one
@@ -84,12 +99,20 @@ theorem mixed_support_one_one_support_two_transition_le_two
 
   let centre : Fin 3 → V := ![top,a,b]
   let Cfam : ∀ r : Fin 3,
-      CentreProjectiveCycle hp (centre r) :=
-    ![Ctop,Ca,Cb]
+      CentreProjectiveCycle hp (centre r) := by
+    intro r
+    fin_cases r
+    · simpa [centre] using Ctop
+    · simpa [centre] using Ca
+    · simpa [centre] using Cb
   let cert : ∀ r : Fin 3,
       HighExponentTransitionIntervalCertificate
-        hp t (centre r) (Cfam r) :=
-    ![HTop,HA,HB]
+        hp t (centre r) (Cfam r) := by
+    intro r
+    fin_cases r
+    · simpa [Cfam, centre] using HTop
+    · simpa [Cfam, centre] using HA
+    · simpa [Cfam, centre] using HB
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
@@ -117,8 +140,8 @@ theorem mixed_support_one_one_support_two_transition_le_two
 theorem mixed_support_one_two_support_two_transitions_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
