@@ -128,7 +128,7 @@ theorem support_three_pinned_middle_or_nonTop_deletion_gain
         hsplitTop hk hrotRays hqRight
         hLast hHiddenPos
         (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht).le
-    exact Or.inr ⟨deleted, hir, hdelTop, hgain⟩
+    exact ⟨deleted, hir, hdelTop, hgain⟩
 
 #print axioms support_three_pinned_middle_or_nonTop_deletion_gain
 
