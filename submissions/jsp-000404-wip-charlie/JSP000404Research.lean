@@ -1643,3 +1643,6 @@ import JSP000404Research.SixPointNFourActualSameSignSlot
 
 -- Kernel-verified direct n4 conditional phase-cover contradiction.
 import JSP000404Research.SixPointNFourDirectNoCover
+
+-- Kernel-checked n4 six-centre phase-cover exclusion without unit equality.
+import JSP000404Research.SixPointNFourNoCoverWithoutEquality
