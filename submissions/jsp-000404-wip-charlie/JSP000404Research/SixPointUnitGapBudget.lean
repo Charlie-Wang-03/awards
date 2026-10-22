@@ -77,6 +77,7 @@ theorem nonUnitPositiveSupport_pos_of_floorExcess_pos
         (if 2 ≤ q i then 1 else 0) ≤
           ∑ j : I, (if 2 ≤ q j then 1 else 0) := by
       exact Finset.single_le_sum
+        (f := fun j : I => if 2 ≤ q j then (1 : ℕ) else 0)
         (fun _ _ => Nat.zero_le _)
         (Finset.mem_univ i)
     simp [hi2, hz] at hsingle
@@ -129,8 +130,9 @@ theorem centre_unitSupport_le_two_of_exponent_n_sub_three
     have h :=
       positiveSupport_le_deficit
         (centreQuotient C t) n hsum
-    rw [← show floorExcess (centreQuotient C t) =
-        centreExponent C t by rfl, hexp] at h
+    change positiveSupport (centreQuotient C t) ≤
+      n - centreExponent C t at h
+    rw [hexp] at h
     omega
   have hexcess :
       1 ≤ floorExcess (centreQuotient C t) := by
@@ -160,8 +162,9 @@ theorem centre_unitSupport_eq_zero_of_exponent_n_sub_one
     have h :=
       positiveSupport_le_deficit
         (centreQuotient C t) n hsum
-    rw [← show floorExcess (centreQuotient C t) =
-        centreExponent C t by rfl, hexp] at h
+    change positiveSupport (centreQuotient C t) ≤
+      n - centreExponent C t at h
+    rw [hexp] at h
     omega
   have hexcess :
       1 ≤ floorExcess (centreQuotient C t) := by
