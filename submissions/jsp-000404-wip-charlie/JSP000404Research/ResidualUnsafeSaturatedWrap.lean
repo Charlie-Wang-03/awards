@@ -48,6 +48,7 @@ theorem hasZeroWrapExcess_of_saturated_zero_band
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hn : 1 ≤ n)
@@ -93,6 +94,7 @@ theorem unsafe_residual_saturated_pair_has_zero_wrap_endpoint
         projectedFree
           (standardResidualColoring D n hwidth) v) :
     HasZeroWrapExcess Lu ∨ HasZeroWrapExcess Lv := by
+  haveI : NeZero n := ⟨by omega⟩
   let R := standardResidualColoring D n hwidth
   have hresActive :=
     residualCoord_mem_active_of_isResidual
