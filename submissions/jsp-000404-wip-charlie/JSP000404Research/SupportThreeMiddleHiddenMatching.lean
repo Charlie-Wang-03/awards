@@ -52,8 +52,8 @@ theorem support_three_middle_hidden_small_matching
     (hsupport :
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp
-        (show top ≠ i by simpa using hit) C) :
+      SupportThreePinnedMiddleShape (t := t) hp
+        (Ne.symm hit) C) :
     ∃ a b c d : OtherVertex i,
       a.1 ≠ top ∧ b.1 ≠ top ∧
       c.1 ≠ top ∧ d.1 ≠ top ∧
@@ -70,7 +70,6 @@ theorem support_three_middle_hidden_small_matching
 
   have hlenRays : C.rays.length = 5 := by
     rw [centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
   have hlenRot : (C.rays.rotate k).length = 5 := by
     rw [List.length_rotate, hlenRays]
   rw [hrotRays] at hlenRot
@@ -93,7 +92,7 @@ theorem support_three_middle_hidden_small_matching
           subst rest3
           exact ⟨b,c,d,rfl⟩
 
-  let topRay : OtherVertex i := ⟨top, by simpa using hit⟩
+  let topRay : OtherVertex i := ⟨top, Ne.symm hit⟩
 
   have hrotShape :
       C.rays.rotate k = topRay :: r :: b :: c :: d :: [] := by
