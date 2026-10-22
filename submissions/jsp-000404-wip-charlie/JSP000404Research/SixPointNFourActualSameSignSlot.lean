@@ -114,6 +114,17 @@ theorem six_point_n_four_exactWitness_actual_sameSign_slot_or_three_transitions
         first rest pre post hrays hq hsigns
   · exact Or.inr hThree
 
+/-- Classically defined set of original-centre unit-gap locations without
+a same-sign certificate; the definition fixes the DecidablePred instance. -/
+noncomputable def globalUnitGapNonSameSignSlotsV1
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (t : ℝ) : Finset (GlobalUnitGapSlot C t) := by
+  classical
+  exact Finset.univ.filter
+    (fun u => ¬ GlobalUnitGapSameSign C t u)
+
 /-- A certified same-sign original-centre unit gap consumes one location
 from the finite set of unit gaps that are not certified same-sign. -/
 theorem non_sameSign_globalUnitGapSlot_card_lt
@@ -123,17 +134,20 @@ theorem non_sameSign_globalUnitGapSlot_card_lt
     (t : ℝ)
     (hexists : ∃ u : GlobalUnitGapSlot C t,
       GlobalUnitGapSameSign C t u) :
-    ((Finset.univ : Finset (GlobalUnitGapSlot C t)).filter
-      (fun u => ¬ GlobalUnitGapSameSign C t u)).card <
+    (globalUnitGapNonSameSignSlotsV1 C t).card <
         Fintype.card (GlobalUnitGapSlot C t) := by
   classical
   obtain ⟨u, hu⟩ := hexists
   let S : Finset (GlobalUnitGapSlot C t) :=
-    Finset.univ.filter (fun v => ¬ GlobalUnitGapSameSign C t v)
+    globalUnitGapNonSameSignSlotsV1 C t
   have hsubset : S ⊆ Finset.univ.erase u := by
     intro v hv
     have hvNot : ¬ GlobalUnitGapSameSign C t v := by
-      exact (Finset.mem_filter.mp hv).2
+      have hv' :
+          v ∈ (Finset.univ : Finset (GlobalUnitGapSlot C t)).filter
+            (fun w => ¬ GlobalUnitGapSameSign C t w) := by
+        simpa [S, globalUnitGapNonSameSignSlotsV1] using hv
+      exact (Finset.mem_filter.mp hv').2
     have hvneq : v ≠ u := by
       intro heq
       subst v
@@ -174,8 +188,7 @@ theorem six_point_n_four_exactWitness_nine_nonSameSign_slots_or_three_transition
       (∑ i : V,
         unitSupport (centreQuotient (C i) t)) = 10) :
     (StrictlyExposedAt p W.b ∧
-      ((Finset.univ : Finset (GlobalUnitGapSlot C t)).filter
-        (fun u => ¬ GlobalUnitGapSameSign C t u)).card ≤ 9)
+      (globalUnitGapNonSameSignSlotsV1 C t).card ≤ 9)
     ∨
     (∃ first : OtherVertex W.b,
       ∃ rest : List (OtherVertex W.b),
