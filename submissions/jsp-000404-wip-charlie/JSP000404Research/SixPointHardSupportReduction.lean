@@ -75,7 +75,7 @@ theorem support_three_middle_of_no_compensated_minimum_deletion
     (hit : i ≠ top)
     (hsupport :
       positiveSupport (centreQuotient (C i) t) = 3) :
-    SupportThreePinnedMiddleShape hp hit.symm (C i) := by
+    SupportThreePinnedMiddleShape (t := t) hp hit.symm (C i) := by
   rcases six_point_support_three_middle_or_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf ht hlam
       top hTop hMin hit hsupport
@@ -128,7 +128,7 @@ theorem six_point_hard_support_profile_reduction
     ∧
     (∀ i : V, i ≠ top →
       positiveSupport (centreQuotient (C i) t) = 3 →
-      SupportThreePinnedMiddleShape hp (show top ≠ i by simpa) (C i)) := by
+      SupportThreePinnedMiddleShape (t := t) hp (Ne.symm hit) (C i)) := by
   classical
   have hprofile :=
     six_point_support_multiplicity_reduction
