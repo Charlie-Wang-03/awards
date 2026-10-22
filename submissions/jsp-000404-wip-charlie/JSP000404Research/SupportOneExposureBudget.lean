@@ -1,4 +1,5 @@
 import JSP000404Research.HighExponentTransitionPacking
+import JSP000404Research.ConcreteSharpCentre
 import JSP000404Research.SupportLeTwoTransitionInterval
 import JSP000404Research.ExposedSupportIntervalGeneral
 import Mathlib.Tactic
@@ -92,10 +93,25 @@ theorem no_three_additional_exposed_after_top_support_one
   let SA : SupportIntervalCertificate (p := p) a :=
     SupportIntervalCertificate.ofHighExponent HA
 
-  have hqTop : HTop.qe = n :=
-    unit_deficit_transition_qe_eq_n
-      Ctop HTop (by omega : 2 ≤ n)
-      hdelta0 hdelta1 ht hTop
+  have hsumTop :=
+    centreQuotient_function_sum_le_n
+      Ctop n delta t (by omega : 1 ≤ n) hdelta0 hdelta1 ht
+  have hdefTop :
+      n - floorExcess (centreQuotient Ctop t) = 1 := by
+    change n - centreExponent Ctop t = 1
+    rw [hTop]
+    omega
+  have hsupportTop :
+      positiveSupport (centreQuotient Ctop t) = 1 :=
+    (unit_deficit_structure
+      (centreQuotient Ctop t) n
+      (by omega : 2 ≤ n) hsumTop hdefTop).1
+  have hqTop : HTop.qe = n := by
+    have h :=
+      highTransition_qe_eq_exponent_add_one_of_support_one
+        Ctop HTop hsupportTop
+    rw [hTop] at h
+    omega
 
   have hqA : HA.qe = n - 2 := by
     have h :=
@@ -147,8 +163,14 @@ theorem no_three_additional_exposed_after_top_support_one
       try { exact False.elim (hcd hxy.symm) }
 
   let cert : ∀ r : Fin 5,
-      SupportIntervalCertificate (p := p) (centre r) :=
-    ![STop,SA,SB,SC,SD]
+      SupportIntervalCertificate (p := p) (centre r) := by
+    intro r
+    fin_cases r
+    · simpa [centre] using STop
+    · simpa [centre] using SA
+    · simpa [centre] using SB
+    · simpa [centre] using SC
+    · simpa [centre] using SD
 
   have hpack :
       (∑ r : Fin 5, (cert r).turnLength) ≤
@@ -171,12 +193,17 @@ theorem no_three_additional_exposed_after_top_support_one
 
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    have hNat : n - 2 + 2 = n :=
+      Nat.sub_add_cancel (by omega : 2 ≤ n)
+    have hReal : ((n - 2 : ℕ) : ℝ) + 2 = (n : ℝ) := by
+      exact_mod_cast hNat
+    linarith
   have hpi : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
 
-  rw [hncast, hpi, ht] at hpack hlower
+  rw [hncast] at hlower
+  rw [hpi, ht] at hpack
   nlinarith
 
 /-- Direct support-class corollary: after one support-one third-layer
