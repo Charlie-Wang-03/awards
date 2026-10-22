@@ -101,18 +101,28 @@ theorem mixed_support_one_one_support_two_transition_le_two
   let Cfam : ∀ r : Fin 3,
       CentreProjectiveCycle hp (centre r) := by
     intro r
-    fin_cases r
+    refine Fin.cases ?_ ?_ r
     · simpa [centre] using Ctop
-    · simpa [centre] using Ca
-    · simpa [centre] using Cb
+    · intro r1
+      refine Fin.cases ?_ ?_ r1
+      · simpa [centre] using Ca
+      · intro r2
+        refine Fin.cases ?_ ?_ r2
+        · simpa [centre] using Cb
+        · exact Fin.elim0 r2
   let cert : ∀ r : Fin 3,
       HighExponentTransitionIntervalCertificate
         hp t (centre r) (Cfam r) := by
     intro r
-    fin_cases r
+    refine Fin.cases ?_ ?_ r
     · simpa [Cfam, centre] using HTop
-    · simpa [Cfam, centre] using HA
-    · simpa [Cfam, centre] using HB
+    · intro r1
+      refine Fin.cases ?_ ?_ r1
+      · simpa [Cfam, centre] using HA
+      · intro r2
+        refine Fin.cases ?_ ?_ r2
+        · simpa [Cfam, centre] using HB
+        · exact Fin.elim0 r2
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
@@ -166,8 +176,8 @@ theorem mixed_support_one_two_support_two_transitions_eq_one
     hp hcap hn hdelta0 hdeltaHalf ht hlam
     hta htb htc hab hac hbc
     Ctop Ca Cb Cc hTop hA hsupA
-    (by rw [hsupB]; omega)
-    (by rw [hsupC]; omega)
+    (by simpa [hsupB])
+    (by undefined)
 
 #print axioms mixed_support_one_one_support_two_transition_le_two
 #print axioms mixed_support_one_two_support_two_transitions_eq_one
