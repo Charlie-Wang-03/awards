@@ -33,8 +33,8 @@ theorem centreQuotient_exists_eq_one_of_exactWitness
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -87,8 +87,8 @@ theorem exactWitness_deficitTwo_support_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -235,7 +235,8 @@ theorem support_two_with_one_exact_shape
     have hfe : f ≠ e := by
       intro h
       apply hab
-      rw [← h, heb]
+      change a = b
+      exact h.trans heb
     have hzero :
         ∀ i : I, i ≠ e → i ≠ f → q i = 0 := by
       intro i hie hif
@@ -288,8 +289,8 @@ theorem exactWitness_deficitTwo_exact_quotient_pair
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
