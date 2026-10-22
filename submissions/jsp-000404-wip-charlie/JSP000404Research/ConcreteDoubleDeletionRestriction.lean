@@ -168,7 +168,7 @@ theorem restrictDelete_rays_adjacent_second_cut
       C hir hother pre
       (deletedParentRay s i his :: post)
       hsplit
-  rw [← CentreProjectiveCycle.restrictDelete_rays]
+  change (C.restrictDelete r hir hother).rays = _
   rw [hfirst]
   simp only [List.filterMap_cons]
   have hsSome :
