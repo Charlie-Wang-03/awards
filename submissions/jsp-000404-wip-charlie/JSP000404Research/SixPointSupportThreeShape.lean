@@ -61,7 +61,6 @@ theorem centreRayList_length_eq_five_of_card_six
     (hcard : Fintype.card V = 6) :
     C.rays.length = 5 := by
   rw [centreRayList_length_eq_card_sub_one C, hcard]
-  norm_num
 
 /-- A length-three natural list with exactly one positive entry has one of the
 three obvious one-spike shapes. -/
@@ -74,27 +73,30 @@ theorem length_three_positiveCount_one_shape
       (qs = [q,0,0] ∨
        qs = [0,q,0] ∨
        qs = [0,0,q]) := by
-  rcases qs with _ | q0 qs
-  · simp at hlen
-  rcases qs with _ | q1 qs
-  · simp at hlen
-  rcases qs with _ | q2 qs
-  · simp at hlen
-  rcases qs with _ | q3 qs
-  · simp only [List.length_cons, List.length_nil] at hlen
-    by_cases h0 : q0 = 0 <;>
-      by_cases h1 : q1 = 0 <;>
-      by_cases h2 : q2 = 0 <;>
-      simp [listPositiveCount, h0, h1, h2] at hcount ⊢
-  · simp at hlen
+  cases qs with
+  | nil => simp at hlen
+  | cons q0 qs =>
+    cases qs with
+    | nil => simp at hlen
+    | cons q1 qs =>
+      cases qs with
+      | nil => simp at hlen
+      | cons q2 qs =>
+        cases qs with
+        | cons q3 qs => simp at hlen
+        | nil =>
+          by_cases h0 : q0 = 0 <;>
+            by_cases h1 : q1 = 0 <;>
+            by_cases h2 : q2 = 0 <;>
+            simp [listPositiveCount, h0, h1, h2] at hcount ⊢
 
 /-- Six-point specialization of the sharp-pinned support-three skeleton. -/
 theorem exists_six_point_sharp_pinned_support_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
