@@ -148,7 +148,7 @@ theorem merged_zero_mem_image_iff_boundary
       simp [mergeLastColor, haN] at hv
       have haZero : a = (0 : Fin (n + 1)) := by
         apply Fin.ext
-        exact hv
+        exact congrArg Fin.val hv
       exact Or.inl (by simpa [haZero] using haS)
     · have haLast : a = Fin.last n := by
         apply Fin.ext
@@ -160,12 +160,10 @@ theorem merged_zero_mem_image_iff_boundary
     rcases h with h0 | hnS
     · apply Finset.mem_image.mpr
       refine ⟨(0 : Fin (n + 1)), h0, ?_⟩
-      apply Fin.ext
-      simp [mergeLastColor, hn]
+      simpa using (mergeLastColor_zero hn)
     · apply Finset.mem_image.mpr
       refine ⟨Fin.last n, hnS, ?_⟩
-      apply Fin.ext
-      simp [mergeLastColor]
+      simpa using (mergeLastColor_last hn)
 
 theorem boundary_union_iff_of_equal_merge_image
     {n : ℕ}
