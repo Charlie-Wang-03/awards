@@ -57,7 +57,7 @@ The source was repaired and further refined after a focused failure exposed one 
 The latest focused workflow is:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39756837018
 
-**Verification at checkpoint authoring: PENDING.** Do not count this as PASS before the action's result and axiom audit are checked.
+**Focused verification: PASS** at https://github.com/Charlie-Wang-03/awards/actions/runs/39756837018 . The two geometric theorems compile (3534 Lake jobs), both with axioms `[propext, Classical.choice, Quot.sound]`, no `sorryAx`. A support-two exponent-`n-3` minimum has a genuine distinct-ray pair of angle at most `(1+delta)*lam/3`, and neither endpoint can be the sharp top.
 
 ## Unclosed mathematics
 
@@ -68,3 +68,31 @@ https://github.com/Charlie-Wang-03/awards/actions/runs/39756837018
 - Focused proof-module PASS is not a whole-tree `lake build JSP000404Research` success. The latest previously completed fast-incremental full-target CI failed; the root entry remains unproved.
 
 No new axioms, non-WIP `sorry` or unjustified solver credit were introduced. The source and verification evidence remain on the research branch only.
+
+## 4. n=3 five-centre top+next companion — fully unit-valued quotients
+
+New source `JSP000404Research/ThreeFiveSaturatedUnitQuotients.lean`, imported in the research umbrella.
+Focused PASS: https://github.com/Charlie-Wang-03/awards/actions/runs/39757363035
+Build: 3536 Lake jobs. Three `#print axioms` audits contain only
+`[propext, Classical.choice, Quot.sound]`.
+
+The verified theorem `top_next_five_has_saturated_unit_companion` strengthens
+the previously proved `top_next_three_exact_support_three_companion`:
+for five genuine planar vertices, if one centre has exponent 2 and another
+exponent 1 at scale `n=3`, at least one of the three other centres has all
+quotient values at most one, with exactly **three unit-valued quotient entries**.
+The three positive entries are therefore `1+1+1` and the other entries vanish.
+This is not an exclusion of the top+next overweight motif.
+
+## 5. n=3 five-centre no-top next-layer — one unit plus one double
+
+New source `JSP000404Research/ThreeFiveTwoOneQuotientShape.lean`,
+with its own focused workflow:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39757858385
+
+The intended precise interface states that any saturated exponent-one,
+support-two centre must have exactly one quotient entry equal to one and
+exactly one entry equal to two (the rest zero). Existing certified geometry
+supplies at least two such saturated centres among any four next-layer
+centres. **The new module's CI status must be checked before claiming kernel
+verification; it was still running at this document update.**
