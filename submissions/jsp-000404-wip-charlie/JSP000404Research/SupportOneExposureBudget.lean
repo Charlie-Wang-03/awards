@@ -165,7 +165,8 @@ theorem no_three_additional_exposed_after_top_support_one
   let cert : ∀ r : Fin 5,
       SupportIntervalCertificate (p := p) (centre r) := by
     intro r
-    fin_cases r
+    rcases r with ⟨j, hj⟩
+    interval_cases j
     · simpa [centre] using STop
     · simpa [centre] using SA
     · simpa [centre] using SB
