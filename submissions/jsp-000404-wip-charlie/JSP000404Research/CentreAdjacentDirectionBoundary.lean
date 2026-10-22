@@ -42,9 +42,7 @@ theorem rayIndex_mem_lowDirectionIndices
       rayThetaAt hp i j < rayThetaAt hp i k) :
     C.rayIndex j ∈ C.lowDirectionIndices j k := by
   classical
-  change C.rayIndex j ≤ C.rayIndex k ∧
-    rayThetaAt hp i (C.rays.get (C.rayIndex j)) =
-      rayThetaAt hp i j
+  simp only [lowDirectionIndices, Finset.mem_filter, Finset.mem_univ, true_and]
   exact ⟨(C.rayIndex_lt_of_theta_lt hjk).le,
     by rw [C.get_rayIndex]⟩
 
@@ -124,9 +122,8 @@ theorem exists_adjacent_angles_of_no_strict_between
     intro heq
     have hsuccS : qsucc ∈ S := by
       change qsucc ∈ C.lowDirectionIndices j k
-      change qsucc ≤ C.rayIndex k ∧
-        rayThetaAt hp i (C.rays.get qsucc) =
-          rayThetaAt hp i j
+      simp only [lowDirectionIndices, Finset.mem_filter,
+        Finset.mem_univ, true_and]
       exact ⟨hqsuccLeK, heq⟩
     have hleMax : qsucc ≤ q :=
       Finset.le_max' S qsucc hsuccS
