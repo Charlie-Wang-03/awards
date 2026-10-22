@@ -1,6 +1,4 @@
-import JSP000404Research.SixPointNFourAllThreeTransitions
-import JSP000404Research.FarthestStrictExposure
-import JSP000404Research.ExposedSupportIntervalGeneral
+import JSP000404Research.SixPointNFourDirectNoCover
 import Mathlib.Tactic
 
 /-!
@@ -12,17 +10,13 @@ Assume a full phase cover by critical unit-gap obstructions, with the natural
 geometric condition that a same-sign unit gap cannot generate such a
 transition obstruction.
 
-The previous module forces every minimum to have exactly three sign
-transitions.  On the other hand, relative to the top centre there is always a
-different strictly exposed vertex: choose a farthest non-top point.  Since all
-non-top vertices are minima, that same centre has three transitions.
+The certified unconditional same-sign-slot theorem finds a genuine indexed
+unusable unit-gap at a strictly exposed non-top centre, without an exact-angle
+witness or all-five-minima three-transition classification.
 
-But ExposedSupportIntervalGeneral proves that every strictly exposed centre has
-exactly one sign transition in its fixed sorted ray cycle.  The two displayed
-head/tail decompositions are decompositions of the same nonempty list C.rays,
-hence have identical head and tail.  This gives 1=3, contradiction.
-
-Thus the n=4 six-point equality terminal admits no such full phase cover.
+The existing conditional phase-cover bound then rules out a full cover.
+Neither the phase-cover lower-bound premise nor same-sign unavailability is
+claimed to follow from AngleCap alone.
 -/
 
 namespace JSP000404Research
@@ -58,30 +52,11 @@ theorem no_six_point_n_four_transition_only_unit_slot_cover
         PredicateCovers A T →
         (4 : ℝ) + delta ≤ (T.card : ℝ) * delta) :
     ¬ PredicateCovers A S := by
-  intro hcover
-  have hAllThree :=
-    six_point_n_four_cover_forces_all_minima_three_transitions
+  exact
+    six_point_n_four_equality_no_transition_only_phase_cover_direct
       hp hcap hdelta0 hdeltaHalf ht hlam
       C hcard top hTop hMin hunitTotal
-      A S hSameUnusable hcoverLower hcover
-  obtain ⟨j, hjTop, hExpose⟩ :=
-    exists_strictlyExposed_ne_fixed
-      hp (by rw [hcard]; norm_num) top
-  obtain ⟨first3, rest3, hrays3, hthree⟩ :=
-    hAllThree j hjTop
-  obtain ⟨first1, rest1, hrays1, hone⟩ :=
-    one_sign_transition_of_strictlyExposed
-      hp (C j) hExpose
-  have hcons :
-      first1 :: rest1 = first3 :: rest3 := by
-    rw [← hrays1, ← hrays3]
-  have hhead : first1 = first3 :=
-    (List.cons.inj hcons).1
-  have htail : rest1 = rest3 :=
-    (List.cons.inj hcons).2
-  subst first3
-  subst rest3
-  omega
+      A S hSameUnusable hcoverLower
 
 #print axioms no_six_point_n_four_transition_only_unit_slot_cover
 
