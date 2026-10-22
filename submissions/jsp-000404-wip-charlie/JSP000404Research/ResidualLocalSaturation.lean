@@ -41,6 +41,7 @@ theorem fullBand_saturated_of_projected_saturated
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hsat :
@@ -87,6 +88,7 @@ theorem top_band_mem_occupied_of_residual_mem
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hres :
@@ -118,6 +120,7 @@ theorem exists_saturated_linear_value_decomposition
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hsat :
@@ -174,6 +177,7 @@ theorem band_val_mem_occupied_of_standardActive
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (c : Fin (n + 1))
@@ -205,6 +209,7 @@ theorem zero_band_mem_occupied_of_standardActive
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hn : 1 ≤ n)
@@ -221,6 +226,7 @@ theorem exists_saturated_zero_wrap_value_decomposition
     {V : Type*} [LinearOrder V] [Fintype V]
     {t : ℝ} {n : ℕ}
     (D : DirectionData V t)
+    {v : V}
     (L : LocalDirectionCycle D v)
     (hwidth : t < (n + 1 : ℕ))
     (hn : 1 ≤ n)
