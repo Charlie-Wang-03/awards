@@ -226,7 +226,10 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
           rw [← hlen]
           simp
         rw [List.rotate_rotate] at hfive
-        exact hfive
+        have hqsLen : qs.length = 5 := by
+          dsimp [qs]
+          exact hqLen
+        simpa [hqsLen] using hfive
       have hright :
           ((qLast :: [qFirst,0,0] ++ [qHidden]).rotate 1).rotate 4 =
             qLast :: [qFirst,0,0] ++ [qHidden] := by
