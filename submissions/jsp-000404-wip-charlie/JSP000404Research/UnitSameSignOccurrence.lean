@@ -138,15 +138,14 @@ theorem sameSignQuotientOccurs_of_mem_post
   | nil =>
       simp only [List.length_nil, List.replicate_zero,
         List.nil_append, List.replicate_succ,
-        List.cons_append, TransitionQuotientOccurs,
-        SameSignQuotientOccurs]
+        List.cons_append, SameSignQuotientOccurs]
       right
       exact sameSignQuotientOccurs_replicate q (!a) post hq
   | cons r rs ih =>
       simp only [List.length_cons, List.replicate_succ,
         List.cons_append, SameSignQuotientOccurs]
       right
-      exact ih a hq
+      exact ih
 
 /-- Two unit entries plus a distinguished unit transition force another unit
 on a same-sign step. -/
@@ -176,7 +175,8 @@ theorem listUnitCount_pos_iff_one_mem
       by_cases hq : q = 1
       · subst q
         simp [listUnitCount]
-      · simp [listUnitCount, hq, ih]
+      · have h1q : (1 : ℕ) ≠ q := Ne.symm hq
+        simpa [listUnitCount, hq, h1q, ih]
 
 /-- General form: if a one-transition decomposition contains exactly two unit
 quotients, at least one unit lies in a constant-sign side block, irrespective
