@@ -31,8 +31,8 @@ theorem six_point_n_four_one_transition_minimum_has_sameSign_slot
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (4 : ℝ) + delta)
     (hlam : lam = Real.pi / t)
@@ -97,8 +97,8 @@ theorem six_point_n_four_cover_forces_all_minima_three_transitions
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
