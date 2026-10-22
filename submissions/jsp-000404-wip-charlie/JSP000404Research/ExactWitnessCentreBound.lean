@@ -29,8 +29,8 @@ theorem exactWitness_centre_ne_topExponent
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -66,14 +66,17 @@ theorem exactWitness_centre_ne_topExponent
     rw [hlam]
     field_simp [ne_of_gt htpos]
   rw [hpi, ht] at hsharpWitness
+  have hnReal : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hpositive : 0 < ((n : ℝ) - 1) * lam :=
+    mul_pos (by linarith) hlampos
   nlinarith
 
 theorem exactWitness_centreExponent_le_n_sub_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
