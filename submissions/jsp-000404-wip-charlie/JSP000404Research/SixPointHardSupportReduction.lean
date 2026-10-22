@@ -126,9 +126,9 @@ theorem six_point_hard_support_profile_reduction
         positiveSupport (centreQuotient (C b) t) = 2)
     )
     ∧
-    (∀ i : V, i ≠ top →
+    (∀ (i : V) (hi_ne_top : i ≠ top),
       positiveSupport (centreQuotient (C i) t) = 3 →
-      SupportThreePinnedMiddleShape (t := t) hp (Ne.symm hi_ne_top) (C i)) := by
+      SupportThreePinnedMiddleShape (t := t) hp hi_ne_top.symm (C i)) := by
   classical
   have hprofile :=
     six_point_support_multiplicity_reduction
