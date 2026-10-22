@@ -95,7 +95,25 @@ theorem mem_cyclicRayAngles_exists_distinct_pair
   · let last := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
-      exact List.getLastD_mem hrest
+      have hlastAux :
+          ∀ xs : List (OtherVertex i),
+            xs ≠ [] → xs.getLastD first ∈ xs := by
+        intro xs
+        induction xs with
+        | nil =>
+            intro hx
+            exact (hx rfl).elim
+        | cons a as ih =>
+            intro _
+            cases as with
+            | nil => simp [List.getLastD]
+            | cons b bs =>
+                have htail :
+                    (b :: bs).getLastD first ∈ b :: bs :=
+                  ih (by simp)
+                have hmem := List.mem_cons_of_mem a htail
+                simpa [List.getLastD] using hmem
+      exact hlastAux rest hrest
     have hfl : last ≠ first := by
       intro h
       subst last
@@ -107,8 +125,8 @@ theorem six_point_support_two_has_one_third_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -128,7 +146,7 @@ theorem six_point_support_two_has_one_third_small_angle
       ∃ first rest, C.rays = first :: rest := by
     cases hR : C.rays with
     | nil => exact False.elim (C.nonempty hR)
-    | cons first rest => exact ⟨first,rest,hR⟩
+    | cons first rest => exact ⟨first, rest, rfl⟩
   let qs := quotientList t C.gaps
   let As := cyclicRayAngles (p := p) i first rest
 
@@ -185,8 +203,8 @@ theorem six_point_support_two_small_pair_avoids_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -228,7 +246,7 @@ theorem six_point_support_two_small_pair_avoids_sharp
       exact hx.trans hy.symm
     have houter :=
       outer_angle_ge_one_sub_delta_mul_lam_of_sharp
-        hp hcap hti hyTop y.2.symm hSharp
+        hp hcap hti hyTop.symm y.2.symm hSharp
     have hs :
         EuclideanGeometry.angle (p top) (p i) (p y.1)
           ≤ ((1 + delta) * lam) / 3 := by
@@ -239,7 +257,7 @@ theorem six_point_support_two_small_pair_avoids_sharp
     have hxTop' : x.1 ≠ top := hxTop
     have houter :=
       outer_angle_ge_one_sub_delta_mul_lam_of_sharp
-        hp hcap hti hxTop' x.2.symm hSharp
+        hp hcap hti hxTop'.symm x.2.symm hSharp
     have hcomm :
         EuclideanGeometry.angle (p x.1) (p i) (p top) =
           EuclideanGeometry.angle (p top) (p i) (p x.1) :=
