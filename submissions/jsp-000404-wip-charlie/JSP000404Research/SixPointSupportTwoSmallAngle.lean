@@ -116,8 +116,10 @@ theorem mem_cyclicRayAngles_exists_distinct_pair
       exact hlastAux rest hrest
     have hfl : last ≠ first := by
       intro h
-      subst last
-      exact (List.nodup_cons.mp hnodup).1 hlastMem
+      have hfirstMem : first ∈ rest := by
+        rw [← h]
+        exact hlastMem
+      exact (List.nodup_cons.mp hnodup).1 hfirstMem
     exact ⟨last, first, hfl, hwrap⟩
 
 /-- Six-point support-two centres contain a genuinely small pair. -/
