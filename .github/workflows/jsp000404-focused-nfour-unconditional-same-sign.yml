@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourUnconditionalSameSignSlot.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourDirectNoCover.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourNoCover.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourAllThreeTransitions.lean"
       - ".github/workflows/jsp000404-focused-nfour-unconditional-same-sign.yml"
   workflow_dispatch:
@@ -55,7 +56,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check unconditional n4 same-sign slot and direct phase-cover exclusion
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SixPointNFourDirectNoCover
+        run: lake build JSP000404Research.SixPointNFourNoCover
       - name: Scope
         if: always()
         run: echo 'Unconditional indexed same-sign slot is not a Boolean true hole; global payment remains open.'
