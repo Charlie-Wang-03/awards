@@ -114,6 +114,34 @@ theorem minimal_deficient_shared_card_ge_slack_add_one
     block_card_eq_private_add_shared blocks T v
   omega
 
+/-- A minimal deficient Hall core cannot contain an isolated locally
+adequate block: there is an actual shared candidate word and a distinct
+second owner inside the core. This gives a collision witness but NOT an
+injective payment of all deficient demands. -/
+theorem minimal_deficient_local_capacity_has_collision
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card) :
+    ∃ word : W, word ∈ blocks v ∧
+      ∃ z : V, z ∈ T ∧ z ≠ v ∧ word ∈ blocks z := by
+  classical
+  have hbound :=
+    minimal_deficient_shared_card_ge_slack_add_one
+      demand blocks hdef hmin hv hlocal
+  have hpos : 0 < (sharedBlockWords blocks T v).card := by
+    omega
+  obtain ⟨word, hword⟩ := Finset.card_pos.mp hpos
+  exact ⟨word, sharedBlockWords_has_other_block blocks hword⟩
+
 theorem minimal_deficient_exact_block_has_shared_word
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
     (demand : V → ℕ)
