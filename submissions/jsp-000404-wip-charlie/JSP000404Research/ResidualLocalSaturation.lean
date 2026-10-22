@@ -112,7 +112,7 @@ theorem top_band_mem_occupied_of_residual_mem
     L.occupiedNatBands_values_eq_incident_val_map
       (n + 1) htLe
   rw [hbands]
-  apply Finset.mem_image.mpr
+  apply Finset.mem_map.mpr
   exact ⟨⟨n, by omega⟩, htopIncident, rfl⟩
 
 /-- Packaged saturation certificate in a concrete nonempty value-list form. -/
@@ -146,7 +146,7 @@ theorem exists_saturated_linear_value_decomposition
     | nil =>
         exact False.elim (L.values_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have haMem : a ∈ L.values := by
     rw [hvalues]
     simp
