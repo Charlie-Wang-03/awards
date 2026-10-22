@@ -547,6 +547,8 @@ theorem minimal_enlargedCandidate_loss_two_nonloss_neighbours_top
     have hdecomp :
         ((retainedActive C r).card + 1) * q - 2 * q
           ≥ 2 * q := by
+      have hmul := Nat.mul_le_mul_right q
+        (by omega : 4 ≤ (retainedActive C r).card + 1)
       omega
     omega
 
@@ -3682,23 +3684,15 @@ theorem enlargedLoss_local_slack_eq_translated_minus_one_cube
     allActiveLossCandidateBlock_card,
     projectedLoss_target_eq_two_mul_completion
       C exponent hvLoss]
-  have hactivePos :
-      1 ≤ (retainedActive C v).card := by
-    have hloss :=
-      (mem_projectedLossVertices C exponent v).1 hvLoss
-    unfold projectedFree at hloss
-    have hcardLe :
-        (retainedActive C v).card ≤ n := by
-      simpa using Finset.card_le_univ
-        (retainedActive C v)
+  let a := (retainedActive C v).card
+  let q := (retainedCompletionWords C v).card
+  change (a + 1) * q - 2 * q = (a - 1) * q
+  by_cases ha : a = 0
+  · simp [ha] <;> omega
+  · have hapos : 1 ≤ a := by omega
+    have hsplit : a + 1 = (a - 1) + 2 := by omega
+    rw [hsplit, add_mul]
     omega
-  have ha :
-      (retainedActive C v).card =
-        ((retainedActive C v).card - 1) + 1 := by
-    omega
-  rw [ha]
-  ring_nf
-  omega
 
 theorem enlargedLoss_translated_region_card_eq_active_mul_cube
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
