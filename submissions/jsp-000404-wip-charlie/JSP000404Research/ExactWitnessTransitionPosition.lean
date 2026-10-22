@@ -25,6 +25,16 @@ namespace JSP000404Research
 
 open Real
 
+/-- The actual cyclic wrap quotient of the first and last rays. -/
+def wrapRayQuotient
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    (i : V) (t : ℝ)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i)) : ℕ :=
+  Nat.floor (t * ((rayThetaAt hp i first + Real.pi -
+    rayThetaAt hp i ((first :: rest).getLast (by simp))) / Real.pi))
+
 /-- Positional certificate that quotient one is carried by a sign transition
 of a concrete centre cycle. -/
 def ExactUnitTransitionPosition
@@ -48,8 +58,7 @@ def ExactUnitTransitionPosition
     ∃ rest : List (OtherVertex i),
       C.rays = first :: rest
       ∧
-      wrapRayQuotient hp i t first
-          (rest.getLastD first) = 1
+      wrapRayQuotient hp i t first rest = 1
       ∧
       raySignAt hp i (rest.getLastD first) ≠
         !raySignAt hp i first)
@@ -59,8 +68,8 @@ theorem exactWitness_ordered_unit_transition_position
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -78,7 +87,10 @@ theorem exactWitness_ordered_unit_transition_position
   let kc : OtherVertex W.b := ⟨W.c, W.hbc.symm⟩
   have htpos :
       0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+    by
+      rw [ht]
+      have hnR : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+      linarith
   have hscale :
       t * (lam / Real.pi) = 1 := by
     rw [hlam]
@@ -159,7 +171,7 @@ theorem exactWitness_ordered_unit_transition_position
       | nil =>
           exact False.elim (C.nonempty hR)
       | cons first rest =>
-          exact ⟨first, rest, hR⟩
+          exact ⟨first, rest, rfl⟩
     have hsorted :
         (first :: rest).Pairwise
           (fun x y =>
@@ -174,7 +186,9 @@ theorem exactWitness_ordered_unit_transition_position
     have hfirstLeA :
         rayThetaAt hp W.b first ≤
           rayThetaAt hp W.b ja := by
-      rcases hjaMem with hEq | htail
+      have hcases : ja = first ∨ ja ∈ rest := by
+        simpa only [List.mem_cons] using hjaMem
+      rcases hcases with hEq | htail
       · simpa [hEq]
       · rw [List.pairwise_cons] at hsorted
         exact hsorted.1 ja htail
@@ -240,24 +254,14 @@ theorem exactWitness_ordered_unit_transition_position
           !raySignAt hp W.b first := by
       rw [hlastSign, hfirstSign]
       exact hWitnessLift
-    have hlastRest :
-        rest.getLastD first = last := by
-      dsimp [last]
-      cases rest with
-      | nil =>
-          simp
-      | cons r rs =>
-          simp [List.getLast_cons]
     have hfloor :
-        wrapRayQuotient hp W.b t first
-            (rest.getLastD first) = 1 := by
+        wrapRayQuotient hp W.b t first rest = 1 := by
       unfold wrapRayQuotient
-      rw [hlastRest, hfirstTheta, hlastTheta]
+      rw [hfirstTheta, hlastTheta]
       dsimp [ja, kc] at hwrap
       rw [hwrap, hscale]
       norm_num
     refine ⟨first, rest, hrays, hfloor, ?_⟩
-    rw [hlastRest]
     exact hLift
 
 /-- Cut-independent exact witness transition-position theorem. -/
@@ -265,8 +269,8 @@ theorem exactWitness_unit_transition_position
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
