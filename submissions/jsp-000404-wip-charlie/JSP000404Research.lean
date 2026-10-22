@@ -1439,6 +1439,7 @@ import JSP000404Research.SupportThreeNonTopGainPosition
 
 import JSP000404Research.SixPointSupportThreeOutletDichotomy
 import JSP000404Research.SixPointSupportThreeActualDeletionOutlet
+import JSP000404Research.SixPointExposedOrTwoHalfCapBridgesOrGain
 
 import JSP000404Research.ThreeFiveSaturatedUnitQuotients
 
