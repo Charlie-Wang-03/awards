@@ -28,7 +28,8 @@ theorem quotientList_getElem_eq_floor
     (m : ℕ)
     (hm : m < (quotientList t gaps).length) :
     (quotientList t gaps)[m] =
-      Nat.floor (t * gaps[m]) := by
+      Nat.floor (t * gaps[m]'(by
+        simpa [quotientList_length] using hm)) := by
   simp [quotientList]
 
 /-- The m-th non-wrap centre quotient is the floor of the m,m+1 adjacent
@@ -42,14 +43,15 @@ theorem centre_adjacent_quotient_getElem_eq
     (hm : m + 1 < C.angles.length) :
     (quotientList t C.gaps)[m] =
       Nat.floor
-        (t * ((C.angles[m + 1] - C.angles[m]) / Real.pi)) := by
+        (t * ((C.angles[m + 1]'hm -
+        C.angles[m]'(by omega)) / Real.pi)) := by
   obtain ⟨a, xs, hangles⟩ :
       ∃ a xs, C.angles = a :: xs := by
     cases h : C.angles with
     | nil =>
         exact False.elim (C.angles_nonempty h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
   have hmTail : m < xs.length := by
     rw [hangles] at hm
     simpa using hm
@@ -99,8 +101,8 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     (m : ℕ)
     (hm : m + 1 < C.rays.length)
     (hchange :
-      raySignAt hp i (C.rays[m]) ≠
-        raySignAt hp i (C.rays[m + 1])) :
+      raySignAt hp i (C.rays[m]'(by omega)) ≠
+        raySignAt hp i (C.rays[m + 1]'hm)) :
     TransitionQuotientOccurs
       ((quotientList t C.gaps)[m])
       (raySignAt hp i first)
@@ -132,14 +134,20 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     have hfull :
         rest.take (m + 1) ++ rest.drop (m + 1) = rest :=
       List.take_append_drop (m + 1) rest
-    rw [← hfull, ← htake]
-    simp [List.append_assoc]
+    calc
+      rest = rest.take (m + 1) ++ rest.drop (m + 1) :=
+        (List.take_append_drop (m + 1) rest).symm
+      _ = (rest.take m ++ [rest[m]]) ++ rest.drop (m + 1) := by
+        rw [← htake]
+      _ = rest.take m ++ rest[m] :: rest.drop (m + 1) := by
+        simp [List.append_assoc]
 
   have hsignSplit :
       liftedCentreSignPath hp i first rest =
         signPre ++ sign (rest[m]) :: signPost := by
     dsimp [signPre, signPost, sign, liftedCentreSignPath]
-    rw [hrestSplit]
+    have hmap := congrArg (List.map sign) hrestSplit
+    rw [hmap]
     simp [List.map_append, List.append_assoc]
 
   have hqSplit :
@@ -152,8 +160,13 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     have hfull :
         qs.take (m + 1) ++ qs.drop (m + 1) = qs :=
       List.take_append_drop (m + 1) qs
-    rw [← hfull, ← htake]
-    simp [List.append_assoc]
+    calc
+      qs = qs.take (m + 1) ++ qs.drop (m + 1) :=
+        (List.take_append_drop (m + 1) qs).symm
+      _ = (qs.take m ++ [qs[m]]) ++ qs.drop (m + 1) := by
+        rw [← htake]
+      _ = qs.take m ++ qs[m] :: qs.drop (m + 1) := by
+        simp [List.append_assoc]
 
   have hpreLen :
       signPre.length = qPre.length := by
@@ -164,17 +177,16 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
       boolLastFrom (sign first) signPre =
         sign (C.rays[m]) := by
     dsimp [signPre, sign]
-    rw [hrays]
-    exact boolLastFrom_map_take_eq_ray_getElem
+    simpa only [hrays] using
+      (boolLastFrom_map_take_eq_ray_getElem
       (raySignAt hp i) first rest m
-      (by simp [hmRest])
+      (by simp [hmRest]))
 
   have hnext :
       sign (rest[m]) =
         sign (C.rays[m + 1]) := by
     dsimp [sign]
-    rw [hrays]
-    simp
+    simp [hrays, List.getElem_cons_succ]
 
   rw [hsignSplit, hqSplit]
   apply transitionQuotientOccurs_of_split
@@ -238,7 +250,7 @@ theorem centre_transitionQuotientOccurs_at_wrap
         qPre.length := by
     dsimp [qPre]
     rw [List.length_map,
-      centre_centreAdjacent_consecutiveRayQuotients_length hp i t first rest]
+      centre_consecutiveRayQuotients_length hp i t first rest]
   have hlast :
       boolLastFrom
           (raySignAt hp i first)
