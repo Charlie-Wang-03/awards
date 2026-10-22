@@ -1,5 +1,6 @@
 import JSP000404Research.ExactWitnessUnitQuotient
 import JSP000404Research.TransitionQuotientOccurrence
+import JSP000404Research.CentreQuotientRayData
 import Mathlib.Tactic
 
 /-!
@@ -25,16 +26,6 @@ namespace JSP000404Research
 
 open Real
 
-/-- The actual cyclic wrap quotient of the first and last rays. -/
-noncomputable def wrapRayQuotient
-    {V : Type*} {p : V → Plane}
-    (hp : Function.Injective p)
-    (i : V) (t : ℝ)
-    (first : OtherVertex i)
-    (rest : List (OtherVertex i)) : ℕ :=
-  Nat.floor (t * ((rayThetaAt hp i first + Real.pi -
-    rayThetaAt hp i ((first :: rest).getLast (by simp))) / Real.pi))
-
 /-- Positional certificate that quotient one is carried by a sign transition
 of a concrete centre cycle. -/
 def ExactUnitTransitionPosition
@@ -58,7 +49,7 @@ def ExactUnitTransitionPosition
     ∃ rest : List (OtherVertex i),
       C.rays = first :: rest
       ∧
-      wrapRayQuotient hp i t first rest = 1
+      wrapRayQuotient hp i t first ((first :: rest).getLast (by simp)) = 1
       ∧
       raySignAt hp i ((first :: rest).getLast (by simp)) ≠
         !raySignAt hp i first)
@@ -255,7 +246,7 @@ theorem exactWitness_ordered_unit_transition_position
       rw [hlastSign, hfirstSign]
       exact hWitnessLift
     have hfloor :
-        wrapRayQuotient hp W.b t first rest = 1 := by
+        wrapRayQuotient hp W.b t first ((first :: rest).getLast (by simp)) = 1 := by
       unfold wrapRayQuotient
       rw [hfirstTheta, hlastTheta]
       dsimp [ja, kc] at hwrap
