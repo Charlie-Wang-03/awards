@@ -1437,6 +1437,8 @@ import JSP000404Research.SixPointSupportMultiplicityReduction
 
 import JSP000404Research.SupportThreeNonTopGainPosition
 
+import JSP000404Research.SixPointSupportThreeOutletDichotomy
+
 
 import JSP000404Research.LinearCyclicDeletionGain
 
