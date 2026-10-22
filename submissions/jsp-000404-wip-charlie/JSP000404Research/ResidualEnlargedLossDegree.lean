@@ -38,6 +38,24 @@ The previously proved unique-neighbour rigidity is the degree-one special case.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+/-- At a genuine projected-loss vertex, the dyadic demand is twice the
+retained completion-cube cardinality. Localizes the algebraic identity
+before the collision-degree proofs that repeatedly consume it. -/
+theorem projectedLoss_target_eq_two_mul_completion
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent) :
+    2 ^ exponent v = 2 * (retainedCompletionWords C v).card := by
+  have hlossEq :=
+    (mem_projectedLossVertices C exponent v).1 hvLoss
+  rw [hlossEq, pow_succ, retainedCompletionWords_card]
+  simp [projectedFree, Nat.mul_comm]
+
+#print axioms projectedLoss_target_eq_two_mul_completion
+
+
 noncomputable def enlargedCollisionNeighbours
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -85,7 +103,7 @@ theorem sharedBlockWords_subset_collisionNeighbour_intersections
   refine ⟨w,?_,Finset.mem_inter.mpr ⟨hvWord,hwWord⟩⟩
   apply (mem_enlargedCollisionNeighbours
     C exponent T v w).2
-  exact ⟨hwT,hwv,⟨word,hvWord,hwWord⟩⟩
+  exact ⟨hwT,hwv,⟨word, Finset.mem_inter.mpr ⟨hvWord, hwWord⟩⟩⟩
 
 theorem maximalLoss_neighbor_intersection_card_le_two_cube
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -278,8 +296,8 @@ theorem minimal_enlargedCandidate_maxLoss_active_card_le_two_mul_degree
     omega
   have hdecomp :
       (a + 1) * q = 2 * q + (a - 1) * q := by
-    rw [haSplit]
-    ring
+    have haPlus : a + 1 = 2 + (a - 1) := by omega
+    rw [haPlus, add_mul]
   rw [hblock, htarget, hdecomp,
       Nat.add_sub_cancel_left] at hsharedLower
 
@@ -341,6 +359,8 @@ theorem minimal_enlargedCandidate_maxLoss_degree_one_exponent_eq_n_sub_one
   have hloss :=
     (mem_projectedLossVertices C exponent v).1 hvLoss
   unfold projectedFree at hloss
+  have hcard : (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
   omega
 
 
@@ -414,7 +434,7 @@ theorem minimal_enlargedCandidate_loss_two_nonloss_neighbours_top
     obtain ⟨hrWord,z,hzT,hzr,hzWord⟩ := hdata
     have hzCross :
         EnlargedBlocksCross C exponent r z :=
-      ⟨word,hrWord,hzWord⟩
+      ⟨word, Finset.mem_inter.mpr ⟨hrWord, hzWord⟩⟩
     rcases hneighbours z hzT hzr hzCross with rfl | rfl
     · exact Finset.mem_union_left _
         (Finset.mem_inter.mpr ⟨hrWord,hzWord⟩)
@@ -495,6 +515,8 @@ theorem minimal_enlargedCandidate_loss_two_nonloss_neighbours_top
     (mem_projectedLossVertices C exponent r).1 hrLoss
   unfold projectedFree at hloss
   rw [hactiveEq] at hloss
+  have hcard : (retainedActive C r).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C r)
   omega
 
 
@@ -562,7 +584,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_is_mixedUn
       hwordShared
   obtain ⟨hvWordBlock,z,hzT,hzv,hzWordBlock⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨word,hvWordBlock,hzWordBlock⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨hvWordBlock, hzWordBlock⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
   have hwT : w ∈ T := hzT
@@ -593,7 +615,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_is_mixedUn
         hy
     obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
     have hzCross' : EnlargedBlocksCross C exponent v z := by
-      exact ⟨y,hyV,hyZ⟩
+      exact ⟨y, Finset.mem_inter.mpr ⟨hyV, hyZ⟩⟩
     have hzw' := hunique z hzT' hzv' hzCross'
     subst z
     rw [enlargedProjectedCandidateBlock_nonloss
@@ -739,7 +761,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
       hwordShared
   obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨word,hvWord,hzWord⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨hvWord, hzWord⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
   have hwv : w ≠ v := hzv
@@ -889,7 +911,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
       hwordShared
   obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨word,hvWord,hzWord⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨hvWord, hzWord⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
 
@@ -907,7 +929,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
         hy
     obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
     have hzCross' : EnlargedBlocksCross C exponent v z := by
-      exact ⟨y,hyV,hyZ⟩
+      exact ⟨y, Finset.mem_inter.mpr ⟨hyV, hyZ⟩⟩
     have hzw' := hunique z hzT' hzv' hzCross'
     subst z
     rw [enlargedProjectedCandidateBlock_nonloss
@@ -1023,7 +1045,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_equalFre
       hbaseShared
   obtain ⟨hbaseVBlock,z,hzT,hzv,hbaseZBlock⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨base,hbaseVBlock,hbaseZBlock⟩
+    exact ⟨base, Finset.mem_inter.mpr ⟨hbaseVBlock, hbaseZBlock⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
 
@@ -1052,7 +1074,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_equalFre
         hy
     obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
     have hzCross' : EnlargedBlocksCross C exponent v z := by
-      exact ⟨y,hyV,hyZ⟩
+      exact ⟨y, Finset.mem_inter.mpr ⟨hyV, hyZ⟩⟩
     have hzw' := hunique z hzT' hzv' hzCross'
     subst z
     rw [enlargedProjectedCandidateBlock_nonloss
@@ -1203,7 +1225,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_cube_gt_surplus
       hwordShared
   obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨word,hvWord,hzWord⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨hvWord, hzWord⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
   have hwv : w ≠ v := hzv
@@ -1550,7 +1572,7 @@ theorem minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
       hwordShared
   obtain ⟨hvWord,z,hzT,hzv,hzWord⟩ := hdata
   have hzCross : EnlargedBlocksCross C exponent v z := by
-    exact ⟨word,hvWord,hzWord⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨hvWord, hzWord⟩⟩
   have hzw : z = w := hunique z hzT hzv hzCross
   subst z
   have hwv : w ≠ v := hzv
@@ -3318,7 +3340,7 @@ theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
     obtain ⟨hbaseVBlock,z,hzT,hzv,hbaseZBlock⟩ := hdata
     have hzCross :
         EnlargedBlocksCross C exponent v z :=
-      ⟨base,hbaseVBlock,hbaseZBlock⟩
+      ⟨base, Finset.mem_inter.mpr ⟨hbaseVBlock, hbaseZBlock⟩⟩
     have hzw : z = w :=
       hunique z hzT hzv hzCross
     subst z
@@ -3349,7 +3371,7 @@ theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
       obtain ⟨hyV,z,hzT',hzv',hyZ⟩ := hyData
       have hzCross' :
           EnlargedBlocksCross C exponent v z :=
-        ⟨y,hyV,hyZ⟩
+        ⟨y, Finset.mem_inter.mpr ⟨hyV, hyZ⟩⟩
       have hzw' := hunique z hzT' hzv' hzCross'
       subst z
       rw [enlargedProjectedCandidateBlock_nonloss
