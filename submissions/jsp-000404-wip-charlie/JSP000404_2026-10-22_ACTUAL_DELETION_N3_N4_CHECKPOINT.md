@@ -155,11 +155,17 @@ simp symbol, wrong list-recursion arguments and failure to rewrite
 `d8591b4ecf581b76158e4fcb588ed3189e6fb064`.
 
 The downstream genuine witness
-`SixPointNFourSameSignUnit.lean` has its own focused run
+`SixPointNFourSameSignUnit.lean` was separately checked:
 https://github.com/Charlie-Wang-03/awards/actions/runs/39770330788
-(**pending** at this checkpoint); both theorems now bind
-`{lam t delta : ℝ}` before using `AngleCap p lam`.
-No kernel success is claimed for that downstream file until its run finishes.
+— **FAILED IN UPSTREAM DEPENDENCY, NOT CERTIFIED**. The 9 diagnostic
+errors are in `CentreAdjacentDirectionBoundary.lean` (unresolved
+adjacent-ray maximum proof, invalid indexed `C.angles[m]` expressions,
+successor index/angle rewrite obligations); the dependent n=4 witness
+file itself was not compiled by that focused run. Both witness theorem
+signatures now correctly bind `{lam t delta : ℝ}` before `AngleCap p lam`.
+Do NOT claim that the actual n=4 witness theorem has passed kernel checking.
+Next focused repair should address `CentreAdjacentDirectionBoundary.lean`
+and rerun the downstream witness.
 
 The full `JSP000404Research` import closure remains unverified because the
 most recently completed full-tree incremental run
