@@ -226,6 +226,18 @@ theorem six_point_minimum_deletion_compensated_of_one_gain
       (Finset.mem_erase.mp hv).1
     simp [childExponent, hvd]
   rw [hsumEq] at hledger
+  have hpostEq :
+      (∑ v ∈ (Finset.univ.erase deleted : Finset V),
+        2 ^ concreteDeletionAfter C hV t deleted v) =
+      deletionPostWeight
+        (concreteDeletionAfter C hV t) deleted := by
+    simp only [deletionPostWeight]
+    apply Finset.sum_congr
+    · ext v
+      simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    · intro v hv
+      rfl
+  rw [hpostEq] at hledger
   exact hledger
 
 #print axioms five_survivor_weight_ge_six_point_profile_of_one_minimum_gain
