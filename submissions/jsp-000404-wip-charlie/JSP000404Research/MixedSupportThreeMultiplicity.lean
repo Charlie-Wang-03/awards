@@ -54,17 +54,18 @@ theorem mixed_support_one_has_at_least_two_support_three
     rw [Finset.card_erase_of_mem haMem,
         Finset.card_erase_of_mem (Finset.mem_univ top),
         Finset.card_univ, hcard]
-    norm_num
 
   by_contra hnot
   have hS3le : S3.card ≤ 1 := by
-    dsimp [S3]
+    have hnot' : ¬ 2 ≤ S3.card := by
+      simpa only [S3, R] using hnot
     omega
   let L : Finset V := R \ S3
   have hS3sub : S3 ⊆ R := Finset.filter_subset _ _
   have hLcard : 3 ≤ L.card := by
-    dsimp [L]
-    rw [Finset.card_sdiff hS3sub, hRcard]
+    have hcardDiff : L.card = R.card - S3.card := by
+      dsimp [L]
+      rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hS3sub]
     omega
 
   obtain ⟨T, hTsub, hTcard⟩ :=
@@ -116,20 +117,29 @@ theorem mixed_support_one_has_at_least_two_support_three
     · exact False.elim ((hTnotS3 v hv) h3.1)
 
   have hTthree : T.card = 3 := hTcard
-  obtain ⟨b, hbT, c, hcT, hbc⟩ :=
-    Finset.two_le_card.mp (by omega : 2 ≤ T.card)
+  obtain ⟨b, hbT⟩ : T.Nonempty :=
+    Finset.card_pos.mp (by omega)
   let T' := T.erase b
   have hT'card : T'.card = 2 := by
     dsimp [T']
     rw [Finset.card_erase_of_mem hbT, hTthree]
-  obtain ⟨c0, hc0T', d, hdT', hc0d⟩ :=
-    Finset.two_le_card.mp (by omega : 2 ≤ T'.card)
+  obtain ⟨c0, hc0T'⟩ : T'.Nonempty :=
+    Finset.card_pos.mp (by omega)
+  let T'' := T'.erase c0
+  have hT''card : T''.card = 1 := by
+    dsimp [T'']
+    rw [Finset.card_erase_of_mem hc0T', hT'card]
+  obtain ⟨d, hdT''⟩ : T''.Nonempty :=
+    Finset.card_pos.mp (by omega)
   have hc0T : c0 ∈ T := (Finset.mem_erase.mp hc0T').2
+  have hdT' : d ∈ T' := (Finset.mem_erase.mp hdT'').2
   have hdT : d ∈ T := (Finset.mem_erase.mp hdT').2
   have hbc0 : b ≠ c0 :=
     (Finset.mem_erase.mp hc0T').1.symm
   have hbd : b ≠ d :=
     (Finset.mem_erase.mp hdT').1.symm
+  have hc0d : c0 ≠ d :=
+    (Finset.mem_erase.mp hdT'').1.symm
 
   exact no_three_support_le_two_after_top_support_one
     hp hcap (by omega : 4 ≤ n)
