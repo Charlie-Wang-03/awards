@@ -41,7 +41,9 @@ theorem centre_adjacent_quotient_getElem_eq
     (t : ℝ)
     (m : ℕ)
     (hm : m + 1 < C.angles.length) :
-    (quotientList t C.gaps)[m] =
+    (quotientList t C.gaps)[m]'(by
+      rw [quotientList_length, C.gaps_length, ← C.angles_length]
+      omega) =
       Nat.floor
         (t * ((C.angles[m + 1]'hm -
         C.angles[m]'(by omega)) / Real.pi)) := by
@@ -104,7 +106,9 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
       raySignAt hp i (C.rays[m]'(by omega)) ≠
         raySignAt hp i (C.rays[m + 1]'hm)) :
     TransitionQuotientOccurs
-      ((quotientList t C.gaps)[m])
+      ((quotientList t C.gaps)[m]'(by
+        rw [quotientList_length, C.gaps_length]
+        omega))
       (raySignAt hp i first)
       (liftedCentreSignPath hp i first rest)
       (quotientList t C.gaps) := by
@@ -145,10 +149,23 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
   have hsignSplit :
       liftedCentreSignPath hp i first rest =
         signPre ++ sign (rest[m]) :: signPost := by
-    dsimp [signPre, signPost, sign, liftedCentreSignPath]
-    have hmap := congrArg (List.map sign) hrestSplit
+    have hmap :
+        rest.map sign =
+          (rest.take m).map sign ++
+            sign rest[m] :: (rest.drop (m + 1)).map sign := by
+      calc
+        rest.map sign =
+            (rest.take m ++ rest[m] :: rest.drop (m + 1)).map sign :=
+          congrArg (List.map sign) hrestSplit
+        _ = (rest.take m).map sign ++
+              sign rest[m] :: (rest.drop (m + 1)).map sign := by
+          simp [List.map_append]
+    change rest.map sign ++ [!sign first] =
+      (rest.take m).map sign ++
+        sign rest[m] ::
+          ((rest.drop (m + 1)).map sign ++ [!sign first])
     rw [hmap]
-    simp [List.map_append, List.append_assoc]
+    simp [List.append_assoc]
 
   have hqSplit :
       qs = qPre ++ qs[m] :: qPost := by
@@ -180,7 +197,7 @@ theorem centre_transitionQuotientOccurs_at_adjacent_index
     simpa only [hrays] using
       (boolLastFrom_map_take_eq_ray_getElem
       (raySignAt hp i) first rest m
-      (by simp [hmRest]))
+      (by simp only [List.length_cons]; omega))
 
   have hnext :
       sign (rest[m]) =
