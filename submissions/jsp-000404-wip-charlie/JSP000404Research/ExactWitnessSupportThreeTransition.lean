@@ -147,12 +147,10 @@ theorem exactWitness_support_three_exposed_unit_transition_or_three
       exact strictlyExposedAt_of_common_signed_interval
         H.width_nonneg H.width_lt_pi H.sigma H.repr
     subst qe
-    exact Or.inl
-      ⟨hexposed, first, rest, pre, post,
+    exact ⟨hexposed, first, rest, pre, post,
         hrays, hq, hsign⟩
   · right
-    exact Or.inr
-      ⟨first, rest, hrays, hocc, hThree⟩
+    exact ⟨first, rest, hrays, hocc, hThree⟩
 
 /-- Non-exposed exact-witness support-three centres necessarily lie in the
 three-transition branch, and quotient one is one of those transition slots. -/
