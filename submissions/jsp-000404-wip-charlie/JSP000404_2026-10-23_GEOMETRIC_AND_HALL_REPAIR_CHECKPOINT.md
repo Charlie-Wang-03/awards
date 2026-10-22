@@ -62,6 +62,26 @@ one endpoint with zero cyclic wrap excess. The module uses the actual
 `LocalDirectionCycle.exists_saturated_zero_wrap_value_decomposition`.
 The exported theorem is sorry-free.
 
+### Mixed support-one/support-two distinguished transition budget
+
+`JSP000404Research/SixPointMixedSupportTransitionBudget.lean` passed
+focused CI [#39821033351](https://github.com/Charlie-Wang-03/awards/actions/runs/39821033351)
+(3463 Lake jobs); both exported theorem axiom reports contain no `sorryAx`.
+
+For a top exponent-`n-1` centre and one exponent-`n-3` support-one
+centre `a`, any further distinct support-at-most-two minimum `b` has
+a distinguished positive transition certificate with `qe <= 2`.
+With two additional support-two centres `b,c`, their distinguished
+transition certificates satisfy `qe(b)=qe(c)=1`. This is the exact
+`n+(n-2)+1+1=2n` saturation profile.
+
+These theorems are now explicitly imported by `JSP000404Research.lean`.
+**Important:** they do not give transition interval certificates for
+the two *nonexposed support-three* minima certified above. Combining the two
+proved structural facts into an exclusion requires a genuinely new
+multi-transition geometric packing argument or a different deletion/payment
+route.
+
 ## Source-level Lean repair attempts still requiring independent validation
 
 At baseline commit `b2f600f61d8d2f6f7c1711685d5c2325870cfac4`,
@@ -84,9 +104,8 @@ Repairs committed to the research branch:
 
 The four-module focused legacy build
 [#39819238271](https://github.com/Charlie-Wang-03/awards/actions/runs/39819238271)
-and the mixed transition budget focused build
-[#39821033351](https://github.com/Charlie-Wang-03/awards/actions/runs/39821033351)
-must be consulted for their actual results; this note does not pre-approve them.
+must be consulted for its final result; this note does not pre-approve
+the full research-tree build.
 
 ## Actual unresolved theorem and scientific restrictions
 
