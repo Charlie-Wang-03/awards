@@ -1,3 +1,4 @@
+import JSP000404Research.ConcreteMinimumOverweightRigidity
 import JSP000404Research.ConcreteCentreDeletionMonotone
 import Mathlib.Tactic
 
@@ -55,7 +56,7 @@ theorem five_survivor_weight_ge_six_point_profile_of_one_minimum_gain
   let R : Finset V := (S.erase top).erase gain
 
   have htopS : top ∈ S := by
-    simp [S, hdelTop]
+    simp [S, hdelTop.symm]
   have hgainS : gain ∈ S := by
     simp [S, hgainDel]
   have hgainST :
@@ -134,10 +135,11 @@ theorem five_survivor_weight_ge_six_point_profile_of_one_minimum_gain
 
   have hn2 : n - 2 = (n - 3) + 1 := by omega
   have hn1 : n - 1 = (n - 3) + 2 := by omega
-  rw [hn2, hn1, pow_add, pow_add] at hchild ⊢
+  rw [hn2, hn1, pow_add, pow_add] at hchild
+  rw [hn1, pow_add]
   norm_num at hchild ⊢
-  simpa [S, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc]
-    using hchild
+  dsimp [S] at hchild ⊢
+  omega
 
 /-- Concrete centre-exponent version.  If deleting one minimum gives a unit
 gain at any other minimum, the deletion post-weight dominates the original
