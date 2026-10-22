@@ -50,9 +50,10 @@ theorem rayIndex_k_mem_firstChangedCutSignIndices
     R.rayIndex k ∈
       R.firstChangedCutSignIndices j k := by
   classical
-  simp [firstChangedCutSignIndices,
-    R.rayIndex_lt_of_cutTheta_lt htheta]
-  simpa [R.get_rayIndex] using hsign.symm
+  simp only [firstChangedCutSignIndices, Finset.mem_filter,
+    Finset.mem_univ, true_and]
+  exact ⟨R.rayIndex_lt_of_cutTheta_lt htheta, le_rfl,
+    by simpa only [R.get_rayIndex] using hsign.symm⟩
 
 /-- Consecutive cut-cycle indices leave no third ray with adjusted theta
 strictly between their endpoint values. -/
@@ -74,12 +75,12 @@ theorem no_cutTheta_strict_between_adjacent
       q < R.rayIndex x := by
     have h :=
       R.rayIndex_lt_of_cutTheta_lt hx.1
-    simpa using h
+    simpa only [R.rayIndex_get] using h
   have hxr :
       R.rayIndex x < r := by
     have h :=
       R.rayIndex_lt_of_cutTheta_lt hx.2
-    simpa using h
+    simpa only [R.rayIndex_get] using h
   have hqv : q.val < (R.rayIndex x).val :=
     hqx
   have hrv : (R.rayIndex x).val < r.val :=
@@ -93,8 +94,8 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
     {i : V} {c : ℝ}
     {C : CentreProjectiveCycle hp i}
     (R : CentreCutRayCycle hp C c)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c)
@@ -145,14 +146,10 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
     dsimp [q]
     omega
   have hqLtR : q < r := by
-    exact Fin.mk_lt_mk.mpr (by
-      dsimp [q]
-      omega)
+    exact Fin.mk_lt_mk.mpr (by omega)
   have hjLeQ : R.rayIndex j ≤ q := by
-    exact Fin.mk_le_mk.mpr (by
-      have hjr : (R.rayIndex j).val < r.val := hrData.1
-      dsimp [q]
-      omega)
+    have hjr : (R.rayIndex j).val < r.val := hrData.1
+    exact Fin.mk_le_mk.mpr (by omega)
   have hqSign :
       cutRaySign hp c i (R.rays.get q) =
         cutRaySign hp c i j := by
@@ -182,7 +179,11 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
     R.cutTheta_sorted.rel_get_of_lt hqLtR
   have hqNeR : R.rays.get q ≠ R.rays.get r := by
     intro h
-    have heq := R.nodup.get_injective q r h
+    have heq : q = r := by
+      calc
+        q = R.rayIndex (R.rays.get q) := (R.rayIndex_get q).symm
+        _ = R.rayIndex (R.rays.get r) := congrArg R.rayIndex h
+        _ = r := R.rayIndex_get r
     exact (ne_of_lt hqLtR) heq
   have hlower :=
     one_le_t_mul_cutRay_gap_of_sign_ne
@@ -191,13 +192,17 @@ theorem exists_adjacent_cut_transition_inside_ordered_seed
   have hthetaJQ :
       cutRayTheta hp c i j ≤
         cutRayTheta hp c i (R.rays.get q) := by
-    have h := R.cutTheta_le_of_rayIndex_le hjLeQ
-    simpa [R.get_rayIndex] using h
+    have hidx :
+        R.rayIndex j ≤ R.rayIndex (R.rays.get q) := by
+      simpa only [R.rayIndex_get] using hjLeQ
+    exact R.cutTheta_le_of_rayIndex_le hidx
   have hthetaRK :
       cutRayTheta hp c i (R.rays.get r) ≤
         cutRayTheta hp c i k := by
-    have h := R.cutTheta_le_of_rayIndex_le hrData.2.1
-    simpa [R.get_rayIndex] using h
+    have hidx :
+        R.rayIndex (R.rays.get r) ≤ R.rayIndex k := by
+      simpa only [R.rayIndex_get] using hrData.2.1
+    exact R.cutTheta_le_of_rayIndex_le hidx
   have hgapLe :
       cutRayTheta hp c i (R.rays.get r) -
           cutRayTheta hp c i (R.rays.get q)
