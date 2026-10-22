@@ -142,13 +142,24 @@ per-palette no-double-boundary premise.
 
 ### Still pending at this checkpoint
 
-`UnitSameSignOccurrence.lean` was repaired and has a focused build at
-https://github.com/Charlie-Wang-03/awards/actions/runs/39769762710.
-Status at writing: **in progress, NOT yet claimed kernel certified**.
-Earlier run #39769065818 failed on three concrete tactic/elaboration errors
-(missing `TransitionQuotientOccurs` simp symbol, incorrect induction
-argument, reversed natural-number equality). All three were corrected
-in commit `c83fd73d02989548609a0bbfdc981284ed2fb3f9`.
+`UnitSameSignOccurrence.lean` is now fully kernel-certified:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39770330837
+— **SUCCESS**, 3526 Lake jobs, all four audited exports NO `sorryAx`.
+This repairs the duplicate-unit same-sign consequence of a single
+sign transition (unitSupport two => at least one unit on an actual
+same-sign adjacent step), vital for `n=4` phase-cover accounting.
+
+Prior failures were caused by an obsolete `TransitionQuotientOccurs`
+simp symbol, wrong list-recursion arguments and failure to rewrite
+`List.replicate_succ`; the final repair is commit
+`d8591b4ecf581b76158e4fcb588ed3189e6fb064`.
+
+The downstream genuine witness
+`SixPointNFourSameSignUnit.lean` has its own focused run
+https://github.com/Charlie-Wang-03/awards/actions/runs/39770330788
+(**pending** at this checkpoint); both theorems now bind
+`{lam t delta : ℝ}` before using `AngleCap p lam`.
+No kernel success is claimed for that downstream file until its run finishes.
 
 The full `JSP000404Research` import closure remains unverified because the
 most recently completed full-tree incremental run
