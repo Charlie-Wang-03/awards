@@ -42,8 +42,11 @@ theorem rayIndex_mem_lowDirectionIndices
       rayThetaAt hp i j < rayThetaAt hp i k) :
     C.rayIndex j ∈ C.lowDirectionIndices j k := by
   classical
-  simp [lowDirectionIndices,
-    C.rayIndex_lt_of_theta_lt hjk |>.le]
+  change C.rayIndex j ≤ C.rayIndex k ∧
+    rayThetaAt hp i (C.rays.get (C.rayIndex j)) =
+      rayThetaAt hp i j
+  exact ⟨(C.rayIndex_lt_of_theta_lt hjk).le,
+    by rw [C.get_rayIndex]⟩
 
 /-- Main adjacent-boundary theorem, stated directly on angle-list entries. -/
 theorem exists_adjacent_angles_of_no_strict_between
@@ -57,10 +60,9 @@ theorem exists_adjacent_angles_of_no_strict_between
       ∀ x : OtherVertex i,
         ¬ (rayThetaAt hp i j < rayThetaAt hp i x ∧
            rayThetaAt hp i x < rayThetaAt hp i k)) :
-    ∃ m : ℕ,
-      m + 1 < C.angles.length ∧
-      C.angles[m] = rayThetaAt hp i j ∧
-      C.angles[m + 1] = rayThetaAt hp i k := by
+    ∃ m : ℕ, ∃ hm : m + 1 < C.angles.length,
+      C.angles[m]'(by omega) = rayThetaAt hp i j ∧
+      C.angles[m + 1]'hm = rayThetaAt hp i k := by
   classical
   let S := C.lowDirectionIndices j k
   have hSne : S.Nonempty := by
@@ -89,12 +91,11 @@ theorem exists_adjacent_angles_of_no_strict_between
   let qsucc : Fin C.rays.length :=
     ⟨q.val + 1, hsuccVal⟩
   have hqsucc : q < qsucc := by
-    exact Fin.mk_lt_mk.mpr (by simp [qsucc])
+    change q.val < q.val + 1
+    omega
   have hqsuccLeK : qsucc ≤ C.rayIndex k := by
-    exact Fin.mk_le_mk.mpr (by
-      have hqkNat : q.val < (C.rayIndex k).val := hqk
-      simp [qsucc]
-      omega)
+    change q.val + 1 ≤ (C.rayIndex k).val
+    exact Nat.succ_le_of_lt hqk
   have hthetaQ :
       rayThetaAt hp i (C.rays.get q) =
         rayThetaAt hp i j :=
@@ -110,8 +111,7 @@ theorem exists_adjacent_angles_of_no_strict_between
       rayThetaAt hp i (C.rays.get qsucc) ≤
         rayThetaAt hp i k := by
     by_cases heq : qsucc = C.rayIndex k
-    · subst qsucc
-      rw [C.get_rayIndex]
+    · rw [heq, C.get_rayIndex]
     · have hlt : qsucc < C.rayIndex k :=
         lt_of_le_of_ne hqsuccLeK heq
       have hsorted :=
@@ -123,7 +123,11 @@ theorem exists_adjacent_angles_of_no_strict_between
         rayThetaAt hp i j := by
     intro heq
     have hsuccS : qsucc ∈ S := by
-      simp [S, lowDirectionIndices, hqsuccLeK, heq]
+      change qsucc ∈ C.lowDirectionIndices j k
+      change qsucc ≤ C.rayIndex k ∧
+        rayThetaAt hp i (C.rays.get qsucc) =
+          rayThetaAt hp i j
+      exact ⟨hqsuccLeK, heq⟩
     have hleMax : qsucc ≤ q :=
       Finset.le_max' S qsucc hsuccS
     exact (not_lt_of_ge hleMax) hqsucc
@@ -141,18 +145,21 @@ theorem exists_adjacent_angles_of_no_strict_between
       lt_of_le_of_ne hthetaUpper hne
     exact hno (C.rays.get qsucc)
       ⟨hstrictLow, hstrictHigh⟩
-  refine ⟨q.val, ?_, ?_, ?_⟩
-  · simpa [CentreProjectiveCycle.angles] using hsuccVal
-  · have hget :
-        C.angles[q.val] =
+  have hsuccAngle : q.val + 1 < C.angles.length := by
+    rw [C.angles_length]
+    exact hsuccVal
+  refine ⟨q.val, hsuccAngle, ?_, ?_⟩
+  · have hqAngle : q.val < C.angles.length := by omega
+    have hget :
+        C.angles[q.val]'hqAngle =
           rayThetaAt hp i (C.rays.get q) := by
       simp [CentreProjectiveCycle.angles]
-    rw [hget, hthetaQ]
+    exact hget.trans hthetaQ
   · have hget :
-        C.angles[q.val + 1] =
+        C.angles[q.val + 1]'hsuccAngle =
           rayThetaAt hp i (C.rays.get qsucc) := by
       simp [CentreProjectiveCycle.angles, qsucc]
-    rw [hget, hthetaSucc]
+    exact hget.trans hthetaSucc
 
 /-- If the boundary angle difference is exactly lambda and lambda has scaled
 width one, then quotient 1 occurs in the centre quotient list. -/
