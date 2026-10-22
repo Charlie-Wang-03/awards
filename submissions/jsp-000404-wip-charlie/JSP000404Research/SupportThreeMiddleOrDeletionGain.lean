@@ -43,7 +43,7 @@ theorem support_three_pinned_middle_or_nonTop_deletion_gain
     (hexp : centreExponent C t = n - 3)
     (hsupport :
       positiveSupport (centreQuotient C t) = 3) :
-    SupportThreePinnedMiddleShape hp hsi C
+    SupportThreePinnedMiddleShape (t := t) hp hsi C
       ∨
     ∃ deleted : V, ∃ hir : i ≠ deleted,
       deleted ≠ s ∧
@@ -66,7 +66,6 @@ theorem support_three_pinned_middle_or_nonTop_deletion_gain
       ((quotientList t C.gaps).rotate k).length = 5 := by
     rw [List.length_rotate, quotientList_length, C.gaps_length,
       centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
   have hmidLen : qmid.length = 3 := by
     rw [hqrot] at hqLen
     simp at hqLen
@@ -93,14 +92,15 @@ theorem support_three_pinned_middle_or_nonTop_deletion_gain
         (sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht).le
 
     let deleted := r.1
-    let hir : i ≠ deleted := r.2
+    let hir : i ≠ deleted := r.2.symm
     have hrotNodup :
         ((⟨s,hsi⟩ : OtherVertex i) :: r :: rest).Nodup := by
       rw [← hrotRays]
       simpa using C.nodup
     have hrs :
-        (⟨s,hsi⟩ : OtherVertex i) ≠ r :=
-      (List.nodup_cons.mp hrotNodup).1 (by simp)
+        (⟨s,hsi⟩ : OtherVertex i) ≠ r := by
+      intro h
+      exact (List.nodup_cons.mp hrotNodup).1 (by simp [← h])
     have hdelTop : deleted ≠ s := by
       intro h
       apply hrs
