@@ -634,6 +634,8 @@ import JSP000404Research.GeneralProjectiveGapDeletion
 import JSP000404Research.SupportThreeTransitionDichotomy
 -- Kernel-checked two nonexposed three-transition minima in the mixed six-centre branch.
 import JSP000404Research.MixedSupportThreeNonExposed
+-- Kernel-checked distinguished transition costs in support-one/support-two mixed minima.
+import JSP000404Research.SixPointMixedSupportTransitionBudget
 
 
 import JSP000404Research.AlternativeKraftExtremizer
