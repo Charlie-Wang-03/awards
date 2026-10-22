@@ -185,7 +185,7 @@ theorem no_three_additional_exposed_after_top_support_one
         lam + lam + lam
         ≤
       ∑ r : Fin 5, (cert r).turnLength := by
-    simpa [cert, centre, Fin.sum_univ_succ] using
+    simpa [cert, centre, Fin.sum_univ_succ, add_assoc] using
       add_le_add
         (add_le_add
           (add_le_add hturnTop hturnA)
