@@ -30,6 +30,28 @@ noncomputable def sharedBlockWords
     (v : V) : Finset W :=
   blocks v ∩ (T.erase v).biUnion blocks
 
+/-- A shared word has an original owner and a distinct second block owner.
+This exposes the exact intersection/biUnion witnesses rather than assuming
+any injective payment or a Boolean true hole. -/
+theorem sharedBlockWords_has_other_block
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (blocks : V → Finset W)
+    {T : Finset V} {v : V} {word : W}
+    (hshared : word ∈ sharedBlockWords blocks T v) :
+    word ∈ blocks v ∧
+      ∃ z : V, z ∈ T ∧ z ≠ v ∧ word ∈ blocks z := by
+  classical
+  have hsplit :
+      word ∈ blocks v ∧
+        word ∈ (T.erase v).biUnion blocks := by
+    simpa only [sharedBlockWords, Finset.mem_inter] using hshared
+  obtain ⟨z, hzErase, hzWord⟩ :=
+    Finset.mem_biUnion.mp hsplit.2
+  have hzData := Finset.mem_erase.mp hzErase
+  exact ⟨hsplit.1, z, hzData.2, hzData.1, hzWord⟩
+
+#print axioms sharedBlockWords_has_other_block
+
 theorem private_union_shared_eq_block
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
     (blocks : V → Finset W)
