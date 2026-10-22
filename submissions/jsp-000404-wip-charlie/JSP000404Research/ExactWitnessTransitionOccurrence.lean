@@ -95,12 +95,11 @@ theorem transitionQuotientOccurs_append_final
       (qs ++ [q]) := by
   induction signs generalizing a qs with
   | nil =>
-      have hnil : qs = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
-      subst qs
-      simp only [List.nil_append, TransitionQuotientOccurs]
-      left
-      exact ⟨rfl, hchange⟩
+      cases qs with
+      | nil =>
+          simpa [TransitionQuotientOccurs, boolLastFrom] using hchange
+      | cons r rs =>
+          simp at hlen
   | cons b bs ih =>
       cases qs with
       | nil =>
@@ -118,8 +117,8 @@ theorem exists_exactWitness_unit_transition_occurs
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -145,7 +144,7 @@ theorem exists_exactWitness_unit_transition_occurs
       | nil =>
           exact False.elim (C.nonempty hR)
       | cons first rest =>
-          exact ⟨first, rest, hR⟩
+          exact ⟨first, rest, rfl⟩
     have hm' :
         m + 1 < (first :: rest).length := by
       simpa [hrays] using hm
@@ -178,6 +177,13 @@ theorem exists_exactWitness_unit_transition_occurs
       C t first rest hrays]
     simpa [liftedCentreSignPath, qwrap] using hocc
   · obtain ⟨first, rest, hrays, hqwrap, hsign⟩ := hwrap
+    have hlastEq :
+        rest.getLastD first =
+          (first :: rest).getLast (by simp) := by
+      simpa using
+        (map_getLastD_eq_getLast_map
+          (fun x : OtherVertex W.b => x) first rest)
+    rw [← hlastEq] at hqwrap hsign
     have hlen :
         (rest.map (raySignAt hp W.b)).length =
           (consecutiveRayQuotients
