@@ -96,7 +96,7 @@ theorem exponent_add_one_le_after_delete_at
 /-- One concrete unit gain at a surviving minimum compensates deletion of any
 other minimum in the six-point terminal profile. -/
 theorem six_point_concrete_minimum_deletion_compensated_of_one_gain
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -166,11 +166,11 @@ theorem six_point_concrete_minimum_deletion_compensated_of_one_gain
 /-- Main global reduction: a support-three minimum is either middle-hidden or
 already yields a compensated non-top deletion. -/
 theorem six_point_support_three_middle_or_compensated_minimum_deletion
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -187,7 +187,7 @@ theorem six_point_support_three_middle_or_compensated_minimum_deletion
     (hit : i ≠ top)
     (hsupport :
       positiveSupport (centreQuotient (C i) t) = 3) :
-    SupportThreePinnedMiddleShape hp hit.symm (C i)
+    SupportThreePinnedMiddleShape (t := t) hp hit.symm (C i)
       ∨
     ∃ deleted : V,
       deleted ≠ top ∧
