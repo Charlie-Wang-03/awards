@@ -293,6 +293,106 @@ theorem minimal_deficient_amount_le_shared_excess
   omega
 
 
+
+/-- The shared part of one candidate block is the union of its pairwise
+intersections with the other blocks in the same Hall core. The union is
+not assumed disjoint: repeated candidate words remain explicitly shared. -/
+theorem sharedBlockWords_eq_biUnion_pairwise_intersections
+    {V W : Type*} [DecidableEq V] [DecidableEq W]
+    (blocks : V → Finset W)
+    (T : Finset V)
+    (v : V) :
+    sharedBlockWords blocks T v =
+      (T.erase v).biUnion (fun z => blocks v ∩ blocks z) := by
+  classical
+  apply Finset.Subset.antisymm
+  · intro word hword
+    obtain ⟨hvWord, z, hzT, hzNe, hzWord⟩ :=
+      sharedBlockWords_has_other_block blocks hword
+    apply Finset.mem_biUnion.mpr
+    exact ⟨z, Finset.mem_erase.mpr ⟨hzNe, hzT⟩,
+      Finset.mem_inter.mpr ⟨hvWord, hzWord⟩⟩
+  · intro word hword
+    obtain ⟨z, hzErase, hzBoth⟩ := Finset.mem_biUnion.mp hword
+    obtain ⟨hvWord, hzWord⟩ := Finset.mem_inter.mp hzBoth
+    unfold sharedBlockWords
+    apply Finset.mem_inter.mpr
+    exact ⟨hvWord, Finset.mem_biUnion.mpr ⟨z, hzErase, hzWord⟩⟩
+
+/-- The Hall deficit plus the local block slack must be paid by
+pairwise collision *incidences*. This is a necessary inequality, not
+a non-reusing assignment: the same word may occur in several summands. -/
+theorem minimal_deficient_pairwise_collision_budget
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card) :
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤
+    ∑ z ∈ T.erase v, (blocks v ∩ blocks z).card := by
+  classical
+  calc
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤ (sharedBlockWords blocks T v).card :=
+        minimal_deficient_amount_le_shared_excess
+          demand blocks hdef hmin hv hlocal
+    _ = ((T.erase v).biUnion
+        (fun z => blocks v ∩ blocks z)).card := by
+          rw [sharedBlockWords_eq_biUnion_pairwise_intersections]
+    _ ≤ ∑ z ∈ T.erase v, (blocks v ∩ blocks z).card :=
+        Finset.card_biUnion_le
+
+/-- A uniform bound on pairwise block intersections forces a minimum
+collision-incidence budget. This allows later geometric fibre bounds
+to be plugged into the abstract Hall obstruction without declaring
+colliding words distinct. -/
+theorem minimal_deficient_pairwise_collision_degree_budget
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (demand : V → ℕ)
+    (blocks : V → Finset W)
+    {T : Finset V}
+    (hdef : BlockDeficient demand blocks T)
+    (hmin :
+      ∀ U : Finset V,
+        U ⊂ T →
+        ¬ BlockDeficient demand blocks U)
+    {v : V}
+    (hv : v ∈ T)
+    (hlocal : demand v ≤ (blocks v).card)
+    (k : ℕ)
+    (hpair :
+      ∀ z ∈ T.erase v, (blocks v ∩ blocks z).card ≤ k) :
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤
+    (T.erase v).card * k := by
+  calc
+    blockDeficiencyAmount demand blocks T +
+        ((blocks v).card - demand v)
+      ≤ ∑ z ∈ T.erase v, (blocks v ∩ blocks z).card :=
+        minimal_deficient_pairwise_collision_budget
+          demand blocks hdef hmin hv hlocal
+    _ ≤ ∑ _z ∈ T.erase v, k := by
+      apply Finset.sum_le_sum
+      intro z hz
+      exact hpair z hz
+    _ = (T.erase v).card * k := by simp
+
+#print axioms sharedBlockWords_eq_biUnion_pairwise_intersections
+#print axioms minimal_deficient_pairwise_collision_budget
+#print axioms minimal_deficient_pairwise_collision_degree_budget
+
+
 noncomputable def deletedVertexTransfer
     {V W : Type*} [DecidableEq V] [DecidableEq W]
     (demand : V → ℕ)
