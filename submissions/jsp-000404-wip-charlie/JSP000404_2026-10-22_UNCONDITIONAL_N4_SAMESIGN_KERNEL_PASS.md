@@ -142,3 +142,38 @@ Both `JSP000404Research/SixPointNFourActualSameSignSlot.lean` and
 `JSP000404Research/SixPointNFourDirectNoCover.lean` are imported
 in the research umbrella. A focused success does not certify the
 all-module import closure.
+
+## Stronger no-equality n=4 conditional phase-cover theorem
+
+CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39809980372
+Result: **SUCCESS**, 3548 Lake jobs, with exported axioms precisely
+`[propext, Classical.choice, Quot.sound]`, **no `sorryAx`**.
+
+- New file: `SixPointNFourNoCoverWithoutEquality.lean`.
+- Certified declaration:
+  `six_point_n_four_no_transition_only_phase_cover_without_equality`.
+- The legacy `SixPointNFourNoCover.lean` theorem
+  `no_six_point_n_four_transition_only_unit_slot_cover` was refactored to
+  use the shorter, separately certified direct-cover argument and ALSO
+  passed the same run without `sorryAx`.
+
+Mathematically, for the six original points, one exponent-three top and
+five exponent-one minima, AngleCap and n=4 with `0 ≤ δ < 1/2`:
+
+1. At most ten actual original-centre dependent unit-gap slots exist.
+2. If the total is ≤9, a covering lower bound
+   `4 + δ ≤ card(S) * δ` contradicts `δ < 1/2`.
+3. If the total is exactly ten, strict exposure supplies an actual
+   same-sign unit-gap, unusable under the explicit transition-only
+   predicate exclusion, and the nine-slot bound contradicts coverage.
+
+**Removed from the new theorem:** the assumption that
+`∑ unitSupport = 10`, any `ExactAngleWitness` premise, and the
+all-minima-three-transitions classification.
+
+**Still assumed:** the concrete predicate `A` rejects certified
+same-sign slots (`hSameUnusable`) and the corresponding phase-cover
+lower bound (`hcoverLower`). The actual construction of such an
+obstruction cover from geometric AngleCap remains OPEN. This does not
+establish global non-reusing six-source payment, and does not eliminate
+the root executable `sorry`.
