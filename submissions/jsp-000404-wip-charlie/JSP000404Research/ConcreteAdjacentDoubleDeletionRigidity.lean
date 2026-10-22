@@ -140,7 +140,6 @@ theorem concrete_adjacent_double_deletion_triple_shape
   have hChildAngles :
       child.angles =
         a :: (pre ++ y :: z :: tailA) := by
-    dsimp [child] at hChildAngles0
     simpa [theta, a, pre, y, z, tailA,
       List.map_append, List.append_assoc] using hChildAngles0
 
