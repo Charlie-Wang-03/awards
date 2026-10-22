@@ -94,5 +94,10 @@ The intended precise interface states that any saturated exponent-one,
 support-two centre must have exactly one quotient entry equal to one and
 exactly one entry equal to two (the rest zero). Existing certified geometry
 supplies at least two such saturated centres among any four next-layer
-centres. **The new module's CI status must be checked before claiming kernel
-verification; it was still running at this document update.**
+centres. The first focused run (#39757858385) **FAILED** because the final
+`omega` goal did not expose the support cardinality from `hsat.1`; the first
+two purely finite arithmetic lemmas themselves passed their axiom audits.
+Commit `031f3c8f9682d28f49caa31f3c1ebf9f321cfe0c` exposes this constraint.
+The repeat workflow is:
+https://github.com/Charlie-Wang-03/awards/actions/runs/39758411644 .
+**Recheck the repeat CI before claiming this concrete-centre theorem is closed.**
