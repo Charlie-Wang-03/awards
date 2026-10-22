@@ -56,6 +56,45 @@ theorem projectedLoss_target_eq_two_mul_completion
 #print axioms projectedLoss_target_eq_two_mul_completion
 
 
+/-- The projected profile is either strict (under budget), exactly at its
+projected free coordinate count, or a one-layer projected-loss vertex.
+The active-card bound rules out a profile exceeding free+1. -/
+theorem projectedProfile_strict_exact_or_loss
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (hexp : ∀ x, exponent x ≤ n)
+    (honeLoss :
+      ∀ x, (active C x).card ≤ n - exponent x + 1)
+    (v : V) :
+    exponent v < projectedFree C v ∨
+      ExactProjectedBudget C exponent v ∨
+      v ∈ projectedLossVertices C exponent := by
+  have hret :=
+    retainedActive_card_le_active C v
+  have hcard : (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
+  have hact := honeLoss v
+  have hbound : exponent v ≤ projectedFree C v + 1 := by
+    unfold projectedFree
+    have hexpV := hexp v
+    omega
+  by_cases hstrict : exponent v < projectedFree C v
+  · exact Or.inl hstrict
+  · by_cases heq : exponent v = projectedFree C v
+    · right
+      left
+      unfold ExactProjectedBudget
+      omega
+    · right
+      right
+      apply (mem_projectedLossVertices C exponent v).2
+      omega
+
+#print axioms projectedProfile_strict_exact_or_loss
+
+
+
 noncomputable def enlargedCollisionNeighbours
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
