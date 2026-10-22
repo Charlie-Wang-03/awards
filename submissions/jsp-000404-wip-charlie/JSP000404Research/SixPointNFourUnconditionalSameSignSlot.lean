@@ -84,20 +84,18 @@ theorem six_point_n_four_equality_nonSameSign_slot_card_le_nine
     (hMin : ∀ i : V, i ≠ top →
       centreExponent (C i) t = 1)
     (hunitTotal :
-      (∑ i : V, unitSupport (centreQuotient (C i) t)) = 10) :
-    ((Finset.univ : Finset (GlobalUnitGapSlot C t)).filter
-      (fun u => ¬ GlobalUnitGapSameSign C t u)).card ≤ 9 := by
+      (∑ i : V, unitSupport (centreQuotient (C i) t)) = 10)
+    (S : Finset (GlobalUnitGapSlot C t))
+    (hS : ∀ u ∈ S, ¬ GlobalUnitGapSameSign C t u) :
+    S.card ≤ 9 := by
   classical
   obtain ⟨u, hu⟩ :=
     six_point_n_four_equality_exists_global_sameSign_unit_slot
       hp hcap hdelta0 hdeltaHalf ht hlam
       C hcard top hTop hMin hunitTotal
-  let S : Finset (GlobalUnitGapSlot C t) :=
-    Finset.univ.filter (fun v => ¬ GlobalUnitGapSameSign C t v)
   have hsubset : S ⊆ Finset.univ.erase u := by
     intro v hv
-    have hvNot : ¬ GlobalUnitGapSameSign C t v :=
-      (Finset.mem_filter.mp hv).2
+    have hvNot : ¬ GlobalUnitGapSameSign C t v := hS v hv
     have hvne : v ≠ u := by
       intro heq
       subst v
@@ -108,8 +106,6 @@ theorem six_point_n_four_equality_nonSameSign_slot_card_le_nine
   have herase : (Finset.univ.erase u).card = 9 := by
     rw [Finset.card_erase_of_mem (Finset.mem_univ u),
       Finset.card_univ, hcardTen]
-    norm_num
-  change S.card ≤ 9
   exact (Finset.card_le_card hsubset).trans_eq herase
 
 #print axioms six_point_n_four_equality_exists_global_sameSign_unit_slot
