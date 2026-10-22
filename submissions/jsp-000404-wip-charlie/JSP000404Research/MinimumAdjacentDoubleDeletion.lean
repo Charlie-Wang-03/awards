@@ -135,8 +135,11 @@ theorem adjacent_two_minimum_deletions_force_three_gap_sparse_at_high_survivor
           ((C i).restrictDelete r hir hotherR) t := by
     dsimp at hSecond
     rw [hChildCycle] at hSecond
-    simpa [sChild, iChild, hchild3, hotherS,
-      hparent3] using hSecond
+    change centreExponent
+        (((C i).restrictDelete r hir hotherR).restrictDelete
+          sChild _ _) t =
+        centreExponent ((C i).restrictDelete r hir hotherR) t at hSecond
+    convert hSecond using 1
 
   exact
     concrete_adjacent_double_deletion_triple_shape
