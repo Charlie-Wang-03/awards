@@ -107,7 +107,7 @@ theorem direct_secondDeletion_exponent_eq_above_min
       ((childC iChild).restrictDelete sChild _ _) t =
       centreExponent (childC iChild) t at hEqFamily
   rw [hChildEq] at hEqFamily
-  convert hEqFamily using 1
+  convert hEqFamily using 1 <;> rfl
 
 /-- Main high-survivor adjacent-ray rigidity theorem. -/
 theorem adjacent_minimum_rays_at_high_survivor_force_sparse_triple
