@@ -64,7 +64,7 @@ theorem hasZeroWrapExcess_of_saturated_zero_band
     HasZeroWrapExcess L := by
   obtain ⟨a, xs, hvalues, _ha0, _hsorted, _hall,
       _hzeroOcc, _htop, _hfull, hwrap⟩ :=
-    exists_saturated_zero_wrap_value_decomposition
+    LocalDirectionCycle.exists_saturated_zero_wrap_value_decomposition
       D L hwidth hn hsat hres hzero
   exact ⟨a, xs, hvalues, hwrap⟩
 
