@@ -46,7 +46,6 @@ theorem unitSupport_eq_filter_card
   unfold unitSupport
   rw [Finset.card_eq_sum_ones]
   rw [Finset.sum_filter]
-  rfl
 
 theorem centreUnitGap_card_eq_unitSupport
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -63,8 +62,6 @@ theorem centreUnitGap_card_eq_unitSupport
   have hcard :
       Fintype.card (CentreUnitGap C t) = S.card := by
     apply Fintype.subtype_card S
-    intro r
-    simp [S]
   rw [hcard]
   symm
   simpa [S] using
