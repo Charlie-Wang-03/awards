@@ -40,15 +40,15 @@ theorem map_getLastD_eq_getLast_map
       | nil =>
           simp
       | cons y ys =>
-          simp [List.getLastD_cons, ih]
+          simpa [List.getLastD_cons] using ih a
 
 /-- Ordered endpoint form. -/
 theorem one_mem_witnessCentre_quotientList_of_ordered
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -102,7 +102,7 @@ theorem one_mem_witnessCentre_quotientList_of_ordered
       | nil =>
           exact False.elim (C.nonempty hR)
       | cons first rest =>
-          exact ⟨first, rest, hR⟩
+          exact ⟨first, rest, rfl⟩
     have hsorted :
         (first :: rest).Pairwise
           (fun x y =>
@@ -117,7 +117,9 @@ theorem one_mem_witnessCentre_quotientList_of_ordered
     have hfirstLeA :
         rayThetaAt hp W.b first ≤
           rayThetaAt hp W.b ja := by
-      rcases hjaMem with hEq | htail
+      have hcases : ja = first ∨ ja ∈ rest := by
+        simpa only [List.mem_cons] using hjaMem
+      rcases hcases with hEq | htail
       · simpa [hEq]
       · rw [List.pairwise_cons] at hsorted
         exact hsorted.1 ja htail
@@ -198,8 +200,8 @@ theorem one_mem_witnessCentre_quotientList
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -216,14 +218,11 @@ theorem one_mem_witnessCentre_quotientList
   · have hrev :
         rayThetaAt hp W.b kc ≤ rayThetaAt hp W.b ja :=
       le_of_not_ge horder
-    have hswap :
-        one_mem_witnessCentre_quotientList_of_ordered
-          hp hcap hn hdelta0 ht hlam W.swapEnds C
-          (by simpa [ExactAngleWitness.swapEnds, ja, kc] using hrev) :=
+    have hswap : 1 ∈ quotientList t C.gaps :=
       one_mem_witnessCentre_quotientList_of_ordered
         hp hcap hn hdelta0 ht hlam W.swapEnds C
         (by simpa [ExactAngleWitness.swapEnds, ja, kc] using hrev)
-    simpa [ExactAngleWitness.swapEnds] using hswap
+    exact hswap
 
 #print axioms ExactAngleWitness.swapEnds
 #print axioms one_mem_witnessCentre_quotientList_of_ordered
