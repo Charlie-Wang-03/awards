@@ -79,7 +79,7 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       rw [hsplitTop, List.rotate_append_length_eq]
       simp [topRay, List.append_assoc]
     rw [hrotTop] at hcanonical
-    exact (List.cons.inj hcanonical).2
+    exact (List.cons.inj hcanonical).2.symm
   have hrotNodup :
       (topRay :: r :: rest).Nodup := by
     rw [← hrotTop]
@@ -89,7 +89,6 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       (quotientList t C.gaps).length = 5 := by
     rw [quotientList_length, C.gaps_length,
       centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
 
   have hqPrev :
       ((quotientList t C.gaps).rotate preTop.length).rotate 4 =
@@ -103,7 +102,6 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       have hlen :
           C.rays.length = 5 := by
         rw [centreRayList_length_eq_card_sub_one C, hcard]
-        norm_num
       rw [hsplitTop] at hlen
       simp at hlen
       omega
@@ -116,12 +114,12 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
     let preR : List (OtherVertex i) :=
       topRay :: postTop.dropLast
     let deleted : V := delRay.1
-    have hir : i ≠ deleted := delRay.2
+    have hir : i ≠ deleted := delRay.2.symm
 
     have hpostDecomp :
         postTop = postTop.dropLast ++ [delRay] := by
       dsimp [delRay]
-      exact List.dropLast_append_getLast hpostNe
+      exact (List.dropLast_append_getLast hpostNe).symm
 
     have hsplitR :
         C.rays =
@@ -136,7 +134,6 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
       have hdrop :
           postTop.dropLast.length = 3 := by
         rw [List.length_dropLast, hpostLen]
-        norm_num
       simp [hdrop]
 
     have hqTarget :
@@ -177,12 +174,12 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
     let preR : List (OtherVertex i) :=
       preTop.dropLast
     let deleted : V := delRay.1
-    have hir : i ≠ deleted := delRay.2
+    have hir : i ≠ deleted := delRay.2.symm
 
     have hpreDecomp :
         preTop = preR ++ [delRay] := by
       dsimp [preR, delRay]
-      exact List.dropLast_append_getLast hpre
+      exact (List.dropLast_append_getLast hpre).symm
 
     have hsplitR :
         C.rays =
@@ -224,7 +221,12 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
         have hlen :
             (qs.rotate preR.length).length = 5 := by
           rw [List.length_rotate, hqLen]
-        simpa [hlen]
+        have hfive :
+            (qs.rotate preR.length).rotate 5 = qs.rotate preR.length := by
+          rw [← hlen]
+          simp
+        rw [List.rotate_rotate] at hfive
+        exact hfive
       have hright :
           ((qLast :: [qFirst,0,0] ++ [qHidden]).rotate 1).rotate 4 =
             qLast :: [qFirst,0,0] ++ [qHidden] := by
@@ -256,7 +258,7 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
         C hir hother preR (topRay :: postTop)
         hsplitR ht0 qLast qHidden [qFirst,0,0]
         hqTarget hLast hHidden
-    exact ⟨deleted, hdelTop, hir.symm, by
+    exact ⟨deleted, hir, hdelTop, by
       simpa [hir, hother] using hgain⟩
 
 #print axioms support_three_right_hidden_has_nonTop_deletion_gain
