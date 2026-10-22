@@ -224,7 +224,7 @@ theorem support_three_right_hidden_has_nonTop_deletion_gain
         have hfive :
             (qs.rotate preR.length).rotate 5 = qs.rotate preR.length := by
           rw [← hlen]
-          simp
+          simp only [List.rotate_length]
         rw [List.rotate_rotate] at hfive
         have hqsLen : qs.length = 5 := by
           dsimp [qs]
