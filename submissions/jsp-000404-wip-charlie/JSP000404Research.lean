@@ -1634,3 +1634,6 @@ import JSP000404Research.ResidualSaturatedGlobalTransition
 import JSP000404Research.ResidualSafeSaturatedTransition
 
 import JSP000404Research.ResidualNetCollisionElevenCentreDoubleHit
+
+-- Kernel-checked unconditional n=4 equality same-sign slot and nine-slot cap.
+import JSP000404Research.SixPointNFourUnconditionalSameSignSlot
