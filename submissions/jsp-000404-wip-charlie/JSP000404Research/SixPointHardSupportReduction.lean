@@ -128,7 +128,7 @@ theorem six_point_hard_support_profile_reduction
     ∧
     (∀ i : V, i ≠ top →
       positiveSupport (centreQuotient (C i) t) = 3 →
-      SupportThreePinnedMiddleShape (t := t) hp (Ne.symm hit) (C i)) := by
+      SupportThreePinnedMiddleShape (t := t) hp (Ne.symm hi_ne_top) (C i)) := by
   classical
   have hprofile :=
     six_point_support_multiplicity_reduction
@@ -179,10 +179,10 @@ theorem six_point_hard_support_profile_reduction
     · exact Or.inr htwo
 
   refine ⟨hlow, ?_⟩
-  intro i hit hsup
+  intro i hi_ne_top hsup
   exact support_three_middle_of_no_compensated_minimum_deletion
     hp hcap C hcard hn5 hdelta0 hdeltaHalf ht hlam
-    top hTop hMin hNoMin hit hsup
+    top hTop hMin hNoMin hi_ne_top hsup
 
 #print axioms SixPointNoCompensatedMinimumDeletion
 #print axioms support_three_middle_of_no_compensated_minimum_deletion
