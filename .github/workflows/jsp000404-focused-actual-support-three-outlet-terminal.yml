@@ -58,4 +58,5 @@ jobs:
         run: lake build JSP000404Research.SixPointSupportThreeActualDeletionOutlet
       - name: Scope
         if: always()
-        run: echo 'Unconditional shape alternative: exact middle case or concrete non-top gain; global six-source payment open.'
+        run: |
+          echo 'Unconditional shape alternative: exact middle case or concrete non-top gain; global six-source payment open.'
