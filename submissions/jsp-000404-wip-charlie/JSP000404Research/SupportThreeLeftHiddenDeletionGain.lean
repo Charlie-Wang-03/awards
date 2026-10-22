@@ -52,7 +52,7 @@ theorem support_three_left_hidden_nonTop_deletion_gain
     (hHidden : 1 ≤ qHidden)
     (ht0 : 0 ≤ t) :
     let deleted := r.1
-    let hir : i ≠ deleted := r.2
+    let hir : i ≠ deleted := r.2.symm
     let hother :
         Nonempty (OtherVertex (survivingCentre deleted i hir)) :=
       child_other_nonempty_of_card_ge_three
@@ -61,7 +61,7 @@ theorem support_three_left_hidden_nonTop_deletion_gain
       centreExponent (C.restrictDelete deleted hir hother) t := by
   let topRay : OtherVertex i := ⟨s,hsi⟩
   let deleted := r.1
-  let hir : i ≠ deleted := r.2
+  let hir : i ≠ deleted := r.2.symm
 
   have hrotTop :
       C.rays.rotate preTop.length =
@@ -75,7 +75,7 @@ theorem support_three_left_hidden_nonTop_deletion_gain
       rw [hsplitTop, List.rotate_append_length_eq]
       simp [topRay, List.append_assoc]
     rw [hrotTop] at hcanonical
-    exact (List.cons.inj hcanonical).2
+    exact (List.cons.inj hcanonical).2.symm
 
   have hqTop :
       (quotientList t C.gaps).rotate preTop.length =
@@ -97,7 +97,6 @@ theorem support_three_left_hidden_nonTop_deletion_gain
 
   have hcardRays : C.rays.length = 5 := by
     rw [centreRayList_length_eq_card_sub_one C, hcard]
-    norm_num
 
   let hcardV3 : 3 ≤ Fintype.card V := by
     rw [hcard]
@@ -136,6 +135,9 @@ theorem support_three_left_hidden_nonTop_deletion_gain
             (quotientList t C.gaps).rotate (preTop.length + 1) =
               (quotientList t C.gaps).rotate 0 := by
           rw [hrotLen]
+          have hqLen : (quotientList t C.gaps).length = C.rays.length := by
+            rw [quotientList_length, C.gaps_length]
+          rw [← hqLen]
           simp
         rw [← hperiod]
         exact hqTarget
