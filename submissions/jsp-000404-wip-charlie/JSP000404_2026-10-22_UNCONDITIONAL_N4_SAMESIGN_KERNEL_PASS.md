@@ -89,3 +89,30 @@ to establish such a cover directly from genuine AngleCap geometry,
 or find a valid alternative global payment mechanism. For higher
 cardinalities, the global six-source non-reuse deficit remains the
 separate main obstacle.
+
+## Subsequent independently certified exact-witness chain
+
+Focused CI: https://github.com/Charlie-Wang-03/awards/actions/runs/39807949978
+Result: **SUCCESS**, 3548 Lake jobs.
+
+`JSP000404Research/SixPointNFourActualSameSignSlot.lean` now
+kernel-builds successfully, including:
+- `six_point_n_four_exactWitness_one_transition_actual_sameSign_unit_slot`;
+- `six_point_n_four_exactWitness_actual_sameSign_slot_or_three_transitions`;
+- `non_sameSign_globalUnitGapSlot_card_lt`;
+- `six_point_n_four_exactWitness_nine_nonSameSign_slots_or_three_transitions`.
+
+The preceding exact-witness dependency errors were repaired in
+`ExactWitnessTransitionOccurrence`,
+`ExactWitnessSupportThreeTransition`,
+`SixPointNFourExactWitness`, and the classically defined
+`globalUnitGapNonSameSignSlotsV1` wrapper. Export axiom reports
+for this chain contain no `sorryAx`.
+
+The **unconditional** n=4 theorem is still strictly stronger: it needs
+no exact-witness branch condition.
+
+A further short direct phase-cover composition was added in
+`SixPointNFourDirectNoCover.lean`. Verify its independent focused
+CI before claiming it kernel-certified; its coverage hypotheses
+are still explicit and are not consequences of AngleCap yet.
