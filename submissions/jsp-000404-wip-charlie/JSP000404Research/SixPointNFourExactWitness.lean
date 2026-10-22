@@ -32,8 +32,8 @@ theorem six_point_n_four_exactWitness_centre_is_minimum
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
@@ -65,8 +65,8 @@ theorem six_point_n_four_exactWitness_forced_11200
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
@@ -104,8 +104,8 @@ theorem six_point_n_four_exactWitness_terminal_dichotomy
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (4 : ℝ) + delta)
