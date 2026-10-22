@@ -114,8 +114,10 @@ theorem no_concrete_secondDeletion_unit_gain_above_min
           intro j hj
           simpa [hparent3] using hrigidR j hj)
         hiChild
-    simpa [childC, hiChild, childVertex] using
-      (show a < centreExponent (C i) t from hiHigh)
+    change a < centreExponent
+      (deletedCycleFamily C hparent3 r hiChild) t
+    rw [h]
+    exact hiHigh
   have hsiChild : hiChild ≠ hsChild := by
     intro hEq
     apply his
@@ -539,9 +541,11 @@ theorem second_minimum_deleted_ray_adjacent_zero_at_high_survivor
     rw [← concreteDeletionAfter_eq
       childC hchild3 t hisChild]
     exact hnoTable
-  exact adjacent_zero_of_no_unit_gain
-    (childC iChild) hisChild hother
-    pre post hsplit ht hno
+  cases pre <;> cases post <;>
+    simpa using
+      (adjacent_zero_of_no_unit_gain
+        (childC iChild) hisChild hother
+        _ _ hsplit ht hno)
 
 #print axioms second_minimum_deleted_ray_adjacent_zero_at_high_survivor
 
