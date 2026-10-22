@@ -53,9 +53,27 @@ Focused workflows at this checkpoint:
 - left/right gain: https://github.com/Charlie-Wang-03/awards/actions/runs/39763022626
 - integrated reduction: https://github.com/Charlie-Wang-03/awards/actions/runs/39763022606
 
-**CI status at writing: PENDING**. The preceding attempts failed because `List.rotate` normalization erased the exact length-five period; the source now uses the Mathlib `List.rotate_length` lemma instead of unconditional `simp`.
+**Verification completed: BOTH focused CI runs PASS.**
+- Left/right concrete gain:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/39763022626
+  — 3536 Lake jobs, both theorem axiom audits are
+  `[propext, Classical.choice, Quot.sound]`.
+- Integrated middle-or-original-non-top-deletion alternative:
+  https://github.com/Charlie-Wang-03/awards/actions/runs/39763022606
+  — 3537 Lake jobs, the concrete geometric composite
+  `six_point_support_three_middle_or_concrete_nonTop_gain`
+  depends on axioms `[propext, Classical.choice, Quot.sound]`,
+  with **NO `sorryAx`**.
 
-The two new focused workflow files and the new module are committed on the research branch. Do not mark them certified until a completed `success` action and no `sorryAx` on printed theorem exports are verified.
+The earlier failed attempts were specifically caused by Lean list-rotation
+period normalization; the actual `List.rotate_length` lemma resolved it.
+The integrated theorem is now imported by the research umbrella
+`JSP000404Research.lean`. It is the strongest actually kernel-checked
+support-three **local outlet** so far, and reduces the open branch to an
+explicit middle hidden `[0,qHidden,0]` quotient case unless a particular
+non-top deletion gain is available. It does **NOT** prove the global
+non-reusing simultaneous payment, show that this middle geometry is impossible,
+or close the admitted lower branch.
 
 ## Next genuine mathematics
 
