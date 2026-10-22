@@ -132,8 +132,13 @@ theorem exists_adjacent_transition_inside_ordered_seed
       have hqLeK : q ≤ C.rayIndex k :=
         hqLtR.le.trans hrData.2.1
       have hqS : q ∈ S := by
-        simp [S, firstChangedSignIndices,
-          hjLtQ, hqLeK, hne]
+        change q ∈ C.firstChangedSignIndices j k
+        unfold firstChangedSignIndices
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+        refine ⟨hjLtQ, hqLeK, ?_⟩
+        change raySignAt hp i (C.rays.get q) ≠
+          raySignAt hp i j
+        exact hne
       have hrLeQ : r ≤ q :=
         Finset.min'_le S q hqS
       exact (not_lt_of_ge hrLeQ) hqLtR
@@ -161,8 +166,11 @@ theorem exists_adjacent_transition_inside_ordered_seed
       rayThetaAt hp i j ≤
         rayThetaAt hp i (C.rays.get q) := by
     by_cases heq : C.rayIndex j = q
-    · subst q
-      simp
+    · have hget : C.rays.get q = j := by
+        rw [← heq, C.get_rayIndex]
+      change rayThetaAt hp i j ≤
+        rayThetaAt hp i (C.rays.get q)
+      rw [hget]
     · have hlt : C.rayIndex j < q :=
         lt_of_le_of_ne hjLeQ heq
       have h := C.theta_sorted.rel_get_of_lt hlt
@@ -171,8 +179,11 @@ theorem exists_adjacent_transition_inside_ordered_seed
       rayThetaAt hp i (C.rays.get r) ≤
         rayThetaAt hp i k := by
     by_cases heq : r = C.rayIndex k
-    · subst r
-      simp
+    · have hget : C.rays.get r = k := by
+        rw [heq, C.get_rayIndex]
+      change rayThetaAt hp i (C.rays.get r) ≤
+        rayThetaAt hp i k
+      rw [hget]
     · have hlt : r < C.rayIndex k :=
         lt_of_le_of_ne hrData.2.1 heq
       have h := C.theta_sorted.rel_get_of_lt hlt
