@@ -46,7 +46,7 @@ theorem mergeLastColor_eq_iff_eq_or_boundary_swap
           apply Fin.ext
           have hv := congrArg Fin.val h
           simp [mergeLastColor, ha, hb] at hv
-          exact hv
+          exact congrArg Fin.val hv
         exact Or.inr (Or.inl ⟨haZero, hbLast⟩)
     · by_cases hb : b.val < n
       · have haLast : a = Fin.last n := by
@@ -81,19 +81,14 @@ theorem mergeLastColor_eq_implies_eq_of_positive_lt_last
     (haN : a.val < n)
     (hEq : mergeLastColor hn a = mergeLastColor hn b) :
     a = b := by
-  by_cases hbN : b.val < n
-  · apply Fin.ext
-    have hv := congrArg Fin.val hEq
-    simp [mergeLastColor, haN, hbN] at hv
-    exact hv
-  · have hbEq : b = Fin.last n := by
-      apply Fin.ext
-      simp
-      have hbLe : b.val ≤ n := by omega
-      omega
-    subst b
-    have hv := congrArg Fin.val hEq
-    simp [mergeLastColor, haN] at hv
+  rcases (mergeLastColor_eq_iff_eq_or_boundary_swap hn a b).mp hEq with
+    heq | hswap | hswap
+  · exact heq
+  · have hzero : a.val = 0 := by
+      simpa using congrArg Fin.val hswap.1
+    omega
+  · have hlast : a.val = n := by
+      simpa using congrArg Fin.val hswap.1
     omega
 
 theorem interior_mem_iff_of_equal_merge_image
@@ -140,7 +135,7 @@ theorem merged_zero_mem_image_iff_boundary
     {n : ℕ}
     (hn : 1 ≤ n)
     (S : Finset (Fin (n + 1))) :
-    (0 : Fin n) ∈ S.image (mergeLastColor hn)
+    (⟨0, hn⟩ : Fin n) ∈ S.image (mergeLastColor hn)
       ↔
     (0 : Fin (n + 1)) ∈ S ∨ Fin.last n ∈ S := by
   classical
@@ -165,9 +160,11 @@ theorem merged_zero_mem_image_iff_boundary
     rcases h with h0 | hnS
     · apply Finset.mem_image.mpr
       refine ⟨(0 : Fin (n + 1)), h0, ?_⟩
+      apply Fin.ext
       simp [mergeLastColor, hn]
     · apply Finset.mem_image.mpr
       refine ⟨Fin.last n, hnS, ?_⟩
+      apply Fin.ext
       simp [mergeLastColor]
 
 theorem boundary_union_iff_of_equal_merge_image
