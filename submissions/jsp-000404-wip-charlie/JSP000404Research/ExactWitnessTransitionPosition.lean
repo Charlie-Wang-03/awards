@@ -60,7 +60,7 @@ def ExactUnitTransitionPosition
       ∧
       wrapRayQuotient hp i t first rest = 1
       ∧
-      raySignAt hp i (rest.getLastD first) ≠
+      raySignAt hp i ((first :: rest).getLast (by simp)) ≠
         !raySignAt hp i first)
 
 /-- Ordered endpoint version. -/
