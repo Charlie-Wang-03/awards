@@ -164,6 +164,7 @@ theorem normalized_three_layer_profile_eq_six
                   have hsub : n - 2 = (n - 3) + 1 := by omega
                   rw [hiK, hsub, pow_add]
                   norm_num
+                  ring
           _ = S2.card * (2 * 2 ^ (n - 3)) := by simp
       have hsPow :
           2 ^ k s = 4 * 2 ^ (n - 3) := by
