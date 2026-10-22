@@ -1637,3 +1637,6 @@ import JSP000404Research.ResidualNetCollisionElevenCentreDoubleHit
 
 -- Kernel-checked unconditional n=4 equality same-sign slot and nine-slot cap.
 import JSP000404Research.SixPointNFourUnconditionalSameSignSlot
+
+-- Kernel-checked indexed n=4 exact-witness slot and conditional nine-slot branch.
+import JSP000404Research.SixPointNFourActualSameSignSlot
