@@ -64,7 +64,7 @@ theorem mixed_support_one_has_two_nonexposed_support_three
     rw [Finset.card_erase_of_mem haMem,
         Finset.card_erase_of_mem (Finset.mem_univ top),
         Finset.card_univ, hcard]
-    norm_num
+    
 
   have hEcard : E.card ≤ 2 := by
     by_contra hnot
@@ -80,14 +80,23 @@ theorem mixed_support_one_has_two_nonexposed_support_three
       intro v hv
       exact (Finset.mem_filter.mp (hTsub hv)).1
 
-    obtain ⟨b, hbT, c, hcT, hbc⟩ :=
-      Finset.two_le_card.mp (by omega : 2 ≤ T.card)
+    have hTpos : 0 < T.card := by omega
+    obtain ⟨b, hbT⟩ := Finset.card_pos.mp hTpos
     let T' := T.erase b
     have hT'card : T'.card = 2 := by
       dsimp [T']
       rw [Finset.card_erase_of_mem hbT, hTcard]
-    obtain ⟨c0, hc0T', d, hdT', hc0d⟩ :=
-      Finset.two_le_card.mp (by omega : 2 ≤ T'.card)
+    have hT'pos : 0 < T'.card := by omega
+    obtain ⟨c0, hc0T'⟩ := Finset.card_pos.mp hT'pos
+    let T'' := T'.erase c0
+    have hT''card : T''.card = 1 := by
+      dsimp [T'']
+      rw [Finset.card_erase_of_mem hc0T', hT'card]
+    have hT''pos : 0 < T''.card := by omega
+    obtain ⟨d, hdT''⟩ := Finset.card_pos.mp hT''pos
+    have hdT' : d ∈ T' := (Finset.mem_erase.mp hdT'').2
+    have hc0d : c0 ≠ d :=
+      (Finset.mem_erase.mp hdT'').1.symm
     have hc0T : c0 ∈ T := (Finset.mem_erase.mp hc0T').2
     have hdT : d ∈ T := (Finset.mem_erase.mp hdT').2
     have hbc0 : b ≠ c0 :=
@@ -142,10 +151,17 @@ theorem mixed_support_one_has_two_nonexposed_support_three
   have hEsub : E ⊆ R := Finset.filter_subset _ _
   have hNcard : 2 ≤ N.card := by
     dsimp [N]
-    rw [Finset.card_sdiff hEsub, hRcard]
+    have hinter : E ∩ R = E := Finset.inter_eq_left.mpr hEsub
+    rw [Finset.card_sdiff, hinter, hRcard]
     omega
-  obtain ⟨b, hbN, c, hcN, hbc⟩ :=
-    Finset.two_le_card.mp hNcard
+  have hNpos : 0 < N.card := by omega
+  obtain ⟨b, hbN⟩ := Finset.card_pos.mp hNpos
+  have hNafter : 0 < (N.erase b).card := by
+    rw [Finset.card_erase_of_mem hbN]
+    omega
+  obtain ⟨c, hcNremove⟩ := Finset.card_pos.mp hNafter
+  have hcN : c ∈ N := (Finset.mem_erase.mp hcNremove).2
+  have hbc : b ≠ c := (Finset.mem_erase.mp hcNremove).1.symm
 
   have hbR : b ∈ R := (Finset.mem_sdiff.mp hbN).1
   have hcR : c ∈ R := (Finset.mem_sdiff.mp hcN).1
