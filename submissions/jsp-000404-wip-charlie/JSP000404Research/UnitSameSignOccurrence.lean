@@ -145,7 +145,7 @@ theorem sameSignQuotientOccurs_of_mem_post
       simp only [List.length_cons, List.replicate_succ,
         List.cons_append, SameSignQuotientOccurs]
       right
-      exact ih
+      simpa only [List.replicate_succ] using (ih a)
 
 /-- Two unit entries plus a distinguished unit transition force another unit
 on a same-sign step. -/
