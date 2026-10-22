@@ -61,6 +61,7 @@ theorem floorExcess_eq_one_unitSupport_eq_two_support_le_three_shape
       have hsingle :
           q i - 1 ≤ ∑ j : I, (q j - 1) :=
         Finset.single_le_sum
+          (f := fun j : I => q j - 1)
           (fun _ _ => Nat.zero_le _)
           (Finset.mem_univ i)
       rw [hex] at hsingle
@@ -100,7 +101,7 @@ theorem six_point_unitSupport_sum_eq_ten_forces_every_min_two
       Finset.sum_erase_add (Finset.univ : Finset V) u
         (Finset.mem_univ top)
     rw [htop, add_zero] at hsplit
-    rw [← hsplit]
+    rw [hsplit]
     exact hsum
   have hcount :
       (Finset.univ.erase top).card = 5 := by
@@ -135,7 +136,10 @@ theorem six_point_unitSupport_sum_eq_ten_forces_every_min_two
     dsimp [T]
     rw [← Finset.add_sum_erase
       (Finset.univ.erase top) u hiMem]
-  rw [hothers, hsplit, hTcard] at hrest
+  have hsumSplit : u i + ∑ j ∈ T, u j = 10 := by
+    rw [← hsplit]
+    exact hothers
+  rw [hTcard] at hrest
   omega
 
 theorem six_point_n_four_unit_budget_equality_forces_11200
