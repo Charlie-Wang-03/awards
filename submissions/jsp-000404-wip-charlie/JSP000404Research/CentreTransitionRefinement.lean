@@ -57,15 +57,17 @@ theorem rayIndex_k_mem_firstChangedSignIndices
   classical
   simp [firstChangedSignIndices,
     C.rayIndex_lt_of_theta_lt htheta]
-  simpa [C.get_rayIndex] using hsign.symm
+  change raySignAt hp i (C.rays.get (C.rayIndex k)) ≠
+    raySignAt hp i j
+  simpa only [C.get_rayIndex] using hsign.symm
 
 /-- Main adjacent-refinement theorem. -/
 theorem exists_adjacent_transition_inside_ordered_seed
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     {j k : OtherVertex i}
@@ -110,14 +112,12 @@ theorem exists_adjacent_transition_inside_ordered_seed
     dsimp [q]
     omega
   have hqLtR : q < r := by
-    exact Fin.mk_lt_mk.mpr (by
-      dsimp [q]
-      omega)
+    change r.val - 1 < r.val
+    omega
   have hjLeQ : C.rayIndex j ≤ q := by
-    exact Fin.mk_le_mk.mpr (by
-      have hjr : (C.rayIndex j).val < r.val := hrData.1
-      dsimp [q]
-      omega)
+    change (C.rayIndex j).val ≤ r.val - 1
+    have hjr : (C.rayIndex j).val < r.val := hrData.1
+    omega
   have hqSign :
       raySignAt hp i (C.rays.get q) =
         raySignAt hp i j := by
@@ -148,8 +148,11 @@ theorem exists_adjacent_transition_inside_ordered_seed
     C.theta_sorted.rel_get_of_lt hqLtR
   have hqNeR : C.rays.get q ≠ C.rays.get r := by
     intro h
-    have := C.nodup.get_injective q r h
-    exact (ne_of_lt hqLtR) this
+    have heq : q = r := by
+      apply C.rayEquiv.injective
+      change C.rays.get q = C.rays.get r
+      exact h
+    exact (ne_of_lt hqLtR) heq
   have hlower :=
     one_le_t_mul_gap_of_canonical_sign_ne
       hp hcap ht hlam i
@@ -157,13 +160,23 @@ theorem exists_adjacent_transition_inside_ordered_seed
   have hthetaJQ :
       rayThetaAt hp i j ≤
         rayThetaAt hp i (C.rays.get q) := by
-    have h := C.theta_le_of_rayIndex_le hjLeQ
-    simpa [C.get_rayIndex] using h
+    by_cases heq : C.rayIndex j = q
+    · subst q
+      simp
+    · have hlt : C.rayIndex j < q :=
+        lt_of_le_of_ne hjLeQ heq
+      have h := C.theta_sorted.rel_get_of_lt hlt
+      simpa only [C.get_rayIndex] using h
   have hthetaRK :
       rayThetaAt hp i (C.rays.get r) ≤
         rayThetaAt hp i k := by
-    have h := C.theta_le_of_rayIndex_le hrData.2.1
-    simpa [C.get_rayIndex] using h
+    by_cases heq : r = C.rayIndex k
+    · subst r
+      simp
+    · have hlt : r < C.rayIndex k :=
+        lt_of_le_of_ne hrData.2.1 heq
+      have h := C.theta_sorted.rel_get_of_lt hlt
+      simpa only [C.get_rayIndex] using h
   have hgapLe :
       rayThetaAt hp i (C.rays.get r) -
           rayThetaAt hp i (C.rays.get q)
