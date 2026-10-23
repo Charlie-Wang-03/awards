@@ -58,15 +58,15 @@ theorem five_gap_exact_unit_lies_at_positive_position
         ∨
         (qLast = 1 ∧ t * gLast = 1)
       ) := by
-  rcases gs with _ | gFirst gs
+  rcases gs with _ | ⟨gFirst, gs⟩
   · simp at hlen
-  rcases gs with _ | g₁ gs
+  rcases gs with _ | ⟨g₁, gs⟩
   · simp at hlen
-  rcases gs with _ | g₂ gs
+  rcases gs with _ | ⟨g₂, gs⟩
   · simp at hlen
-  rcases gs with _ | g₃ gs
+  rcases gs with _ | ⟨g₃, gs⟩
   · simp at hlen
-  rcases gs with _ | gLast gs
+  rcases gs with _ | ⟨gLast, gs⟩
   · simp at hlen
   have hnil : gs = [] := by
     simpa using hlen
@@ -161,8 +161,8 @@ theorem exactWitness_pinned_support_three_exact_unit_position
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n k : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
