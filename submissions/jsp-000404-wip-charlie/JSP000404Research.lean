@@ -1479,6 +1479,8 @@ import JSP000404Research.SixPointSupportThreeMinimumDeletion
 
 
 import JSP000404Research.SixPointHardSupportReduction
+-- Kernel-checked mixed six-centre hard residual: two pinned hidden triple-transition minima.
+import JSP000404Research.SixPointMixedHardTerminal
 
 
 import JSP000404Research.SixPointTwoNonGainers
