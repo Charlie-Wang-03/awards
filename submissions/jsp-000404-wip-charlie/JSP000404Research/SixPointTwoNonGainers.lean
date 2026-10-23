@@ -29,9 +29,9 @@ namespace JSP000404Research
 theorem nonGaining_support_one_or_two
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -111,8 +111,8 @@ theorem two_nonGaining_lowSupport_witnesses
           (by rw [hcard]; omega) top t ∧
         positiveSupport (centreQuotient (C a) t) = 2 ∧
         positiveSupport (centreQuotient (C b) t) = 2 ∧
-        ¬ TopPinnedPositivePair C top a (by assumption) t ∧
-        ¬ TopPinnedPositivePair C top b (by assumption) t
+        (∀ ha : a ≠ top, ¬ TopPinnedPositivePair C top a ha t) ∧
+        (∀ hb : b ≠ top, ¬ TopPinnedPositivePair C top b hb t)
     )
     ∨
     (
@@ -154,10 +154,20 @@ theorem two_nonGaining_lowSupport_witnesses
 
   have hNcard : 2 ≤ N.card := by
     dsimp [N]
-    rw [Finset.card_sdiff hGsub, hminCard]
+    have hinter : G ∩ minima = G :=
+      Finset.inter_eq_left.mpr hGsub
+    rw [Finset.card_sdiff, hinter, hminCard]
     omega
 
-  obtain ⟨a, haN, b, hbN, hab⟩ := Finset.two_le_card.mp hNcard
+  obtain ⟨a, haN⟩ : N.Nonempty :=
+    Finset.card_pos.mp (by omega : 0 < N.card)
+  have hbcard : 0 < (N.erase a).card := by
+    rw [Finset.card_erase_of_mem haN]
+    omega
+  obtain ⟨b, hbErase⟩ : (N.erase a).Nonempty :=
+    Finset.card_pos.mp hbcard
+  have hbN : b ∈ N := (Finset.mem_erase.mp hbErase).2
+  have hab : a ≠ b := (Finset.mem_erase.mp hbErase).1.symm
   have haMin := (Finset.mem_sdiff.mp haN).1
   have hbMin := (Finset.mem_sdiff.mp hbN).1
   have haNotG : a ∉ G := (Finset.mem_sdiff.mp haN).2
@@ -203,18 +213,18 @@ theorem two_nonGaining_lowSupport_witnesses
         ⟨a,b,hat,hbt,hab,
           by simpa [G,hcard3] using haNotG,
           by simpa [G,hcard3] using hbNotG,
-          ha1,hb2,hsepB⟩
+          ha1,hb2,(fun _ => hsepB)⟩
   · rcases hb12 with hb1 | hb2
     · exact Or.inr
         ⟨b,a,hbt,hat,hab.symm,
           by simpa [G,hcard3] using hbNotG,
           by simpa [G,hcard3] using haNotG,
-          hb1,ha2,hsepA⟩
+          hb1,ha2,(fun _ => hsepA)⟩
     · exact Or.inl
         ⟨a,b,hat,hbt,hab,
           by simpa [G,hcard3] using haNotG,
           by simpa [G,hcard3] using hbNotG,
-          ha2,hb2,hsepA,hsepB⟩
+          ha2,hb2,(fun _ => hsepA),(fun _ => hsepB)⟩
 
 #print axioms nonGaining_support_one_or_two
 #print axioms nonGaining_support_two_is_separated
