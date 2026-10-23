@@ -95,3 +95,18 @@ This is only a snapshot; rerun whole-tree after isolated repairs before
 revising the overall status.
 
 The status of the upstream prize should NOT be changed to solved.
+
+## Final follow-up verification (supersedes earlier pending status)
+
+* `SixPointCyclicCutCriticalAvoidance.lean` full in-period theorem and
+  noncoverage corollary **PASS**:
+  [39933542695](https://github.com/Charlie-Wang-03/awards/actions/runs/39933542695),
+  9,075 jobs, no `sorryAx` for either theorem. The kernel-verified
+  physical-period conclusion is `exists x : Real, 0 <= x ∧ x < t ∧
+  ¬ ExistsCutAdjacentCriticalBadAt C t delta x`.
+* The verified module was imported explicitly in the umbrella
+  `JSP000404Research.lean` with the important no-global-payment caveat.
+* `DeficitThreeSupportThreeRemainder.lean` remains a SEPARATELY
+  audited local repair; see the final result of
+  [39934051047](https://github.com/Charlie-Wang-03/awards/actions/runs/39934051047).
+  No whole-tree green CI is claimed.
