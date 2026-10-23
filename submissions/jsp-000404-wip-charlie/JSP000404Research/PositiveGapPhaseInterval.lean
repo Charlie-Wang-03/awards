@@ -86,7 +86,7 @@ theorem globalPositiveGapStart_nonneg
   convert normalizedRayTheta_nonneg
       hp ht u.1
         ((C u.1).rays.get
-          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> ring
+          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> (unfold normalizedRayTheta; ring)
 
 theorem globalPositiveGapStart_lt_t
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -99,7 +99,7 @@ theorem globalPositiveGapStart_lt_t
   convert normalizedRayTheta_lt_t
       hp ht u.1
         ((C u.1).rays.get
-          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> ring
+          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> (unfold normalizedRayTheta; ring)
 
 theorem globalPositiveGapScaledLength_nonneg
     {V : Type*} [LinearOrder V] [Fintype V]
