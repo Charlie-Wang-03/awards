@@ -1668,3 +1668,7 @@ import JSP000404Research.SixPointMixedFiveAngleSqueeze
 
 -- Kernel-checked n4 six-centre phase-cover exclusion without unit equality.
 import JSP000404Research.SixPointNFourNoCoverWithoutEquality
+
+-- Kernel-verified all-centre/all-cut cyclic critical gap avoidance (n >= 5),
+-- including exact in-period phase. NOT a global dyadic Boolean-hole payment.
+import JSP000404Research.SixPointCyclicCutCriticalAvoidance
