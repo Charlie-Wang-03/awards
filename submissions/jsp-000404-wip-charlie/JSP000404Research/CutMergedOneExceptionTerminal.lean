@@ -189,7 +189,7 @@ noncomputable def uncoveredCutMergedPartition
     cutProjectiveBandPartition
       hp hcap htpos hlam hc0 hcpi n htop
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
@@ -244,7 +244,7 @@ theorem uncoveredCutMergedPartition_active_le_of_not_bad
   let exponent : V → ℕ :=
     fun i => centreExponent (C i) t
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
@@ -318,7 +318,7 @@ theorem uncoveredCutMergedPartition_active_le_one_extra
   let exponent : V → ℕ :=
     fun i => centreExponent (C i) t
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
