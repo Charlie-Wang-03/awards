@@ -137,7 +137,7 @@ theorem unitGap_turnStart_eq
         (globalUnitGapToTurnUnitSlot C t u)
       =
     globalUnitGapStart C t u := by
-  rfl
+  exact globalUnitGapToTurnUnitSlot_start C t u
 
 #print axioms cyclicTurnUnitBadAt_implies_deltaArc
 #print axioms cyclicGlobalTurnUnitBadAt_implies_deltaArc
