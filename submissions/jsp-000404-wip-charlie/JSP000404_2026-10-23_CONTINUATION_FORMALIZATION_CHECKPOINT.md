@@ -72,3 +72,8 @@ introducing a new axiom. No complete proof or disproof is claimed.
 
 Do not submit upstream as solved or equate any focused CI PASS with
 whole-tree acceptance.
+
+## Subsequent verified CI results
+
+* `MixedSupportTwoHiddenLargeAngle` **PASS**: https://github.com/Charlie-Wang-03/awards/actions/runs/39914150560 (3,472 Lake jobs), `mixed_support_one_support_two_hidden_large_angle` without `sorryAx`.
+* `FinitePeriodTransitionPhaseCover` **PASS**: https://github.com/Charlie-Wang-03/awards/actions/runs/39914027254 (9,078 Lake jobs), `no_six_point_finite_period_transition_slot_cover` without `sorryAx`. Its quantitative finite-period cover lower bound is still explicitly hypothesized; neither physical coverage nor global net Boolean-hole payment follows.
