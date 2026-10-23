@@ -27,10 +27,10 @@ open Real
 theorem triangle_ordinary_arc_has_global_unit_transition_slot
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta L S : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta L S : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
