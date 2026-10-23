@@ -102,9 +102,12 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
   have hget :
       (centreQuotient C t r : ℝ) ≤
         t * C.gaps.get r := by
-    exact List.Forall₂.get halign
-      (Fin.cast (quotientList_length t C.gaps).symm r)
-      r rfl
+    have hqidx :
+        r.val < (quotientList t C.gaps).length := by
+      simpa only [quotientList_length] using r.isLt
+    have hgetList :=
+      List.Forall₂.get halign hqidx r.isLt
+    simpa only [centreQuotient, quotientList] using hgetList
   have htotal :=
     centre_remainderMass_eq_delta_of_deficit_three_support_three
       C hn hdelta0 hdeltaHalf ht hexp hsupport
@@ -127,16 +130,20 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
           r.val < (quotientList t C.gaps).length := by
         rw [quotientList_length]
         exact r.isLt
-      simpa [centreQuotient] using
-        (List.take_append_getElem_drop
-          (quotientList t C.gaps) r.val hrq)
+      change
+        (quotientList t C.gaps) =
+          (quotientList t C.gaps).take r.val ++
+            (quotientList t C.gaps)[r.val] ::
+              (quotientList t C.gaps).drop (r.val + 1)
+      rw [List.getElem_cons_drop hrq, List.take_append_drop]
     have hgdecomp :
         C.gaps =
           gpre ++ C.gaps.get r :: gpost := by
       dsimp [gpre, gpost]
-      simpa using
-        (List.take_append_getElem_drop
-          C.gaps r.val r.isLt)
+      change
+        C.gaps = C.gaps.take r.val ++
+          C.gaps[r.val] :: C.gaps.drop (r.val + 1)
+      rw [List.getElem_cons_drop r.isLt, List.take_append_drop]
     have hpreLen : qpre.length = gpre.length := by
       dsimp [qpre, gpre]
       rw [List.length_take, List.length_take,
@@ -145,13 +152,20 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
         QuotientGapAligned t
           (qpre ++ centreQuotient C t r :: qpost)
           (gpre ++ C.gaps.get r :: gpost) := by
-      simpa [hqdecomp, hgdecomp] using halign
+      rw [← hqdecomp, ← hgdecomp]
+      exact halign
     have h :=
       displayed_remainder_le_listRemainderMass
         qpre qpost gpre gpost
         (centreQuotient C t r)
         (C.gaps.get r) hpreLen halign'
-    simpa [hqdecomp, hgdecomp] using h
+    calc
+      _ ≤ listRemainderMass t
+          (qpre ++ centreQuotient C t r :: qpost)
+          (gpre ++ C.gaps.get r :: gpost) := h
+      _ = listRemainderMass t
+          (quotientList t C.gaps) C.gaps := by
+            rw [hqdecomp, hgdecomp]
   rw [htotal] at hdisplay
   exact ⟨by linarith, hdisplay⟩
 
