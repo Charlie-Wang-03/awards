@@ -30,13 +30,32 @@ namespace JSP000404Research
 
 open Real
 
+/-- Zero-quotient angle mass splits across aligned list concatenation. -/
+private theorem listZeroAngleMass_append_aligned
+    (qs₁ qs₂ : List ℕ) (As₁ As₂ : List ℝ)
+    (hlen : qs₁.length = As₁.length) :
+    listZeroAngleMass (qs₁ ++ qs₂) (As₁ ++ As₂) =
+      listZeroAngleMass qs₁ As₁ + listZeroAngleMass qs₂ As₂ := by
+  induction qs₁ generalizing As₁ with
+  | nil =>
+      have hnil : As₁ = [] :=
+        List.length_eq_zero_iff.mp (by simpa using hlen.symm)
+      subst As₁
+      simp [listZeroAngleMass]
+  | cons q qs ih =>
+      cases As₁ with
+      | nil => simp at hlen
+      | cons A As =>
+          simp at hlen
+          simp [listZeroAngleMass, ih As hlen]
+
 /-- Rotate an exact deficit-three/support-two centre so the ray to the sharp
 top is first, retaining aligned quotient and actual-angle data. -/
 theorem exists_sharp_pinned_support_two_deficit_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -58,10 +77,10 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
       ∃ qmid : List ℕ,
         C.rays = first0 :: rest0 ∧
         C.rays =
-          pre ++ (⟨top, hit⟩ : OtherVertex i) :: post ∧
+          pre ++ (⟨top, hit.symm⟩ : OtherVertex i) :: post ∧
         k = pre.length ∧
         C.rays.rotate k =
-          (⟨top, hit⟩ : OtherVertex i) :: r :: rest ∧
+          (⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest ∧
         (quotientList t C.gaps).rotate k =
           qFirst :: qmid ++ [qLast] ∧
         listPositiveCount
@@ -74,7 +93,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
           ≤ (1 + delta) * lam ∧
         (cyclicRayAngles (p := p) i first0 rest0).rotate k =
           cyclicRayAngles (p := p) i
-            (⟨top, hit⟩ : OtherVertex i) (r :: rest) := by
+            (⟨top, hit.symm⟩ : OtherVertex i) (r :: rest) := by
   classical
   have htpos :
       0 < t :=
@@ -84,7 +103,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
       ∃ first rest, C.rays = first :: rest := by
     cases hR : C.rays with
     | nil => exact False.elim (C.nonempty hR)
-    | cons first rest => exact ⟨first, rest, hR⟩
+    | cons first rest => exact ⟨first, rest, rfl⟩
 
   let qs : List ℕ := quotientList t C.gaps
   let As : List ℝ :=
@@ -114,7 +133,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
         hp hcap hn hdelta0 hdeltaHalf ht hlam
         i C hexp hsupport first0 rest0 hrays0
 
-  let topRay : OtherVertex i := ⟨top, hit⟩
+  let topRay : OtherVertex i := ⟨top, hit.symm⟩
   have htopMem : topRay ∈ C.rays := C.mem_rays_iff topRay
   obtain ⟨pre, post, hsplit⟩ :=
     exists_append_cons_of_mem htopMem
@@ -155,7 +174,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
       ∃ r rest, tailRays = r :: rest := by
     cases hT : tailRays with
     | nil => exact False.elim (htailNonempty hT)
-    | cons r rest => exact ⟨r,rest,hT⟩
+    | cons r rest => exact ⟨r, rest, rfl⟩
 
   have hqRLen :
       qR.length = (topRay :: r :: rest).length := by
@@ -268,9 +287,9 @@ outer-angle contribution leaves at most 2*delta*lambda of zero-angle mass. -/
 theorem separated_support_two_residual_zero_budget
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (Cfam : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -289,10 +308,10 @@ theorem separated_support_two_residual_zero_budget
     ∃ first0 rest0 k pre post r rest qFirst qLast qmid,
       (Cfam i).rays = first0 :: rest0 ∧
       (Cfam i).rays =
-        pre ++ (⟨top, hit⟩ : OtherVertex i) :: post ∧
+        pre ++ (⟨top, hit.symm⟩ : OtherVertex i) :: post ∧
       k = pre.length ∧
       (Cfam i).rays.rotate k =
-        (⟨top, hit⟩ : OtherVertex i) :: r :: rest ∧
+        (⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest ∧
       (quotientList t (Cfam i).gaps).rotate k =
         qFirst :: qmid ++ [qLast] ∧
       listPositiveCount (qFirst :: qmid ++ [qLast]) = 2 ∧
@@ -342,7 +361,7 @@ theorem separated_support_two_residual_zero_budget
       hrays0, hsplit, hk, hrotRays, hqrot,
       hsupportRot, hmidLen, hmass, hangleRot⟩ :=
     exists_sharp_pinned_support_two_deficit_three_shape
-      hp hcap hn.le hdelta0 hdeltaHalf ht hlam
+      hp hcap (by omega : 4 ≤ n) hdelta0 hdeltaHalf ht hlam
       hit (Cfam i) hI hsupport
 
   have hnotBoth :
@@ -367,7 +386,7 @@ theorem separated_support_two_residual_zero_budget
   let ALast := EuclideanGeometry.angle (p lastRay.1) (p i) (p top)
 
   have hrotNodup :
-      ((⟨top, hit⟩ : OtherVertex i) :: r :: rest).Nodup := by
+      ((⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest).Nodup := by
     rw [← hrotRays]
     simpa using (Cfam i).nodup
   have htopr : top ≠ r.1 := by
@@ -379,13 +398,14 @@ theorem separated_support_two_residual_zero_budget
     exact Or.inl (Subtype.ext h)
   have hlastMem : lastRay ∈ r :: rest := by
     dsimp [lastRay]
-    exact List.getLastD_mem (by simp)
+    simpa [List.getLastD_cons] using
+      (List.getLastD_mem_cons : rest.getLastD r ∈ r :: rest)
   have htopLast : top ≠ lastRay.1 := by
     intro h
     have hne :=
       (List.nodup_cons.mp hrotNodup).1
     apply hne
-    have : (⟨top, hit⟩ : OtherVertex i) = lastRay :=
+    have : (⟨top, hit.symm⟩ : OtherVertex i) = lastRay :=
       Subtype.ext h.symm
     rw [this]
     exact hlastMem
@@ -462,7 +482,7 @@ theorem separated_support_two_residual_zero_budget
           (AFirst :: Amid).length := by
       simp [hmidLen]
     have hEq :=
-      listZeroAngleMass_append
+      listZeroAngleMass_append_aligned
         (qFirst :: qmid) [qLast]
         (AFirst :: Amid) [ALast] hpreLen
     have hsingle :
