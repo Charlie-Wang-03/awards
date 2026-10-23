@@ -38,6 +38,33 @@ The previously proved unique-neighbour rigidity is the degree-one special case.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+/-- Exact natural-number payment lemma, including the degenerate zero-palette
+case. No positivity assumption on the number of retained colours is needed. -/
+private theorem nat_layered_slack_charge
+    (r q x : ℕ) (hx : x ≤ r * q) :
+    x - ((r + 1) * q - 2 * q) ≤ q := by
+  cases r with
+  | zero =>
+      have hx0 : x = 0 := by
+        have h : x ≤ 0 := by simpa using hx
+        omega
+      subst x
+      simp
+  | succ r =>
+      have hmul :
+          (Nat.succ r + 1) * q = r * q + 2 * q := by
+        simp only [Nat.succ_eq_add_one]
+        ring
+      have hbase : Nat.succ r * q = r * q + q := by
+        simp only [Nat.succ_eq_add_one]
+        ring
+      rw [hmul]
+      have hsub : r * q + 2 * q - 2 * q = r * q := by omega
+      rw [hsub]
+      rw [hbase] at hx
+      omega
+
+
 /-- At a genuine projected-loss vertex, the dyadic demand is twice the
 retained completion-cube cardinality. Localizes the algebraic identity
 before the collision-degree proofs that repeatedly consume it. -/
@@ -2377,68 +2404,23 @@ theorem uniqueNeighbourLeafExcess_after_lossParentSlack_le_cube
           (retainedCompletionWords C parent).card :=
     hsumExcess.trans hsumCharge
 
-  have hparentSlack :
+  have hslackEq :
       (enlargedProjectedCandidateBlock C exponent parent).card -
           2 ^ exponent parent
         =
-      ((retainedActive C parent).card - 1) *
-        (retainedCompletionWords C parent).card := by
+      ((retainedActive C parent).card + 1) *
+          (retainedCompletionWords C parent).card -
+        2 * (retainedCompletionWords C parent).card := by
     rw [enlargedProjectedCandidateBlock_loss
           C exponent hparentLoss,
         allActiveLossCandidateBlock_card,
         projectedLoss_target_eq_two_mul_completion
           C exponent hparentLoss]
-    have hactivePos :
-        1 ≤ (retainedActive C parent).card := by
-      have hloss :=
-        (mem_projectedLossVertices C exponent parent).1 hparentLoss
-      unfold projectedFree at hloss
-      have hcardLe :
-          (retainedActive C parent).card ≤ n := by
-        simpa using Finset.card_le_univ
-          (retainedActive C parent)
-      omega
-    have ha :
-        (retainedActive C parent).card =
-          ((retainedActive C parent).card - 1) + 1 := by
-      omega
-    have hblockDecomp :
-        ((retainedActive C parent).card + 1) *
-            (retainedCompletionWords C parent).card
-          =
-        2 * (retainedCompletionWords C parent).card +
-          ((retainedActive C parent).card - 1) *
-            (retainedCompletionWords C parent).card := by
-      rw [ha]
-      ring
-    rw [hblockDecomp, Nat.add_sub_cancel_left]
-
-  rw [hparentSlack]
-  have hdecomp :
-      (retainedActive C parent).card *
-          (retainedCompletionWords C parent).card
-        =
-      ((retainedActive C parent).card - 1) *
-          (retainedCompletionWords C parent).card +
-        (retainedCompletionWords C parent).card := by
-    have hactivePos :
-        1 ≤ (retainedActive C parent).card := by
-      have hloss :=
-        (mem_projectedLossVertices C exponent parent).1 hparentLoss
-      unfold projectedFree at hloss
-      have hcardLe :
-          (retainedActive C parent).card ≤ n := by
-        simpa using Finset.card_le_univ
-          (retainedActive C parent)
-      omega
-    have ha :
-        (retainedActive C parent).card =
-          ((retainedActive C parent).card - 1) + 1 := by
-      omega
-    rw [ha]
-    ring
-  rw [hdecomp] at hsum
-  omega
+  rw [hslackEq]
+  exact nat_layered_slack_charge
+    (retainedActive C parent).card
+    (retainedCompletionWords C parent).card
+    (∑ v ∈ leaves, (excess v).card) hsum
 
 
 theorem minimal_enlargedCandidate_loss_leaf_deficiency_le_parentSlice_of_lt
@@ -3213,67 +3195,23 @@ theorem uniqueNeighbourLeafTransfers_after_lossParentSlack_le_cube
         (retainedActive C parent).card *
           (retainedCompletionWords C parent).card :=
     hsumTransfer.trans hsumCharge
-  have hslack :
+  have hslackEq :
       (enlargedProjectedCandidateBlock C exponent parent).card -
           2 ^ exponent parent
         =
-      ((retainedActive C parent).card - 1) *
-        (retainedCompletionWords C parent).card := by
+      ((retainedActive C parent).card + 1) *
+          (retainedCompletionWords C parent).card -
+        2 * (retainedCompletionWords C parent).card := by
     rw [enlargedProjectedCandidateBlock_loss
           C exponent hparentLoss,
         allActiveLossCandidateBlock_card,
         projectedLoss_target_eq_two_mul_completion
           C exponent hparentLoss]
-    have hactivePos :
-        1 ≤ (retainedActive C parent).card := by
-      have hloss :=
-        (mem_projectedLossVertices C exponent parent).1 hparentLoss
-      unfold projectedFree at hloss
-      have hcardLe :
-          (retainedActive C parent).card ≤ n := by
-        simpa using Finset.card_le_univ
-          (retainedActive C parent)
-      omega
-    have ha :
-        (retainedActive C parent).card =
-          ((retainedActive C parent).card - 1) + 1 := by
-      omega
-    have hdecomp :
-        ((retainedActive C parent).card + 1) *
-            (retainedCompletionWords C parent).card
-          =
-        2 * (retainedCompletionWords C parent).card +
-          ((retainedActive C parent).card - 1) *
-            (retainedCompletionWords C parent).card := by
-      rw [ha]
-      ring
-    rw [hdecomp, Nat.add_sub_cancel_left]
-  rw [hslack]
-  have hactivePos :
-      1 ≤ (retainedActive C parent).card := by
-    have hloss :=
-      (mem_projectedLossVertices C exponent parent).1 hparentLoss
-    unfold projectedFree at hloss
-    have hcardLe :
-        (retainedActive C parent).card ≤ n := by
-      simpa using Finset.card_le_univ
-        (retainedActive C parent)
-    omega
-  have ha :
-      (retainedActive C parent).card =
-        ((retainedActive C parent).card - 1) + 1 := by
-    omega
-  have hmass :
-      (retainedActive C parent).card *
-          (retainedCompletionWords C parent).card
-        =
-      ((retainedActive C parent).card - 1) *
-          (retainedCompletionWords C parent).card +
-        (retainedCompletionWords C parent).card := by
-    rw [ha]
-    ring
-  rw [hmass] at hsum
-  omega
+  rw [hslackEq]
+  exact nat_layered_slack_charge
+    (retainedActive C parent).card
+    (retainedCompletionWords C parent).card
+    (∑ v ∈ leaves, transfer v) hsum
 
 
 theorem minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
