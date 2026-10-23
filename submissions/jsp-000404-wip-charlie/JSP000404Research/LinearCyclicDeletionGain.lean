@@ -107,7 +107,7 @@ theorem listExponent_linearCyclic_delete_second_gain
   omega
 
 /-- The final forward difference records exactly the new endpoint. -/
-theorem successiveDiffsFrom_append_cons
+theorem successiveDiffsFrom_append_last_linearCyclic
     (a : ℝ) (pre : List ℝ) (z : ℝ) :
     successiveDiffsFrom a (pre ++ [z]) =
       successiveDiffsFrom a pre ++ [z - pre.getLastD a] := by
@@ -131,7 +131,7 @@ theorem linearCyclicGapQuotients_append_last
   | cons b bs ih =>
       simp only [List.cons_append, linearCyclicGapQuotients,
         successiveDiffsFrom, List.map_cons, List.getLastD_cons]
-      rw [successiveDiffsFrom_append_cons]
+      rw [successiveDiffsFrom_append_last_linearCyclic]
       simp [List.map_append, List.append_assoc]
 
 /-- Final displayed deletion merges predecessor and wrap gaps. -/
