@@ -87,6 +87,18 @@ abbrev GlobalCyclicTransitionUnitGapSlot
   {u : GlobalUnitGapSlot C t //
     GlobalUnitGapCyclicTransition C t u}
 
+/-- The noncomputable sign-transition predicate does not provide a decidable
+subtype instance during theorem-statement elaboration.  Register its finite
+enumeration using classical decidability. -/
+noncomputable instance instGlobalCyclicTransitionUnitGapSlotFintype
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (t : ℝ) :
+    Fintype (GlobalCyclicTransitionUnitGapSlot C t) := by
+  classical
+  infer_instance
+
 /-- Forgetting the transition proof embeds cyclic transition slots into all
 unit-gap slots. -/
 theorem globalCyclicTransitionUnitGapSlot_card_le_all
