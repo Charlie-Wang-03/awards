@@ -40,7 +40,11 @@ theorem get_cons_append_cons_at_tail_length
   | nil =>
       simp
   | cons x xs ih =>
-      simpa [List.getLastD_cons] using ih x
+      have hlast : (x :: xs).getLastD a = xs.getLastD x := by
+        cases xs with
+        | nil => simp
+        | cons y ys => simp [List.getLastD_cons]
+      simpa [hlast] using ih x
 
 theorem get_cons_append_cons_at_next
     {α : Type*}
@@ -63,7 +67,11 @@ theorem get_cons_at_tail_length
   induction as generalizing a with
   | nil => simp
   | cons x xs ih =>
-      simpa [List.getLastD_cons] using ih x
+      have hlast : (x :: xs).getLastD a = xs.getLastD x := by
+        cases xs with
+        | nil => simp
+        | cons y ys => simp [List.getLastD_cons]
+      simpa [hlast] using ih x
 
 namespace CentreCutRayCycle
 
@@ -99,8 +107,8 @@ end CentreCutRayCycle
 theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -469,8 +477,8 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
 theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta c : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
