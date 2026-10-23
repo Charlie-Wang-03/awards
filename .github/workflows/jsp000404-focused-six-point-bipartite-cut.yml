@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointBoundaryCutDichotomy.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PositiveArcSafeCutExistence.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PositiveToCriticalPhaseBridge.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PositiveArcBoundaryCutBridge.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PositiveGapFullDeltaArcEscape.lean"
