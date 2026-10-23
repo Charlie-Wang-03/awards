@@ -152,7 +152,7 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
   obtain ⟨a, xs, hvalues, hseam⟩ :=
     R.saturated_failure_has_wrap_unit_subslot_data
       hp hcap hn htpos hlam ht hdelta0 hdeltaHalf
-      hc0 hcpi hsat hfail
+      hc0 hcpi C hsat hfail
   let z := xs.getLastD a
   let s := a + t - z
   let q := Nat.floor s
