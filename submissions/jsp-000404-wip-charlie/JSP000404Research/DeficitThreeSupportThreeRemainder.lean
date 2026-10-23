@@ -102,19 +102,13 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
   have hget :
       (centreQuotient C t r : ℝ) ≤
         t * C.gaps.get r := by
-    have hqidx :
-        r.val < (quotientList t C.gaps).length := by
-      simpa only [quotientList_length] using r.isLt
-    have hqidxBind :
-        r.val <
-          (do
-            let q ← quotientList t C.gaps
-            pure (q : ℝ)).length := by
-      rw [← map_eq_pure_bind]
-      simpa only [List.length_map] using hqidx
-    have hgetList :=
-      List.Forall₂.get halign hqidxBind r.isLt
-    simpa [List.getElem_map, centreQuotient, quotientList] using hgetList
+    have hg0 : 0 ≤ C.gaps.get r :=
+      C.gaps_nonneg (C.gaps.get r) (List.get_mem C.gaps r)
+    have hscaled0 : 0 ≤ t * C.gaps.get r :=
+      mul_nonneg htpos.le hg0
+    change (Nat.floor (t * C.gaps.get r) : ℝ) ≤
+      t * C.gaps.get r
+    exact Nat.floor_le hscaled0
   have htotal :=
     centre_remainderMass_eq_delta_of_deficit_three_support_three
       C hn hdelta0 hdeltaHalf ht hexp hsupport
