@@ -300,7 +300,7 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       simpa [hrays] using C.mem_rays_iff b
     have hfirstLeB :
         rayThetaAt hp i first ≤ rayThetaAt hp i b := by
-      rcases hbMem with hEq | hbTail
+      rcases List.mem_cons.mp hbMem with hEq | hbTail
       · simpa [hEq]
       · exact (List.pairwise_cons.mp hsorted).1 b hbTail
     have hbLeFirst :
@@ -340,10 +340,11 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
     have hlastD :
         rest.getLastD first = last := by
       dsimp [last]
+      rw [List.getLast_eq_getLastD]
       cases rest with
       | nil => simp
       | cons x xs =>
-          simp [List.getLast_eq_getLastD, List.getLastD_cons]
+          simp [List.getLastD_cons]
 
     have hfloorWrap :
         wrapRayQuotient hp i t first
@@ -366,6 +367,8 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       have hai := (C.rayIndex a).isLt
       have hlen : C.rays.length = rest.length + 1 := by
         simp [hrays]
+      change (C.rayIndex a).val ≤ (gapToRayIndex C u.1).val
+      rw [hgapVal]
       omega
     have haIdxLeG :
         C.rayIndex a ≤ C.rayIndex g := by
