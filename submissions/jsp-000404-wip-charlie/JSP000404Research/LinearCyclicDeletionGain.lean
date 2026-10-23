@@ -114,7 +114,8 @@ theorem successiveDiffsFrom_append_cons
   induction pre generalizing a with
   | nil => simp [successiveDiffsFrom]
   | cons b bs ih =>
-      cases bs <;> simp [successiveDiffsFrom, ih, List.getLastD, List.getLast?]
+      rw [List.getLastD_cons]
+      simp [successiveDiffsFrom, ih]
 
 /-- Explicit cyclic quotient form for a nonempty displayed list ending in z. -/
 theorem linearCyclicGapQuotients_append_last
@@ -180,7 +181,9 @@ theorem listExponent_linearCyclic_delete_last_gain
   have hy :
       (first :: mid).getLastD a = mid.getLastD first := by
     cases mid <;> simp [List.getLastD, List.getLast?]
-  rw [hy] at hLeft horder hmerge'
+  rw [hy] at hLeft horder
+  dsimp [y] at hmerge'
+  rw [hy] at hmerge'
   have hlocal :=
     excess_merge_gain_of_both_pos
       (a := Nat.floor (z - mid.getLastD first))
