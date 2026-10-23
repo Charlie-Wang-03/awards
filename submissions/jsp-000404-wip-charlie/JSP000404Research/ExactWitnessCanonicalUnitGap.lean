@@ -1,7 +1,6 @@
 import JSP000404Research.ExactWitnessUnitGapMass
 import JSP000404Research.CentreExponent
 import JSP000404Research.AdjacentProjectiveGapIndex
-import JSP000404Research.TurnUnitGapBridge
 import Mathlib.Tactic
 
 /-!
@@ -26,11 +25,69 @@ namespace JSP000404Research
 
 open Real
 
-/-!
-The exact-witness theorem below uses the already kernel-checked dependent
-turn-unit-gap bridge. This avoids duplicating the subtle Fin/getElem
-transport proofs for the ordinary and wrap positions.
--/
+/-- The m-th ordinary canonical projective gap is the normalized difference of
+the m-th and (m+1)-st sorted ray parameters. -/
+theorem centre_gap_get_adjacent_eq
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (m : ℕ)
+    (hm : m + 1 < C.rays.length) :
+    C.gaps.get
+        ⟨m, by
+          rw [C.gaps_length]
+          omega⟩
+      =
+    (rayThetaAt hp i
+          (C.rays.get ⟨m + 1, hm⟩) -
+        rayThetaAt hp i
+          (C.rays.get ⟨m, by omega⟩)) /
+      Real.pi := by
+  change C.gaps[m] =
+    (C.angles[m + 1] - C.angles[m]) / Real.pi
+  have hmA : m + 1 < C.angles.length := by
+    rw [C.angles_length]
+    exact hm
+  simp only [CentreProjectiveCycle.gaps]
+  obtain ⟨a, xs, hangles⟩ :
+      ∃ a xs, C.angles = a :: xs := by
+    cases h : C.angles with
+    | nil => exact False.elim (C.angles_nonempty h)
+    | cons a xs => exact ⟨a, xs, rfl⟩
+  simp only [hangles]
+  have hmTail : m < xs.length := by
+    rw [hangles] at hmA
+    simpa using hmA
+  have hmDiff : m < (successiveDiffsFrom a xs).length := by
+    simpa [successiveDiffsFrom_length] using hmTail
+  simp only [normalizedProjectiveGaps, projectiveGaps, List.getElem_map]
+  rw [List.getElem_append_left hmDiff]
+  simpa using successiveDiffsFrom_getElem_eq_adjacent_diff
+    a xs m hmTail
+
+/-- The final canonical projective gap is the normalized wrap difference. -/
+theorem centre_gap_get_wrap_eq
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p} {i : V}
+    (C : CentreProjectiveCycle hp i)
+    (first : OtherVertex i)
+    (rest : List (OtherVertex i))
+    (hrays : C.rays = first :: rest) :
+    C.gaps.get
+        ⟨rest.length, by
+          rw [C.gaps_length, hrays]
+          simp⟩
+      =
+    (rayThetaAt hp i first + Real.pi -
+        rayThetaAt hp i (rest.getLastD first)) /
+      Real.pi := by
+  change C.gaps[rest.length] =
+    (rayThetaAt hp i first + Real.pi -
+      rayThetaAt hp i (rest.getLastD first)) / Real.pi
+  simp [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles,
+    normalizedProjectiveGaps, projectiveGaps, hrays,
+    successiveDiffsFrom_length, map_getLastD,
+    List.getElem_append_right]
 
 /-- Every exact maximum-angle witness has one canonical cyclic gap whose
 natural quotient and exact scaled width are both exactly one. -/
@@ -50,49 +107,49 @@ theorem exists_exactWitness_canonical_unit_gap
       centreQuotient C t e = 1 ∧
       t * C.gaps.get e = 1 := by
   rcases exactWitness_unit_transition_gap_position
-      hp hcap hn hdelta0 ht hlam W C with hord | hwrap
+      hp hcap hn hdelta0 ht hlam W C
+    with hord | hwrap
   · obtain ⟨m, hm, hscaled, _hsign⟩ := hord
-    have hfloor :
-        Nat.floor
-          (t * ((rayThetaAt hp W.b
+    let e : Fin C.gaps.length :=
+      ⟨m, by
+        rw [C.gaps_length]
+        omega⟩
+    have hgap :
+        C.gaps.get e =
+          (rayThetaAt hp W.b
               (C.rays.get ⟨m + 1, hm⟩) -
             rayThetaAt hp W.b
-              (C.rays.get ⟨m, by omega⟩)) / Real.pi)) = 1 := by
-      rw [hscaled]
-      norm_num
-    obtain ⟨u, huIndex, _huOffset, huQuotient⟩ :=
-      exists_centreTurnUnitSlot_of_adjacent_floor
-        C t m 1 0 hm hfloor (by decide)
-    let e : Fin C.gaps.length := u.1
+              (C.rays.get ⟨m, by omega⟩)) /
+            Real.pi := by
+      simpa [e] using centre_gap_get_adjacent_eq C m hm
     have hscaled' : t * C.gaps.get e = 1 := by
-      have hgap :=
-        centreTurnUnitGapScaledLength_eq_adjacent
-          C t u m hm huIndex
-      change t * C.gaps.get u.1 = _ at hgap
       rw [hgap]
       exact hscaled
     refine ⟨e, ?_, hscaled'⟩
-    simpa [e, centreTurnUnitGapQuotient] using huQuotient
+    unfold centreQuotient
+    rw [hscaled']
+    norm_num
   · obtain ⟨first, rest, hrays, hscaled, _hsign⟩ := hwrap
-    have hfloor :
-        wrapRayQuotient hp W.b t first (rest.getLastD first) = 1 := by
-      unfold wrapRayQuotient
-      rw [hscaled]
-      norm_num
-    obtain ⟨u, huIndex, _huOffset, huQuotient⟩ :=
-      exists_centreTurnUnitSlot_of_wrap_floor
-        C t first rest hrays 1 0 hfloor (by decide)
-    let e : Fin C.gaps.length := u.1
+    let e : Fin C.gaps.length :=
+      ⟨rest.length, by
+        rw [C.gaps_length, hrays]
+        simp⟩
+    have hgap :
+        C.gaps.get e =
+          (rayThetaAt hp W.b first + Real.pi -
+            rayThetaAt hp W.b (rest.getLastD first)) /
+            Real.pi := by
+      simpa [e] using centre_gap_get_wrap_eq C first rest hrays
     have hscaled' : t * C.gaps.get e = 1 := by
-      have hgap :=
-        centreTurnUnitGapScaledLength_eq_wrap
-          C t u first rest hrays huIndex
-      change t * C.gaps.get u.1 = _ at hgap
       rw [hgap]
       exact hscaled
     refine ⟨e, ?_, hscaled'⟩
-    simpa [e, centreTurnUnitGapQuotient] using huQuotient
+    unfold centreQuotient
+    rw [hscaled']
+    norm_num
 
+#print axioms centre_gap_get_adjacent_eq
+#print axioms centre_gap_get_wrap_eq
 #print axioms exists_exactWitness_canonical_unit_gap
 
 end JSP000404Research
