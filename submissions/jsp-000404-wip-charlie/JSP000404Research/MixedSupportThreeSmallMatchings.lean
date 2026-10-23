@@ -97,7 +97,7 @@ theorem covers_every_other_nonTop
     rw [Finset.card_erase_of_mem hiMem,
         Finset.card_erase_of_mem (Finset.mem_univ top),
         Finset.card_univ, hcard]
-    norm_num
+ 
 
   have hSsub : S ⊆ U := by
     intro x hx
@@ -238,7 +238,7 @@ theorem reorient_around
           EuclideanGeometry.angle (p M.c.1) (p i) (p M.d.1) =
             EuclideanGeometry.angle (p M.d.1) (p i) (p M.c.1) :=
         EuclideanGeometry.angle_comm _ _ _
-      simpa [hvD, hcomm] using M.small_sum
+      simpa [hvD, hcomm, add_comm] using M.small_sum
 
 theorem three_remaining_vertices_exhaust
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -299,9 +299,9 @@ triangle with two delta-small angles. -/
 theorem two_smallPerfectMatchings_have_distinct_partners
     {V : Type*} [Fintype V] [DecidableEq V]
     {p : V → Plane}
+    {top b c : V} {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {top b c : V} {delta lam : ℝ}
     (hcard : Fintype.card V = 6)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -360,7 +360,7 @@ theorem two_smallPerfectMatchings_have_distinct_partners
       linarith
     exact impossible_two_delta_small_angles_under_cap
       hp hcap hdeltaHalf hlam
-      hbc hxbB hxbC
+      hbc hxbB.symm hxbC.symm
       hsmallB0 hsmallC0
   exact ⟨xb,yb,zb,xc,yc,zc,
     hxbTop,hybTop,hzbTop,
@@ -379,9 +379,9 @@ the three remaining minima. -/
 theorem two_smallPerfectMatchings_hamiltonian_residual
     {V : Type*} [Fintype V] [DecidableEq V]
     {p : V → Plane}
+    {top b c : V} {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {top b c : V} {delta lam : ℝ}
     (hcard : Fintype.card V = 6)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -561,7 +561,7 @@ theorem support_three_middle_smallPerfectMatching
     (hsupport :
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
-      SupportThreePinnedMiddleShape hp
+      SupportThreePinnedMiddleShape (t := t) hp
         (show top ≠ i by exact hit.symm) C) :
     Nonempty
       (SmallPerfectMatchingAwayFromTop
@@ -637,14 +637,14 @@ theorem mixed_support_one_has_two_smallPerfectMatchings
       ht hlam top a hta hTop hMin hsupA
 
   have hbMiddle :
-      SupportThreePinnedMiddleShape hp
+      SupportThreePinnedMiddleShape (t := t) hp
         (show top ≠ b by exact hbTop.symm)
         (C b) :=
     support_three_middle_of_no_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf
       ht hlam top hTop hMin hNoMin hbTop hbSup3
   have hcMiddle :
-      SupportThreePinnedMiddleShape hp
+      SupportThreePinnedMiddleShape (t := t) hp
         (show top ≠ c by exact hcTop.symm)
         (C c) :=
     support_three_middle_of_no_compensated_minimum_deletion
