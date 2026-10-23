@@ -22,14 +22,14 @@ namespace JSP000404Research
 noncomputable def seventeenPhase (t : ℝ) (r : Fin 17) : ℝ :=
   (r.val : ℝ) * t / 17
 
-theorem elevenPhase_nonneg
+theorem seventeenPhase_nonneg
     {t : ℝ} (ht : 0 ≤ t)
     (r : Fin 17) :
     0 ≤ seventeenPhase t r := by
   unfold seventeenPhase
   positivity
 
-theorem elevenPhase_lt_t
+theorem seventeenPhase_lt_t
     {t : ℝ} (ht : 0 < t)
     (r : Fin 17) :
     seventeenPhase t r < t := by
@@ -40,7 +40,7 @@ theorem elevenPhase_lt_t
 
 /-- Distinct Fin 17 indices differ by between one and ten in absolute real
 value. -/
-theorem fin11_val_abs_sub_bounds
+theorem fin17_val_abs_sub_bounds
     {r s : Fin 17}
     (hrs : r ≠ s) :
     1 ≤ |(r.val : ℝ) - (s.val : ℝ)| ∧
@@ -84,7 +84,7 @@ theorem fin11_val_abs_sub_bounds
         exact_mod_cast hgt.le
       linarith
 
-theorem elevenPhase_abs_sub
+theorem seventeenPhase_abs_sub
     {t : ℝ} (ht : 0 < t)
     (r s : Fin 17) :
     |seventeenPhase t r - seventeenPhase t s| =
@@ -100,7 +100,7 @@ theorem elevenPhase_abs_sub
 
 /-- Any two distinct seventeen-sample phases are separated by more than delta in
 both the direct and complementary circular directions whenever delta<t/17. -/
-theorem elevenPhase_cyclic_separation
+theorem seventeenPhase_cyclic_separation
     {t delta : ℝ}
     (ht : 0 < t)
     (hdelta : delta < t / 17)
@@ -110,8 +110,8 @@ theorem elevenPhase_cyclic_separation
     delta <
       t - |seventeenPhase t r - seventeenPhase t s| := by
   obtain ⟨hd1, hd10⟩ :=
-    fin11_val_abs_sub_bounds hrs
-  rw [elevenPhase_abs_sub ht r s]
+    fin17_val_abs_sub_bounds hrs
+  rw [seventeenPhase_abs_sub ht r s]
   have h11 : (0 : ℝ) < 17 := by norm_num
   have hlower :
       t / 17 ≤
@@ -133,7 +133,7 @@ theorem elevenPhase_cyclic_separation
 
 /-- Consequently one periodic delta-arc can contain at most one of the seventeen
 equally spaced samples. -/
-theorem elevenPhase_injective_on_same_cyclicDeltaArc
+theorem seventeenPhase_injective_on_same_cyclicDeltaArc
     {t delta alpha : ℝ}
     (ht : 0 < t)
     (hdelta0 : 0 ≤ delta)
@@ -146,7 +146,7 @@ theorem elevenPhase_injective_on_same_cyclicDeltaArc
     r = s := by
   by_contra hrs
   have hsep :=
-    elevenPhase_cyclic_separation ht hdelta hrs
+    seventeenPhase_cyclic_separation ht hdelta hrs
   have hdeltaT : delta < t := by
     have ht11 : t / 17 < t := by
       nlinarith
@@ -154,10 +154,10 @@ theorem elevenPhase_injective_on_same_cyclicDeltaArc
   have hclose :=
     two_points_same_cyclicDeltaArc_close
       ht hdelta0 hdeltaT halpha0 halphaT
-      (elevenPhase_nonneg ht.le r)
-      (elevenPhase_lt_t ht r)
-      (elevenPhase_nonneg ht.le s)
-      (elevenPhase_lt_t ht s)
+      (seventeenPhase_nonneg ht.le r)
+      (seventeenPhase_lt_t ht r)
+      (seventeenPhase_nonneg ht.le s)
+      (seventeenPhase_lt_t ht s)
       hr hs
   rcases hclose with hdirect | hwrap
   · linarith
@@ -165,7 +165,7 @@ theorem elevenPhase_injective_on_same_cyclicDeltaArc
 
 /-- Assigning a positive quotient gap slot to every seventeen-sample phase forces an
 injective map into the global positive gap-slot type. -/
-theorem critical_slot_assignment_on_elevenPhase_injective
+theorem critical_slot_assignment_on_seventeenPhase_injective
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -191,7 +191,7 @@ theorem critical_slot_assignment_on_elevenPhase_injective
       cyclicPositiveGapBadAt_implies_deltaArc
         C ht.le (hbad s)
     simpa [hrsSlot] using h
-  exact elevenPhase_injective_on_same_cyclicDeltaArc
+  exact seventeenPhase_injective_on_same_cyclicDeltaArc
     ht hdelta0 hdelta
     (globalPositiveGapStart_nonneg C ht.le (slot r))
     (globalPositiveGapStart_lt_t C ht (slot r))
