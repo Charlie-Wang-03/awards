@@ -1,57 +1,31 @@
-import JSP000404Research.TriangleCriticalUnitDomination
-import JSP000404Research.OrdinaryCriticalHalfGrid
+import JSP000404Research.SixPointHalfGridTriangleAvoidance
 import Mathlib.Tactic
 
 /-!
-# Six-point triangle-phase terminal on the half grid
+# Six-point ordinary triangle-phase terminal on the half-grid
 
-For the six-point top + five n-3 profile with n>=5, the previous modules give:
+This module retains the original three theorem names while reusing the
+kernel-checked `OrdinaryShortTriangleBadAt` existential certificate.  The
+previous attempted dependent `structure OrdinaryBadTriangleAt` did not
+elaborate; its intended data and conditions were exactly those of the
+existential ordinary short triangle predicate.
 
-* at least one half-grid phase is not covered by any ordinary critical q=1
-  transition obstruction;
-* every ordinary short triangle bad arc containing a phase produces exactly
-  such a concrete obstruction.
-
-Therefore the half-grid phases cannot all admit ordinary short bad-triangle
-certificates.
-
-This theorem isolates the remaining geometric task of the fixed-phase route:
-show that a phase whose merged wrap graph contains a triangle supplies the
-ordinary lifted triangle certificate below (or its cyclic/wrap analogue).
+This is a conservative representation change: same original vertices, same
+three normalized projective directions, same small arc and bad-phase bounds.
+It does not include cyclic wrap triangles or prove the global Boolean-hole
+payment.
 -/
 
 namespace JSP000404Research
 
-open Real
-
-/-- Data saying that one concrete triangle is bad at one real phase through an
-ordinary lifted projective direction arc. -/
-structure OrdinaryBadTriangleAt
+/-- A concrete ordinary short-triangle bad-phase certificate. -/
+abbrev OrdinaryBadTriangleAt
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (t delta x : ℝ) : Type where
-  i j k : V
-  hij : i ≠ j
-  hik : i ≠ k
-  hjk : j ≠ k
-  L S : ℝ
-  span_le : S ≤ 1 + delta
-  ij_mem :
-    L ≤ normalizedEdgeTheta hp t i j hij ∧
-      normalizedEdgeTheta hp t i j hij ≤ L + S
-  ik_mem :
-    L ≤ normalizedEdgeTheta hp t i k hik ∧
-      normalizedEdgeTheta hp t i k hik ≤ L + S
-  jk_mem :
-    L ≤ normalizedEdgeTheta hp t j k hjk ∧
-      normalizedEdgeTheta hp t j k hjk ≤ L + S
-  phase_mem :
-    arcBadLeft L S ≤ x ∧
-      x ≤ arcBadRight L delta
+    (t delta x : ℝ) : Prop :=
+  OrdinaryShortTriangleBadAt hp t delta x
 
-/-- Every ordinary bad-triangle certificate gives a concrete ordinary critical
-unit obstruction at the same phase. -/
 theorem ordinaryBadTriangleAt_implies_criticalUnit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
@@ -65,16 +39,9 @@ theorem ordinaryBadTriangleAt_implies_criticalUnit
     (B : OrdinaryBadTriangleAt hp t delta x) :
     ∃ u : GlobalUnitGapSlot C t,
       OrdinaryCriticalUnitBadAt C t delta u x := by
-  obtain ⟨u, _huCentre, hubad⟩ :=
-    triangle_parent_bad_has_ordinary_critical_unit
-      hp hcap C ht hlam hdeltaHalf B.span_le
-      B.hij B.hik B.hjk
-      B.ij_mem B.ik_mem B.jk_mem
-      B.phase_mem
-  exact ⟨u, hubad⟩
+  exact ordinaryShortTriangleBadAt_implies_critical_unit
+    hp hcap C ht hlam hdeltaHalf B
 
-/-- Main n>=5 six-point terminal: not every half-grid phase can carry an
-ordinary bad-triangle certificate. -/
 theorem exists_halfGrid_phase_without_ordinary_bad_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
@@ -91,27 +58,15 @@ theorem exists_halfGrid_phase_without_ordinary_bad_triangle
     (hcard : Fintype.card V = 6)
     (top : V)
     (hTop : centreExponent (C top) t = n - 1)
-    (hMin :
-      ∀ i : V, i ≠ top →
-        centreExponent (C i) t = n - 3) :
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3) :
     ∃ r : Fin (2 * n + 1),
       ¬ OrdinaryBadTriangleAt hp t delta
           ((r.val : ℝ) / 2) := by
-  obtain ⟨r, hr⟩ :=
-    exists_uncovered_halfGrid_phase_of_six_point_terminal
-      C hn4 hn5 hdelta0 hdeltaHalf ht
-      hcard top hTop hMin
-  refine ⟨r, ?_⟩
-  intro B
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
-  obtain ⟨u, hubad⟩ :=
-    ordinaryBadTriangleAt_implies_criticalUnit
-      hp hcap C htpos hlam hdeltaHalf B
-  exact hr u hubad
+  exact six_point_exists_halfGrid_phase_avoiding_all_short_triangles
+    hp hcap C hn4 hn5 hdelta0 hdeltaHalf ht hlam
+    hcard top hTop hMin
 
-/-- Contradiction form convenient for a future rotating-wrap bridge. -/
 theorem not_all_halfGrid_phases_have_ordinary_bad_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
@@ -128,9 +83,8 @@ theorem not_all_halfGrid_phases_have_ordinary_bad_triangle
     (hcard : Fintype.card V = 6)
     (top : V)
     (hTop : centreExponent (C top) t = n - 1)
-    (hMin :
-      ∀ i : V, i ≠ top →
-        centreExponent (C i) t = n - 3) :
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3) :
     ¬ (∀ r : Fin (2 * n + 1),
       OrdinaryBadTriangleAt hp t delta
         ((r.val : ℝ) / 2)) := by
