@@ -177,9 +177,7 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
     have hmTail : m < xs.length := by
       rw [hangles] at hmA
       simpa using hmA
-    have hmMap :
-        m < ((successiveDiffsFrom a xs).map
-          (fun g => g / Real.pi)).length := by
+    have hmDiff : m < (successiveDiffsFrom a xs).length := by
       simpa [successiveDiffsFrom_length] using hmTail
     simp only [normalizedProjectiveGaps, projectiveGaps,
       List.getElem_map]
