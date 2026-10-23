@@ -26,8 +26,8 @@ theorem exists_exactWitness_unit_transition_decomposition_of_support_le_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -46,7 +46,7 @@ theorem exists_exactWitness_unit_transition_decomposition_of_support_le_two
             List.replicate (post.length + 1)
               (!raySignAt hp W.b first) := by
   obtain ⟨first, rest, hrays, hocc⟩ :=
-    exactWitness_unit_transition_occurs
+    exists_exactWitness_unit_transition_occurs
       hp hcap hn hdelta0 ht hlam W C
   have htpos :
       0 < t :=
@@ -108,8 +108,8 @@ theorem exactWitness_deficitThree_support_two_hidden_large_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
