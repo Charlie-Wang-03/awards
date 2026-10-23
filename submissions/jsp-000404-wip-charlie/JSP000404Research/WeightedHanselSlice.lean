@@ -34,6 +34,25 @@ def FalseCompletionAt
 def FalseWordAt (k : ℕ) (c : Fin k) :=
   {w : Fin k → Bool // w c = false}
 
+/-- Classical finite instances needed already when elaborating cardinality
+statements (before a theorem body's `classical` tactic takes effect). -/
+noncomputable instance falseCompletionAtFintype
+    {V : Type*} {k : ℕ}
+    (bit : V → Fin k → Bool)
+    (specified : V → Finset (Fin k))
+    (c : Fin k) (v : V) :
+    Fintype (FalseCompletionAt bit specified c v) := by
+  classical
+  unfold FalseCompletionAt
+  infer_instance
+
+noncomputable instance falseWordAtFintype
+    (k : ℕ) (c : Fin k) :
+    Fintype (FalseWordAt k c) := by
+  classical
+  unfold FalseWordAt
+  infer_instance
+
 /-- If c is free in S, fixing that free Boolean value to false is equivalent
 to deleting c from the free-coordinate domain, i.e. inserting c into S. -/
 noncomputable def falseFreeEquivInserted
@@ -68,8 +87,7 @@ noncomputable def falseFreeEquivInserted
     funext i
     have hic : i.1 ≠ c := by
       intro h
-      subst c
-      exact i.2 (by simp)
+      exact i.2 (by simpa [h] using (Finset.mem_insert_self c S))
     simp [hic]
 
 theorem card_false_free
@@ -172,8 +190,7 @@ noncomputable def falseWordEquivFreeSingleton
     funext i
     have hic : i.1 ≠ c := by
       intro h
-      subst c
-      exact i.2 (by simp)
+      exact i.2 (by simp [h])
     simp [hic]
 
 theorem card_falseWordAt
