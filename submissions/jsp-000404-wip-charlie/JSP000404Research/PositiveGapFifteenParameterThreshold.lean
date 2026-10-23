@@ -60,7 +60,6 @@ theorem six_point_hard_top_exists_safe_fifteenPhase_of_exact_threshold
     have hno := hnone (fifteenPhase t r)
       (fifteenPhase_nonneg htpos.le r)
       (fifteenPhase_lt_t htpos r)
-    push Not at hno
     exact hno
   let slot : Fin 15 → GlobalPositiveGapSlot C t :=
     fun r => Classical.choose (hnone' r)
