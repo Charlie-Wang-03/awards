@@ -95,18 +95,28 @@ theorem mixed_support_one_support_two_hidden_large_angle
   let Cfam : (r : Fin 3) →
       CentreProjectiveCycle hp (centre r) := by
     intro r
-    fin_cases r
-    · exact Ctop
-    · exact Ca
-    · exact Cb
+    induction r using Fin.cases with
+    | zero => exact Ctop
+    | succ r =>
+      induction r using Fin.cases with
+      | zero => exact Ca
+      | succ r =>
+        induction r using Fin.cases with
+        | zero => exact Cb
+        | succ r => exact Fin.elim0 r
   let cert : (r : Fin 3) →
       HighExponentTransitionIntervalCertificate
         hp t (centre r) (Cfam r) := by
     intro r
-    fin_cases r
-    · exact HTop
-    · exact HA
-    · exact HB
+    induction r using Fin.cases with
+    | zero => exact HTop
+    | succ r =>
+      induction r using Fin.cases with
+      | zero => exact HA
+      | succ r =>
+        induction r using Fin.cases with
+        | zero => exact HB
+        | succ r => exact Fin.elim0 r
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
