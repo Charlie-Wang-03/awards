@@ -156,11 +156,15 @@ theorem eq_of_pos_of_exact_exponent_coordinate
   have hrel :
       excess (qs.get rq) = excess (bs.get rb) := by
     have hrb : rq.val < bs.length := by omega
-    simpa only [hr] using (List.Forall₂.get heq rq.isLt hrb)
+    have heqFin : (⟨rq.val, hrb⟩ : Fin bs.length) = rb :=
+      Fin.ext hr
+    simpa only [heqFin] using (List.Forall₂.get heq rq.isLt hrb)
   have hleGet :
       qs.get rq ≤ bs.get rb := by
     have hrb : rq.val < bs.length := by omega
-    simpa only [hr] using (List.Forall₂.get hle rq.isLt hrb)
+    have heqFin : (⟨rq.val, hrb⟩ : Fin bs.length) = rb :=
+      Fin.ext hr
+    simpa only [heqFin] using (List.Forall₂.get hle rq.isLt hrb)
   have hbpos : 1 ≤ bs.get rb := hqpos.trans hleGet
   unfold excess at hrel
   omega
