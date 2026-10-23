@@ -106,12 +106,10 @@ theorem exists_centreUnitGap_of_wrap_floor_one
           [wrapRayQuotient hp i t first (rest.getLastD first)])[rest.length]? =
         some 1 := by
       rw [List.getElem?_append_right (by omega)]
-      simpa [hlenQ, hfloor] using (rfl : ([1] : List ℕ)[0]? = some 1)
-    have hs :
-        some ((quotientList t C.gaps)[rest.length]) = some 1 := by
-      simpa [htarget] using hopt
+      simp [hlenQ, hfloor]
+    rw [htarget] at hopt
     change (quotientList t C.gaps)[rest.length] = 1
-    exact Option.some_inj.mp hs
+    exact Option.some_inj.mp hopt
 
   have hbridge :
       centreQuotient C t rGap =
