@@ -130,6 +130,63 @@ theorem exists_six_point_exactWitness_support_three_unit_position
     hqFirst, hqLast, hqHidden, hmidShape,
     hthreeSum, hunit⟩
 
+
+/-- At n=4, the three positive quotients of an exact-witness support-three
+third-layer centre sum to four. Thus at least TWO distinct positive quotient
+positions are genuine unit slots. The actual top-pinned rotation and all three
+possible middle locations are retained in the witness. This is a local
+terminal constraint, not an all-six-source payment. -/
+theorem exists_six_point_nfour_exactWitness_support_three_two_unit_positions
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hcard : Fintype.card V = 6)
+    (hn4 : n = 4)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (W : ExactAngleWitness p lam)
+    {s : V}
+    (hsb : s ≠ W.b)
+    (hs : SharpAt p delta lam s)
+    (C : CentreProjectiveCycle hp W.b)
+    (hexp : centreExponent C t = n - 3)
+    (hsupport : positiveSupport (centreQuotient C t) = 3) :
+    ∃ k : ℕ, ∃ r : OtherVertex W.b,
+    ∃ rest : List (OtherVertex W.b),
+    ∃ qFirst qLast qHidden : ℕ, ∃ qmid : List ℕ,
+      C.rays.rotate k =
+        (⟨s, hsb⟩ : OtherVertex W.b) :: r :: rest ∧
+      (quotientList t C.gaps).rotate k =
+        qFirst :: qmid ++ [qLast] ∧
+      (qmid = [qHidden, 0, 0] ∨
+       qmid = [0, qHidden, 0] ∨
+       qmid = [0, 0, qHidden]) ∧
+      qFirst + qHidden + qLast = 4 ∧
+      ((qFirst = 1 ∧ qHidden = 1) ∨
+       (qFirst = 1 ∧ qLast = 1) ∨
+       (qHidden = 1 ∧ qLast = 1)) := by
+  obtain ⟨first0, rest0, k, r, rest,
+    qFirst, qLast, qHidden, qmid,
+    _hrays0, hrot, hqrot,
+    hfirst, hlast, hhidden, hshape, hsum, _hone⟩ :=
+    exists_six_point_exactWitness_support_three_unit_position
+      hp hcap hcard (by omega : 4 ≤ n)
+      hdelta0 hdeltaHalf ht hlam W hsb hs C hexp hsupport
+  have hsum4 : qFirst + qHidden + qLast = 4 := by omega
+  have htwo :
+      (qFirst = 1 ∧ qHidden = 1) ∨
+      (qFirst = 1 ∧ qLast = 1) ∨
+      (qHidden = 1 ∧ qLast = 1) := by
+    omega
+  exact ⟨k, r, rest, qFirst, qLast, qHidden, qmid,
+    hrot, hqrot, hshape, hsum4, htwo⟩
+
+#print axioms exists_six_point_nfour_exactWitness_support_three_two_unit_positions
+
 #print axioms exists_six_point_exactWitness_support_three_unit_position
 
 end JSP000404Research
