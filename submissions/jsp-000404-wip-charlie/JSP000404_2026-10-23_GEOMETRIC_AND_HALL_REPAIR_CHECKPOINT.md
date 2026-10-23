@@ -118,3 +118,69 @@ fibres, covered soft overlap, equal-exponent twin rigid carriers, both
 mixed-rigid debts, projected loss and **unreserved** dyadic surplus.
 A covered soft word or a repeated collision word is NOT a true hole.
 A passing focused build is not equivalent to an all-research-tree build.
+
+
+## 2026-10-23 continuation: actual kernel-verified terminal repairs
+
+- **Legacy four-module kernel PASS:** #39821678467 compiled
+  `SixPointExactWitnessTerminal`, `SixPointUnitPhaseCoverAllN`,
+  `SixPointHardSupportReduction`, and
+  `CentreAdjacentTransitionOccurrence`. This certifies local repair,
+  not the complete research tree.
+- **Latest broad error census:** #39821777756 (SHA `388006b87`)
+  reported 145 Lean errors across 15 files after expanding the import
+  umbrella. These are NOT directly comparable to earlier 118 errors
+  across 13 files because the build surface changed.
+- **Exact-witness terminal kernel PASS:** #39900191863 (SHA `4d82b363`)
+  built 3552 Lake jobs including `ExactWitnessTransitionQuotient`,
+  `ExactWitnessSupportTwoTransition`, and
+  `SixPointExactWitnessSupportThree`. A repeated ordinary/wrap gap
+  argument was eliminated by calling existing certified
+  `exists_exactWitness_unit_transition_occurs` and transporting
+  witnesses across the unique cons decomposition of `C.rays`.
+  All listed #print axioms are standard Lean axioms, without sorryAx.
+  The support-two witness unit transition gives an actual hidden
+  same-sign Euclidean angle at least `(n-2)*lam`.
+- **Real unit-slot kernel PASS:** #39900284005
+  (SHA `81c74732`) built 9059 Lake jobs. The three
+  `TransitionUnitGapSlot` bridge theorems map adjacent ray-index,
+  quotient-floor-one, and opposite signs to *actual* local/global
+  unit gap slot witnesses; #print axioms exclude sorryAx.
+- **Actual six-centre deletion kernel PASS:** #39900573320
+  (SHA `20f85894`) built 3548 Lake jobs.
+  `positive_positive_ray_eq_top_of_no_compensated_minimum_deletion`
+  proves any ray flanked by two positive cyclic quotients in the
+  hard no-minimum-deletion branch is the sharp TOP ray. The fixed
+  `DecidableEq V` instance was removed so the linear order's
+  canonical decidable equality is used in subtype/erasure code.
+- **NEW n=4 structural kernel PASS:** #39900707567
+  (SHA `9886c149`) built 3552 Lake jobs.
+  `exists_six_point_nfour_exactWitness_support_three_two_unit_positions`
+  retains top-pinned ray rotation, middle-block shape, and all positive
+  quotient coordinates. For positive integers
+  `qFirst+qHidden+qLast=4`, at least TWO of these THREE distinct
+  **positions** have quotient one (arithmetic pattern 1,1,2).
+  This does NOT certify two independently payable Boolean holes.
+- **Combined mixed hard residual case:** new theorem in
+  `JSP000404Research/SixPointMixedHardTerminal.lean` (SHA `c084fdcb`)
+  constructs two distinct middle-hidden support-three three-transition
+  minima in the mixed six-centre case when there is no compensated
+  minimum deletion, by combining two previously certified facts.
+  CI #39900884166 was still **in progress** at the time of this
+  checkpoint amendment; no kernel PASS is claimed until checked.
+
+### Next genuine mathematical targets
+
+1. Establish, directly from physical `AngleCap` geometry, a
+   **multi-transition packing/exclusion** for the forced nonexposed
+   `n-3` support-three middle-hidden centres; do NOT apply the
+   `n-2 <= exponent` `HighExponentTransitionIntervalCertificate`
+   theorem to them.
+2. Relate exact-witness `n=4` two-unit-slot positions to independently
+   certified *transition* slots and prove a necessary global phase-cover
+   restriction **without** assuming away same-sign slots by fiat.
+3. Discharge the *global nonreusing* six-source Boolean payment. Neither
+   local Hall collision incidences nor overlapping soft words are
+   spare true Boolean holes. The root `PlanarLowerBranchProofAdmittedWIP`
+   intentionally retains one executable `sorry` with `sorryAx`.
+
