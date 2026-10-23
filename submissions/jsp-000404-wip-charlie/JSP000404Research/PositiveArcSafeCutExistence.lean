@@ -37,7 +37,7 @@ theorem exists_boundary_cut_coloring_of_full_positive_deltaArc_safe
   have hcpi : c < Real.pi := by
     dsimp [c]
     apply (div_lt_iff₀ htpos).2
-    exact mul_lt_mul_of_pos_right hxt Real.pi_pos
+    simpa only [mul_comm] using mul_lt_mul_of_pos_right hxt Real.pi_pos
   have hphase : t * c / Real.pi = x := by
     dsimp [c]
     have htne : t ≠ 0 := ne_of_gt htpos
