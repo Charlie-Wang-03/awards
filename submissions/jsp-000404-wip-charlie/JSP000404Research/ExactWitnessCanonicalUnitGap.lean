@@ -43,8 +43,9 @@ theorem centre_gap_get_adjacent_eq
         rayThetaAt hp i
           (C.rays.get ⟨m, by omega⟩)) /
       Real.pi := by
-  change C.gaps[m] =
-    (C.angles[m + 1] - C.angles[m]) / Real.pi
+  change C.gaps[m]'(by rw [C.gaps_length]; omega) =
+    (C.angles[m + 1]'(by rw [C.angles_length]; exact hm) -
+      C.angles[m]'(by rw [C.angles_length]; omega)) / Real.pi
   have hmA : m + 1 < C.angles.length := by
     rw [C.angles_length]
     exact hm
@@ -81,7 +82,7 @@ theorem centre_gap_get_wrap_eq
     (rayThetaAt hp i first + Real.pi -
         rayThetaAt hp i (rest.getLastD first)) /
       Real.pi := by
-  change C.gaps[rest.length] =
+  change C.gaps[rest.length]'(by rw [C.gaps_length, hrays]; simp) =
     (rayThetaAt hp i first + Real.pi -
       rayThetaAt hp i (rest.getLastD first)) / Real.pi
   simp [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles,
