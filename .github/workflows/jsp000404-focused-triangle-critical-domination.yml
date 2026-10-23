@@ -6,7 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TriangleCriticalUnitDomination.lean"
-      - ".github/workflows/jsp000404-focused-positive-gap-slots.yml"
+      - ".github/workflows/jsp000404-focused-triangle-critical-domination.yml"
   workflow_dispatch:
 
 permissions:
