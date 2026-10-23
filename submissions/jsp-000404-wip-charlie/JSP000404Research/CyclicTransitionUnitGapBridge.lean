@@ -1,6 +1,7 @@
 import JSP000404Research.CyclicTransitionUnitGapSlot
 import JSP000404Research.TransitionUnitGapSlot
 import JSP000404Research.CentreSignPath
+import JSP000404Research.CutNormalizedPhase
 import Mathlib.Tactic
 
 /-!
@@ -18,7 +19,7 @@ cut-adjacent-to-canonical-slot proof substantially cleaner.
 namespace JSP000404Research
 
 /-- Canonical normalized start coordinate of one cyclic q=1 slot. -/
-def centreUnitGapStart
+noncomputable def centreUnitGapStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -28,7 +29,7 @@ def centreUnitGapStart
   normalizedRayTheta hp t i
     (C.rays.get (gapToRayIndex C u.1))
 
-def globalUnitGapStart
+noncomputable def globalUnitGapStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -50,17 +51,13 @@ theorem exists_period_shift_eq_cut_lift
           cutNormalizedRayTheta hp t c i j := by
   by_cases h : rayThetaAt hp i j < c
   · refine ⟨1, ?_⟩
-    rw [cutRayTheta_eq_add_pi_sub_of_lt hp h]
-    unfold normalizedRayTheta cutNormalizedRayTheta
-    norm_num
-    field_simp [Real.pi_ne_zero]
+    rw [cutNormalizedRayTheta_eq_normalized_add_period_sub_phase_of_lt hp t j h]
+    push_cast
     ring
   · refine ⟨0, ?_⟩
     have hc : c ≤ rayThetaAt hp i j := le_of_not_gt h
-    rw [cutRayTheta_eq_sub_of_ge hp hc]
-    unfold normalizedRayTheta cutNormalizedRayTheta
-    norm_num
-    field_simp [Real.pi_ne_zero]
+    rw [cutNormalizedRayTheta_eq_normalized_sub_phase_of_ge hp t j hc]
+    push_cast
     ring
 
 
@@ -97,9 +94,24 @@ theorem exists_centreUnitGap_of_wrap_floor_one
       C t first rest hrays
   have hlastList :
       (quotientList t C.gaps).get rList = 1 := by
+    have hopt :=
+      congrArg (fun xs : List ℕ => xs[rest.length]?) hdecomp
+    rw [List.getElem?_eq_getElem hlistLen] at hopt
+    have hlenQ :
+        (consecutiveRayQuotients hp i t first rest).length =
+          rest.length :=
+      centre_consecutiveRayQuotients_length hp i t first rest
+    have htarget :
+        (consecutiveRayQuotients hp i t first rest ++
+          [wrapRayQuotient hp i t first (rest.getLastD first)])[rest.length]? =
+        some 1 := by
+      rw [List.getElem?_append_right (by omega)]
+      simpa [hlenQ, hfloor] using (rfl : ([1] : List ℕ)[0]? = some 1)
+    have hs :
+        some ((quotientList t C.gaps)[rest.length]) = some 1 := by
+      simpa [htarget] using hopt
     change (quotientList t C.gaps)[rest.length] = 1
-    rw [hdecomp]
-    simp [consecutiveRayQuotients_length, hfloor]
+    exact Option.some_inj.mp hs
 
   have hbridge :
       centreQuotient C t rGap =
