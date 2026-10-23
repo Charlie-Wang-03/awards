@@ -1,5 +1,6 @@
 import JSP000404Research.SixPointSeparatedSupportTwo
 import JSP000404Research.PositiveGapSeventeenPhase
+import JSP000404Research.PositiveGapFifteenParameterThreshold
 import Mathlib.Tactic
 
 /-!
@@ -57,6 +58,55 @@ theorem six_point_uncompensated_top_has_separated_two_and_safe_positive_phase
     six_point_exists_period_phase_without_positiveGap_bad
       C hn8 hdelta0 hdeltaHalf ht hcard top hTop hMin
   exact ⟨v, hv, htwo, hnotGain, hnotPinned, x, hx0, hxt, hsafe⟩
+
+
+/-- Stronger exact-threshold joint certificate.  In the genuine six-centre
+uncompensated top-deletion branch, the geometric separated support-two witness
+and a single in-period phase avoiding *all* positive quotient gap intervals
+coexist whenever 14*delta<n.  In particular the sharp sampling route covers
+n=5,6 under the displayed parameter inequality, and every n>=7 with
+0<=delta<1/2.  This does not imply global Boolean-hole payment. -/
+theorem six_point_uncompensated_top_joint_certificate_of_exact_threshold
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcard : Fintype.card V = 6)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hthreshold : 14 * delta < (n : ℝ))
+    (top : V)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3)
+    (hNoTop :
+      SixPointNoCompensatedTopDeletion
+        C (by rw [hcard]; omega) top t n) :
+    ∃ v : V, ∃ hv : v ≠ top,
+      positiveSupport (centreQuotient (C v) t) = 2 ∧
+      v ∉ topDeletionGainMinima C
+        (by rw [hcard]; omega) top t ∧
+      ¬ TopPinnedPositivePair C top v hv t ∧
+      ∃ x : ℝ, 0 ≤ x ∧ x < t ∧
+        ∀ u : GlobalPositiveGapSlot C t,
+          ¬ GlobalCyclicPositiveGapBadAt C t delta u x := by
+  obtain ⟨v, hv, htwo, hnotGain, hnotPinned⟩ :=
+    exists_separated_support_two_minimum_of_no_compensated_top
+      hp hcap C hcard hn5 hdelta0 hdeltaHalf ht hlam
+      top hTop hMin hNoTop
+  obtain ⟨x, hx0, hxt, hsafe⟩ :=
+    six_point_hard_top_exists_safe_fifteenPhase_of_exact_threshold
+      hp hcap C hcard hn5 hdelta0 hdeltaHalf ht hlam
+      hthreshold top hTop hMin hNoTop
+  exact ⟨v, hv, htwo, hnotGain, hnotPinned,
+    x, hx0, hxt, hsafe⟩
+
+#print axioms six_point_uncompensated_top_joint_certificate_of_exact_threshold
 
 #print axioms six_point_uncompensated_top_has_separated_two_and_safe_positive_phase
 
