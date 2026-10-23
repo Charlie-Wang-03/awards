@@ -41,9 +41,11 @@ theorem positive_deltaArc_safe_implies_boundary_cut_separation
         C t delta x hsafe u
     apply hcrit
     simpa only [hphase] using hbad
+  dsimp only
+  intro u v huv hboundary
   exact cutBoundaryWrapBit_separates
     hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
-    hc0 hcpi huncovered
+    hc0 hcpi huncovered huv hboundary
 
 #print axioms positive_deltaArc_safe_implies_boundary_cut_separation
 
