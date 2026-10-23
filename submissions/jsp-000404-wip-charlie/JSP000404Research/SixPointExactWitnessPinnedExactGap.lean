@@ -77,6 +77,12 @@ theorem five_gap_exact_unit_lies_at_positive_position
   simp at hg
   rcases hshape with hshape | hshape | hshape
   · rw [hshape] at hq
+    have hzero2 : Nat.floor (t * g₂) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[2]?) hq
+      simpa [quotientList] using h
+    have hzero3 : Nat.floor (t * g₃) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[3]?) hq
+      simpa [quotientList] using h
     simp [quotientList] at hq
     rcases hg with heq | heq | heq | heq | heq
     all_goals rw [heq] at hscale
@@ -104,6 +110,12 @@ theorem five_gap_exact_unit_lies_at_positive_position
         norm_num
       exact ⟨by omega, hscale⟩
   · rw [hshape] at hq
+    have hzero1 : Nat.floor (t * g₁) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[1]?) hq
+      simpa [quotientList] using h
+    have hzero3 : Nat.floor (t * g₃) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[3]?) hq
+      simpa [quotientList] using h
     simp [quotientList] at hq
     rcases hg with heq | heq | heq | heq | heq
     all_goals rw [heq] at hscale
@@ -131,6 +143,12 @@ theorem five_gap_exact_unit_lies_at_positive_position
         norm_num
       exact ⟨by omega, hscale⟩
   · rw [hshape] at hq
+    have hzero1 : Nat.floor (t * g₁) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[1]?) hq
+      simpa [quotientList] using h
+    have hzero2 : Nat.floor (t * g₂) = 0 := by
+      have h := congrArg (fun xs : List ℕ => xs[2]?) hq
+      simpa [quotientList] using h
     simp [quotientList] at hq
     rcases hg with heq | heq | heq | heq | heq
     all_goals rw [heq] at hscale
