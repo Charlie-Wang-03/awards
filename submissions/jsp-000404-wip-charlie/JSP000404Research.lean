@@ -1167,6 +1167,8 @@ import JSP000404Research.TriangleCriticalUnitDomination
 
 
 import JSP000404Research.OrdinaryCriticalHalfGrid
+-- Kernel-certified finite-period obstruction without a postulated cover bound.
+import JSP000404Research.SixPointHalfGridFinitePeriodNoCover
 
 
 import JSP000404Research.SixPointTrianglePhaseTerminal
