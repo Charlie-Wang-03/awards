@@ -27,6 +27,8 @@ namespace ProjectionOrdered
 open OrderedEdgeColoring
 open DirectionData
 
+set_option maxHeartbeats 1000000
+
 /-- Concrete lower-branch endpoint dichotomy. -/
 theorem genericProjection_saturated_zeroFirst_or_unitStep
     {V : Type*} [Fintype V]
@@ -41,19 +43,26 @@ theorem genericProjection_saturated_zeroFirst_or_unitStep
     (hlam : lam = Real.pi / t)
     (exponent : ProjectionOrdered V → ℕ)
     (i : ProjectionOrdered V)
-    (C : CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hexpI : exponent i = centreExponent C t)
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      CentreProjectiveCycle (reindexedPoint_injective hp) i)
+    (hexpI :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      exponent i = centreExponent C t)
     (hsat :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ExactProjectedBudget
         (genericResidualColoring
           hp hcap
           (sendov_scale_pos hn hdelta0 htEq)
           hlam n
           (by
+            push_cast
             rw [htEq]
             linarith))
         exponent i)
     (hres :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       residualCoord n ∈
         active
           (genericResidualColoring
@@ -61,6 +70,7 @@ theorem genericProjection_saturated_zeroFirst_or_unitStep
             (sendov_scale_pos hn hdelta0 htEq)
             hlam n
             (by
+              push_cast
               rw [htEq]
               linarith))
           i) :
@@ -137,16 +147,19 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
     (htEq : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {word : Fin n → Bool}
     (hword :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       let B :=
         genericResidualColoring
           hp hcap
           (sendov_scale_pos hn hdelta0 htEq)
           hlam n
           (by
+            push_cast
             rw [htEq]
             linarith)
       let exponent :=
@@ -163,6 +176,7 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
         hp hcap (sendov_scale_pos hn hdelta0 htEq)
         hlam n
         (by
+          push_cast
           rw [htEq]
           linarith)
     let exponent :=
@@ -217,7 +231,8 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
   let D :=
     genericDirectionData_sendov hp hcap htPos hlam
   let B : OrderedEdgeColoring (ProjectionOrdered V) (n + 1) :=
-    genericResidualColoring hp hcap htPos hlam n hwidth
+    genericResidualColoring hp hcap htPos hlam n
+      (by push_cast; exact hwidth)
   let exponent : ProjectionOrdered V → ℕ :=
     fun i => centreExponent (C i) t
   have hword' :
@@ -260,7 +275,8 @@ theorem saturatedSaturatedWord_has_common_top_and_endpoint_dichotomies
     DirectionData.LocalDirectionCycle.edge_value_mem_both_localCycles
       (D := D) huv Lu Lv
   have hresStd :
-      IsResidual (standardResidualColoring D n hwidth) u v := by
+      IsResidual (standardResidualColoring D n
+        (by push_cast; exact hwidth)) u v := by
     simpa [B, D, genericResidualColoring] using hres
   have hfloor :
       Nat.floor (D.value u v) = n :=
