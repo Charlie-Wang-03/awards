@@ -193,7 +193,7 @@ theorem six_point_top_deletion_compensated_of_gain_set_card_ge_four
   · intro v hv
     have h := (mem_topDeletionGainMinima_iff
       C hcard3 top t v).1 hv
-    exact h.1
+    exact Finset.mem_erase.mpr ⟨h.1, Finset.mem_univ v⟩
   · simpa [G] using hgainCard
   · intro v hvt
     rw [← hMin v hvt]
