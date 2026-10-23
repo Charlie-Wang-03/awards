@@ -73,7 +73,8 @@ theorem five_gap_exact_unit_lies_at_positive_position
   subst gs
   refine ⟨gFirst, g₁, g₂, g₃, gLast, rfl, ?_⟩
   obtain ⟨g, hg, hscale⟩ := hexact
-  simp only [List.mem_cons, List.mem_singleton] at hg
+  simp only [List.mem_cons] at hg
+  simp at hg
   rcases hshape with hshape | hshape | hshape
   · rw [hshape] at hq
     simp [quotientList] at hq
