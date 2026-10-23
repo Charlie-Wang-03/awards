@@ -57,9 +57,8 @@ theorem centre_gap_get_adjacent_eq
   have hmDiff :
       m < (successiveDiffsFrom a xs).length := by
     simpa [successiveDiffsFrom_length] using hmTail
-  simp only [CentreProjectiveCycle.gaps]
-  simp only [hangles]
-  simp only [normalizedProjectiveGaps, projectiveGaps,
+  simp only [CentreProjectiveCycle.gaps, hangles,
+    normalizedProjectiveGaps, projectiveGaps,
     List.map_append, List.map_singleton]
   simp [hmDiff,
     successiveDiffsFrom_getElem_eq_adjacent_diff
@@ -82,10 +81,9 @@ theorem centre_gap_get_wrap_eq
     (rayThetaAt hp i first + Real.pi -
         rayThetaAt hp i (rest.getLastD first)) /
       Real.pi := by
-  simp only [CentreProjectiveCycle.gaps,
-      CentreProjectiveCycle.angles]
-  simp only [hrays]
-  simp [normalizedProjectiveGaps, projectiveGaps]
+  simpa [CentreProjectiveCycle.gaps,
+    CentreProjectiveCycle.angles, hrays,
+    normalizedProjectiveGaps, projectiveGaps]
 
 /-- Every exact maximum-angle witness has one canonical cyclic gap whose
 natural quotient and exact scaled width are both exactly one. -/
