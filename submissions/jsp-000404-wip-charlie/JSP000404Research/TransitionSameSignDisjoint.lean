@@ -104,7 +104,7 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
   have hleft :
       boolLastFrom (raySignAt hp i first) signPre =
         raySignAt hp i
-          ((first :: rest)[qPre.length]'hidxLeft'hidxLeft) := by
+          ((first :: rest)[qPre.length]'hidxLeft) := by
     rw [hpreEq, hpreTake]
     exact boolLastFrom_map_take_eq_ray_getElem
       (raySignAt hp i) first rest qPre.length
@@ -112,20 +112,20 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
   have hright :
       b =
         raySignAt hp i
-          ((first :: rest)[qPre.length + 1]'hidxRight'hidxRight) := by
+          ((first :: rest)[qPre.length + 1]'hidxRight) := by
     rw [hbEq]
     dsimp [signs, liftedCentreSignPath]
     simp [hmRest]
   have hraysLeft :
       (C.rays.get
         ⟨qPre.length, by omega⟩) =
-      (first :: rest)[qPre.length] := by
+      (first :: rest)[qPre.length]'hidxLeft := by
     rw [hrays]
     rfl
   have hraysRight :
       (C.rays.get
         ⟨qPre.length + 1, hmRay⟩) =
-      (first :: rest)[qPre.length + 1] := by
+      (first :: rest)[qPre.length + 1]'hidxRight := by
     rw [hrays]
     rfl
   have hsamePair :
@@ -133,11 +133,17 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
           (C.rays.get ⟨qPre.length, by omega⟩)
         =
       raySignAt hp i
-          (C.rays.get ⟨qPre.length + 1, hm⟩) := by
+          (C.rays.get ⟨qPre.length + 1, hmRay⟩) := by
     rw [hraysLeft, hraysRight]
     rw [← hleft, ← hright]
     exact hlast
-  exact hne hsamePair
+  have hne' :
+      raySignAt hp i
+          (C.rays.get ⟨qPre.length, by omega⟩) ≠
+        raySignAt hp i
+          (C.rays.get ⟨qPre.length + 1, hmRay⟩) := by
+    simpa only [← hmEq] using hne
+  exact hne' hsamePair
 
 theorem globalUnitGapSameSign_not_ordinaryTransition
     {V : Type*} [LinearOrder V] [Fintype V]
