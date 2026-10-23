@@ -44,8 +44,8 @@ theorem linearCyclicGapQuotients_cons_cons_cons
   cases xs with
   | nil => simp [linearCyclicGapQuotients, successiveDiffsFrom]
   | cons d ds =>
-      simp [linearCyclicGapQuotients, successiveDiffsFrom,
-        List.getLastD_cons]
+      cases ds <;> simp [linearCyclicGapQuotients, successiveDiffsFrom,
+        List.getLastD, List.getLast?]
 
 theorem linearCyclicGapQuotients_delete_second
     {t a b c : ℝ} {xs : List ℝ}
@@ -97,7 +97,7 @@ theorem listExponent_linearCyclic_delete_second_gain
       hab hbc
   rw [linearCyclicGapQuotients_cons_cons_cons,
       hchild]
-   have hlocal :=
+  have hlocal :=
     excess_merge_gain_of_both_pos
       (a := Nat.floor (b - a))
       (b := Nat.floor (c - b))
@@ -106,7 +106,6 @@ theorem listExponent_linearCyclic_delete_second_gain
   simp only [listExponent, List.map_cons, List.sum_cons]
   omega
 
-/-- Explicit cyclic quotient form for a nonempty displayed list ending in z. -/
 /-- The final forward difference records exactly the new endpoint. -/
 theorem successiveDiffsFrom_append_cons
     (a : ℝ) (pre : List ℝ) (z : ℝ) :
@@ -115,8 +114,9 @@ theorem successiveDiffsFrom_append_cons
   induction pre generalizing a with
   | nil => simp [successiveDiffsFrom]
   | cons b bs ih =>
-      simp [successiveDiffsFrom, ih, List.getLastD_cons]
+      cases bs <;> simp [successiveDiffsFrom, ih, List.getLastD, List.getLast?]
 
+/-- Explicit cyclic quotient form for a nonempty displayed list ending in z. -/
 theorem linearCyclicGapQuotients_append_last
     (t a : ℝ) (pre : List ℝ) (z : ℝ) :
     linearCyclicGapQuotients t (a :: (pre ++ [z]))
@@ -177,29 +177,9 @@ theorem listExponent_linearCyclic_delete_last_gain
   rw [linearCyclicGapQuotients_append_last]
   simp only [linearCyclicGapQuotients,
     successiveDiffsFrom, List.map_cons, List.getLastD_cons]
-  have hparent :
-      (successiveDiffsFrom a (first :: mid)).map Nat.floor ++
-          [Nat.floor (z - (first :: mid).getLastD a),
-           Nat.floor (a + t - z)]
-        =
-      Nat.floor (first - a) ::
-        ((successiveDiffsFrom first mid).map Nat.floor ++
-          [Nat.floor (z - mid.getLastD first),
-           Nat.floor (a + t - z)]) := by
-    simp [successiveDiffsFrom, List.getLastD_cons,
-      List.append_assoc]
-  have hchild :
-      linearCyclicGapQuotients t (a :: first :: mid)
-        =
-      Nat.floor (first - a) ::
-        ((successiveDiffsFrom first mid).map Nat.floor ++
-          [Nat.floor (a + t - mid.getLastD first)]) := by
-    simp [linearCyclicGapQuotients, successiveDiffsFrom,
-      List.getLastD_cons, List.append_assoc]
-  rw [hchild]
   have hy :
       (first :: mid).getLastD a = mid.getLastD first := by
-    simp [List.getLastD_cons]
+    cases mid <;> simp [List.getLastD, List.getLast?]
   rw [hy] at hLeft horder hmerge'
   have hlocal :=
     excess_merge_gain_of_both_pos
