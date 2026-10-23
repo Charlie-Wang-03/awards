@@ -1,6 +1,7 @@
 import JSP000404Research.MixedSupportThreeNonExposed
 import JSP000404Research.SixPointHardSupportReduction
 import JSP000404Research.SupportThreeMiddleHiddenMatching
+import JSP000404Research.TwoSmallAngleContradiction
 import Mathlib.Tactic
 
 /-!
@@ -233,7 +234,11 @@ theorem reorient_around
     · intro h; exact M.a_ne_c (Subtype.ext h.symm)
     · intro h; exact M.b_ne_c (Subtype.ext h.symm)
     · intro h; exact M.a_ne_b (Subtype.ext h)
-    · simpa [hvD, add_comm] using M.small_sum
+    · have hcomm :
+          EuclideanGeometry.angle (p M.c.1) (p i) (p M.d.1) =
+            EuclideanGeometry.angle (p M.d.1) (p i) (p M.c.1) :=
+        EuclideanGeometry.angle_comm _ _ _
+      simpa [hvD, hcomm] using M.small_sum
 
 theorem three_remaining_vertices_exhaust
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -267,7 +272,6 @@ theorem three_remaining_vertices_exhaust
         Finset.card_erase_of_mem hbMem,
         Finset.card_erase_of_mem (Finset.mem_univ top),
         Finset.card_univ, hcard]
-    norm_num
   have hSsub : S ⊆ U := by
     intro w hw
     dsimp [S] at hw
@@ -441,7 +445,7 @@ theorem two_smallPerfectMatchings_hamiltonian_residual
           hycTop hycB hycC
         with hxb | hyb | hzb
       · exact Or.inl hxb
-      · exact False.elim (hxcYc hxb.symm)
+      · exact False.elim (hxcYc hyb.symm)
       · exact Or.inr hzb
     have hzcCase :
         zc = xb ∨ zc = zb := by
@@ -454,7 +458,7 @@ theorem two_smallPerfectMatchings_hamiltonian_residual
           hzcTop hzcB hzcC
         with hxb | hyb | hzb
       · exact Or.inl hxb
-      · exact False.elim (hxcZc hxb.symm)
+      · exact False.elim (hxcZc hyb.symm)
       · exact Or.inr hzb
     have hpairC :
         EuclideanGeometry.angle (p xb) (p c) (p zb)
@@ -472,7 +476,7 @@ theorem two_smallPerfectMatchings_hamiltonian_residual
         EuclideanGeometry.angle (p b) (p c) (p yb) +
             EuclideanGeometry.angle (p xb) (p c) (p zb)
           ≤ delta * lam := by
-      exact add_le_add_left hpairC _ |>.trans hsmallC
+      linarith [hpairC, hsmallC]
     exact ⟨xb,yb,zb,
       hxbTop,hybTop,hzbTop,
       hxbB,hybB,hzbB,
@@ -523,7 +527,7 @@ theorem two_smallPerfectMatchings_hamiltonian_residual
         EuclideanGeometry.angle (p b) (p c) (p zb) +
             EuclideanGeometry.angle (p xb) (p c) (p yb)
           ≤ delta * lam := by
-      exact add_le_add_left hpairC _ |>.trans hsmallC
+      linarith [hpairC, hsmallC]
     have hsmallB' :
         EuclideanGeometry.angle (p c) (p b) (p xb) +
             EuclideanGeometry.angle (p zb) (p b) (p yb)
@@ -558,7 +562,7 @@ theorem support_three_middle_smallPerfectMatching
       positiveSupport (centreQuotient C t) = 3)
     (hmiddle :
       SupportThreePinnedMiddleShape hp
-        (show top ≠ i by simpa using hit) C) :
+        (show top ≠ i by exact hit.symm) C) :
     Nonempty
       (SmallPerfectMatchingAwayFromTop
         (p := p) top i delta lam) := by
@@ -634,14 +638,14 @@ theorem mixed_support_one_has_two_smallPerfectMatchings
 
   have hbMiddle :
       SupportThreePinnedMiddleShape hp
-        (show top ≠ b by simpa using hbTop)
+        (show top ≠ b by exact hbTop.symm)
         (C b) :=
     support_three_middle_of_no_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf
       ht hlam top hTop hMin hNoMin hbTop hbSup3
   have hcMiddle :
       SupportThreePinnedMiddleShape hp
-        (show top ≠ c by simpa using hcTop)
+        (show top ≠ c by exact hcTop.symm)
         (C c) :=
     support_three_middle_of_no_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf
