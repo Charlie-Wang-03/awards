@@ -23,9 +23,9 @@ open Real
 theorem two_smallPerfectMatchings_hamiltonian_with_cross_separation
     {V : Type*} [Fintype V] [DecidableEq V]
     {p : V → Plane}
+    {top b c : V} {delta lam : ℝ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {top b c : V} {delta lam : ℝ}
     (hcard : Fintype.card V = 6)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
