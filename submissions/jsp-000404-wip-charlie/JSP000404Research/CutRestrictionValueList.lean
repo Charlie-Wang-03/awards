@@ -164,7 +164,7 @@ theorem mem_parent_cut_split_without_deleted_iff
 /-- The child rays, mapped back to parent rays, are a permutation of the
 parent cut list with the deleted ray removed. -/
 theorem child_parent_ray_list_perm_split
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i r : V}
     {C : CentreProjectiveCycle hp i}
@@ -181,9 +181,9 @@ theorem child_parent_ray_list_perm_split
     (hsplit :
       R.rays =
         pre ++ deletedParentRay r i hir :: post) :
-    Rc.rays.map (childOtherToParent r i hir)
-      ~
-    pre ++ post := by
+    List.Perm
+      (Rc.rays.map (childOtherToParent r i hir))
+      (pre ++ post) := by
   have hleft :
       (Rc.rays.map (childOtherToParent r i hir)).Nodup :=
     Rc.nodup.map
@@ -248,7 +248,7 @@ theorem parent_cut_split_without_deleted_sorted
 /-- Exact cut-normalized child value list after deleting one displayed parent
 ray. -/
 theorem restrictDelete_normalizedValues_of_cut_split
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i r : V}
     {C : CentreProjectiveCycle hp i}
@@ -273,10 +273,9 @@ theorem restrictDelete_normalizedValues_of_cut_split
     child_parent_ray_list_perm_split
       R hir hother Rc pre post hsplit
   have hpermValues :
-      Rc.normalizedValues t
-        ~
-      (pre ++ post).map
-        (cutNormalizedRayTheta hp t c i) := by
+      List.Perm (Rc.normalizedValues t)
+        ((pre ++ post).map
+          (cutNormalizedRayTheta hp t c i)) := by
     have hmap :
         Rc.normalizedValues t =
           (Rc.rays.map (childOtherToParent r i hir)).map
