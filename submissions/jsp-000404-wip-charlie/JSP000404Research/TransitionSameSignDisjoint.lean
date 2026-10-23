@@ -65,16 +65,20 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
         signs.take (qPre.length + 1) ++
           signs.drop (qPre.length + 1) = signs :=
       List.take_append_drop (qPre.length + 1) signs
-    rw [← hfull, ← htake]
-    simp [List.append_assoc]
+    calc
+      signs = signs.take (qPre.length + 1) ++
+          signs.drop (qPre.length + 1) := hfull.symm
+      _ = (signs.take qPre.length ++ [signs[qPre.length]]) ++
+          signs.drop (qPre.length + 1) :=
+        congrArg (fun xs => xs ++ signs.drop (qPre.length + 1)) htake.symm
+      _ = signs.take qPre.length ++ signs[qPre.length] ::
+          signs.drop (qPre.length + 1) := by simp [List.append_assoc]
   have hsigns' :
       signs = signPre ++ b :: signPost := by
     simpa [signs] using hsigns
   have hblocks :=
     blocks_eq_of_decompositions
-      hsigns' hstd (by
-        rw [hlen, hqIdx]
-        simp)
+      hsigns' hstd (by omega)
   have hpreEq :
       signPre = signs.take qPre.length :=
     hblocks.1
@@ -90,10 +94,17 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
     rw [List.take_append_of_le_length]
     · simp
     · simpa using hle
+  have hidxLeft : qPre.length < (first :: rest).length := by
+    simp only [List.length_cons]
+    omega
+  have hidxRight : qPre.length + 1 < (first :: rest).length := by
+    simp only [List.length_cons]
+    omega
+  have hmRay : qPre.length + 1 < C.rays.length := by omega
   have hleft :
       boolLastFrom (raySignAt hp i first) signPre =
         raySignAt hp i
-          ((first :: rest)[qPre.length]) := by
+          ((first :: rest)[qPre.length]'hidxLeft'hidxLeft) := by
     rw [hpreEq, hpreTake]
     exact boolLastFrom_map_take_eq_ray_getElem
       (raySignAt hp i) first rest qPre.length
@@ -101,7 +112,7 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
   have hright :
       b =
         raySignAt hp i
-          ((first :: rest)[qPre.length + 1]) := by
+          ((first :: rest)[qPre.length + 1]'hidxRight'hidxRight) := by
     rw [hbEq]
     dsimp [signs, liftedCentreSignPath]
     simp [hmRest]
@@ -113,7 +124,7 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
     rfl
   have hraysRight :
       (C.rays.get
-        ⟨qPre.length + 1, hm⟩) =
+        ⟨qPre.length + 1, hmRay⟩) =
       (first :: rest)[qPre.length + 1] := by
     rw [hrays]
     rfl
