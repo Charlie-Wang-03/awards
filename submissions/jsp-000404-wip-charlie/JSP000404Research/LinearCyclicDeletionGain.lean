@@ -41,8 +41,11 @@ theorem linearCyclicGapQuotients_cons_cons_cons
       Nat.floor (c - b) ::
       ((successiveDiffsFrom c xs).map Nat.floor ++
         [Nat.floor (a + t - xs.getLastD c)]) := by
-  simp [linearCyclicGapQuotients, successiveDiffsFrom,
-    List.getLastD_cons, List.append_assoc]
+  cases xs with
+  | nil => simp [linearCyclicGapQuotients, successiveDiffsFrom]
+  | cons d ds =>
+      simp [linearCyclicGapQuotients, successiveDiffsFrom,
+        List.getLastD_cons]
 
 theorem linearCyclicGapQuotients_delete_second
     {t a b c : ℝ} {xs : List ℝ}
@@ -71,9 +74,9 @@ theorem linearCyclicGapQuotients_delete_second
         Nat.floor (b - a) + Nat.floor (c - b) + carry := by
     have h := hmerge
     norm_num at h
-    rw [show (b - a) + (c - b) = c - a by ring] at h
     exact h
   rw [hmerge']
+  simp only [List.cons_append]
 
 /-- Deleting the second displayed value gains one exponent unit when both
 adjacent ordinary floor gaps are positive. -/
@@ -94,20 +97,26 @@ theorem listExponent_linearCyclic_delete_second_gain
       hab hbc
   rw [linearCyclicGapQuotients_cons_cons_cons,
       hchild]
-  let tail :=
-    (successiveDiffsFrom c xs).map Nat.floor ++
-      [Nat.floor (a + t - xs.getLastD c)]
-  have hlocal :=
+   have hlocal :=
     excess_merge_gain_of_both_pos
       (a := Nat.floor (b - a))
       (b := Nat.floor (c - b))
       (c := carry)
       hLeft hRight
   simp only [listExponent, List.map_cons, List.sum_cons]
-  dsimp [tail]
   omega
 
 /-- Explicit cyclic quotient form for a nonempty displayed list ending in z. -/
+/-- The final forward difference records exactly the new endpoint. -/
+theorem successiveDiffsFrom_append_cons
+    (a : ℝ) (pre : List ℝ) (z : ℝ) :
+    successiveDiffsFrom a (pre ++ [z]) =
+      successiveDiffsFrom a pre ++ [z - pre.getLastD a] := by
+  induction pre generalizing a with
+  | nil => simp [successiveDiffsFrom]
+  | cons b bs ih =>
+      simp [successiveDiffsFrom, ih, List.getLastD_cons]
+
 theorem linearCyclicGapQuotients_append_last
     (t a : ℝ) (pre : List ℝ) (z : ℝ) :
     linearCyclicGapQuotients t (a :: (pre ++ [z]))
@@ -157,14 +166,13 @@ theorem listExponent_linearCyclic_delete_last_gain
           Nat.floor (a + t - z) + carry := by
     have h := hmerge
     norm_num at h
-    rw [hsum] at h
     exact h
   have hpreDecomp :
       ∃ first mid,
         pre = first :: mid := by
     cases hp : pre with
     | nil => exact False.elim (hpre hp)
-    | cons first mid => exact ⟨first,mid,hp⟩
+    | cons first mid => exact ⟨first,mid,rfl⟩
   obtain ⟨first,mid,rfl⟩ := hpreDecomp
   rw [linearCyclicGapQuotients_append_last]
   simp only [linearCyclicGapQuotients,
@@ -180,7 +188,6 @@ theorem listExponent_linearCyclic_delete_last_gain
            Nat.floor (a + t - z)]) := by
     simp [successiveDiffsFrom, List.getLastD_cons,
       List.append_assoc]
-  rw [hparent]
   have hchild :
       linearCyclicGapQuotients t (a :: first :: mid)
         =
