@@ -1672,3 +1672,10 @@ import JSP000404Research.SixPointNFourNoCoverWithoutEquality
 -- Kernel-verified all-centre/all-cut cyclic critical gap avoidance (n >= 5),
 -- including exact in-period phase. NOT a global dyadic Boolean-hole payment.
 import JSP000404Research.SixPointCyclicCutCriticalAvoidance
+
+-- Kernel-verified n >= 5 common original safe cut with sign-uniform short bands.
+import JSP000404Research.SixPointSafeCutSignUniformity
+
+-- Kernel-verified n >= 8 periodic avoidance for ALL positive quotient gaps q >= 1.
+-- This is not a non-reusing TRUE-hole or dyadic payment.
+import JSP000404Research.PositiveGapSeventeenPhase
