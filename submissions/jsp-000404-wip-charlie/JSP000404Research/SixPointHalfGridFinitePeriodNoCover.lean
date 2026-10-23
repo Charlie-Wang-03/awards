@@ -126,12 +126,12 @@ theorem no_six_point_ordinary_critical_finite_period_cover
       have hdist :=
         ordinaryCriticalUnitBadAt_pair_distance_le_delta
           C t delta (slot a) (hbad a) hba
-      rw [hzero] at hdist
+      rw [← hzero] at hdist
       have hdiff :
           ((a.val : ℝ) / 4) - ((b.val : ℝ) / 4) = 0 := by
         have habs : |((a.val : ℝ) / 4) - ((b.val : ℝ) / 4)| = 0 :=
           le_antisymm hdist (abs_nonneg _)
-        exact sub_eq_zero.mpr (abs_eq_zero.mp habs)
+        exact abs_eq_zero.mp habs
       have heqR : (a.val : ℝ) = (b.val : ℝ) := by linarith
       have heqN : a.val = b.val := by exact_mod_cast heqR
       exact Fin.ext heqN
