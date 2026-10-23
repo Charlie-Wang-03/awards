@@ -1653,5 +1653,11 @@ import JSP000404Research.SixPointNFourActualSameSignSlot
 -- Kernel-verified direct n4 conditional phase-cover contradiction.
 import JSP000404Research.SixPointNFourDirectNoCover
 
+-- Kernel-checked phase-dependent n4 ordinary-transition cover conditional reduction.
+import JSP000404Research.SixPointNFourOrdinaryTransitionNoCover
+
+-- Kernel-checked same-witness five-angle hard mixed-branch squeeze.
+import JSP000404Research.SixPointMixedFiveAngleSqueeze
+
 -- Kernel-checked n4 six-centre phase-cover exclusion without unit equality.
 import JSP000404Research.SixPointNFourNoCoverWithoutEquality
