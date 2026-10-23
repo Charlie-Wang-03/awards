@@ -116,13 +116,14 @@ theorem genericProjection_saturated_zeroFirst_or_unitStep
     (L.value_mem_bounds haMem).1
   have hsorted :
       (a :: xs).Pairwise (· ≤ ·) := by
-    simpa [hvalues] using L.values_pairwise
+    rw [← hvalues]
+    exact L.values_pairwise
   have hall :
       ∀ x ∈ a :: xs, x < t := by
     intro x hx
     exact
       (L.value_mem_bounds
-        (by simpa [hvalues] using hx)).2
+        (by rw [hvalues]; exact hx)).2
   refine ⟨a, xs, hvalues, hlast, htight, hwrap, ?_⟩
   by_cases hzero : Nat.floor a = 0
   · exact Or.inl hzero
