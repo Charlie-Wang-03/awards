@@ -71,14 +71,15 @@ theorem ordinaryCriticalUnitBadAt_implies_transition
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     (t delta : ℝ)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
     (u : GlobalUnitGapSlot C t)
     {x : ℝ}
     (hbad : OrdinaryCriticalUnitBadAt C t delta u x) :
     GlobalUnitGapOrdinaryTransition C t u := by
   rcases hbad with
-    ⟨m, hm, hidx, hsign, _hs1, _hsTop, _hxL, _hxR⟩
+    ⟨m, hm, hidx, hsign, hs1, hsTop, _hxL, _hxR⟩
   refine ⟨m, hm, hidx, ?_, hsign⟩
-  exact u.2.2
+  exact critical_gap_floor_eq_one hdeltaHalf hs1 hsTop
 
 /-- Same-sign unit slots are automatically unusable by the ordinary critical
 obstruction family. -/
@@ -87,6 +88,7 @@ theorem ordinaryCriticalUnitBadAt_not_of_sameSign
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     (t delta : ℝ)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
     (u : GlobalUnitGapSlot C t)
     (hsame : GlobalUnitGapSameSign C t u) :
     ∀ x : ℝ, ¬ OrdinaryCriticalUnitBadAt C t delta u x := by
@@ -95,7 +97,7 @@ theorem ordinaryCriticalUnitBadAt_not_of_sameSign
     (globalUnitGapSameSign_not_ordinaryTransition
       C t u hsame)
       (ordinaryCriticalUnitBadAt_implies_transition
-        C t delta u hbad)
+        C t delta hdeltaHalf u hbad)
 
 /-- Unified six-point terminal for the actual ordinary critical-unit
 obstruction family. -/
@@ -132,7 +134,7 @@ theorem no_six_point_ordinaryCriticalUnit_cover
       S
       (fun u hsame =>
         ordinaryCriticalUnitBadAt_not_of_sameSign
-          C t delta u hsame)
+          C t delta hdeltaHalf u hsame)
       hcoverLower
 
 #print axioms ordinaryCriticalUnitBadAt_implies_transition
