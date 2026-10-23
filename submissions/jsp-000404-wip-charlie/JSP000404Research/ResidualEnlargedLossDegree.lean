@@ -1732,14 +1732,20 @@ theorem minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
       rw [retainedCompletionWords_card]
       positivity
 
+    have hslackTwo :
+        2 * (retainedCompletionWords C v).card ≤
+          ((retainedActive C v).card + 1) *
+              (retainedCompletionWords C v).card -
+            2 * (retainedCompletionWords C v).card := by
+      have hcoef :
+          4 ≤ (retainedActive C v).card + 1 := by omega
+      have hmul :=
+        Nat.mul_le_mul_right
+          (retainedCompletionWords C v).card hcoef
+      omega
     have hqwGt :
         (retainedCompletionWords C v).card <
           (retainedCompletionWords C w).card := by
-      by_contra hnot
-      have hqwLe :
-          (retainedCompletionWords C w).card ≤
-            (retainedCompletionWords C v).card := by
-        omega
       omega
 
     have hfreeLt :
