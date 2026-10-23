@@ -60,7 +60,7 @@ def centreTurnUnitOffset
     (u : CentreTurnUnitSlot C t) : ℕ :=
   u.2.val
 
-def centreTurnUnitGapQuotient
+noncomputable def centreTurnUnitGapQuotient
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -69,7 +69,7 @@ def centreTurnUnitGapQuotient
     (u : CentreTurnUnitSlot C t) : ℕ :=
   centreQuotient C t u.1
 
-def centreTurnUnitGapScaledLength
+noncomputable def centreTurnUnitGapScaledLength
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -79,7 +79,7 @@ def centreTurnUnitGapScaledLength
   t * C.gaps.get u.1
 
 /-- Universal-cover start of this whole-unit subslot. -/
-def centreTurnUnitStart
+noncomputable def centreTurnUnitStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -90,7 +90,7 @@ def centreTurnUnitStart
       (C.rays.get (gapToRayIndex C u.1))
     + u.2.val
 
-def globalTurnUnitStart
+noncomputable def globalTurnUnitStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -98,7 +98,7 @@ def globalTurnUnitStart
     (u : GlobalTurnUnitSlot C t) : ℝ :=
   centreTurnUnitStart (C u.1) t u.2
 
-def globalTurnUnitGapQuotient
+noncomputable def globalTurnUnitGapQuotient
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -106,7 +106,7 @@ def globalTurnUnitGapQuotient
     (u : GlobalTurnUnitSlot C t) : ℕ :=
   centreTurnUnitGapQuotient (C u.1) t u.2
 
-def globalTurnUnitGapScaledLength
+noncomputable def globalTurnUnitGapScaledLength
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -182,7 +182,9 @@ def globalUnitGapToTurnUnitSlot
         (globalUnitGapToTurnUnitSlot C t u)
       =
     globalUnitGapStart C t u := by
-  rfl
+  simp [globalTurnUnitStart, globalUnitGapToTurnUnitSlot,
+    centreTurnUnitStart, centreUnitGapToTurnUnitSlot,
+    globalUnitGapStart, centreUnitGapStart]
 
 /-- Every centre has at most n whole-unit quotient subslots in the lower
 Sendov branch. -/
