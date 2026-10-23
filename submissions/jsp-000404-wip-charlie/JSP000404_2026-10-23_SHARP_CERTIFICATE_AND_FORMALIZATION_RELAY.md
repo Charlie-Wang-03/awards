@@ -106,3 +106,22 @@ nonreusing payment inequality or the executable `sorry` in
 **Additional code repair still pending CI at this checkpoint:** `UncoveredBoundaryColoring.lean` corrected `lam` binder order, exact Fin band transports, and the noncomputable boundary Boolean bit's classical `if`. `CutTriangleCriticalSlot.lean` corrected parity replacement (matching the already-verified unspecialized triangle parity proof), lambda scope, and explicit reversal of normalized edge coordinates. Do not report either as verified without its independent focused CI success.
 
 **Main mathematical status:** `PlanarLowerBranchProofAdmittedWIP.lean` still has its intentional genuine terminal `sorry`. The exact global non-reusing TRUE Boolean-hole / unreserved dyadic payment inequality is NOT proved. A checked safe phase, a bounded positive gap slot count, exact-witness unit slot geometry, or quotient/band-jump equality DO NOT imply that global payment. The missing geometric implication from nonpayment to exhaustive bad-phase coverage is also not established. Some historical conditional lemmas are logical reductions rather than independent solutions. Full research-tree compilation remains separate and unverified.
+
+
+## 2026-10-23 fourth continuation — stronger full-delta-arc phase certificate
+
+**NEW KERNEL-CHECKED RESULTS:**
+
+* [CI #39971090898](https://github.com/Charlie-Wang-03/awards/actions/runs/39971090898): `CutTriangleCriticalSlot.lean` PASS, 9,076 targets. The original short-cut triangle implies an actual cyclic critical unit-gap obstruction. `#print axioms` excludes `sorryAx`.
+* [CI #39971468022](https://github.com/Charlie-Wang-03/awards/actions/runs/39971468022): `UncoveredBoundaryColoring.lean` PASS, 9,077 targets. At a cut phase free of critical unit-gap obstructions, `cutBoundaryWrapBit_separates` produces an actual boundary-edge separating Boolean bit. `#print axioms` excludes `sorryAx`.
+* [CI #39972800339](https://github.com/Charlie-Wang-03/awards/actions/runs/39972800339): `PositiveGapFullDeltaArcEscape.lean` PASS, 9,109 targets. `positive_gap_exists_full_deltaArc_free_sample` is strictly STRONGER than avoiding physical positive bad subintervals: when `card(GlobalPositiveGapSlot C t) < M` and `0 <= delta < t/M`, some equally spaced physical phase avoids the ENTIRE full-width periodic delta arc `[alpha_u+k*t,alpha_u+k*t+delta]` for every actual canonical positive quotient gap. Axioms exactly `[propext, Classical.choice, Quot.sound]`.
+* [CI #39972953795](https://github.com/Charlie-Wang-03/awards/actions/runs/39972953795): `SixPointFullDeltaArcDichotomy.lean` PASS, 9,110 targets. At `13*delta < n` the original six-centre `AngleCap` + uncompensated top deletion configuration admits EITHER two distinct non-gaining support-two minima OR one physical phase avoiding the ENTIRE canonical positive-gap delta arcs (not merely narrow bad intervals). Axioms exactly `[propext, Classical.choice, Quot.sound]`.
+
+**Further bridging source committed, not yet verified at this checkpoint:**
+
+* `PositiveToCriticalPhaseBridge.lean`: canonical quotient-one unit-gap slots embed into positive quotient gaps. Their starts require a real ring equality, not `rfl`, due to distinct real multiplication/division normalization forms. Fix committed, focused CI pending.
+* `PositiveArcBoundaryCutBridge.lean`: transports one full-positive-arc-safe phase through the previous embedding to the `UncoveredBoundaryColoring` separating bit at a matching cut phase. Not yet kernel-verified.
+* `PositiveArcSafeCutExistence.lean`: constructs the actual cut `c=x*pi/t` from a safe physical sample `x in [0,t)` and deduces separation of original boundary colour 0/n edges. Not yet kernel-verified.
+* Dedicated focus workflows cover the dependencies and use pinned Lean/Mathlib, plus `jsp000404_sorry_audit.py` requiring at most one allowed root WIP `sorry`.
+
+**Critical limitation:** the sole original `PlanarLowerBranchProofAdmittedWIP.lean` global non-reusing TRUE Boolean-hole/unreserved-surplus payment `sorry` remains. Neither stronger full-delta arcs nor boundary bipartite colouring imply dyadic capacity without an additional independently proved global accounting/charging theorem. No upstream complete-proof award claim is justified by this checkpoint.
