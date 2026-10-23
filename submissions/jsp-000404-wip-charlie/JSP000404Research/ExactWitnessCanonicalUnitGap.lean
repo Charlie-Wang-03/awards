@@ -43,28 +43,30 @@ theorem centre_gap_get_adjacent_eq
         rayThetaAt hp i
           (C.rays.get ⟨m, by omega⟩)) /
       Real.pi := by
-  change C.gaps[m]'(by rw [C.gaps_length]; omega) =
-    (C.angles[m + 1]'(by rw [C.angles_length]; exact hm) -
-      C.angles[m]'(by rw [C.angles_length]; omega)) / Real.pi
   have hmA : m + 1 < C.angles.length := by
     rw [C.angles_length]
     exact hm
-  simp only [CentreProjectiveCycle.gaps]
-  obtain ⟨a, xs, hangles⟩ :
-      ∃ a xs, C.angles = a :: xs := by
-    cases h : C.angles with
-    | nil => exact False.elim (C.angles_nonempty h)
-    | cons a xs => exact ⟨a, xs, rfl⟩
-  simp only [hangles]
-  have hmTail : m < xs.length := by
-    rw [hangles] at hmA
-    simpa using hmA
-  have hmDiff : m < (successiveDiffsFrom a xs).length := by
-    simpa [successiveDiffsFrom_length] using hmTail
-  simp only [normalizedProjectiveGaps, projectiveGaps, List.getElem_map]
-  rw [List.getElem_append_left hmDiff]
-  simpa using successiveDiffsFrom_getElem_eq_adjacent_diff
-    a xs m hmTail
+  have hCanonical :
+      C.gaps.get ⟨m, by rw [C.gaps_length]; omega⟩ =
+        (C.angles.get ⟨m + 1, hmA⟩ -
+          C.angles.get ⟨m, by omega⟩) / Real.pi := by
+    simp only [CentreProjectiveCycle.gaps]
+    obtain ⟨a, xs, hangles⟩ :
+        ∃ a xs, C.angles = a :: xs := by
+      cases h : C.angles with
+      | nil => exact False.elim (C.angles_nonempty h)
+      | cons a xs => exact ⟨a, xs, rfl⟩
+    simp only [hangles]
+    have hmTail : m < xs.length := by
+      rw [hangles] at hmA
+      simpa using hmA
+    have hmDiff : m < (successiveDiffsFrom a xs).length := by
+      simpa [successiveDiffsFrom_length] using hmTail
+    simp only [normalizedProjectiveGaps, projectiveGaps, List.getElem_map]
+    rw [List.getElem_append_left hmDiff]
+    simpa using successiveDiffsFrom_getElem_eq_adjacent_diff
+      a xs m hmTail
+  simpa only [CentreProjectiveCycle.angles, List.getElem_map] using hCanonical
 
 /-- The final canonical projective gap is the normalized wrap difference. -/
 theorem centre_gap_get_wrap_eq
