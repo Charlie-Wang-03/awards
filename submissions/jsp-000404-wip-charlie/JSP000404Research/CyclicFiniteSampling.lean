@@ -19,7 +19,7 @@ an integer offset and need not lie in the fundamental interval [0,t).
 
 namespace JSP000404Research
 
-def cyclicSamplePhase (t : ℝ) (M : ℕ) (r : Fin M) : ℝ :=
+noncomputable def cyclicSamplePhase (t : ℝ) (M : ℕ) (r : Fin M) : ℝ :=
   (r.val : ℝ) * t / (M : ℝ)
 
 theorem cyclicSamplePhase_nonneg
@@ -66,7 +66,7 @@ theorem fin_val_abs_sub_bounds
     have hr0 : (0 : ℝ) ≤ r.val := by positivity
     rw [abs_of_nonpos]
     · constructor <;> linarith
-    · exact_mod_cast hlt.le
+    · exact sub_nonpos.mpr (by exact_mod_cast hlt.le)
   · have h1Nat : s.val + 1 ≤ r.val := by omega
     have h1Cast :
         (s.val : ℝ) + 1 ≤ (r.val : ℝ) := by
@@ -77,7 +77,7 @@ theorem fin_val_abs_sub_bounds
     have hs0 : (0 : ℝ) ≤ s.val := by positivity
     rw [abs_of_nonneg]
     · constructor <;> linarith
-    · exact_mod_cast hgt.le
+    · exact sub_nonneg.mpr (by exact_mod_cast hgt.le)
 
 theorem cyclicSamplePhase_abs_sub
     {t : ℝ} {M : ℕ}
@@ -98,7 +98,6 @@ theorem cyclicSamplePhase_abs_sub
           (M : ℝ) by ring,
       abs_div, abs_mul, htAbs,
       abs_of_pos hMR]
-  ring
 
 theorem cyclicSamplePhase_cyclic_separation
     {t delta : ℝ} {M : ℕ}
@@ -198,7 +197,8 @@ theorem two_points_same_cyclicDeltaArcAnyBase_close
     rw [hcast] at hdiffUpper hdiffLower
     have hyxPos : 0 ≤ y - x := by
       nlinarith
-    rw [abs_of_nonpos (sub_nonpos.mpr hyxPos)]
+    have hxyNonpos : x - y ≤ 0 := by linarith
+    rw [abs_of_nonpos hxyNonpos]
     nlinarith
   · left
     have hcast :
