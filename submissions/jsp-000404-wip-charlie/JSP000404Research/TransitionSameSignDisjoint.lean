@@ -78,7 +78,8 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
     simpa [signs] using hsigns
   have hblocks :=
     blocks_eq_of_decompositions
-      hsigns' hstd (by omega)
+      hsigns' hstd (by
+        simpa [hlen, List.length_take, Nat.min_eq_left hsignLen.le])
   have hpreEq :
       signPre = signs.take qPre.length :=
     hblocks.1
@@ -113,21 +114,41 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
       b =
         raySignAt hp i
           ((first :: rest)[qPre.length + 1]'hidxRight) := by
-    rw [hbEq]
-    dsimp [signs, liftedCentreSignPath]
-    simp [hmRest]
+    have hsignMap :
+        signs[qPre.length] =
+          (rest.map (raySignAt hp i))[qPre.length]'(by
+            simpa using hmRest) := by
+      have hopt :
+          signs[qPre.length]? =
+            (rest.map (raySignAt hp i))[qPre.length]? := by
+        simp [signs, liftedCentreSignPath, hmRest]
+      rw [List.getElem?_eq_getElem hsignLen,
+        List.getElem?_eq_getElem (by simpa using hmRest)] at hopt
+      exact Option.some_inj.mp hopt
+    calc
+      b = signs[qPre.length] := hbEq
+      _ = (rest.map (raySignAt hp i))[qPre.length]'(by
+            simpa using hmRest) := hsignMap
+      _ = raySignAt hp i (rest[qPre.length]'hmRest) := by simp
+      _ = raySignAt hp i
+            ((first :: rest)[qPre.length + 1]'hidxRight) := by simp
+  have hmLeft : qPre.length < C.rays.length := by omega
   have hraysLeft :
-      (C.rays.get
-        ⟨qPre.length, by omega⟩) =
-      (first :: rest)[qPre.length]'hidxLeft := by
-    rw [hrays]
-    rfl
+      (C.rays.get ⟨qPre.length, hmLeft⟩) =
+        (first :: rest)[qPre.length]'hidxLeft := by
+    have hopt := congrArg
+      (fun rays : List (OtherVertex i) => rays[qPre.length]?) hrays
+    rw [List.getElem?_eq_getElem hmLeft,
+      List.getElem?_eq_getElem hidxLeft] at hopt
+    exact Option.some_inj.mp hopt
   have hraysRight :
-      (C.rays.get
-        ⟨qPre.length + 1, hmRay⟩) =
-      (first :: rest)[qPre.length + 1]'hidxRight := by
-    rw [hrays]
-    rfl
+      (C.rays.get ⟨qPre.length + 1, hmRay⟩) =
+        (first :: rest)[qPre.length + 1]'hidxRight := by
+    have hopt := congrArg
+      (fun rays : List (OtherVertex i) => rays[qPre.length + 1]?) hrays
+    rw [List.getElem?_eq_getElem hmRay,
+      List.getElem?_eq_getElem hidxRight] at hopt
+    exact Option.some_inj.mp hopt
   have hsamePair :
       raySignAt hp i
           (C.rays.get ⟨qPre.length, by omega⟩)
