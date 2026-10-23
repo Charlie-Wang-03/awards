@@ -72,7 +72,11 @@ theorem no_six_point_finite_period_transition_slot_cover
       exact_mod_cast hSbound
     have hmul : (S.card : ℝ) * delta ≤ 10 * delta :=
       mul_le_mul_of_nonneg_right hcardReal hdelta0
-    rw [ht] at hcredit
+    have hcredit' :
+        (n : ℝ) + delta ≤ (S.card : ℝ) * delta := by
+      calc
+        (n : ℝ) + delta = t := ht.symm
+        _ ≤ (S.card : ℝ) * delta := hcredit
     linarith
   · have hn4 : n = 4 := by omega
     by_cases hsmall : Fintype.card (GlobalUnitGapSlot C t) ≤ 9
@@ -82,8 +86,11 @@ theorem no_six_point_finite_period_transition_slot_cover
         exact_mod_cast hcardS
       have hmul : (S.card : ℝ) * delta ≤ 9 * delta :=
         mul_le_mul_of_nonneg_right hcardReal hdelta0
-      rw [ht, hn4] at hcredit
-      norm_num at hcredit
+      have hcredit4 :
+          (4 : ℝ) + delta ≤ (S.card : ℝ) * delta := by
+        calc
+          (4 : ℝ) + delta = t := by simpa [hn4] using ht.symm
+          _ ≤ (S.card : ℝ) * delta := hcredit
       linarith
     · have htenEq : Fintype.card (GlobalUnitGapSlot C t) = 10 := by
         omega
@@ -131,7 +138,11 @@ theorem no_six_point_finite_period_transition_slot_cover
       have hmul :
           ((S.erase u).card : ℝ) * delta ≤ 9 * delta :=
         mul_le_mul_of_nonneg_right hcardReal hdelta0
-      rw [ht4] at hlower
+      have hlower4 :
+          (4 : ℝ) + delta ≤ ((S.erase u).card : ℝ) * delta := by
+        calc
+          (4 : ℝ) + delta = t := ht4.symm
+          _ ≤ ((S.erase u).card : ℝ) * delta := hlower
       linarith
 
 #print axioms no_six_point_finite_period_transition_slot_cover
