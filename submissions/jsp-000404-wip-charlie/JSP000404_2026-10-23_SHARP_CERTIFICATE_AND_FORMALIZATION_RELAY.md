@@ -133,3 +133,22 @@ nonreusing payment inequality or the executable `sorry` in
 * Thus the **kernel-checked** local dependency is: (13 positive-gap slots, parameter (13δ<n) on the support-one/two branch) -> existence of a physical phase free of **every full positive-gap δ-arc** -> at that same phase every actual quotient-one cyclic critical interval is absent. This is stronger than the earlier direct positive-bad-subinterval escape.
 * `PositiveArcBoundaryCutBridge.lean`, `PositiveArcSafeCutExistence.lean`, and `SixPointBoundaryCutDichotomy.lean` have been committed with separate CI gates. They attempt to transport the safe phase into a genuine cut `c=πx/t` carrying a coherent boundary Boolean 2-colouring. **Not kernel-verified at this checkpoint.** Any old failed downstream CI built before the normalized-start correction is stale.
 * **Global original proof still open:** an actual non-reusing payment of true unhit Boolean holes and unreserved dyadic surplus against all genuine residual translated-loss, NET, rigid, soft, twin and collision debts, or an independently proved contradiction from failure of that payment. The original WIP `sorry` remains intentionally visible.
+
+
+## 2026-10-23 sixth continuation — phase-to-real-boundary-cut, verified
+
+**Newly kernel checked on the same research branch and pinned toolchain:**
+
+* [Run #39975283387](https://github.com/Charlie-Wang-03/awards/actions/runs/39975283387): `PositiveArcBoundaryCutBridge.lean` PASS, no `sorryAx`. It transports full-positive-delta-arc phase safety to the genuine cut-boundary 0/n graph's Boolean edge separation, via all canonical q=1 critical slots.
+* [Run #39978824071](https://github.com/Charlie-Wang-03/awards/actions/runs/39978824071): `PositiveArcSafeCutExistence.lean` PASS, 9,117/9,117 Lake targets. `exists_boundary_cut_coloring_of_full_positive_deltaArc_safe` constructs `c=x*pi/t in [0,pi)` from safe `x in [0,t)` and a real coherent `cutBoundaryWrapBit`. Printed axioms `[propext, Classical.choice, Quot.sound]`.
+* [Run #39978965116](https://github.com/Charlie-Wang-03/awards/actions/runs/39978965116): `SixPointBoundaryCutDichotomy.lean` PASS, 9,118/9,118 Lake targets. `six_point_hard_top_two_support_two_or_boundary_bipartite_cut`: under actual six-point `AngleCap` geometry, top/minima exponent pattern, uncompensated top deletion and `13*delta<n`, either TWO DISTINCT actual non-gaining support-two minima remain, or an actual projective cut has a coherent Boolean bipartite 0/n boundary graph. Printed axioms `[propext, Classical.choice, Quot.sound]`.
+
+**Additional proof engineering (under new focused CI when written):**
+`PositiveArcSafeCutExistence`'s bound on `x*pi/t<pi` was repaired by reordering the commutative product. `ExactWitnessSupportThreeRemainder` and `SixPointExactWitnessPinnedExactGap` had `lam` bound AFTER its use in `AngleCap p lam`, accidentally introducing an independent implicit `lam✝`; this binder issue was fixed. The five-gap list proof was further repaired to remove impossible `g in []` from its last membership alternative. `SixPointAllDeltaBoundaryAlternative` eliminates the parameter threshold for n>=7 since delta<1/2 implies 13delta<7<=n. All three are only **candidate sources pending their own focused CI PASS**, not verified claims.
+
+**No global prize proof:** the executable admitted `sorry` in
+`PlanarLowerBranchProofAdmittedWIP.lean` remains. Boundary 0/n
+bipartiteness does NOT alone provide the exact original-geometry,
+globally non-reusing TRUE hole / unreserved surplus allocation against
+all covered-loss, NET, twin, mixed-rigid, soft, and projected-loss
+debts. It would be unsound to infer the latter from this local cut.
