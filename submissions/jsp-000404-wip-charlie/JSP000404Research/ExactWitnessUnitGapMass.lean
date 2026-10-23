@@ -84,7 +84,7 @@ theorem exactWitness_unit_transition_gap_position_ordered
     rw [hlam]
     field_simp [ne_of_gt htpos, Real.pi_ne_zero]
   change rayThetaAt hp W.b ja ≤ rayThetaAt hp W.b kc at horder
-· rcases exactWitness_ordered_short_gap_or_wrap_eq_lam
+  rcases exactWitness_ordered_short_gap_or_wrap_eq_lam
       hp hn hdelta0 ht hlam W horder with hord | hwrap
   · left
     have hjk :
