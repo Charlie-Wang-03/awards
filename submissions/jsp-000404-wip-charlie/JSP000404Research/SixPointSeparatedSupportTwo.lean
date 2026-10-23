@@ -156,7 +156,6 @@ theorem five_survivor_weight_ge_six_point_profile_of_at_least_four_gains
   have hcoef : 9 ≤ 2 * good.card + (5 - good.card) := by
     omega
   have hpowPos : 0 < 2 ^ (n - 3) := by positivity
-  dsimp [S]
   nlinarith
 
 /-- Four or more actual top-deletion gain minima already compensate the top. -/
@@ -299,10 +298,11 @@ when top is deleted, and therefore cannot be positive-positive pinned at the
 top ray. -/
 theorem exists_separated_support_two_minimum_of_no_compensated_top
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
