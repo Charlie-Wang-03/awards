@@ -30,7 +30,7 @@ structure OrdinaryBadTriangleAt
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (t delta x : ℝ) : Prop where
+    (t delta x : ℝ) : Type where
   i j k : V
   hij : i ≠ j
   hik : i ≠ k
@@ -54,10 +54,11 @@ structure OrdinaryBadTriangleAt
 unit obstruction at the same phase. -/
 theorem ordinaryBadTriangleAt_implies_criticalUnit
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta x : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta x : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -76,9 +77,10 @@ theorem ordinaryBadTriangleAt_implies_criticalUnit
 ordinary bad-triangle certificate. -/
 theorem exists_halfGrid_phase_without_ordinary_bad_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
+    {p : V → Plane}
     {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     (hn4 : 4 ≤ n)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -112,9 +114,10 @@ theorem exists_halfGrid_phase_without_ordinary_bad_triangle
 /-- Contradiction form convenient for a future rotating-wrap bridge. -/
 theorem not_all_halfGrid_phases_have_ordinary_bad_triangle
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
+    {p : V → Plane}
     {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     (hn4 : 4 ≤ n)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
