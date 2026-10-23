@@ -72,7 +72,8 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
     have hq :
         (C i).rayIndex j ≤
           (C i).rayIndex ((C i).rays.get q) := by
-      simpa using hjLeQ
+      rw [(C i).rayIndex_get]
+      exact hjLeQ
     exact (C i).theta_le_of_rayIndex_le hq
   have hthetaRK :
       rayThetaAt hp i ((C i).rays.get r) ≤
@@ -80,7 +81,8 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
     have hr :
         (C i).rayIndex ((C i).rays.get r) ≤
           (C i).rayIndex k := by
-      simpa using hrLeK
+      rw [(C i).rayIndex_get]
+      exact hrLeK
     exact (C i).theta_le_of_rayIndex_le hr
 
   have hscale0 : 0 ≤ t / Real.pi := by
@@ -173,10 +175,16 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
   · rw [← hrEq]
     simpa using htrans
   · dsimp [alpha, s] at hxCritical ⊢
-    rw [hrEq] at hlow hsTop hxCritical
+    rw [hrEq] at hlow hxCritical
+    have hsTop' :
+        t * ((rayThetaAt hp i
+          ((C i).rays.get ⟨q.val + 1, hm⟩) -
+        rayThetaAt hp i ((C i).rays.get q)) / Real.pi) ≤
+          1 + delta := by
+      simpa [s, hrEq] using hsTop
     refine ⟨?_, ?_, ?_, ?_⟩
     · simpa using hlow
-    · simpa using hsTop
+    · simpa using hsTop'
     · simpa [normalizedRayThetaAt, normalizedRayTheta, mul_div_assoc]
         using hxCritical.1
     · simpa [normalizedRayThetaAt, normalizedRayTheta, mul_div_assoc]
