@@ -224,9 +224,9 @@ theorem six_point_two_exception_target_weight_eq
     rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁)
       (fun v => 2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v)) hb₂Mem]
     dsimp [S]
-    simp [sixPointTwoExceptionTarget,
-      htb₁, htb₂, hb₁₂]
-    omega
+    simp only [sixPointTwoExceptionTarget]
+    simp [htb₁, htb₂, hb₁₂, eq_comm,
+      Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
   rw [hdecomp, hsumS]
   have hn1 : n - 1 = (n - 4) + 3 := by omega
   have hn3 : n - 3 = (n - 4) + 1 := by omega
