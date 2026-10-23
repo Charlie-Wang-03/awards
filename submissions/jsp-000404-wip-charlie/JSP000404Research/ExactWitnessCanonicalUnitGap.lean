@@ -58,7 +58,7 @@ theorem centre_gap_get_adjacent_eq
       m < (successiveDiffsFrom a xs).length := by
     simpa [successiveDiffsFrom_length] using hmTail
   simp only [CentreProjectiveCycle.gaps]
-  rw [hangles]
+  simp only [hangles]
   simp only [normalizedProjectiveGaps, projectiveGaps,
     List.map_append, List.map_singleton]
   simp [hmDiff,
@@ -84,7 +84,7 @@ theorem centre_gap_get_wrap_eq
       Real.pi := by
   simp only [CentreProjectiveCycle.gaps,
       CentreProjectiveCycle.angles]
-  rw [hrays]
+  simp only [hrays]
   simp [normalizedProjectiveGaps, projectiveGaps]
 
 /-- Every exact maximum-angle witness has one canonical cyclic gap whose
