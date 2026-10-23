@@ -1,0 +1,59 @@
+name: JSP-000404 Focused Cut Critical to Cyclic Bad Phase
+
+on:
+  push:
+    branches:
+      - research/jsp-000404-sharp-centre
+    paths:
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutCriticalToCyclicBadPhase.lean"
+      - ".github/workflows/jsp000404-focused-cut-critical-cyclic-phase-bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jsp000404-cut-critical-cyclic-bad-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Audit executable proof holes
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: |
+          python3 scripts/jsp000404_sorry_audit.py --self-test
+          python3 scripts/jsp000404_sorry_audit.py --root JSP000404Research --allowed-wip JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean --wip-max-sorries 1
+      - name: Install elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh \
+            -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Lake packages
+        id: lake-packages
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: |
+            submissions/jsp-000404-wip-charlie/.lake/packages
+            submissions/jsp-000404-wip-charlie/lake-manifest.json
+          key: jsp000404-lake-v2-${{ runner.os }}-${{ hashFiles('submissions/jsp-000404-wip-charlie/lakefile.toml', 'submissions/jsp-000404-wip-charlie/lean-toolchain') }}
+      - name: Resolve dependencies if uncached
+        if: steps.lake-packages.outputs.cache-hit != 'true'
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake update
+      - name: Restore pinned Mathlib oleans
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake exe cache get
+      - name: Kernel-check actual adjacent cut-phase bad interval to periodic canonical gap
+        working-directory: submissions/jsp-000404-wip-charlie
+        run: lake build JSP000404Research.CutCriticalToCyclicBadPhase
+      - name: Scope
+        if: always()
+        run: echo 'Cut-to-cyclic transport is local geometry, not global Boolean-hole payment.'
