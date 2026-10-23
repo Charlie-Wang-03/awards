@@ -83,10 +83,11 @@ theorem globalPositiveGapStart_nonneg
     (u : GlobalPositiveGapSlot C t) :
     0 ≤ globalPositiveGapStart C t u := by
   unfold globalPositiveGapStart centrePositiveGapStart
-  exact normalizedRayTheta_nonneg
-    hp ht u.1
-      ((C u.1).rays.get
-        (gapToRayIndex (C u.1) u.2.1))
+  simpa only [normalizedRayTheta] using
+    (normalizedRayTheta_nonneg
+      hp ht u.1
+        ((C u.1).rays.get
+          (gapToRayIndex (C u.1) u.2.1)))
 
 theorem globalPositiveGapStart_lt_t
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -96,10 +97,11 @@ theorem globalPositiveGapStart_lt_t
     (u : GlobalPositiveGapSlot C t) :
     globalPositiveGapStart C t u < t := by
   unfold globalPositiveGapStart centrePositiveGapStart
-  exact normalizedRayTheta_lt_t
-    hp ht u.1
-      ((C u.1).rays.get
-        (gapToRayIndex (C u.1) u.2.1))
+  simpa only [normalizedRayTheta] using
+    (normalizedRayTheta_lt_t
+      hp ht u.1
+        ((C u.1).rays.get
+          (gapToRayIndex (C u.1) u.2.1)))
 
 theorem globalPositiveGapScaledLength_nonneg
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -197,7 +199,8 @@ theorem cyclicPositiveGapBadAt_width_bounds
   have hsq :
       globalPositiveGapScaledLength C t u ≤
         (globalPositiveGapQuotient C t u : ℝ) + delta := by
-    unfold positiveGapBadLeft positiveGapBadRight at hxL hxR
+    unfold positiveGapBadLeft at hxL
+    unfold positiveGapBadRight at hxR
     linarith
   constructor <;> linarith
 
