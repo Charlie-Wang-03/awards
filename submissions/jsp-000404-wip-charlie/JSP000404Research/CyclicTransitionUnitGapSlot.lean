@@ -19,7 +19,7 @@ therefore provides one common finite slot universe for all phases.
 namespace JSP000404Research
 
 /-- Convert a cyclic gap coordinate to the identically numbered ray index. -/
-def gapToRayIndex
+noncomputable def gapToRayIndex
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -43,7 +43,10 @@ def firstRayIndex
     {i : V}
     (C : CentreProjectiveCycle hp i) :
     Fin C.rays.length :=
-  ⟨0, List.length_pos.mpr C.nonempty⟩
+  ⟨0, by
+    cases h : C.rays with
+    | nil => exact False.elim (C.nonempty h)
+    | cons _ _ => simp [h]⟩
 
 /-- A cyclic gap coordinate is a genuine sign-transition position.
 
@@ -51,7 +54,7 @@ For an ordinary coordinate m this is the sign change m -> m+1.
 For the final cyclic coordinate it is the lifted wrap step
 last -> !first.
 -/
-def CentreUnitGapCyclicTransition
+noncomputable def CentreUnitGapCyclicTransition
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -67,7 +70,7 @@ def CentreUnitGapCyclicTransition
     raySignAt hp i (C.rays.get r) ≠
       !raySignAt hp i (C.rays.get (firstRayIndex C))
 
-def GlobalUnitGapCyclicTransition
+noncomputable def GlobalUnitGapCyclicTransition
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -93,6 +96,7 @@ theorem globalCyclicTransitionUnitGapSlot_card_le_all
     (t : ℝ) :
     Fintype.card (GlobalCyclicTransitionUnitGapSlot C t) ≤
       Fintype.card (GlobalUnitGapSlot C t) := by
+  classical
   let f : GlobalCyclicTransitionUnitGapSlot C t →
       GlobalUnitGapSlot C t :=
     fun u => u.1
@@ -119,6 +123,7 @@ theorem six_point_globalCyclicTransitionUnitGapSlot_card_le_ten
       ∀ i : V, i ≠ top →
         centreExponent (C i) t = n - 3) :
     Fintype.card (GlobalCyclicTransitionUnitGapSlot C t) ≤ 10 := by
+  classical
   exact
     (globalCyclicTransitionUnitGapSlot_card_le_all C t).trans
       (six_point_globalUnitGapSlot_card_le_ten
