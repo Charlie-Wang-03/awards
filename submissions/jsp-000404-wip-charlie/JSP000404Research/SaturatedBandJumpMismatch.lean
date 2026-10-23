@@ -45,13 +45,13 @@ theorem positiveCount_eq_add_mismatch_of_forall₂_le
           simp [listPositiveCount,
             zeroPositiveMismatchCount, ih]
         · simp [listPositiveCount,
-            zeroPositiveMismatchCount, hb0, ih]
+            zeroPositiveMismatchCount, hb0, ih] <;> omega
       · have hb0 : b ≠ 0 := by
           intro hb
           subst b
           omega
         simp [listPositiveCount,
-          zeroPositiveMismatchCount, hq0, hb0, ih]
+          zeroPositiveMismatchCount, hq0, hb0, ih] <;> omega
 
 theorem excess_mono_nat
     {q b : ℕ}
@@ -78,15 +78,13 @@ theorem forall₂_excess_eq_of_forall₂_le_of_listExponent_eq
       have htailLe :
           listExponent qs ≤ listExponent bs :=
         listExponent_le_of_forall₂_le hrest
-      have hheadEq : excess q = excess b := by
-        simp only [listExponent, List.map_cons,
-          List.sum_cons] at hexp
-        omega
+      have hsum :
+          excess q + listExponent qs =
+            excess b + listExponent bs := by
+        simpa [listExponent] using hexp
+      have hheadEq : excess q = excess b := by omega
       have htailEq :
-          listExponent qs = listExponent bs := by
-        simp only [listExponent, List.map_cons,
-          List.sum_cons] at hexp
-        omega
+          listExponent qs = listExponent bs := by omega
       exact List.Forall₂.cons hheadEq
         (ih htailEq)
 
@@ -110,8 +108,10 @@ theorem sum_eq_add_mismatch_of_exact_exponent
         exact (List.forall₂_cons.mp h).1
       have htailEq :
           listExponent qs = listExponent bs := by
-        simp only [listExponent, List.map_cons,
-          List.sum_cons] at hexp
+        have hsum :
+            excess q + listExponent qs =
+              excess b + listExponent bs := by
+          simpa [listExponent] using hexp
         have hqeb : excess q ≤ excess b :=
           excess_mono_nat hqb
         have htailLe :
@@ -123,12 +123,12 @@ theorem sum_eq_add_mismatch_of_exact_exponent
       · subst q
         by_cases hb0 : b = 0
         · subst b
-          simp [zeroPositiveMismatchCount, ih']
+          simp [zeroPositiveMismatchCount, ih'] <;> omega
         · have hb1 : b = 1 := by
             unfold excess at hheadEq
             omega
           subst b
-          simp [zeroPositiveMismatchCount, ih']
+          simp [zeroPositiveMismatchCount, ih'] <;> omega
       · have hb0 : b ≠ 0 := by
           intro hb
           subst b
@@ -137,7 +137,7 @@ theorem sum_eq_add_mismatch_of_exact_exponent
           unfold excess at hheadEq
           omega
         subst b
-        simp [zeroPositiveMismatchCount, hq0, ih']
+        simp [zeroPositiveMismatchCount, hq0, ih'] <;> omega
 
 /-- On a positive coordinate, exact exponent equality forces full equality of
 the dominated natural labels. -/
@@ -154,11 +154,13 @@ theorem eq_of_pos_of_exact_exponent_coordinate
       hle hexp
   have hlen := List.Forall₂.length_eq hle
   have hrel :
-      excess (qs.get rq) = excess (bs.get rb) :=
-    List.Forall₂.get heq rq rb hr
+      excess (qs.get rq) = excess (bs.get rb) := by
+    have hrb : rq.val < bs.length := by omega
+    simpa using (List.Forall₂.get heq rq.isLt hrb)
   have hleGet :
-      qs.get rq ≤ bs.get rb :=
-    List.Forall₂.get hle rq rb hr
+      qs.get rq ≤ bs.get rb := by
+    have hrb : rq.val < bs.length := by omega
+    simpa using (List.Forall₂.get hle rq.isLt hrb)
   have hbpos : 1 ≤ bs.get rb := hqpos.trans hleGet
   unfold excess at hrel
   omega
@@ -176,17 +178,13 @@ theorem forall₂_mismatch_is_unit_of_exact_exponent
   have heq :=
     forall₂_excess_eq_of_forall₂_le_of_listExponent_eq
       hle hexp
-  induction heq with
-  | nil =>
-      exact List.Forall₂.nil
-  | @cons q b qs bs hqb hrest ih =>
-      apply List.Forall₂.cons
-      · rintro ⟨hq0, hb0⟩
-        subst q
-        unfold excess at hqb
-        have hbPos : 1 ≤ b := Nat.one_le_iff_ne_zero.mpr hb0
-        omega
-      · exact ih
+  apply heq.imp
+  intro q b hqb
+  rintro ⟨hq0, hb0⟩
+  subst q
+  unfold excess at hqb
+  have hbPos : 1 ≤ b := Nat.one_le_iff_ne_zero.mpr hb0
+  omega
 
 /-- Numerical form: if the band-jump support has B positive positions and the
 quotient support has Q, then the mismatch count is exactly B-Q. -/
