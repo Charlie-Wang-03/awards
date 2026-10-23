@@ -107,7 +107,7 @@ theorem cyclicCriticalUnitBadAt_implies_deltaArc
     exact hxR
 
 /-- Eleven equally spaced sample phases on one normalized projective circle. -/
-def elevenPhase (t : ℝ) (r : Fin 11) : ℝ :=
+noncomputable def elevenPhase (t : ℝ) (r : Fin 11) : ℝ :=
   (r.val : ℝ) * t / 11
 
 theorem elevenPhase_nonneg
@@ -151,7 +151,7 @@ theorem fin11_val_abs_sub_bounds
       linarith
     rw [abs_of_nonpos]
     · constructor <;> linarith
-    · exact_mod_cast hlt.le
+    · omega
   · have h1Nat : s.val + 1 ≤ r.val := by omega
     have h1Cast :
         (s.val : ℝ) + 1 ≤ (r.val : ℝ) := by
@@ -166,7 +166,7 @@ theorem fin11_val_abs_sub_bounds
       linarith
     rw [abs_of_nonneg]
     · exact ⟨h1, h10⟩
-    · exact_mod_cast hgt.le
+    · omega
 
 theorem elevenPhase_abs_sub
     {t : ℝ} (ht : 0 < t)
@@ -180,8 +180,7 @@ theorem elevenPhase_abs_sub
           (s.val : ℝ) * t / 11 =
         (((r.val : ℝ) - (s.val : ℝ)) * t) / 11 by ring,
       abs_div, abs_mul, htAbs]
-  norm_num
-  ring
+  norm_num <;> ring
 
 /-- Any two distinct eleven-sample phases are separated by more than delta in
 both the direct and complementary circular directions whenever delta<t/11. -/
@@ -279,6 +278,9 @@ theorem two_points_same_cyclicDeltaArc_close
       hy0 hyT ⟨hyL, hyR⟩
   rcases hkx with rfl | rfl <;>
     rcases hky with rfl | rfl
+  all_goals
+    simp only [Int.cast_neg, Int.cast_one, Int.cast_zero,
+      neg_one_mul, zero_mul, add_zero, one_mul] at hxL hxR hyL hyR
   · left
     have hxy : x - y ≤ delta := by
       nlinarith
