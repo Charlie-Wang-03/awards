@@ -218,7 +218,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
 
   cases hqCase : qR with
   | nil =>
-      have : qR.length = 0 := by rw [hqCase]
+      have : qR.length = 0 := by simp [hqCase]
       rw [hqRLen] at this
       simp at this
   | cons qFirst qrest =>
@@ -246,7 +246,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
         exact List.dropLast_append_getLast hqrestNonempty
       have hqShape :
           qR = qFirst :: qmid ++ [qLast] := by
-        rw [hqCase, hqrestShape]
+        simp [hqCase, hqrestShape]
 
       let Amid := consecutiveRayAngles (p := p) i r rest
       let lastRay : OtherVertex i := (r :: rest).getLastD r
@@ -259,7 +259,8 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
           AR = AFirst :: Amid ++ [ALast] := by
         rw [hARpin]
         simp [cyclicRayAngles, consecutiveRayAngles,
-          topRay, AFirst, Amid, ALast, lastRay]
+          topRay, AFirst, Amid, ALast, lastRay,
+          List.getLastD_cons]
 
       have hmidLen :
           qmid.length = Amid.length := by
@@ -447,7 +448,8 @@ theorem separated_support_two_residual_zero_budget
         AFirst :: Amid ++ [ALast] := by
     rw [hangleRot]
     simp [cyclicRayAngles, consecutiveRayAngles,
-      AFirst, Amid, ALast, lastRay]
+      AFirst, Amid, ALast, lastRay,
+      List.getLastD_cons]
 
   have hmassShape :
       listZeroAngleMass
@@ -486,7 +488,7 @@ theorem separated_support_two_residual_zero_budget
     have hpreLen :
         (qFirst :: qmid).length =
           (AFirst :: Amid).length := by
-      simp [hmidLen]
+      simp [Amid, hmidLen]
     have hEq :=
       listZeroAngleMass_append_aligned
         (qFirst :: qmid) [qLast]
