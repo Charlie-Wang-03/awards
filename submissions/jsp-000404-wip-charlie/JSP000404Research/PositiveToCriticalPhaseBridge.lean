@@ -26,7 +26,10 @@ theorem unitGapAsPositiveGap_start
     (t : ℝ) (u : GlobalUnitGapSlot C t) :
     globalPositiveGapStart C t (unitGapAsPositiveGap C t u) =
       globalUnitGapStart C t u := by
-  rfl
+  unfold globalPositiveGapStart centrePositiveGapStart
+    globalUnitGapStart centreUnitGapStart
+    unitGapAsPositiveGap normalizedRayTheta
+  ring
 
 theorem full_positive_deltaArc_safe_implies_critical_unit_safe
     {V : Type*} [LinearOrder V] [Fintype V]
