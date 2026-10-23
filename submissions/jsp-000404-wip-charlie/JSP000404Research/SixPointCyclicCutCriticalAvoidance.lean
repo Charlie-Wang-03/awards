@@ -98,7 +98,65 @@ theorem six_point_exists_elevenPhase_without_cut_critical
       C htpos hdeltaHalf hbad
   exact hr u hu
 
+/-- The avoiding sample is an ACTUAL phase in the half-open physical period.
+This form is ready to substitute into a finite-period merged-wrap argument. -/
+theorem six_point_exists_period_phase_without_cut_critical
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {t delta : ℝ} {n : ℕ}
+    (hn4 : 4 ≤ n)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hcard : Fintype.card V = 6)
+    (top : V)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3) :
+    ∃ x : ℝ,
+      0 ≤ x ∧ x < t ∧
+        ¬ ExistsCutAdjacentCriticalBadAt C t delta x := by
+  obtain ⟨r, hr⟩ :=
+    six_point_exists_elevenPhase_without_cut_critical
+      C hn4 hn5 hdelta0 hdeltaHalf ht
+      hcard top hTop hMin
+  have htpos : 0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  exact ⟨elevenPhase t r,
+    elevenPhase_nonneg htpos.le r,
+    elevenPhase_lt_t htpos r, hr⟩
+
+/-- In particular, actual cut-adjacent critical intervals can never cover
+the entire physical period, even when the centre and cut vary by phase. -/
+theorem six_point_no_full_period_cut_critical_cover
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {t delta : ℝ} {n : ℕ}
+    (hn4 : 4 ≤ n)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hcard : Fintype.card V = 6)
+    (top : V)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3) :
+    ¬ (∀ x : ℝ, 0 ≤ x → x < t →
+      ExistsCutAdjacentCriticalBadAt C t delta x) := by
+  obtain ⟨x, hx0, hxt, hxNo⟩ :=
+    six_point_exists_period_phase_without_cut_critical
+      C hn4 hn5 hdelta0 hdeltaHalf ht
+      hcard top hTop hMin
+  intro hfull
+  exact hxNo (hfull x hx0 hxt)
+
 #print axioms cutCriticalBadAt_implies_cyclicUnitBadAt
 #print axioms six_point_exists_elevenPhase_without_cut_critical
+#print axioms six_point_exists_period_phase_without_cut_critical
+#print axioms six_point_no_full_period_cut_critical_cover
 
 end JSP000404Research
