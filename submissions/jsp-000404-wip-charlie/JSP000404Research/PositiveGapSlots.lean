@@ -46,7 +46,7 @@ abbrev GlobalPositiveGapSlot
     (t : ℝ) :=
   Σ i : V, CentrePositiveGap (C i) t
 
-def centrePositiveGapQuotient
+noncomputable def centrePositiveGapQuotient
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -55,17 +55,17 @@ def centrePositiveGapQuotient
     (u : CentrePositiveGap C t) : ℕ :=
   centreQuotient C t u.1
 
-def centrePositiveGapStart
+noncomputable def centrePositiveGapStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
     (C : CentreProjectiveCycle hp i)
     (t : ℝ)
     (u : CentrePositiveGap C t) : ℝ :=
-  normalizedRayTheta hp t i
-    (C.rays.get (gapToRayIndex C u.1))
+  t * (rayThetaAt hp i
+    (C.rays.get (gapToRayIndex C u.1)) / Real.pi)
 
-def centrePositiveGapScaledLength
+noncomputable def centrePositiveGapScaledLength
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     {i : V}
@@ -74,7 +74,7 @@ def centrePositiveGapScaledLength
     (u : CentrePositiveGap C t) : ℝ :=
   t * C.gaps.get u.1
 
-def globalPositiveGapQuotient
+noncomputable def globalPositiveGapQuotient
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -82,7 +82,7 @@ def globalPositiveGapQuotient
     (u : GlobalPositiveGapSlot C t) : ℕ :=
   centrePositiveGapQuotient (C u.1) t u.2
 
-def globalPositiveGapStart
+noncomputable def globalPositiveGapStart
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -90,7 +90,7 @@ def globalPositiveGapStart
     (u : GlobalPositiveGapSlot C t) : ℝ :=
   centrePositiveGapStart (C u.1) t u.2
 
-def globalPositiveGapScaledLength
+noncomputable def globalPositiveGapScaledLength
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -134,12 +134,10 @@ theorem centrePositiveGap_card_eq_positiveSupport
   have hcard :
       Fintype.card (CentrePositiveGap C t) = S.card := by
     apply Fintype.subtype_card S
-    intro r
-    simp [S]
   rw [hcard]
-  simpa [S] using
+  simpa [S, positiveIndexSet, Nat.pos_iff_ne_zero] using
     (positiveIndexSet_card_eq_positiveSupport
-      (centreQuotient C t)).symm
+      (centreQuotient C t))
 
 theorem globalPositiveGapSlot_card_eq_sum_positiveSupport
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -172,8 +170,7 @@ theorem centre_positiveSupport_le_one_of_exponent_n_sub_one
   have h :=
     positiveSupport_le_deficit
       (centreQuotient C t) n hsum
-  rw [← show floorExcess (centreQuotient C t) =
-      centreExponent C t by rfl, hexp] at h
+  change floorExcess (centreQuotient C t) = _ at hexp
   omega
 
 theorem centre_positiveSupport_le_three_of_exponent_n_sub_three
@@ -194,8 +191,7 @@ theorem centre_positiveSupport_le_three_of_exponent_n_sub_three
   have h :=
     positiveSupport_le_deficit
       (centreQuotient C t) n hsum
-  rw [← show floorExcess (centreQuotient C t) =
-      centreExponent C t by rfl, hexp] at h
+  change floorExcess (centreQuotient C t) = _ at hexp
   omega
 
 theorem six_point_globalPositiveGapSlot_card_le_sixteen
@@ -241,8 +237,9 @@ theorem six_point_globalPositiveGapSlot_card_le_sixteen
         intro i hi
         exact hother i (Finset.mem_erase.mp hi).1
     _ = 16 := by
-        rw [Finset.card_erase_of_mem (Finset.mem_univ top)]
-        simp [hcard]
+        have hfive : (Finset.univ.erase top : Finset V).card = 5 := by
+          simp [Finset.card_erase_of_mem, hcard]
+        simp [Finset.sum_const, hfive]
 
 #print axioms centrePositiveGap_card_eq_positiveSupport
 #print axioms globalPositiveGapSlot_card_eq_sum_positiveSupport
