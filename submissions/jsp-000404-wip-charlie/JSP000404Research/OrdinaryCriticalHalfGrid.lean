@@ -45,42 +45,34 @@ theorem ordinaryCriticalUnitBadAt_pair_distance_le_delta
     omega
   subst my
   subst mx
+  let m : ℕ := u.2.1.val
   let alpha :=
     normalizedRayThetaAt hp t u.1
-      ((C u.1).rays.get ⟨mx, by omega⟩)
+      ((C u.1).rays.get ⟨m, by omega⟩)
   let s :=
     t * ((rayThetaAt hp u.1
-        ((C u.1).rays.get ⟨mx + 1, hmx⟩) -
+        ((C u.1).rays.get ⟨m + 1, hmx⟩) -
       rayThetaAt hp u.1
-        ((C u.1).rays.get ⟨mx, by omega⟩)) / Real.pi)
+        ((C u.1).rays.get ⟨m, by omega⟩)) / Real.pi)
+  have hs1 : 1 ≤ s := by
+    simpa [s, m] using hs1X
+  have hsTop : s ≤ 1 + delta := by
+    simpa [s, m] using hsTopX
+  have hdelta0 : 0 ≤ delta := by linarith
   have hwidth :
       criticalBadRight alpha delta -
-          criticalBadLeft alpha s
-        ≤ delta := by
-    exact
-      (critical_bad_width_bounds
-        (alpha := alpha) (s := s) (delta := delta)
-        (by
-          have := hsTopX
-          have := hs1X
-          linarith)
-        hs1X hsTopX).2
-  have hxy :
-      x - y ≤ delta := by
-    have : x - y ≤
-        criticalBadRight alpha delta -
-          criticalBadLeft alpha s := by
-      dsimp [alpha, s] at hxL hxR hyL hyR ⊢
-      linarith
-    linarith
-  have hyx :
-      y - x ≤ delta := by
-    have : y - x ≤
-        criticalBadRight alpha delta -
-          criticalBadLeft alpha s := by
-      dsimp [alpha, s] at hxL hxR hyL hyR ⊢
-      linarith
-    linarith
+          criticalBadLeft alpha s ≤ delta :=
+    (critical_bad_width_bounds
+      (alpha := alpha) (s := s) (delta := delta)
+      hdelta0 hs1 hsTop).2
+  have hxLo : criticalBadLeft alpha s ≤ x := by
+    simpa [alpha, s, m] using hxL
+  have hyLo : criticalBadLeft alpha s ≤ y := by
+    simpa [alpha, s, m] using hyL
+  have hxHi : x ≤ criticalBadRight alpha delta := by
+    simpa [alpha, m] using hxR
+  have hyHi : y ≤ criticalBadRight alpha delta := by
+    simpa [alpha, m] using hyR
   rw [abs_le]
   constructor <;> linarith
 
