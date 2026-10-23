@@ -151,7 +151,9 @@ theorem fin11_val_abs_sub_bounds
       linarith
     rw [abs_of_nonpos]
     · constructor <;> linarith
-    · omega
+    · have hle : (r.val : ℝ) ≤ (s.val : ℝ) := by
+        exact_mod_cast hlt.le
+      linarith
   · have h1Nat : s.val + 1 ≤ r.val := by omega
     have h1Cast :
         (s.val : ℝ) + 1 ≤ (r.val : ℝ) := by
@@ -166,7 +168,9 @@ theorem fin11_val_abs_sub_bounds
       linarith
     rw [abs_of_nonneg]
     · exact ⟨h1, h10⟩
-    · omega
+    · have hle : (s.val : ℝ) ≤ (r.val : ℝ) := by
+        exact_mod_cast hgt.le
+      linarith
 
 theorem elevenPhase_abs_sub
     {t : ℝ} (ht : 0 < t)
