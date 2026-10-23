@@ -30,8 +30,8 @@ theorem exactWitness_unit_transition_occurs_of_ordered
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -127,7 +127,9 @@ theorem exactWitness_unit_transition_occurs_of_ordered
       centre_transitionQuotientOccurs_at_adjacent_index
         hp C t first rest hrays m hmRays hchange
     have hqOne :
-        (quotientList t C.gaps)[m] = 1 := by
+        (quotientList t C.gaps)[m]'(by
+          rw [quotientList_length, C.gaps_length]
+          omega) = 1 := by
       rw [centre_adjacent_quotient_getElem_eq C t m hm]
       rw [hmLow, hmHigh]
       dsimp [ja, kc] at hordinary
@@ -150,7 +152,7 @@ theorem exactWitness_unit_transition_occurs_of_ordered
     have hfirstLeA :
         rayThetaAt hp W.b first ≤
           rayThetaAt hp W.b ja := by
-      rcases hjaMem with hEq | htail
+      rcases List.mem_cons.mp hjaMem with hEq | htail
       · simpa [hEq]
       · rw [List.pairwise_cons] at hsorted
         exact hsorted.1 ja htail
@@ -249,8 +251,8 @@ theorem exactWitness_unit_transition_occurs
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -290,8 +292,8 @@ theorem exactWitness_unique_transition_decomposition_unit
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -309,9 +311,10 @@ theorem exactWitness_unique_transition_decomposition_unit
         List.replicate pre.length (raySignAt hp W.b first) ++
           List.replicate (post.length + 1)
             (!raySignAt hp W.b first) := by
-  have htpos :
-      0 < t :=
-    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have htpos : 0 < t := by
+    rw [ht]
+    have hnR : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have htone : 1 ≤ t := by
     rw [ht]
     have hnR : (1 : ℝ) ≤ n := by exact_mod_cast (show 1 ≤ n by omega)
