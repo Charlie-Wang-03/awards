@@ -1310,13 +1310,13 @@ import JSP000404Research.CutSupportTwoBadSmallAngle
 import JSP000404Research.TwoScaledSmallAngleContradiction
 
 
-import JSP000404Research.CutSupportThreeBadSameBandAngle
+-- Omitted nonexistent research module: CutSupportThreeBadSameBandAngle
 
 
 import JSP000404Research.CutSupportOneBadPalette
 
 
-import JSP000404Research.CutSupportOneBadConsecutivePalette
+-- Omitted nonexistent research module: CutSupportOneBadConsecutivePalette
 
 
 import JSP000404Research.CutBadOrdinaryMismatchShape
