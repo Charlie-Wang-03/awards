@@ -1679,3 +1679,6 @@ import JSP000404Research.SixPointSafeCutSignUniformity
 -- Kernel-verified n >= 8 periodic avoidance for ALL positive quotient gaps q >= 1.
 -- This is not a non-reusing TRUE-hole or dyadic payment.
 import JSP000404Research.PositiveGapSeventeenPhase
+
+-- Kernel-verified non-gaining separated support-two minimum in uncompensated top deletion.
+import JSP000404Research.SixPointSeparatedSupportTwo
