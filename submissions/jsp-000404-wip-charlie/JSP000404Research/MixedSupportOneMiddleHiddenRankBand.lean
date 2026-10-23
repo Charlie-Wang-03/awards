@@ -64,7 +64,7 @@ theorem mixed_support_one_two_middle_hidden_rank_bands_same_side
   have hbMiddle :
       SupportThreePinnedMiddleShape
         (t := t) hp
-        (show top ≠ b by simpa using hbTop)
+        (show top ≠ b by exact hbTop.symm)
         (C b) :=
     support_three_middle_of_no_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf
@@ -72,7 +72,7 @@ theorem mixed_support_one_two_middle_hidden_rank_bands_same_side
   have hcMiddle :
       SupportThreePinnedMiddleShape
         (t := t) hp
-        (show top ≠ c by simpa using hcTop)
+        (show top ≠ c by exact hcTop.symm)
         (C c) :=
     support_three_middle_of_no_compensated_minimum_deletion
       hp hcap C hcard hn5 hdelta0 hdeltaHalf
@@ -89,13 +89,13 @@ theorem mixed_support_one_two_middle_hidden_rank_bands_same_side
       MiddleHiddenRankBand p top b :=
     nonexposed_middle_hidden_rank_band
       hp hcap htpos htone hlam hcard
-      (show top ≠ b by simpa using hbTop)
+      (show top ≠ b by exact hbTop.symm)
       (C b) hbSup3 hbNotExp hbMiddle
   have hcBand :
       MiddleHiddenRankBand p top c :=
     nonexposed_middle_hidden_rank_band
       hp hcap htpos htone hlam hcard
-      (show top ≠ c by simpa using hcTop)
+      (show top ≠ c by exact hcTop.symm)
       (C c) hcSup3 hcNotExp hcMiddle
 
   have hsame :
