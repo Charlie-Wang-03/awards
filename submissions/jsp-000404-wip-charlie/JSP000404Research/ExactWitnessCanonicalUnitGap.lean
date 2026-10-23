@@ -57,19 +57,10 @@ theorem centre_gap_get_adjacent_eq
   have hmDiff :
       m < (successiveDiffsFrom a xs).length := by
     simpa [successiveDiffsFrom_length] using hmTail
-  have hmap :
-      C.rays.map (rayThetaAt hp i) = a :: xs := hangles
-  simp only [CentreProjectiveCycle.gaps,
-    CentreProjectiveCycle.angles, normalizedProjectiveGaps,
-    projectiveGaps, hmap]
-  have hmapLen :
-      m < ((successiveDiffsFrom a xs).map
-        (fun g => g / Real.pi)).length := by
-    simpa [successiveDiffsFrom_length] using hmTail
-  simp only [List.getElem_append_left hmapLen, List.getElem_map]
-  simpa using congrArg (fun g : ℝ => g / Real.pi)
-    (successiveDiffsFrom_getElem_eq_adjacent_diff
-      a xs m hmTail)
+  simp only [CentreProjectiveCycle.gaps, hangles]
+  simp [normalizedProjectiveGaps, projectiveGaps, hmDiff,
+    successiveDiffsFrom_getElem_eq_adjacent_diff a xs m hmTail,
+    CentreProjectiveCycle.angles, hangles]
 
 /-- The final canonical projective gap is the normalized wrap difference. -/
 theorem centre_gap_get_wrap_eq
@@ -88,13 +79,9 @@ theorem centre_gap_get_wrap_eq
         rayThetaAt hp i (rest.getLastD first)) /
       Real.pi := by
   simp only [CentreProjectiveCycle.gaps,
-    CentreProjectiveCycle.angles, normalizedProjectiveGaps,
-    projectiveGaps, hrays]
-  have hlen :
-      (successiveDiffsFrom (rayThetaAt hp i first)
-        (rest.map (rayThetaAt hp i))).length = rest.length := by
-    simp [successiveDiffsFrom_length]
-  simp [List.getElem_append_right, hlen, map_getLastD]
+    CentreProjectiveCycle.angles, hrays]
+  simp [normalizedProjectiveGaps, projectiveGaps,
+    successiveDiffsFrom_length, map_getLastD]
 
 /-- Every exact maximum-angle witness has one canonical cyclic gap whose
 natural quotient and exact scaled width are both exactly one. -/
