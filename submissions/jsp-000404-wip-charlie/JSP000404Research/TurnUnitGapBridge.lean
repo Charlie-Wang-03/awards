@@ -182,10 +182,10 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
           (fun g => g / Real.pi)).length := by
       simpa [successiveDiffsFrom_length] using hmTail
     simp only [normalizedProjectiveGaps, projectiveGaps,
-      List.getElem_append_left hmMap, List.getElem_map]
-    simpa using congrArg (fun g : ℝ => g / Real.pi)
-      (successiveDiffsFrom_getElem_eq_adjacent_diff
-        a xs m hmTail)
+      List.getElem_map]
+    rw [List.getElem_append_left hmDiff]
+    simpa using successiveDiffsFrom_getElem_eq_adjacent_diff
+      a xs m hmTail
   change t * C.gaps[m] = _
   rw [hgap]
   simp [CentreProjectiveCycle.angles]
@@ -212,10 +212,11 @@ theorem centreTurnUnitGapScaledLength_eq_wrap
     apply Fin.ext
     exact hu
   rw [hr]
-  simp only [CentreProjectiveCycle.gaps,
-      CentreProjectiveCycle.angles, hrays]
-  simp [normalizedProjectiveGaps, projectiveGaps,
-    successiveDiffsFrom_length, map_getLastD]
+  congr 1
+  simp [CentreProjectiveCycle.gaps, CentreProjectiveCycle.angles,
+    normalizedProjectiveGaps, projectiveGaps, hrays,
+    successiveDiffsFrom_length, map_getLastD,
+    List.getElem_append_right]
 
 /-- Start of an ordinary constructed slot is the normalized direction at the
 left endpoint of the corresponding adjacent canonical gap. -/
