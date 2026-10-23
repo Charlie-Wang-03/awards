@@ -69,13 +69,19 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
   have hthetaJQ :
       rayThetaAt hp i j ≤
         rayThetaAt hp i ((C i).rays.get q) := by
-    have h := (C i).theta_le_of_rayIndex_le hjLeQ
-    simpa [(C i).get_rayIndex] using h
+    have hq :
+        (C i).rayIndex j ≤
+          (C i).rayIndex ((C i).rays.get q) := by
+      simpa using hjLeQ
+    exact (C i).theta_le_of_rayIndex_le hq
   have hthetaRK :
       rayThetaAt hp i ((C i).rays.get r) ≤
         rayThetaAt hp i k := by
-    have h := (C i).theta_le_of_rayIndex_le hrLeK
-    simpa [(C i).get_rayIndex] using h
+    have hr :
+        (C i).rayIndex ((C i).rays.get r) ≤
+          (C i).rayIndex k := by
+      simpa using hrLeK
+    exact (C i).theta_le_of_rayIndex_le hr
 
   have hscale0 : 0 ≤ t / Real.pi := by
     exact div_nonneg ht.le Real.pi_pos.le
@@ -166,8 +172,15 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
     exact huval
   · rw [← hrEq]
     simpa using htrans
-  · dsimp [alpha, s] at hlow hsTop hxCritical ⊢
-    exact ⟨hlow, hsTop, hxCritical.1, hxCritical.2⟩
+  · dsimp [alpha, s] at hxCritical ⊢
+    rw [hrEq] at hlow hsTop hxCritical
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · simpa using hlow
+    · simpa using hsTop
+    · simpa [normalizedRayThetaAt, normalizedRayTheta, mul_div_assoc]
+        using hxCritical.1
+    · simpa [normalizedRayThetaAt, normalizedRayTheta, mul_div_assoc]
+        using hxCritical.2
 
 /-- Unordered two-ray version. -/
 theorem transition_seed_parent_bad_has_critical_unit
@@ -254,11 +267,11 @@ theorem triangle_parent_bad_has_ordinary_critical_unit
     have hjiArc :
         L ≤ normalizedRayTheta hp t i ji ∧
         normalizedRayTheta hp t i ji ≤ L + S := by
-      simpa [ji, normalizedEdgeTheta, normalizedRayTheta] using hijArc
+      simpa [ji, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hijArc
     have hkiArc :
         L ≤ normalizedRayTheta hp t i ki ∧
         normalizedRayTheta hp t i ki ≤ L + S := by
-      simpa [ki, normalizedEdgeTheta, normalizedRayTheta] using hikArc
+      simpa [ki, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hikArc
     have hjki : ji ≠ ki := by
       intro h
       apply hjk
@@ -278,11 +291,11 @@ theorem triangle_parent_bad_has_ordinary_critical_unit
         L ≤ normalizedRayTheta hp t j ijj ∧
         normalizedRayTheta hp t j ijj ≤ L + S := by
       rw [← hijRev] at hijArc
-      simpa [ijj, normalizedEdgeTheta, normalizedRayTheta] using hijArc
+      simpa [ijj, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hijArc
     have hkjArc :
         L ≤ normalizedRayTheta hp t j kj ∧
         normalizedRayTheta hp t j kj ≤ L + S := by
-      simpa [kj, normalizedEdgeTheta, normalizedRayTheta] using hjkArc
+      simpa [kj, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hjkArc
     have hne : ijj ≠ kj := by
       intro h
       apply hik
@@ -306,12 +319,12 @@ theorem triangle_parent_bad_has_ordinary_critical_unit
         L ≤ normalizedRayTheta hp t k ik ∧
         normalizedRayTheta hp t k ik ≤ L + S := by
       rw [← hikRev] at hikArc
-      simpa [ik, normalizedEdgeTheta, normalizedRayTheta] using hikArc
+      simpa [ik, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hikArc
     have hjkArcK :
         L ≤ normalizedRayTheta hp t k jk ∧
         normalizedRayTheta hp t k jk ≤ L + S := by
       rw [← hjkRev] at hjkArc
-      simpa [jk, normalizedEdgeTheta, normalizedRayTheta] using hjkArc
+      simpa [jk, normalizedEdgeTheta, normalizedRayTheta, mul_div_assoc] using hjkArc
     have hne : ik ≠ jk := by
       intro h
       apply hij
