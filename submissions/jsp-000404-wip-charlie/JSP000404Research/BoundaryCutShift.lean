@@ -36,7 +36,7 @@ namespace JSP000404Research
 
 open Real
 
-def shiftBackProjectiveCut (c d : ℝ) : ℝ :=
+noncomputable def shiftBackProjectiveCut (c d : ℝ) : ℝ :=
   if d ≤ c then c - d else c + Real.pi - d
 
 theorem shiftBackProjectiveCut_nonneg
@@ -180,7 +180,7 @@ theorem cutRayTheta_shiftBack_of_ge
       rw [if_neg hnotS, if_neg htc]
       ring
 
-def boundaryShortCut (t delta c : ℝ) : ℝ :=
+noncomputable def boundaryShortCut (t delta c : ℝ) : ℝ :=
   shiftBackProjectiveCut c (delta * Real.pi / t)
 
 theorem boundaryShiftAngle_nonneg
@@ -279,8 +279,7 @@ theorem cutNormalizedRayTheta_boundaryShort_of_lt_n
         (n : ℝ) =
           t * (Real.pi - d) / Real.pi := by
       rw [pi_sub_boundaryShift_eq_n_scale htpos ht]
-      field_simp [Real.pi_ne_zero]
-      ring
+      field_simp [Real.pi_ne_zero] <;> ring
     rw [hscale] at hx
     have hcoef : 0 < t / Real.pi := div_pos htpos Real.pi_pos
     have hrewrite :
@@ -290,15 +289,19 @@ theorem cutNormalizedRayTheta_boundaryShort_of_lt_n
         t * (Real.pi - d) / Real.pi =
           (t / Real.pi) * (Real.pi - d) := by ring
     rw [hrewrite, hrewrite2] at hx
-    exact (mul_lt_mul_left hcoef).mp hx
+    by_contra hnot
+    have hge : Real.pi - d ≤ cutRayTheta hp c i j :=
+      le_of_not_gt hnot
+    have hscaled :=
+      mul_le_mul_of_nonneg_left hge hcoef.le
+    linarith
   have htheta :=
     cutRayTheta_shiftBack_of_lt
       hp hc0 hcpi hd0 hdpi i j hthreshold
   unfold boundaryShortCut cutNormalizedRayTheta
   rw [htheta]
   dsimp [d]
-  field_simp [Real.pi_ne_zero, ne_of_gt htpos]
-  ring
+  field_simp [Real.pi_ne_zero, ne_of_gt htpos] <;> ring
 
 /-- Exact normalized rotation formula on/above band n. -/
 theorem cutNormalizedRayTheta_boundaryShort_of_ge_n
@@ -328,8 +331,7 @@ theorem cutNormalizedRayTheta_boundaryShort_of_ge_n
         (n : ℝ) =
           t * (Real.pi - d) / Real.pi := by
       rw [pi_sub_boundaryShift_eq_n_scale htpos ht]
-      field_simp [Real.pi_ne_zero]
-      ring
+      field_simp [Real.pi_ne_zero] <;> ring
     rw [hscale] at hx
     have hcoef : 0 < t / Real.pi := div_pos htpos Real.pi_pos
     have hrewrite :
@@ -339,7 +341,12 @@ theorem cutNormalizedRayTheta_boundaryShort_of_ge_n
         t * (Real.pi - d) / Real.pi =
           (t / Real.pi) * (Real.pi - d) := by ring
     rw [hrewrite, hrewrite2] at hx
-    exact (mul_le_mul_left hcoef).mp hx
+    by_contra hnot
+    have hgt : cutRayTheta hp c i j < Real.pi - d :=
+      lt_of_not_ge hnot
+    have hscaled :=
+      mul_lt_mul_of_pos_left hgt hcoef
+    linarith
   have htheta :=
     cutRayTheta_shiftBack_of_ge
       hp hc0 hcpi hd0 hdpi i j hthreshold
@@ -347,8 +354,7 @@ theorem cutNormalizedRayTheta_boundaryShort_of_ge_n
   rw [htheta]
   dsimp [d]
   rw [pi_sub_boundaryShift_eq_n_scale htpos ht]
-  field_simp [Real.pi_ne_zero, ne_of_gt htpos]
-  ring
+  field_simp [Real.pi_ne_zero, ne_of_gt htpos] <;> ring
 
 /-- Old band 0 is contained in the short boundary arc after shifting the cut. -/
 theorem boundaryShort_mem_of_band_zero
@@ -425,12 +431,10 @@ theorem boundaryShort_phase_eq_or_add_period
   by_cases hdc : d ≤ c
   · rw [if_pos hdc]
     left
-    dsimp [d]
     field_simp [Real.pi_ne_zero, ne_of_gt htpos]
     ring
   · rw [if_neg hdc]
     right
-    dsimp [d]
     field_simp [Real.pi_ne_zero, ne_of_gt htpos]
     ring
 
