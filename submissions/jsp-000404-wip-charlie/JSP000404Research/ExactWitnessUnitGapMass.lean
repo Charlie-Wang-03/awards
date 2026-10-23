@@ -144,10 +144,16 @@ theorem exactWitness_unit_transition_gap_position_ordered
       exact exactWitness_ordinary_short_endpoint_sign_ne
         hp hn hdelta0 ht hlam W horder
         (by simpa [ja, kc] using hord)
-    refine Or.inl ⟨m, hmRays, ?_, hsign⟩
-    rw [huTheta, hvTheta]
-    dsimp [ja, kc] at hord
-    rw [hord, hscale]
+    refine Or.inl ⟨m, hmRays, ?_⟩
+    change
+      t * ((rayThetaAt hp W.b v - rayThetaAt hp W.b u) /
+        Real.pi) = 1 ∧
+        raySignAt hp W.b u ≠ raySignAt hp W.b v
+    constructor
+    · rw [huTheta, hvTheta]
+      dsimp [ja, kc] at hord
+      rw [hord, hscale]
+    · exact hsign
   · right
     obtain ⟨first, rest, hrays⟩ :
         ∃ first rest, C.rays = first :: rest := by
@@ -167,7 +173,7 @@ theorem exactWitness_unit_transition_gap_position_ordered
     have hfirstLeA :
         rayThetaAt hp W.b first ≤
           rayThetaAt hp W.b ja := by
-      rcases hjaMem with heq | htail
+      rcases List.mem_cons.mp hjaMem with heq | htail
       · simpa [heq]
       · exact (List.pairwise_cons.mp hsorted).1 ja htail
     have hfirstGeA :
@@ -213,7 +219,10 @@ theorem exactWitness_unit_transition_gap_position_ordered
       dsimp [last]
       cases rest with
       | nil => simp
-      | cons r rs => simp [List.getLast_eq_getLastD, List.getLastD_cons]
+      | cons r rs =>
+          cases rs with
+          | nil => simp [List.getLast_eq_getLastD]
+          | cons x xs => simp [List.getLast_eq_getLastD]
     have hfirstSign :
         raySignAt hp W.b first =
           raySignAt hp W.b ja :=
@@ -231,7 +240,8 @@ theorem exactWitness_unit_transition_gap_position_ordered
       exact exactWitness_wrap_short_endpoint_lifted_sign_ne
         hp hn hdelta0 ht hlam W horder
         (by simpa [ja, kc] using hwrap)
-    refine Or.inr ⟨first, rest, hrays, ?_, hsign⟩
+    refine Or.inr ⟨first, rest, ?_⟩
+    refine ⟨hrays, ?_, hsign⟩
     rw [hlastD, hfirstEq, hlastEq]
     dsimp [ja, kc] at hwrap
     rw [hwrap, hscale]
