@@ -136,7 +136,14 @@ theorem mixed_support_one_support_two_hidden_large_angle
         hp (by omega : 1 ≤ n)
         hdelta0 hdeltaHalf ht
         centre hcentre Cfam cert
-    simpa [cert, Cfam, centre, Fin.sum_univ_succ, Fin.cases] using h
+    have he0 : (cert (0 : Fin 3)).qe = HTop.qe := by rfl
+    have he1 : (cert (1 : Fin 3)).qe = HA.qe := by rfl
+    have he2 : (cert (2 : Fin 3)).qe = HB.qe := by rfl
+    have hsum :
+        (∑ r : Fin 3, (cert r).qe) =
+          HTop.qe + HA.qe + HB.qe := by
+      simpa [Fin.sum_univ_succ, he0, he1, he2, add_assoc]
+    exact hsum ▸ h
 
   have hqeBle : qeB ≤ 2 := by
     rw [hqTop, hqA, hHBqe] at hpack
