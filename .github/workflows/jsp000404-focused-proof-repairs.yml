@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointTwoNonGainers.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessCanonicalUnitGap.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/TurnUnitPhaseInterval.lean"
       - ".github/workflows/jsp000404-focused-proof-repairs.yml"
   workflow_dispatch:
@@ -54,7 +55,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check corrected two-nongainer and turn-phase modules
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SixPointTwoNonGainers JSP000404Research.TurnUnitPhaseInterval
+        run: lake build JSP000404Research.SixPointTwoNonGainers JSP000404Research.TurnUnitPhaseInterval JSP000404Research.ExactWitnessCanonicalUnitGap
       - name: Scope
         if: always()
         run: echo 'Focused local Lean repairs only; global Boolean-hole/dyadic payment remains open.'
