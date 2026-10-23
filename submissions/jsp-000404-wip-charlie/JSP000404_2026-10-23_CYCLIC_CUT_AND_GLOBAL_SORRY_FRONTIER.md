@@ -110,3 +110,16 @@ The status of the upstream prize should NOT be changed to solved.
   audited local repair; see the final result of
   [39934051047](https://github.com/Charlie-Wang-03/awards/actions/runs/39934051047).
   No whole-tree green CI is claimed.
+
+## Remainder repair follow-up / explicit CI status
+
+The targeted support-three fractional remainder check
+[39934051047](https://github.com/Charlie-Wang-03/awards/actions/runs/39934051047)
+FAILED during elaboration of an index into the coercion-generated List monad
+conversion. This was **not** a mathematical counterexample. The next commit
+replaces that brittle dependent `Forall₂.get` cast with the direct
+nonnegative Real natural-floor inequality `Nat.floor_le`, while retaining
+the independent aligned-list remainder-mass proof. The fresh focused run is
+[39934702721](https://github.com/Charlie-Wang-03/awards/actions/runs/39934702721).
+Classify the pointwise remainder theorem as **pending**, not as kernel-verified,
+until this check is green and `#print axioms` has no `sorryAx`.
