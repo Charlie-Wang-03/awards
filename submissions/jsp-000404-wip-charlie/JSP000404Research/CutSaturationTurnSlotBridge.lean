@@ -42,8 +42,11 @@ theorem get_cons_append_cons_at_tail_length
   | cons x xs ih =>
       have hlast : (x :: xs).getLastD a = xs.getLastD x := by
         cases xs with
-        | nil => simp
-        | cons y ys => simp [List.getLastD_cons]
+        | nil => rfl
+        | cons y ys =>
+            cases ys with
+            | nil => rfl
+            | cons z zs => rfl
       simpa [hlast] using ih x
 
 theorem get_cons_append_cons_at_next
@@ -69,8 +72,11 @@ theorem get_cons_at_tail_length
   | cons x xs ih =>
       have hlast : (x :: xs).getLastD a = xs.getLastD x := by
         cases xs with
-        | nil => simp
-        | cons y ys => simp [List.getLastD_cons]
+        | nil => rfl
+        | cons y ys =>
+            cases ys with
+            | nil => rfl
+            | cons z zs => rfl
       simpa [hlast] using ih x
 
 namespace CentreCutRayCycle
