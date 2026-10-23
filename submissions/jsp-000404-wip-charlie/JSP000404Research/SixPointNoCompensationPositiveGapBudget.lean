@@ -83,16 +83,11 @@ theorem six_point_no_compensation_positive_gap_card_le_fourteen
     have hiS : i ∈ S := (Finset.mem_sdiff.mp hi).1
     have hiNotG : i ∉ G := (Finset.mem_sdiff.mp hi).2
     have hiTop : i ≠ top := (Finset.mem_erase.mp hiS).1
+    by_contra hnot
+    have hgt : 2 < f i := by omega
     have h3 : f i = 3 := by
       have hle := hminSupport i hiTop
-      by_contra hne
-      have hgt : 2 < f i := by
-        by_contra h
-        exact hiNotG (by
-          have he : f i ≤ 2 := by omega
-          omega)
       omega
-    exfalso
     apply hiNotG
     exact support_three_mem_topDeletionGainMinima
       hp hcap C hcard (by omega : 4 ≤ n)
@@ -117,8 +112,11 @@ theorem six_point_no_compensation_positive_gap_card_le_fourteen
   have hsplit :
       (∑ i ∈ S, f i) =
         (∑ i ∈ G, f i) + (∑ i ∈ R, f i) := by
-    have h := Finset.sum_sdiff hGsub (f := f)
-    simpa only [R, add_comm] using h.symm
+    have hsd :
+        (∑ i ∈ R, f i) + (∑ i ∈ G, f i) =
+          (∑ i ∈ S, f i) := by
+      exact Finset.sum_sdiff hGsub
+    simpa only [add_comm] using hsd.symm
   rw [globalPositiveGapSlot_card_eq_sum_positiveSupport C t]
   calc
     (∑ i : V, f i) = f top + ∑ i ∈ S, f i := by
