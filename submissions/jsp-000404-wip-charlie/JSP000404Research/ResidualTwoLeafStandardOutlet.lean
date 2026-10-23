@@ -48,13 +48,21 @@ theorem two_enlargedLeafOutlets_twoLoss_or_paid_or_exact
     ) := by
   rcases hu with ⟨huStrict,_huProgress⟩ | ⟨huExact,_huOut⟩ | ⟨huLoss,_huProgress⟩
   · exact Or.inr (Or.inl
-      ⟨u, projected_strict_surplus_at_least_one
-        exponent (projectedFree C) huStrict⟩)
+      ⟨u, by
+        have hhalf :=
+          half_pow_le_dyadic_surplus_of_lt huStrict
+        have hpos :
+            0 < 2 ^ (projectedFree C u - 1) := by positivity
+        omega⟩)
   · exact Or.inr (Or.inr ⟨u,huExact⟩)
   · rcases hv with ⟨hvStrict,_hvProgress⟩ | ⟨hvExact,_hvOut⟩ | ⟨hvLoss,_hvProgress⟩
     · exact Or.inr (Or.inl
-        ⟨v, projected_strict_surplus_at_least_one
-          exponent (projectedFree C) hvStrict⟩)
+        ⟨v, by
+        have hhalf :=
+          half_pow_le_dyadic_surplus_of_lt hvStrict
+        have hpos :
+            0 < 2 ^ (projectedFree C v - 1) := by positivity
+        omega⟩)
     · exact Or.inr (Or.inr ⟨v,hvExact⟩)
     · exact Or.inl ⟨huLoss,hvLoss⟩
 
