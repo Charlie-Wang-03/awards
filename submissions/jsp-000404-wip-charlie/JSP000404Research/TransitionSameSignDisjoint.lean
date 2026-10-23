@@ -121,7 +121,10 @@ theorem not_centreUnitGapSameSign_and_ordinaryTransition
       have hopt :
           signs[qPre.length]? =
             (rest.map (raySignAt hp i))[qPre.length]? := by
-        simp [signs, liftedCentreSignPath, hmRest]
+        change
+          (rest.map (raySignAt hp i) ++ [!raySignAt hp i first])[qPre.length]? =
+            (rest.map (raySignAt hp i))[qPre.length]?
+        exact List.getElem?_append_left (by simpa using hmRest)
       rw [List.getElem?_eq_getElem hsignLen,
         List.getElem?_eq_getElem (by simpa using hmRest)] at hopt
       exact Option.some_inj.mp hopt
