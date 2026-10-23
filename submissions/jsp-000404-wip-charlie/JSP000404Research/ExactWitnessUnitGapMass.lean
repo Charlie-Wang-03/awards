@@ -58,18 +58,21 @@ def ExactUnitTransitionGapPosition
         !raySignAt hp i first)
 
 /-- Every exact witness supplies an exact scaled unit transition gap. -/
-theorem exactWitness_unit_transition_gap_position
+theorem exactWitness_unit_transition_gap_position_ordered
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (W : ExactAngleWitness p lam)
-    (C : CentreProjectiveCycle hp W.b) :
+    (C : CentreProjectiveCycle hp W.b)
+    (horder :
+      rayThetaAt hp W.b (⟨W.a, W.hab⟩ : OtherVertex W.b) ≤
+        rayThetaAt hp W.b (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)) :
     ExactUnitTransitionGapPosition C t := by
   let ja : OtherVertex W.b := ⟨W.a, W.hab⟩
   let kc : OtherVertex W.b := ⟨W.c, W.hbc.symm⟩
@@ -80,167 +83,186 @@ theorem exactWitness_unit_transition_gap_position
       t * (lam / Real.pi) = 1 := by
     rw [hlam]
     field_simp [ne_of_gt htpos, Real.pi_ne_zero]
-  by_cases horder :
-      rayThetaAt hp W.b ja ≤ rayThetaAt hp W.b kc
-  · rcases exactWitness_ordered_short_gap_or_wrap_eq_lam
-        hp hn hdelta0 ht hlam W horder with hord | hwrap
-    · left
-      have hjk :
-          rayThetaAt hp W.b ja <
-            rayThetaAt hp W.b kc := by
-        have hlamPos : 0 < lam := by
-          rw [hlam]
-          exact div_pos Real.pi_pos htpos
-        dsimp [ja, kc] at hord ⊢
-        linarith
-      have hno :
-          ∀ x : OtherVertex W.b,
-            ¬ (rayThetaAt hp W.b ja <
-                rayThetaAt hp W.b x ∧
-               rayThetaAt hp W.b x <
-                rayThetaAt hp W.b kc) := by
-        intro x hx
-        exact no_ray_strictly_inside_exactWitness_ordinary_short_arc
-          hp hcap hn hdelta0 ht hlam W x
-          (by simpa [ja] using hx.1)
-          (by simpa [kc] using hx.2)
-          (by simpa [ja, kc] using hord)
-      obtain ⟨m, hm, hmLow, hmHigh⟩ :=
-        C.exists_adjacent_angles_of_no_strict_between
-          hjk hno
-      have hmRays : m + 1 < C.rays.length := by
-        rw [← C.angles_length]
-        exact hm
-      let u : OtherVertex W.b :=
-        C.rays.get ⟨m, by omega⟩
-      let v : OtherVertex W.b :=
-        C.rays.get ⟨m + 1, hmRays⟩
-      have huTheta :
-          rayThetaAt hp W.b u =
-            rayThetaAt hp W.b ja := by
-        dsimp [u]
-        simpa [CentreProjectiveCycle.angles] using hmLow
-      have hvTheta :
-          rayThetaAt hp W.b v =
-            rayThetaAt hp W.b kc := by
-        dsimp [v]
-        simpa [CentreProjectiveCycle.angles] using hmHigh
-      have huSign :
-          raySignAt hp W.b u =
-            raySignAt hp W.b ja :=
-        raySignAt_eq_of_rayThetaAt_eq
-          hp hcap htpos hlam W.b u ja huTheta
-      have hvSign :
-          raySignAt hp W.b v =
-            raySignAt hp W.b kc :=
-        raySignAt_eq_of_rayThetaAt_eq
-          hp hcap htpos hlam W.b v kc hvTheta
-      have hsign :
-          raySignAt hp W.b u ≠
-            raySignAt hp W.b v := by
-        rw [huSign, hvSign]
-        exact exactWitness_ordinary_short_endpoint_sign_ne
-          hp hn hdelta0 ht hlam W horder
-          (by simpa [ja, kc] using hord)
-      refine Or.inl ⟨m, hmRays, ?_, hsign⟩
-      rw [huTheta, hvTheta]
-      dsimp [ja, kc] at hord
-      rw [hord, hscale]
-    · right
-      obtain ⟨first, rest, hrays⟩ :
-          ∃ first rest, C.rays = first :: rest := by
-        cases hR : C.rays with
-        | nil => exact False.elim (C.nonempty hR)
-        | cons first rest => exact ⟨first, rest, hR⟩
-      have hsorted :
-          (first :: rest).Pairwise
-            (fun x y =>
-              rayThetaAt hp W.b x ≤
-                rayThetaAt hp W.b y) := by
-        simpa [hrays] using C.theta_sorted
-      have hjaMem : ja ∈ first :: rest := by
-        simpa [hrays] using C.mem_rays_iff ja
-      have hkcMem : kc ∈ first :: rest := by
-        simpa [hrays] using C.mem_rays_iff kc
-      have hfirstLeA :
-          rayThetaAt hp W.b first ≤
-            rayThetaAt hp W.b ja := by
-        rcases hjaMem with rfl | htail
-        · rfl
-        · exact (List.pairwise_cons.mp hsorted).1 ja htail
-      have hfirstGeA :
-          rayThetaAt hp W.b ja ≤
-            rayThetaAt hp W.b first := by
-        by_contra hnot
-        have hlt :
-            rayThetaAt hp W.b first <
-              rayThetaAt hp W.b ja :=
-          lt_of_not_ge hnot
-        exact no_ray_strictly_inside_exactWitness_wrap_short_arc
-          hp hcap hn hdelta0 ht hlam W first horder
-          (Or.inr (by simpa [ja] using hlt))
-          (by simpa [ja, kc] using hwrap)
-      have hfirstEq :
-          rayThetaAt hp W.b first =
+  change rayThetaAt hp W.b ja ≤ rayThetaAt hp W.b kc at horder
+· rcases exactWitness_ordered_short_gap_or_wrap_eq_lam
+      hp hn hdelta0 ht hlam W horder with hord | hwrap
+  · left
+    have hjk :
+        rayThetaAt hp W.b ja <
+          rayThetaAt hp W.b kc := by
+      have hlamPos : 0 < lam := by
+        rw [hlam]
+        exact div_pos Real.pi_pos htpos
+      dsimp [ja, kc] at hord ⊢
+      linarith
+    have hno :
+        ∀ x : OtherVertex W.b,
+          ¬ (rayThetaAt hp W.b ja <
+              rayThetaAt hp W.b x ∧
+             rayThetaAt hp W.b x <
+              rayThetaAt hp W.b kc) := by
+      intro x hx
+      exact no_ray_strictly_inside_exactWitness_ordinary_short_arc
+        hp hcap hn hdelta0 ht hlam W x
+        (by simpa [ja] using hx.1)
+        (by simpa [kc] using hx.2)
+        (by simpa [ja, kc] using hord)
+    obtain ⟨m, hm, hmLow, hmHigh⟩ :=
+      C.exists_adjacent_angles_of_no_strict_between
+        hjk hno
+    have hmRays : m + 1 < C.rays.length := by
+      rw [← C.angles_length]
+      exact hm
+    let u : OtherVertex W.b :=
+      C.rays.get ⟨m, by omega⟩
+    let v : OtherVertex W.b :=
+      C.rays.get ⟨m + 1, hmRays⟩
+    have huTheta :
+        rayThetaAt hp W.b u =
+          rayThetaAt hp W.b ja := by
+      dsimp [u]
+      simpa [CentreProjectiveCycle.angles] using hmLow
+    have hvTheta :
+        rayThetaAt hp W.b v =
+          rayThetaAt hp W.b kc := by
+      dsimp [v]
+      simpa [CentreProjectiveCycle.angles] using hmHigh
+    have huSign :
+        raySignAt hp W.b u =
+          raySignAt hp W.b ja :=
+      raySignAt_eq_of_rayThetaAt_eq
+        hp hcap htpos hlam W.b u ja huTheta
+    have hvSign :
+        raySignAt hp W.b v =
+          raySignAt hp W.b kc :=
+      raySignAt_eq_of_rayThetaAt_eq
+        hp hcap htpos hlam W.b v kc hvTheta
+    have hsign :
+        raySignAt hp W.b u ≠
+          raySignAt hp W.b v := by
+      rw [huSign, hvSign]
+      exact exactWitness_ordinary_short_endpoint_sign_ne
+        hp hn hdelta0 ht hlam W horder
+        (by simpa [ja, kc] using hord)
+    refine Or.inl ⟨m, hmRays, ?_, hsign⟩
+    rw [huTheta, hvTheta]
+    dsimp [ja, kc] at hord
+    rw [hord, hscale]
+  · right
+    obtain ⟨first, rest, hrays⟩ :
+        ∃ first rest, C.rays = first :: rest := by
+      cases hR : C.rays with
+      | nil => exact False.elim (C.nonempty hR)
+      | cons first rest => exact ⟨first, rest, rfl⟩
+    have hsorted :
+        (first :: rest).Pairwise
+          (fun x y =>
+            rayThetaAt hp W.b x ≤
+              rayThetaAt hp W.b y) := by
+      simpa [hrays] using C.theta_sorted
+    have hjaMem : ja ∈ first :: rest := by
+      simpa [hrays] using C.mem_rays_iff ja
+    have hkcMem : kc ∈ first :: rest := by
+      simpa [hrays] using C.mem_rays_iff kc
+    have hfirstLeA :
+        rayThetaAt hp W.b first ≤
+          rayThetaAt hp W.b ja := by
+      rcases hjaMem with heq | htail
+      · simpa [heq]
+      · exact (List.pairwise_cons.mp hsorted).1 ja htail
+    have hfirstGeA :
+        rayThetaAt hp W.b ja ≤
+          rayThetaAt hp W.b first := by
+      by_contra hnot
+      have hlt :
+          rayThetaAt hp W.b first <
             rayThetaAt hp W.b ja :=
-        le_antisymm hfirstLeA hfirstGeA
-      let last : OtherVertex W.b :=
-        (first :: rest).getLast (by simp)
-      have hkcLeLast :
-          rayThetaAt hp W.b kc ≤
-            rayThetaAt hp W.b last := by
-        simpa [last] using hsorted.rel_getLast hkcMem
-      have hlastLeK :
-          rayThetaAt hp W.b last ≤
-            rayThetaAt hp W.b kc := by
-        by_contra hnot
-        have hlt :
-            rayThetaAt hp W.b kc <
-              rayThetaAt hp W.b last :=
-          lt_of_not_ge hnot
-        exact no_ray_strictly_inside_exactWitness_wrap_short_arc
-          hp hcap hn hdelta0 ht hlam W last horder
-          (Or.inl (by simpa [kc] using hlt))
-          (by simpa [ja, kc] using hwrap)
-      have hlastEq :
-          rayThetaAt hp W.b last =
-            rayThetaAt hp W.b kc :=
-        le_antisymm hlastLeK hkcLeLast
-      have hlastD :
-          rest.getLastD first = last := by
-        dsimp [last]
-        cases rest with
-        | nil => simp
-        | cons r rs => simp [List.getLastD_cons]
-      have hfirstSign :
-          raySignAt hp W.b first =
-            raySignAt hp W.b ja :=
-        raySignAt_eq_of_rayThetaAt_eq
-          hp hcap htpos hlam W.b first ja hfirstEq
-      have hlastSign :
-          raySignAt hp W.b last =
-            raySignAt hp W.b kc :=
-        raySignAt_eq_of_rayThetaAt_eq
-          hp hcap htpos hlam W.b last kc hlastEq
-      have hsign :
-          raySignAt hp W.b (rest.getLastD first) ≠
-            !raySignAt hp W.b first := by
-        rw [hlastD, hlastSign, hfirstSign]
-        exact exactWitness_wrap_short_endpoint_lifted_sign_ne
-          hp hn hdelta0 ht hlam W horder
-          (by simpa [ja, kc] using hwrap)
-      refine Or.inr ⟨first, rest, hrays, ?_, hsign⟩
-      rw [hlastD, hfirstEq, hlastEq]
-      dsimp [ja, kc] at hwrap
-      rw [hwrap, hscale]
-  · have hrev :
-        rayThetaAt hp W.b kc ≤
+        lt_of_not_ge hnot
+      exact no_ray_strictly_inside_exactWitness_wrap_short_arc
+        hp hcap hn hdelta0 ht hlam W first horder
+        (Or.inr (by simpa [ja] using hlt))
+        (by simpa [ja, kc] using hwrap)
+    have hfirstEq :
+        rayThetaAt hp W.b first =
           rayThetaAt hp W.b ja :=
+      le_antisymm hfirstLeA hfirstGeA
+    let last : OtherVertex W.b :=
+      (first :: rest).getLast (by simp)
+    have hkcLeLast :
+        rayThetaAt hp W.b kc ≤
+          rayThetaAt hp W.b last := by
+      simpa [last] using hsorted.rel_getLast hkcMem
+    have hlastLeK :
+        rayThetaAt hp W.b last ≤
+          rayThetaAt hp W.b kc := by
+      by_contra hnot
+      have hlt :
+          rayThetaAt hp W.b kc <
+            rayThetaAt hp W.b last :=
+        lt_of_not_ge hnot
+      exact no_ray_strictly_inside_exactWitness_wrap_short_arc
+        hp hcap hn hdelta0 ht hlam W last horder
+        (Or.inl (by simpa [kc] using hlt))
+        (by simpa [ja, kc] using hwrap)
+    have hlastEq :
+        rayThetaAt hp W.b last =
+          rayThetaAt hp W.b kc :=
+      le_antisymm hlastLeK hkcLeLast
+    have hlastD :
+        rest.getLastD first = last := by
+      dsimp [last]
+      cases rest with
+      | nil => simp
+      | cons r rs => simp [List.getLast_eq_getLastD, List.getLastD_cons]
+    have hfirstSign :
+        raySignAt hp W.b first =
+          raySignAt hp W.b ja :=
+      raySignAt_eq_of_rayThetaAt_eq
+        hp hcap htpos hlam W.b first ja hfirstEq
+    have hlastSign :
+        raySignAt hp W.b last =
+          raySignAt hp W.b kc :=
+      raySignAt_eq_of_rayThetaAt_eq
+        hp hcap htpos hlam W.b last kc hlastEq
+    have hsign :
+        raySignAt hp W.b (rest.getLastD first) ≠
+          !raySignAt hp W.b first := by
+      rw [hlastD, hlastSign, hfirstSign]
+      exact exactWitness_wrap_short_endpoint_lifted_sign_ne
+        hp hn hdelta0 ht hlam W horder
+        (by simpa [ja, kc] using hwrap)
+    refine Or.inr ⟨first, rest, hrays, ?_, hsign⟩
+    rw [hlastD, hfirstEq, hlastEq]
+    dsimp [ja, kc] at hwrap
+    rw [hwrap, hscale]
+
+theorem exactWitness_unit_transition_gap_position
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (hn : 3 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (W : ExactAngleWitness p lam)
+    (C : CentreProjectiveCycle hp W.b) :
+    ExactUnitTransitionGapPosition C t := by
+  by_cases horder :
+      rayThetaAt hp W.b (⟨W.a, W.hab⟩ : OtherVertex W.b) ≤
+        rayThetaAt hp W.b (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b)
+  · exact exactWitness_unit_transition_gap_position_ordered
+      hp hcap hn hdelta0 ht hlam W C horder
+  · have hrev :
+        rayThetaAt hp W.b (⟨W.c, W.hbc.symm⟩ : OtherVertex W.b) ≤
+          rayThetaAt hp W.b (⟨W.a, W.hab⟩ : OtherVertex W.b) :=
       le_of_not_ge horder
     have hswap :=
-      exactWitness_unit_transition_gap_position
+      exactWitness_unit_transition_gap_position_ordered
         hp hcap hn hdelta0 ht hlam W.swapEnds C
-    simpa [ExactAngleWitness.swapEnds, ja, kc] using hswap
+        (by simpa [ExactAngleWitness.swapEnds] using hrev)
+    simpa [ExactAngleWitness.swapEnds] using hswap
 
 #print axioms exactWitness_unit_transition_gap_position
 
