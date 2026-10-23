@@ -152,3 +152,11 @@ bipartiteness does NOT alone provide the exact original-geometry,
 globally non-reusing TRUE hole / unreserved surplus allocation against
 all covered-loss, NET, twin, mixed-rigid, soft, and projected-loss
 debts. It would be unsound to infer the latter from this local cut.
+
+
+## 2026-10-23 seventh continuation — six-centre all-delta theorem and exact-witness repairs
+
+* [Focused run #39980103572](https://github.com/Charlie-Wang-03/awards/actions/runs/39980103572) **SUCCESS**, 9,119/9,119: `SixPointAllDeltaBoundaryAlternative.lean` proves `thirteen_delta_lt_n_of_seven_le` and `six_point_n_ge_seven_two_support_two_or_boundary_bipartite_cut`. For **all n>=7 and 0<=delta<1/2** the earlier six-centre dichotomy needs NO extra `13*delta<n` assumption because `13*delta<6.5<7<=n`. Both printed theorem axioms are exactly `[propext, Classical.choice, Quot.sound]`.
+* [Focused run #39979471116](https://github.com/Charlie-Wang-03/awards/actions/runs/39979471116): `ExactWitnessSupportThreeRemainder.lean` **BUILT**, with two exported theorem axioms exactly `[propext, Classical.choice, Quot.sound]`. Whole run failed due to a different module, so do not call that run green. The true exact physical unit gap has quotient 1 and zero fractional remainder; the other support-three remainders lie in [0,delta].
+* `SixPointExactWitnessPinnedExactGap.lean` was previously blocked by out-of-order `lam` binding and malformed list destructor syntax. Both were fixed. The next CI exposed an exact five-element membership split bug: use of `rfl` destroyed the named gap variable. New source revision preserves `heq` separately and rewrites the local scale equality `hscale`, rather than substituting the named gaps. This fix is **pending** [Focused run #39981085670](https://github.com/Charlie-Wang-03/awards/actions/runs/39981085670). Do not claim its two pinned-gap theorems pass before checking.
+* The new six-centre boundary dichotomy and all-delta corollary are still conditional original-geometry classification results. They do NOT conclude the needed global non-reusing payment of true Boolean holes and unreserved dyadic surplus. Main `PlanarLowerBranchProofAdmittedWIP.lean` retains one genuine `sorry`. No complete JSP-000404 proof or disproof.
