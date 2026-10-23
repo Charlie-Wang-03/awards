@@ -109,7 +109,7 @@ theorem exists_centreTurnUnitSlot_of_wrap_floor
       (quotientList t C.gaps).get rList = q := by
     change (quotientList t C.gaps)[rest.length] = q
     simp only [hdecomp]
-    simp [consecutiveRayQuotients_length, hfloor]
+    simpa [consecutiveRayQuotients_length, List.getLastD] using hfloor
   have hbridge :
       centreQuotient C t rGap =
         (quotientList t C.gaps).get rList := by
@@ -172,14 +172,20 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
         ∃ a xs, C.angles = a :: xs := by
       cases ha : C.angles with
       | nil => exact False.elim (C.angles_nonempty ha)
-      | cons a xs => exact ⟨a, xs, ha⟩
+      | cons a xs => exact ⟨a, xs, rfl⟩
     simp only [hangles]
     have hmTail : m < xs.length := by
       rw [hangles] at hmA
       simpa using hmA
-    simp [normalizedProjectiveGaps, projectiveGaps,
-      hmTail, successiveDiffsFrom_getElem_eq_adjacent_diff
-        a xs m hmTail]
+    have hmMap :
+        m < ((successiveDiffsFrom a xs).map
+          (fun g => g / Real.pi)).length := by
+      simpa [successiveDiffsFrom_length] using hmTail
+    simp only [normalizedProjectiveGaps, projectiveGaps,
+      List.getElem_append_left hmMap, List.getElem_map]
+    simpa using congrArg (fun g : ℝ => g / Real.pi)
+      (successiveDiffsFrom_getElem_eq_adjacent_diff
+        a xs m hmTail)
   change t * C.gaps[m] = _
   rw [hgap]
   simp [CentreProjectiveCycle.angles]
