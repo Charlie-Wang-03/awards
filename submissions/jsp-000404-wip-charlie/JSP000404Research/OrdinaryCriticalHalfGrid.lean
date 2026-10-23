@@ -46,7 +46,7 @@ theorem ordinaryCriticalUnitBadAt_pair_distance_le_delta
   subst my
   subst mx
   let alpha :=
-    normalizedRayTheta hp t u.1
+    normalizedRayThetaAt hp t u.1
       ((C u.1).rays.get ⟨mx, by omega⟩)
   let s :=
     t * ((rayThetaAt hp u.1
@@ -159,7 +159,7 @@ theorem exists_uncovered_halfGrid_phase_of_six_point_terminal
         ¬ OrdinaryCriticalUnitBadAt C t delta
             u ((r.val : ℝ) / 2) := by
   by_contra hnone
-  push_neg at hnone
+  push Not at hnone
   let slot : Fin (2 * n + 1) → GlobalUnitGapSlot C t :=
     fun r => Classical.choose (hnone r)
   have hbad :
