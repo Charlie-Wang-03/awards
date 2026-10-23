@@ -162,13 +162,13 @@ noncomputable def cutBoundaryWrapBit
     (htpos : 0 < t)
     (htop : t < (n + 1 : ℕ))
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
-    (i : V) : Bool :=
-  if h :
+    (i : V) : Bool := by
+  classical
+  exact if h :
       ∃ j : OtherVertex i,
         CutBoundaryRay hp htpos hc0 hcpi n htop i j
-  then
-    cutRaySign hp (boundaryShortCut t delta c) i h.choose
-  else false
+    then cutRaySign hp (boundaryShortCut t delta c) i h.choose
+    else false
 
 theorem cutBoundaryWrapBit_eq_shortSign
     {V : Type*} [LinearOrder V] [Fintype V]
