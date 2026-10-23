@@ -24,7 +24,7 @@ namespace JSP000404Research
 open scoped BigOperators
 
 theorem six_point_nonTop_positive_positive_ray_gives_compensated_deletion
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -79,7 +79,7 @@ theorem six_point_nonTop_positive_positive_ray_gives_compensated_deletion
       hTop hMin hgain
 
 theorem no_nonTop_positive_positive_ray_of_no_compensated_minimum_deletion
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -122,7 +122,7 @@ theorem no_nonTop_positive_positive_ray_of_no_compensated_minimum_deletion
 /-- Convenient hard-branch form: any ray flanked by positive cyclic quotients
 at a minimum centre must point to the sharp top. -/
 theorem positive_positive_ray_eq_top_of_no_compensated_minimum_deletion
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
