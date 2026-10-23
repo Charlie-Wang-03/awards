@@ -71,7 +71,9 @@ theorem exists_centreUnitGap_of_adjacent_floor_one
   have hmA : m + 1 < C.angles.length := by
     simpa [C.angles_length] using hm
   have hqList :
-      (quotientList t C.gaps)[m] = 1 := by
+      (quotientList t C.gaps)[m]'(by
+        rw [quotientList_length, C.gaps_length]
+        omega) = 1 := by
     rw [centre_adjacent_quotient_getElem_eq C t m hmA]
     simpa [CentreProjectiveCycle.angles] using hfloor
   have hmGap : m < C.gaps.length := by
@@ -98,8 +100,8 @@ theorem exists_unit_ordinary_transition_slot_between_rays
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p} {i : V}
     (C : CentreProjectiveCycle hp i)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -206,8 +208,8 @@ theorem exists_global_unit_ordinary_transition_slot_between_rays
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
