@@ -85,20 +85,15 @@ theorem triangle_exactly_one_other_cutSign_transition
       (sij := sij) (sik := sik) (sjk := sjk)
       (by simpa [sij, sik] using hi)
   dsimp [sij, sik, sjk] at hpure
-  rw [hji, hki] at hpure
-  have hkj' :
-      cutRaySign hp c k ⟨j, hjk⟩ =
-        !cutRaySign hp c j ⟨k, hjk.symm⟩ := hkj
-  rw [hkj'] at hpure
-  exact hpure
+  simpa [hji, hki, hkj] using hpure
 
 /-- Main short-triangle obstruction at an arbitrary cut. -/
 theorem cut_triangle_short_arc_has_cyclic_critical_slot
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -162,8 +157,9 @@ theorem cut_triangle_short_arc_has_cyclic_critical_slot
                 (⟨i, hij⟩ : OtherVertex j) ∧
           cutNormalizedRayTheta hp t c j
                 (⟨i, hij⟩ : OtherVertex j) ≤ 1 + delta := by
-        rw [← cutNormalizedEdgeTheta_reverse hp t c hij]
-        simpa [cutNormalizedEdgeTheta] using hijArc
+        change 0 ≤ cutNormalizedEdgeTheta hp t c j i hij.symm ∧
+          cutNormalizedEdgeTheta hp t c j i hij.symm ≤ 1 + delta
+        simpa only [← cutNormalizedEdgeTheta_reverse hp t c hij] using hijArc
       have hjkArcJ :
           0 ≤ cutNormalizedRayTheta hp t c j
                 (⟨k, hjk.symm⟩ : OtherVertex j) ∧
@@ -186,15 +182,17 @@ theorem cut_triangle_short_arc_has_cyclic_critical_slot
                 (⟨i, hik⟩ : OtherVertex k) ∧
           cutNormalizedRayTheta hp t c k
                 (⟨i, hik⟩ : OtherVertex k) ≤ 1 + delta := by
-        rw [← cutNormalizedEdgeTheta_reverse hp t c hik]
-        simpa [cutNormalizedEdgeTheta] using hikArc
+        change 0 ≤ cutNormalizedEdgeTheta hp t c k i hik.symm ∧
+          cutNormalizedEdgeTheta hp t c k i hik.symm ≤ 1 + delta
+        simpa only [← cutNormalizedEdgeTheta_reverse hp t c hik] using hikArc
       have hkjArc :
           0 ≤ cutNormalizedRayTheta hp t c k
                 (⟨j, hjk⟩ : OtherVertex k) ∧
           cutNormalizedRayTheta hp t c k
                 (⟨j, hjk⟩ : OtherVertex k) ≤ 1 + delta := by
-        rw [← cutNormalizedEdgeTheta_reverse hp t c hjk]
-        simpa [cutNormalizedEdgeTheta] using hjkArc
+        change 0 ≤ cutNormalizedEdgeTheta hp t c k j hjk.symm ∧
+          cutNormalizedEdgeTheta hp t c k j hjk.symm ≤ 1 + delta
+        simpa only [← cutNormalizedEdgeTheta_reverse hp t c hjk] using hjkArc
       obtain ⟨u, huk, hubad⟩ :=
         cut_transition_seed_has_cyclic_critical_slot
           hp hcap C ht hlam hdeltaHalf hc0 hcpi
