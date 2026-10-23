@@ -1656,6 +1656,9 @@ import JSP000404Research.SixPointNFourDirectNoCover
 -- Kernel-checked phase-dependent n4 ordinary-transition cover conditional reduction.
 import JSP000404Research.SixPointNFourOrdinaryTransitionNoCover
 
+-- Verified finite-period [0,t) conditional slot obstruction (not full-real cover).
+import JSP000404Research.FinitePeriodTransitionPhaseCover
+
 -- Kernel-checked same-witness five-angle hard mixed-branch squeeze.
 import JSP000404Research.SixPointMixedFiveAngleSqueeze
 
