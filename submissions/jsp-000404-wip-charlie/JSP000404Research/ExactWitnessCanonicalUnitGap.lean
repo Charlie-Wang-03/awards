@@ -46,10 +46,9 @@ theorem centre_gap_get_adjacent_eq
   have hmA : m + 1 < C.angles.length := by
     rw [C.angles_length]
     exact hm
-  have hCanonical :
-      C.gaps.get ⟨m, by rw [C.gaps_length]; omega⟩ =
-        (C.angles.get ⟨m + 1, hmA⟩ -
-          C.angles.get ⟨m, by omega⟩) / Real.pi := by
+  have hgap :
+      C.gaps[m] =
+        (C.angles[m + 1] - C.angles[m]) / Real.pi := by
     simp only [CentreProjectiveCycle.gaps]
     obtain ⟨a, xs, hangles⟩ :
         ∃ a xs, C.angles = a :: xs := by
@@ -62,11 +61,12 @@ theorem centre_gap_get_adjacent_eq
       simpa using hmA
     have hmDiff : m < (successiveDiffsFrom a xs).length := by
       simpa [successiveDiffsFrom_length] using hmTail
-    simp only [normalizedProjectiveGaps, projectiveGaps, List.getElem_map]
+    simp only [normalizedProjectiveGaps, projectiveGaps,
+      List.getElem_map]
     rw [List.getElem_append_left hmDiff]
     simpa using successiveDiffsFrom_getElem_eq_adjacent_diff
       a xs m hmTail
-  simpa only [CentreProjectiveCycle.angles, List.getElem_map] using hCanonical
+  simpa [CentreProjectiveCycle.angles, List.getElem_map] using hgap
 
 /-- The final canonical projective gap is the normalized wrap difference. -/
 theorem centre_gap_get_wrap_eq
