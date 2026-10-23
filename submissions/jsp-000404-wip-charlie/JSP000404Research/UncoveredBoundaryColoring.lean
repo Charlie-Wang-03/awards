@@ -71,21 +71,25 @@ theorem cutBoundaryRay_short_mem
   change b.val = 0 ∨ b.val = n at hj
   rcases hj with hb0 | hbn
   · have beq : b = (0 : Fin (n + 1)) := Fin.ext hb0
-    subst b
     have hband :
         0 ≤ cutNormalizedRayTheta hp t c i j ∧
         cutNormalizedRayTheta hp t c i j < 1 := by
-      simpa [RayInCutProjectiveBand] using hmem
+      change (b.val : ℝ) ≤ cutNormalizedRayTheta hp t c i j ∧
+        cutNormalizedRayTheta hp t c i j < (b.val : ℝ) + 1 at hmem
+      rw [beq] at hmem
+      simpa using hmem
     exact boundaryShort_mem_of_band_zero
       hp hn htpos ht hdelta0 hc0 hcpi i j hband
   · have beq : b = Fin.last n := by
       apply Fin.ext
       simpa using hbn
-    subst b
     have hband :
         (n : ℝ) ≤ cutNormalizedRayTheta hp t c i j ∧
         cutNormalizedRayTheta hp t c i j < (n : ℝ) + 1 := by
-      simpa [RayInCutProjectiveBand] using hmem
+      change (b.val : ℝ) ≤ cutNormalizedRayTheta hp t c i j ∧
+        cutNormalizedRayTheta hp t c i j < (b.val : ℝ) + 1 at hmem
+      rw [beq] at hmem
+      simpa using hmem
     exact boundaryShort_mem_of_band_last
       hp hn htpos ht hdelta0 hc0 hcpi i j hband
 
@@ -94,9 +98,9 @@ the same short-cut sign. -/
 theorem cutBoundaryRay_shortSign_eq_of_uncovered
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -169,9 +173,9 @@ noncomputable def cutBoundaryWrapBit
 theorem cutBoundaryWrapBit_eq_shortSign
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -187,11 +191,12 @@ theorem cutBoundaryWrapBit_eq_shortSign
     (hj :
       CutBoundaryRay hp htpos hc0 hcpi n
         (by rw [ht]; push_cast; linarith) i j) :
-    cutBoundaryWrapBit hp n htpos
+    cutBoundaryWrapBit (delta := delta) hp n htpos
         (by rw [ht]; push_cast; linarith)
         hc0 hcpi i
       =
     cutRaySign hp (boundaryShortCut t delta c) i j := by
+  classical
   unfold cutBoundaryWrapBit
   split_ifs with h
   · exact cutBoundaryRay_shortSign_eq_of_uncovered
@@ -204,9 +209,9 @@ theorem cutBoundaryWrapBit_eq_shortSign
 theorem cutBoundaryWrapBit_separates
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -224,7 +229,7 @@ theorem cutBoundaryWrapBit_separates
       cutProjectiveBandPartition
         hp hcap htpos hlam hc0 hcpi n htop
     let wrapBit :=
-      cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+      cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
     ∀ {u v : V}, u < v →
       ((P.edgeColor u v).val = 0 ∨
         (P.edgeColor u v).val = n) →
