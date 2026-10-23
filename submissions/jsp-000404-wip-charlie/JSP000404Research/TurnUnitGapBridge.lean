@@ -173,7 +173,7 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
       cases ha : C.angles with
       | nil => exact False.elim (C.angles_nonempty ha)
       | cons a xs => exact ⟨a, xs, ha⟩
-    rw [hangles]
+    simp only [hangles]
     have hmTail : m < xs.length := by
       rw [hangles] at hmA
       simpa using hmA
