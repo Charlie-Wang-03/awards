@@ -26,7 +26,7 @@ re-enters one of the two hard state classes: exact saturated or projected loss.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
-theorem projectedProfile_strict_exact_or_loss
+theorem largeBlocker_projectedProfile_strict_exact_or_loss
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
@@ -120,7 +120,7 @@ theorem large_oneFlip_blocker_paid_or_exact_or_loss
     )
     ∨ ExactProjectedBudget C exponent w
     ∨ w ∈ projectedLossVertices C exponent := by
-  rcases projectedProfile_strict_exact_or_loss
+  rcases largeBlocker_projectedProfile_strict_exact_or_loss
       C exponent hexp honeLoss w
     with hstrict | hexact | hloss
   · exact Or.inl
@@ -152,7 +152,7 @@ theorem large_twoFlip_blocker_paid_or_exact_or_loss
     )
     ∨ ExactProjectedBudget C exponent w
     ∨ w ∈ projectedLossVertices C exponent := by
-  rcases projectedProfile_strict_exact_or_loss
+  rcases largeBlocker_projectedProfile_strict_exact_or_loss
       C exponent hexp honeLoss w
     with hstrict | hexact | hloss
   · exact Or.inl
@@ -161,7 +161,7 @@ theorem large_twoFlip_blocker_paid_or_exact_or_loss
   · exact Or.inr (Or.inl hexact)
   · exact Or.inr (Or.inr hloss)
 
-#print axioms projectedProfile_strict_exact_or_loss
+#print axioms largeBlocker_projectedProfile_strict_exact_or_loss
 #print axioms large_oneFlip_blocker_paid_or_exact_or_loss
 #print axioms large_twoFlip_blocker_paid_or_exact_or_loss
 
