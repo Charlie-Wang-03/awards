@@ -34,8 +34,8 @@ theorem exists_six_point_exactWitness_support_three_unit_position
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -115,38 +115,14 @@ theorem exists_six_point_exactWitness_support_three_unit_position
     rw [hqRot] at honeRot
     rcases hmidShape with hshape | hshape | hshape
     · rw [hshape] at honeRot
-      simp only [List.mem_cons, List.mem_append,
-        List.mem_singleton] at honeRot
-      rcases honeRot with hfirst | hmid | hlast
-      · exact Or.inl hfirst.symm
-      · simp only [List.mem_cons, List.mem_singleton] at hmid
-        rcases hmid with hhidden | hzero | hzero
-        · exact Or.inr (Or.inl hhidden.symm)
-        · omega
-        · omega
-      · exact Or.inr (Or.inr hlast.symm)
+      simpa [List.mem_cons, List.mem_append, or_assoc, eq_comm]
+        using honeRot
     · rw [hshape] at honeRot
-      simp only [List.mem_cons, List.mem_append,
-        List.mem_singleton] at honeRot
-      rcases honeRot with hfirst | hmid | hlast
-      · exact Or.inl hfirst.symm
-      · simp only [List.mem_cons, List.mem_singleton] at hmid
-        rcases hmid with hzero | hhidden | hzero
-        · omega
-        · exact Or.inr (Or.inl hhidden.symm)
-        · omega
-      · exact Or.inr (Or.inr hlast.symm)
+      simpa [List.mem_cons, List.mem_append, or_assoc, eq_comm]
+        using honeRot
     · rw [hshape] at honeRot
-      simp only [List.mem_cons, List.mem_append,
-        List.mem_singleton] at honeRot
-      rcases honeRot with hfirst | hmid | hlast
-      · exact Or.inl hfirst.symm
-      · simp only [List.mem_cons, List.mem_singleton] at hmid
-        rcases hmid with hzero | hzero | hhidden
-        · omega
-        · omega
-        · exact Or.inr (Or.inl hhidden.symm)
-      · exact Or.inr (Or.inr hlast.symm)
+      simpa [List.mem_cons, List.mem_append, or_assoc, eq_comm]
+        using honeRot
 
   exact ⟨first0, rest0, k, r, rest,
     qFirst, qLast, qHidden, qmid,
