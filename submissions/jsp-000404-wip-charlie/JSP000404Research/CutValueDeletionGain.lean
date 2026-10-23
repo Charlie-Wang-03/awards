@@ -79,7 +79,8 @@ theorem centreExponent_gain_of_normalizedValues_delete_second
       CentreCutRayCycle.gapQuotients] using
       Rc.exponent_eq_centreExponent
         (restrictedPoint_injective hp r) ht
-  rw [hParent, hChild] at hParentExp hChildExp
+  rw [hParent] at hParentExp
+  rw [hChild] at hChildExp
   rw [← hParentExp, ← hChildExp]
   exact hgain
 
@@ -137,7 +138,8 @@ theorem centreExponent_gain_of_normalizedValues_delete_last
       CentreCutRayCycle.gapQuotients] using
       Rc.exponent_eq_centreExponent
         (restrictedPoint_injective hp r) ht
-  rw [hParent, hChild] at hParentExp hChildExp
+  rw [hParent] at hParentExp
+  rw [hChild] at hChildExp
   rw [← hParentExp, ← hChildExp]
   exact hgain
 
