@@ -206,7 +206,7 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
         centreUnitGapStart C t u =
           normalizedRayTheta hp t i a := by
       unfold centreUnitGapStart
-      rw [hstartTheta]
+      simpa only [normalizedRayTheta, hstartTheta]
     obtain ⟨k, hk⟩ :=
       exists_period_shift_eq_cut_lift hp t c i a
     refine ⟨u, k, ?_⟩
@@ -288,7 +288,7 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       | nil =>
           exact False.elim (C.nonempty hR)
       | cons first rest =>
-          exact ⟨first, rest, hR⟩
+          exact ⟨first, rest, rfl⟩
 
     have hsorted :
         (first :: rest).Pairwise
@@ -300,8 +300,8 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       simpa [hrays] using C.mem_rays_iff b
     have hfirstLeB :
         rayThetaAt hp i first ≤ rayThetaAt hp i b := by
-      rcases hbMem with rfl | hbTail
-      · rfl
+      rcases hbMem with hEq | hbTail
+      · simpa [hEq]
       · exact (List.pairwise_cons.mp hsorted).1 b hbTail
     have hbLeFirst :
         rayThetaAt hp i b ≤ rayThetaAt hp i first := by
@@ -343,7 +343,7 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       cases rest with
       | nil => simp
       | cons x xs =>
-          simp [List.getLastD_cons]
+          simp [List.getLast_eq_getLastD, List.getLastD_cons]
 
     have hfloorWrap :
         wrapRayQuotient hp i t first
@@ -364,13 +364,12 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
         C.rayIndex a ≤ gapToRayIndex C u.1 := by
       apply Fin.mk_le_mk.mpr
       have hai := (C.rayIndex a).isLt
-      rw [hrays] at hai
-      simp only [List.length_cons] at hai
+      have hlen : C.rays.length = rest.length + 1 := by
+        simp [hrays]
       omega
     have haIdxLeG :
         C.rayIndex a ≤ C.rayIndex g := by
-      dsimp [g]
-      simpa using haIdxLe
+      simpa only [g, CentreProjectiveCycle.rayIndex_get] using haIdxLe
     have haLeG :
         rayThetaAt hp i a ≤ rayThetaAt hp i g :=
       C.theta_le_of_rayIndex_le haIdxLeG
@@ -387,7 +386,7 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
       change
         normalizedRayTheta hp t i g =
           normalizedRayTheta hp t i a
-      rw [hgTheta]
+      simpa only [normalizedRayTheta, hgTheta]
     obtain ⟨k, hk⟩ :=
       exists_period_shift_eq_cut_lift hp t c i a
     refine ⟨u, k, ?_⟩
