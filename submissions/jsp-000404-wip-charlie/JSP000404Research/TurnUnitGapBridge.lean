@@ -42,8 +42,11 @@ theorem exists_centreTurnUnitSlot_of_adjacent_floor
       centreTurnUnitGapQuotient C t u = q := by
   have hmA : m + 1 < C.angles.length := by
     simpa [C.angles_length] using hm
+  have hmQ : m < (quotientList t C.gaps).length := by
+    rw [quotientList_length, C.gaps_length]
+    omega
   have hqList :
-      (quotientList t C.gaps)[m] = q := by
+      (quotientList t C.gaps)[m]'hmQ = q := by
     rw [centre_adjacent_quotient_getElem_eq C t m hmA]
     simpa [CentreProjectiveCycle.angles] using hfloor
   have hmGap : m < C.gaps.length := by
@@ -105,7 +108,7 @@ theorem exists_centreTurnUnitSlot_of_wrap_floor
   have hlastList :
       (quotientList t C.gaps).get rList = q := by
     change (quotientList t C.gaps)[rest.length] = q
-    rw [hdecomp]
+    simp only [hdecomp]
     simp [consecutiveRayQuotients_length, hfloor]
   have hbridge :
       centreQuotient C t rGap =
@@ -148,7 +151,7 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
       ∃ first rest, C.rays = first :: rest := by
     cases h : C.rays with
     | nil => exact False.elim (C.nonempty h)
-    | cons first rest => exact ⟨first, rest, h⟩
+    | cons first rest => exact ⟨first, rest, rfl⟩
   have hmA : m + 1 < C.angles.length := by
     simpa [C.angles_length] using hm
   have hq :=
@@ -164,7 +167,7 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
             (t * ((C.angles[m + 1] - C.angles[m]) / Real.pi)) := hq
     -- identify the gap itself from the concrete cyclic-gap definition,
     -- independently of flooring.
-    rw [CentreProjectiveCycle.gaps]
+    simp only [CentreProjectiveCycle.gaps]
     obtain ⟨a, xs, hangles⟩ :
         ∃ a xs, C.angles = a :: xs := by
       cases ha : C.angles with
@@ -177,6 +180,7 @@ theorem centreTurnUnitGapScaledLength_eq_adjacent
     simp [normalizedProjectiveGaps, projectiveGaps,
       hmTail, successiveDiffsFrom_getElem_eq_adjacent_diff
         a xs m hmTail]
+  change t * C.gaps[m] = _
   rw [hgap]
   simp [CentreProjectiveCycle.angles]
 
@@ -202,7 +206,7 @@ theorem centreTurnUnitGapScaledLength_eq_wrap
     apply Fin.ext
     exact hu
   rw [hr]
-  rw [CentreProjectiveCycle.gaps,
+  simp only [CentreProjectiveCycle.gaps,
       CentreProjectiveCycle.angles, hrays]
   simp [normalizedProjectiveGaps, projectiveGaps,
     successiveDiffsFrom_length, map_getLastD]
