@@ -83,11 +83,10 @@ theorem globalPositiveGapStart_nonneg
     (u : GlobalPositiveGapSlot C t) :
     0 ≤ globalPositiveGapStart C t u := by
   unfold globalPositiveGapStart centrePositiveGapStart
-  simpa only [normalizedRayTheta] using
-    (normalizedRayTheta_nonneg
+  convert normalizedRayTheta_nonneg
       hp ht u.1
         ((C u.1).rays.get
-          (gapToRayIndex (C u.1) u.2.1)))
+          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> ring
 
 theorem globalPositiveGapStart_lt_t
     {V : Type*} [LinearOrder V] [Fintype V]
@@ -97,11 +96,10 @@ theorem globalPositiveGapStart_lt_t
     (u : GlobalPositiveGapSlot C t) :
     globalPositiveGapStart C t u < t := by
   unfold globalPositiveGapStart centrePositiveGapStart
-  simpa only [normalizedRayTheta] using
-    (normalizedRayTheta_lt_t
+  convert normalizedRayTheta_lt_t
       hp ht u.1
         ((C u.1).rays.get
-          (gapToRayIndex (C u.1) u.2.1)))
+          (gapToRayIndex (C u.1) u.2.1)) using 1 <;> ring
 
 theorem globalPositiveGapScaledLength_nonneg
     {V : Type*} [LinearOrder V] [Fintype V]
