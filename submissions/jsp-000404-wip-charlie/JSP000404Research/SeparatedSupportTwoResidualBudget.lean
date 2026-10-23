@@ -47,7 +47,7 @@ private theorem listZeroAngleMass_append_aligned
       | nil => simp at hlen
       | cons A As =>
           simp at hlen
-          simp [listZeroAngleMass, ih As hlen]
+          simp [listZeroAngleMass, ih As hlen, add_assoc]
 
 /-- Rotate an exact deficit-three/support-two centre so the ray to the sharp
 top is first, retaining aligned quotient and actual-angle data. -/
@@ -154,6 +154,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
     dsimp [qR]
     rw [List.length_rotate, hqLen]
     rw [← List.length_rotate C.rays k, hrotRays]
+    simp
 
   have hsupportR :
       listPositiveCount qR = 2 := by
@@ -269,7 +270,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
 
       refine ⟨first0, rest0, k, pre, post, r, rest,
         qFirst, qLast, qmid,
-        hrays0, hsplit, rfl, ?_, ?_, ?_, ?_, ?_⟩
+        hrays0, hsplit, rfl, ?_, ?_, ?_, ?_, ?_, ?_⟩
       · rw [hrotRays, htail]
       · dsimp [qR, qs] at hqShape
         exact hqShape
@@ -398,15 +399,20 @@ theorem separated_support_two_residual_zero_budget
     exact Or.inl (Subtype.ext h)
   have hlastMem : lastRay ∈ r :: rest := by
     dsimp [lastRay]
-    simpa [List.getLastD_cons] using
-      (List.getLastD_mem_cons : rest.getLastD r ∈ r :: rest)
+    have hlastEq :
+        (r :: rest).getLastD r = rest.getLastD r := by
+      cases rest with
+      | nil => rfl
+      | cons x xs => rfl
+    rw [hlastEq]
+    exact List.getLastD_mem_cons
   have htopLast : top ≠ lastRay.1 := by
     intro h
     have hne :=
       (List.nodup_cons.mp hrotNodup).1
     apply hne
     have : (⟨top, hit.symm⟩ : OtherVertex i) = lastRay :=
-      Subtype.ext h.symm
+      Subtype.ext h
     rw [this]
     exact hlastMem
 
