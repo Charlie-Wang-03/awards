@@ -92,3 +92,17 @@ nonreusing payment inequality or the executable `sorry` in
   **PENDING**, not green.
 * Full changed-module tree: numerous unrelated Lean errors remain;
   don't mark the entire research tree compilable based on focused PASS.
+
+
+## 2026-10-23 third continuation — exact-witness and saturated mismatch closure
+
+**Kernel-verified outcomes (all are downstream partial results; NOT the global theorem):**
+
+1. [Focused run #39968483780](https://github.com/Charlie-Wang-03/awards/actions/runs/39968483780): SUCCESS, 9,124/9,124 jobs. `ExactWitnessCanonicalUnitGap.lean` now compiles. The following three `#print axioms` outputs contain precisely `[propext, Classical.choice, Quot.sound]`, no `sorryAx`: `centre_gap_get_adjacent_eq`, `centre_gap_get_wrap_eq`, `exists_exactWitness_canonical_unit_gap`. One *same* canonical `e : Fin C.gaps.length` simultaneously satisfies `centreQuotient C t e = 1` and `t * C.gaps.get e = 1`.
+2. [Focused run #39971176608](https://github.com/Charlie-Wang-03/awards/actions/runs/39971176608): SUCCESS, 3,214/3,214 jobs. `SaturatedBandJumpMismatch.lean` has been repaired: exact exponent componentwise equality, zero-positive mismatch counting, positive-support difference identity. All four printed lemmas have axioms `[propext, Quot.sound]` without `sorryAx`. The two inter-list `Fin` positions must be related using `Fin.ext` rather than direct rewriting of dependent evidence.
+3. [Focused run #39966584594](https://github.com/Charlie-Wang-03/awards/actions/runs/39966584594): renamed `successiveDiffsFrom_append_cons` to `successiveDiffsFrom_append_last_linearCyclic`, eliminating a *real* duplicate-declaration import collision with `ProjectiveCutRotation`. The repaired cyclic-deletion module builds.
+4. Previously established [run #39967310330](https://github.com/Charlie-Wang-03/awards/actions/runs/39967310330) remains the sharp six-centre support-one/two phase result at `13*delta < n`, and [run #39966920889](https://github.com/Charlie-Wang-03/awards/actions/runs/39966920889) is the general periodic sample lemma.
+
+**Additional code repair still pending CI at this checkpoint:** `UncoveredBoundaryColoring.lean` corrected `lam` binder order, exact Fin band transports, and the noncomputable boundary Boolean bit's classical `if`. `CutTriangleCriticalSlot.lean` corrected parity replacement (matching the already-verified unspecialized triangle parity proof), lambda scope, and explicit reversal of normalized edge coordinates. Do not report either as verified without its independent focused CI success.
+
+**Main mathematical status:** `PlanarLowerBranchProofAdmittedWIP.lean` still has its intentional genuine terminal `sorry`. The exact global non-reusing TRUE Boolean-hole / unreserved dyadic payment inequality is NOT proved. A checked safe phase, a bounded positive gap slot count, exact-witness unit slot geometry, or quotient/band-jump equality DO NOT imply that global payment. The missing geometric implication from nonpayment to exhaustive bad-phase coverage is also not established. Some historical conditional lemmas are logical reductions rather than independent solutions. Full research-tree compilation remains separate and unverified.
