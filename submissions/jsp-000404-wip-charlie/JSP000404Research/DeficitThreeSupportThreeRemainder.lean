@@ -105,9 +105,13 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
     have hqidx :
         r.val < (quotientList t C.gaps).length := by
       simpa only [quotientList_length] using r.isLt
+    have hqidxMap :
+        r.val <
+          ((quotientList t C.gaps).map (fun q : ℕ => (q : ℝ))).length := by
+      simpa only [List.length_map] using hqidx
     have hgetList :=
-      List.Forall₂.get halign hqidx r.isLt
-    simpa only [centreQuotient, quotientList] using hgetList
+      List.Forall₂.get halign hqidxMap r.isLt
+    simpa [List.getElem_map, centreQuotient, quotientList] using hgetList
   have htotal :=
     centre_remainderMass_eq_delta_of_deficit_three_support_three
       C hn hdelta0 hdeltaHalf ht hexp hsupport
@@ -130,12 +134,17 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
           r.val < (quotientList t C.gaps).length := by
         rw [quotientList_length]
         exact r.isLt
-      change
-        (quotientList t C.gaps) =
-          (quotientList t C.gaps).take r.val ++
-            (quotientList t C.gaps)[r.val] ::
-              (quotientList t C.gaps).drop (r.val + 1)
-      rw [List.getElem_cons_drop hrq, List.take_append_drop]
+      have hqvalue :
+          (quotientList t C.gaps)[r.val] = centreQuotient C t r := by
+        simp [centreQuotient, quotientList]
+      calc
+        quotientList t C.gaps =
+            (quotientList t C.gaps).take r.val ++
+              (quotientList t C.gaps)[r.val] ::
+                (quotientList t C.gaps).drop (r.val + 1) := by
+                  rw [List.getElem_cons_drop hrq, List.take_append_drop]
+        _ = qpre ++ centreQuotient C t r :: qpost := by
+          simp only [qpre, qpost, hqvalue]
     have hgdecomp :
         C.gaps =
           gpre ++ C.gaps.get r :: gpost := by
@@ -165,7 +174,9 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
           (gpre ++ C.gaps.get r :: gpost) := h
       _ = listRemainderMass t
           (quotientList t C.gaps) C.gaps := by
-            rw [hqdecomp, hgdecomp]
+            congr 1
+            · exact hqdecomp.symm
+            · exact hgdecomp.symm
   rw [htotal] at hdisplay
   exact ⟨by linarith, hdisplay⟩
 
