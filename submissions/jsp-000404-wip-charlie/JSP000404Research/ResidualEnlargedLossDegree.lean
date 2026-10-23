@@ -686,6 +686,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_exactNeighbor_is_mixedUn
             2 ^ exponent v := by
       unfold dyadicProfileSurplus
       rw [retainedCompletionWords_card]
+      simp only [projectedFree]
     have hinterComm :
         (retainedCompletionWords C v ∩
           retainedCompletionWords C w).card
@@ -854,10 +855,10 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
           2 ^ exponent v := by
     unfold dyadicProfileSurplus
     rw [retainedCompletionWords_card]
+    simp only [projectedFree]
 
   have hsurplusHalf :=
     half_pow_le_dyadic_surplus_of_lt hvStrict
-  rw [← retainedCompletionWords_card C v] at hsurplusHalf
 
   have hqwGtSurplus :
       dyadicProfileSurplus exponent (projectedFree C) v <
@@ -875,6 +876,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
         (retainedCompletionWords C w).card ≤
           2 ^ (projectedFree C v - 1) := by
       rw [retainedCompletionWords_card]
+      change 2 ^ projectedFree C w ≤ 2 ^ (projectedFree C v - 1)
       exact Nat.pow_le_pow_right
         (by norm_num : 0 < 2) hwFreeLe
     have hhalfLe :
@@ -990,6 +992,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
           2 ^ exponent v := by
     unfold dyadicProfileSurplus
     rw [retainedCompletionWords_card]
+    simp only [projectedFree]
 
   have hqwGtSurplus :
       dyadicProfileSurplus exponent (projectedFree C) v <
@@ -1016,6 +1019,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_free_le
       (retainedCompletionWords C w).card ≤
         2 ^ (projectedFree C v - 1) := by
     rw [retainedCompletionWords_card]
+    change 2 ^ projectedFree C w ≤ 2 ^ (projectedFree C v - 1)
     exact Nat.pow_le_pow_right
       (by norm_num : 0 < 2) hwFreeLe
   omega
@@ -1139,6 +1143,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_equalFre
           2 ^ exponent v := by
     unfold dyadicProfileSurplus
     rw [retainedCompletionWords_card]
+    simp only [projectedFree]
 
   have hinterGtHalf :
       2 ^ (projectedFree C v - 1) <
@@ -1177,11 +1182,14 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_nonlossNeighbor_equalFre
         retainedCompletionWords C w).card =
         (retainedCompletionWords C v).card := by
     rw [hinterCard,hcommonEq,retainedCompletionWords_card]
+    simp only [projectedFree]
   have hinterEqW :
       (retainedCompletionWords C v ∩
         retainedCompletionWords C w).card =
         (retainedCompletionWords C w).card := by
-    rw [hinterCard,hcommonEq,retainedCompletionWords_card,hfreeEq]
+    rw [hinterCard, hcommonEq, retainedCompletionWords_card]
+    change 2 ^ projectedFree C v = 2 ^ projectedFree C w
+    rw [hfreeEq]
 
   have hEqV :
       retainedCompletionWords C v ∩
@@ -1315,6 +1323,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_cube_gt_surplus
           2 ^ exponent v := by
     unfold dyadicProfileSurplus
     rw [retainedCompletionWords_card]
+    simp only [projectedFree]
   rw [hsurplusEq]
   omega
 
@@ -1363,6 +1372,7 @@ theorem minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_free_le
       (retainedCompletionWords C w).card ≤
         2 ^ (projectedFree C v - 1) := by
     rw [retainedCompletionWords_card]
+    change 2 ^ projectedFree C w ≤ 2 ^ (projectedFree C v - 1)
     exact Nat.pow_le_pow_right
       (by norm_num : 0 < 2) hwLe
   omega
