@@ -887,7 +887,6 @@ theorem minimal_enlargedCandidate_strict_nonloss_unique_lossNeighbor_exponent_lt
 
   have hwEq :=
     (mem_projectedLossVertices C exponent w).1 hwLoss
-  unfold projectedFree at hwEq
   omega
 
 
@@ -1430,7 +1429,6 @@ theorem minimal_enlargedCandidate_strict_nonloss_leaf_progress
     · left
       have hwEq :=
         (mem_projectedLossVertices C exponent w).1 hwLoss
-      unfold projectedFree at hwEq
       omega
     · have hwLeOne :=
         exponent_le_projectedFree_add_one
@@ -1479,6 +1477,9 @@ theorem strictLeafProgressRank_lt_of_free_lt
   have hgap :
       freeDim * (n + 1) + n <
         (freeDim + 1) * (n + 1) := by
+    have hstepEq :
+        (freeDim + 1) * (n + 1) =
+          freeDim * (n + 1) + (n + 1) := by ring
     omega
   have hleft :
       freeDim * (n + 1) + exponent ≤
@@ -1727,7 +1728,6 @@ theorem minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
       (mem_projectedLossVertices C exponent v).1 hvLoss
     have hwEq :=
       (mem_projectedLossVertices C exponent w).1 hwLoss
-    unfold projectedFree at hvEq hwEq
     omega
 
 
@@ -2197,6 +2197,9 @@ theorem uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
       (enlargedProjectedCandidateBlock C exponent) := by
   intro u hu v hv huv
   classical
+  change Disjoint
+    (enlargedProjectedCandidateBlock C exponent u)
+    (enlargedProjectedCandidateBlock C exponent v)
   rw [Finset.disjoint_left]
   intro word huWord hvWord
   have huT : u ∈ T := hleavesT hu
@@ -3309,6 +3312,7 @@ theorem minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
       C exponent hvNonloss,
       retainedCompletionWords_card,
       hvExact]
+    simp only [projectedFree]
   have hsplit :=
     block_card_eq_private_add_shared
       (enlargedProjectedCandidateBlock C exponent)
@@ -3562,7 +3566,6 @@ theorem minimal_enlargedCandidate_exact_leaf_profile_outlet
       intro hwLoss
       have hwEq :=
         (mem_projectedLossVertices C exponent w).1 hwLoss
-      unfold projectedFree at hwEq
       omega
     rcases
       minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_descends
@@ -3652,7 +3655,6 @@ theorem minimal_enlargedCandidate_any_leaf_outlet
       intro hvLoss
       have hvEq :=
         (mem_projectedLossVertices C exponent v).1 hvLoss
-      unfold projectedFree at hvEq
       omega
     exact EnlargedLeafOutlet.strictProgress
       hvStrict
