@@ -1,5 +1,6 @@
 import JSP000404Research.OrdinaryCriticalHalfGrid
 import JSP000404Research.TriangleCriticalUnitDomination
+import JSP000404Research.SixPointHalfGridFinitePeriodNoCover
 import Mathlib.Tactic
 
 /-!
@@ -103,6 +104,60 @@ theorem six_point_exists_halfGrid_phase_avoiding_all_short_triangles
     ordinaryShortTriangleBadAt_implies_critical_unit
       hp hcap C htpos hlam hdeltaHalf hbad
   exact hr u hu
+
+/-- For ALL 0 <= delta < 1/2 (including delta=0), there is a REAL
+phase INSIDE the physical half-open normalized period [0,t) that avoids
+every ordinary short-triangle bad interval.
+
+Uses the unconditional finite-period *actual* unit-slot no-cover theorem,
+not an assumed measure/length lower bound. Ordinary and wrap/mixed-rigid
+debt are still fundamentally different from true Boolean holes. -/
+theorem six_point_exists_finite_period_phase_avoiding_all_short_triangles
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hn4 : 4 ≤ n)
+    (hn5 : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (hcard : Fintype.card V = 6)
+    (top : V)
+    (hTop : centreExponent (C top) t = n - 1)
+    (hMin : ∀ i : V, i ≠ top →
+      centreExponent (C i) t = n - 3) :
+    ∃ x : ℝ,
+      0 ≤ x ∧ x < t ∧
+      ¬ OrdinaryShortTriangleBadAt hp t delta x := by
+  classical
+  by_contra hnone
+  have hall :
+      ∀ x : ℝ, 0 ≤ x → x < t →
+        OrdinaryShortTriangleBadAt hp t delta x := by
+    intro x hx0 hxt
+    by_contra hbad
+    exact hnone ⟨x, hx0, hxt, hbad⟩
+  have htpos : 0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hcrit :
+      FinitePeriodCovers t
+        (OrdinaryCriticalUnitBadAt C t delta)
+        (Finset.univ : Finset (GlobalUnitGapSlot C t)) := by
+    intro x hx0 hxt
+    obtain ⟨u, hu⟩ :=
+      ordinaryShortTriangleBadAt_implies_critical_unit
+        hp hcap C htpos hlam hdeltaHalf (hall x hx0 hxt)
+    exact ⟨u, Finset.mem_univ u, hu⟩
+  exact
+    (no_six_point_ordinary_critical_finite_period_cover
+      C hn4 hn5 hdelta0 hdeltaHalf ht
+      hcard top hTop hMin Finset.univ) hcrit
+
+#print axioms six_point_exists_finite_period_phase_avoiding_all_short_triangles
 
 #print axioms ordinaryShortTriangleBadAt_implies_critical_unit
 #print axioms six_point_exists_halfGrid_phase_avoiding_all_short_triangles
