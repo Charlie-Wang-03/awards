@@ -78,7 +78,7 @@ theorem six_point_mixed_no_minimum_deletion_has_base_triangle_squeeze
 
   obtain ⟨hBaseB, hBaseC, hApex⟩ :=
     hamiltonian_residual_base_triangle_bounds
-      hp hcap hbc hyB hyC hxB hxC hzB hzC hB hC
+      hp hcap hbc hyB.symm hyC.symm hxB.symm hxC.symm hzB.symm hzC.symm hB hC
 
   exact ⟨b, c, z, hbTop, hcTop, hbA, hcA, hbc,
     hzTop, hzB, hzC, hBaseB, hBaseC, hApex⟩
