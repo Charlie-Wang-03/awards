@@ -40,3 +40,55 @@ geometric support and phase lemmas, like all structural partial results,
 do not yet provide the exact non-reusing global TRUE Boolean-hole and
 unreserved-dyadic-surplus payment needed to close this hole. All-tree
 compilation is NOT asserted by these focused checks.
+
+
+## 2026-10-23 second continuation — additional kernel-checked work
+
+### Local Lean repairs
+
+* `LinearCyclicDeletionGain.lean`: a helper theorem named
+  `successiveDiffsFrom_append_cons` collided with a generated declaration
+  from `ProjectiveCutRotation` when the entire changed-module tree loaded.
+  It has been renamed to `successiveDiffsFrom_append_last_linearCyclic`.
+  The module was independently rechecked in
+  [run #39966584594](https://github.com/Charlie-Wang-03/awards/actions/runs/39966584594) — PASS, not merely syntax reviewed.
+* `CyclicFiniteSampling.lean`: [run #39966920889](https://github.com/Charlie-Wang-03/awards/actions/runs/39966920889)
+  — PASS, all 9,079 Lake jobs. Fixes: explicit noncomputability of real
+  periodic samples, signed difference cast proofs, redundant tactic after
+  a finished goal, and correct sign of the wrapped absolute difference.
+  `cyclicSamplePhase_injective_on_same_anyBaseArc` uses no `sorryAx`.
+
+### Mathematically stronger original-geometry local result
+
+* `PositiveGapThirteenSlotPhase.lean`: [run #39967310330](https://github.com/Charlie-Wang-03/awards/actions/runs/39967310330)
+  — PASS, 9,108/9,108 targets, all three printed theorems have only
+  `[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
+  * `positive_gap_safe_sample_of_card_lt`: any strictly fewer than
+    `M` canonical positive-gap bad slots cannot obstruct all `M` equally
+    spaced physical phases when `M≥2`, `0≤delta<t/M`.
+  * `six_point_support_one_two_safe_fourteenPhase_of_threshold`: under
+    genuine six-centre top/minima exponents and a support-one/support-two
+    pair, there exists one safe period phase if `13*delta<n`
+    (equivalently `14*delta<t`). Hence for `n=6` the corresponding
+    subbranch is proved for `delta<6/13` rather than `delta<3/7`.
+  * `six_point_hard_top_two_support_two_or_safe_fourteenPhase`: original
+    `AngleCap` + uncompensated top deletion imply either **two distinct
+    non-gaining support-two** minima, or the above safe phase.
+
+**Critical logical limitation:** no proof that a GLOBAL shortage of true
+Boolean holes and unreserved dyadic surplus forces a cover by the above
+positive-gap arcs. Thus a safe phase alone cannot discharge the original
+nonreusing payment inequality or the executable `sorry` in
+`PlanarLowerBranchProofAdmittedWIP.lean`.
+
+### Not yet verified
+
+* `ExactWitnessCanonicalUnitGap.lean`: its earlier raw `getElem` proof
+  did not compile because a dependent `Fin` proof failed to transport
+  across the definition of `C.gaps`. The source has been revised to
+  introduce the intermediate `hgap` statement with ordinary
+  `C.gaps[m]` notation, following the successful `TurnUnitGapBridge`
+  proof pattern. The focused result at this checkpoint is still
+  **PENDING**, not green.
+* Full changed-module tree: numerous unrelated Lean errors remain;
+  don't mark the entire research tree compilable based on focused PASS.
