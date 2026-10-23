@@ -166,8 +166,13 @@ A passing focused build is not equivalent to an all-research-tree build.
   constructs two distinct middle-hidden support-three three-transition
   minima in the mixed six-centre case when there is no compensated
   minimum deletion, by combining two previously certified facts.
-  CI #39900884166 was still **in progress** at the time of this
-  checkpoint amendment; no kernel PASS is claimed until checked.
+  **KERNEL PASS CONFIRMED:** focused CI
+  [#39900884166](https://github.com/Charlie-Wang-03/awards/actions/runs/39900884166)
+  built 3553 Lake jobs; the final theorem's `#print axioms` lists only
+  `propext`, `Classical.choice`, `Quot.sound`, not `sorryAx`.
+  It is explicitly imported by `JSP000404Research.lean`.
+  This simultaneously forces two distinct nonexposed, triple-transition,
+  TOP-pinned middle-hidden n-3 centres under the exact hard branch hypotheses.
 
 ### Next genuine mathematical targets
 
