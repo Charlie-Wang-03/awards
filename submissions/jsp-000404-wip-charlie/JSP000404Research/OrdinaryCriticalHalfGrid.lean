@@ -44,8 +44,7 @@ theorem ordinaryCriticalUnitBadAt_pair_distance_le_delta
   have hm : mx = my := by
     omega
   subst my
-  have hproof : hmy = hmx := Subsingleton.elim _ _
-  subst hmy
+  subst mx
   let alpha :=
     normalizedRayTheta hp t u.1
       ((C u.1).rays.get ⟨mx, by omega⟩)
@@ -101,15 +100,17 @@ theorem halfGrid_separation
       exact_mod_cast hnat
     rw [abs_of_nonpos]
     · linarith
-    · norm_num
-      exact_mod_cast hlt.le
+    · have hle : (a.val : ℝ) ≤ (b.val : ℝ) := by
+        exact_mod_cast hlt.le
+      linarith
   · have hnat : b.val + 1 ≤ a.val := by omega
     have hreal : (b.val : ℝ) + 1 ≤ (a.val : ℝ) := by
       exact_mod_cast hnat
     rw [abs_of_nonneg]
     · linarith
-    · norm_num
-      exact_mod_cast hgt.le
+    · have hle : (b.val : ℝ) ≤ (a.val : ℝ) := by
+        exact_mod_cast hgt.le
+      linarith
 
 /-- At most one half-grid sample can lie in one critical unit obstruction. -/
 theorem ordinaryCriticalUnitBadAt_halfGrid_injective
