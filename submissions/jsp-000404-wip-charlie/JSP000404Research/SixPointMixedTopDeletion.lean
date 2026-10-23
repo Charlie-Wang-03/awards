@@ -46,7 +46,7 @@ def SixPointNoCompensatedTopDeletion
   )
 
 theorem six_point_top_deletion_compensated_of_four_concrete_gains
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -128,7 +128,7 @@ theorem exponent_add_one_le_after_delete_top_of_positive_positive_pin
 /-- If four minima have any certified top-deletion gains, a hard top-deletion
 branch is impossible. -/
 theorem no_four_top_deletion_gains
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
