@@ -27,9 +27,10 @@ open scoped BigOperators
 
 theorem mixed_support_one_support_two_hidden_large_angle
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
+    {p : V → Plane}
     {lam t delta : ℝ} {n : ℕ}
+    (hp : Function.Injective p)
+    (hcap : AngleCap p lam)
     (hn : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -61,7 +62,7 @@ theorem mixed_support_one_support_two_hidden_large_angle
       hraysB, hqeB0, hqB, hsignB⟩ :=
     exists_transition_decomposition_of_support_le_two
       hp hcap htpos htone hlam b Cb
-      (by rw [hsupB]; omega)
+      (by rw [hsupB])
 
   obtain ⟨HB, hHBqe⟩ :=
     exists_highExponentTransitionIntervalCertificate_of_decomposition
@@ -91,13 +92,21 @@ theorem mixed_support_one_support_two_hidden_large_angle
     omega
 
   let centre : Fin 3 → V := ![top,a,b]
-  let Cfam : ∀ r : Fin 3,
-      CentreProjectiveCycle hp (centre r) :=
-    ![Ctop,Ca,Cb]
-  let cert : ∀ r : Fin 3,
+  let Cfam : (r : Fin 3) →
+      CentreProjectiveCycle hp (centre r) := by
+    intro r
+    fin_cases r
+    · exact Ctop
+    · exact Ca
+    · exact Cb
+  let cert : (r : Fin 3) →
       HighExponentTransitionIntervalCertificate
-        hp t (centre r) (Cfam r) :=
-    ![HTop,HA,HB]
+        hp t (centre r) (Cfam r) := by
+    intro r
+    fin_cases r
+    · exact HTop
+    · exact HA
+    · exact HB
 
   have hcentre : Function.Injective centre := by
     intro x y hxy
