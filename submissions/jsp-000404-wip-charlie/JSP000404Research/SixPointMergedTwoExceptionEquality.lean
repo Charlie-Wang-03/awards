@@ -51,10 +51,10 @@ theorem six_point_two_min_exceptions_weight_eq
     ((Finset.univ.erase top).erase bad₁).erase bad₂
   have hb₁Mem :
       bad₁ ∈ (Finset.univ.erase top : Finset V) := by
-    simp [htb₁]
+    exact Finset.mem_erase.mpr ⟨htb₁.symm, Finset.mem_univ _⟩
   have hb₂Mem :
       bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
-    simp [htb₂, hb₁₂]
+    exact Finset.mem_erase.mpr ⟨hb₁₂.symm, Finset.mem_erase.mpr ⟨htb₂.symm, Finset.mem_univ _⟩⟩
   have hScard : S.card = 3 := by
     dsimp [S]
     rw [Finset.card_erase_of_mem hb₂Mem,
@@ -103,15 +103,12 @@ theorem six_point_two_min_exceptions_weight_eq
         2 ^ (n - (active P bad₁).card) +
         2 ^ (n - (active P bad₂).card) +
         ∑ v ∈ S, 2 ^ (n - (active P v).card) := by
-    rw [← Finset.sum_erase_add
-      (fun v => 2 ^ (n - (active P v).card))
-      (Finset.mem_univ top)]
-    rw [← Finset.sum_erase_add
-      (fun v => 2 ^ (n - (active P v).card))
-      hb₁Mem]
-    rw [← Finset.sum_erase_add
-      (fun v => 2 ^ (n - (active P v).card))
-      hb₂Mem]
+    rw [← Finset.sum_erase_add (Finset.univ : Finset V)
+      top (Finset.mem_univ top)]
+    rw [← Finset.sum_erase_add (Finset.univ.erase top)
+      bad₁ hb₁Mem]
+    rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁)
+      bad₂ hb₂Mem]
     dsimp [S]
     omega
 
@@ -174,10 +171,10 @@ theorem six_point_two_exception_target_weight_eq
     ((Finset.univ.erase top).erase bad₁).erase bad₂
   have hb₁Mem :
       bad₁ ∈ (Finset.univ.erase top : Finset V) := by
-    simp [htb₁]
+    exact Finset.mem_erase.mpr ⟨htb₁.symm, Finset.mem_univ _⟩
   have hb₂Mem :
       bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
-    simp [htb₂, hb₁₂]
+    exact Finset.mem_erase.mpr ⟨hb₁₂.symm, Finset.mem_erase.mpr ⟨htb₂.symm, Finset.mem_univ _⟩⟩
   have hScard : S.card = 3 := by
     dsimp [S]
     rw [Finset.card_erase_of_mem hb₂Mem,
@@ -220,18 +217,12 @@ theorem six_point_two_exception_target_weight_eq
         2 ^ (n - 4) +
         ∑ v ∈ S,
           2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v) := by
-    rw [← Finset.sum_erase_add
-      (fun v =>
-        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
-      (Finset.mem_univ top)]
-    rw [← Finset.sum_erase_add
-      (fun v =>
-        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
-      hb₁Mem]
-    rw [← Finset.sum_erase_add
-      (fun v =>
-        2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v))
-      hb₂Mem]
+    rw [← Finset.sum_erase_add (Finset.univ : Finset V)
+      top (Finset.mem_univ top)]
+    rw [← Finset.sum_erase_add (Finset.univ.erase top)
+      bad₁ hb₁Mem]
+    rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁)
+      bad₂ hb₂Mem]
     dsimp [S]
     simp [sixPointTwoExceptionTarget,
       htb₁, htb₂, hb₁₂]
