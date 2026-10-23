@@ -78,7 +78,8 @@ theorem five_gap_exact_unit_lies_at_positive_position
   rcases hshape with hshape | hshape | hshape
   · rw [hshape] at hq
     simp [quotientList] at hq
-    rcases hg with rfl | rfl | rfl | rfl | rfl
+    rcases hg with heq | heq | heq | heq | heq
+    all_goals rw [heq] at hscale
     · left
       have hfloor : Nat.floor (t * gFirst) = 1 := by
         rw [hscale]
@@ -104,7 +105,8 @@ theorem five_gap_exact_unit_lies_at_positive_position
       exact ⟨by omega, hscale⟩
   · rw [hshape] at hq
     simp [quotientList] at hq
-    rcases hg with rfl | rfl | rfl | rfl | rfl
+    rcases hg with heq | heq | heq | heq | heq
+    all_goals rw [heq] at hscale
     · left
       have hfloor : Nat.floor (t * gFirst) = 1 := by
         rw [hscale]
@@ -130,7 +132,8 @@ theorem five_gap_exact_unit_lies_at_positive_position
       exact ⟨by omega, hscale⟩
   · rw [hshape] at hq
     simp [quotientList] at hq
-    rcases hg with rfl | rfl | rfl | rfl | rfl
+    rcases hg with heq | heq | heq | heq | heq
+    all_goals rw [heq] at hscale
     · left
       have hfloor : Nat.floor (t * gFirst) = 1 := by
         rw [hscale]
