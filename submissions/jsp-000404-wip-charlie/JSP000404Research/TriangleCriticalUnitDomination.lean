@@ -3,6 +3,7 @@ import JSP000404Research.TriangleCriticalTransitionSeed
 import JSP000404Research.CentreTransitionRefinement
 import JSP000404Research.TransitionUnitGapSlot
 import JSP000404Research.CriticalPhaseDomination
+import JSP000404Research.CutNormalizedPhase
 import Mathlib.Tactic
 
 /-!
@@ -34,10 +35,11 @@ open Real
 /-- Ordered two-ray version retaining the parent-arc nesting data. -/
 theorem ordered_transition_seed_parent_bad_has_critical_unit
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta L S x : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta L S x : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -170,10 +172,11 @@ theorem ordered_transition_seed_parent_bad_has_critical_unit
 /-- Unordered two-ray version. -/
 theorem transition_seed_parent_bad_has_critical_unit
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta L S x : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta L S x : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -213,10 +216,11 @@ is covered by a concrete ordinary critical q=1 transition obstruction at one
 of the triangle vertices. -/
 theorem triangle_parent_bad_has_ordinary_critical_unit
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta L S x : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta L S x : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
