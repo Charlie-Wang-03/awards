@@ -144,7 +144,7 @@ theorem exactWitness_unit_transition_gap_position_ordered
       exact exactWitness_ordinary_short_endpoint_sign_ne
         hp hn hdelta0 ht hlam W horder
         (by simpa [ja, kc] using hord)
-    refine Or.inl ⟨m, hmRays, ?_⟩
+    refine ⟨m, hmRays, ?_⟩
     change
       t * ((rayThetaAt hp W.b v - rayThetaAt hp W.b u) /
         Real.pi) = 1 ∧
@@ -220,9 +220,17 @@ theorem exactWitness_unit_transition_gap_position_ordered
       cases rest with
       | nil => simp
       | cons r rs =>
-          cases rs with
-          | nil => simp [List.getLast_eq_getLastD]
-          | cons x xs => simp [List.getLast_eq_getLastD]
+          have hlastGet :
+              (first :: r :: rs).getLast (by simp) =
+                (r :: rs).getLast (by simp) := by
+            simpa using
+              (List.getLast_append_of_right_ne_nil
+                [first] (r :: rs) (by simp))
+          have htail :
+              (r :: rs).getLast? =
+                some ((r :: rs).getLast (by simp)) :=
+            List.getLast?_eq_getLast_of_ne_nil (by simp)
+          simpa [List.getLastD, htail, hlastGet]
     have hfirstSign :
         raySignAt hp W.b first =
           raySignAt hp W.b ja :=
@@ -240,7 +248,7 @@ theorem exactWitness_unit_transition_gap_position_ordered
       exact exactWitness_wrap_short_endpoint_lifted_sign_ne
         hp hn hdelta0 ht hlam W horder
         (by simpa [ja, kc] using hwrap)
-    refine Or.inr ⟨first, rest, ?_⟩
+    refine ⟨first, rest, ?_⟩
     refine ⟨hrays, ?_, hsign⟩
     rw [hlastD, hfirstEq, hlastEq]
     dsimp [ja, kc] at hwrap
