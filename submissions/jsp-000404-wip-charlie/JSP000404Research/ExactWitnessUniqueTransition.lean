@@ -24,9 +24,9 @@ distinguished quotient one. -/
 theorem exactWitness_transition_decomposition_qe_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -62,9 +62,9 @@ whose unique transition quotient is one. -/
 theorem exists_exactWitness_unit_transition_decomposition_of_support_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
@@ -123,9 +123,9 @@ on a same-sign step. -/
 theorem exactWitness_deficitThree_support_two_hidden_sameSign
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -168,7 +168,7 @@ theorem exactWitness_deficitThree_support_two_hidden_sameSign
       hsupportList hsumList hone
   have hhidden :
       n - 2 ∈ quotientList t C.gaps := by
-    simpa using hhidden0
+    simpa [Nat.sub_sub] using hhidden0
   obtain ⟨pre, post, hq, hsign⟩ :=
     exists_exactWitness_unit_transition_decomposition_of_support_two
       hp hcap (by omega : 3 ≤ n)
@@ -187,9 +187,9 @@ branch. -/
 theorem exactWitness_deficitThree_support_two_hidden_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
+    {lam t delta : ℝ} {n : ℕ}
     (hp : Function.Injective p)
     (hcap : AngleCap p lam)
-    {lam t delta : ℝ} {n : ℕ}
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
