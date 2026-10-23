@@ -58,7 +58,7 @@ private theorem six_centre_sum_le_thirteen_of_three_distinguished
         intro i _hi
         exact hall i
       _ = T.card * 3 := by simp
-      _ = 9 := by rw [hTcard]; omega
+      _ = 9 := by rw [hTcard]
   have htopSplit :
       (∑ i : V, f i) = f top + ∑ i ∈ S, f i := by
     have h := Finset.sum_erase_add
