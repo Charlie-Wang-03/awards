@@ -50,14 +50,15 @@ theorem centre_gap_get_adjacent_eq
       ∃ a xs, C.angles = a :: xs := by
     cases h : C.angles with
     | nil => exact False.elim (C.angles_nonempty h)
-    | cons a xs => exact ⟨a, xs, h⟩
+    | cons a xs => exact ⟨a, xs, rfl⟩
   have hmTail : m < xs.length := by
     rw [hangles] at hmA
     simpa using hmA
   have hmDiff :
       m < (successiveDiffsFrom a xs).length := by
     simpa [successiveDiffsFrom_length] using hmTail
-  rw [CentreProjectiveCycle.gaps, hangles]
+  simp only [CentreProjectiveCycle.gaps]
+  rw [hangles]
   simp only [normalizedProjectiveGaps, projectiveGaps,
     List.map_append, List.map_singleton]
   simp [hmDiff,
@@ -81,8 +82,9 @@ theorem centre_gap_get_wrap_eq
     (rayThetaAt hp i first + Real.pi -
         rayThetaAt hp i (rest.getLastD first)) /
       Real.pi := by
-  rw [CentreProjectiveCycle.gaps,
-      CentreProjectiveCycle.angles, hrays]
+  simp only [CentreProjectiveCycle.gaps,
+      CentreProjectiveCycle.angles]
+  rw [hrays]
   simp [normalizedProjectiveGaps, projectiveGaps]
 
 /-- Every exact maximum-angle witness has one canonical cyclic gap whose
@@ -91,8 +93,8 @@ theorem exists_exactWitness_canonical_unit_gap
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
     (hn : 3 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (ht : t = (n : ℝ) + delta)
