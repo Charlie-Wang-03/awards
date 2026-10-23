@@ -92,7 +92,7 @@ theorem five_survivor_weight_ge_six_point_profile_of_at_least_four_gains
     exact (Finset.card_le_card hgoodSub).trans_eq hScard
   have hRcard : R.card = 5 - good.card := by
     dsimp [R]
-    rw [Finset.card_sdiff hgoodSub, hScard]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hgoodSub, hScard]
 
   have hgoodLower :
       good.card * 2 ^ (n - 2)
@@ -132,11 +132,12 @@ theorem five_survivor_weight_ge_six_point_profile_of_at_least_four_gains
         =
       (∑ v ∈ good, 2 ^ childExponent v) +
       (∑ v ∈ R, 2 ^ childExponent v) := by
-    have hsd :=
-      Finset.sum_sdiff hgoodSub
-        (fun v => 2 ^ childExponent v)
-    dsimp [R]
-    omega
+    have hsd :
+        (∑ v ∈ R, 2 ^ childExponent v) +
+          (∑ v ∈ good, 2 ^ childExponent v) =
+            (∑ v ∈ S, 2 ^ childExponent v) := by
+      exact Finset.sum_sdiff hgoodSub
+    simpa only [add_comm] using hsd.symm
 
   have hchild :
       good.card * 2 ^ (n - 2) +
@@ -148,7 +149,8 @@ theorem five_survivor_weight_ge_six_point_profile_of_at_least_four_gains
 
   have hn2 : n - 2 = (n - 3) + 1 := by omega
   have hn1 : n - 1 = (n - 3) + 2 := by omega
-  rw [hn2, hn1, pow_add, pow_add] at hchild ⊢
+  rw [hn2, pow_add] at hchild
+  rw [hn1, pow_add]
   norm_num at hchild ⊢
   rw [hRcard] at hchild
   have hcoef : 9 ≤ 2 * good.card + (5 - good.card) := by
@@ -159,7 +161,7 @@ theorem five_survivor_weight_ge_six_point_profile_of_at_least_four_gains
 
 /-- Four or more actual top-deletion gain minima already compensate the top. -/
 theorem six_point_top_deletion_compensated_of_gain_set_card_ge_four
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -191,8 +193,7 @@ theorem six_point_top_deletion_compensated_of_gain_set_card_ge_four
   · intro v hv
     have h := (mem_topDeletionGainMinima_iff
       C hcard3 top t v).1 hv
-    simp [G]
-    exact Finset.mem_erase.mpr ⟨h.1, Finset.mem_univ v⟩
+    exact h.1
   · simpa [G] using hgainCard
   · intro v hvt
     rw [← hMin v hvt]
@@ -204,7 +205,7 @@ theorem six_point_top_deletion_compensated_of_gain_set_card_ge_four
     omega
 
 theorem topDeletionGainMinima_card_le_three_of_no_compensated_top
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ} {n : ℕ}
@@ -233,11 +234,11 @@ theorem topDeletionGainMinima_card_le_three_of_no_compensated_top
 
 /-- A support-three minimum is always in the top-deletion gain set. -/
 theorem support_three_mem_topDeletionGainMinima
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 4 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -275,7 +276,7 @@ def TopPinnedPositivePair
       1 ≤ qOut ∧ 1 ≤ qIn
 
 theorem topPinnedPositivePair_mem_topDeletionGainMinima
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
     {t : ℝ}
@@ -297,7 +298,7 @@ theorem topPinnedPositivePair_mem_topDeletionGainMinima
 when top is deleted, and therefore cannot be positive-positive pinned at the
 top ray. -/
 theorem exists_separated_support_two_minimum_of_no_compensated_top
-    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
@@ -316,13 +317,11 @@ theorem exists_separated_support_two_minimum_of_no_compensated_top
     (hNoTop :
       SixPointNoCompensatedTopDeletion
         C (by rw [hcard]; omega) top t n) :
-    ∃ v : V,
-      v ≠ top ∧
+    ∃ v : V, ∃ hv : v ≠ top,
       positiveSupport (centreQuotient (C v) t) = 2 ∧
       v ∉ topDeletionGainMinima C
         (by rw [hcard]; omega) top t ∧
-      ¬ TopPinnedPositivePair C top v
-          (by assumption) t := by
+      ¬ TopPinnedPositivePair C top v hv t := by
   classical
   let hcard3 : 3 ≤ Fintype.card V := by
     rw [hcard]
@@ -353,11 +352,11 @@ theorem exists_separated_support_two_minimum_of_no_compensated_top
 
   have hNcard : 2 ≤ N.card := by
     dsimp [N]
-    rw [Finset.card_sdiff hGsub, hminCard]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hGsub, hminCard]
     omega
 
-  obtain ⟨a, haN, b, hbN, hab⟩ :=
-    Finset.two_le_card.mp hNcard
+  obtain ⟨a, b, haN, hbN, hab⟩ :=
+    Finset.one_lt_card_iff.mp (by omega : 1 < N.card)
 
   have haMin : a ∈ minima := (Finset.mem_sdiff.mp haN).1
   have hbMin : b ∈ minima := (Finset.mem_sdiff.mp hbN).1
