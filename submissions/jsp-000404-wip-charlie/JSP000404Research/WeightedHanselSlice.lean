@@ -236,12 +236,12 @@ theorem falseCompletionSigmaMap_bijective
           =
         ⟨y.1, y.2.1⟩ :=
       hbij.1 hword
-    cases x with
-    | mk vx fx =>
-      cases y with
-      | mk vy fy =>
-        cases hbase
-        rfl
+    -- Destructure the dependent subtype payloads *before* eliminating
+    -- the sigma equality; their proofs are then proof-irrelevant.
+    rcases x with ⟨vx, ⟨fx, hfx⟩⟩
+    rcases y with ⟨vy, ⟨fy, hfy⟩⟩
+    cases hbase
+    rfl
   · intro w
     obtain ⟨x, hx⟩ := hbij.2 w.1
     cases x with
