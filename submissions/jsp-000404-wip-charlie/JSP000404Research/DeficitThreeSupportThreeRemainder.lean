@@ -105,12 +105,15 @@ theorem centre_gap_remainder_between_zero_delta_of_deficit_three_support_three
     have hqidx :
         r.val < (quotientList t C.gaps).length := by
       simpa only [quotientList_length] using r.isLt
-    have hqidxMap :
+    have hqidxBind :
         r.val <
-          ((quotientList t C.gaps).map (fun q : ℕ => (q : ℝ))).length := by
+          (do
+            let q ← quotientList t C.gaps
+            pure (q : ℝ)).length := by
+      rw [← map_eq_pure_bind]
       simpa only [List.length_map] using hqidx
     have hgetList :=
-      List.Forall₂.get halign hqidxMap r.isLt
+      List.Forall₂.get halign hqidxBind r.isLt
     simpa [List.getElem_map, centreQuotient, quotientList] using hgetList
   have htotal :=
     centre_remainderMass_eq_delta_of_deficit_three_support_three
