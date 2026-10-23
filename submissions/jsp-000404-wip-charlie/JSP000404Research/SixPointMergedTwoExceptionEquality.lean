@@ -104,11 +104,11 @@ theorem six_point_two_min_exceptions_weight_eq
         2 ^ (n - (active P bad₂).card) +
         ∑ v ∈ S, 2 ^ (n - (active P v).card) := by
     rw [← Finset.sum_erase_add (Finset.univ : Finset V)
-      top (Finset.mem_univ top)]
+      (fun v => 2 ^ (n - (active P v).card)) (Finset.mem_univ top)]
     rw [← Finset.sum_erase_add (Finset.univ.erase top)
-      bad₁ hb₁Mem]
+      (fun v => 2 ^ (n - (active P v).card)) hb₁Mem]
     rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁)
-      bad₂ hb₂Mem]
+      (fun v => 2 ^ (n - (active P v).card)) hb₂Mem]
     dsimp [S]
     omega
 
@@ -218,11 +218,11 @@ theorem six_point_two_exception_target_weight_eq
         ∑ v ∈ S,
           2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v) := by
     rw [← Finset.sum_erase_add (Finset.univ : Finset V)
-      top (Finset.mem_univ top)]
+      (fun v => 2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v)) (Finset.mem_univ top)]
     rw [← Finset.sum_erase_add (Finset.univ.erase top)
-      bad₁ hb₁Mem]
+      (fun v => 2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v)) hb₁Mem]
     rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁)
-      bad₂ hb₂Mem]
+      (fun v => 2 ^ (n - sixPointTwoExceptionTarget top bad₁ bad₂ v)) hb₂Mem]
     dsimp [S]
     simp [sixPointTwoExceptionTarget,
       htb₁, htb₂, hb₁₂]
@@ -271,11 +271,10 @@ theorem six_point_two_min_exceptions_active_card_eq_target
       simp [sixPointTwoExceptionTarget, hTop]
     · by_cases hvb₁ : v = bad₁
       · subst v
-        simp [sixPointTwoExceptionTarget, htb₁, hBad₁]
+        simpa [sixPointTwoExceptionTarget, hvt] using hBad₁
       · by_cases hvb₂ : v = bad₂
         · subst v
-          simp [sixPointTwoExceptionTarget,
-            htb₂, hb₁₂, hBad₂]
+          simpa [sixPointTwoExceptionTarget, hvt, hvb₁] using hBad₂
         · have h := hOther v hvt hvb₁ hvb₂
           simpa [sixPointTwoExceptionTarget,
             hvt, hvb₁, hvb₂] using h
@@ -319,9 +318,9 @@ theorem six_point_two_min_exceptions_active_exact
   constructor
   · simpa [sixPointTwoExceptionTarget] using h top
   constructor
-  · simpa [sixPointTwoExceptionTarget, htb₁] using h bad₁
+  · simpa [sixPointTwoExceptionTarget, htb₁.symm] using h bad₁
   constructor
-  · simpa [sixPointTwoExceptionTarget, htb₂, hb₁₂] using h bad₂
+  · simpa [sixPointTwoExceptionTarget, htb₂.symm, hb₁₂.symm] using h bad₂
   · intro v hvt hvb₁ hvb₂
     simpa [sixPointTwoExceptionTarget,
       hvt, hvb₁, hvb₂] using h v
