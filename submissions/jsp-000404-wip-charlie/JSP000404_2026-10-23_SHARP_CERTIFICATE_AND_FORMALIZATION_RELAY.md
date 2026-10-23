@@ -23,3 +23,20 @@ What is missing is a GLOBAL, original-geometry, **non-reusing** payment of the e
 The newly proved sharp phase theorem excludes covering all phases by the corresponding canonical positive quotient-gap bad arcs. To turn this into a contradiction, one would need to PROVE (not assume) that failure of the actual non-reusing global resource inequality forces suitably strong original-geometry bad-phase coverage, or find a direct true-hole resource-matching/charging argument. This implication is not established and is not an elementary consequence of the <=14 slot count. In particular the separate `GeometricCertificates` assumption in the independent upstream partial formalization PR #5131 also does NOT discharge this gap.
 
 No additional axiom, `admit`, or executable `sorry` was intentionally added. No upstream complete-proof PR or award claim is justified.
+
+## 2026-10-23 additional verified continuation
+
+The following results are now **independently kernel checked** and should
+supersede the corresponding earlier "waiting" items above:
+
+1. `TurnUnitGapBridge.lean` successfully compiled in [focused CI #39957963427](https://github.com/Charlie-Wang-03/awards/actions/runs/39957963427). Its ordinary and wrap dependent turn-unit constructors and scaled-gap equalities now elaborate without Lean errors; the checked exported constructor and start theorems do not report `sorryAx`.
+2. `SixPointThirteenSlotAlternative.lean` successfully compiled in [focused CI #39959171500](https://github.com/Charlie-Wang-03/awards/actions/runs/39959171500), with `#print axioms` for `six_point_positive_gap_card_le_thirteen_of_support_one_two` and `six_point_hard_top_thirteen_slots_or_two_support_two` listing only `propext`, `Classical.choice`, `Quot.sound`. The ORIGINAL six-centre no-compensation top profile admits either `Fintype.card (GlobalPositiveGapSlot C t) <= 13` or two distinct non-gaining support-two minima. The 13 budget is proved by the explicit 1+1+2+3+3+3 support decomposition. This does not improve the existing fifteen-phase threshold without a separate phase argument.
+3. `LinearCyclicDeletionGain.lean` successfully compiled in [focused CI #39960741070](https://github.com/Charlie-Wang-03/awards/actions/runs/39960741070) (3,217/3,217 Lake jobs). `listExponent_linearCyclic_delete_second_gain` and `listExponent_linearCyclic_delete_last_gain` both report no `sorryAx`. This repairs the physical list-gap floor-merge/carry backends for cyclic deletion.
+4. `ExactWitnessCanonicalUnitGap.lean` was found to trigger an unrelated import-environment collision when simultaneously importing `TurnUnitGapBridge` and `ExactWitnessUnitGapMass`: duplicate generated `positiveIndexSet.eq_1`. The heavy-bridge import was therefore REVERTED from this file. A direct, lightweight `getElem` proof with explicit index bounds is under focused CI. **Do not label this last module verified until its own CI succeeds.**
+
+The only executable top-level research proof hole is still the one in
+`PlanarLowerBranchProofAdmittedWIP.lean`. The sharpened six-point
+geometric support and phase lemmas, like all structural partial results,
+do not yet provide the exact non-reusing global TRUE Boolean-hole and
+unreserved-dyadic-surplus payment needed to close this hole. All-tree
+compilation is NOT asserted by these focused checks.
