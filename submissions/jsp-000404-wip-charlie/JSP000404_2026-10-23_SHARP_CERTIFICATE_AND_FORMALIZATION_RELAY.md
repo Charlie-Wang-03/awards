@@ -125,3 +125,11 @@ nonreusing payment inequality or the executable `sorry` in
 * Dedicated focus workflows cover the dependencies and use pinned Lean/Mathlib, plus `jsp000404_sorry_audit.py` requiring at most one allowed root WIP `sorry`.
 
 **Critical limitation:** the sole original `PlanarLowerBranchProofAdmittedWIP.lean` global non-reusing TRUE Boolean-hole/unreserved-surplus payment `sorry` remains. Neither stronger full-delta arcs nor boundary bipartite colouring imply dyadic capacity without an additional independently proved global accounting/charging theorem. No upstream complete-proof award claim is justified by this checkpoint.
+
+
+## 2026-10-23 fifth continuation — direct positive-gap to critical-unit safety, kernel PASS
+
+* [CI #39974094932](https://github.com/Charlie-Wang-03/awards/actions/runs/39974094932): `PositiveToCriticalPhaseBridge.lean` **PASS**, 9,111/9,111. Both `unitGapAsPositiveGap_start` and `full_positive_deltaArc_safe_implies_critical_unit_safe` have axioms exactly `[propext, Classical.choice, Quot.sound]`. The real normalization equality of physical starts needed `unfold ...; ring`, not a definitional `rfl`.
+* Thus the **kernel-checked** local dependency is: (13 positive-gap slots, parameter (13δ<n) on the support-one/two branch) -> existence of a physical phase free of **every full positive-gap δ-arc** -> at that same phase every actual quotient-one cyclic critical interval is absent. This is stronger than the earlier direct positive-bad-subinterval escape.
+* `PositiveArcBoundaryCutBridge.lean`, `PositiveArcSafeCutExistence.lean`, and `SixPointBoundaryCutDichotomy.lean` have been committed with separate CI gates. They attempt to transport the safe phase into a genuine cut `c=πx/t` carrying a coherent boundary Boolean 2-colouring. **Not kernel-verified at this checkpoint.** Any old failed downstream CI built before the normalized-start correction is stale.
+* **Global original proof still open:** an actual non-reusing payment of true unhit Boolean holes and unreserved dyadic surplus against all genuine residual translated-loss, NET, rigid, soft, twin and collision debts, or an independently proved contradiction from failure of that payment. The original WIP `sorry` remains intentionally visible.
