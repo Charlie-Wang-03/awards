@@ -341,10 +341,6 @@ theorem exists_centreUnitGap_of_adjacent_cut_critical
         rest.getLastD first = last := by
       dsimp [last]
       rw [List.getLast_eq_getLastD]
-      cases rest with
-      | nil => simp
-      | cons x xs =>
-          simp [List.getLastD_cons]
 
     have hfloorWrap :
         wrapRayQuotient hp i t first
