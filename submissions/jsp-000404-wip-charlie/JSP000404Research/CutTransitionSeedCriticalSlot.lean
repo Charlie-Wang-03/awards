@@ -33,10 +33,11 @@ open Real
 
 theorem ordered_cut_transition_seed_has_cyclic_critical_slot
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta c : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -101,8 +102,10 @@ theorem ordered_cut_transition_seed_has_cyclic_critical_slot
   have hthetaRK :
       cutRayTheta hp c i (R.rays.get r) ≤
         cutRayTheta hp c i k := by
-    have h := R.cutTheta_le_of_rayIndex_le hrLeK
-    simpa [R.get_rayIndex] using h
+    have hrLeK' :
+        R.rayIndex (R.rays.get r) ≤ R.rayIndex k := by
+      simpa only [R.rayIndex_get] using hrLeK
+    exact R.cutTheta_le_of_rayIndex_le hrLeK'
 
   have hcoordRK :
       cutNormalizedRayTheta hp t c i (R.rays.get r) ≤
@@ -111,7 +114,7 @@ theorem ordered_cut_transition_seed_has_cyclic_critical_slot
     have hpi : 0 < Real.pi := Real.pi_pos
     have hdiv :=
       div_le_div_of_nonneg_right hthetaRK hpi.le
-    exact mul_le_mul_of_nonneg_left hdiv ht.le
+    convert mul_le_mul_of_nonneg_left hdiv ht.le using 1 <;> ring
 
   have hbetaAdd :
       beta + s =
@@ -136,24 +139,25 @@ theorem ordered_cut_transition_seed_has_cyclic_critical_slot
     have hstart' :
         globalUnitGapStart C t u + (kShift : ℝ) * t =
           t * c / Real.pi + beta := by
-      simpa [u, beta] using hstart
+      simpa only [globalUnitGapStart, u, beta] using hstart
     rw [hstart']
     linarith
   · unfold criticalBadRight
     have hstart' :
         globalUnitGapStart C t u + (kShift : ℝ) * t =
           t * c / Real.pi + beta := by
-      simpa [u, beta] using hstart
+      simpa only [globalUnitGapStart, u, beta] using hstart
     rw [hstart']
     linarith
 
 /-- Orientation-free version. -/
 theorem cut_transition_seed_has_cyclic_critical_slot
     {V : Type*} [LinearOrder V] [Fintype V]
-    {p : V → Plane} (hp : Function.Injective p)
+    {p : V → Plane}
+    {lam t delta c : ℝ}
+    (hp : Function.Injective p)
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ}
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
