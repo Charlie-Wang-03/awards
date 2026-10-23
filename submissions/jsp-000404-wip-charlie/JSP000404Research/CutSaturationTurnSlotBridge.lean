@@ -40,13 +40,8 @@ theorem get_cons_append_cons_at_tail_length
   | nil =>
       simp
   | cons x xs ih =>
-      have hlast : (x :: xs).getLastD a = xs.getLastD x := by
-        cases xs with
-        | nil => rfl
-        | cons y ys =>
-            cases ys with
-            | nil => rfl
-            | cons z zs => rfl
+      have hlast : (x :: xs).getLastD a = xs.getLastD x :=
+        List.getLastD_cons
       simpa [hlast] using ih x
 
 theorem get_cons_append_cons_at_next
@@ -70,13 +65,8 @@ theorem get_cons_at_tail_length
   induction as generalizing a with
   | nil => simp
   | cons x xs ih =>
-      have hlast : (x :: xs).getLastD a = xs.getLastD x := by
-        cases xs with
-        | nil => rfl
-        | cons y ys =>
-            cases ys with
-            | nil => rfl
-            | cons z zs => rfl
+      have hlast : (x :: xs).getLastD a = xs.getLastD x :=
+        List.getLastD_cons
       simpa [hlast] using ih x
 
 namespace CentreCutRayCycle
