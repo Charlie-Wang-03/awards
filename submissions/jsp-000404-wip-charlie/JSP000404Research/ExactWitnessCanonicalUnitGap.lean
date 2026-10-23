@@ -46,9 +46,13 @@ theorem centre_gap_get_adjacent_eq
   have hmA : m + 1 < C.angles.length := by
     rw [C.angles_length]
     exact hm
+  have hmGap : m < C.gaps.length := by
+    rw [C.gaps_length]
+    omega
   have hgap :
-      C.gaps[m] =
-        (C.angles[m + 1] - C.angles[m]) / Real.pi := by
+      C.gaps[m]'hmGap =
+        (C.angles[m + 1]'hmA -
+          C.angles[m]'(by omega)) / Real.pi := by
     simp only [CentreProjectiveCycle.gaps]
     obtain ⟨a, xs, hangles⟩ :
         ∃ a xs, C.angles = a :: xs := by
