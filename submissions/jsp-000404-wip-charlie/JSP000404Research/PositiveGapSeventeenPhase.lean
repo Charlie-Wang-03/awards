@@ -165,7 +165,7 @@ theorem seventeenPhase_injective_on_same_cyclicDeltaArc
 
 /-- Assigning a positive quotient gap slot to every seventeen-sample phase forces an
 injective map into the global positive gap-slot type. -/
-theorem critical_slot_assignment_on_seventeenPhase_injective
+theorem positive_gap_slot_assignment_on_seventeenPhase_injective
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} {hp : Function.Injective p}
     (C : ∀ i : V, CentreProjectiveCycle hp i)
