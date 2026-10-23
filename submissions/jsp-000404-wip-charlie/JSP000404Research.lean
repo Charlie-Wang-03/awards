@@ -1482,6 +1482,9 @@ import JSP000404Research.SixPointHardSupportReduction
 -- Kernel-checked mixed six-centre hard residual: two pinned hidden triple-transition minima.
 import JSP000404Research.SixPointMixedHardTerminal
 
+-- Focused kernel-certified four-gain top deletion compensation.
+import JSP000404Research.SixPointMixedTopDeletion
+
 
 import JSP000404Research.SixPointTwoNonGainers
 
