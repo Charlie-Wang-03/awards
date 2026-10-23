@@ -85,9 +85,9 @@ theorem nonGaining_support_two_is_separated
 theorem two_nonGaining_lowSupport_witnesses
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -124,7 +124,7 @@ theorem two_nonGaining_lowSupport_witnesses
           (by rw [hcard]; omega) top t ∧
         positiveSupport (centreQuotient (C a) t) = 1 ∧
         positiveSupport (centreQuotient (C b) t) = 2 ∧
-        ¬ TopPinnedPositivePair C top b (by assumption) t
+        (∀ hb : b ≠ top, ¬ TopPinnedPositivePair C top b hb t)
     ) := by
   classical
   let hcard3 : 3 ≤ Fintype.card V := by
