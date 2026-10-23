@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointNFourOrdinaryTransitionNoCover.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/TransitionSameSignDisjoint.lean"
       - ".github/workflows/jsp000404-focused-ordinary-transition-phase-cover.yml"
   workflow_dispatch:
 
