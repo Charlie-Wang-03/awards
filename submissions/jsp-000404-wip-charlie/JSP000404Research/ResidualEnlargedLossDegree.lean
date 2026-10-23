@@ -1388,8 +1388,10 @@ theorem minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_free_le
     minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_cube_gt_surplus
       C exponent hexp honeLoss
       hdef hmin hvT hvNonloss hvStrict hunique
-  have hhalf :=
-    half_pow_le_dyadic_surplus_of_lt hvStrict
+  have hhalf :
+      2 ^ (projectedFree C v - 1) ≤
+        dyadicProfileSurplus exponent (projectedFree C) v := by
+    exact half_pow_le_dyadic_surplus_of_lt hvStrict
   by_contra hnot
   have hwLe :
       projectedFree C w ≤ projectedFree C v - 1 := by
@@ -1401,7 +1403,8 @@ theorem minimal_enlargedCandidate_strict_nonloss_uniqueNeighbor_free_le
     change 2 ^ projectedFree C w ≤ 2 ^ (projectedFree C v - 1)
     exact Nat.pow_le_pow_right
       (by norm_num : 0 < 2) hwLe
-  omega
+  have hbad := hpowLe.trans hhalf
+  exact (not_lt_of_ge hbad) hgt
 
 theorem minimal_enlargedCandidate_strict_nonloss_leaf_progress
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -1662,6 +1665,9 @@ theorem minimal_enlargedCandidate_loss_uniqueNeighbor_top_or_exponent_lt
     have hloss :=
       (mem_projectedLossVertices C exponent v).1 hvLoss
     unfold projectedFree at hloss
+    have hn2 : 2 ≤ n := by
+      have := hexpLt v
+      omega
     omega
   · right
     have hactiveGe :
@@ -1966,7 +1972,10 @@ theorem minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_lt
           (retainedActive C v).card =
             ((retainedActive C v).card - 1) + 1 := by
         omega
-      rw [ha]
+      have hplus :
+          (retainedActive C v).card + 1 =
+            ((retainedActive C v).card - 1) + 2 := by omega
+      rw [hplus]
       ring
     rw [hdecomp, Nat.add_sub_cancel_left]
     have hcoef :
@@ -2191,7 +2200,10 @@ theorem minimal_enlargedCandidate_loss_leaf_excess_le_parentSlice_of_gt
           (retainedActive C v).card =
             ((retainedActive C v).card - 1) + 1 := by
         omega
-      rw [ha]
+      have hplus :
+          (retainedActive C v).card + 1 =
+            ((retainedActive C v).card - 1) + 2 := by omega
+      rw [hplus]
       ring
     rw [hdecomp, Nat.add_sub_cancel_left]
     have hcoef :
@@ -2233,10 +2245,10 @@ theorem uniqueNeighbourLeaves_enlargedBlocks_pairwiseDisjoint
   have hvT : v ∈ T := hleavesT hv
   have hcross :
       EnlargedBlocksCross C exponent u v := by
-    exact ⟨word,huWord,hvWord⟩
+    exact ⟨word, Finset.mem_inter.mpr ⟨huWord, hvWord⟩⟩
   have hvParent :
       v = parent :=
-    hunique u hu v hvT huv hcross
+    hunique u hu v hvT huv.symm hcross
   subst v
   exact hparentNotLeaf hv
 
@@ -3251,13 +3263,16 @@ theorem minimal_enlargedCandidate_exact_nonloss_leaf_transfer_eq_shared
       retainedCompletionWords_card,
       hvExact]
     simp only [projectedFree]
-  have hsplit :=
-    block_card_eq_private_add_shared
-      (enlargedProjectedCandidateBlock C exponent)
-      T v
-  unfold deletedVertexTransfer
-  rw [hblock] at hsplit
-  omega
+  have hlocal :
+      2 ^ exponent v ≤
+        (enlargedProjectedCandidateBlock C exponent v).card :=
+    hblock.ge
+  rw [deletedVertexTransfer_eq_shared_minus_slack
+    (fun x : V => 2 ^ exponent x)
+    (enlargedProjectedCandidateBlock C exponent)
+    T v hlocal]
+  rw [hblock]
+  simp
 
 theorem minimal_enlargedCandidate_exact_leaf_strictNeighbor_paid_or_mixedUnpaid
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
