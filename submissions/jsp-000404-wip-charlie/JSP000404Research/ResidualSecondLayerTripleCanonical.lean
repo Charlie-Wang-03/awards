@@ -485,7 +485,8 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
       intro e he
       by_cases hecx : e = cx
       · simp [hecx]
-      · simp [heq hecx]
+      · have heq : e = cy := hnone e he hecx
+        simp [heq]
     have hle := Finset.card_le_card hsub
     simp [hcard,hcxy] at hle
   obtain ⟨e,he,hecx,hecy⟩ := hexists
@@ -503,7 +504,10 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
     · exact hd.1
   have hcard4 :
       ({cx,cy,e,d} : Finset (Fin n)).card = 4 := by
-    simp [hcxy,hecx,hecy,hd.2.1,hd.2.2,hde,eq_comm]
+    symm
+    exact (Finset.card_eq_four).2
+      ⟨cx,cy,e,d,hcxy,hecx.symm,hd.2.1.symm,
+        hecy.symm,hd.2.2.symm,hde.symm,rfl⟩
   have hfour : 4 ≤ (retainedActive C s).card := by
     rw [← hcard4]
     exact Finset.card_le_card hsub
@@ -853,7 +857,8 @@ theorem QTT_hard_branch_upgrades_to_QTTT
       · exact heS
     have hsetCard :
         ({cx,cy,e} : Finset (Fin n)).card = 3 := by
-      simp [hcxy,heCx,heCy,eq_comm]
+      exact (Finset.card_triple_eq_three_iff).2
+        ⟨hcxy,heCx.symm,heCy.symm⟩
     have hsEq :
         retainedActive C s = {cx,cy,e} := by
       have hreverse : ({cx,cy,e} : Finset (Fin n)) =
