@@ -52,6 +52,19 @@ theorem zeroGapValues_sum
           by_cases hq : q = 0 <;>
             simp [zeroGapValues, listZeroGapMass, hq, ih gs hlen]
 
+/-- Every positive quotient gap occupies a distinct input list position. -/
+theorem listPositiveCount_le_length_for_zeroGapValues (qs : List ℕ) :
+    listPositiveCount qs ≤ qs.length := by
+  induction qs with
+  | nil => simp [listPositiveCount]
+  | cons q qs ih =>
+      by_cases hq : q = 0
+      · subst q
+        simp [listPositiveCount]
+        omega
+      · simp [listPositiveCount, hq]
+        omega
+
 theorem zeroGapValues_length
     (qs : List ℕ) (gs : List ℝ)
     (hlen : qs.length = gs.length) :
@@ -67,7 +80,11 @@ theorem zeroGapValues_length
           simp only [List.length_cons, Nat.succ.injEq] at hlen
           by_cases hq : q = 0
           · subst q
-            simp [zeroGapValues, listPositiveCount, ih gs hlen]
+            have hcount := listPositiveCount_le_length_for_zeroGapValues qs
+
+          simp [zeroGapValues, listPositiveCount, ih gs hlen]
+
+          omega
           · simp [zeroGapValues, listPositiveCount, hq, ih gs hlen]
             omega
 
