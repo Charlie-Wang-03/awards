@@ -528,6 +528,7 @@ theorem planar_secondLayerLoss_completion_card
   have hwLoss' :
       w ∈ projectedLossVertices R exponent := by
     simpa [R,exponent,hn1,hdelta1] using hwLoss
+  change (retainedCompletionWords R w).card = 2 ^ (n - 3)
   rw [retainedCompletionWords_card]
   have heq :=
     (mem_projectedLossVertices R exponent w).1 hwLoss'
@@ -628,6 +629,8 @@ theorem planar_top_secondLayerLoss_total_cube_le_top_cube
         2 ^ (n - 2) := by
     exact topLoss_completion_card_current
       R exponent hsLoss' hS
+  change (∑ w ∈ S, (retainedCompletionWords R w).card) ≤
+    (retainedCompletionWords R s).card
   rw [hsum,htopCard]
   calc
     S.card * 2 ^ (n - 3)

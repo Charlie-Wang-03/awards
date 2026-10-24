@@ -159,8 +159,8 @@ theorem localColour_active_split
       · exact hu
     · intro hu
       cases hbit : P.bit u.1 c with
-      | false => exact Or.inl ⟨hu, hbit⟩
-      | true => exact Or.inr ⟨hu, hbit⟩
+      | false => exact Or.inl ⟨hu, rfl⟩
+      | true => exact Or.inr ⟨hu, rfl⟩
   change L.card + R.card = A.card
   rw [← hunion, Finset.card_union_of_disjoint hdisj]
 
