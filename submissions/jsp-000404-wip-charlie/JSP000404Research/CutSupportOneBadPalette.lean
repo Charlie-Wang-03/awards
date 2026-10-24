@@ -55,7 +55,7 @@ theorem list_sum_eq_member_of_positiveCount_one
         simp only [List.sum_cons, zero_add]
         have hmemTail : q ∈ as := by
           simpa [hq] using hmem
-        exact ih hcount hmemTail hq
+        exact ih hcount hmemTail
       · have htailCount :
             listPositiveCount as = 0 := by
           simp [listPositiveCount, ha] at hcount
@@ -81,7 +81,7 @@ theorem le_getLastD_of_mem_pairwise
     {x : α}
     (hx : x ∈ a :: xs) :
     x ≤ xs.getLastD a := by
-  induction xs generalizing a with
+  induction xs generalizing a x with
   | nil =>
       simp only [List.mem_singleton] at hx
       subst x
@@ -156,7 +156,7 @@ theorem cutSaturationBadAt_support_one_four_consecutive_band_span
   have hsat :
       centreExponent (C i) t + (active P i).card = n + 1 := by
     have heq := hbad'.1
-    rw [hexp] at heq ⊢
+    dsimp [exponent] at heq
     omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ active P i ∧
@@ -167,7 +167,7 @@ theorem cutSaturationBadAt_support_one_four_consecutive_band_span
     R.saturated_failure_has_wrap_unit_subslot_data
       hp hcap (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
-      hc0 hcpi (C i) R
+      hc0 hcpi (C i)
       (by simpa [P, htop] using hsat)
       (by simpa [P, htop] using hfail)
 
