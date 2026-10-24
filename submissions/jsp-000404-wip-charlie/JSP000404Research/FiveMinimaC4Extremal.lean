@@ -34,7 +34,7 @@ def HasFourCycle {W : Type*} (G : SimpleGraph W) : Prop :=
     G.Adj c d ∧ G.Adj d a
 
 theorem neighbor_inter_card_le_one_of_no_fourCycle
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (G : SimpleGraph W)
     [DecidableRel G.Adj]
     {u v : W}
@@ -145,17 +145,18 @@ theorem localColour_active_split
     intro u huL huR
     simp [L, R, localColourLeftActiveMinima,
       localColourRightActiveMinima] at huL huR
+    exact Bool.false_ne_true (huL.2.symm.trans huR.2)
   have hunion : L ∪ R = A := by
     ext u
-    simp only [Finset.mem_union, Finset.mem_filter]
+    simp only [L, R, localColourLeftActiveMinima,
+      localColourRightActiveMinima, Finset.mem_union, Finset.mem_filter]
     constructor
     · rintro (⟨huA, _⟩ | ⟨huA, _⟩)
       · exact huA
       · exact huA
     · intro huA
-      cases hbit : P.bit u.1 c <;>
-        simp [L, R, localColourLeftActiveMinima,
-          localColourRightActiveMinima, huA, hbit]
+      cases hbit : P.bit u.1 c <;> simp [huA, hbit]
+  change L.card + R.card = A.card
   rw [← hunion, Finset.card_union_of_disjoint hdisj]
 
 theorem localColourGraph_isBipartiteWith_active_split
@@ -177,6 +178,7 @@ theorem localColourGraph_isBipartiteWith_active_split
     intro u huL huR
     simp [L, R, localColourLeftActiveMinima,
       localColourRightActiveMinima] at huL huR
+    exact Bool.false_ne_true (huL.2.symm.trans huR.2)
   · intro u v huv
     have hdata :=
       (localColourGraph_adj P top c u v).1 huv
@@ -201,7 +203,7 @@ theorem localColourGraph_isBipartiteWith_active_split
         localColourActiveMinima]
 
 theorem card_otherVertex_eq_five_of_card_six
-    {V : Type*} [Fintype V]
+    {V : Type*} [Fintype V] [DecidableEq V]
     (hcard : Fintype.card V = 6)
     (top : V) :
     Fintype.card (OtherVertex top) = 5 := by
@@ -217,6 +219,7 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     (P : BinaryEdgePartition V k)
     (top : V)
     (c : Fin k)
+    [DecidableRel (localColourGraph P top c).Adj]
     (hcard : Fintype.card V = 6)
     (hcTop : c ∉ active P top)
     (hused : (localColourActiveMinima P top c).Nonempty)
