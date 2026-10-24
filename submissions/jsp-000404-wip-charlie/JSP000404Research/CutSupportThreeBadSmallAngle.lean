@@ -262,7 +262,18 @@ theorem cutRayTheta_le_of_cutNormalized_le
         (t / Real.pi) * cutRayTheta hp c i v := by
     simpa [div_eq_mul_inv, mul_assoc, mul_left_comm,
       mul_comm] using h
-  exact (mul_le_mul_left₀ hcoef).mp h'
+  have hpos : 0 ≤ Real.pi / t :=
+    (div_pos Real.pi_pos ht).le
+  calc
+    cutRayTheta hp c i u
+        = (Real.pi / t) * ((t / Real.pi) * cutRayTheta hp c i u) := by
+          field_simp [ne_of_gt ht, Real.pi_ne_zero]
+          ring
+    _ ≤ (Real.pi / t) * ((t / Real.pi) * cutRayTheta hp c i v) :=
+      mul_le_mul_of_nonneg_left h' hpos
+    _ = cutRayTheta hp c i v := by
+      field_simp [ne_of_gt ht, Real.pi_ne_zero]
+      ring
 
 theorem actual_angle_eq_cut_gap_of_sign_eq
     {V : Type*} {p : V → Plane}
