@@ -325,9 +325,14 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
           ((4 * B) * Q + (2 * B) * U.card)
         =
       16 * B := by
-    rw [← hFtop, ← hFb1, ← hFb2,
-        ← hFO, ← hsumDecomp,
-        hslice, hpow1]
+    calc
+      8 * B + B + B +
+          ((4 * B) * Q + (2 * B) * U.card)
+          = F top + F bad₁ + F bad₂ + ∑ w ∈ O, F w := by
+              rw [hFtop, hFb1, hFb2, hFO]
+      _ = ∑ w : V, F w := hsumDecomp.symm
+      _ = 2 ^ (n - 1) := by simpa [F] using hslice
+      _ = 16 * B := hpow1
 
   have hfactor :
       (10 + 4 * Q + 2 * U.card) * B =
