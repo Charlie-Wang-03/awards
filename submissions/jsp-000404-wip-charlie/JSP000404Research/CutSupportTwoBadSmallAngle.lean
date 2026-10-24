@@ -81,10 +81,8 @@ theorem zeroGapValues_length
           by_cases hq : q = 0
           · subst q
             have hcount := listPositiveCount_le_length_for_zeroGapValues qs
-
-          simp [zeroGapValues, listPositiveCount, ih gs hlen]
-
-          omega
+            simp [zeroGapValues, listPositiveCount, ih gs hlen]
+            omega
           · simp [zeroGapValues, listPositiveCount, hq, ih gs hlen]
             omega
 
