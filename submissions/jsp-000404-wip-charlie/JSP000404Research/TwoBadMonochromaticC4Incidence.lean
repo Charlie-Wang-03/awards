@@ -38,12 +38,12 @@ theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
       Ne.symm hda, Ne.symm hac, Ne.symm hbd]
   by_contra hnone
   push_neg at hnone
-  have hb1Comp : bad₁ ∈ (Finset.univ  S : Finset W) := by
+  have hb1Comp : bad₁ ∈ (Finset.univ \ S : Finset W) := by
     simp [hnone.1]
-  have hb2Comp : bad₂ ∈ (Finset.univ  S : Finset W) := by
+  have hb2Comp : bad₂ ∈ (Finset.univ \ S : Finset W) := by
     simp [hnone.2]
   have hcompCard :
-      (Finset.univ  S : Finset W).card = 1 := by
+      (Finset.univ \ S : Finset W).card = 1 := by
     rw [Finset.card_sdiff]
     · rw [Finset.card_univ, hcard, hScard]
       omega
@@ -190,8 +190,8 @@ theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
     rcases hmem1 with h1 | h1 | h1 | h1
     · subst a
       refine ⟨bad₁,b.1,e.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h.symm)
-      · exact fun h => hea (Subtype.ext h)
+      · exact fun h => hab (Subtype.ext h)
+      · exact fun h => hea (Subtype.ext h.symm)
       · exact fun h => hbe (Subtype.ext h)
       · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
           hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
@@ -228,8 +228,8 @@ theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
     rcases hmem2 with h2 | h2 | h2 | h2
     · subst a
       refine ⟨bad₂,b.1,e.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h.symm)
-      · exact fun h => hea (Subtype.ext h)
+      · exact fun h => hab (Subtype.ext h)
+      · exact fun h => hea (Subtype.ext h.symm)
       · exact fun h => hbe (Subtype.ext h)
       · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
           hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
