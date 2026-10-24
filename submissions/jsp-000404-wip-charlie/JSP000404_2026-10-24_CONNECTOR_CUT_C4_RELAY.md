@@ -153,3 +153,13 @@ two centres cannot be treated as a newly discovered hole or as spare mass.
 ### Exact unresolved obligation
 
 At the end of `PlanarLowerBranchProofAdmittedWIP.lean` (near line 900), one executable admitted proof remains: for general original numbers of centres with n≥3 beyond the proved special configurations, show an ACTUAL planar nonreusing allocation of the global loss, already-covered soft/hard blocker, duplicate NET target, twin, mixed-rigid and other debts against **TRUE Boolean holes outside translated-loss credit** plus genuinely **unreserved** dyadic profile surplus. A C4-colour or small-angle witness is not itself a Boolean hole, a spare dyadic term or an admissible resource double-charge. No new axioms, no new admitted lemma, no full-prize-proof claim.
+
+
+## Root compilation and strengthened pendant subbranch — CONFIRMED CI
+
+- **[40112204828](https://github.com/Charlie-Wang-03/awards/actions/runs/40112204828) SUCCESS**, 3,826 Lake jobs: built `JSP000404Research.PlanarLowerBranchProofAdmittedWIP` and broad genuine dependencies. Executable-proof audit explicitly prints `PlanarLowerBranchProofAdmittedWIP.lean:900: explicit sorry`, `WARNING: the WIP root theorem depends on Lean sorryAx`, and `PASS: zero executable sorry/admit outside the exact allowed WIP path`. This is FULL ROOT COMPILATION only, not a valid proof or disproof of JSP-000404.
+- **[40112349807](https://github.com/Charlie-Wang-03/awards/actions/runs/40112349807) SUCCESS**, 9,123 Lake jobs: both `pendant_bad_has_repeated_nonC4_colour` and `pendant_saturation_bad_has_repeated_small_angle` now have precisely `[propext, Classical.choice, Quot.sound]`, no `sorryAx`. The repeated pair at an off-C4 pendant bad minimum is in a different colour from the C4-bearing colour and yields a true strict sub-lambda angle.
+- Refactored `TwoBadEachSmallAngle.lean` to use only the certified direct 4-to-3 pigeonhole route. The first refactor CI failed from a malformed text splice at `let M`; that splice and the lost documentation-comment start were repaired by commit `5b714607`. Its [latest CI 40112876834](https://github.com/Charlie-Wang-03/awards/actions/runs/40112876834) must be inspected, not presumed green.
+- The [full six-centre cut local certificate CI 40112599605](https://github.com/Charlie-Wang-03/awards/actions/runs/40112599605) remains pending at this checkpoint.
+
+**One admitted true-hole/surplus global capacity obligation is still open.** The above establishes a compiler-clean original root (with an explicit, recognised `sorry`), and two more useful local geometric constraints. The compiled root is NOT a proof.
