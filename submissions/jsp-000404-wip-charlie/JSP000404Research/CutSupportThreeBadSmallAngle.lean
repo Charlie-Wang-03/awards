@@ -42,7 +42,6 @@ theorem successiveDiffsFrom_sum_telescoping_real
           simp
       | cons d ds =>
           simp [List.getLastD_cons]
-          ring
 
 theorem cyclicRealGapsAt_sum_eq_width
     (width a : ℝ) (xs : List ℝ) :
@@ -89,7 +88,7 @@ theorem listZeroGapMass_ge_member_of_floor_zero
       · have htail :=
           ih
             (fun y hy => hg0 y (by simp [hy]))
-            hgmem hfloor
+            hgmem
         by_cases hx : Nat.floor x = 0
         · have hx0 := hg0 x (by simp)
           simp [listZeroGapMass, hx]
@@ -263,7 +262,7 @@ theorem cutRayTheta_le_of_cutNormalized_le
         (t / Real.pi) * cutRayTheta hp c i v := by
     simpa [div_eq_mul_inv, mul_assoc, mul_left_comm,
       mul_comm] using h
-  exact (mul_le_mul_left hcoef).mp h'
+  exact (mul_le_mul_left₀ hcoef).mp h'
 
 theorem actual_angle_eq_cut_gap_of_sign_eq
     {V : Type*} {p : V → Plane}
@@ -338,17 +337,29 @@ theorem actual_angle_le_delta_lam_of_cut_same_sign_gap
             cutRayTheta hp c i u)
         ≤ delta := by
     convert hsmall using 1 <;> ring
-  have hdiv :=
-    (le_div_iff₀ hcoef).mpr hsmall'
-  field_simp [ne_of_gt ht, Real.pi_ne_zero] at hdiv ⊢
-  nlinarith
+  have hpos : 0 ≤ Real.pi / t :=
+    (div_pos Real.pi_pos ht).le
+  have hmul := mul_le_mul_of_nonneg_left hsmall' hpos
+  have hcancel :
+      (Real.pi / t) * ((t / Real.pi) *
+        (cutRayTheta hp c i v - cutRayTheta hp c i u))
+        = cutRayTheta hp c i v - cutRayTheta hp c i u := by
+    field_simp [ne_of_gt ht, Real.pi_ne_zero]
+    ring
+  calc
+    cutRayTheta hp c i v - cutRayTheta hp c i u
+        = (Real.pi / t) * ((t / Real.pi) *
+            (cutRayTheta hp c i v - cutRayTheta hp c i u)) :=
+          hcancel.symm
+    _ ≤ (Real.pi / t) * delta := hmul
+    _ = delta * (Real.pi / t) := by ring
 
 theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -390,7 +401,9 @@ theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
   have hsat :
       centreExponent (C i) t +
         (BinaryEdgePartition.active P i).card = n + 1 := by
-    simpa [exponent] using hbad'.1
+    have heq := hbad'.1
+    rw [hexp] at heq ⊢
+    omega
   have hfail :
       ¬ (
         (0 : Fin (n + 1)) ∈ BinaryEdgePartition.active P i ∧
@@ -555,9 +568,9 @@ theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
 theorem cutSaturationBadAt_support_three_has_delta_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -592,9 +605,9 @@ cannot use the top ray at either endpoint. -/
 theorem cutSaturationBadAt_support_three_small_pair_avoids_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -656,7 +669,7 @@ theorem cutSaturationBadAt_support_three_small_pair_avoids_sharp
       apply Subtype.ext
       calc
         u.1 = top := hu.symm
-        _ = v.1 := hv
+        _ = v.1 := hv.symm
     have hlow :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
