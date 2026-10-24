@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-sharp-centre
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointSeparatedSupportTwo.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoResidualBudget.lean"
       - ".github/workflows/jsp000404-focused-separated-support-two.yml"
   workflow_dispatch:
 
@@ -53,7 +54,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check non-gaining separated support two at hard top deletion
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SixPointSeparatedSupportTwo
+        run: lake build JSP000404Research.SixPointSeparatedSupportTwo JSP000404Research.SeparatedSupportTwoResidualBudget
       - name: Scope
         if: always()
-        run: echo 'Necessary separated support-two configuration is not a global dyadic payment.'
+        run: echo 'Necessary separated support-two residual bound is not a global dyadic payment.'
