@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/jsp-000404-sharp-centre
+      - research/jsp-000404-c4-uniqueness-canary
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/**"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research.lean"
