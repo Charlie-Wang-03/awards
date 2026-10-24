@@ -103,7 +103,7 @@ theorem cutSaturationBadAt_support_mismatch_data
         exact False.elim
           (R.normalizedValues_nonempty t hv)
     | cons a xs =>
-        exact ⟨a, xs, hv⟩
+        exact ⟨a, xs, rfl⟩
 
   have haMem : a ∈ R.normalizedValues t := by
     rw [hvalues]
@@ -190,6 +190,7 @@ theorem cutSaturationBadAt_support_mismatch_data
         ((a :: xs).map Nat.floor).toFinset.card = 4 := by
       simpa [occupiedNatBands] using hocc4
     dsimp [bs]
+    simp only [List.map_cons]
     rw [h]
     exact hfin
 
@@ -225,6 +226,7 @@ theorem cutSaturationBadAt_support_mismatch_data
         ((a :: xs).map Nat.floor).toFinset.card = 4 := by
       simpa [occupiedNatBands] using hocc4
     dsimp [bs]
+    simp only [List.map_cons]
     rw [h, hfin]
     omega
 
@@ -253,9 +255,9 @@ three, two, and one zero-quotient positive band jumps. -/
 theorem cutSaturationBadAt_mismatch_count_by_support
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
