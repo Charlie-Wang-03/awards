@@ -32,8 +32,10 @@ private theorem finFive_distinct_fourCycles_share_edge :
       0 < (cycleEdgeSet a b c d ∩
         cycleEdgeSet e f g h).card := by
   intro a b c d
+  -- Prune the five-vertex tuples violating the first cycle's six
+  -- distinctness conditions *before* reducing the second cycle.
   fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
-    decide
+    simp_all <;> decide
 
 noncomputable section
 
