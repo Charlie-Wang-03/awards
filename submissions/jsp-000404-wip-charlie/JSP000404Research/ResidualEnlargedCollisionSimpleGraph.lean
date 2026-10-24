@@ -284,8 +284,10 @@ theorem minimal_enlargedCollisionGraph_two_leaves_of_acyclic
       (enlargedCollisionGraph C exponent T).IsAcyclic) :
     ∃ u v : {x : V // x ∈ T},
       u ≠ v ∧
-      (enlargedCollisionGraph C exponent T).degree u = 1 ∧
-      (enlargedCollisionGraph C exponent T).degree v = 1 := by
+      (∃! w : {x : V // x ∈ T},
+        (enlargedCollisionGraph C exponent T).Adj u w) ∧
+      (∃! w : {x : V // x ∈ T},
+        (enlargedCollisionGraph C exponent T).Adj v w) := by
   classical
   let G := enlargedCollisionGraph C exponent T
   have hT :
@@ -311,7 +313,10 @@ theorem minimal_enlargedCollisionGraph_two_leaves_of_acyclic
     Fintype.one_lt_card_iff_nontrivial.mp hcardSubtype
   have htree : G.IsTree := by
     exact ⟨hconn,hacyclic⟩
-  exact htree.exists_ne_and_degree_eq_one
+  obtain ⟨u,v,huv,hdu,hdv⟩ := htree.exists_ne_and_degree_eq_one
+  refine ⟨u,v,huv,?_,?_⟩
+  · exact (SimpleGraph.degree_eq_one_iff_existsUnique_adj).1 hdu
+  · exact (SimpleGraph.degree_eq_one_iff_existsUnique_adj).1 hdv
 
 
 theorem enlargedCollisionGraph_degree_one_unique_neighbor
@@ -321,7 +326,8 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
     (T : Finset V)
     (u : {x : V // x ∈ T})
     (hdeg :
-      (enlargedCollisionGraph C exponent T).degree u = 1) :
+      ∃! w : {x : V // x ∈ T},
+        (enlargedCollisionGraph C exponent T).Adj u w) :
     ∃ w : V,
       w ∈ T ∧
       w ≠ u.1 ∧
@@ -332,8 +338,7 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
         z = w := by
   classical
   let G := enlargedCollisionGraph C exponent T
-  obtain ⟨w, huw, huniq⟩ :=
-    SimpleGraph.degree_eq_one_iff_existsUnique_adj.mp hdeg
+  obtain ⟨w, huw, huniq⟩ := hdeg
   refine ⟨w.1,w.2,?_,?_⟩
   · exact (G.ne_of_adj huw).symm
   · intro z hzT hzu hcross
@@ -344,7 +349,7 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
         C exponent T u.2 hzT
         (by
           intro h
-          exact hzu (congrArg Subtype.val h))
+          exact hzu (congrArg Subtype.val h).symm)
         hcross
     have hsubEq : (⟨z,hzT⟩ : {x : V // x ∈ T}) = w :=
       huniq _ huz
