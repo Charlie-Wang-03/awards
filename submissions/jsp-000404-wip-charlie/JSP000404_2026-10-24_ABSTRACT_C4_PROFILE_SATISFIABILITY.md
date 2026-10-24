@@ -53,3 +53,31 @@ axiom, `sorry` or false unused-hole credit is justified.
 
 Evidence of the previously certified uniqueness:
 https://github.com/Charlie-Wang-03/awards/actions/runs/40103687396
+
+
+## Stronger obstruction to a tempting overclaim: the bad vertex can lie OUTSIDE C4
+
+Even granting *both* bad minima are active in the unique C4-bearing
+colour, it is **not** combinatorially forced that both minima lie on that
+C4. A second explicit K5 edge-colouring gives a witness:
+
+| Colour | Edges | Bipartite structure |
+| --- | --- | --- |
+| A | `01,02,23` | path `1–0–2–3` |
+| B | `03,12,13,24,34` | C4 `1–2–4–3–1` with pendant `0–3` |
+| C | `04,14` | path `0–4–1` |
+
+The incident-colour counts at vertices `0,1,2,3,4` are again
+`3,3,2,2,2`, and the only C4-bearing colour B is active at both
+exceptional vertices 0 and 1. **Vertex 0 is not on that C4**; it is
+pendant to it. The example satisfies only the stipulated abstract
+three-colour finite graph constraints; it is not a geometric or
+`AngleCap` realization.
+
+Consequently the conditional theorem
+`two_bad_minima_share_monochromatic_fourCycle_colour`, even once
+kernel-certified, cannot justify the stronger statement that BOTH
+bad minima get the cycle-neighbour small-angle conclusion from the
+same specified four-cycle. At least one is on the C4 by five-vertex
+cardinality; the off-cycle bad vertex requires a pendant analysis
+or an independent actual-plane angle argument.
