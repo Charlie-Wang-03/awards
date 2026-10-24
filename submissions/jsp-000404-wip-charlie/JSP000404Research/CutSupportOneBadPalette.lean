@@ -261,7 +261,7 @@ theorem cutSaturationBadAt_support_one_four_consecutive_band_span
     have hzt :
         z < ((n + 1 : ℕ) : ℝ) := by
       push_cast
-      exact (hall z (List.getLastD_mem_cons (l := xs) (a := a))).trans htTop
+      exact (hall z (List.getLastD_mem_cons a xs)).trans htTop
     have hf : Nat.floor z < n + 1 :=
       (Nat.floor_lt hz0).2 hzt
     omega
