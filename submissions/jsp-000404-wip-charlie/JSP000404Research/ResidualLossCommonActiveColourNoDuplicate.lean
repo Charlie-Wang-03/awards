@@ -33,7 +33,7 @@ theorem translated_loss_duplicate_zero_of_common_chosen_coordinate
     translatedLossDuplicateDebt C exponent choice = 0 := by
   classical
   have hdisjoint :
-      (((Finset.univ : Finset (Fin n)) : Set (Fin n)).PairwiseDisjoint
+      (((Finset.univ : Finset (Fin n)) : Set (Fin n))).PairwiseDisjoint
         (fun c => translatedLossSliceWords C exponent choice c) := by
     intro c hc d hd hcd
     rw [Finset.disjoint_left]
