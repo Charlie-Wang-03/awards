@@ -41,7 +41,7 @@ local instance finiteNeighbourSet
 
 local instance finiteEdgeSet
     {W : Type*} [Fintype W] (G : SimpleGraph W) :
-    Fintype G.edgeSet := G.fintypeEdgeSet
+    Fintype G.edgeSet := Fintype.ofFinite _
 
 open BinaryEdgePartition
 open scoped BigOperators
@@ -191,8 +191,9 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             (localColourGraph P top c).degree u := by
             apply Finset.sum_congr rfl
             intro c hc
-            exact (SimpleGraph.sum_degrees_eq_twice_card_edges
-              (G := localColourGraph P top c)).symm
+            simpa only [SimpleGraph.edgeFinset, Set.toFinset_card] using
+              (SimpleGraph.sum_degrees_eq_twice_card_edges
+                (localColourGraph P top c)).symm
       _ =
         ∑ u : OtherVertex top,
           ∑ c ∈ U,
@@ -446,7 +447,8 @@ theorem six_point_two_exception_has_monochromatic_fourCycle
     have hlt :=
       localColourGraph_edge_card_lt_active_of_no_fourCycle
         P top c hcard hcTop hcdata.2 (hnone root c hcdata.1)
-    exact Nat.add_one_le_iff.mpr hlt
+    simpa only [SimpleGraph.edgeFinset, Set.toFinset_card] using
+      (Nat.add_one_le_iff.mpr hlt)
 
   have hsumLoss :
       (∑ c ∈ U,
