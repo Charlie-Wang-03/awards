@@ -17,8 +17,8 @@ namespace JSP000404Research
 
 private def cycleEdgeSet {W : Type*} [DecidableEq W]
     (a b c d : W) : Finset (Sym2 W) :=
-  {Sym2.mk (a,b), Sym2.mk (b,c),
-    Sym2.mk (c,d), Sym2.mk (d,a)}
+  {Sym2.mk a b, Sym2.mk b c,
+    Sym2.mk c d, Sym2.mk d a}
 
 set_option maxRecDepth 16384 in
 set_option maxHeartbeats 0 in
