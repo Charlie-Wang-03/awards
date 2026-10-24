@@ -43,8 +43,8 @@ theorem finset_sum_split_predicate
       simp
   | @insert a s ha ih =>
       by_cases hpa : p a
-      · simp [ha, hpa, ih, add_assoc, add_left_comm, add_comm]
-      · simp [ha, hpa, ih, add_assoc, add_left_comm, add_comm]
+      · simp [Finset.filter_insert, ha, hpa, ih, add_assoc, add_left_comm, add_comm]
+      · simp [Finset.filter_insert, ha, hpa, ih, add_assoc, add_left_comm, add_comm]
 
 theorem finset_card_split_predicate
     {α : Type*} [DecidableEq α]
@@ -57,8 +57,8 @@ theorem finset_card_split_predicate
       simp
   | @insert a s ha ih =>
       by_cases hpa : p a
-      · simp [ha, hpa, ih]
-      · simp [ha, hpa, ih]
+      · simp [Finset.filter_insert, ha, hpa, ih]
+      · simp [Finset.filter_insert, ha, hpa, ih]
 
 /-- At exact two-exception equality, an outside-bad colour that appears at an
 ordinary minimum appears at exactly two ordinary minima. -/
@@ -116,7 +116,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
   have hcRoot : c ≠ root := by
     intro h
     subst c
-    exact hcBad ((hrootAll bad₁ htb₁).1)
+    exact hcBad ((hrootAll bad₁ htb₁.symm).1)
   have hcTop : c ∉ active P top := by
     rw [hrootTop]
     simp [hcRoot]
@@ -182,7 +182,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     dsimp [F]
     rw [card_falseCompletionAt,
       dif_neg hcTop,
-      Finset.card_insert_of_not_mem hcTop,
+      Finset.card_insert_of_notMem hcTop,
       hexact.1,
       hpow2]
 
@@ -190,7 +190,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     dsimp [F]
     rw [card_falseCompletionAt,
       dif_neg hcBad,
-      Finset.card_insert_of_not_mem hcBad,
+      Finset.card_insert_of_notMem hcBad,
       hexact.2.1]
     have he : n - (4 + 1) = n - 5 := by omega
     rw [he]
@@ -199,7 +199,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     dsimp [F]
     rw [card_falseCompletionAt,
       dif_neg hcBad₂,
-      Finset.card_insert_of_not_mem hcBad₂,
+      Finset.card_insert_of_notMem hcBad₂,
       hexact.2.2.1]
     have he : n - (4 + 1) = n - 5 := by omega
     rw [he]
@@ -240,7 +240,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     dsimp [F]
     rw [card_falseCompletionAt,
       dif_neg hcw,
-      Finset.card_insert_of_not_mem hcw,
+      Finset.card_insert_of_notMem hcw,
       hwCard, hpow4]
 
   have hFactive :
@@ -654,7 +654,7 @@ theorem exists_ordinary_reduced_active_subset_bad
     have hcWRoot : c ≠ root := by
       intro h
       subst c
-      exact hcBad ((hrootAll bad₁ htb₁).1)
+      exact hcBad ((hrootAll bad₁ htb₁.symm).1)
     have hdRoot : d ≠ root :=
       (Finset.mem_erase.mp hdUErase).1
     have hcd : c ≠ d := by
