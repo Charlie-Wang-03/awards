@@ -184,9 +184,9 @@ theorem exists_sample_outside_topTurn_and_critical
           (by
             intro u hu
             exact htop ⟨u, hu⟩)
-      push_neg at hcritNotAll
       exact hcritNotAll
 
+  classical
   let slot :
       Fin M →
         Sum (CentreTurnUnitSlot (C top) t)
@@ -246,7 +246,8 @@ theorem lowerBranch_delta_lt_twoNPlusOne_spacing
   have hden :
       (0 : ℝ) < (2 * n + 1 : ℕ) := by
     positivity
-  rw [div_lt_iff₀ hden, ht]
+  rw [ht]
+  apply (lt_div_iff₀ hden).2
   push_cast
   nlinarith
 
@@ -309,9 +310,9 @@ critical-uncovered and top-saturation-safe. -/
 theorem exists_cut_topSafe_criticalUncovered_of_n_ge_ten
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (hn10 : 10 ≤ n)
     (hdelta0 : 0 ≤ delta)
