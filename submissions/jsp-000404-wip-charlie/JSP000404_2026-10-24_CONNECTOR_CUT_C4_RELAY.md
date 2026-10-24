@@ -214,3 +214,17 @@ The main theorem has exactly ONE admitted proof and remains open.
 These theorems clarify the REAL remaining geometry and rule out several bookkeeping shortcuts. Their antecedent injection / eligible Hall expansion is NOT proved from AngleCap. A purely numerical injection between abstract cardinalities is a certificate interface, NOT the missing geometrically forced construction. The named Boolean-hole credit subtype is defined as original globally uncovered words MINUS ALL translated-loss slices; the surplus credit index has the existing exact already-pre-reserved deduction. In particular NO covered soft word, blocker word or canonical NET shadow can be silently promoted to a TRUE hole.
 
 No axiom, new `sorry`, changed theorem assumption, accepted prize proof, or upstream submission. Maintain Draft PR #6.
+
+
+### Updated kernel verdicts for nonreuse/Hall interfaces
+
+These completed statuses supersede "pending" above:
+
+- [40114872463](https://github.com/Charlie-Wang-03/awards/actions/runs/40114872463) **SUCCESS**, 3,420 jobs; `actual_eight_source_injective_payment_suffices` formally preserves all SIX terminal source categories plus actual covered-loss blocker words and duplicate debt, with only two legal external-resource categories; axioms exactly the three standard Mathlib axioms, **no sorryAx**.
+- [40115000977](https://github.com/Charlie-Wang-03/awards/actions/runs/40115000977) **SUCCESS**, 3,420 jobs; `planar_lower_branch_capacity_of_global_true_hole_nonreuse_injection` connects the tagged actual payment certificate to the ORIGINAL all-cardinality planar dyadic-capacity conclusion, conditional on the missing ACTUAL matching; **no sorryAx**.
+- [40115194428](https://github.com/Charlie-Wang-03/awards/actions/runs/40115194428) **SUCCESS**, 3,428 jobs; `actual_eight_source_hall_condition_implies_payment` uses pinned Mathlib Hall theorem to certify that EVERY-subset neighbourhood expansion of debt units into eligible REAL credits produces the needed globally injective payment; **no sorryAx**.
+
+Latest conditional planar variants have a fixed `#print axioms` template bug; successful Lean verdict must be checked separately:
+[40115544989](https://github.com/Charlie-Wang-03/awards/actions/runs/40115544989) (8-class matching → full planar), [40115551185](https://github.com/Charlie-Wang-03/awards/actions/runs/40115551185) (8-class Hall expansion → full planar).
+
+**Not solved:** no theorem proves the chosen geometric eligibility neighbourhoods satisfy Hall expansion under AngleCap. In particular an arbitrary full neighbourhood would merely restate the outstanding numerical inequality. The one original global `sorry` remains at `PlanarLowerBranchProofAdmittedWIP.lean:900`.
