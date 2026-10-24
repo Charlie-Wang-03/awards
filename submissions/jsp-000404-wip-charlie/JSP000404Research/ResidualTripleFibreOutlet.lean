@@ -92,17 +92,17 @@ theorem tripleFibre_has_common_word_collision_triangle
       (enlargedCollisionGraph C exponent T).Adj u v := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T huData.1 hvData.1 huv
-    exact ⟨word,huData.2,hvData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨huData.2,hvData.2⟩⟩
   have hUW :
       (enlargedCollisionGraph C exponent T).Adj u w := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T huData.1 hwData.1 huw
-    exact ⟨word,huData.2,hwData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨huData.2,hwData.2⟩⟩
   have hVW :
       (enlargedCollisionGraph C exponent T).Adj v w := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T hvData.1 hwData.1 hvw
-    exact ⟨word,hvData.2,hwData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨hvData.2,hwData.2⟩⟩
 
   exact ⟨u,v,w,huvSub,huwSub,hvwSub,
     huData.2,hvData.2,hwData.2,hUV,hUW,hVW⟩
@@ -520,7 +520,7 @@ theorem loss_nonloss_common_word_edgeSlice_of_lt
     have hdInter :
         (translatedCompletionWords C x d ∩
           retainedCompletionWords C y).Nonempty :=
-      ⟨word,hdWord,hyQ⟩
+      ⟨word,Finset.mem_inter.mpr ⟨hdWord,hyQ⟩⟩
     have hedge :=
       loss_translated_intersection_forces_edge_colour
         C exponent hexp honeLoss hxLoss
@@ -534,7 +534,7 @@ theorem loss_nonloss_common_word_edgeSlice_of_lt
           d = retainedColor C x y hret := by
         apply Fin.ext
         have hval := congrArg Fin.val hdEq
-        simpa [retainedColor] using hval
+        simpa [retainedColor] using hval.symm
       simpa [hdEdge] using hdWord
     · exact False.elim ((not_lt_of_ge hxy.le) hback.1)
 
@@ -582,7 +582,7 @@ theorem nonloss_loss_common_word_edgeSlice_of_lt
     have hdInter :
         (translatedCompletionWords C y d ∩
           retainedCompletionWords C x).Nonempty :=
-      ⟨word,hdWord,hxQ⟩
+      ⟨word,Finset.mem_inter.mpr ⟨hdWord,hxQ⟩⟩
     have hedge :=
       loss_translated_intersection_forces_edge_colour
         C exponent hexp honeLoss hyLoss
@@ -597,7 +597,7 @@ theorem nonloss_loss_common_word_edgeSlice_of_lt
           d = retainedColor C x y hret := by
         apply Fin.ext
         have hval := congrArg Fin.val hdEq
-        simpa [retainedColor] using hval
+        simpa [retainedColor] using hval.symm
       simpa [hdEdge] using hdWord
 
 /-- Ordered exact-two-loss triple carrier, lower two vertices loss and the top
@@ -1232,7 +1232,7 @@ theorem threeTranslatedLoss_middleTop_two_pattern
       · exact herightActive
       · exact hcy
     have hc3 : ({eleft,eright,cy} : Finset (Fin n)).card = 3 := by
-      simp [hne,hnot.1,hnot.2]
+      simp [hne,hnot.1,hnot.2,eq_comm]
     have hthree : 3 ≤ (retainedActive C y).card := by
       rw [← hc3]
       exact Finset.card_le_card hsub
