@@ -54,15 +54,14 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
     have hzxColour : χ z ≠ χ x := χ.valid hzx
     have hzyColour : χ z ≠ χ y := χ.valid hzy
     have hxyColour : χ x ≠ χ y := χ.valid hxyE
-    let cz : Fin 2 := χ z
-    let cx : Fin 2 := χ x
-    let cy : Fin 2 := χ y
-    change cz ≠ cx at hzxColour
-    change cz ≠ cy at hzyColour
-    change cx ≠ cy at hxyColour
-    fin_cases cz <;> fin_cases cx <;> fin_cases cy <;> simp_all
-  rcases hxMem with rfl | rfl | rfl | rfl <;>
-    rcases hyMem with rfl | rfl | rfl | rfl
+    have hnoThree :
+        ∀ i j k : Fin 2, i ≠ j → i ≠ k → j ≠ k → False := by
+      decide
+    exact hnoThree (χ z) (χ x) (χ y)
+      hzxColour hzyColour hxyColour
+  rcases hxMem with hx | hx | hx | hx <;>
+    rcases hyMem with hy | hy | hy | hy <;>
+    subst x <;> subst y
   <;> try { exact False.elim (hxy rfl) }
   all_goals
     first
@@ -112,7 +111,7 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
   have hdegPos : 1 ≤ G.degree z := by
     obtain ⟨u,hzu⟩ := hzSupport
     rw [← SimpleGraph.card_neighborFinset_eq_degree]
-    exact Finset.one_le_card.mpr ⟨u, G.mem_neighborFinset _ |>.mpr hzu⟩
+    exact Finset.one_le_card.mpr ⟨u, by simpa using hzu⟩
   have hcycleSet :
       ({a,b,c,d} : Finset W).card = 4 := by
     simp [hab,hbc,hcd,hda,hac,hbd,
@@ -136,7 +135,8 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
       apply Finset.eq_univ_of_card
       simpa only [hfive] using hcard.symm
     have hxS : x ∈ S := by rw [hSuniv]; simp
-    simp [S, hx.1, hx.2.1, hx.2.2.1, hx.2.2.2.1] at hxS
+    simp [S, hx.1, hx.2.1, hx.2.2.1,
+      hx.2.2.2.1, hx.2.2.2.2] at hxS
 
   by_contra hdegNe
   have hdeg2 : 2 ≤ G.degree z := by omega
@@ -144,9 +144,9 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
   obtain ⟨x,hxN,y,hyN,hxy⟩ :=
     Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset z).card)
   have hzx : G.Adj z x :=
-    SimpleGraph.mem_neighborFinset.mp hxN
+    by simpa using hxN
   have hzy : G.Adj z y :=
-    SimpleGraph.mem_neighborFinset.mp hyN
+    by simpa using hyN
   have hxNeZ : x ≠ z := hzx.ne'
   have hyNeZ : y ≠ z := hzy.ne'
   have hxMem :
