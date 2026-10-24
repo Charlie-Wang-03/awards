@@ -226,7 +226,7 @@ theorem cutSaturationBadAt_support_mismatch_data
         ((a :: xs).map Nat.floor).toFinset.card = 4 := by
       simpa [occupiedNatBands] using hocc4
     dsimp [bs]
-    simp only [List.map_cons]
+    simp only [List.map_cons] at hfin ⊢
     rw [h, hfin]
     omega
 

@@ -198,13 +198,13 @@ theorem localIncidentColor_uncoveredCutMerged_eq_merge
     (cutProjectiveBandPartition hp hcap htpos hlam
       hc0 hcpi n
       (by rw [ht]; push_cast; linarith))
-    (cutBoundaryWrapBit hp n htpos
+    (cutBoundaryWrapBit (delta := delta) hp n htpos
       (by rw [ht]; push_cast; linarith) hc0 hcpi)
     (by
-      simpa using
-        cutBoundaryWrapBit_separates
-          hp hcap C hn htpos hlam ht hdelta0
-          hdeltaHalf hc0 hcpi huncovered)
+      intro u v huv hboundary
+      exact (cutBoundaryWrapBit_separates
+        hp hcap C hn htpos hlam ht hdelta0
+        hdeltaHalf hc0 hcpi huncovered) huv hboundary)
     i j
 
 #print axioms localIncidentColor_mergeLastPartition

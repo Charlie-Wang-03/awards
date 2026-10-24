@@ -38,9 +38,9 @@ structure SmallPairAwayFromTop
 theorem separated_support_two_smallPairWitness
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -74,9 +74,9 @@ theorem separated_support_two_smallPairWitness
 theorem six_point_hard_lowSupport_geometry
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -119,24 +119,24 @@ theorem six_point_hard_lowSupport_geometry
     refine ⟨a,b,hat,hbt,hab,hsupA,hsupB,?_,?_⟩
     · exact separated_support_two_smallPairWitness
         hp hcap C hcard hn5 hdelta0 hdeltaHalf
-        ht hlam top hTop hat (hMin a hat) hsupA hsepA
+        ht hlam top hTop hat (hMin a hat) hsupA (hsepA hat)
     · exact separated_support_two_smallPairWitness
         hp hcap C hcard hn5 hdelta0 hdeltaHalf
-        ht hlam top hTop hbt (hMin b hbt) hsupB hsepB
+        ht hlam top hTop hbt (hMin b hbt) hsupB (hsepB hbt)
   · obtain ⟨a,b,hat,hbt,hab,_haNG,_hbNG,
       hsupA,hsupB,hsepB⟩ := hmixed
     right
     refine ⟨a,b,hat,hbt,hab,hsupA,hsupB,?_,?_⟩
     · exact separated_support_two_smallPairWitness
         hp hcap C hcard hn5 hdelta0 hdeltaHalf
-        ht hlam top hTop hbt (hMin b hbt) hsupB hsepB
+        ht hlam top hTop hbt (hMin b hbt) hsupB (hsepB hbt)
     · exact mixed_support_one_one_support_two_transition_le_two
         hp hcap (by omega : 4 ≤ n)
         hdelta0 hdeltaHalf ht hlam
         hat.symm hbt.symm hab
         (C top) (C a) (C b)
         hTop (hMin a hat) hsupA
-        (by rw [hsupB]; omega)
+        (by simpa [hsupB])
 
 #print axioms separated_support_two_smallPairWitness
 #print axioms six_point_hard_lowSupport_geometry

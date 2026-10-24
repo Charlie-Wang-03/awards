@@ -83,10 +83,12 @@ theorem localColourGraph_neighborFinset
     (top : V)
     (c : Fin k)
     (u : OtherVertex top) :
+    letI : Fintype ((localColourGraph P top c).neighborSet u) := Fintype.ofFinite _
     (localColourGraph P top c).neighborFinset u =
       (Finset.univ.erase u).filter
         (fun v => localIncidentColor P u.1 v.1 = c) := by
   classical
+  dsimp only
   ext v
   simp [SimpleGraph.mem_neighborFinset,
     localColourGraph_adj, ne_comm]
@@ -116,7 +118,10 @@ theorem localColourGraph_isBipartiteWith
   constructor
   · rw [Set.disjoint_left]
     intro u huL huR
-    simp [localColourLeft, localColourRight] at huL huR
+    change P.bit u.1 c = false at huL
+    change P.bit u.1 c = true at huR
+    rw [huL] at huR
+    cases huR
   · intro u v huv
     have hdata :=
       (localColourGraph_adj P top c u v).1 huv
@@ -186,7 +191,7 @@ theorem active_mem_localColourGraph_support_of_not_top
     constructor
     · intro huv
       have hval := congrArg Subtype.val huv
-      exact (ne_of_gt hau) hval.symm
+      exact (ne_of_gt hau) hval
     · unfold localIncidentColor
       have hnot : ¬ u.1 < a := not_lt_of_ge hau.le
       rw [dif_neg hnot]
