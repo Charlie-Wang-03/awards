@@ -91,3 +91,44 @@ credits. Do not assert JSP-000404 solved on the basis of this research PR.
 ### Global proof boundary
 
 The full theorem still needs ONE global six-source payment with a nonreusing injection into **actual true outside-translated Boolean holes** plus genuinely unreserved dyadic surplus. Small-angle witnesses are local geometry and alone provide neither that injection nor adequate surplus. New local modules must not be imported as a fake global proof.
+
+
+## PROVEN shorter route: EACH bad minimum gets an actual small angle
+
+**SUCCESS:** [40110888692](https://github.com/Charlie-Wang-03/awards/actions/runs/40110888692), 9,121 Lake jobs. The new stronger local theorem
+`six_point_cut_both_bad_minima_have_strict_small_angles_direct` printed **only**
+`[propext, Classical.choice, Quot.sound]`, not `sorryAx`.
+
+Its exact input is the SAME six-point un-covered cut-merged active-card
+bounds (`top ≤1, bad₁ ≤4, bad₂ ≤4, all other minima ≤3`),
+both `CutSaturationBadAt`, and genuine `AngleCap` geometry.
+Its conclusion provides a strict sub-`lam` non-top two-ray angle
+**separately at EACH of the two bad minima**.
+
+The proof is significantly shorter than the pendant-C4 alternative:
+`six_point_two_exception_root_factorization`
+→ `four_nonTop_edges_three_nonroot_colours_repeat` *twice*
+→ `actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad` *twice*.
+This requires NO monochromatic C4 and NO assumption that both bad minima
+lie on a selected C4. The independent C4 uniqueness and pendant results
+remain useful for different structural cases but are now *unnecessary*
+for the two-angle consequence.
+
+**Also SUCCESS:** [40111014343](https://github.com/Charlie-Wang-03/awards/actions/runs/40111014343), 9,116 Lake jobs: the existing
+`uncovered_cut_two_bad_minima_have_small_nonTop_angles` original-exponent
+terminal theorem, after correcting duplicated `lam` in its binder
+sequence. Its axiom list is `[propext, Classical.choice, Quot.sound]`.
+
+A stronger conjunction
+`six_point_cut_shared_C4_and_both_bad_small_angles` is submitted in
+`SixPointCutSharedC4BothBadAngles.lean`; follow its separate
+[40111507155](https://github.com/Charlie-Wang-03/awards/actions/runs/40111507155)
+kernel gate before making acceptance claims. The optional
+pendant-aware proof file `TwoBadEachSmallAngle.lean` has a separate
+[40111643182](https://github.com/Charlie-Wang-03/awards/actions/runs/40111643182)
+gate. Those paths are NOT required by the verified direct two-angle theorem.
+
+**Unsolved:** the all-cardinality original theorem still retains ONE genuine
+`sorry` for the global nonreusing six-source payment into REAL external
+Boolean holes plus genuinely unreserved dyadic surplus. A small angle at
+two centres cannot be treated as a newly discovered hole or as spare mass.
