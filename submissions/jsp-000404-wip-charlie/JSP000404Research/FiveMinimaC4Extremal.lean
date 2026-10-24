@@ -42,20 +42,20 @@ theorem neighbor_inter_card_le_one_of_no_fourCycle
     (hno : ¬ HasFourCycle G) :
     (G.neighborFinset u ∩ G.neighborFinset v).card ≤ 1 := by
   rw [Finset.card_le_one_iff]
-  intro x hx y hy
+  intro x y hx hy
   by_contra hxy
   have hux : G.Adj u x := by
-    exact (SimpleGraph.mem_neighborFinset.mp
-      (Finset.mem_inter.mp hx).1)
+    simpa only [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hx).1
   have hvx : G.Adj v x := by
-    exact (SimpleGraph.mem_neighborFinset.mp
-      (Finset.mem_inter.mp hx).2)
+    simpa only [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hx).2
   have huy : G.Adj u y := by
-    exact (SimpleGraph.mem_neighborFinset.mp
-      (Finset.mem_inter.mp hy).1)
+    simpa only [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hy).1
   have hvy : G.Adj v y := by
-    exact (SimpleGraph.mem_neighborFinset.mp
-      (Finset.mem_inter.mp hy).2)
+    simpa only [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hy).2
   apply hno
   refine ⟨u, x, v, y,
     hux.ne, hvx.ne', hvy.ne, huy.ne', huv, hxy,
@@ -148,14 +148,16 @@ theorem localColour_active_split
     exact Bool.false_ne_true (huL.2.symm.trans huR.2)
   have hunion : L ∪ R = A := by
     ext u
-    simp only [L, R, localColourLeftActiveMinima,
-      localColourRightActiveMinima, Finset.mem_union, Finset.mem_filter]
+    change (u ∈ A ∧ P.bit u.1 c = false) ∨
+      (u ∈ A ∧ P.bit u.1 c = true) ↔ u ∈ A
     constructor
-    · rintro (⟨huA, _⟩ | ⟨huA, _⟩)
-      · exact huA
-      · exact huA
-    · intro huA
-      cases hbit : P.bit u.1 c <;> simp [huA, hbit]
+    · rintro (⟨hu, _⟩ | ⟨hu, _⟩)
+      · exact hu
+      · exact hu
+    · intro hu
+      cases hbit : P.bit u.1 c with
+      | false => exact Or.inl ⟨hu, hbit⟩
+      | true => exact Or.inr ⟨hu, hbit⟩
   change L.card + R.card = A.card
   rw [← hunion, Finset.card_union_of_disjoint hdisj]
 
@@ -231,6 +233,7 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
   let A := localColourActiveMinima P top c
   let L := localColourLeftActiveMinima P top c
   let R := localColourRightActiveMinima P top c
+  change G.edgeFinset.card < A.card
 
   have hbi :
       G.IsBipartiteWith (L : Set (OtherVertex top))
