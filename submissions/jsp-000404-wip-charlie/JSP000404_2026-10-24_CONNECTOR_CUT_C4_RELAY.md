@@ -279,3 +279,52 @@ The global one-sorry six-source actual external-Boolean-hole PLUS net available-
 - `ResidualLossAtMostOneSourceZeroDuplicate.lean` derives a full active zero-duplicate choice with NO additional source-colour assumption whenever original projected-loss source count ≤1, using the already certified positive retainedActive palette. [CI 40119405532](https://github.com/Charlie-Wang-03/awards/actions/runs/40119405532) pending.
 
 **Scope warning:** a choice making duplicate debt zero can CHANGE the ACTUAL covered translated blockers and exterior-hole count. Therefore duplicate-zero alone is not a valid global six-source payment; it is a genuine elimination of only ONE ledger term, with other terms still to be paid. The main single admitted `sorry` at `PlanarLowerBranchProofAdmittedWIP.lean:900` remains untouched. No theorem claim beyond proven CI evidence.
+
+
+## 2026-10-25 continued — verified collision-square TRUE-hole scarcity
+
+This checkpoint separates TWO distinct outcomes: (i) genuinely proven
+original-Boolean-cube resource EXCLUSIONS; (ii) genuinely proven
+sufficient choices eliminating projected-loss duplicate debt.
+Neither outcome by itself proves all-cardinality six-source payment.
+
+### New unconditional kernel-approved collision obstructions
+
+| GitHub Actions | New theorem scope | Verifiable result |
+| --- | --- | --- |
+| [40117561435](https://github.com/Charlie-Wang-03/awards/actions/runs/40117561435) | `cross_loss_collision_three_distinct_non_external_holes` | SUCCESS 3,320 jobs, `w` lies in translated loss while both distinct immediate flips are ORIGINAL covered, so all THREE exclude real outside-translated true-hole credit |
+| [40119237706](https://github.com/Charlie-Wang-03/awards/actions/runs/40119237706) | `cross_loss_collision_square_external_hole_only_double_flip`, `cross_loss_collision_square_external_holes_card_le_one` | SUCCESS 3,320 jobs: only opposite double-flip can be credited, at most 1 real exterior hole on the square |
+| [40119237695](https://github.com/Charlie-Wang-03/awards/actions/runs/40119237695) | `positive_loss_duplicate_debt_forces_one_hole_square` | SUCCESS 3,321 jobs: every positive ORIGINAL exact translated-loss duplicate debt yields an actual collision square subject to this ≤1 capacity |
+| [40119335142](https://github.com/Charlie-Wang-03/awards/actions/runs/40119335142) | `actual_loss_collision_inactive_cross_square_no_external_holes` | SUCCESS 3,324 jobs: if either original source owner lacks the OTHER loss coordinate in retainedActive, then the ENTIRE local collision square has ZERO genuine exterior holes |
+| [40119536010](https://github.com/Charlie-Wang-03/awards/actions/runs/40119536010) | `cross_loss_collision_square_exterior_holes_exact_singleton` and `_exact_count` | SUCCESS 3,321 jobs: literally `square ∩ real exterior holes = {opposite two-flip word} ∩ real exterior holes`; exact local cardinality is 0 or 1 based on actual membership |
+
+All those named Lean lemmas' `#print axioms` exclude `sorryAx`.
+
+### Two complementary routes that really make duplicate debt ZERO
+
+- [40119750833](https://github.com/Charlie-Wang-03/awards/actions/runs/40119750833) SUCCESS, 3,308 jobs: `common_retained_active_colour_gives_zero_loss_duplicate_choice`. If all actual projected-loss vertices have ONE shared actual retained-active coordinate, pick it as the common flip choice; the exact ORIGINAL global cross-coordinate duplicate debt is 0. Fixed Lean elaboration from `Function.onFun Disjoint` to concrete finite-set `Disjoint` before `Finset.disjoint_left`.
+- [40119750866](https://github.com/Charlie-Wang-03/awards/actions/runs/40119750866) SUCCESS, 3,312 jobs: `at_most_one_projected_loss_vertex_has_active_zero_duplicate_choice`. At most one actual projected-loss source eliminates the exact duplicate debt with a legitimate active choice.
+
+### Pending exact geometric one-hole criterion
+
+`ResidualLossCollisionExactLocalHoleEligibility.lean` combines the
+new exact square 0/1 count and the earlier source-native double-flip
+IFF criterion. It asserts that a square contributes exactly ONE
+eligible real exterior hole IFF both source-cross activities hold,
+all third-party original retained cubes exclude the opposite word,
+and all translated-loss slices exclude the opposite word.
+[CI 40119968385](https://github.com/Charlie-Wang-03/awards/actions/runs/40119968385)
+was still in progress at the time of this relay entry. It is NOT
+kernel-certified until SUCCESS.
+
+### Remaining explicit mathematical gap
+
+A positive global duplicate debt is NOT a license to refund a TRUE hole:
+the actual local square may have 0 holes. Even if it has 1, MULTIPLE
+collision events can point to the SAME opposite double-flip word.
+A valid proof must establish a globally NONREUSING matching (or an
+equivalent direct capacity inequality) for ALL eight original debt
+source classes under actual planar `AngleCap`; no such existence
+theorem is yet known. The sole global `sorry` at
+`PlanarLowerBranchProofAdmittedWIP.lean:900` remains untouched.
+No merge, additional axiom, new sorry, or solved/disproved claim.
