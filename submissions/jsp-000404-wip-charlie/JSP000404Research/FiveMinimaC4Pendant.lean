@@ -65,14 +65,20 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
   <;> try { exact False.elim (hxy rfl) }
   all_goals
     first
-    | exact ⟨a,b,c,hzA,hab,hbc,hzC,hac,hzx,habE,hbcE,hzy.symm⟩
-    | exact ⟨a,d,c,hzA,hda.symm,hcd.symm,hzC,hac,hzx,hdaE.symm,hcdE.symm,hzy.symm⟩
-    | exact ⟨b,a,d,hzB,hab.symm,hda,hzD,hbd,hzx,habE.symm,hdaE,hzy.symm⟩
-    | exact ⟨b,c,d,hzB,hbc,hcd,hzD,hbd,hzx,hbcE,hcdE,hzy.symm⟩
-    | exact ⟨c,b,a,hzC,hbc.symm,hab.symm,hzA,hac,hzx,hbcE.symm,habE.symm,hzy.symm⟩
-    | exact ⟨c,d,a,hzC,hcd,hda,hzA,hac,hzx,hcdE,hdaE,hzy.symm⟩
-    | exact ⟨d,a,b,hzD,hda.symm,hab,hzB,hbd,hzx,hdaE.symm,habE,hzy.symm⟩
-    | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB,hbd,hzx,hcdE.symm,hbcE.symm,hzy.symm⟩
+    | exact ⟨a,b,c,hzA,hab,hbc,hzC.symm,hzB,hac,hzx,habE,hbcE,hzy.symm⟩
+    | exact ⟨a,d,c,hzA,hda.symm,hcd.symm,hzC.symm,hzD,hac,hzx,
+        hdaE.symm,hcdE.symm,hzy.symm⟩
+    | exact ⟨b,a,d,hzB,hab.symm,hda.symm,hzD.symm,hzA,hbd,hzx,
+        habE.symm,hdaE.symm,hzy.symm⟩
+    | exact ⟨b,c,d,hzB,hbc,hcd,hzD.symm,hzC,hbd,hzx,hbcE,hcdE,hzy.symm⟩
+    | exact ⟨c,b,a,hzC,hbc.symm,hab.symm,hzA.symm,hzB,hac.symm,hzx,
+        hbcE.symm,habE.symm,hzy.symm⟩
+    | exact ⟨c,d,a,hzC,hcd,hda,hzA.symm,hzD,hac.symm,hzx,
+        hcdE,hdaE,hzy.symm⟩
+    | exact ⟨d,a,b,hzD,hda,hab,hzB.symm,hzA,hbd.symm,hzx,
+        hdaE,habE,hzy.symm⟩
+    | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB.symm,hzC,hbd.symm,hzx,
+        hcdE.symm,hbcE.symm,hzy.symm⟩
     | exfalso
       apply hnotXY
       assumption
