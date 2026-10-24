@@ -109,10 +109,12 @@ theorem bipartite_edge_card_le_right_add_one_of_left_card_two
     rw [← SimpleGraph.card_neighborFinset_eq_degree,
         ← SimpleGraph.card_neighborFinset_eq_degree]
     omega
-  simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
-    ← Nat.card_eq_fintype_card] at hdeg ⊢
-  rw [← hdeg]
-  exact hdegCard
+  have hEdges : G.edgeFinset.card = G.degree u + G.degree v := by
+    simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] using hdeg.symm
+  calc
+    G.edgeFinset.card = G.degree u + G.degree v := hEdges
+    _ ≤ R.card + 1 := hdegCard
 
 noncomputable def localColourActiveMinima
     {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
@@ -293,9 +295,13 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     simp only [Finset.sum_singleton] at hdeg
     have hdegLe :=
       SimpleGraph.isBipartiteWith_degree_le hbi huL
-    rw [hdeg] at hdegLe
-    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
-      ← Nat.card_eq_fintype_card] at hdegLe ⊢
+    have hEdges : G.edgeFinset.card = G.degree u := by
+      simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+        ← Nat.card_eq_fintype_card] using hdeg.symm
+    have hEdgesLe : G.edgeFinset.card ≤ R.card := by
+      calc
+        G.edgeFinset.card = G.degree u := hEdges
+        _ ≤ R.card := hdegLe
     omega
 
   by_cases hR1 : R.card = 1
@@ -307,9 +313,13 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     simp only [Finset.sum_singleton] at hdeg
     have hdegLe :=
       SimpleGraph.isBipartiteWith_degree_le' hbi huR
-    rw [hdeg] at hdegLe
-    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
-      ← Nat.card_eq_fintype_card] at hdegLe ⊢
+    have hEdges : G.edgeFinset.card = G.degree u := by
+      simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+        ← Nat.card_eq_fintype_card] using hdeg.symm
+    have hEdgesLe : G.edgeFinset.card ≤ R.card := by
+      calc
+        G.edgeFinset.card = G.degree u := hEdges
+        _ ≤ R.card := hdegLe
     omega
 
   have hL2 : 2 ≤ L.card := by omega
@@ -492,10 +502,12 @@ theorem five_minima_large_local_colour_classes_card_le_two
     have htopEdges :=
       (SimpleGraph.card_edgeFinset_top_eq_card_choose_two
         (V := OtherVertex top))
-    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
-      ← Nat.card_eq_fintype_card] at htopEdges ⊢
-    rw [htopEdges]
-    rw [Nat.card_eq_fintype_card,
+    have htopEdges' :
+        (⊤ : SimpleGraph (OtherVertex top)).edgeFinset.card =
+          (Nat.card (OtherVertex top)).choose 2 := by
+      simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+        ← Nat.card_eq_fintype_card] using htopEdges
+    rw [htopEdges', Nat.card_eq_fintype_card,
       card_otherVertex_eq_five_of_card_six hSix top]
     decide
   have hsub :
