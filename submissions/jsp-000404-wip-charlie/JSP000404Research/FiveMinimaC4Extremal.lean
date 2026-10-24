@@ -148,6 +148,9 @@ theorem localColour_active_split
     exact Bool.false_ne_true (huL.2.symm.trans huR.2)
   have hunion : L ∪ R = A := by
     ext u
+    simp only [Finset.mem_union, L, R,
+      localColourLeftActiveMinima, localColourRightActiveMinima,
+      Finset.mem_filter]
     change (u ∈ A ∧ P.bit u.1 c = false) ∨
       (u ∈ A ∧ P.bit u.1 c = true) ↔ u ∈ A
     constructor
