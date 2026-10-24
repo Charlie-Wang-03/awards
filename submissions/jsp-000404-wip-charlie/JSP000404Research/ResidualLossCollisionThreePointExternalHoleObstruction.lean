@@ -154,12 +154,13 @@ theorem cross_loss_collision_square_external_holes_card_le_one
     {word : Fin n → Bool}
     (hc : word ∈ translatedLossSliceWords C exponent choice c)
     (hd : word ∈ translatedLossSliceWords C exponent choice d) :
-    ((insert word
-      (insert (flipBoolWordAt word c)
-        (insert (flipBoolWordAt word d)
-          ({flipBoolWordAt (flipBoolWordAt word c) d} :
-            Finset (Fin n → Bool))))) ∩
-      lossLedgerOutsideTranslatedTrueHoles C exponent choice).card ≤ 1 := by
+    Finset.card
+      ((insert word
+        (insert (flipBoolWordAt word c)
+          (insert (flipBoolWordAt word d)
+            ({flipBoolWordAt (flipBoolWordAt word c) d} :
+              Finset (Fin n → Bool))))) ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) ≤ 1 := by
   classical
   have hsubset :
       (insert word
