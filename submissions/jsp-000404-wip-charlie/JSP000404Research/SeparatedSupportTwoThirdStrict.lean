@@ -84,6 +84,7 @@ theorem separated_support_two_six_centres_no_double_zero_at_third
       hp hcap Cfam hn hthird ht hlam top hTop hit hI hsupport
   refine ⟨k, r, rest, qFirst, qLast, qmid, hrays, hquot, ?_⟩
   intro hends
+  letI : DecidableEq V := LinearOrder.toDecidableEq
   have hOtherFive : Fintype.card (OtherVertex i) = 5 := by
     change Fintype.card {v : V // v ≠ i} = 5
     rw [Fintype.card_subtype_compl (fun v : V => v = i)]
@@ -94,7 +95,7 @@ theorem separated_support_two_six_centres_no_double_zero_at_third
         (Cfam i).rays.toFinset.card = 5 := by
       have hcompleteCard :=
         congrArg Finset.card (Cfam i).complete
-      simpa [hOtherFive] using hcompleteCard
+      simpa [hSix] using hcompleteCard
     omega
   have hQuotFive : (quotientList t (Cfam i).gaps).length = 5 := by
     rw [quotientList_length, (Cfam i).gaps_length]
