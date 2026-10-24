@@ -53,6 +53,46 @@ theorem at_most_one_projected_loss_vertex_has_active_zero_duplicate_choice
     intro v hv
     exact False.elim (hSome ⟨v,hv⟩)
 
+/-- STRONGER: with at most one projected-loss source, the EXACT
+cross-coordinate duplicate debt is zero for EVERY flip choice, active or
+otherwise. This uses NO exponent bound, no n≥1, no original geometry
+and no choice construction: a cross-slice collision itself demands
+TWO different projected-loss owners with different chosen colours. -/
+theorem any_choice_duplicate_zero_of_at_most_one_projected_loss_source
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    (choice : V → Fin n)
+    (hone : (projectedLossVertices C exponent).card ≤ 1) :
+    translatedLossDuplicateDebt C exponent choice = 0 := by
+  classical
+  by_contra hneZero
+  have hpositive :
+      0 < translatedLossDuplicateDebt C exponent choice :=
+    Nat.pos_of_ne_zero hneZero
+  obtain ⟨c,d,hcd,word,hwordC,hwordD⟩ :=
+    positive_loss_duplicateDebt_has_slice_collision
+      C exponent choice hpositive
+  obtain ⟨v,hvSlice,_⟩ := Finset.mem_biUnion.mp hwordC
+  obtain ⟨u,huSlice,_⟩ := Finset.mem_biUnion.mp hwordD
+  have hvData :=
+    (mem_lossCoordinateSlice C exponent choice c v).1 hvSlice
+  have huData :=
+    (mem_lossCoordinateSlice C exponent choice d u).1 huSlice
+  have hvu : v = u := by
+    by_contra hvune
+    have htwo : 1 < (projectedLossVertices C exponent).card :=
+      Finset.one_lt_card.mpr ⟨v,hvData.1,u,huData.1,hvune⟩
+    omega
+  have hcd' : c = d := by
+    calc
+      c = choice v := hvData.2.symm
+      _ = choice u := congrArg choice hvu
+      _ = d := huData.2
+  exact hcd hcd'
+
+#print axioms any_choice_duplicate_zero_of_at_most_one_projected_loss_source
+
 #print axioms at_most_one_projected_loss_vertex_has_active_zero_duplicate_choice
 end OrderedEdgeColoring
 end JSP000404Research
