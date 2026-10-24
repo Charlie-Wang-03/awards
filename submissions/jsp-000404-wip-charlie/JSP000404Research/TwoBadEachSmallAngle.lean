@@ -91,7 +91,7 @@ theorem exceptional_bad_has_nonTop_small_angle
       y ≠ top ∧ y ≠ rootBad ∧
       x ≠ y ∧
       EuclideanGeometry.angle (p x) (p rootBad) (p y) < lam := by
-  let M  let M :=
+  let M :=
     uncoveredCutMergedPartition
       hp hcap C (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
@@ -124,7 +124,7 @@ theorem exceptional_bad_has_nonTop_small_angle
     hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
     hc0 hcpi huncovered hxb.symm hyb.symm hxy hbadSat
     (by simpa only [M] using heq)
-o-exception corollary: both saturation-bad minima carry their own
+/-- Two-exception corollary: both saturation-bad minima carry their own
 non-top strict sub-lambda angle witnesses. -/
 theorem two_exception_bad_minima_each_have_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
