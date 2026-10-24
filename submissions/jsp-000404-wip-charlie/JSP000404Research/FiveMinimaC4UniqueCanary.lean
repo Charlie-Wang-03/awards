@@ -15,12 +15,6 @@ isolated research module is not imported by the global JSP-000404 theorem.
 
 namespace JSP000404Research
 
-noncomputable section
-
-private instance graphEdgeSetFintype {W : Type*} [Fintype W]
-    (G : SimpleGraph W) : Fintype G.edgeSet :=
-  Fintype.ofFinite _
-
 
 private def cycleEdgeSet {W : Type*} [DecidableEq W]
     (a b c d : W) : Finset (Sym2 W) :=
@@ -35,10 +29,15 @@ private theorem finFive_distinct_fourCycles_share_edge :
       a ≠ c → b ≠ d →
       e ≠ f → f ≠ g → g ≠ h → h ≠ e →
       e ≠ g → f ≠ h →
-      (cycleEdgeSet a b c d ∩
-        cycleEdgeSet e f g h).Nonempty := by
-  classical
+      0 < (cycleEdgeSet a b c d ∩
+        cycleEdgeSet e f g h).card := by
   decide
+
+noncomputable section
+
+private instance graphEdgeSetFintype {W : Type*} [Fintype W]
+    (G : SimpleGraph W) : Fintype G.edgeSet :=
+  Fintype.ofFinite _
 
 private theorem distinct_fourCycles_share_edge_of_card_five
     {W : Type*} [Fintype W] [DecidableEq W]
@@ -56,9 +55,9 @@ private theorem distinct_fourCycles_share_edge_of_card_five
   let φ : W ≃ Fin 5 := Fintype.equivFinOfCardEq hFive
   let E : Sym2 W ↪ Sym2 (Fin 5) :=
     ⟨Sym2.map φ, Sym2.map.injective φ.injective⟩
-  have hFin :
-      (cycleEdgeSet (φ a) (φ b) (φ c) (φ d) ∩
-        cycleEdgeSet (φ e) (φ f) (φ g) (φ h)).Nonempty := by
+  have hFinCard :
+      0 < (cycleEdgeSet (φ a) (φ b) (φ c) (φ d) ∩
+        cycleEdgeSet (φ e) (φ f) (φ g) (φ h)).card := by
     apply finFive_distinct_fourCycles_share_edge
     all_goals
       intro heq
@@ -88,6 +87,7 @@ private theorem distinct_fourCycles_share_edge_of_card_five
         (cycleEdgeSet (φ a) (φ b) (φ c) (φ d) ∩
           cycleEdgeSet (φ e) (φ f) (φ g) (φ h)) := by
     rw [Finset.map_inter, hMapA, hMapB]
+  have hFin := Finset.card_pos.mp hFinCard
   obtain ⟨z,hz⟩ := hFin
   have hMapped : z ∈
       (cycleEdgeSet a b c d ∩ cycleEdgeSet e f g h).map E := by
