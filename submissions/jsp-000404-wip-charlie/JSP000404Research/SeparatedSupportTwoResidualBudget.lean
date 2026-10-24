@@ -797,8 +797,7 @@ theorem separated_support_two_double_zero_middle_angle_budget
       _ = _ := by ring
   rw [hmassExact] at hmassShape
   constructor
-  · dsimp [Amid]
-    nlinarith [hFirstLower, hLastLower, hmassShape]
+  · nlinarith [hFirstLower, hLastLower, hmassShape]
   · by_contra hthird
     have hlt : delta < (1 : ℝ) / 3 := by push_neg at hthird; exact hthird
     have hgap : 0 < (1 - 3 * delta) * lam :=
