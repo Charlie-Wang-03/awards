@@ -6,6 +6,8 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointBadSharedC4Colour.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointBadActiveC4.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/FiveMinimaC4UniqueCanary.lean"
       - ".github/workflows/jsp000404-focused-shared-bad-c4.yml"
   workflow_dispatch:
 
