@@ -804,6 +804,52 @@ theorem separated_support_two_double_zero_middle_angle_budget
       mul_pos (by linarith) hlampos
     nlinarith [hFirstLower, hLastLower, hmassShape, hmidNonneg, hgap]
 
+/-- At the sharp threshold delta = 1/3, simultaneous zero top-adjacent
+quotient gaps force the *actual* middle zero-angle mass to vanish.
+This is a boundary-case geometric consequence, not a global dyadic payment. -/
+theorem separated_support_two_double_zero_at_third_middle_mass_eq_zero
+    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (Cfam : ∀ v : V, CentreProjectiveCycle hp v)
+    (hn : 5 ≤ n)
+    (hthird : delta = (1 : ℝ) / 3)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (top : V)
+    (hTop : centreExponent (Cfam top) t = n - 1)
+    {i : V}
+    (hit : i ≠ top)
+    (hI : centreExponent (Cfam i) t = n - 3)
+    (hsupport : positiveSupport (centreQuotient (Cfam i) t) = 2) :
+    ∃ (k : ℕ) (r : OtherVertex i) (rest : List (OtherVertex i))
+      (qFirst qLast : ℕ) (qmid : List ℕ),
+      (Cfam i).rays.rotate k =
+        (⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest ∧
+      (quotientList t (Cfam i).gaps).rotate k =
+        qFirst :: qmid ++ [qLast] ∧
+      (qFirst = 0 ∧ qLast = 0 →
+        listZeroAngleMass qmid
+          (consecutiveRayAngles (p := p) i r rest) = 0) := by
+  have hdelta0 : 0 ≤ delta := by rw [hthird]; norm_num
+  have hdeltaHalf : delta < (1 : ℝ) / 2 := by rw [hthird]; norm_num
+  obtain ⟨k, r, rest, qFirst, qLast, qmid, hrays, hquot, hbudget⟩ :=
+    separated_support_two_double_zero_middle_angle_budget
+      hp hcap Cfam hn hdelta0 hdeltaHalf ht hlam top hTop hit hI hsupport
+  refine ⟨k, r, rest, qFirst, qLast, qmid, hrays, hquot, ?_⟩
+  intro hzeros
+  have hupper := (hbudget hzeros).1
+  have hlower :
+      0 ≤ listZeroAngleMass qmid
+        (consecutiveRayAngles (p := p) i r rest) :=
+    listZeroAngleMass_nonneg qmid _
+      (all_consecutiveRayAngles_nonneg (p := p) i r rest)
+  rw [hthird] at hupper
+  nlinarith
+
+#print axioms separated_support_two_double_zero_at_third_middle_mass_eq_zero
+
 #print axioms separated_support_two_has_positive_top_endpoint_of_delta_lt_third
 #print axioms separated_support_two_double_zero_middle_angle_budget
 
