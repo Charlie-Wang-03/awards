@@ -36,6 +36,9 @@ theorem translated_loss_duplicate_zero_of_common_chosen_coordinate
       (((Finset.univ : Finset (Fin n)) : Set (Fin n))).PairwiseDisjoint
         (fun c => translatedLossSliceWords C exponent choice c) := by
     intro c hc d hd hcd
+    change Disjoint
+      (translatedLossSliceWords C exponent choice c)
+      (translatedLossSliceWords C exponent choice d)
     rw [Finset.disjoint_left]
     intro word hwc hwd
     obtain ⟨v,hv,_⟩ := Finset.mem_biUnion.mp hwc
