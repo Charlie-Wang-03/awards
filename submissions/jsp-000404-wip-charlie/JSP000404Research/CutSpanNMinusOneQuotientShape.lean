@@ -77,9 +77,12 @@ theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
   have hbad' :
       SaturationCollisionFailure P exponent i := by
     simpa [CutSaturationBadAt, P, exponent, htop] using hbad
+  have hsatCard :
+      (active P i).card = n + 1 - centreExponent (C i) t := by
+    simpa [exponent] using hbad'.1
   have hsat :
       centreExponent (C i) t + (active P i).card = n + 1 := by
-    simpa [exponent] using hbad'.1
+    omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ active P i ∧
         Fin.last n ∈ active P i) :=
@@ -89,7 +92,7 @@ theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
     R.saturated_failure_has_wrap_unit_subslot_data
       hp hcap (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
-      hc0 hcpi (C i) R
+      hc0 hcpi (C i)
       (by simpa [P, htop] using hsat)
       (by simpa [P, htop] using hfail)
   have hcons : a :: xs = a' :: xs' := by
