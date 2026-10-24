@@ -40,3 +40,27 @@ The conditional `PlanarLowerBranchActualEdgeCarrierFrontier` remains sorry-free,
 Proved separate simplifications already recorded elsewhere: n=1 and n=2 all-cardinality capacity; card<=4 small-centre cases; for <=7 centres NET duplicate debt is zero by the true hard-carrier eight-centre barrier; for <=9 centres genuine NET duplicate and twin-rigid debt cannot both be positive. None by itself pays covered blocker, soft, mixed, twin, or other debt. The locally certified small-angle triangles have not been shown to furnish a globally injective TRUE-hole payment.
 
 **No `sorry` has been discharged at this checkpoint**, and no new axiom, `sorry`, external assumption or original-problem complete-proof claim has been introduced.
+
+
+## 2026-10-24 later checkpoint — precise double-zero budget (kernel PASS)
+
+The stronger real-plane theorem \`separated_support_two_double_zero_middle_angle_budget\` was implemented in \`SeparatedSupportTwoResidualBudget.lean\`. Verified by [focused CI run 40065565121](https://github.com/Charlie-Wang-03/awards/actions/runs/40065565121): **3553 Lake jobs PASS** and \`#print axioms\` lists \`[propext, Classical.choice, Quot.sound]\` only.
+
+For an arbitrary finite set of centres (not just six), assume original planar \`AngleCap\`, an actual sharp-top exponent \`n-1\`, a distinct deficit-three centre exponent \`n-3\`, \`positiveSupport=2\`, \`n>=5\`, and \`0<=delta<1/2\`. An actual ray/quotient rotation pinning the top at the head exists. If BOTH first and final quotient gaps are zero, the **sum of all middle zero-gap ACTUAL angles** is bounded above by \`(3*delta-1)*lam\` and \`delta>=1/3\`. The proof deducts TWO distinct outer-angle lower bounds of \`(1-delta)*lam\` each from the exact \`(1+delta)*lam\` zero-angle mass bound; all geometry and lists are kernel checked. No global injection or true-hole credit follows automatically.
+
+### Confirmed restoration of five difficult Lean modules
+
+[Focused hard-branch CI 40065984799](https://github.com/Charlie-Wang-03/awards/actions/runs/40065984799): **PASS, 9148 Lake jobs, zero Lean errors**. In particular \`outside_bad_colour_used_by_exactly_two_ordinary\`, \`exists_ordinary_reduced_active_subset_bad\`, \`six_point_hard_lowSupport_geometry\`, and \`localColourGraph_neighborFinset\` have \`#print axioms\` free of \`sorryAx\`.
+
+These proofs are genuine formalized necessary conditions for the two-bad-minimum six-point cut and the non-gaining low-support geometry; they do not prove the global payment.
+
+### Remaining major engineering gate: enlarged collision graph
+
+The previous incremental compilation logged 47 errors in \`ResidualEnlargedCollisionSimpleGraph.lean\` (older run 40065565159, ultimately CANCELLED after branch updates, **not** a valid final acceptance).
+
+- \`4db3a636\`: relocates three genuine later-defined theorems above their early uses; adds a shared-word/source-block inclusion theorem using existing verified \`sharedBlockWords_has_other_block\`.
+- \`3a246c3a\`: expresses tree leaves by unique adjacency rather than requiring an unsynthesizable \`Fintype\` instance for a parametrized neighbour set in the theorem statement.
+- \`f1a335c4\` and \`6e44d4da\`: formally derive the exact projected-loss retained-active count with the correctly associated natural subtraction \`n + 1 - exponent(v)\`; the tempting \`n - exponent(v) + 1\` is **not valid without extra hypotheses** at the zero-cardinality boundary.
+- \`b3a6a9fd\`: corrects malformed YAML in a new focused enlarged-collision workflow. The intended CI is \`JSP-000404 Focused Enlarged Collision Compilation\`. Latest available run after the active-count correction: [40066491073](https://github.com/Charlie-Wang-03/awards/actions/runs/40066491073), at this checkpoint **not yet validated**.
+
+The root umbrella’s whole-tree compilation remains **UNVERIFIED** after these changes, and the sole intentional \`sorry\` remains in \`PlanarLowerBranchProofAdmittedWIP.lean\` at the genuine six-source external TRUE-hole/non-reused surplus allocation. These structural repairs are not a proof of global geometry.
