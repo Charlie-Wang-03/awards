@@ -1,6 +1,8 @@
 import JSP000404Research.ResidualEnlargedCollisionSimpleGraph
 import JSP000404Research.ResidualExactSharedRecursiveOutlet
 import JSP000404Research.ResidualLossCycleLocal
+import JSP000404Research.ResidualLossThreeExitRecursiveOutlet
+import JSP000404Research.ResidualLossFibreRigidity
 import Mathlib.Tactic
 
 /-!
@@ -146,7 +148,8 @@ theorem enlargedTriangle_nonloss_edge_paid_or_exactRecursive
   have hcross :=
     enlargedCollisionGraph_cross_of_adj
       C exponent T huv
-  obtain ⟨word,huBlock,hvBlock⟩ := hcross
+  obtain ⟨word,hintersection⟩ := hcross
+  obtain ⟨huBlock,hvBlock⟩ := Finset.mem_inter.mp hintersection
   have huWord :
       word ∈ retainedCompletionWords C u.1 := by
     rw [enlargedProjectedCandidateBlock_nonloss
@@ -422,7 +425,7 @@ theorem two_projectedLoss_highLayer_classification
               v ∈ (Finset.univ : Finset V).filter
                 (fun z => exponent z = n - 1) := by
             simp [hvTop]
-          exact huv (Finset.card_le_one.mp htop huMem hvMem)
+          exact huv (Finset.card_le_one.mp htop u huMem v hvMem)
         · exact Or.inl ⟨huTop,hvSecond⟩
       · rcases hvLayer with hvTop | hvSecond
         · exact Or.inr (Or.inl ⟨huSecond,hvTop⟩)
@@ -822,7 +825,7 @@ theorem three_loss_triple_word_has_cross_translated_pair
           translated_loss_conflict_distinct_coordinates
             C exponent hexp honeLoss
             hvLoss hwLoss hvw
-            ⟨word,hvWord,hwWord⟩
+            ⟨word,Finset.mem_inter.mpr ⟨hvWord,hwWord⟩⟩
         exact Or.inr (Or.inr
           ⟨cv,cw,hcv,hcw,hne,hvWord,hwWord⟩)
   · obtain ⟨cu,hcu,huWord⟩ :=
@@ -840,7 +843,7 @@ theorem three_loss_triple_word_has_cross_translated_pair
           translated_loss_conflict_distinct_coordinates
             C exponent hexp honeLoss
             huLoss hwLoss huw
-            ⟨word,huWord,hwWord⟩
+            ⟨word,Finset.mem_inter.mpr ⟨huWord,hwWord⟩⟩
         exact Or.inr
           (Or.inl ⟨cu,cw,hcu,hcw,hne,huWord,hwWord⟩)
     · obtain ⟨cv,hcv,hvWord⟩ :=
@@ -849,7 +852,7 @@ theorem three_loss_triple_word_has_cross_translated_pair
         translated_loss_conflict_distinct_coordinates
           C exponent hexp honeLoss
           huLoss hvLoss huv
-          ⟨word,huWord,hvWord⟩
+          ⟨word,Finset.mem_inter.mpr ⟨huWord,hvWord⟩⟩
       exact Or.inl
         ⟨cu,cv,hcu,hcv,hne,huWord,hvWord⟩
 
