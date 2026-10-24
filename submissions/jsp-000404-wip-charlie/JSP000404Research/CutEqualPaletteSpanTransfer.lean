@@ -63,8 +63,8 @@ theorem floor_of_mem_le_floor_last_sorted
 theorem normalized_floor_span_three_of_equal_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -96,7 +96,7 @@ theorem normalized_floor_span_three_of_equal_active
     | nil =>
         exact False.elim (Rj.normalizedValues_nonempty t h)
     | cons a xs =>
-        exact ⟨a, xs, h⟩
+        exact ⟨a, xs, rfl⟩
 
   have hsi :
       (ai :: xsi).Pairwise (· ≤ ·) := by
@@ -110,13 +110,13 @@ theorem normalized_floor_span_three_of_equal_active
   have hziMem :
       xsi.getLastD ai ∈ Ri.normalizedValues t := by
     rw [hvi]
-    exact List.getLastD_mem_cons ai xsi
+    exact (by exact List.getLastD_mem_cons)
   have hajMem : aj ∈ Rj.normalizedValues t := by
     rw [hvj]; simp
   have hzjMem :
       xsj.getLastD aj ∈ Rj.normalizedValues t := by
     rw [hvj]
-    exact List.getLastD_mem_cons aj xsj
+    exact (by exact List.getLastD_mem_cons)
 
   have haiTop :
       Nat.floor ai < n + 1 :=
