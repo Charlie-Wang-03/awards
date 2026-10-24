@@ -64,7 +64,7 @@ theorem planarCentreExponent_le_n
         (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   ∀ i, planarCentreExponent hp C i ≤ n := by
+    ∀ i, planarCentreExponent hp C i ≤ n := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   intro i
   unfold planarCentreExponent
@@ -90,7 +90,7 @@ theorem planarStandardResidual_oneLayer_budget
         (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap hn hdelta0 hdelta1 ht hlam
     ∀ i,
@@ -117,7 +117,7 @@ theorem planarCentreExponent_lt_n
         (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   ∀ i, planarCentreExponent hp C i < n := by
+    ∀ i, planarCentreExponent hp C i < n := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   intro i
   unfold planarCentreExponent
@@ -169,7 +169,7 @@ theorem planar_topLoss_word_four_exit_outlet
       word ∈ retainedCompletionWords R v) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
@@ -301,7 +301,7 @@ theorem planar_topLoss_word_layered_outlet
       word ∈ retainedCompletionWords R v) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
@@ -386,7 +386,7 @@ theorem planar_topLoss_secondLayer_companion_card_le_two
  planarCentreExponent hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   ((Finset.univ : Finset (ProjectionOrdered V)).filter
+    ((Finset.univ : Finset (ProjectionOrdered V)).filter
       (fun i =>
         i ≠ s ∧
         planarCentreExponent hp C i = n - 2)).card ≤ 2 := by
@@ -417,7 +417,7 @@ noncomputable def planarTopSecondLayerLossVertices
     (s : ProjectionOrdered V) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   Finset (ProjectionOrdered V) := by
+    Finset (ProjectionOrdered V) := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   classical
   let R :=
@@ -453,7 +453,7 @@ theorem planarTopSecondLayerLossVertices_card_le_two
  planarCentreExponent hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   (planarTopSecondLayerLossVertices
+    (planarTopSecondLayerLossVertices
       hp hcap hn hdelta0 hdeltaHalf ht hlam C s).card ≤ 2 := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   classical
@@ -512,7 +512,7 @@ theorem planar_secondLayerLoss_completion_card
       planarCentreExponent hp C w = n - 2) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
@@ -573,7 +573,7 @@ theorem planar_top_secondLayerLoss_total_cube_le_top_cube
  planarCentreExponent hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
@@ -686,7 +686,7 @@ theorem planar_top_secondLayerLoss_child_rank_lt
  planarCentreExponent hp C w = n - 2) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   let R :=
+    let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
@@ -769,7 +769,7 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
       2 ^ n - (coveredCompletionWords R).card) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-   (∑ i : ProjectionOrdered V,
+    (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   let R :=
