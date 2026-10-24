@@ -65,22 +65,8 @@ theorem exists_rootColour_of_top_active_card_one
   intro v hvt
   rcases lt_or_gt_of_ne hvt with htv | hvt'
   · have hcTop :
-        P.edgeColor top v ∈ active P top :=
-      edgeColor_mem_active_lower P htv
-    have hcol :
-        P.edgeColor top v = c := by
-      rw [hc] at hcTop
-      simpa using hcTop
-    have hcV :
-        c ∈ active P v := by
-      rw [← hcol]
-      exact edgeColor_mem_active_upper P htv
-    have hproper := P.proper htv
-    rw [hcol] at hproper
-    exact ⟨hcV, hproper.symm⟩
-  · have hcTop :
         P.edgeColor v top ∈ active P top :=
-      edgeColor_mem_active_upper P hvt'
+      edgeColor_mem_active_upper P htv
     have hcol :
         P.edgeColor v top = c := by
       rw [hc] at hcTop
@@ -88,10 +74,24 @@ theorem exists_rootColour_of_top_active_card_one
     have hcV :
         c ∈ active P v := by
       rw [← hcol]
-      exact edgeColor_mem_active_lower P hvt'
-    have hproper := P.proper hvt'
+      exact edgeColor_mem_active_lower P htv
+    have hproper := P.proper htv
     rw [hcol] at hproper
     exact ⟨hcV, hproper⟩
+  · have hcTop :
+        P.edgeColor top v ∈ active P top :=
+      edgeColor_mem_active_lower P hvt'
+    have hcol :
+        P.edgeColor top v = c := by
+      rw [hc] at hcTop
+      simpa using hcTop
+    have hcV :
+        c ∈ active P v := by
+      rw [← hcol]
+      exact edgeColor_mem_active_upper P hvt'
+    have hproper := P.proper hvt'
+    rw [hcol] at hproper
+    exact ⟨hcV, hproper.symm⟩
 
 theorem nonTop_rootBit_eq
     {V : Type*} [LinearOrder V]
@@ -177,15 +177,15 @@ theorem six_point_two_exception_root_factorization
       P hroot huv hut hvt
   · have hc := (hroot bad₁ htb₁.symm).1
     rw [Finset.card_erase_of_mem hc, hexact.2.1]
-    norm_num
+
   · have hc := (hroot bad₂ htb₂.symm).1
     rw [Finset.card_erase_of_mem hc, hexact.2.2.1]
-    norm_num
+
   · intro v hvt hvb₁ hvb₂
     have hc := (hroot v hvt).1
     rw [Finset.card_erase_of_mem hc,
       hexact.2.2.2 v hvt hvb₁ hvb₂]
-    norm_num
+
 
 #print axioms exists_rootColour_of_top_active_card_one
 #print axioms nonTop_rootBit_eq
