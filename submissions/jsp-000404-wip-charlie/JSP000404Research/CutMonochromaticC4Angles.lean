@@ -72,7 +72,7 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
     cutProjectiveBandPartition
       hp hcap htpos hlam hc0 hcpi n htop
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
@@ -176,9 +176,9 @@ theorem saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
     rw [habData.2, hadColour]
   exact
     actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
+      (i := a.1) (x := b.1) (y := d.1)
       hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi huncovered
-      a.1 b.1 d.1
       (by
         intro h
         exact hab (Subtype.ext h))
