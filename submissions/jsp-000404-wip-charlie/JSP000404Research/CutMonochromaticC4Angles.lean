@@ -78,10 +78,11 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
-    simpa [P, wrapBit] using
-      cutBoundaryWrapBit_separates
-        hp hcap C hn htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi huncovered
+    intro u v huv hb
+    exact (cutBoundaryWrapBit_separates
+      hp hcap C hn htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi huncovered
+      (u := u) (v := v)) huv hb
   have hbad' :
       SaturationCollisionFailure
         P (fun v => centreExponent (C v) t) i := by
@@ -104,7 +105,7 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
       localIncidentColor_uncoveredCutMerged_eq_merge
         hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
         hc0 hcpi huncovered i y
-    rw [hx, hy]
+    rw [← hx, ← hy]
     simpa [P, wrapBit] using heq
   have hold :
       localIncidentColor P i x =
