@@ -41,7 +41,7 @@ local instance finiteNeighbourSet
 
 local instance finiteEdgeSet
     {W : Type*} [Fintype W] (G : SimpleGraph W) :
-    Fintype G.edgeSet := Fintype.ofFinite _
+    Fintype G.edgeSet := G.fintypeEdgeSet
 
 open BinaryEdgePartition
 open scoped BigOperators
