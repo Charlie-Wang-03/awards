@@ -507,7 +507,7 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
     symm
     exact (Finset.card_eq_four).2
       ⟨cx,cy,e,d,hcxy,hecx.symm,hd.2.1.symm,
-        hecy.symm,hd.2.2.symm,Ne.symm hde,rfl⟩
+        hecy.symm,hd.2.2.symm,(by intro hed; exact hde hed.symm),rfl⟩
   have hfour : 4 ≤ (retainedActive C s).card := by
     rw [← hcard4]
     exact Finset.card_le_card hsub
