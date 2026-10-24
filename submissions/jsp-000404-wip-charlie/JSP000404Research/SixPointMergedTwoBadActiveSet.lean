@@ -121,8 +121,6 @@ theorem no_exclusive_colour_at_first_bad
       dif_neg hc₂,
       Finset.card_insert_of_notMem hc₂,
       hexact.2.2.1]
-    have he : n - (4 + 1) = n - 5 := by omega
-    rw [he]
 
   have hEven :
       ∀ v : V, v ≠ bad₂ →

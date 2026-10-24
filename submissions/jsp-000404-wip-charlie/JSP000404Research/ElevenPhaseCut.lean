@@ -19,7 +19,7 @@ directly into an actual projective cut.
 
 namespace JSP000404Research
 
-def projectiveCutOfPhase (t x : ℝ) : ℝ :=
+noncomputable def projectiveCutOfPhase (t x : ℝ) : ℝ :=
   Real.pi * x / t
 
 theorem projectiveCutOfPhase_nonneg
@@ -45,7 +45,6 @@ theorem phase_projectiveCutOfPhase
     t * projectiveCutOfPhase t x / Real.pi = x := by
   unfold projectiveCutOfPhase
   field_simp [ne_of_gt ht, Real.pi_ne_zero]
-  ring
 
 /-- For the six-point terminal with n>=5, one of the canonical eleven
 sample phases yields an actual cut which is uncovered by every global cyclic

@@ -1,4 +1,5 @@
 import JSP000404Research.SixPointMergedRepeatedColour
+import JSP000404Research.CentreQuotientRayData
 import Mathlib.Combinatorics.SimpleGraph.Bipartite
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Tactic
