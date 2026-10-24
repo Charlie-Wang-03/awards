@@ -19,6 +19,10 @@ namespace JSP000404Research
 
 open BinaryEdgePartition
 
+-- The fully expanded eight-way subtype/angle case analysis is expensive to
+-- elaborate. This increases the compiler budget only, not proof strength.
+set_option maxHeartbeats 10000000
+
 theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
     {W : Type*} [Fintype W] [DecidableEq W]
     (hcard : Fintype.card W = 5)
@@ -38,10 +42,12 @@ theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
       Ne.symm hda, Ne.symm hac, Ne.symm hbd]
   by_contra hnone
   push_neg at hnone
-  have hb1Comp : bad₁ ∈ (Finset.univ \ S : Finset W) := by
-    simp [hnone.1]
-  have hb2Comp : bad₂ ∈ (Finset.univ \ S : Finset W) := by
-    simp [hnone.2]
+  have hb1NotS : bad₁ ∉ S := by simpa only [S] using hnone.1
+  have hb2NotS : bad₂ ∉ S := by simpa only [S] using hnone.2
+  have hb1Comp : bad₁ ∈ (Finset.univ \ S : Finset W) :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hb1NotS⟩
+  have hb2Comp : bad₂ ∈ (Finset.univ \ S : Finset W) :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hb2NotS⟩
   have hcompCard :
       (Finset.univ \ S : Finset W).card = 1 := by
     have hcardDiff :
@@ -50,7 +56,6 @@ theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
       rw [Finset.card_sdiff]
       simp
     rw [hcardDiff, Finset.card_univ, hcard, hScard]
-    norm_num
   have hEq :=
     Finset.card_eq_one.mp hcompCard
   obtain ⟨z, hz⟩ := hEq
@@ -109,7 +114,6 @@ theorem monochromatic_fourCycle_contains_bad_minimum
 /-- Main geometric incidence consequence: in the two-bad equality branch,
 the forced monochromatic C4 supplies at least one saturation-bad minimum with
 a strict sub-lambda cycle-neighbour angle. -/
-set_option maxHeartbeats 2000000 in
 theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
