@@ -57,7 +57,17 @@ theorem coreEnlargedCandidateFibre_card_eq_two_of_shared_of_card_le_two
       C exponent T word w).2 ⟨hwT,hwWord⟩
   have htwo :
       2 ≤ (coreEnlargedCandidateFibre C exponent T word).card :=
-    Finset.two_le_card.mpr ⟨v,hvF,w,hwF,hwv.symm⟩
+    by
+      have hsub : ({v, w} : Finset V) ⊆
+          coreEnlargedCandidateFibre C exponent T word := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact hvF
+        · exact hwF
+      have hcard : ({v, w} : Finset V).card = 2 := by
+        simp [hwv, Ne.symm hwv]
+      simpa [hcard] using Finset.card_le_card hsub
   have hup := hle word
   omega
 
@@ -199,7 +209,8 @@ theorem boundedMultiplicity_sum_shared_cards_eq_two_mul_doubleCovered
         exact hdouble
           ((mem_coreDoubleCoveredWords
             C exponent T word).2 hcard)
-      simp [hdouble,hnone]
+      simp [hdouble]
+      exact hnone
 
   calc
     (∑ v ∈ T,
@@ -216,11 +227,11 @@ theorem boundedMultiplicity_sum_shared_cards_eq_two_mul_doubleCovered
           apply Finset.sum_congr rfl
           intro v hvT
           symm
-          exact Finset.card_eq_sum_ite
+          exact (Finset.card_eq_sum_ite
             (Finset.subset_univ
               (sharedBlockWords
                 (enlargedProjectedCandidateBlock C exponent)
-                T v))
+                T v))).symm
     _ =
     ∑ word : Fin n → Bool,
       ∑ v ∈ T,
@@ -330,6 +341,9 @@ theorem boundedMultiplicity_doubleCovered_eq_totalSlack_add_deficiency
         (enlargedProjectedCandidateBlock C exponent)).card
         <
       ∑ v ∈ T, 2 ^ exponent v := hdef
+  have hsumEq :
+      (∑ v ∈ T, (fun x => 2 ^ exponent x) v) =
+        (∑ v ∈ T, 2 ^ exponent v) := by rfl
   unfold blockDeficiencyAmount
   omega
 
