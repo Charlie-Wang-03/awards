@@ -54,7 +54,13 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
     have hzxColour : χ z ≠ χ x := χ.valid hzx
     have hzyColour : χ z ≠ χ y := χ.valid hzy
     have hxyColour : χ x ≠ χ y := χ.valid hxyE
-    fin_cases χ z <;> fin_cases χ x <;> fin_cases χ y <;> simp_all
+    let cz : Fin 2 := χ z
+    let cx : Fin 2 := χ x
+    let cy : Fin 2 := χ y
+    change cz ≠ cx at hzxColour
+    change cz ≠ cy at hzyColour
+    change cx ≠ cy at hxyColour
+    fin_cases cz <;> fin_cases cx <;> fin_cases cy <;> simp_all
   rcases hxMem with rfl | rfl | rfl | rfl <;>
     rcases hyMem with rfl | rfl | rfl | rfl
   <;> try { exact False.elim (hxy rfl) }
@@ -68,14 +74,13 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
     | exact ⟨c,d,a,hzC,hcd,hda,hzA,hac,hzx,hcdE,hdaE,hzy.symm⟩
     | exact ⟨d,a,b,hzD,hda.symm,hab,hzB,hbd,hzx,hdaE.symm,habE,hzy.symm⟩
     | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB,hbd,hzx,hcdE.symm,hbcE.symm,hzy.symm⟩
-    | exact False.elim (hnotXY habE)
-    | exact False.elim (hnotXY habE.symm)
-    | exact False.elim (hnotXY hbcE)
-    | exact False.elim (hnotXY hbcE.symm)
-    | exact False.elim (hnotXY hcdE)
-    | exact False.elim (hnotXY hcdE.symm)
-    | exact False.elim (hnotXY hdaE)
-    | exact False.elim (hnotXY hdaE.symm)
+    | exfalso
+      apply hnotXY
+      assumption
+    | exfalso
+      apply hnotXY
+      symm
+      assumption
 
 /-- Five-vertex specialization: if z is active in a C4 colour but no C4 of
 that colour contains z, then z has degree exactly one. -/
@@ -107,7 +112,7 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
   have hdegPos : 1 ≤ G.degree z := by
     obtain ⟨u,hzu⟩ := hzSupport
     rw [← SimpleGraph.card_neighborFinset_eq_degree]
-    exact Finset.one_le_card.mpr ⟨u, SimpleGraph.mem_neighborFinset.mpr hzu⟩
+    exact Finset.one_le_card.mpr ⟨u, G.mem_neighborFinset _ |>.mpr hzu⟩
   have hcycleSet :
       ({a,b,c,d} : Finset W).card = 4 := by
     simp [hab,hbc,hcd,hda,hac,hbd,
@@ -129,7 +134,7 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
         Ne.symm hda,Ne.symm hac,Ne.symm hbd]
     have hSuniv : S = Finset.univ := by
       apply Finset.eq_univ_of_card
-      rw [hfive, Finset.card_univ, hcard]
+      simpa only [hfive] using hcard.symm
     have hxS : x ∈ S := by rw [hSuniv]; simp
     simp [S, hx.1, hx.2.1, hx.2.2.1, hx.2.2.2.1] at hxS
 
@@ -137,7 +142,7 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
   have hdeg2 : 2 ≤ G.degree z := by omega
   rw [← SimpleGraph.card_neighborFinset_eq_degree] at hdeg2
   obtain ⟨x,hxN,y,hyN,hxy⟩ :=
-    Finset.two_le_card.mp hdeg2
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset z).card)
   have hzx : G.Adj z x :=
     SimpleGraph.mem_neighborFinset.mp hxN
   have hzy : G.Adj z y :=
