@@ -1785,6 +1785,25 @@ theorem longCycle_exists_shared_overload_vertex
   omega
 
 
+/-- A true projected-loss centre has exactly the retained-active
+cardinality dictated by its one-unit free-exponent loss. This follows
+from the DEFINITION of projectedFree and the n-coordinate universe,
+without extra geometric or dyadic payment assumptions. -/
+theorem projectedLoss_retainedActive_card
+    {V : Type*} [LinearOrder V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent) :
+    (retainedActive C v).card = n - exponent v + 1 := by
+  have hcard : (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
+  have heq := (mem_projectedLossVertices C exponent v).1 hvLoss
+  dsimp [projectedFree] at heq
+  omega
+
+#print axioms projectedLoss_retainedActive_card
+
 /-- Every genuinely shared word belongs to its indexed source block. -/
 theorem sharedBlockWords_subset_block
     {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
