@@ -1,5 +1,6 @@
 import JSP000404Research.CutSupportThreeBadSmallAngle
 import JSP000404Research.SixPointSupportThreeShape
+import JSP000404Research.CyclicRealGapsNonneg
 import Mathlib.Tactic
 
 /-!
@@ -144,39 +145,6 @@ theorem adjacent_sub_mem_cyclicRealGapsAt
           f first (rest ++ u :: v :: post)
           (first :: rest) post u v rfl)
 
-/-- Cyclic real gaps of a sorted list in [0,width) are nonnegative. -/
-theorem cyclicRealGapsAt_nonneg_of_sorted
-    {width a : ℝ} {xs : List ℝ}
-    (ha0 : 0 ≤ a)
-    (hsorted : (a :: xs).Pairwise (· ≤ ·))
-    (hall : ∀ x ∈ a :: xs, x < width) :
-    ∀ g ∈ cyclicRealGapsAt width (a :: xs), 0 ≤ g := by
-  intro g hg
-  simp only [cyclicRealGapsAt, List.mem_append,
-    List.mem_singleton] at hg
-  rcases hg with hg | rfl
-  · induction xs generalizing a with
-    | nil =>
-        simp [successiveDiffsFrom] at hg
-    | cons b bs ih =>
-        have hp := List.pairwise_cons.mp hsorted
-        simp only [successiveDiffsFrom, List.mem_cons] at hg
-        rcases hg with rfl | hg
-        · exact sub_nonneg.mpr (hp.1 b (by simp))
-        · have hb0 : 0 ≤ b :=
-            ha0.trans (hp.1 b (by simp))
-          exact ih (a := b) hb0 hp.2
-            (by
-              intro x hx
-              exact hall x (by simp [hx])) hg
-  · have hlast :
-        xs.getLastD a < width :=
-      hall _ (List.getLastD_mem_cons)
-    have hafirst :
-        a ≤ xs.getLastD a :=
-      head_le_getLastD_of_pairwise a xs hsorted
-    linarith
-
 /-- A support-three saturation-bad six-point minimum contains two consecutive
 cut rays in the same old band whose genuine angle is at most delta*lambda. -/
 theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
@@ -307,7 +275,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     have hnd := R.nodup
     rw [hdec] at hnd
     have htailNoDup : (u :: u :: post).Nodup :=
-      (List.nodup_append.mp hnd).2
+      (List.nodup_append.mp hnd).2.1
     simp at htailNoDup
 
   have hcoordLe :

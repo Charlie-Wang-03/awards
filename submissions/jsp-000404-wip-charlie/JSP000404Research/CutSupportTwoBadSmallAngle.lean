@@ -1,6 +1,7 @@
 import JSP000404Research.CutSupportThreeBadSmallAngle
 import JSP000404Research.CutSaturatedSupportMismatch
 import JSP000404Research.SharpOuterAngles
+import JSP000404Research.CyclicRealGapsNonneg
 import Mathlib.Tactic
 
 /-!
@@ -292,10 +293,7 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
     have hmap :
         gs.map Nat.floor =
           linearCyclicGapQuotients t (a :: xs) := by
-      dsimp [gs]
-      simpa [cyclicRealGapsAt, cyclicGapsAt] using
-        (linearCyclicGapQuotients_eq_floor_cyclicGapsAt
-          t (a :: xs)).symm
+      simp [gs, cyclicRealGapsAt, linearCyclicGapQuotients]
     rw [hmap]
     simpa [CentreCutRayCycle.gapQuotients, hvalues] using h
 
@@ -307,10 +305,7 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
     have hmap :
         gs.map Nat.floor =
           linearCyclicGapQuotients t (a :: xs) := by
-      dsimp [gs]
-      simpa [cyclicRealGapsAt, cyclicGapsAt] using
-        (linearCyclicGapQuotients_eq_floor_cyclicGapsAt
-          t (a :: xs)).symm
+      simp [gs, cyclicRealGapsAt, linearCyclicGapQuotients]
     rw [hmap]
     simpa [CentreCutRayCycle.exponent,
       CentreCutRayCycle.gapQuotients, hvalues] using h
@@ -322,12 +317,20 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
     rw [hqExp, hqPos] at hid
     omega
 
+  have hOtherFive : Fintype.card (OtherVertex i) = 5 := by
+    change Fintype.card {v : V // v ≠ i} = 5
+    rw [Fintype.card_subtype_compl (fun v : V => v = i)]
+    simp [hcardV]
+  have hRaysFive : R.rays.length = 5 := by
+    have hc := List.toFinset_card_of_nodup R.nodup
+    have hcardSet : R.rays.toFinset.card = 5 := by
+      have hcComplete := congrArg Finset.card R.complete
+      simpa [hOtherFive] using hcComplete
+    omega
   have hvalsLen :
       (a :: xs).length = 5 := by
     rw [← hvalues]
-    simp [CentreCutRayCycle.normalizedValues,
-      centreRayList_length_eq_five_of_card_six
-        (C i) hcardV]
+    simpa [CentreCutRayCycle.normalizedValues] using hRaysFive
   have hgsLen : gs.length = 5 := by
     dsimp [gs]
     rw [cyclicRealGapsAt_length_cons, hvalsLen]
