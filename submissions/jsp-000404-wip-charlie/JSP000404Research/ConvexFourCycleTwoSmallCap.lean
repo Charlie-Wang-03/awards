@@ -85,4 +85,39 @@ theorem convex_four_cycle_no_two_adjacent_angles_lt_lam
 
 #print axioms convex_four_cycle_no_two_opposite_angles_lt_lam
 
+/-- Two strict-small cycle corners force a nonconvex or
+non-crossing geometric arrangement. This is an explicit disjunctive
+obstruction, not an assumption that a graph-theoretic C4 is convex. -/
+theorem two_small_cycle_corners_force_nonconvex_or_noncrossing
+    {V : Type*} {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam : ℝ} (hcap : AngleCap p lam)
+    {a b c d : V}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (hsmallA : EuclideanGeometry.angle (p b) (p a) (p d) < lam)
+    (hsmallSecond :
+      EuclideanGeometry.angle (p a) (p b) (p c) < lam ∨
+      EuclideanGeometry.angle (p b) (p c) (p d) < lam) :
+    p a ∈ convexHull ℝ ({p b, p c, p d} : Set Plane) ∨
+    p c ∈ convexHull ℝ ({p a, p b, p d} : Set Plane) ∨
+    ¬ (segment ℝ (p a) (p c) ∩
+        segment ℝ (p b) (p d)).Nonempty := by
+  by_cases ha : p a ∈ convexHull ℝ ({p b, p c, p d} : Set Plane)
+  · exact Or.inl ha
+  right
+  by_cases hc : p c ∈ convexHull ℝ ({p a, p b, p d} : Set Plane)
+  · exact Or.inl hc
+  right
+  intro hcross
+  rcases hsmallSecond with hsmallB | hsmallC
+  · exact convex_four_cycle_no_two_adjacent_angles_lt_lam
+      hp hcap hab hac had hbc hbd hcd
+      ha hc hcross hsmallA hsmallB
+  · exact convex_four_cycle_no_two_opposite_angles_lt_lam
+      hp hcap hab hac had hbc hbd hcd
+      ha hc hcross hsmallA hsmallC
+
+#print axioms two_small_cycle_corners_force_nonconvex_or_noncrossing
+
 end JSP000404Research
