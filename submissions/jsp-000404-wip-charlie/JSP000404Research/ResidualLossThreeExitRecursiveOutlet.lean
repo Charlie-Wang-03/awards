@@ -142,13 +142,13 @@ theorem secondLayerLoss_three_exit_hole_or_paid_or_disjoint_exact_loss_fibres
       · exact Or.inl ⟨c,hc,hcHole⟩
       · have haCovered :
             flipBoolWordAt word a ∈ coveredCompletionWords C := by
-          simpa using haHole
+          exact not_not.mp haHole
         have hbCovered :
             flipBoolWordAt word b ∈ coveredCompletionWords C := by
-          simpa using hbHole
+          exact not_not.mp hbHole
         have hcCovered :
             flipBoolWordAt word c ∈ coveredCompletionWords C := by
-          simpa using hcHole
+          exact not_not.mp hcHole
         have haNonempty :=
           (mem_coveredCompletionWords C
             (flipBoolWordAt word a)).1 haCovered
