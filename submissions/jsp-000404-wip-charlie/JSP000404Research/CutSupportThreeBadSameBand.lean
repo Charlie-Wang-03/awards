@@ -75,8 +75,7 @@ theorem exists_adjacent_map_eq_of_pairwise_of_not_nodup
                       exact ⟨z, hzbs, rfl⟩)
                   have hba :
                       f b ≤ f a := by
-                    rw [hza] at hbz
-                    exact hbz
+                    exact hbz.trans_eq hza
                   exact hab (le_antisymm habLe hba)
               · exact htailNodup
             have htailSorted : ((b :: bs).map f).Pairwise (· ≤ ·) :=
@@ -166,8 +165,10 @@ theorem cyclicRealGapsAt_nonneg_of_sorted
         · exact sub_nonneg.mpr (hp.1 b (by simp))
         · have hb0 : 0 ≤ b :=
             ha0.trans (hp.1 b (by simp))
-          exact ih b hb0 hp.2
-            (fun x hx => hall x (by simp [hx])) hg
+          exact ih (a := b) hb0 hp.2
+            (by
+              intro x hx
+              exact hall x (by simp [hx])) hg
   · have hlast :
         xs.getLastD a < width :=
       hall _ (List.getLastD_mem_cons a xs)
