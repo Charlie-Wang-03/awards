@@ -1690,3 +1690,9 @@ import JSP000404Research.SeparatedSupportTwoResidualBudget
 import JSP000404Research.SeparatedSupportTwoTrianglePropagation
 import JSP000404Research.SmallTriangleApexUniqueness
 import JSP000404Research.SmallPairHardBranchDistinctSupports
+
+-- Kernel-verified original-plane AngleCap geometry and its one-third endpoint corollary.
+-- These are genuine sharp six-centre obstructions, NOT global dyadic payment.
+import JSP000404Research.AngleCapNoncollinear
+import JSP000404Research.ZeroAngleMassStrictPos
+import JSP000404Research.SeparatedSupportTwoThirdStrict
