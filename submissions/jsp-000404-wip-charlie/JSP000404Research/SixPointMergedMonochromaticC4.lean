@@ -127,14 +127,12 @@ theorem sum_reducedUsedColours_degree_eq_four
     intro c hc
     rw [← SimpleGraph.card_neighborFinset_eq_degree,
         localColourGraph_neighborFinset]
-    rfl
 
   have hNcard : N.card = 4 := by
     dsimp [N]
     rw [Finset.card_erase_of_mem (Finset.mem_univ u)]
     rw [Finset.card_univ,
       card_otherVertex_eq_five_of_card_six hcard top]
-    norm_num
 
   calc
     (∑ c ∈ reducedUsedColours P top root,
@@ -176,7 +174,6 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
       _ = Fintype.card (OtherVertex top) * 4 := by simp
       _ = 20 := by
             rw [card_otherVertex_eq_five_of_card_six hcard top]
-            norm_num
 
   have htwice :
       2 * (∑ c ∈ U,
@@ -194,7 +191,7 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             (localColourGraph P top c).degree u := by
             apply Finset.sum_congr rfl
             intro c hc
-            rw [SimpleGraph.sum_degrees_eq_twice_card_edges]
+            rw [← SimpleGraph.sum_degrees_eq_twice_card_edges]
       _ =
         ∑ u : OtherVertex top,
           ∑ c ∈ U,
@@ -202,6 +199,7 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             rw [Finset.sum_comm]
       _ = 20 := hsumVertex
 
+  change (∑ c ∈ U, (localColourGraph P top c).edgeFinset.card) = 10
   omega
 
 theorem usedColour_active_below_eq_erase
@@ -250,7 +248,7 @@ theorem sum_reducedUsedColours_active_card_eq
     _ =
       ∑ u ∈ (Finset.univ : Finset (OtherVertex top)),
         (U.bipartiteBelow r u).card := by
-        exact Finset.sum_card_bipartiteAbove_eq_sum_card_bipartiteBelow
+        exact Finset.sum_card_bipartiteAbove_eq_sum_card_bipartiteBelow r
     _ =
       ∑ u ∈ (Finset.univ : Finset (OtherVertex top)),
         ((active P u.1).erase root).card := by
@@ -301,7 +299,6 @@ theorem sum_reduced_active_card_eq_twelve
         Finset.card_erase_of_mem hb₁Mem,
         Finset.card_univ,
         card_otherVertex_eq_five_of_card_six hcard top]
-    norm_num
 
   have hSsum :
       (∑ u ∈ S, ((active P u.1).erase root).card) = 6 := by
@@ -325,7 +322,7 @@ theorem sum_reduced_active_card_eq_twelve
                 exact h
               exact hOther u.1 hut hub₁ hub₂
       _ = S.card * 2 := by simp [Nat.mul_comm]
-      _ = 6 := by rw [hScard]; norm_num
+      _ = 6 := by rw [hScard]
 
   have hdecomp :
       (∑ u : OtherVertex top,
@@ -335,12 +332,15 @@ theorem sum_reduced_active_card_eq_twelve
       ((active P bad₂).erase root).card +
       ∑ u ∈ S, ((active P u.1).erase root).card := by
     dsimp [S, b₁, b₂]
-    rw [← Finset.sum_erase_add hb₁Mem]
-    rw [← Finset.sum_erase_add hb₂Mem]
+    rw [← Finset.sum_erase_add
+      (Finset.univ : Finset (OtherVertex top))
+      (fun u : OtherVertex top => ((active P u.1).erase root).card) hb₁Mem]
+    rw [← Finset.sum_erase_add
+      (Finset.univ.erase b₁ : Finset (OtherVertex top))
+      (fun u : OtherVertex top => ((active P u.1).erase root).card) hb₂Mem]
     omega
 
   rw [hdecomp, hBad₁, hBad₂, hSsum]
-  norm_num
 
 theorem reducedUsedColours_card_ge_three
     {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
@@ -440,7 +440,7 @@ theorem six_point_two_exception_has_monochromatic_fourCycle
     have hlt :=
       localColourGraph_edge_card_lt_active_of_no_fourCycle
         P top c hcard hcTop hcdata.2 (hnone root c hcdata.1)
-    omega
+    exact Nat.add_one_le_iff.mpr hlt
 
   have hsumLoss :
       (∑ c ∈ U,
