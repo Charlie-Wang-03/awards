@@ -46,6 +46,15 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
       z ≠ v ∧ u ≠ w ∧
       G.Adj z u ∧ G.Adj u v ∧
       G.Adj v w ∧ G.Adj w z := by
+  -- A bipartite colouring forbids an edge between two distinct
+  -- neighbours of z: it would create a monochromatic triangle.
+  have hnotXY : ¬ G.Adj x y := by
+    intro hxyE
+    obtain ⟨χ⟩ := hbi
+    have hzxColour : χ z ≠ χ x := χ.valid hzx
+    have hzyColour : χ z ≠ χ y := χ.valid hzy
+    have hxyColour : χ x ≠ χ y := χ.valid hxyE
+    fin_cases χ z <;> fin_cases χ x <;> fin_cases χ y <;> simp_all
   rcases hxMem with rfl | rfl | rfl | rfl <;>
     rcases hyMem with rfl | rfl | rfl | rfl
   <;> try { exact False.elim (hxy rfl) }
@@ -59,6 +68,14 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
     | exact ⟨c,d,a,hzC,hcd,hda,hzA,hac,hzx,hcdE,hdaE,hzy.symm⟩
     | exact ⟨d,a,b,hzD,hda.symm,hab,hzB,hbd,hzx,hdaE.symm,habE,hzy.symm⟩
     | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB,hbd,hzx,hcdE.symm,hbcE.symm,hzy.symm⟩
+    | exact False.elim (hnotXY habE)
+    | exact False.elim (hnotXY habE.symm)
+    | exact False.elim (hnotXY hbcE)
+    | exact False.elim (hnotXY hbcE.symm)
+    | exact False.elim (hnotXY hcdE)
+    | exact False.elim (hnotXY hcdE.symm)
+    | exact False.elim (hnotXY hdaE)
+    | exact False.elim (hnotXY hdaE.symm)
 
 /-- Five-vertex specialization: if z is active in a C4 colour but no C4 of
 that colour contains z, then z has degree exactly one. -/
