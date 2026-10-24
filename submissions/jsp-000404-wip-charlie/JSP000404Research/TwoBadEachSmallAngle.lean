@@ -30,9 +30,9 @@ open BinaryEdgePartition
 theorem exceptional_bad_has_nonTop_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -176,9 +176,9 @@ non-top strict sub-lambda angle witnesses. -/
 theorem two_exception_bad_minima_each_have_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn4 : 4 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
