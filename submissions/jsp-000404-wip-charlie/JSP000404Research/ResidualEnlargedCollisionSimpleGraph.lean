@@ -340,7 +340,8 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
   let G := enlargedCollisionGraph C exponent T
   obtain ⟨w, huw, huniq⟩ := hdeg
   refine ⟨w.1,w.2,?_,?_⟩
-  · exact (G.ne_of_adj huw).symm
+  · intro heq
+    exact (G.ne_of_adj huw).symm (Subtype.ext heq)
   · intro z hzT hzu hcross
     have huz :
         G.Adj u ⟨z,hzT⟩ := by
@@ -349,7 +350,7 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
         C exponent T u.2 hzT
         (by
           intro h
-          exact hzu (congrArg Subtype.val h).symm)
+          exact hzu (congrArg Subtype.val h))
         hcross
     have hsubEq : (⟨z,hzT⟩ : {x : V // x ∈ T}) = w :=
       huniq _ huz
@@ -734,7 +735,7 @@ theorem projectedLoss_incident_collision_with_nonloss_is_retained
   · simp [hlt]
     by_contra hnot
     have hres : IsResidual C r u := by
-      unfold IsResidual residualCoord
+      unfold IsResidual
       apply Fin.ext
       simp
       omega
@@ -746,7 +747,7 @@ theorem projectedLoss_incident_collision_with_nonloss_is_retained
     simp [hlt]
     by_contra hnot
     have hres : IsResidual C u r := by
-      unfold IsResidual residualCoord
+      unfold IsResidual
       apply Fin.ext
       simp
       omega
@@ -971,6 +972,7 @@ theorem enlargedCollisionGraph_triangle_or_three_lt_girth
       (SimpleGraph.is3Clique_iff).1 hs
     exact ⟨u,v,w,huv,huw,hvw⟩
   · right
+    change 3 < G.girth
     omega
 
 theorem minimal_enlargedCollisionGraph_leaf_outlets_or_triangle_or_long_cycle
@@ -1562,7 +1564,9 @@ theorem longCycle_sum_shared_cards_eq_two_mul_doubleCovered
         exact hdouble
           ((mem_coreDoubleCoveredWords
             C exponent T word).2 hcard)
-      simp [hdouble,hnone]
+      simpa only [hdouble, if_false] using (by
+        intro v hvT
+        exact hnone v hvT)
 
   calc
     (∑ v ∈ T,
@@ -1578,7 +1582,6 @@ theorem longCycle_sum_shared_cards_eq_two_mul_doubleCovered
         then 1 else 0 := by
           apply Finset.sum_congr rfl
           intro v hvT
-          symm
           exact Finset.card_eq_sum_ite
             (Finset.subset_univ
               (sharedBlockWords
@@ -1790,7 +1793,7 @@ cardinality dictated by its one-unit free-exponent loss. This follows
 from the DEFINITION of projectedFree and the n-coordinate universe,
 without extra geometric or dyadic payment assumptions. -/
 theorem projectedLoss_retainedActive_card
-    {V : Type*} [LinearOrder V] {n : ℕ}
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
     (exponent : V → ℕ)
     {v : V}
