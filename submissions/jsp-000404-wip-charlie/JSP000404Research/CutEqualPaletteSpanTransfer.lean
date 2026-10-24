@@ -46,9 +46,9 @@ theorem floor_head_le_floor_of_mem_sorted
     Nat.floor a ≤ Nat.floor x := by
   have hax :
       a ≤ x := by
-    rcases hx with rfl | hx
-    · rfl
-    · exact (List.pairwise_cons.mp hsorted).1 x hx
+    rcases (List.mem_cons.mp hx) with heq | htail
+    · rw [heq]
+    · exact (List.pairwise_cons.mp hsorted).1 x htail
   exact Nat.floor_mono hax
 
 theorem floor_of_mem_le_floor_last_sorted

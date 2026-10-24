@@ -225,7 +225,7 @@ theorem cutSaturationBadAt_ordinary_mismatch_shape
     induction xs generalizing a with
     | nil => rfl
     | cons b bs ih =>
-        simp [successiveDiffsFrom, successiveNatDiffsFrom, ih b]
+        simpa [successiveDiffsFrom, successiveNatDiffsFrom] using ih b
 
   have hmismatchOrd :
       zeroPositiveMismatchCount qOrd bOrd = 4 - s := by
@@ -385,9 +385,16 @@ theorem cutSaturationBadAt_ordinary_step_counts
     exact cyclicBandJumps_map_floor_cons_decompose n a xs
 
   have hRlen : R.rays.length = 5 := by
-    obtain ⟨k, hk⟩ := R.rotation
-    rw [hk, List.length_rotate,
-      centreRayList_length_eq_five_of_card_six (C i) hcardV]
+    letI : DecidableEq V := LinearOrder.toDecidableEq
+    have hOtherFive : Fintype.card (OtherVertex i) = 5 := by
+      change Fintype.card {v : V // v ≠ i} = 5
+      rw [Fintype.card_subtype_compl (fun v : V => v = i)]
+      simp [hcardV]
+    have hc := List.toFinset_card_of_nodup R.nodup
+    have hcComplete := congrArg Finset.card R.complete
+    have hcardSet : R.rays.toFinset.card = 5 := by
+      simpa [hcardV] using hcComplete
+    omega
   have hvalsLen : (R.normalizedValues t).length = 5 := by
     simp [CentreCutRayCycle.normalizedValues, hRlen]
   have hxsLen : xs.length = 4 := by

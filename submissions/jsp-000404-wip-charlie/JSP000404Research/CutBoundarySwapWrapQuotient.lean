@@ -109,7 +109,7 @@ theorem cutSaturationBadAt_wrap_quotient_eq_two_of_span_n_sub_one
   have hzMem :
       xs.getLastD a ∈ R.normalizedValues t := by
     rw [hvalues]
-    exact List.getLastD_mem_cons a xs
+    exact List.getLastD_mem_cons
   have ha0 :
       0 ≤ a :=
     (R.normalizedValues_mem_bounds
@@ -146,7 +146,7 @@ theorem cutSaturationBadAt_wrap_quotient_eq_two_of_span_n_sub_one
     have hlt :
         Nat.floor (xs.getLastD a) < n + 1 :=
       (Nat.floor_lt hz0).2
-        (hzt.trans htTopReal)
+        (by simpa only [Nat.cast_add, Nat.cast_one] using hzt.trans htTopReal)
     omega
   have hbandWrap :
       (n + 1 - Nat.floor (xs.getLastD a)) +
