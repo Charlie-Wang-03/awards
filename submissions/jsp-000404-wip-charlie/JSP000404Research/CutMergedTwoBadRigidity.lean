@@ -34,9 +34,9 @@ open BinaryEdgePartition
 theorem uncovered_cut_two_bad_minima_rigidity
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ i : V, CentreProjectiveCycle hp i) {n : ℕ}
     (hn : 4 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)

@@ -33,9 +33,9 @@ open BinaryEdgePartition
 theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+    (C : ∀ i : V, CentreProjectiveCycle hp i) {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -218,9 +218,9 @@ theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
 theorem cutSaturationBadAt_span_n_sub_one_support_two_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ i : V, CentreProjectiveCycle hp i) {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -255,9 +255,9 @@ theorem cutSaturationBadAt_span_n_sub_one_support_two_shape
 theorem cutSaturationBadAt_span_n_sub_one_support_three_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ i : V, CentreProjectiveCycle hp i) {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
