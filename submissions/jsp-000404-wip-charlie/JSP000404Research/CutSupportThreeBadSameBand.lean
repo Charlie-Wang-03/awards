@@ -75,7 +75,7 @@ theorem exists_adjacent_map_eq_of_pairwise_of_not_nodup
                       exact ⟨z, hzbs, rfl⟩)
                   have hba :
                       f b ≤ f a := by
-                    exact hbz.trans_eq hza
+                    simpa only [hza] using hbz
                   exact hab (le_antisymm habLe hba)
               · exact htailNodup
             have htailSorted : ((b :: bs).map f).Pairwise (· ≤ ·) :=
