@@ -108,6 +108,24 @@ theorem cyclicBandJumps_map_floor_cons_decompose
       [(n + 1 - Nat.floor (xs.getLastD a)) + Nat.floor a] := by
   simp [cyclicBandJumps, map_getLastD_eq]
 
+theorem successiveDiffsFrom_length_for_bad_shape
+    (a : ℝ) (xs : List ℝ) :
+    (successiveDiffsFrom a xs).length = xs.length := by
+  induction xs generalizing a with
+  | nil => rfl
+  | cons b bs ih =>
+      simp [successiveDiffsFrom,
+        ih b]
+
+theorem successiveNatDiffsFrom_length
+    (a : ℕ) (xs : List ℕ) :
+    (successiveNatDiffsFrom a xs).length = xs.length := by
+  induction xs generalizing a with
+  | nil => rfl
+  | cons b bs ih =>
+      simp [successiveNatDiffsFrom,
+        ih b]
+
 /-- At a saturation-bad exact n-3 centre, all mismatch positions are ordinary
 (non-wrap), their number is 4-s, and every one is a unit band jump. -/
 theorem cutSaturationBadAt_ordinary_mismatch_shape
@@ -221,11 +239,8 @@ theorem cutSaturationBadAt_ordinary_mismatch_shape
 
   have hlenOrd : qOrd.length = bOrd.length := by
     dsimp [qOrd, bOrd]
-    rw [List.length_map]
-    induction xs generalizing a with
-    | nil => rfl
-    | cons b bs ih =>
-        simpa [successiveDiffsFrom, successiveNatDiffsFrom] using ih b
+    simp [List.length_map, successiveDiffsFrom_length_for_bad_shape,
+      successiveNatDiffsFrom_length]
 
   have hmismatchOrd :
       zeroPositiveMismatchCount qOrd bOrd = 4 - s := by
@@ -245,24 +260,6 @@ theorem cutSaturationBadAt_ordinary_mismatch_shape
 
   exact ⟨R, a, xs, hvalues,
     hmismatchOrd, hunitOrd⟩
-
-theorem successiveDiffsFrom_length_for_bad_shape
-    (a : ℝ) (xs : List ℝ) :
-    (successiveDiffsFrom a xs).length = xs.length := by
-  induction xs generalizing a with
-  | nil => rfl
-  | cons b bs ih =>
-      simp [successiveDiffsFrom,
-        ih b]
-
-theorem successiveNatDiffsFrom_length
-    (a : ℕ) (xs : List ℕ) :
-    (successiveNatDiffsFrom a xs).length = xs.length := by
-  induction xs generalizing a with
-  | nil => rfl
-  | cons b bs ih =>
-      simp [successiveNatDiffsFrom,
-        ih b]
 
 /-- Complete ordinary-step count profile at a saturation-bad exact n-3
 six-point minimum.  The four ordinary positions split into:

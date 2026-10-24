@@ -191,7 +191,8 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             (localColourGraph P top c).degree u := by
             apply Finset.sum_congr rfl
             intro c hc
-            rw [← SimpleGraph.sum_degrees_eq_twice_card_edges]
+            exact (SimpleGraph.sum_degrees_eq_twice_card_edges
+              (G := localColourGraph P top c)).symm
       _ =
         ∑ u : OtherVertex top,
           ∑ c ∈ U,
@@ -331,7 +332,12 @@ theorem sum_reduced_active_card_eq_twelve
       ((active P bad₁).erase root).card +
       ((active P bad₂).erase root).card +
       ∑ u ∈ S, ((active P u.1).erase root).card := by
-    dsimp [S, b₁, b₂]
+    change (∑ u : OtherVertex top,
+      ((active P u.1).erase root).card) =
+      ((active P b₁.1).erase root).card +
+      ((active P b₂.1).erase root).card +
+      ∑ u ∈ (Finset.univ.erase b₁).erase b₂,
+        ((active P u.1).erase root).card
     rw [← Finset.sum_erase_add
       (Finset.univ : Finset (OtherVertex top))
       (fun u : OtherVertex top => ((active P u.1).erase root).card) hb₁Mem]
