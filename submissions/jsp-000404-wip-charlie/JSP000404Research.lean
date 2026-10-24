@@ -1705,3 +1705,8 @@ import JSP000404Research.SeparatedSupportTwoAtMostThird
 -- Kernel-verified: positive AngleCap forces strict (rather than weak)
 -- canonical projective gap positivity at every original centre.
 import JSP000404Research.AngleCapStrictProjectiveTheta
+
+-- Kernel checked under genuine crossing-diagonal convexity: no two
+-- distinct strict sub-lambda quadrilateral interior angles (opposite/adjacent).
+-- This does NOT assert graph-theoretic monochromatic C4 is convex.
+import JSP000404Research.ConvexFourCycleTwoSmallCap
