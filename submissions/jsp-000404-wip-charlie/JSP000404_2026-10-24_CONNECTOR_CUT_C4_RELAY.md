@@ -328,3 +328,14 @@ source classes under actual planar `AngleCap`; no such existence
 theorem is yet known. The sole global `sorry` at
 `PlanarLowerBranchProofAdmittedWIP.lean:900` remains untouched.
 No merge, additional axiom, new sorry, or solved/disproved claim.
+
+
+### Final verification: exact local one-hole eligibility (pending status superseded)
+
+- [CI 40119968385](https://github.com/Charlie-Wang-03/awards/actions/runs/40119968385) **SUCCESS**, 3,326 Lake jobs; `actual_loss_collision_square_one_hole_iff_eligible` kernel axioms are EXACTLY `[propext, Classical.choice, Quot.sound]` — NO `sorryAx`.
+- Given an actual earliest retained-edge loss-collision source pair `(v,u)`, chosen distinct source-flip coordinates `c,d` and original collision word `w`, the true exterior-hole count in the original 4-corner square is **EXACTLY ONE IFF**:
+  1. `d ∈ retainedActive C v` and `c ∈ retainedActive C u`;
+  2. the opposite double-flip corner `q` is not in ANY third-party retained completion cube;
+  3. `q` is not in ANY translated-loss slice.
+- Failure of any single condition gives EXACTLY ZERO locally payable exterior true-hole words. This is a genuine source-native and original-Boolean geometry/coverage criterion, not an abstract unrestricted matching.
+- This result closes the **LOCAL** collision-square 0/1 eligibility classification completely. It does NOT certify a distinct `q` for different collisions, nor address the other six original terminal source debt classes/covered blockers or surplus. The true all-centre injection/Hall expansion existence required by the one original `PlanarLowerBranchProofAdmittedWIP.lean:900` `sorry` remains open.
