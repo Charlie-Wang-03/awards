@@ -26,6 +26,7 @@ theorem listPositiveCount_eq_length_of_all_ne_zero
         intro x hx
         exact h x (by simp [hx])
       simp [listPositiveCount, hq, ih hrest]
+      omega
 
 theorem middle_zero_of_three_slots_and_two_positive
     (qFirst qLast : ℕ) (qmid : List ℕ)
@@ -89,8 +90,11 @@ theorem separated_support_two_six_centres_no_double_zero_at_third
     simp [hSix]
   have hRayFive : (Cfam i).rays.length = 5 := by
     have hc := List.toFinset_card_of_nodup (Cfam i).nodup
-    rw [(Cfam i).complete] at hc
-    simp only [Finset.card_univ] at hc
+    have hcardSet :
+        (Cfam i).rays.toFinset.card = 5 := by
+      have hcompleteCard :=
+        congrArg Finset.card (Cfam i).complete
+      simpa [hOtherFive] using hcompleteCard
     omega
   have hQuotFive : (quotientList t (Cfam i).gaps).length = 5 := by
     rw [quotientList_length, (Cfam i).gaps_length]
@@ -98,7 +102,8 @@ theorem separated_support_two_six_centres_no_double_zero_at_third
   have hRotFive : ((quotientList t (Cfam i).gaps).rotate k).length = 5 := by
     simpa using hQuotFive
   rw [hquot] at hRotFive
-  simp only [List.length_cons, List.length_append, List.length_singleton] at hRotFive
+  simp only [List.length_cons, List.length_append, List.length_singleton,
+    List.length_nil] at hRotFive
   have hmid3 : qmid.length = 3 := by omega
   have hmidPosCount :
       listPositiveCount (qFirst :: qmid ++ [qLast]) = 2 := by
