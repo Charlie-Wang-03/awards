@@ -33,3 +33,44 @@ This is a finite graph lemma, *not* a geometric six-source payment. Its initial 
 The live `AngleCap` argument needs a non-reusing charge of real translated-loss and terminal twin/mixed/soft/covered-blocker debts into TRUE uncovered Boolean words outside all translated slices and *genuinely unreserved* dyadic slack. Existing local cycle/triangle/C4 and exact matching lemmas have not established that global allocation. In particular, a finite graph colouring lemma does not provide any new true-hole credit.
 
 No custom axiom, new admitted proposition, first-complete-priority assertion, or upstream submission is intended by this branch.
+
+
+## Continuation: verified mathematical reductions, 2026-10-24
+
+GitHub branch is `research/jsp-000404-connector-compiler-repair-20261024`; draft PR is https://github.com/Charlie-Wang-03/awards/pull/6.
+
+### Kernel-certified results (full SUCCESS, no `sorryAx` in named theorems)
+
+| Workflow | Target | Status |
+| --- | --- | --- |
+| [40103687396](https://github.com/Charlie-Wang-03/awards/actions/runs/40103687396) | `FiveMinimaC4UniqueCanary` | SUCCESS: five minima, at most one C4-bearing edge-disjoint colour |
+| [40107208313](https://github.com/Charlie-Wang-03/awards/actions/runs/40107208313) | `CutBadFourConsecutiveStepShape` | SUCCESS, 9,115 Lake jobs: each positive ordinary step quotient equals one under the span-three assumptions |
+| [40107649425](https://github.com/Charlie-Wang-03/awards/actions/runs/40107649425) | `SixPointBadActiveC4`, `SixPointBadSharedC4Colour` | SUCCESS, 3,252 Lake jobs: both bad minima must activate the SAME C4-bearing colour under exact 3,3,2,2,2 reduced profile |
+| [40107649419](https://github.com/Charlie-Wang-03/awards/actions/runs/40107649419) | `CutSpanNMinusOneQuotientShape`, `CutMonochromaticC4Angles`, `TwoBadMonochromaticC4Incidence` | SUCCESS, 9,135 Lake jobs: one of two bad minima on a forced cycle has an AngleCap-based strict sub-lambda angle |
+| [40108090562](https://github.com/Charlie-Wang-03/awards/actions/runs/40108090562) | `SixPointBadSharedC4FromEquality` | SUCCESS, 3,253 Lake jobs: original six-point exact-equality assumptions imply a single C4 colour active at both bad minima |
+
+In the absence of independent geometric constraints, the stronger claim
+that BOTH bad minima lie ON the same four-cycle is false.
+The explicit 3-colour K5 witness and its on-cycle/off-cycle active profile
+are in `JSP000404_2026-10-24_ABSTRACT_C4_PROFILE_SATISFIABILITY.md`.
+
+### Latest conditional conjunction
+
+`SixPointCutSharedC4SmallAngle.lean` connects the exact six-point shared
+colour and the genuine uncovered-cut two-bad small-angle theorems under
+their common AngleCap assumptions. Its focused gate is
+https://github.com/Charlie-Wang-03/awards/actions/runs/40108455064 .
+Treat the result as **pending** until the gate returns success and
+`#print axioms` excludes `sorryAx`.
+
+### Unsolved original theorem
+
+The admitted theorem
+`ProjectionOrdered.planar_lower_branch_dyadic_capacity_admitted_wip`
+still has exactly one intended executable `sorry`. The remaining
+global proof obligation is the nonreused allocation of translated-loss
+blockers, duplicate canonical images, terminal twin/mixed/soft and
+other losses against **true external Boolean holes** and **unreserved**
+dyadic surplus under actual AngleCap geometry. Conditional accounting
+identities are not a payment proof, and covered words are not hole
+credits. Do not assert JSP-000404 solved on the basis of this research PR.
