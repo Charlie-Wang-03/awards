@@ -64,7 +64,7 @@ theorem planarCentreExponent_le_n
         (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-    ∀ i, planarCentreExponent hp C i ≤ n := by
+    ∀ i, planarCentreExponent (t := t) hp C i ≤ n := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   intro i
   unfold planarCentreExponent
@@ -95,7 +95,7 @@ theorem planarStandardResidual_oneLayer_budget
         hp hcap hn hdelta0 hdelta1 ht hlam
     ∀ i,
       (active R i).card ≤
-        n - planarCentreExponent hp C i + 1 := by
+        n - planarCentreExponent (t := t) hp C i + 1 := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   dsimp [planarStandardResidualColoring,
     planarCentreExponent]
@@ -117,7 +117,7 @@ theorem planarCentreExponent_lt_n
         (reindexedPoint_injective hp) i) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
-    ∀ i, planarCentreExponent hp C i < n := by
+    ∀ i, planarCentreExponent (t := t) hp C i < n := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   intro i
   unfold planarCentreExponent
@@ -149,13 +149,13 @@ theorem planar_topLoss_word_four_exit_outlet
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       v ∈ projectedLossVertices R exponent)
     (hvTop :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
 
-      planarCentreExponent hp C v = n - 1)
+      planarCentreExponent (t := t) hp C v = n - 1)
     {word : Fin n → Bool}
     (hword :
       letI : LinearOrder (ProjectionOrdered V) :=
@@ -174,7 +174,7 @@ theorem planar_topLoss_word_four_exit_outlet
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
         ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ e : Fin n,
         e ∈ retainedActive R v ∧
@@ -203,7 +203,7 @@ theorem planar_topLoss_word_four_exit_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hvLoss' :
       v ∈ projectedLossVertices R exponent := by
     simpa [R,exponent,hn1,hdelta1] using hvLoss
@@ -281,13 +281,13 @@ theorem planar_topLoss_word_layered_outlet
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       v ∈ projectedLossVertices R exponent)
     (hvTop :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
 
-      planarCentreExponent hp C v = n - 1)
+      planarCentreExponent (t := t) hp C v = n - 1)
     {word : Fin n → Bool}
     (hword :
       letI : LinearOrder (ProjectionOrdered V) :=
@@ -306,7 +306,7 @@ theorem planar_topLoss_word_layered_outlet
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
         ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ e : Fin n,
         e ∈ retainedActive R v ∧
@@ -341,7 +341,7 @@ theorem planar_topLoss_word_layered_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hfour :=
     planar_topLoss_word_four_exit_outlet
       hp hcap hcard hn hdelta0 hdeltaHalf
@@ -353,11 +353,11 @@ theorem planar_topLoss_word_layered_outlet
   · exact Or.inr (Or.inr (Or.inl hexact))
   · obtain ⟨w,hwLoss,hwLower⟩ := hlower
     have hwLt :
-        planarCentreExponent hp C w < n :=
+        planarCentreExponent (t := t) hp C w < n :=
       planarCentreExponent_lt_n
         hp hn1 hdelta0 hdelta1 ht C w
     rcases lowerLoss_secondLayer_or_deep
-        R (planarCentreExponent hp C)
+        R (planarCentreExponent (t := t) hp C)
         hwLoss hwLt hwLower
       with hsecond | hdeep
     · exact Or.inr (Or.inr (Or.inr
@@ -383,13 +383,13 @@ theorem planar_topLoss_secondLayer_companion_card_le_two
     (hS :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
- planarCentreExponent hp C s = n - 1) :
+ planarCentreExponent (t := t) hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     ((Finset.univ : Finset (ProjectionOrdered V)).filter
       (fun i =>
         i ≠ s ∧
-        planarCentreExponent hp C i = n - 2)).card ≤ 2 := by
+        planarCentreExponent (t := t) hp C i = n - 2)).card ≤ 2 := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   have hcapRe :
       AngleCap (reindexedPoint p) lam :=
@@ -425,7 +425,7 @@ noncomputable def planarTopSecondLayerLossVertices
       hp hcap (by omega : 1 ≤ n)
       hdelta0 (by linarith : delta < 1)
       ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   exact (Finset.univ : Finset (ProjectionOrdered V)).filter
     (fun i =>
       i ≠ s ∧
@@ -450,7 +450,7 @@ theorem planarTopSecondLayerLossVertices_card_le_two
     (hS :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
- planarCentreExponent hp C s = n - 1) :
+ planarCentreExponent (t := t) hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     (planarTopSecondLayerLossVertices
@@ -464,7 +464,7 @@ theorem planarTopSecondLayerLossVertices_card_le_two
     (Finset.univ : Finset (ProjectionOrdered V)).filter
       (fun i =>
         i ≠ s ∧
-        planarCentreExponent hp C i = n - 2)
+        planarCentreExponent (t := t) hp C i = n - 2)
   have hsub : S ⊆ A := by
     intro i hi
     simp only [S,planarTopSecondLayerLossVertices,
@@ -503,13 +503,13 @@ theorem planar_secondLayerLoss_completion_card
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       w ∈ projectedLossVertices R exponent)
     (hwSecond :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
 
-      planarCentreExponent hp C w = n - 2) :
+      planarCentreExponent (t := t) hp C w = n - 2) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let R :=
@@ -524,7 +524,7 @@ theorem planar_secondLayerLoss_completion_card
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hwLoss' :
       w ∈ projectedLossVertices R exponent := by
     simpa [R,exponent,hn1,hdelta1] using hwLoss
@@ -565,12 +565,12 @@ theorem planar_top_secondLayerLoss_total_cube_le_top_cube
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       s ∈ projectedLossVertices R exponent)
     (hS :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
- planarCentreExponent hp C s = n - 1) :
+ planarCentreExponent (t := t) hp C s = n - 1) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let R :=
@@ -591,7 +591,7 @@ theorem planar_top_secondLayerLoss_total_cube_le_top_cube
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   let S :=
     planarTopSecondLayerLossVertices
       hp hcap hn hdelta0 hdeltaHalf ht hlam C s
@@ -663,12 +663,12 @@ theorem planar_top_secondLayerLoss_child_rank_lt
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       s ∈ projectedLossVertices R exponent)
     (hS :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
- planarCentreExponent hp C s = n - 1)
+ planarCentreExponent (t := t) hp C s = n - 1)
     (hwLoss :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -678,12 +678,12 @@ theorem planar_top_secondLayerLoss_child_rank_lt
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       w ∈ projectedLossVertices R exponent)
     (hW :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
- planarCentreExponent hp C w = n - 2) :
+ planarCentreExponent (t := t) hp C w = n - 2) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
     let R :=
@@ -693,18 +693,18 @@ theorem planar_top_secondLayerLoss_child_rank_lt
         ht hlam
     lossLayerHardStateRank n
         (retainedCompletionWords R w).card
-        (planarCentreExponent hp C w)
+        (planarCentreExponent (t := t) hp C w)
       <
     lossLayerHardStateRank n
         (retainedCompletionWords R s).card
-        (planarCentreExponent hp C s) := by
+        (planarCentreExponent (t := t) hp C s) := by
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   let hn1 : 1 ≤ n := by omega
   let hdelta1 : delta < 1 := by linarith
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hsLoss' :
       s ∈ projectedLossVertices R exponent := by
     simpa [R,exponent,hn1,hdelta1] using hsLoss
@@ -734,8 +734,8 @@ theorem planar_top_secondLayerLoss_child_rank_lt
     (n := n)
     (payload := (retainedCompletionWords R s).card)
     (payload' := (retainedCompletionWords R w).card)
-    (exponent := planarCentreExponent hp C s)
-    (exponent' := planarCentreExponent hp C w)
+    (exponent := planarCentreExponent (t := t) hp C s)
+    (exponent' := planarCentreExponent (t := t) hp C w)
     (by rw [hS]; omega)
     (by rw [hW]; omega)
     hpayload
@@ -762,7 +762,7 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
       let R :=
         planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       (saturatedOverlapWords R exponent).card +
           (lossCompletionWords R exponent).card
         ≤
@@ -775,7 +775,7 @@ theorem planar_centre_capacity_of_hard_words_fit_holes
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexp :
       ∀ i, exponent i ≤ n :=
     planarCentreExponent_le_n
