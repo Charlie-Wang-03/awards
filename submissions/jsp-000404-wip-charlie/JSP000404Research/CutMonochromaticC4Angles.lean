@@ -28,9 +28,9 @@ open BinaryEdgePartition
 theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ v : V, CentreProjectiveCycle hp v) {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -120,9 +120,9 @@ sub-lambda angle between its two cycle neighbours. -/
 theorem saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ v : V, CentreProjectiveCycle hp v) {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)

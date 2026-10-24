@@ -109,9 +109,9 @@ a strict sub-lambda cycle-neighbour angle. -/
 theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
-    (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
+    (C : ∀ v : V, CentreProjectiveCycle hp v) {n : ℕ}
     (hn4 : 4 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
