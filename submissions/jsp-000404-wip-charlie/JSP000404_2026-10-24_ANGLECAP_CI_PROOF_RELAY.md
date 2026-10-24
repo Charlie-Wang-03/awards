@@ -46,3 +46,11 @@ The original-plane theorems above are imported into `JSP000404Research.lean` at 
 - **Exact scope:** The obstruction requires a sharp top exponent n-1, a different centre exponent n-3 of positive support 2, n>=5, injective original-plane geometry, and actual AngleCap with lambda=pi/t. This excludes both top-adjacent quotient endpoints being zero in the specified range. It says nothing unconditional about all other hard carriers or the genuinely non-reusing global six-source payment.
 - **Global frontier unchanged:** one intentionally admitted `sorry` inside `PlanarLowerBranchProofAdmittedWIP.lean`. No reduction in its executable `sorry` count is claimed and no extra axiom/false Boolean-hole credit is inserted.
 
+
+
+## 2026-10-24 continued — actual projective gaps are strictly positive
+
+- `AngleCapStrictProjectiveTheta.lean` proves `rayThetaAt_injective_of_AngleCap`, `centreProjectiveCycle_angles_nodup_of_AngleCap`, and `centreProjectiveCycle_gaps_pos_of_AngleCap`. Positive genuine `AngleCap` plus injective original planar points exclude coincident or antipodal projective rays; with sorted/nonduplicated angle lists and a strict wrap bound, **EVERY normalized cyclic projective gap is strictly positive**.
+- Kernel: [Focused Strict Projective Theta CI #40093517326](https://github.com/Charlie-Wang-03/awards/actions/runs/40093517326) PASS, **3212 Lake jobs**, three printed axiom sets restricted to `propext`, `Classical.choice`, `Quot.sound`. No `sorryAx`.
+- This is a reusable geometric strengthening of `CentreProjectiveCycle.gaps_nonneg`, not a proof that all Sendov gap quotients are positive. The floor of a strictly positive normalized gap may still be zero. Consequently **no Boolean true-hole resource, NET duplicate debt or unreserved surplus is newly paid** by this result.
+- The one global `sorry` in `PlanarLowerBranchProofAdmittedWIP.lean` remains the sole executable admitted payment. No claim of a complete JSP-000404 proof/disproof.

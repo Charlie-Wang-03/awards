@@ -1701,3 +1701,7 @@ import JSP000404Research.SeparatedSupportTwoThirdStrict
 -- at >= 6 original centres for every 0 <= delta <= 1/3. Not global NET payment.
 import JSP000404Research.SeparatedSupportTwoSixPlusStrict
 import JSP000404Research.SeparatedSupportTwoAtMostThird
+
+-- Kernel-verified: positive AngleCap forces strict (rather than weak)
+-- canonical projective gap positivity at every original centre.
+import JSP000404Research.AngleCapStrictProjectiveTheta
