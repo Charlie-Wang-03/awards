@@ -66,6 +66,8 @@ theorem bipartite_edge_card_le_active_card_of_active_card_le_four
   have hprod :
       G.edgeFinset.card ≤ L.card * R.card := by
     rw [hdeg] at hdegBound
+    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] at hdegBound ⊢
     simpa [Nat.mul_comm] using hdegBound
   by_cases hL0 : L.card = 0
   · have hedges0 : G.edgeFinset.card = 0 := by
@@ -278,10 +280,15 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
     calc
       (∑ c ∈ U, (if c ∈ active P bad then 1 else 0))
           = (U.filter (fun c => c ∈ active P bad)).card := by
-              simp only [Finset.sum_ite]
-              congr 1
-              ext c
-              simp
+              have hfilter :
+                  U ∩ active P bad =
+                    U.filter (fun c => c ∈ active P bad) := by
+                ext c
+                simp
+              calc
+                _ = (U ∩ active P bad).card := by simp
+                _ = (U.filter (fun c => c ∈ active P bad)).card := by
+                  rw [hfilter]
       _ = ((active P bad).erase root).card := by rw [hsetEq]
       _ = 3 := hBadCard
 
