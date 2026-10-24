@@ -73,7 +73,7 @@ theorem actual_external_hole_nonreuse_certificate_implies_payment
   have hcard :=
     Fintype.card_le_of_injective allocation hinjective
   simpa only [actualExternalPaymentDebts, actualExternalPaymentCredits,
-    Fintype.card_sum, Fintype.card_fin, Fintype.card_coe] using hcard
+    Fintype.card_sum, Fintype.card_fin, Fintype.card_coe, Nat.add_assoc] using hcard
 
 #print axioms actual_external_hole_nonreuse_certificate_implies_payment
 
