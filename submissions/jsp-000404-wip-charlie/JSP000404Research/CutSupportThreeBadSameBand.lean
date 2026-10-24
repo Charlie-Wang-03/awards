@@ -62,7 +62,7 @@ theorem exists_adjacent_map_eq_of_pairwise_of_not_nodup
                 simp only [List.mem_cons] at hz
                 rcases hz with hzb | hzbs
                 · subst z
-                  exact hab hza
+                  exact hab hza.symm
                 · have habLe :
                       f a ≤ f b :=
                     hp.1 (f b) (by simp)
@@ -75,7 +75,7 @@ theorem exists_adjacent_map_eq_of_pairwise_of_not_nodup
                       exact ⟨z, hzbs, rfl⟩)
                   have hba :
                       f b ≤ f a := by
-                    rw [← hza] at hbz
+                    rw [hza] at hbz
                     exact hbz
                   exact hab (le_antisymm habLe hba)
               · exact htailNodup
@@ -140,9 +140,10 @@ theorem adjacent_sub_mem_cyclicRealGapsAt
       simp only [List.cons_append, List.map_append,
         List.map_cons, cyclicRealGapsAt, List.mem_append]
       left
-      exact adjacent_sub_mem_successiveDiffsFrom
-        f first (rest ++ u :: v :: post)
-        (first :: rest) post u v rfl
+      simpa only [List.map_append, List.map_cons] using
+        (adjacent_sub_mem_successiveDiffsFrom
+          f first (rest ++ u :: v :: post)
+          (first :: rest) post u v rfl)
 
 /-- Cyclic real gaps of a sorted list in [0,width) are nonnegative. -/
 theorem cyclicRealGapsAt_nonneg_of_sorted
@@ -180,9 +181,9 @@ cut rays in the same old band whose genuine angle is at most delta*lambda. -/
 theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -456,9 +457,9 @@ pair can be the top ray. -/
 theorem cutSaturationBadAt_support_three_same_band_pair_avoids_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)

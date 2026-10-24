@@ -147,7 +147,7 @@ theorem successiveDiffsFrom_length_real
   induction xs generalizing a with
   | nil => rfl
   | cons b bs =>
-      simp [successiveDiffsFrom, successiveDiffsFrom_length_real b bs]
+      simp [successiveDiffsFrom, ih b]
 
 theorem cyclicRealGapsAt_length_cons
     (width a : ℝ) (xs : List ℝ) :
@@ -183,9 +183,9 @@ theorem support_two_zero_gap_mass_le_one_add_delta
 theorem cutSaturationBadAt_support_two_has_subhalf_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -425,9 +425,9 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
 theorem cutSaturationBadAt_support_two_subhalf_pair_avoids_sharp
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)

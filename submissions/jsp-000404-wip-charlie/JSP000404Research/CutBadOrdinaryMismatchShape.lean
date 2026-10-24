@@ -246,7 +246,7 @@ theorem successiveDiffsFrom_length_for_bad_shape
   | nil => rfl
   | cons b bs =>
       simp [successiveDiffsFrom,
-        successiveDiffsFrom_length_for_bad_shape b bs]
+        ih b]
 
 theorem successiveNatDiffsFrom_length
     (a : ℕ) (xs : List ℕ) :
@@ -255,7 +255,7 @@ theorem successiveNatDiffsFrom_length
   | nil => rfl
   | cons b bs =>
       simp [successiveNatDiffsFrom,
-        successiveNatDiffsFrom_length b bs]
+        ih b]
 
 /-- Complete ordinary-step count profile at a saturation-bad exact n-3
 six-point minimum.  The four ordinary positions split into:

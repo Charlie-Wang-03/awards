@@ -31,9 +31,9 @@ open BinaryEdgePartition
 theorem actual_angle_le_one_add_delta_lam_of_two_boundary_rays
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -128,9 +128,9 @@ theorem actual_angle_le_one_add_delta_lam_of_two_boundary_rays
 theorem actual_angle_le_one_add_delta_lam_of_equal_uncovered_merged_color
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
