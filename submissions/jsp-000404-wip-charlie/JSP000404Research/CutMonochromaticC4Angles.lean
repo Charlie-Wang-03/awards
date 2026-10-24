@@ -72,16 +72,17 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
     cutProjectiveBandPartition
       hp hcap htpos hlam hc0 hcpi n htop
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
-    simpa [P, wrapBit] using
-      cutBoundaryWrapBit_separates
-        hp hcap C hn htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi huncovered
+    intro u v huv hb
+    exact (cutBoundaryWrapBit_separates
+      hp hcap C hn htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi huncovered
+      (u := u) (v := v)) huv hb
   have hbad' :
       SaturationCollisionFailure
         P (fun v => centreExponent (C v) t) i := by
@@ -104,8 +105,8 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
       localIncidentColor_uncoveredCutMerged_eq_merge
         hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
         hc0 hcpi huncovered i y
-    rw [hx, hy]
-    simpa [P, wrapBit] using heq
+    rw [hx, hy] at heq
+    simpa only [localIncidentColor_mergeLastPartition] using heq
   have hold :
       localIncidentColor P i x =
         localIncidentColor P i y :=
@@ -176,9 +177,9 @@ theorem saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
     rw [habData.2, hadColour]
   exact
     actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
+      (i := a.1) (x := b.1) (y := d.1)
       hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi huncovered
-      a.1 b.1 d.1
       (by
         intro h
         exact hab (Subtype.ext h))

@@ -38,12 +38,13 @@ theorem successiveNatDiffsFrom_sum_eq_last_sub_first
       cases bs with
       | nil =>
           simp
-          omega
       | cons c cs =>
           simp only [List.getLastD_cons]
           have hbc :
-              b ≤ (c :: cs).getLastD b :=
-            head_le_getLastD_of_pairwise b (c :: cs) hp.2
+              b ≤ cs.getLastD c :=
+            (List.pairwise_cons.mp hp.2).1 _
+              (List.getLastD_mem_cons : cs.getLastD c ∈ c :: cs)
+          simp only [List.getLastD_cons] at *
           omega
 
 theorem listPositiveCount_le_sum_self
@@ -70,10 +71,10 @@ theorem listPositiveCount_erase_add_one_of_mem_pos
       simp only [List.mem_cons] at hb
       rcases hb with hxb | hb
       · subst x
-        simp [listPositiveCount, hb0]
+        simp [listPositiveCount, hb0] <;> omega
       · by_cases hxb : x = b
         · subst x
-          simp [listPositiveCount, hb0]
+          simp [listPositiveCount, hb0] <;> omega
         · by_cases hx0 : x = 0
           · subst x
             simp [listPositiveCount, hxb]
@@ -93,12 +94,12 @@ theorem list_sum_erase_add_of_mem
       simp only [List.mem_cons] at hb
       rcases hb with hxb | hb
       · subst x
-        simp
+        simp <;> omega
       · by_cases hxb : x = b
         · subst x
-          simp
+          simp <;> omega
         · simp [List.erase_cons, hxb]
-          rw [ih hb]
+          have hi := ih hb
           omega
 
 theorem positiveCount_three_sum_three_entries_le_one
@@ -167,7 +168,7 @@ theorem ordinary_step_shape_of_span_three
         q ≤ 1) := by
   have hfloorSorted :
       ((a :: xs).map Nat.floor).Pairwise (· ≤ ·) := by
-    exact hsorted.imp
+    exact hsorted.map Nat.floor
       (fun _ _ hxy => Nat.floor_mono hxy)
   have hnatSorted :
       (Nat.floor a :: xs.map Nat.floor).Pairwise (· ≤ ·) := by
