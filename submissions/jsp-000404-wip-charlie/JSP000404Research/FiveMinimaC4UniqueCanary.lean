@@ -4,7 +4,7 @@ import Mathlib.Tactic
 /-!
 # Five-vertex 4-cycles: strict uniqueness of an exceptional colour
 
-This isolated branch checks a stronger five-minima obstruction: two 4-cycles in
+This dedicated Lean target checks the stronger five-minima obstruction: two 4-cycles in
 the complete graph on five vertices necessarily share an unordered edge.
 It is proved by a finite, kernel-evaluated five-vertex verification and
 transported to an arbitrary vertex type of cardinality five.
