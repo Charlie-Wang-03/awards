@@ -390,10 +390,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
       ha0 hsorted hallT
   have hqMap :
       gs.map Nat.floor = qs := by
-    dsimp [gs, qs]
-    simpa [cyclicRealGapsAt, cyclicGapsAt] using
-      (linearCyclicGapQuotients_eq_floor_cyclicGapsAt
-        t (a :: xs)).symm
+    simp [gs, qs, cyclicRealGapsAt, linearCyclicGapQuotients]
   have hgapMem' :
       coord v - coord u ∈ gs := by
     simpa [gs, hvalues] using hgapMem
