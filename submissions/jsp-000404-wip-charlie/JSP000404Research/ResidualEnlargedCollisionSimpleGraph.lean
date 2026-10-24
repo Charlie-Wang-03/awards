@@ -117,7 +117,7 @@ theorem minimal_enlargedCollisionGraph_preconnected
     refine ⟨u.1,?_⟩
     apply Finset.mem_filter.mpr
     refine ⟨u.2,?_⟩
-    exact ⟨u.2, SimpleGraph.Reachable.refl⟩
+    exact ⟨u.2, by simpa using (SimpleGraph.Reachable.refl : G.Reachable u u)⟩
 
   have hvNotA : v.1 ∉ A := by
     intro hvA
@@ -132,7 +132,9 @@ theorem minimal_enlargedCollisionGraph_preconnected
     exact Finset.mem_sdiff.mpr ⟨v.2,hvNotA⟩
 
   have hdisjAB : Disjoint A B := by
-    exact Finset.disjoint_sdiff_right
+    apply Finset.disjoint_left.mpr
+    intro x hxA hxB
+    exact (Finset.mem_sdiff.mp hxB).2 hxA
 
   have hunion : A ∪ B = T := by
     dsimp [B]
@@ -162,7 +164,7 @@ theorem minimal_enlargedCollisionGraph_preconnected
 
     have hCrossXY :
         EnlargedBlocksCross C exponent x y := by
-      exact ⟨word,hxWord,hyWord⟩
+      exact ⟨word,Finset.mem_inter.mpr ⟨hxWord,hyWord⟩⟩
     have hAdj :
         G.Adj ⟨x,hxT⟩ ⟨y,hyT⟩ := by
       dsimp [G]
@@ -303,7 +305,7 @@ theorem minimal_enlargedCollisionGraph_two_leaves_of_acyclic
       C exponent hexpLt hexp honeLoss hdef
   have hcardSubtype :
       1 < Fintype.card {x : V // x ∈ T} := by
-    simpa using hcard
+    simpa using (show 1 < T.card by omega)
   letI : Nontrivial {x : V // x ∈ T} :=
     Fintype.one_lt_card_iff_nontrivial.mp hcardSubtype
   have htree : G.IsTree := by
@@ -594,7 +596,7 @@ theorem enlargedCollisionGraph_incident_intersections_disjoint_of_three_lt_girth
   have hrightParts := Finset.mem_inter.mp hright
   have huwCross :
       EnlargedBlocksCross C exponent u.1 w.1 := by
-    exact ⟨word,hleftParts.2,hrightParts.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨hleftParts.2,hrightParts.2⟩⟩
   have huwAdj :
       (enlargedCollisionGraph C exponent T).Adj u w := by
     exact enlargedCollisionGraph_adj_of_cross
@@ -646,9 +648,12 @@ theorem enlargedCollisionGraph_triangle_has_loss
   have hvwCross :=
     enlargedCollisionGraph_cross_of_adj
       C exponent T hvw
-  obtain ⟨wordUV,huUV,hvUV⟩ := huvCross
-  obtain ⟨wordUW,huUW,hwUW⟩ := huwCross
-  obtain ⟨wordVW,hvVW,hwVW⟩ := hvwCross
+  obtain ⟨wordUV,hwordUV⟩ := huvCross
+  obtain ⟨huUV,hvUV⟩ := Finset.mem_inter.mp hwordUV
+  obtain ⟨wordUW,hwordUW⟩ := huwCross
+  obtain ⟨huUW,hwUW⟩ := Finset.mem_inter.mp hwordUW
+  obtain ⟨wordVW,hwordVW⟩ := hvwCross
+  obtain ⟨hvVW,hwVW⟩ := Finset.mem_inter.mp hwordVW
 
   rw [enlargedProjectedCandidateBlock_nonloss
         C exponent huNonloss] at huUV huUW
@@ -795,7 +800,8 @@ theorem oneLoss_twoNonloss_triangle_colour_shape
     apply (enlargedCollisionGraph C exponent T).ne_of_adj hrv
     apply Subtype.ext
     exact h
-  obtain ⟨wordUV,huWord,hvWord⟩ := huvCross
+  obtain ⟨wordUV,hwordUV⟩ := huvCross
+  obtain ⟨huWord,hvWord⟩ := Finset.mem_inter.mp hwordUV
   rw [enlargedProjectedCandidateBlock_nonloss
         C exponent huNonloss] at huWord
   rw [enlargedProjectedCandidateBlock_nonloss
@@ -1089,17 +1095,17 @@ theorem coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
       (enlargedCollisionGraph C exponent T).Adj U Vv := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T huData.1 hvData.1 huv
-    exact ⟨word,huData.2,hvData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨huData.2,hvData.2⟩⟩
   have hVW :
       (enlargedCollisionGraph C exponent T).Adj Vv W := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T hvData.1 hwData.1 hvw
-    exact ⟨word,hvData.2,hwData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨hvData.2,hwData.2⟩⟩
   have hUW :
       (enlargedCollisionGraph C exponent T).Adj U W := by
     apply enlargedCollisionGraph_adj_of_cross
       C exponent T huData.1 hwData.1 huw
-    exact ⟨word,huData.2,hwData.2⟩
+    exact ⟨word,Finset.mem_inter.mpr ⟨huData.2,hwData.2⟩⟩
 
   exact
     (simpleGraph_no_triangle_of_three_lt_girth
