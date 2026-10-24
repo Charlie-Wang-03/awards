@@ -1,4 +1,5 @@
 import JSP000404Research.CutMergedRepeatedSmallAngle
+import JSP000404Research.MergeLastPalettePullback
 import Mathlib.Tactic
 
 /-!
@@ -23,9 +24,9 @@ open BinaryEdgePartition
 theorem equal_uncovered_merged_incident_colors_old_fibre
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
