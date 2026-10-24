@@ -196,11 +196,10 @@ noncomputable def uncoveredCutMergedPartition
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
     intro u v huv hb
-    have hsep :=
-      cutBoundaryWrapBit_separates
-        hp hcap C hn htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi huncovered
-    exact hsep huv hb
+    exact (cutBoundaryWrapBit_separates
+      hp hcap C hn htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi huncovered
+      (u := u) (v := v)) huv hb
   exact mergeLastPartition hn P wrapBit hwrap
 
 /-- Safe centres meet the exact n-colour local deficit after the uncovered
@@ -253,11 +252,10 @@ theorem uncoveredCutMergedPartition_active_le_of_not_bad
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
     intro u v huv hb
-    have hsep :=
-      cutBoundaryWrapBit_separates
-        hp hcap C hn htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi huncovered
-    exact hsep huv hb
+    exact (cutBoundaryWrapBit_separates
+      hp hcap C hn htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi huncovered
+      (u := u) (v := v)) huv hb
   have hold :
       ∀ i, (active P i).card ≤
         (n + 1) - exponent i := by
@@ -329,11 +327,10 @@ theorem uncoveredCutMergedPartition_active_le_one_extra
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
     intro u v huv hb
-    have hsep :=
-      cutBoundaryWrapBit_separates
-        hp hcap C hn htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi huncovered
-    exact hsep huv hb
+    exact (cutBoundaryWrapBit_separates
+      hp hcap C hn htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi huncovered
+      (u := u) (v := v)) huv hb
   have hold :
       ∀ i, (active P i).card ≤
         (n + 1) - exponent i := by
