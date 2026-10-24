@@ -179,3 +179,38 @@ This overrides older "pending" statements above for the same runs:
 For the latter three runs, exactly `[propext, Classical.choice, Quot.sound]` was printed in `#print axioms`. The prior proven [40111507155](https://github.com/Charlie-Wang-03/awards/actions/runs/40111507155) independently proves shared C4 plus two bad angles under active-card bounds.
 
 **REMAINING mathematical bottleneck**: original global all-cardinality nonreusing six-source accounting into TRUE external Boolean holes and NET unreserved dyadic surplus. The sole admitted main theorem is not a complete proof, and no full-disproof is established. Do not conflate a SUCCESS root build with proof closure.
+
+
+## 2026-10-25 — Global true-hole nonreuse reformulation / Lean handoff
+
+This continuation targets the EXACT remaining source-based frontier
+from `PlanarLowerBranchProofAdmittedWIP.lean:~476–900`:
+
+```
+terminalTwinOtherFiveDebt(B,k)
++ card(actual retained-edge covered blocker union)
++ translatedLossDuplicateDebt(B,k,choice)
+≤ card(TRUE holes outside all translated-loss slices)
++ terminalTwinAvailableSurplus(B,k)
+```
+
+The main theorem has exactly ONE admitted proof and remains open.
+
+### Genuine new kernel-verified facts
+
+- [CI 40114532776](https://github.com/Charlie-Wang-03/awards/actions/runs/40114532776) **SUCCESS**, 3,419 Lake jobs, ordinary axioms `[propext, Classical.choice, Quot.sound]`, no `sorryAx`: `ActualExternalHoleNonreuseCertificate.lean` constructs an **explicit source-tagged debt / genuine-credit type**, and proves a single *injective* matching into exterior TRUE holes or the pre-deducted surplus is sufficient for the exact outstanding numeric inequality.
+- [CI 40114532801](https://github.com/Charlie-Wang-03/awards/actions/runs/40114532801) **SUCCESS**, 3,420 Lake jobs, standard 3 axioms, no `sorryAx`: `ActualExternalHoleSeparatedSourcePayment.lean` proves that separate source maps pay the total only if the individual maps are injective AND all three pairs of image classes are disjoint. This rules out cross-source double spending.
+- [CI 40114739960](https://github.com/Charlie-Wang-03/awards/actions/runs/40114739960) **SUCCESS**, 3,318 Lake jobs, standard 3 axioms, no `sorryAx`: `ActualExternalHoleCoveredBlockerSeparation.lean` establishes ACTUAL covered blocker union is SUBSET of coveredCompletionWords and strictly DISJOINT from outside-translated TRUE Boolean holes. An already covered blocker word is categorically NOT itself a valid hole payment.
+
+### Deeper nonreuse interfaces, pending final kernel verdicts
+
+- `ActualEightSourceNonreuseCertificate.lean`: the SIX terminal categories remain individually source-tagged (actual soft words, forward/reverse hard words, twin dyadic mass, ascending mixed, descending mixed), as do actual covered blocker WORDS and duplicate mass: EIGHT debt classes to TWO genuine resources. [CI 40114872463](https://github.com/Charlie-Wang-03/awards/actions/runs/40114872463).
+- `PlanarCapacityOfGlobalTrueHoleNonreuseInjection.lean`: conditional sufficient bridge from the three-tag injection to the ENTIRE original planar dyadic-capacity conclusion. [CI 40115000977](https://github.com/Charlie-Wang-03/awards/actions/runs/40115000977). Corrected Lean namespace `open DirectionData` after initial failure.
+- `PlanarCapacityOfEightSourceNonreuseMatching.lean`: same all-cardinality planar capacity bridge from the fully tagged eight-class injection. [CI 40115006117](https://github.com/Charlie-Wang-03/awards/actions/runs/40115006117).
+- `ActualEightSourceHallPaymentCriterion.lean`: finite Hall's marriage theorem converts actual-source eligible-credit NEIGHBOURHOOD EXPANSION of every subset of the eight-class debt domain to one global nonreusing allocation. [CI 40115194428](https://github.com/Charlie-Wang-03/awards/actions/runs/40115194428). The formal Hall conclusion is CONDITIONAL, not a geometric proof that expansion holds.
+
+### Essential mathematical boundary
+
+These theorems clarify the REAL remaining geometry and rule out several bookkeeping shortcuts. Their antecedent injection / eligible Hall expansion is NOT proved from AngleCap. A purely numerical injection between abstract cardinalities is a certificate interface, NOT the missing geometrically forced construction. The named Boolean-hole credit subtype is defined as original globally uncovered words MINUS ALL translated-loss slices; the surplus credit index has the existing exact already-pre-reserved deduction. In particular NO covered soft word, blocker word or canonical NET shadow can be silently promoted to a TRUE hole.
+
+No axiom, new `sorry`, changed theorem assumption, accepted prize proof, or upstream submission. Maintain Draft PR #6.
