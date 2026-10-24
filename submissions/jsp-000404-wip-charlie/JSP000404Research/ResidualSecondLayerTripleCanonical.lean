@@ -110,7 +110,7 @@ theorem secondLayer_translated_word_blocker_or_closed
         · exact hc
       have hcard4 :
           ({a,b,d,c} : Finset (Fin n)).card = 4 := by
-        simp [hab,had,hbd,hnot.1,hnot.2.1,hnot.2.2]
+        simp [hab,had,hbd,hnot.1,hnot.2.1,hnot.2.2,eq_comm]
       have hfour :
           4 ≤ (retainedActive C v).card := by
         rw [← hcard4]
@@ -483,8 +483,9 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
     have hsub :
         retainedActive C s ⊆ {cx,cy} := by
       intro e he
-      have heq := hnone e he
-      simp [heq]
+      by_cases hecx : e = cx
+      · simp [hecx]
+      · simp [heq hecx]
     have hle := Finset.card_le_card hsub
     simp [hcard,hcxy] at hle
   obtain ⟨e,he,hecx,hecy⟩ := hexists
@@ -502,7 +503,7 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
     · exact hd.1
   have hcard4 :
       ({cx,cy,e,d} : Finset (Fin n)).card = 4 := by
-    simp [hcxy,hecx,hecy,hd.2.1,hd.2.2,hde]
+    simp [hcxy,hecx,hecy,hd.2.1,hd.2.2,hde,eq_comm]
   have hfour : 4 ≤ (retainedActive C s).card := by
     rw [← hcard4]
     exact Finset.card_le_card hsub
@@ -604,7 +605,7 @@ theorem QTT_unique_third_exit_fresh_blocker_or_closed
   · exact Or.inl ⟨flipBoolWordAt word e,heHole⟩
   · have heCovered :
         flipBoolWordAt word e ∈ coveredCompletionWords C := by
-      simpa using heHole
+      exact not_not.mp heHole
     have heNonempty :=
       (mem_coveredCompletionWords C
         (flipBoolWordAt word e)).1 heCovered
@@ -852,17 +853,20 @@ theorem QTT_hard_branch_upgrades_to_QTTT
       · exact heS
     have hsetCard :
         ({cx,cy,e} : Finset (Fin n)).card = 3 := by
-      simp [hcxy,heCx,heCy]
+      simp [hcxy,heCx,heCy,eq_comm]
     have hsEq :
         retainedActive C s = {cx,cy,e} := by
-      apply Finset.eq_of_subset_of_card_le
-      · exact hsetSub
-      · simpa [hsCard,hsetCard]
+      have hreverse : ({cx,cy,e} : Finset (Fin n)) =
+          retainedActive C s := by
+        apply Finset.eq_of_subset_of_card_le
+        · exact hsetSub
+        · simpa [hsCard,hsetCard]
+      exact hreverse.symm
     exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
       ⟨e,z,hzS.symm,hzX.symm,hzY.symm,
         hzLoss,hzSecond,
         hknown.1,hknown.2,heS,
-        hcxy,heCx,heCy,hsEq,
+        hcxy,heCx.symm,heCy.symm,hsEq,
         hcx,hcy,hzCarrier.1,
         hsQ,hxT,hyT,hzCarrier.2⟩))))
 
@@ -1054,9 +1058,8 @@ theorem secondLayer_fin3_twoFlip_not_mem_enlarged
         flipBoolWordAt (flipBoolWordAt base a) b ≠ base := by
       intro h
       have hbEq := congrFun h b
-      rw [flipBoolWordAt_at] at hbEq
-      rw [flipBoolWordAt_off base hab] at hbEq
-      cases hw : base b <;> simp [hw] at hbEq
+      cases hw : base b <;>
+        simp [flipBoolWordAt,hab,hw,eq_comm] at hbEq
     exact hneq heq
   · unfold allActiveTranslatedWords at hT
     obtain ⟨d,hdActive,hdT⟩ := Finset.mem_biUnion.mp hT
@@ -1077,27 +1080,18 @@ theorem secondLayer_fin3_twoFlip_not_mem_enlarged
       by_cases hdb : d = b
       · exact Or.inr (Or.inl hdb)
       exact Or.inr (Or.inr ⟨hda,hdb⟩)
-    rcases hd with rfl | rfl | hdOther
-    · have hcomm :=
-        flipBoolWordAt_comm
-          (flipBoolWordAt base a) (c := b) (d := a) hab.symm
-      have heq' := heq
-      rw [hcomm, flipBoolWordAt_involutive] at heq'
-      have hneq := flipBoolWordAt_at_ne base b
-      exact hneq heq'
-    · rw [flipBoolWordAt_involutive] at heq
-      exact flipBoolWordAt_at_ne base a heq
-    · have hneq :
-          flipBoolWordAt
-              (flipBoolWordAt (flipBoolWordAt base a) b) d
-            ≠ base := by
-        intro h
-        have hdEq := congrFun h d
-        rw [flipBoolWordAt_at] at hdEq
-        rw [flipBoolWordAt_off _ hdOther.2.symm] at hdEq
-        rw [flipBoolWordAt_off base hdOther.1.symm] at hdEq
-        cases hw : base d <;> simp [hw] at hdEq
-      exact hneq heq
+    rcases hd with hda | hdb | hdOther
+    · subst d
+      have hbEq := congrFun heq b
+      cases hw : base b <;>
+        simp [flipBoolWordAt,hab,hw,eq_comm] at hbEq
+    · subst d
+      have haEq := congrFun heq a
+      cases hw : base a <;>
+        simp [flipBoolWordAt,hab,hw,eq_comm] at haEq
+    · have hdEq := congrFun heq d
+      cases hw : base d <;>
+        simp [flipBoolWordAt,hdOther.1,hdOther.2,hw,eq_comm] at hdEq
 
 /-- The antipode of a Fin-3 word is outside the n=3 second-layer enlarged
 block whose completion base is the word itself. -/
@@ -1275,7 +1269,7 @@ theorem QTTT_fin3_antipode_hole_or_fresh_blocker
   · exact Or.inl hhole
   · right
     have hcovered : anti ∈ coveredCompletionWords C := by
-      simpa using hhole
+      exact not_not.mp hhole
     obtain ⟨r,hrF⟩ :=
       (mem_coveredCompletionWords C anti).1 hcovered
     have hrQ :
@@ -1648,8 +1642,9 @@ theorem QTT_fin3_three_blocks_union_eq_univ_erase_antipode
     · obtain ⟨d,hd⟩ := hantiSingle
       obtain hdCase : d = cx ∨ d = cy ∨ d = cz :=
         three_distinct_fin3_exhaust hcxy hcxz hcyz (q := d)
-      rcases hdCase with rfl | rfl | rfl
-      · apply Finset.mem_union_right
+      rcases hdCase with hdX | hdY | hdZ
+      · subst d
+        apply Finset.mem_union_right
         apply secondLayer_fin3_base_or_single_mem_enlarged
           C exponent hyLoss hySecond hyBase
         right
@@ -1658,9 +1653,15 @@ theorem QTT_fin3_three_blocks_union_eq_univ_erase_antipode
         funext e
         obtain he : e = cx ∨ e = cy ∨ e = cz :=
           three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
-        rcases he with rfl | rfl | rfl <;>
-          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
-      · apply Finset.mem_union_left
+        rcases he with heX | heY | heZ
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+      · subst d
+        apply Finset.mem_union_left
         apply Finset.mem_union_right
         apply secondLayer_fin3_base_or_single_mem_enlarged
           C exponent hxLoss hxSecond hxBase
@@ -1670,9 +1671,15 @@ theorem QTT_fin3_three_blocks_union_eq_univ_erase_antipode
         funext e
         obtain he : e = cx ∨ e = cy ∨ e = cz :=
           three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
-        rcases he with rfl | rfl | rfl <;>
-          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
-      · apply Finset.mem_union_left
+        rcases he with heX | heY | heZ
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+      · subst d
+        apply Finset.mem_union_left
         apply Finset.mem_union_right
         apply secondLayer_fin3_base_or_single_mem_enlarged
           C exponent hxLoss hxSecond hxBase
@@ -1682,8 +1689,13 @@ theorem QTT_fin3_three_blocks_union_eq_univ_erase_antipode
         funext e
         obtain he : e = cx ∨ e = cy ∨ e = cz :=
           three_distinct_fin3_exhaust hcxy hcxz hcyz (q := e)
-        rcases he with rfl | rfl | rfl <;>
-          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz]
+        rcases he with heX | heY | heZ
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
+        · subst e
+          simp [anti,tripleFlipBoolWord,flipBoolWordAt,hcxy,hcxz,hcyz,eq_comm]
 
 /-- Cardinal form: the three original Q/T/T blocks cover exactly seven words. -/
 theorem QTT_fin3_three_blocks_union_card_eq_seven
