@@ -1,6 +1,7 @@
 import JSP000404Research.CutBoundarySwapWrapQuotient
 import JSP000404Research.CutSupportInvariant
 import JSP000404Research.CutBadOrdinaryMismatchShape
+import JSP000404Research.CutSupportOneBadPalette
 import Mathlib.Tactic
 
 /-!
@@ -125,7 +126,9 @@ theorem cut_wrap_two_support_two_unique_ordinary_eq_n_sub_three
   have hpos : listPositiveCount qOrd = 1 := by
     simpa [qOrd] using hshape.1
   have hsum : qOrd.sum = n - 3 := by
-    simpa [qOrd] using hshape.2
+    have heq : qOrd.sum = n - 5 + 2 := by
+      simpa [qOrd] using hshape.2
+    omega
   refine ⟨hpos, hsum, ?_⟩
   intro q hq hq0
   have hqsum :=
@@ -154,9 +157,14 @@ theorem cut_wrap_two_support_three_ordinary_shape
     let qOrd := (successiveDiffsFrom a xs).map Nat.floor
     listPositiveCount qOrd = 2 ∧
       qOrd.sum = n - 2 := by
-  simpa using
+  have hbase :=
     cut_wrap_two_ordinary_shape_of_deficit_three_support
       hp hn5 htpos C R hvalues hexp hsupport hwrap
+  refine ⟨?_, ?_⟩
+  · simpa [qOrd] using hbase.1
+  · have heq : qOrd.sum = n - 5 + 3 := by
+      simpa [qOrd] using hbase.2
+    omega
 
 #print axioms cut_wrap_two_ordinary_shape_of_deficit_three_support
 #print axioms cut_wrap_two_support_two_unique_ordinary_eq_n_sub_three
