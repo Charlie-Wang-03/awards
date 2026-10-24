@@ -1696,3 +1696,8 @@ import JSP000404Research.SmallPairHardBranchDistinctSupports
 import JSP000404Research.AngleCapNoncollinear
 import JSP000404Research.ZeroAngleMassStrictPos
 import JSP000404Research.SeparatedSupportTwoThirdStrict
+
+-- Verified: sharp-top support-two double-zero endpoint impossibility uniformly
+-- at >= 6 original centres for every 0 <= delta <= 1/3. Not global NET payment.
+import JSP000404Research.SeparatedSupportTwoSixPlusStrict
+import JSP000404Research.SeparatedSupportTwoAtMostThird

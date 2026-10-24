@@ -36,3 +36,13 @@ The original-plane theorems above are imported into `JSP000404Research.lean` at 
 - Audit the root umbrella `lake build JSP000404Research`, separately from focused builds; its WIP `sorryAx` remains expected and explicitly documented.
 - Re-run `scripts/jsp000404_sorry_audit.py --root JSP000404Research --allowed-wip JSP000404Research/PlanarLowerBranchProofAdmittedWIP.lean --wip-max-sorries 1` and inspect `#print axioms` of new results.
 - Prioritize genuinely unreserved global geometry/payment over additional cosmetic local counting lemmas.
+
+
+## 2026-10-24 continuation — certified endpoint range and compilation repair
+
+- **Five-module Lean repair is now kernel-verified**, not merely committed. Focused CI #40091160636 PASS, 9273 Lake jobs, no compilation errors: [run](https://github.com/Charlie-Wang-03/awards/actions/runs/40091160636). The modules are `FiveMinimaC4Extremal`, `CutSupportOneBadPalette`, `CutSupportTwoBadSmallAngle`, `CutSupportThreeBadSameBand`, and `ResidualSecondLayerTripleCanonical`.
+- **Arbitrary finite >=6 original centres, delta=1/3:** `separated_support_two_at_least_six_centres_no_double_zero_at_third` kernel PASS, focused CI #40092391597 (3555 Lake jobs). Its `#print axioms` contains only `propext`, `Classical.choice`, and `Quot.sound`: [run](https://github.com/Charlie-Wang-03/awards/actions/runs/40092391597).
+- **Entire interval 0 <= delta <= 1/3:** `separated_support_two_no_double_zero_of_delta_lt_third` for arbitrary finite centre sets and `separated_support_two_at_least_six_no_double_zero_of_delta_le_third` for >=6 actual centres are kernel PASS, focused CI #40092526954 (3556 Lake jobs), with the same ordinary axioms and no `sorryAx`: [run](https://github.com/Charlie-Wang-03/awards/actions/runs/40092526954).
+- **Exact scope:** The obstruction requires a sharp top exponent n-1, a different centre exponent n-3 of positive support 2, n>=5, injective original-plane geometry, and actual AngleCap with lambda=pi/t. This excludes both top-adjacent quotient endpoints being zero in the specified range. It says nothing unconditional about all other hard carriers or the genuinely non-reusing global six-source payment.
+- **Global frontier unchanged:** one intentionally admitted `sorry` inside `PlanarLowerBranchProofAdmittedWIP.lean`. No reduction in its executable `sorry` count is claimed and no extra axiom/false Boolean-hole credit is inserted.
+
