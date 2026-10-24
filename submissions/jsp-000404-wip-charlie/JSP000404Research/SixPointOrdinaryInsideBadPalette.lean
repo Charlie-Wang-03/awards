@@ -125,10 +125,10 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     dsimp [O]
     have hb₁Mem :
         bad₁ ∈ (Finset.univ.erase top : Finset V) := by
-      simp [htb₁]
+      simp [htb₁.symm]
     have hb₂Mem :
         bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
-      simp [htb₂, hb₁₂]
+      simp [htb₂.symm, hb₁₂.symm]
     rw [Finset.card_erase_of_mem hb₂Mem,
         Finset.card_erase_of_mem hb₁Mem,
         Finset.card_erase_of_mem (Finset.mem_univ top)]
@@ -288,7 +288,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
               intro w hw
               exact hFfree w hw
       _ = U.card * (2 * B) := by simp
-      _ = (2 * B) * U.card := by omega
+      _ = (2 * B) * U.card := by ring
 
   have hFO :
       (∑ w ∈ O, F w) =
@@ -312,11 +312,11 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
     rw [← Finset.sum_erase_add F (Finset.mem_univ top)]
     have hb1mem :
         bad₁ ∈ (Finset.univ.erase top : Finset V) := by
-      simp [htb₁]
+      simp [htb₁.symm]
     rw [← Finset.sum_erase_add F hb1mem]
     have hb2mem :
         bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
-      simp [htb₂, hb₁₂]
+      simp [htb₂.symm, hb₁₂.symm]
     rw [← Finset.sum_erase_add F hb2mem]
     omega
 
@@ -392,10 +392,10 @@ theorem exists_ordinary_reduced_active_subset_bad
     dsimp [O]
     have hb₁Mem :
         bad₁ ∈ (Finset.univ.erase top : Finset V) := by
-      simp [htb₁]
+      simp [htb₁.symm]
     have hb₂Mem :
         bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
-      simp [htb₂, hb₁₂]
+      simp [htb₂.symm, hb₁₂.symm]
     rw [Finset.card_erase_of_mem hb₂Mem,
         Finset.card_erase_of_mem hb₁Mem,
         Finset.card_erase_of_mem (Finset.mem_univ top)]
@@ -479,6 +479,7 @@ theorem exists_ordinary_reduced_active_subset_bad
       ∃ u ∈ O, u ∉ A := by
     have hlt : A.card < O.card := by
       rw [hAcard, hOcard]
+      omega
     obtain ⟨u, huO, huA⟩ :=
       Finset.exists_mem_notMem_of_card_lt_card hlt
     exact ⟨u, huO, huA⟩
