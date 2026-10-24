@@ -129,7 +129,7 @@ theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
 
   have heqR :=
     R.local_band_equality_of_active_saturated
-      hp hcap htpos hlam hc0 hcpi n htop
+      hp hcap htpos hlam hc0 hcpi n htop (C i)
       (by simpa [P, htop] using hsat)
   have heq :
       listExponent
