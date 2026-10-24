@@ -110,6 +110,76 @@ theorem earliest_actual_edge_collision_three_external_hole_exclusions
       C exponent choice hcd hc hd
   exact ⟨hw, hcNoHole, hdNoHole⟩
 
+/-- Of the FOUR corners of the actual collision's two-flip Boolean
+square, at most the OPPOSITE double-flip corner can be a true external
+hole. This does not assert that the opposite corner IS a hole. -/
+theorem cross_loss_collision_square_external_hole_only_double_flip
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    {c d : Fin n} (hcd : c ≠ d)
+    {word target : Fin n → Bool}
+    (hc : word ∈ translatedLossSliceWords C exponent choice c)
+    (hd : word ∈ translatedLossSliceWords C exponent choice d)
+    (hsquare : target ∈
+      insert word
+        (insert (flipBoolWordAt word c)
+          (insert (flipBoolWordAt word d)
+            ({flipBoolWordAt (flipBoolWordAt word c) d} :
+              Finset (Fin n → Bool)))))
+    (htrue : target ∈ lossLedgerOutsideTranslatedTrueHoles
+      C exponent choice) :
+    target = flipBoolWordAt (flipBoolWordAt word c) d := by
+  obtain ⟨h0,h1,h2,_,_,_⟩ :=
+    cross_loss_collision_three_distinct_non_external_holes
+      C exponent choice hcd hc hd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hsquare
+  rcases hsquare with h | h | h | h
+  · subst target
+    exact False.elim (h0 htrue)
+  · subst target
+    exact False.elim (h1 htrue)
+  · subst target
+    exact False.elim (h2 htrue)
+  · exact h
+
+/-- The local four-corner collision square offers AT MOST ONE external
+true-hole token. In particular the other three corners contribute ZERO
+hole credit regardless of their geometric origin or net classification. -/
+theorem cross_loss_collision_square_external_holes_card_le_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    {c d : Fin n} (hcd : c ≠ d)
+    {word : Fin n → Bool}
+    (hc : word ∈ translatedLossSliceWords C exponent choice c)
+    (hd : word ∈ translatedLossSliceWords C exponent choice d) :
+    ((insert word
+      (insert (flipBoolWordAt word c)
+        (insert (flipBoolWordAt word d)
+          ({flipBoolWordAt (flipBoolWordAt word c) d} :
+            Finset (Fin n → Bool)))) ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice).card ≤ 1 := by
+  classical
+  have hsubset :
+      (insert word
+        (insert (flipBoolWordAt word c)
+          (insert (flipBoolWordAt word d)
+            ({flipBoolWordAt (flipBoolWordAt word c) d} :
+              Finset (Fin n → Bool)))) ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice ⊆
+        ({flipBoolWordAt (flipBoolWordAt word c) d} :
+          Finset (Fin n → Bool)) := by
+    intro target ht
+    exact Finset.mem_singleton.mpr
+      (cross_loss_collision_square_external_hole_only_double_flip
+        C exponent choice hcd hc hd
+        (Finset.mem_inter.mp ht).1 (Finset.mem_inter.mp ht).2)
+  exact (Finset.card_le_card hsubset).trans (by simp)
+
+#print axioms cross_loss_collision_square_external_hole_only_double_flip
+#print axioms cross_loss_collision_square_external_holes_card_le_one
+
 #print axioms flipped_bool_word_ne_original
 #print axioms cross_loss_collision_three_distinct_non_external_holes
 #print axioms earliest_actual_edge_collision_three_external_hole_exclusions
