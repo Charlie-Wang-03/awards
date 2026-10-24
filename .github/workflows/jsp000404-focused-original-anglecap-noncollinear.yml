@@ -8,6 +8,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/AngleCapNoncollinear.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ZeroAngleMassStrictPos.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoThirdStrict.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoSixPlusStrict.lean"
       - ".github/workflows/jsp000404-focused-original-anglecap-noncollinear.yml"
   workflow_dispatch:
 
@@ -55,7 +56,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check actual AngleCap positivity and nonzero middle mass
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.AngleCapNoncollinear JSP000404Research.ZeroAngleMassStrictPos JSP000404Research.SeparatedSupportTwoThirdStrict
+        run: lake build JSP000404Research.AngleCapNoncollinear JSP000404Research.ZeroAngleMassStrictPos JSP000404Research.SeparatedSupportTwoThirdStrict JSP000404Research.SeparatedSupportTwoSixPlusStrict
       - name: Scope
         if: always()
         run: echo 'Threshold double-zero geometric exclusion only; global dyadic payment is not yet proved.'
