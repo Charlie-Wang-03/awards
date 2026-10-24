@@ -49,20 +49,26 @@ theorem two_enlargedLeafOutlets_twoLoss_or_paid_or_exact
   rcases hu with ⟨huStrict,_huProgress⟩ | ⟨huExact,_huOut⟩ | ⟨huLoss,_huProgress⟩
   · exact Or.inr (Or.inl
       ⟨u, by
-        have hhalf :=
-          half_pow_le_dyadic_surplus_of_lt huStrict
-        have hpos :
-            0 < 2 ^ (projectedFree C u - 1) := by positivity
-        omega⟩)
+        have hstep : exponent u + 1 ≤ projectedFree C u := by
+          omega
+        have hcredit :=
+          target_weight_le_dyadicProfileSurplus_of_one_surplus
+            exponent (projectedFree C) u hstep
+        have hone : 1 ≤ 2 ^ exponent u :=
+          Nat.one_le_pow _ _ (by decide : 0 < (2 : ℕ))
+        exact hone.trans hcredit⟩)
   · exact Or.inr (Or.inr ⟨u,huExact⟩)
   · rcases hv with ⟨hvStrict,_hvProgress⟩ | ⟨hvExact,_hvOut⟩ | ⟨hvLoss,_hvProgress⟩
     · exact Or.inr (Or.inl
         ⟨v, by
-        have hhalf :=
-          half_pow_le_dyadic_surplus_of_lt hvStrict
-        have hpos :
-            0 < 2 ^ (projectedFree C v - 1) := by positivity
-        omega⟩)
+        have hstep : exponent v + 1 ≤ projectedFree C v := by
+          omega
+        have hcredit :=
+          target_weight_le_dyadicProfileSurplus_of_one_surplus
+            exponent (projectedFree C) v hstep
+        have hone : 1 ≤ 2 ^ exponent v :=
+          Nat.one_le_pow _ _ (by decide : 0 < (2 : ℕ))
+        exact hone.trans hcredit⟩)
     · exact Or.inr (Or.inr ⟨v,hvExact⟩)
     · exact Or.inl ⟨huLoss,hvLoss⟩
 
