@@ -350,6 +350,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
 
   have hUcard : U.card = 1 := by
     omega
+  change A.card = 2
   omega
 
 /-- In exact two-bad equality, at least one ordinary minimum has all of its
