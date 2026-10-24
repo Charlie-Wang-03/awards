@@ -241,18 +241,18 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           · rw [huQ]
             exact hseam'.1
           · unfold CentreCyclicTurnUnitBadAt
-          refine ⟨(-1 : ℤ), ?_, ?_⟩
-          dsimp
-          rw [hstart, hlen, huQ]
-          unfold positiveGapBadLeft positiveGapBadRight
-          norm_num
-          constructor
-          · have hlo := hseam'.2.2.1
-            rw [hbeta] at hlo
-            linarith
-          · have hhi := hseam'.2.2.2
-            rw [hbeta] at hhi
-            linarith
+            refine ⟨(-1 : ℤ), ?_⟩
+            dsimp
+            rw [hstart, hlen, huQ]
+            unfold positiveGapBadLeft positiveGapBadRight
+            norm_num
+            constructor
+            · have hlo := hseam'.2.2.1
+              rw [hbeta] at hlo
+              linarith
+            · have hhi := hseam'.2.2.2
+              rw [hbeta] at hhi
+              linarith
   | cons lowFirst lowRest =>
       cases high with
       | nil =>
@@ -333,18 +333,18 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           · rw [huQ]
             exact hseam'.1
           · unfold CentreCyclicTurnUnitBadAt
-          refine ⟨(0 : ℤ), ?_, ?_⟩
-          dsimp
-          rw [hstart, hlen, huQ]
-          unfold positiveGapBadLeft positiveGapBadRight
-          norm_num
-          constructor
-          · have hlo := hseam'.2.2.1
-            rw [hbeta] at hlo
-            linarith
-          · have hhi := hseam'.2.2.2
-            rw [hbeta] at hhi
-            linarith
+            refine ⟨(0 : ℤ), ?_⟩
+            dsimp
+            rw [hstart, hlen, huQ]
+            unfold positiveGapBadLeft positiveGapBadRight
+            norm_num
+            constructor
+            · have hlo := hseam'.2.2.1
+              rw [hbeta] at hlo
+              linarith
+            · have hhi := hseam'.2.2.2
+              rw [hbeta] at hhi
+              linarith
       | cons highFirst highRest =>
           -- Genuine split: the seam is the ordinary canonical gap from the
           -- last low ray to the first high ray.
@@ -454,18 +454,18 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           · rw [huQ]
             exact hseam'.1
           · unfold CentreCyclicTurnUnitBadAt
-          refine ⟨(0 : ℤ), ?_, ?_⟩
-          dsimp
-          rw [hstart, hlen, huQ]
-          unfold positiveGapBadLeft positiveGapBadRight
-          norm_num
-          constructor
-          · have hlo := hseam'.2.2.1
-            rw [hbeta] at hlo
-            linarith
-          · have hhi := hseam'.2.2.2
-            rw [hbeta] at hhi
-            linarith
+            refine ⟨(0 : ℤ), ?_⟩
+            dsimp
+            rw [hstart, hlen, huQ]
+            unfold positiveGapBadLeft positiveGapBadRight
+            norm_num
+            constructor
+            · have hlo := hseam'.2.2.1
+              rw [hbeta] at hlo
+              linarith
+            · have hhi := hseam'.2.2.2
+              rw [hbeta] at hhi
+              linarith
 
 /-- Backward-compatible form retaining only the periodic badness witness. -/
 theorem exists_canonical_turnUnit_bad_of_cut_saturated_failure
