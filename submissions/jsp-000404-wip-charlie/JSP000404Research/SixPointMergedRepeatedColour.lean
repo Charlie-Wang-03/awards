@@ -113,12 +113,11 @@ theorem four_nonTop_edges_three_nonroot_colours_repeat
   have hinj : Set.InjOn f (S : Set V) := by
     intro x hx y hy hxy
     by_contra hne
-    exact (hnone x
+    exact (hnone x y
       (by
         have h := Finset.mem_erase.mp hx
         exact (Finset.mem_erase.mp h.2).1)
       (Finset.mem_erase.mp hx).1
-      y
       (by
         have h := Finset.mem_erase.mp hy
         exact (Finset.mem_erase.mp h.2).1)
