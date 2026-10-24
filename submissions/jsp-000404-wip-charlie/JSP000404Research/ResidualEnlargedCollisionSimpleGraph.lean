@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualEnlargedLossDegree
 import JSP000404Research.ResidualLossTwoExitRecursiveOutlet
 import JSP000404Research.ResidualCompletionMultiplicity
+import JSP000404Research.ResidualProjectionLoss
 import Mathlib.Combinatorics.SimpleGraph.Acyclic
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Combinatorics.SimpleGraph.Clique
@@ -717,9 +718,12 @@ theorem projectedLoss_incident_collision_with_nonloss_is_retained
       (C.color r u).val < n
     else
       (C.color u r).val < n := by
-  have hrInactive :=
-    residual_inactive_of_projectedLoss
-      C exponent hexp honeLoss hrLoss
+  have hprofile :
+      exponent r = projectedFree C r + 1 :=
+    (mem_projectedLossVertices C exponent r).1 hrLoss
+  have hrInactive : residualCoord n ∉ active C r :=
+    (exact_projected_loss_rigidity
+      C exponent hexp honeLoss hprofile rfl).1
   by_cases hlt : r < u
   · simp [hlt]
     by_contra hnot
@@ -1163,7 +1167,10 @@ theorem coreEnlargedCandidateFibre_card_eq_two_of_shared_of_three_lt_girth
   have htwo :
       2 ≤ (coreEnlargedCandidateFibre
         C exponent T word).card := by
-    exact Finset.two_le_card.mpr ⟨v,hvF,w,hwF,hwv.symm⟩
+    have hgt : 1 < (coreEnlargedCandidateFibre
+        C exponent T word).card :=
+      Finset.one_lt_card.mpr ⟨v, hvF, w, hwF, hwv.symm⟩
+    omega
   have hle :=
     coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
       C exponent T hgirth word
@@ -2306,8 +2313,11 @@ theorem longCycle_doubleCoveredWords_eq_pairOverlapUnion
     have htwo :
         2 ≤ (coreEnlargedCandidateFibre
           C exponent T word).card := by
-      exact Finset.two_le_card.mpr
-        ⟨u,huF,v,hvF,ne_of_lt hpair.2.2⟩
+      have hgt : 1 < (coreEnlargedCandidateFibre
+          C exponent T word).card :=
+        Finset.one_lt_card.mpr
+          ⟨u, huF, v, hvF, ne_of_lt hpair.2.2⟩
+      omega
     have hle :=
       coreEnlargedCandidateFibre_card_le_two_of_three_lt_girth
         C exponent T hgirth word
