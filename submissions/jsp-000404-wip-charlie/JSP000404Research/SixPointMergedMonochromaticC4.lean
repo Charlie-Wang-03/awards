@@ -191,7 +191,8 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             (localColourGraph P top c).degree u := by
             apply Finset.sum_congr rfl
             intro c hc
-            simpa only [SimpleGraph.edgeFinset, Set.toFinset_card] using
+            simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+              Fintype.card_eq_nat_card] using
               (SimpleGraph.sum_degrees_eq_twice_card_edges
                 (localColourGraph P top c)).symm
       _ =
@@ -447,7 +448,8 @@ theorem six_point_two_exception_has_monochromatic_fourCycle
     have hlt :=
       localColourGraph_edge_card_lt_active_of_no_fourCycle
         P top c hcard hcTop hcdata.2 (hnone root c hcdata.1)
-    simpa only [SimpleGraph.edgeFinset, Set.toFinset_card] using
+    simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
+              Fintype.card_eq_nat_card] using
       (Nat.add_one_le_iff.mpr hlt)
 
   have hsumLoss :
