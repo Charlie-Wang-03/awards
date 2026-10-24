@@ -105,8 +105,10 @@ theorem earliest_actual_edge_collision_three_external_hole_exclusions
     simpa [lossSliceAtNat, c.isLt] using hpair.1
   have hd : word ∈ translatedLossSliceWords C exponent choice d := by
     simpa [lossSliceAtNat, d.isLt] using hpair.2
-  exact (cross_loss_collision_three_distinct_non_external_holes
-    C exponent choice hcd hc hd).1 |>.elim (fun x y => ⟨x,y.1,y.2.1⟩)
+  obtain ⟨hw, hcNoHole, hdNoHole, _, _, _⟩ :=
+    cross_loss_collision_three_distinct_non_external_holes
+      C exponent choice hcd hc hd
+  exact ⟨hw, hcNoHole, hdNoHole⟩
 
 #print axioms flipped_bool_word_ne_original
 #print axioms cross_loss_collision_three_distinct_non_external_holes
