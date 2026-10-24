@@ -1682,3 +1682,7 @@ import JSP000404Research.PositiveGapSeventeenPhase
 
 -- Kernel-verified non-gaining separated support-two minimum in uncompensated top deletion.
 import JSP000404Research.SixPointSeparatedSupportTwo
+
+-- Kernel-checked delta < 1/3 sharp-endpoint exclusion for a separated support-two minimum.
+-- This is not the global six-source Boolean-hole / unreserved-surplus payment.
+import JSP000404Research.SeparatedSupportTwoResidualBudget
