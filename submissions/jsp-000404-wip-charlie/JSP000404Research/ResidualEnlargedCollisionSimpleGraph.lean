@@ -1678,6 +1678,9 @@ theorem longCycle_doubleCovered_eq_totalSlack_add_deficiency
         <
       ∑ v ∈ T, 2 ^ exponent v := hdef
 
+  have hsumEq :
+      (∑ v ∈ T, (fun x => 2 ^ exponent x) v) =
+        (∑ v ∈ T, 2 ^ exponent v) := by rfl
   unfold blockDeficiencyAmount
   omega
 
@@ -3197,11 +3200,15 @@ theorem two_topLoss_enlargedBlocks_union_eq_univ
     loss_allActive_pair_intersection_card_le_sum_cubes
       C exponent hexp honeLoss
       huLoss hvLoss huv
-  rw [enlargedProjectedCandidateBlock_loss
-        C exponent huLoss,
-      enlargedProjectedCandidateBlock_loss
-        C exponent hvLoss,
-      hqU,hqV] at hinter
+  have hinterEnlarged :
+      (enlargedProjectedCandidateBlock C exponent u ∩
+        enlargedProjectedCandidateBlock C exponent v).card ≤
+        (retainedCompletionWords C u).card +
+          (retainedCompletionWords C v).card := by
+    simpa only [
+      enlargedProjectedCandidateBlock_loss C exponent huLoss,
+      enlargedProjectedCandidateBlock_loss C exponent hvLoss] using hinter
+  rw [hqU, hqV] at hinterEnlarged
   have hambient :
       (enlargedProjectedCandidateBlock C exponent u ∪
         enlargedProjectedCandidateBlock C exponent v).card
@@ -3287,9 +3294,11 @@ theorem longCycle_at_most_one_topLoss
   have hpairProper :
       ({u,v} : Finset V) ⊂ T := by
     refine ⟨hpairSub,?_⟩
-    intro heq
-    have hc := congrArg Finset.card heq
-    simp [huv] at hc
+    intro hsub
+    have hc := Finset.card_le_card hsub
+    have hpairCard : ({u,v} : Finset V).card = 2 := by
+      simp [huv, huv.symm]
+    rw [hpairCard] at hc
     omega
   obtain ⟨w,hwT,hwNotPair⟩ :=
     Finset.exists_of_ssubset hpairProper
@@ -3310,11 +3319,11 @@ theorem longCycle_at_most_one_topLoss
     · exact hvT
     · exact hwT
   have hUCard : U.card = 3 := by
-    simp [U,huv,hwu,hwv]
+    simp [U, huv, huv.symm, hwu, hwu.symm, hwv, hwv.symm]
   have hUProper : U ⊂ T := by
     refine ⟨hUSub,?_⟩
-    intro heq
-    have hc := congrArg Finset.card heq
+    intro hsub
+    have hc := Finset.card_le_card hsub
     rw [hUCard] at hc
     omega
   have hUUnion :
@@ -3349,7 +3358,7 @@ theorem longCycle_at_most_one_topLoss
           =
         2 ^ exponent u + 2 ^ exponent v +
           2 ^ exponent w := by
-      simp [U,huv,hwu,hwv,add_assoc]
+      simp [U, huv, huv.symm, hwu, hwu.symm, hwv, hwv.symm, add_assoc]
     rw [hsum,huTop,hvTop]
     simp only [Finset.card_univ, Fintype.card_fun,
       Fintype.card_fin, Fintype.card_bool]
