@@ -163,3 +163,19 @@ At the end of `PlanarLowerBranchProofAdmittedWIP.lean` (near line 900), one exec
 - The [full six-centre cut local certificate CI 40112599605](https://github.com/Charlie-Wang-03/awards/actions/runs/40112599605) remains pending at this checkpoint.
 
 **One admitted true-hole/surplus global capacity obligation is still open.** The above establishes a compiler-clean original root (with an explicit, recognised `sorry`), and two more useful local geometric constraints. The compiled root is NOT a proof.
+
+
+## Final continuation gate verdicts — all four latest targets SUCCESS
+
+This overrides older "pending" statements above for the same runs:
+
+| Run | Module | Result |
+| --- | --- | --- |
+| [40112204828](https://github.com/Charlie-Wang-03/awards/actions/runs/40112204828) | `PlanarLowerBranchProofAdmittedWIP` full root | **SUCCESS** 3,826 jobs; audit exactly ONE explicit `sorry` at line 900 and zero elsewhere; root **still has sorryAx** |
+| [40112349807](https://github.com/Charlie-Wang-03/awards/actions/runs/40112349807) | `FiveMinimaPendantRepeatedSmallAngle` | **SUCCESS** 9,123 jobs, two nonC4-colour/true-angle statements **no sorryAx** |
+| [40112599605](https://github.com/Charlie-Wang-03/awards/actions/runs/40112599605) | `SixPointCutTwoBadCompleteLocalCertificate` | **SUCCESS** 9,123 jobs; sharp top + SAME non-root C4 colour + TWO DISTINCT simultaneous bad turn slots + TWO true small angles, **no sorryAx** |
+| [40112876834](https://github.com/Charlie-Wang-03/awards/actions/runs/40112876834) | `TwoBadEachSmallAngle` refactor | **SUCCESS** 9,122 jobs; both named theorems (`exceptional_bad_has_nonTop_small_angle`, `two_exception_bad_minima_each_have_small_angle`) have standard axioms only, **no sorryAx** |
+
+For the latter three runs, exactly `[propext, Classical.choice, Quot.sound]` was printed in `#print axioms`. The prior proven [40111507155](https://github.com/Charlie-Wang-03/awards/actions/runs/40111507155) independently proves shared C4 plus two bad angles under active-card bounds.
+
+**REMAINING mathematical bottleneck**: original global all-cardinality nonreusing six-source accounting into TRUE external Boolean holes and NET unreserved dyadic surplus. The sole admitted main theorem is not a complete proof, and no full-disproof is established. Do not conflate a SUCCESS root build with proof closure.
