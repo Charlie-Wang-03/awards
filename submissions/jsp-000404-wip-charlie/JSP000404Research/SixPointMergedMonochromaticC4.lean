@@ -33,6 +33,16 @@ five minima.
 
 namespace JSP000404Research
 
+noncomputable section
+
+local instance finiteNeighbourSet
+    {W : Type*} [Fintype W] (G : SimpleGraph W) (u : W) :
+    Fintype (G.neighborSet u) := Fintype.ofFinite _
+
+local instance finiteEdgeSet
+    {W : Type*} [Fintype W] (G : SimpleGraph W) :
+    Fintype G.edgeSet := Fintype.ofFinite _
+
 open BinaryEdgePartition
 open scoped BigOperators
 
@@ -107,12 +117,12 @@ theorem sum_reducedUsedColours_degree_eq_four
 
   have hfib :
       N.card =
-        ∑ c ∈ U, #{v ∈ N | g v = c} :=
+        ∑ c ∈ U, (N.filter (fun v => g v = c)).card :=
     Finset.card_eq_sum_card_fiberwise hmaps
 
   have hfiberDegree :
       ∀ c ∈ U,
-        #{v ∈ N | g v = c} =
+        (N.filter (fun v => g v = c)).card =
           (localColourGraph P top c).degree u := by
     intro c hc
     rw [← SimpleGraph.card_neighborFinset_eq_degree,
@@ -130,7 +140,7 @@ theorem sum_reducedUsedColours_degree_eq_four
     (∑ c ∈ reducedUsedColours P top root,
       (localColourGraph P top c).degree u)
         =
-      ∑ c ∈ U, #{v ∈ N | g v = c} := by
+      ∑ c ∈ U, (N.filter (fun v => g v = c)).card := by
         apply Finset.sum_congr rfl
         intro c hc
         exact (hfiberDegree c hc).symm
@@ -201,7 +211,7 @@ theorem usedColour_active_below_eq_erase
     (root : Fin k)
     (u : OtherVertex top) :
     (reducedUsedColours P top root).bipartiteBelow
-        (fun c v : OtherVertex top => c ∈ active P v.1) u
+        (fun (c : Fin k) (v : OtherVertex top) => c ∈ active P v.1) u
       =
     (active P u.1).erase root := by
   classical
@@ -233,13 +243,13 @@ theorem sum_reducedUsedColours_active_card_eq
     (∑ c ∈ reducedUsedColours P top root,
       (localColourActiveMinima P top c).card)
         =
-      ∑ c ∈ U, #(Finset.univ.bipartiteAbove r c) := by
+      ∑ c ∈ U, (Finset.univ.bipartiteAbove r c).card := by
         apply Finset.sum_congr rfl
         intro c hc
         rfl
     _ =
       ∑ u ∈ (Finset.univ : Finset (OtherVertex top)),
-        #(U.bipartiteBelow r u) := by
+        (U.bipartiteBelow r u).card := by
         exact Finset.sum_card_bipartiteAbove_eq_sum_card_bipartiteBelow
     _ =
       ∑ u ∈ (Finset.univ : Finset (OtherVertex top)),
@@ -325,14 +335,8 @@ theorem sum_reduced_active_card_eq_twelve
       ((active P bad₂).erase root).card +
       ∑ u ∈ S, ((active P u.1).erase root).card := by
     dsimp [S, b₁, b₂]
-    rw [← Finset.sum_erase_add
-        (fun u : OtherVertex top =>
-          ((active P u.1).erase root).card)
-        hb₁Mem]
-    rw [← Finset.sum_erase_add
-        (fun u : OtherVertex top =>
-          ((active P u.1).erase root).card)
-        hb₂Mem]
+    rw [← Finset.sum_erase_add hb₁Mem]
+    rw [← Finset.sum_erase_add hb₂Mem]
     omega
 
   rw [hdecomp, hBad₁, hBad₂, hSsum]
@@ -462,5 +466,7 @@ theorem six_point_two_exception_has_monochromatic_fourCycle
 #print axioms sum_reducedUsedColours_edge_card_eq_ten
 #print axioms sum_reducedUsedColours_active_card_eq
 #print axioms six_point_two_exception_has_monochromatic_fourCycle
+
+end
 
 end JSP000404Research
