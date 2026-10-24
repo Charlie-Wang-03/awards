@@ -326,7 +326,7 @@ theorem separated_support_two_has_small_pair_away_from_top
           hA₁ hA₂ hA₃
           (mul_nonneg hdelta0 hlampos.le)
           hmidCount
-          (by simpa [listZeroAngleMass, A₁, A₂, A₃,
+          (by simpa [listZeroAngleMass, A₁, A₂, A₃, hL,
                  add_assoc, mul_assoc] using htail)
       rcases hsmall with h1 | h2 | h3
       · exact ⟨r,b,hrb,hrTop,hbTop,h1.2⟩
