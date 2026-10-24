@@ -200,7 +200,7 @@ theorem child_parent_ray_list_perm_split
     exact (List.nodup_cons.mp hmid).2
   apply list_perm_of_nodup_mem_iff hleft hright
   intro j
-  rw [mem_map_childOtherToParent_iff_ne_deleted
+  rw [mem_map_childOtherToParent_iff_ne_deleted (C := C)
       hir hother Rc j,
     mem_parent_cut_split_without_deleted_iff
       R hir pre post hsplit j]
@@ -270,7 +270,7 @@ theorem restrictDelete_normalizedValues_of_cut_split
       (pre ++ post).map
         (cutNormalizedRayTheta hp t c i) := by
   have hpermRays :=
-    child_parent_ray_list_perm_split
+    child_parent_ray_list_perm_split (C := C)
       R hir hother Rc pre post hsplit
   have hpermValues :
       List.Perm (Rc.normalizedValues t)
@@ -301,11 +301,12 @@ theorem restrictDelete_normalizedValues_of_cut_split
       ((pre ++ post).map
         (cutNormalizedRayTheta hp t c i)).Pairwise (· ≤ ·) := by
     rw [List.pairwise_map]
-    intro a ha b hb hab
-    unfold cutNormalizedRayTheta
-    have hdiv :=
-      div_le_div_of_nonneg_right hab Real.pi_pos.le
-    exact mul_le_mul_of_nonneg_left hdiv ht.le
+    exact hrightTheta.imp (by
+      intro a b hab
+      unfold cutNormalizedRayTheta
+      have hdiv :=
+        div_le_div_of_nonneg_right hab Real.pi_pos.le
+      exact mul_le_mul_of_nonneg_left hdiv ht.le)
 
   exact List.Perm.eq_of_pairwise
     (fun a b _ha _hb hab hba => le_antisymm hab hba)
