@@ -57,8 +57,10 @@ theorem finset_card_split_predicate
       simp
   | @insert a s ha ih =>
       by_cases hpa : p a
-      · simp [Finset.filter_insert, ha, hpa, ih]
-      · simp [Finset.filter_insert, ha, hpa, ih]
+      · simp [Finset.filter_insert, ha, hpa]
+        omega
+      · simp [Finset.filter_insert, ha, hpa]
+        omega
 
 /-- At exact two-exception equality, an outside-bad colour that appears at an
 ordinary minimum appears at exactly two ordinary minima. -/
@@ -192,8 +194,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
       dif_neg hcBad,
       Finset.card_insert_of_notMem hcBad,
       hexact.2.1]
-    have he : n - (4 + 1) = n - 5 := by omega
-    rw [he]
+
 
   have hFb2 : F bad₂ = B := by
     dsimp [F]
@@ -201,8 +202,7 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
       dif_neg hcBad₂,
       Finset.card_insert_of_notMem hcBad₂,
       hexact.2.2.1]
-    have he : n - (4 + 1) = n - 5 := by omega
-    rw [he]
+
 
   have hOrdCard :
       ∀ w ∈ O, (active P w).card = 3 := by
@@ -309,15 +309,15 @@ theorem outside_bad_colour_used_by_exactly_two_ordinary
         F top + F bad₁ + F bad₂ +
           ∑ w ∈ O, F w := by
     dsimp [O]
-    rw [← Finset.sum_erase_add F (Finset.mem_univ top)]
+    rw [← Finset.sum_erase_add (Finset.univ : Finset V) F (Finset.mem_univ top)]
     have hb1mem :
         bad₁ ∈ (Finset.univ.erase top : Finset V) := by
       simp [htb₁.symm]
-    rw [← Finset.sum_erase_add F hb1mem]
+    rw [← Finset.sum_erase_add (Finset.univ.erase top : Finset V) F hb1mem]
     have hb2mem :
         bad₂ ∈ ((Finset.univ.erase top).erase bad₁ : Finset V) := by
       simp [htb₂.symm, hb₁₂.symm]
-    rw [← Finset.sum_erase_add F hb2mem]
+    rw [← Finset.sum_erase_add ((Finset.univ.erase top).erase bad₁ : Finset V) F hb2mem]
     omega
 
   have hmain :
@@ -526,7 +526,7 @@ theorem exists_ordinary_reduced_active_subset_bad
 
   have hthreeCard :
       ({v,w,u} : Finset V).card = 3 := by
-    simp [hwne, huv, huw]
+    simp [hwne, hwne.symm, huv, huv.symm, huw, huw.symm]
   have hthreeSub :
       ({v,w,u} : Finset V) ⊆ O := by
     intro x hx
@@ -606,9 +606,11 @@ theorem exists_ordinary_reduced_active_subset_bad
             · exact hx
           have hc3 :
               ({c,d,x} : Finset (Fin n)).card = 3 := by
-            simp [hcd]
-            push_neg at hxCD
-            tauto
+            have hxc : x ≠ c := by
+              intro h; apply hxCD; simp [h]
+            have hxd : x ≠ d := by
+              intro h; apply hxCD; simp [h]
+            simp [hcd, hcd.symm, hxc, hxc.symm, hxd, hxd.symm]
           rw [← hc3]
           exact Finset.card_le_card hs
         rw [hredCard] at h3
@@ -629,10 +631,10 @@ theorem exists_ordinary_reduced_active_subset_bad
       rw [hsubsetCD] at heRed
       simp only [Finset.mem_insert, Finset.mem_singleton] at heRed
       rcases heRed with hec | hed
-      · subst e
-        exact hcBad heB
-      · subst e
-        exact hdBad heB
+      · change e ∈ active P bad₁ at heB
+        exact hcBad (hec ▸ heB)
+      · change e ∈ active P bad₁ at heB
+        exact hdBad (hed ▸ heB)
     · let e := P.edgeColor bad₁ v
       have heB := edgeColor_mem_active_lower P hbv
       have heV := edgeColor_mem_active_upper P hbv
@@ -646,10 +648,10 @@ theorem exists_ordinary_reduced_active_subset_bad
       rw [hsubsetCD] at heRed
       simp only [Finset.mem_insert, Finset.mem_singleton] at heRed
       rcases heRed with hec | hed
-      · subst e
-        exact hcBad heB
-      · subst e
-        exact hdBad heB
+      · change e ∈ active P bad₁ at heB
+        exact hcBad (hec ▸ heB)
+      · change e ∈ active P bad₁ at heB
+        exact hdBad (hed ▸ heB)
   · have hdW : d ∈ active P w :=
       (Finset.mem_filter.mp hwD).2
     have hcWRoot : c ≠ root := by
@@ -690,9 +692,11 @@ theorem exists_ordinary_reduced_active_subset_bad
           · exact hx
         have hc3 :
             ({c,d,x} : Finset (Fin n)).card = 3 := by
-          simp [hcd]
-          push_neg at hxCD
-          tauto
+          have hxc : x ≠ c := by
+            intro h; apply hxCD; simp [h]
+          have hxd : x ≠ d := by
+            intro h; apply hxCD; simp [h]
+          simp [hcd, hcd.symm, hxc, hxc.symm, hxd, hxd.symm]
         have h3 := Finset.card_le_card hs
         rw [hc3, hredCard] at h3
         omega
@@ -715,10 +719,10 @@ theorem exists_ordinary_reduced_active_subset_bad
       rw [hsubsetCD] at heRed
       simp only [Finset.mem_insert, Finset.mem_singleton] at heRed
       rcases heRed with hec | hed
-      · subst e
-        exact hcBad heB
-      · subst e
-        exact hdBad heB
+      · change e ∈ active P bad₁ at heB
+        exact hcBad (hec ▸ heB)
+      · change e ∈ active P bad₁ at heB
+        exact hdBad (hed ▸ heB)
     · let e := P.edgeColor bad₁ w
       have heB := edgeColor_mem_active_lower P hbw
       have heW := edgeColor_mem_active_upper P hbw
@@ -732,10 +736,10 @@ theorem exists_ordinary_reduced_active_subset_bad
       rw [hsubsetCD] at heRed
       simp only [Finset.mem_insert, Finset.mem_singleton] at heRed
       rcases heRed with hec | hed
-      · subst e
-        exact hcBad heB
-      · subst e
-        exact hdBad heB
+      · change e ∈ active P bad₁ at heB
+        exact hcBad (hec ▸ heB)
+      · change e ∈ active P bad₁ at heB
+        exact hdBad (hed ▸ heB)
 
 #print axioms outside_bad_colour_used_by_exactly_two_ordinary
 #print axioms exists_ordinary_reduced_active_subset_bad

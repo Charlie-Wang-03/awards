@@ -88,7 +88,6 @@ theorem localColourGraph_neighborFinset
       (Finset.univ.erase u).filter
         (fun v => localIncidentColor P u.1 v.1 = c) := by
   classical
-  dsimp only
   ext v
   simp [SimpleGraph.mem_neighborFinset,
     localColourGraph_adj, ne_comm]
