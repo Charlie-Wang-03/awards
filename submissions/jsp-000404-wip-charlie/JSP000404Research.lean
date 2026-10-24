@@ -1686,3 +1686,5 @@ import JSP000404Research.SixPointSeparatedSupportTwo
 -- Kernel-checked delta < 1/3 sharp-endpoint exclusion for a separated support-two minimum.
 -- This is not the global six-source Boolean-hole / unreserved-surplus payment.
 import JSP000404Research.SeparatedSupportTwoResidualBudget
+-- Actual short-angle triangle propagation for separated support-two minima.
+import JSP000404Research.SeparatedSupportTwoTrianglePropagation
