@@ -501,7 +501,7 @@ theorem cutSaturationBadAt_support_three_same_band_pair_avoids_sharp
       intro hv
       apply huv
       apply Subtype.ext
-      exact hu.trans hv.symm
+      exact hu.trans hv
     have hlow :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
@@ -517,7 +517,7 @@ theorem cutSaturationBadAt_support_three_same_band_pair_avoids_sharp
       intro hu
       apply huv
       apply Subtype.ext
-      exact hu.symm.trans hv
+      exact hu.symm.trans hv.symm
     have hlow :=
       delta_mul_lam_lt_outer_angle_of_sharp
         hp hcap hdeltaHalf hlampos
