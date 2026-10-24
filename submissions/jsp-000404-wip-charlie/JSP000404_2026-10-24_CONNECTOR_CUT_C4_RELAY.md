@@ -228,3 +228,22 @@ Latest conditional planar variants have a fixed `#print axioms` template bug; su
 [40115544989](https://github.com/Charlie-Wang-03/awards/actions/runs/40115544989) (8-class matching → full planar), [40115551185](https://github.com/Charlie-Wang-03/awards/actions/runs/40115551185) (8-class Hall expansion → full planar).
 
 **Not solved:** no theorem proves the chosen geometric eligibility neighbourhoods satisfy Hall expansion under AngleCap. In particular an arbitrary full neighbourhood would merely restate the outstanding numerical inequality. The one original global `sorry` remains at `PlanarLowerBranchProofAdmittedWIP.lean:900`.
+
+
+## 2026-10-25 — ACTUAL loss-collision square: candidate external-hole exclusion
+
+**Last pending prior gates CONFIRMED:**
+- [CI 40115544989](https://github.com/Charlie-Wang-03/awards/actions/runs/40115544989): **SUCCESS**, 3421 Lake jobs; `planar_lower_branch_capacity_of_eight_source_actual_nonreuse_matching`, only ordinary `[propext, Classical.choice, Quot.sound]` axioms.
+- [CI 40115551185](https://github.com/Charlie-Wang-03/awards/actions/runs/40115551185): **SUCCESS**, 3429 Lake jobs; `planar_lower_branch_capacity_of_eight_source_Hall_expansion`, ordinary axioms only. **BOTH ARE STILL CONDITIONAL:** actual planar Hall expansion / allocation existence not established.
+
+**New direct, mathematically unconditional collision-credit exclusion:**
+- `ResidualLossCollisionThreePointExternalHoleObstruction.lean` reuses REAL original loss-collision predecessor theorems. Every shared word `w` of two *distinct* actual translated-loss coordinate slices `c,d` gives THREE pairwise DISTINCT forbidden external TRUE-hole credits:
+  - `w` is inside translated-loss set and thus OUTSIDE-hole-ineligible;
+  - `flip(w,c)` is an ACTUALLY covered original completion word;
+  - `flip(w,d)` is a distinct ACTUALLY covered original completion word.
+- [CI 40117561435](https://github.com/Charlie-Wang-03/awards/actions/runs/40117561435): **SUCCESS**, 3320 Lake jobs. The three elementary/real-collision exclusion theorems have no `sorryAx`.
+- The same file has the follow-up TWO-FLIP FOUR-CORNER SQUARE theorem: only the *opposite double-flip* corner `flip(flip(w,c),d)` can POSSIBLY be a TRUE exterior hole; the actual exterior-hole cardinality of the whole four-corner square is at most ONE. **This does not assert that fourth corner actually IS an exterior hole.** Independent [CI 40117821203](https://github.com/Charlie-Wang-03/awards/actions/runs/40117821203) must complete before marking the square statement kernel-certified.
+- The double-flip may be covered by an external (third) centre or lie in another translated-loss slice; one must explicitly prove genuine uncoveredness and global distinct allocations for any proposed refund. A local square/three-point obstruction is NOT an entire all-centre six-source payment.
+- We added the dedicated new current-HEAD workflow `.github/workflows/jsp000404-focused-actual-collision-square.yml` to ensure the amended square/cardinality statements get a fresh kernel gate.
+
+**Still exactly one research-root executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean:900`; no new admit, no upstream prize proof/disproof, PR stays Draft.
