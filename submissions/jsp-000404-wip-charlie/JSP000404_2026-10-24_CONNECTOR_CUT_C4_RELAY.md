@@ -247,3 +247,23 @@ Latest conditional planar variants have a fixed `#print axioms` template bug; su
 - We added the dedicated new current-HEAD workflow `.github/workflows/jsp000404-focused-actual-collision-square.yml` to ensure the amended square/cardinality statements get a fresh kernel gate.
 
 **Still exactly one research-root executable `sorry`** in `PlanarLowerBranchProofAdmittedWIP.lean:900`; no new admit, no upstream prize proof/disproof, PR stays Draft.
+
+
+## 2026-10-25 — Exact ORIGINAL collision-square hole iff and positive duplicate branch
+
+These updates **supersede** prior pending descriptions of the square CI:
+
+1. **[40118219163](https://github.com/Charlie-Wang-03/awards/actions/runs/40118219163) SUCCESS, 3320 Lake jobs**: both
+   `cross_loss_collision_square_external_hole_only_double_flip` and
+   `cross_loss_collision_square_external_holes_card_le_one` have standard axioms only, **NO sorryAx**. The double-flip corner is the SOLE possible exterior true-hole inside an actual collision's four-corner Boolean square; there may be ZERO exterior holes. One compiler failure in the first run was a missing right parenthesis in nested Finset.insert cardinality syntax, fixed by commit `d25c7f03`.
+2. **[40118501850](https://github.com/Charlie-Wang-03/awards/actions/runs/40118501850) SUCCESS, 3322 Lake jobs**: `actual_loss_collision_double_flip_true_hole_forces_cross_activity` and its exterior variant are BOTH kernel-checked, **NO sorryAx**. If the only plausible local refund corner `flip(flip(w,c),d)` is actually a TRUE hole, the first source's ORIGINAL retained-active set MUST contain d and the second source's must contain c. Proof: otherwise inactive-coordinate completion closes the alleged hole with one of its OWN two original source cubes.
+3. **[40118646836](https://github.com/Charlie-Wang-03/awards/actions/runs/40118646836) SUCCESS, 3323 Lake jobs**: `actual_loss_collision_double_flip_external_hole_iff` is an exact source-native IFF, **NO sorryAx**. The only local candidate q is genuinely outside-translated TRUE hole iff:
+   - d active at c-owner v,
+   - c active at d-owner u,
+   - q lies in NO third-party original completion cube,
+   - q lies in NO translated-loss slice.
+   Proof uses actual distinct original collision owners, inactive-flip cube invariance, active-flip cube exit, and the exact Boolean complement definition. **It does NOT assert these four conditions always hold.**
+4. `ResidualLossDuplicateDebtSquareDichotomy.lean` is a new global numerical/source bridge: when the literal `translatedLossDuplicateDebt>0`, a REAL coordinate collision and a four-corner square with at most one hole must exist; otherwise debt is zero. **[40118791070](https://github.com/Charlie-Wang-03/awards/actions/runs/40118791070) was pending** at this checkpoint; verify before elevating.
+5. `ResidualLossCommonActiveColourNoDuplicate.lean` is a constructive opposite branch: if the actual projected-loss sources SHARE ONE genuinely retained-active colour c0, choosing c0 at every loss vertex yields exactly zero cross-coordinate duplicate debt, with NO hole/surplus credit assumed. **[40119012594](https://github.com/Charlie-Wang-03/awards/actions/runs/40119012594) was pending** at this checkpoint; verify before elevating.
+
+The global one-sorry six-source actual external-Boolean-hole PLUS net available-surplus injection is **NOT** proved. The exact local criterion and the common-colour zero-duplicate branch reduce particular source-native subproblems without establishing that the required source conditions hold in all AngleCap configurations, nor that candidate holes across collisions can be used injectively.
