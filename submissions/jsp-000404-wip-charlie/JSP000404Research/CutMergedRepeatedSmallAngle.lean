@@ -1,6 +1,7 @@
 import JSP000404Research.SixPointMergedRepeatedColour
 import JSP000404Research.LastMergeActiveExact
 import JSP000404Research.CutBandSmallAngle
+import JSP000404Research.CutMergedOneExceptionTerminal
 import Mathlib.Tactic
 
 /-!
@@ -78,8 +79,8 @@ theorem old_localIncidentColor_eq_of_merged_eq_of_boundary_failure
 theorem localIncidentColor_cutProjective_eq
     {V : Type*} [LinearOrder V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -104,8 +105,8 @@ theorem localIncidentColor_cutProjective_eq
 theorem actual_angle_lt_lam_of_equal_local_cut_color
     {V : Type*} [LinearOrder V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {t lam c : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)

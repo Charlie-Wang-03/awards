@@ -123,9 +123,9 @@ theorem exists_small_zero_of_three_support_eq_two_after_outer
 theorem separated_support_two_has_small_pair_away_from_top
     {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (Cfam : ∀ v : V, CentreProjectiveCycle hp v)
-    {lam t delta : ℝ} {n : ℕ}
     (hcard : Fintype.card V = 6)
     (hn : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -162,7 +162,6 @@ theorem separated_support_two_has_small_pair_away_from_top
 
   have hRayLen : (Cfam i).rays.length = 5 := by
     rw [centreRayList_length_eq_card_sub_one (Cfam i), hcard]
-    norm_num
   have hrestLen : rest.length = 3 := by
     have h := congrArg List.length hrotRays
     rw [List.length_rotate, hRayLen] at h
@@ -211,13 +210,13 @@ theorem separated_support_two_has_small_pair_away_from_top
   let A₁ := EuclideanGeometry.angle (p r.1) (p i) (p b.1)
   let A₂ := EuclideanGeometry.angle (p b.1) (p i) (p c.1)
   let A₃ := EuclideanGeometry.angle (p c.1) (p i) (p d.1)
-  have hA₁ : 0 ≤ A₁ := by positivity
-  have hA₂ : 0 ≤ A₂ := by positivity
-  have hA₃ : 0 ≤ A₃ := by positivity
+  have hA₁ : 0 ≤ A₁ := EuclideanGeometry.angle_nonneg _ _ _
+  have hA₂ : 0 ≤ A₂ := EuclideanGeometry.angle_nonneg _ _ _
+  have hA₃ : 0 ≤ A₃ := EuclideanGeometry.angle_nonneg _ _ _
 
   have hrotNodup :
-      ((⟨top, hit⟩ : OtherVertex i) :: r :: b :: c :: d :: []).Nodup := by
-    rw [← hrest] at hrotRays
+      ((⟨top, hit.symm⟩ : OtherVertex i) :: r :: b :: c :: d :: []).Nodup := by
+    rw [hrest] at hrotRays
     rw [← hrotRays]
     simpa using (Cfam i).nodup
 
@@ -225,7 +224,7 @@ theorem separated_support_two_has_small_pair_away_from_top
       (r :: b :: c :: d :: []).Nodup :=
     (List.nodup_cons.mp hrotNodup).2
   have htopNotTail :
-      (⟨top, hit⟩ : OtherVertex i) ∉
+      (⟨top, hit.symm⟩ : OtherVertex i) ∉
         (r :: b :: c :: d :: []) :=
     (List.nodup_cons.mp hrotNodup).1
 
