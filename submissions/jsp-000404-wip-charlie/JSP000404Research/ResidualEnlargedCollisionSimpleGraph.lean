@@ -1795,7 +1795,7 @@ theorem projectedLoss_retainedActive_card
     (exponent : V → ℕ)
     {v : V}
     (hvLoss : v ∈ projectedLossVertices C exponent) :
-    (retainedActive C v).card = n - exponent v + 1 := by
+    (retainedActive C v).card = n + 1 - exponent v := by
   have hcard : (retainedActive C v).card ≤ n := by
     simpa using Finset.card_le_univ (retainedActive C v)
   have heq := (mem_projectedLossVertices C exponent v).1 hvLoss
