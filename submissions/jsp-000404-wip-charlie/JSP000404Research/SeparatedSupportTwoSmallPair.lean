@@ -234,28 +234,28 @@ theorem separated_support_two_has_small_pair_away_from_top
     simp only [List.mem_cons, List.mem_singleton]
     left
     apply Subtype.ext
-    exact h
+    exact h.symm
   have hbTop : b.1 ≠ top := by
     intro h
     apply htopNotTail
     simp only [List.mem_cons, List.mem_singleton]
     right; left
     apply Subtype.ext
-    exact h
+    exact h.symm
   have hcTop : c.1 ≠ top := by
     intro h
     apply htopNotTail
     simp only [List.mem_cons, List.mem_singleton]
     right; right; left
     apply Subtype.ext
-    exact h
+    exact h.symm
   have hdTop : d.1 ≠ top := by
     intro h
     apply htopNotTail
     simp only [List.mem_cons, List.mem_singleton]
-    right; right; right
+    right; right; right; left
     apply Subtype.ext
-    exact h
+    exact h.symm
 
   have hrb : r ≠ b := by
     intro heq
@@ -350,7 +350,7 @@ theorem separated_support_two_has_small_pair_away_from_top
         hA₁ hA₂ hA₃
         (mul_nonneg hdelta0 hlampos.le)
         hmidCount
-        (by simpa [listZeroAngleMass, A₁, A₂, A₃,
+        (by simpa [listZeroAngleMass, A₁, A₂, A₃, hF,
                add_assoc, mul_assoc] using hhead)
     rcases hsmall with h1 | h2 | h3
     · exact ⟨r,b,hrb,hrTop,hbTop,h1.2⟩
