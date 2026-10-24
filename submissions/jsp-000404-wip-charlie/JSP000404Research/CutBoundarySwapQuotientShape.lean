@@ -157,6 +157,7 @@ theorem cut_wrap_two_support_three_ordinary_shape
     let qOrd := (successiveDiffsFrom a xs).map Nat.floor
     listPositiveCount qOrd = 2 ∧
       qOrd.sum = n - 2 := by
+  let qOrd := (successiveDiffsFrom a xs).map Nat.floor
   have hbase :=
     cut_wrap_two_ordinary_shape_of_deficit_three_support
       hp hn5 htpos C R hvalues hexp hsupport hwrap
