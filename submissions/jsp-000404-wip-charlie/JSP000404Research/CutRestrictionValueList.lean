@@ -91,10 +91,10 @@ theorem mem_map_childOtherToParent_iff_ne_deleted
     (hir : i ≠ r)
     (hother :
       Nonempty (OtherVertex (survivingCentre r i hir)))
-    (D := C.restrictDelete r hir hother)
     (Rc :
       CentreCutRayCycle
-        (restrictedPoint_injective hp r) D c)
+        (restrictedPoint_injective hp r)
+        (C.restrictDelete r hir hother) c)
     (j : OtherVertex i) :
     j ∈ Rc.rays.map (childOtherToParent r i hir)
       ↔
@@ -173,10 +173,10 @@ theorem child_parent_ray_list_perm_split
     (hir : i ≠ r)
     (hother :
       Nonempty (OtherVertex (survivingCentre r i hir)))
-    (D := C.restrictDelete r hir hother)
     (Rc :
       CentreCutRayCycle
-        (restrictedPoint_injective hp r) D c)
+        (restrictedPoint_injective hp r)
+        (C.restrictDelete r hir hother) c)
     (pre post : List (OtherVertex i))
     (hsplit :
       R.rays =
@@ -257,10 +257,10 @@ theorem restrictDelete_normalizedValues_of_cut_split
     (hir : i ≠ r)
     (hother :
       Nonempty (OtherVertex (survivingCentre r i hir)))
-    (D := C.restrictDelete r hir hother)
     (Rc :
       CentreCutRayCycle
-        (restrictedPoint_injective hp r) D c)
+        (restrictedPoint_injective hp r)
+        (C.restrictDelete r hir hother) c)
     (ht : 0 < t)
     (pre post : List (OtherVertex i))
     (hsplit :
@@ -306,7 +306,8 @@ theorem restrictDelete_normalizedValues_of_cut_split
       unfold cutNormalizedRayTheta
       have hdiv :=
         div_le_div_of_nonneg_right hab Real.pi_pos.le
-      exact mul_le_mul_of_nonneg_left hdiv ht.le)
+      simpa only [mul_div_assoc] using
+        (mul_le_mul_of_nonneg_left hdiv ht.le))
 
   exact List.Perm.eq_of_pairwise
     (fun a b _ha _hb hab hba => le_antisymm hab hba)
