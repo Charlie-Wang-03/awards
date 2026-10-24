@@ -401,6 +401,72 @@ theorem large_disjoint_edge_colour_classes_card_le_two
     (hLarge a ha) (hLarge b hb) (hLarge c hc)
     (hDisjoint a b hab) (hDisjoint a c hac) (hDisjoint b c hbc)
 
+/--
+For a six-point partition and five non-top vertices, *actual* colour graph
+edge classes of size at least four occur in at most two colours.
+This uses their proven edge disjointness and the exact ten-edge complete-graph
+ceiling. No C4-to-four-edges interface is assumed here.
+-/
+theorem five_minima_large_local_colour_classes_card_le_two
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (P : BinaryEdgePartition V k)
+    (top : V)
+    (hSix : Fintype.card V = 6)
+    (large : Finset (Fin k))
+    (hLarge : ∀ c ∈ large,
+      4 ≤ (localColourGraph P top c).edgeFinset.card) :
+    large.card ≤ 2 := by
+  classical
+  by_contra hnot
+  have hThree : 2 < large.card := by omega
+  obtain ⟨a,ha,b,hb,c,hc,hab,hac,hbc⟩ :=
+    Finset.two_lt_card.mp hThree
+  let A := (localColourGraph P top a).edgeFinset
+  let B := (localColourGraph P top b).edgeFinset
+  let D := (localColourGraph P top c).edgeFinset
+  have hAB : Disjoint A B :=
+    localColourGraph_edgeFinset_disjoint_of_ne P top hab
+  have hAD : Disjoint A D :=
+    localColourGraph_edgeFinset_disjoint_of_ne P top hac
+  have hBD : Disjoint B D :=
+    localColourGraph_edgeFinset_disjoint_of_ne P top hbc
+  have hABD : Disjoint (A ∪ B) D := by
+    apply Finset.disjoint_left.mpr
+    intro e he hd
+    rcases Finset.mem_union.mp he with hA | hB
+    · exact (Finset.disjoint_left.mp hAD) hA hd
+    · exact (Finset.disjoint_left.mp hBD) hB hd
+  have hUnion : ((A ∪ B) ∪ D).card =
+      A.card + B.card + D.card := by
+    rw [Finset.card_union_of_disjoint hABD,
+      Finset.card_union_of_disjoint hAB]
+  have hEdgesTop :
+      (⊤ : SimpleGraph (OtherVertex top)).edgeFinset.card = 10 := by
+    rw [SimpleGraph.card_edgeFinset_top_eq_card_choose_two,
+      card_otherVertex_eq_five_of_card_six hSix top]
+    norm_num
+  have hsub :
+      ((A ∪ B) ∪ D) ⊆
+        (⊤ : SimpleGraph (OtherVertex top)).edgeFinset := by
+    intro e he
+    rcases Finset.mem_union.mp he with heAB | heD
+    · rcases Finset.mem_union.mp heAB with heA | heB
+      · exact (SimpleGraph.edgeFinset_mono le_top) heA
+      · exact (SimpleGraph.edgeFinset_mono le_top) heB
+    · exact (SimpleGraph.edgeFinset_mono le_top) heD
+  have hUnionLe : ((A ∪ B) ∪ D).card ≤ 10 := by
+    calc
+      ((A ∪ B) ∪ D).card ≤
+          (⊤ : SimpleGraph (OtherVertex top)).edgeFinset.card :=
+        Finset.card_le_card hsub
+      _ = 10 := hEdgesTop
+  have hA : 4 ≤ A.card := hLarge a ha
+  have hB : 4 ≤ B.card := hLarge b hb
+  have hD : 4 ≤ D.card := hLarge c hc
+  omega
+
+#print axioms five_minima_large_local_colour_classes_card_le_two
+
 #print axioms three_disjoint_four_edge_classes_impossible
 #print axioms large_disjoint_edge_colour_classes_card_le_two
 
