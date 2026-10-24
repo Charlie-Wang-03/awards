@@ -40,9 +40,8 @@ theorem get_cons_append_cons_at_tail_length
   | nil =>
       simp
   | cons x xs ih =>
-      have hlast : (x :: xs).getLastD a = xs.getLastD x :=
-        List.getLastD_cons
-      simpa [hlast] using ih x
+      rw [List.getLastD_cons]
+      simpa using ih x
 
 theorem get_cons_append_cons_at_next
     {α : Type*}
@@ -65,9 +64,8 @@ theorem get_cons_at_tail_length
   induction as generalizing a with
   | nil => simp
   | cons x xs ih =>
-      have hlast : (x :: xs).getLastD a = xs.getLastD x :=
-        List.getLastD_cons
-      simpa [hlast] using ih x
+      rw [List.getLastD_cons]
+      simpa using ih x
 
 namespace CentreCutRayCycle
 
@@ -186,7 +184,7 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hlastHigh :
               c ≤ rayThetaAt hp i (rest.getLastD first) :=
             hhigh _ (by
-              exact List.getLastD_mem_cons first rest)
+              exact List.getLastD_mem_cons)
           have hsCanon :
               s =
                 t * ((rayThetaAt hp i first + Real.pi -
@@ -221,8 +219,8 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hget :
               C.rays.get ⟨rest.length, hm⟩ =
                 rest.getLastD first := by
-            rw [hCRays]
-            exact get_cons_at_tail_length first rest
+            simpa only [hCRays] using
+              get_cons_at_tail_length first rest
           have hstart :
               centreTurnUnitStart C t u =
                 normalizedRayTheta hp t i
@@ -277,7 +275,7 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             hlow lowFirst (by simp)
           have hlastLow :
               rayThetaAt hp i (lowRest.getLastD lowFirst) < c :=
-            hlow _ (List.getLastD_mem_cons lowFirst lowRest)
+            hlow _ (List.getLastD_mem_cons)
           have hsCanon :
               s =
                 t * ((rayThetaAt hp i lowFirst + Real.pi -
@@ -313,8 +311,8 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hget :
               C.rays.get ⟨lowRest.length, hm⟩ =
                 lowRest.getLastD lowFirst := by
-            rw [hCRays]
-            exact get_cons_at_tail_length lowFirst lowRest
+            simpa only [hCRays] using
+              get_cons_at_tail_length lowFirst lowRest
           have hstart :
               centreTurnUnitStart C t u =
                 normalizedRayTheta hp t i
@@ -382,7 +380,7 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             hhigh highFirst (by simp)
           have hlastLow :
               rayThetaAt hp i (lowRest.getLastD lowFirst) < c :=
-            hlow _ (List.getLastD_mem_cons lowFirst lowRest)
+            hlow _ (List.getLastD_mem_cons)
           have hsCanon :
               s =
                 t * ((rayThetaAt hp i highFirst -
@@ -406,16 +404,16 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
               C.rays.get ⟨m, by omega⟩ =
                 lowRest.getLastD lowFirst := by
             dsimp [m]
-            rw [hCRays]
-            exact get_cons_append_cons_at_tail_length
-              lowFirst lowRest highFirst highRest
+            simpa only [hCRays] using
+              get_cons_append_cons_at_tail_length
+                lowFirst lowRest highFirst highRest
           have hright :
               C.rays.get ⟨m + 1, hm⟩ =
                 highFirst := by
             dsimp [m]
-            rw [hCRays]
-            exact get_cons_append_cons_at_next
-              lowFirst lowRest highFirst highRest
+            simpa only [hCRays] using
+              get_cons_append_cons_at_next
+                lowFirst lowRest highFirst highRest
           have hfloor :
               Nat.floor
                 (t * ((rayThetaAt hp i
