@@ -559,6 +559,7 @@ theorem simpleGraph_no_triangle_of_three_lt_girth
     (huv : G.Adj u v)
     (hvw : G.Adj v w) :
     ¬ G.Adj u w := by
+  classical
   intro huw
   have hclique :
       G.IsNClique 3 ({u,v,w} : Finset X) := by
@@ -1778,6 +1779,97 @@ theorem longCycle_exists_shared_overload_vertex
       hdef
   omega
 
+
+/-- Every genuinely shared word belongs to its indexed source block. -/
+theorem sharedBlockWords_subset_block
+    {V W : Type*} [Fintype V] [DecidableEq V] [DecidableEq W]
+    (blocks : V → Finset W) (T : Finset V) (v : V) :
+    sharedBlockWords blocks T v ⊆ blocks v := by
+  intro word hshared
+  exact (sharedBlockWords_has_other_block blocks hshared).1
+
+theorem strict_enlargedBlock_card_le_two_mul_localSlack
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hstrict : exponent v < projectedFree C v) :
+    (enlargedProjectedCandidateBlock C exponent v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ) := by
+  have hnonloss :
+      v ∉ projectedLossVertices C exponent := by
+    intro hloss
+    have heq :=
+      (mem_projectedLossVertices C exponent v).1 hloss
+    omega
+  rw [enlargedProjectedCandidateBlock_nonloss
+      C exponent hnonloss]
+  have hcube :=
+    retainedCompletionWords_card_le_two_mul_surplus_of_strict
+      C exponent hstrict
+  rw [retainedCompletionWords_card] at hcube ⊢
+  unfold dyadicProfileSurplus at hcube
+  exact hcube
+
+theorem lowerLoss_enlargedBlock_card_le_two_mul_localSlack
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hlower : exponent v + 2 ≤ n) :
+    (enlargedProjectedCandidateBlock C exponent v).card
+      ≤
+    2 *
+      (
+        (enlargedProjectedCandidateBlock C exponent v).card -
+          2 ^ exponent v
+      ) := by
+  have hactive :
+      3 ≤ (retainedActive C v).card := by
+    rw [projectedLoss_retainedActive_card
+      C exponent hvLoss]
+    omega
+  have hblock :=
+    allActiveLossCandidateBlock_card C v
+  have hslack :=
+    enlargedLoss_local_slack_eq_translated_minus_one_cube
+      C exponent hvLoss
+  rw [enlargedProjectedCandidateBlock_loss
+      C exponent hvLoss]
+  rw [hslack]
+  rw [hblock]
+  have hcoef :
+      (retainedActive C v).card + 1
+        ≤
+      2 * ((retainedActive C v).card - 1) := by
+    omega
+  exact Nat.mul_le_mul_right
+    (retainedCompletionWords C v).card hcoef
+
+theorem topLoss_retainedActive_card_eq_two
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ)
+    {v : V}
+    (hvLoss : v ∈ projectedLossVertices C exponent)
+    (hvTop : exponent v = n - 1) :
+    (retainedActive C v).card = 2 := by
+  rw [projectedLoss_retainedActive_card
+    C exponent hvLoss, hvTop]
+  have hn2 : 2 ≤ n := by
+    have heq :=
+      (mem_projectedLossVertices C exponent v).1 hvLoss
+    unfold projectedFree at heq
+    omega
+  omega
+
+
 theorem longCycle_shared_overload_exact_or_topLoss
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -2600,34 +2692,6 @@ theorem longCycle_two_mul_pairOverlaps_le_sum_block_cards
   rw [← hpair] 
   omega
 
-theorem strict_enlargedBlock_card_le_two_mul_localSlack
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hstrict : exponent v < projectedFree C v) :
-    (enlargedProjectedCandidateBlock C exponent v).card
-      ≤
-    2 *
-      (
-        (enlargedProjectedCandidateBlock C exponent v).card -
-          2 ^ exponent v
-      ) := by
-  have hnonloss :
-      v ∉ projectedLossVertices C exponent := by
-    intro hloss
-    have heq :=
-      (mem_projectedLossVertices C exponent v).1 hloss
-    omega
-  rw [enlargedProjectedCandidateBlock_nonloss
-      C exponent hnonloss]
-  have hcube :=
-    retainedCompletionWords_card_le_two_mul_surplus_of_strict
-      C exponent hstrict
-  rw [retainedCompletionWords_card] at hcube ⊢
-  unfold dyadicProfileSurplus at hcube
-  exact hcube
-
 theorem longCycle_exists_nonstrict_vertex
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -2712,42 +2776,6 @@ theorem longCycle_exists_exact_or_loss_vertex
   · exact ⟨v,hvT,Or.inl hexact⟩
   · exact ⟨v,hvT,Or.inr hloss⟩
 
-
-theorem lowerLoss_enlargedBlock_card_le_two_mul_localSlack
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hvLoss : v ∈ projectedLossVertices C exponent)
-    (hlower : exponent v + 2 ≤ n) :
-    (enlargedProjectedCandidateBlock C exponent v).card
-      ≤
-    2 *
-      (
-        (enlargedProjectedCandidateBlock C exponent v).card -
-          2 ^ exponent v
-      ) := by
-  have hactive :
-      3 ≤ (retainedActive C v).card := by
-    rw [projectedLoss_retainedActive_card
-      C exponent hvLoss]
-    omega
-  have hblock :=
-    allActiveLossCandidateBlock_card C v
-  have hslack :=
-    enlargedLoss_local_slack_eq_translated_minus_one_cube
-      C exponent hvLoss
-  rw [enlargedProjectedCandidateBlock_loss
-      C exponent hvLoss]
-  rw [hslack]
-  rw [hblock]
-  have hcoef :
-      (retainedActive C v).card + 1
-        ≤
-      2 * ((retainedActive C v).card - 1) := by
-    omega
-  exact Nat.mul_le_mul_right
-    (retainedCompletionWords C v).card hcoef
 
 theorem longCycle_exists_exact_or_topLoss_vertex
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -3512,23 +3540,6 @@ theorem longCycle_exact_or_singleTopLoss_lowDefect
           hdef hmin hgirth hnoExact
           htopT htopLoss htopExp⟩
 
-
-theorem topLoss_retainedActive_card_eq_two
-    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
-    (C : OrderedEdgeColoring V (n + 1))
-    (exponent : V → ℕ)
-    {v : V}
-    (hvLoss : v ∈ projectedLossVertices C exponent)
-    (hvTop : exponent v = n - 1) :
-    (retainedActive C v).card = 2 := by
-  rw [projectedLoss_retainedActive_card
-    C exponent hvLoss, hvTop]
-  have hn2 : 2 ≤ n := by
-    have heq :=
-      (mem_projectedLossVertices C exponent v).1 hvLoss
-    unfold projectedFree at heq
-    omega
-  omega
 
 theorem topLoss_exists_two_distinct_active
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
