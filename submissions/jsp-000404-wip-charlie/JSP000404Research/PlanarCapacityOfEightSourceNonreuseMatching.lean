@@ -87,6 +87,6 @@ theorem planar_lower_branch_capacity_of_eight_source_actual_nonreuse_matching
   exact planar_lower_branch_capacity_of_actual_retainedEdge_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hpayout
 
-#print axioms planar_lower_branch_capacity_of_global_true_hole_nonreuse_injection
+#print axioms planar_lower_branch_capacity_of_eight_source_actual_nonreuse_matching
 end ProjectionOrdered
 end JSP000404Research
