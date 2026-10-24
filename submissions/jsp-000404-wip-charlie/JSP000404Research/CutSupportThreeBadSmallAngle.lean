@@ -41,7 +41,7 @@ theorem successiveDiffsFrom_sum_telescoping_real
       | nil =>
           simp
       | cons d ds =>
-          simp [List.getLastD_cons]
+          cases ds <;> simp [List.getLastD_cons]
 
 theorem cyclicRealGapsAt_sum_eq_width
     (width a : ℝ) (xs : List ℝ) :
@@ -268,12 +268,10 @@ theorem cutRayTheta_le_of_cutNormalized_le
     cutRayTheta hp c i u
         = (Real.pi / t) * ((t / Real.pi) * cutRayTheta hp c i u) := by
           field_simp [ne_of_gt ht, Real.pi_ne_zero]
-          ring
     _ ≤ (Real.pi / t) * ((t / Real.pi) * cutRayTheta hp c i v) :=
       mul_le_mul_of_nonneg_left h' hpos
     _ = cutRayTheta hp c i v := by
       field_simp [ne_of_gt ht, Real.pi_ne_zero]
-      ring
 
 theorem actual_angle_eq_cut_gap_of_sign_eq
     {V : Type*} {p : V → Plane}
@@ -356,7 +354,6 @@ theorem actual_angle_le_delta_lam_of_cut_same_sign_gap
         (cutRayTheta hp c i v - cutRayTheta hp c i u))
         = cutRayTheta hp c i v - cutRayTheta hp c i u := by
     field_simp [ne_of_gt ht, Real.pi_ne_zero]
-    ring
   calc
     cutRayTheta hp c i v - cutRayTheta hp c i u
         = (Real.pi / t) * ((t / Real.pi) *
@@ -413,7 +410,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
       centreExponent (C i) t +
         (BinaryEdgePartition.active P i).card = n + 1 := by
     have heq := hbad'.1
-    rw [hexp] at heq ⊢
+    dsimp [exponent] at heq
     omega
   have hfail :
       ¬ (
@@ -425,7 +422,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
     R.zeroUnitStep_of_saturated_boundary_collision_failure
       hp hcap (by omega : 1 ≤ n)
       htpos hlam ht hdeltaHalf
-      hc0 hcpi hsat
+      hc0 hcpi (C i) hsat
       (by simpa [P, htop] using hfail)
 
   obtain ⟨u, v, huv, hband, hfloor0, hgapMem⟩ :=
