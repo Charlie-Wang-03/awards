@@ -31,7 +31,9 @@ private theorem finFive_distinct_fourCycles_share_edge :
       e ≠ g → f ≠ h →
       0 < (cycleEdgeSet a b c d ∩
         cycleEdgeSet e f g h).card := by
-  decide
+  intro a b c d
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    decide
 
 noncomputable section
 
