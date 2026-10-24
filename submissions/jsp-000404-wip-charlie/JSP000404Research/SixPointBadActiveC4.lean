@@ -31,6 +31,15 @@ reduced colour whose colour graph contains a C4.
 
 namespace JSP000404Research
 
+noncomputable section
+
+-- Locally materialize finite edge sets of the colour graphs. Without this
+-- instance, `edgeFinset` cannot elaborate in the support-cardinality lemma.
+local instance edgeSetFintypeBadActiveC4
+    {W : Type*} [Fintype W] (G : SimpleGraph W) :
+    Fintype G.edgeSet :=
+  Fintype.ofFinite _
+
 open BinaryEdgePartition
 open scoped BigOperators
 
@@ -294,4 +303,5 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
 #print axioms localColourGraph_edge_card_le_active_of_inactive_minimum
 #print axioms bad_minimum_active_in_some_monochromatic_fourCycle
 
+end
 end JSP000404Research
