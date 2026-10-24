@@ -257,15 +257,18 @@ theorem separated_support_two_has_small_pair_away_from_top
     apply Subtype.ext
     exact h
 
-  have hrb : r ≠ b :=
-    (List.nodup_cons.mp htailNodup).1 (by simp)
+  have hrb : r ≠ b := by
+    intro heq
+    exact (List.nodup_cons.mp htailNodup).1 (by simp [heq])
   have hbc : b ≠ c := by
+    intro heq
     have hbcN := (List.nodup_cons.mp htailNodup).2
-    exact (List.nodup_cons.mp hbcN).1 (by simp)
+    exact (List.nodup_cons.mp hbcN).1 (by simp [heq])
   have hcd : c ≠ d := by
+    intro heq
     have hbcN := (List.nodup_cons.mp htailNodup).2
     have hcdN := (List.nodup_cons.mp hbcN).2
-    exact (List.nodup_cons.mp hcdN).1 (by simp)
+    exact (List.nodup_cons.mp hcdN).1 (by simp [heq])
 
   have hsupport3 :
       listPositiveCount (qFirst :: [q₁,q₂,q₃] ++ [qLast]) = 2 := by
@@ -292,7 +295,7 @@ theorem separated_support_two_has_small_pair_away_from_top
               ht hlam top (Cfam top) hTop
           have h :=
             outer_angle_ge_one_sub_delta_mul_lam_of_sharp
-              hp hcap hit.symm hdTop
+              hp hcap hit.symm hdTop.symm
               (by intro h; exact d.2 h.symm) hsharp
           simpa [EuclideanGeometry.angle_comm] using h
         · rw [hrest] at hLast
@@ -303,14 +306,15 @@ theorem separated_support_two_has_small_pair_away_from_top
           (EuclideanGeometry.angle (p d.1) (p i) (p top))
           delta lam hA₁ hA₂ hA₃ hdelta0 hdeltaHalf hlampos
           hmidCount hLastLower
-          (by simpa [listZeroAngleMass] using htail)
+          (by simpa [listZeroAngleMass, A₁, A₂, A₃,
+                 add_assoc, mul_assoc] using htail)
       rcases hsmall with h1 | h2 | h3
       · exact ⟨r,b,hrb,hrTop,hbTop,by simpa [A₁] using h1.2⟩
       · exact ⟨b,c,hbc,hbTop,hcTop,by simpa [A₂] using h2.2⟩
       · exact ⟨c,d,hcd,hcTop,hdTop,by simpa [A₃] using h3.2⟩
     · have hmidCount :
           listPositiveCount [q₁,q₂,q₃] ≤ 1 := by
-        simp [listPositiveCount, hF, hL] at hsupport3
+        simp [listPositiveCount, hF, hL] at hsupport3 ⊢
         omega
       have htail := htailBudget hF
       rw [hrest, hqmid] at htail
@@ -322,7 +326,8 @@ theorem separated_support_two_has_small_pair_away_from_top
           hA₁ hA₂ hA₃
           (mul_nonneg hdelta0 hlampos.le)
           hmidCount
-          (by simpa [listZeroAngleMass] using htail)
+          (by simpa [listZeroAngleMass, A₁, A₂, A₃,
+                 add_assoc, mul_assoc] using htail)
       rcases hsmall with h1 | h2 | h3
       · exact ⟨r,b,hrb,hrTop,hbTop,h1.2⟩
       · exact ⟨b,c,hbc,hbTop,hcTop,h2.2⟩
@@ -333,7 +338,7 @@ theorem separated_support_two_has_small_pair_away_from_top
       · exact hLast.1
     have hmidCount :
         listPositiveCount [q₁,q₂,q₃] ≤ 1 := by
-      simp [listPositiveCount, hF, hL] at hsupport3
+      simp [listPositiveCount, hF, hL] at hsupport3 ⊢
       omega
     have hhead := hheadBudget hL
     rw [hrest, hqmid] at hhead
@@ -345,7 +350,8 @@ theorem separated_support_two_has_small_pair_away_from_top
         hA₁ hA₂ hA₃
         (mul_nonneg hdelta0 hlampos.le)
         hmidCount
-        (by simpa [listZeroAngleMass] using hhead)
+        (by simpa [listZeroAngleMass, A₁, A₂, A₃,
+               add_assoc, mul_assoc] using hhead)
     rcases hsmall with h1 | h2 | h3
     · exact ⟨r,b,hrb,hrTop,hbTop,h1.2⟩
     · exact ⟨b,c,hbc,hbTop,hcTop,h2.2⟩
