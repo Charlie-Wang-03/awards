@@ -71,12 +71,13 @@ theorem cross_loss_collision_square_exterior_holes_exact_count
     {word : Fin n → Bool}
     (hc : word ∈ translatedLossSliceWords C exponent choice c)
     (hd : word ∈ translatedLossSliceWords C exponent choice d) :
-    ((insert word
-      (insert (flipBoolWordAt word c)
-        (insert (flipBoolWordAt word d)
-          ({flipBoolWordAt (flipBoolWordAt word c) d} :
-            Finset (Fin n → Bool))))) ∩
-      lossLedgerOutsideTranslatedTrueHoles C exponent choice).card =
+    Finset.card
+      ((insert word
+        (insert (flipBoolWordAt word c)
+          (insert (flipBoolWordAt word d)
+            ({flipBoolWordAt (flipBoolWordAt word c) d} :
+              Finset (Fin n → Bool))))) ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) =
         if flipBoolWordAt (flipBoolWordAt word c) d ∈
           lossLedgerOutsideTranslatedTrueHoles C exponent choice
         then 1 else 0 := by
