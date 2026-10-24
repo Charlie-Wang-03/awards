@@ -260,7 +260,7 @@ theorem exists_sharp_pinned_support_two_deficit_three_shape
         rw [hARpin]
         simp [cyclicRayAngles, consecutiveRayAngles,
           topRay, AFirst, Amid, ALast, lastRay,
-          List.getLastD_cons]
+          List.getLastD_cons] <;> cases rest <;> rfl
 
       have hmidLen :
           qmid.length = Amid.length := by
@@ -449,7 +449,7 @@ theorem separated_support_two_residual_zero_budget
     rw [hangleRot]
     simp [cyclicRayAngles, consecutiveRayAngles,
       AFirst, Amid, ALast, lastRay,
-      List.getLastD_cons]
+      List.getLastD_cons] <;> cases rest <;> rfl
 
   have hmassShape :
       listZeroAngleMass
