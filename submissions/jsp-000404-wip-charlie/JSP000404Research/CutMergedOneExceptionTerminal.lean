@@ -195,10 +195,12 @@ noncomputable def uncoveredCutMergedPartition
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
-    simpa [P, wrapBit, htop] using
+    intro u v huv hb
+    have hsep :=
       cutBoundaryWrapBit_separates
         hp hcap C hn htpos hlam ht
         hdelta0 hdeltaHalf hc0 hcpi huncovered
+    exact hsep huv hb
   exact mergeLastPartition hn P wrapBit hwrap
 
 /-- Safe centres meet the exact n-colour local deficit after the uncovered
@@ -250,10 +252,12 @@ theorem uncoveredCutMergedPartition_active_le_of_not_bad
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
-    simpa [P, wrapBit, htop] using
+    intro u v huv hb
+    have hsep :=
       cutBoundaryWrapBit_separates
         hp hcap C hn htpos hlam ht
         hdelta0 hdeltaHalf hc0 hcpi huncovered
+    exact hsep huv hb
   have hold :
       ∀ i, (active P i).card ≤
         (n + 1) - exponent i := by
@@ -324,10 +328,12 @@ theorem uncoveredCutMergedPartition_active_le_one_extra
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
-    simpa [P, wrapBit, htop] using
+    intro u v huv hb
+    have hsep :=
       cutBoundaryWrapBit_separates
         hp hcap C hn htpos hlam ht
         hdelta0 hdeltaHalf hc0 hcpi huncovered
+    exact hsep huv hb
   have hold :
       ∀ i, (active P i).card ≤
         (n + 1) - exponent i := by
@@ -408,7 +414,8 @@ theorem no_uncovered_cut_with_top_safe_and_atMostOne_bad_minimum
         htpos hlam ht hdelta0 hdeltaHalf
         hc0 hcpi huncovered top hTopSafe
     rw [hTopExp] at h
-    omega
+    have hnStep : n - (n - 1) = 1 := by omega
+    simpa [hnStep] using h
   have hBad :
       (active M bad).card ≤ 4 := by
     have h :=
@@ -419,7 +426,8 @@ theorem no_uncovered_cut_with_top_safe_and_atMostOne_bad_minimum
     have hbadMin : centreExponent (C bad) t = n - 3 :=
       hMinExp bad htb.symm
     rw [hbadMin] at h
-    omega
+    have hnStep : n - (n - 3) = 3 := by omega
+    simpa [hnStep] using h
   have hOther :
       ∀ v : V, v ≠ top → v ≠ bad →
         (active M v).card ≤ 3 := by
@@ -437,7 +445,8 @@ theorem no_uncovered_cut_with_top_safe_and_atMostOne_bad_minimum
         htpos hlam ht hdelta0 hdeltaHalf
         hc0 hcpi huncovered v hsafe
     rw [hMinExp v hvt] at h
-    omega
+    have hnStep : n - (n - 3) = 3 := by omega
+    simpa [hnStep] using h
   exact no_six_point_partition_with_one_min_exception
     hn M top bad htb hcard hTop hBad hOther
 
