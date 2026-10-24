@@ -1,26 +1,19 @@
-import JSP000404Research.FiveMinimaPendantRepeatedSmallAngle
+import JSP000404Research.SixPointMergedRepeatedColour
 import JSP000404Research.SixPointBadActiveC4
 import JSP000404Research.CutMonochromaticC4Angles
 import Mathlib.Tactic
 
 /-!
-# Every exceptional saturation-bad minimum has a non-top small angle
+# Each exceptional saturation-bad minimum has its own small angle
 
-In the exact two-exception root-factorized terminal, each exceptional minimum
-is active in some non-root colour whose five-minimum colour graph contains a
-four-cycle.
+Uses a shorter proof than the earlier C4/pendant case split:
+four non-top edges use three reduced colours, forcing a repeated incident
+merged colour, and saturation-bad makes that a genuine strict sub-lambda
+angle at the prescribed minimum. No C4 existence or pendant hypotheses
+are needed.
 
-Fix such a bad minimum b and such a colour c.
-
-* If a c-coloured four-cycle contains b, the two cycle neighbours at b have
-  genuine angle < lambda by CutMonochromaticC4Angles.
-* If no c-coloured four-cycle contains b, the five-vertex bipartite graph
-  forces b to be a pendant of the existing C4.  The other three incident
-  minimum edges use only the other two reduced colours, so one repeats; the
-  pendant repeated-colour theorem again gives a genuine angle < lambda.
-
-Thus every saturation-bad exceptional minimum has a strict sub-lambda angle
-between two other non-top vertices.
+Both individual and paired conclusions are sorry-free local consequences
+of the genuine uncovered-cut setup, not a global true-hole payment.
 -/
 
 namespace JSP000404Research
@@ -98,80 +91,40 @@ theorem exceptional_bad_has_nonTop_small_angle
       y ≠ top ∧ y ≠ rootBad ∧
       x ≠ y ∧
       EuclideanGeometry.angle (p x) (p rootBad) (p y) < lam := by
-  let M :=
+  let M  let M :=
     uncoveredCutMergedPartition
       hp hcap C (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi huncovered
 
-  obtain ⟨colour,hcolourRoot,hcolourBad,hC4⟩ :=
-    bad_minimum_active_in_some_monochromatic_fourCycle
-      M top bad₁ bad₂ root
-      htb₁ htb₂ hb₁₂ hcard
-      (by simpa [M] using hrootTop)
-      (by simpa [M] using hrootEdges)
-      (by simpa [M] using hBad₁)
-      (by simpa [M] using hBad₂)
-      (by simpa [M] using hOther)
-      rootBad hbadCase
-
   have hbt : rootBad ≠ top := by
-    rcases hbadCase with rfl | rfl
-    · exact htb₁.symm
-    · exact htb₂.symm
-
-  let B : OtherVertex top := ⟨rootBad, hbt⟩
-
-  by_cases hthrough :
-      ∃ u v w : OtherVertex top,
-        B ≠ u ∧ u ≠ v ∧ v ≠ w ∧ w ≠ B ∧
-        B ≠ v ∧ u ≠ w ∧
-        (localColourGraph M top colour).Adj B u ∧
-        (localColourGraph M top colour).Adj u v ∧
-        (localColourGraph M top colour).Adj v w ∧
-        (localColourGraph M top colour).Adj w B
-  · obtain ⟨u,v,w,hBu,huv,hvw,hwB,hBv,huw,
-        hBuE,huvE,hvwE,hwBE⟩ := hthrough
-    refine ⟨u.1,w.1,u.2,?_,w.2,?_,?_,?_⟩
-    · intro h
-      apply hBu
-      apply Subtype.ext
-      exact h.symm
-    · intro h
-      apply hwB
-      apply Subtype.ext
-      exact h
-    · intro h
-      apply huw
-      apply Subtype.ext
-      exact h
-    · exact
-        saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n)
-          htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour
-          hBu hwB.symm huw
-          hBuE hwBE hbadSat
-  · have hReducedBad :
-        ((active M rootBad).erase root).card = 3 := by
-      rcases hbadCase with rfl | rfl
-      · simpa [M] using hBad₁
-      · simpa [M] using hBad₂
-    exact
-      pendant_saturation_bad_has_repeated_small_angle
-        hp hcap C (by omega : 1 ≤ n)
-        htpos hlam ht hdelta0 hdeltaHalf
-        hc0 hcpi huncovered
-        top rootBad root colour hbt hcard
-        (by simpa [M] using hrootTop)
-        (by simpa [M] using hrootEdges)
-        hcolourRoot hReducedBad
-        (by simpa [M] using hcolourBad)
-        (by simpa [M] using hC4)
-        (by simpa [B,M] using hthrough)
-        hbadSat
-
-/-- Two-exception corollary: both saturation-bad minima carry their own
+    rcases hbadCase with h | h
+    · rw [h]
+      exact htb₁.symm
+    · rw [h]
+      exact htb₂.symm
+  have hReducedBad :
+      ((active M rootBad).erase root).card = 3 := by
+    rcases hbadCase with h | h
+    · rw [h]
+      simpa only [M] using hBad₁
+    · rw [h]
+      simpa only [M] using hBad₂
+  have hrootEdges' :
+      ∀ {u v : V}, u < v →
+        u ≠ top → v ≠ top → M.edgeColor u v ≠ root := by
+    intro u v huv hut hvt
+    exact hrootEdges huv hut hvt
+  obtain ⟨x,y,hxt,hxb,hyt,hyb,hxy,heq⟩ :=
+    four_nonTop_edges_three_nonroot_colours_repeat
+      M top rootBad root hbt hcard hrootEdges' hReducedBad
+  refine ⟨x,y,hxt,hxb,hyt,hyb,hxy,?_⟩
+  exact actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
+    (i := rootBad) (x := x) (y := y)
+    hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
+    hc0 hcpi huncovered hxb.symm hyb.symm hxy hbadSat
+    (by simpa only [M] using heq)
+o-exception corollary: both saturation-bad minima carry their own
 non-top strict sub-lambda angle witnesses. -/
 theorem two_exception_bad_minima_each_have_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
