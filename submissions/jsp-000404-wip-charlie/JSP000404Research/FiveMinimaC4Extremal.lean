@@ -312,6 +312,66 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
         G R L hbi.symm hRtwo (by simpa [G] using hno)
     omega
 
+/--
+Three pairwise disjoint edge classes of cardinality at least four cannot
+fit in an ambient edge universe of cardinality at most ten.
+
+This is the finite packing inequality needed for the *conditional* C4
+exception-colour count on five vertices.  Establishing the ambient ten-edge
+universe and the four-edge lower bound for real local colour graphs remains
+a separate graph-theoretic interface, not an assumed planar theorem.
+-/
+theorem three_disjoint_four_edge_classes_impossible
+    {E : Type*} [Fintype E]
+    (A B C : Finset E)
+    (hTen : Fintype.card E ≤ 10)
+    (hA : 4 ≤ A.card)
+    (hB : 4 ≤ B.card)
+    (hC : 4 ≤ C.card)
+    (hAB : Disjoint A B)
+    (hAC : Disjoint A C)
+    (hBC : Disjoint B C) : False := by
+  classical
+  have hABCdisjoint : Disjoint (A ∪ B) C := by
+    apply Finset.disjoint_left.mpr
+    intro x hx hc
+    rcases Finset.mem_union.mp hx with hxA | hxB
+    · exact (Finset.disjoint_left.mp hAC) hxA hc
+    · exact (Finset.disjoint_left.mp hBC) hxB hc
+  have hABCcard :
+      ((A ∪ B) ∪ C).card = A.card + B.card + C.card := by
+    rw [Finset.card_union_of_disjoint hABCdisjoint,
+      Finset.card_union_of_disjoint hAB]
+  have hBound := Finset.card_le_univ ((A ∪ B) ∪ C)
+  omega
+
+/--
+At most two colour classes can each use four or more mutually exclusive edges
+inside an ambient universe of at most ten edges.  The disjointness and
+four-edge bounds are explicit, independently checkable hypotheses.
+-/
+theorem large_disjoint_edge_colour_classes_card_le_two
+    {E K : Type*} [Fintype E]
+    (hTen : Fintype.card E ≤ 10)
+    (edgeClass : K → Finset E)
+    (hDisjoint : ∀ a b : K, a ≠ b →
+      Disjoint (edgeClass a) (edgeClass b))
+    (bad : Finset K)
+    (hLarge : ∀ c ∈ bad, 4 ≤ (edgeClass c).card) :
+    bad.card ≤ 2 := by
+  classical
+  by_contra h
+  have hThree : 2 < bad.card := by omega
+  obtain ⟨a,ha,b,hb,c,hc,hab,hac,hbc⟩ :=
+    Finset.two_lt_card.mp hThree
+  exact three_disjoint_four_edge_classes_impossible
+    (edgeClass a) (edgeClass b) (edgeClass c) hTen
+    (hLarge a ha) (hLarge b hb) (hLarge c hc)
+    (hDisjoint a b hab) (hDisjoint a c hac) (hDisjoint b c hbc)
+
+#print axioms three_disjoint_four_edge_classes_impossible
+#print axioms large_disjoint_edge_colour_classes_card_le_two
+
 #print axioms neighbor_inter_card_le_one_of_no_fourCycle
 #print axioms bipartite_edge_card_le_right_add_one_of_left_card_two
 #print axioms localColourGraph_edge_card_lt_active_of_no_fourCycle
