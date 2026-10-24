@@ -664,7 +664,149 @@ theorem separated_support_two_has_positive_top_endpoint_of_delta_lt_third
       · omega
     · omega
 
+/-- Actual planar double-zero sharp-pinned budget.
+
+If BOTH sharp-top-adjacent quotient gaps at a genuine deficit-three,
+support-two centre vanish, then the sum of ALL remaining middle zero-gap
+angles costs at most (3*delta-1)*lambda. In particular this geometry
+forces delta >= 1/3.
+
+This is an explicit quantitative geometric necessary condition. It is
+NOT a payment of Boolean holes, covered sink words or dyadic debt. -/
+theorem separated_support_two_double_zero_middle_angle_budget
+    {V : Type*} [LinearOrder V] [Fintype V] [DecidableEq V]
+    {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta : ℝ} {n : ℕ}
+    (hcap : AngleCap p lam)
+    (Cfam : ∀ v : V, CentreProjectiveCycle hp v)
+    (hn : 5 ≤ n)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (n : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (top : V)
+    (hTop : centreExponent (Cfam top) t = n - 1)
+    {i : V}
+    (hit : i ≠ top)
+    (hI : centreExponent (Cfam i) t = n - 3)
+    (hsupport :
+      positiveSupport (centreQuotient (Cfam i) t) = 2) :
+    ∃ (k : ℕ) (r : OtherVertex i) (rest : List (OtherVertex i))
+      (qFirst qLast : ℕ) (qmid : List ℕ),
+      (Cfam i).rays.rotate k =
+        (⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest ∧
+      (quotientList t (Cfam i).gaps).rotate k =
+        qFirst :: qmid ++ [qLast] ∧
+      (qFirst = 0 ∧ qLast = 0 →
+        listZeroAngleMass qmid
+            (consecutiveRayAngles (p := p) i r rest)
+          ≤ (3 * delta - 1) * lam ∧
+        (1 : ℝ) / 3 ≤ delta) := by
+  have htpos : 0 < t :=
+    sendov_scale_pos (by omega : 1 ≤ n) hdelta0 ht
+  have hlampos : 0 < lam := by
+    rw [hlam]
+    exact div_pos Real.pi_pos htpos
+  have hsharp : SharpAt p delta lam top :=
+    concrete_unit_deficit_is_sharp
+      hp hcap (by omega : 2 ≤ n) hdelta0
+      (by linarith : delta < 1) ht hlam
+      top (Cfam top) hTop
+  obtain ⟨first0, rest0, k, pre, post, r, rest,
+      qFirst, qLast, qmid,
+      hrays0, hsplit, hk, hrotRays, hqrot,
+      hsupportRot, hmidLen, hmass, hangleRot⟩ :=
+    exists_sharp_pinned_support_two_deficit_three_shape
+      hp hcap (by omega : 4 ≤ n) hdelta0 hdeltaHalf ht hlam
+      hit (Cfam i) hI hsupport
+  let lastRay : OtherVertex i := (r :: rest).getLastD r
+  let AFirst := EuclideanGeometry.angle (p top) (p i) (p r.1)
+  let Amid := consecutiveRayAngles (p := p) i r rest
+  let ALast := EuclideanGeometry.angle (p lastRay.1) (p i) (p top)
+  have hrotNodup :
+      ((⟨top, hit.symm⟩ : OtherVertex i) :: r :: rest).Nodup := by
+    rw [← hrotRays]
+    simpa using (Cfam i).nodup
+  have htopr : top ≠ r.1 := by
+    intro h
+    have hne := (List.nodup_cons.mp hrotNodup).1
+    apply hne
+    exact List.mem_cons.mpr (Or.inl (Subtype.ext h))
+  have hlastMem : lastRay ∈ r :: rest := by
+    dsimp [lastRay]
+    have hlastEq : (r :: rest).getLastD r = rest.getLastD r := by
+      cases rest <;> rfl
+    rw [hlastEq]
+    exact List.getLastD_mem_cons
+  have htopLast : top ≠ lastRay.1 := by
+    intro h
+    have hne := (List.nodup_cons.mp hrotNodup).1
+    apply hne
+    have he : (⟨top, hit.symm⟩ : OtherVertex i) = lastRay :=
+      Subtype.ext h
+    rw [he]
+    exact hlastMem
+  have hFirstLower : (1 - delta) * lam ≤ AFirst := by
+    dsimp [AFirst]
+    exact outer_angle_ge_one_sub_delta_mul_lam_of_sharp
+      hp hcap hit.symm htopr
+      (by intro h; apply r.2; exact h.symm) hsharp
+  have hLastLower : (1 - delta) * lam ≤ ALast := by
+    dsimp [ALast]
+    have h :=
+      outer_angle_ge_one_sub_delta_mul_lam_of_sharp
+        hp hcap hit.symm htopLast
+        (by intro h; apply lastRay.2; exact h.symm) hsharp
+    have hcomm :
+        EuclideanGeometry.angle (p top) (p i) (p lastRay.1) =
+        EuclideanGeometry.angle (p lastRay.1) (p i) (p top) :=
+      EuclideanGeometry.angle_comm _ _ _
+    simpa [hcomm] using h
+  have hARShape :
+      (cyclicRayAngles (p := p) i first0 rest0).rotate k =
+        AFirst :: Amid ++ [ALast] := by
+    rw [hangleRot]
+    simp [cyclicRayAngles, consecutiveRayAngles,
+      AFirst, Amid, ALast, lastRay,
+      List.getLastD_cons] <;> cases rest <;> rfl
+  have hmassShape :
+      listZeroAngleMass (qFirst :: qmid ++ [qLast])
+        (AFirst :: Amid ++ [ALast]) ≤ (1 + delta) * lam := by
+    rw [← hqrot, ← hARShape]
+    exact hmass
+  have hmidNonneg : 0 ≤ listZeroAngleMass qmid Amid :=
+    listZeroAngleMass_nonneg qmid Amid
+      (all_consecutiveRayAngles_nonneg (p := p) i r rest)
+  refine ⟨k, r, rest, qFirst, qLast, qmid, hrotRays, hqrot, ?_⟩
+  rintro ⟨hF, hL⟩
+  have hsplitMass :=
+    listZeroAngleMass_append_aligned
+      qmid [qLast] Amid [ALast] hmidLen
+  have hsingle :
+      listZeroAngleMass [qLast] [ALast] = ALast := by
+    simp [listZeroAngleMass, hL]
+  have hmassExact :
+      listZeroAngleMass (qFirst :: qmid ++ [qLast])
+          (AFirst :: Amid ++ [ALast]) =
+        AFirst + listZeroAngleMass qmid Amid + ALast := by
+    calc
+      _ = AFirst + listZeroAngleMass (qmid ++ [qLast])
+          (Amid ++ [ALast]) := by simp [listZeroAngleMass, hF]
+      _ = AFirst + (listZeroAngleMass qmid Amid + ALast) := by
+        rw [hsplitMass, hsingle]
+      _ = _ := by ring
+  rw [hmassExact] at hmassShape
+  constructor
+  · dsimp [Amid]
+    nlinarith [hFirstLower, hLastLower, hmassShape]
+  · by_contra hthird
+    have hlt : delta < (1 : ℝ) / 3 := by push_neg at hthird; exact hthird
+    have hgap : 0 < (1 - 3 * delta) * lam :=
+      mul_pos (by linarith) hlampos
+    nlinarith [hFirstLower, hLastLower, hmassShape, hmidNonneg, hgap]
+
 #print axioms separated_support_two_has_positive_top_endpoint_of_delta_lt_third
+#print axioms separated_support_two_double_zero_middle_angle_budget
 
 #print axioms exists_sharp_pinned_support_two_deficit_three_shape
 #print axioms separated_support_two_residual_zero_budget
