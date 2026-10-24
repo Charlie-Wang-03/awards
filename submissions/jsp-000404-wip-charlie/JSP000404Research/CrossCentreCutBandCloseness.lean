@@ -99,7 +99,8 @@ theorem abs_cutRayTheta_lt_lam_of_equal_cut_color
   have hinv : Real.pi / t = 1 / (t / Real.pi) := by
     field_simp [ne_of_gt ht, Real.pi_ne_zero]
   rw [hinv]
-  exact (mul_lt_one_iff_lt_inv₀ hscale).mp hnorm
+  apply (lt_div_iff₀ hscale).2
+  simpa only [mul_comm] using hnorm
 
 #print axioms abs_sub_lt_one_of_same_cut_band_values
 #print axioms abs_cutNormalizedRayTheta_lt_one_of_equal_cut_color
