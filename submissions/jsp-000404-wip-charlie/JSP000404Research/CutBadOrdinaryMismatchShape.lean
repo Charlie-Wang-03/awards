@@ -43,7 +43,9 @@ theorem zeroPositiveMismatchCount_append
   induction qs₁ generalizing bs₁ with
   | nil =>
       have hnil : bs₁ = [] := by
-        exact List.length_eq_zero.mp (by simpa using hlen.symm)
+        cases bs₁ with
+        | nil => rfl
+        | cons _ _ => simp at hlen
       subst bs₁
       simp [zeroPositiveMismatchCount]
   | cons q qs ih =>
@@ -70,7 +72,10 @@ theorem forall₂_left_of_append_of_length
   induction xs generalizing as with
   | nil =>
       have has : as = [] :=
-        List.length_eq_zero.mp (by simpa using hlen.symm)
+        by
+          cases as with
+          | nil => rfl
+          | cons _ _ => simp at hlen
       subst as
       exact List.Forall₂.nil
   | cons x xs ih =>
@@ -108,9 +113,9 @@ theorem cyclicBandJumps_map_floor_cons_decompose
 theorem cutSaturationBadAt_ordinary_mismatch_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -261,9 +266,9 @@ six-point minimum.  The four ordinary positions split into:
 theorem cutSaturationBadAt_ordinary_step_counts
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -452,9 +457,9 @@ theorem cutSaturationBadAt_ordinary_step_counts
 theorem cutSaturationBadAt_support_two_ordinary_mismatch_count
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -485,9 +490,9 @@ theorem cutSaturationBadAt_support_two_ordinary_mismatch_count
 theorem cutSaturationBadAt_support_three_ordinary_mismatch_count
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)

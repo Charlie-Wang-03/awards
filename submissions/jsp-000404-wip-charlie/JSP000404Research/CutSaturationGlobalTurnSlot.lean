@@ -29,9 +29,9 @@ turn slot whose underlying quotient is at least two. -/
 theorem cutSaturationBadAt_has_canonical_large_turnUnit_bad
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -84,9 +84,9 @@ theorem cutSaturationBadAt_has_canonical_large_turnUnit_bad
 theorem cutSaturationBadAt_has_global_large_turnUnit_bad
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -115,9 +115,9 @@ theorem cutSaturationBadAt_has_global_large_turnUnit_bad
 theorem cutSaturationBadAt_has_canonical_turnUnit_bad
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -168,9 +168,9 @@ theorem cutSaturationBadAt_has_canonical_turnUnit_bad
 theorem cutSaturationBadAt_has_global_turnUnit_bad
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -200,9 +200,9 @@ at the current phase, then i is merge-safe. -/
 theorem not_cutSaturationBadAt_of_no_turnUnit_bad_at_centre
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn : 1 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
