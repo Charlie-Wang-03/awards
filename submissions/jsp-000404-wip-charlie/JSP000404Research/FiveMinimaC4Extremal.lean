@@ -401,6 +401,39 @@ theorem large_disjoint_edge_colour_classes_card_le_two
     (hLarge a ha) (hLarge b hb) (hLarge c hc)
     (hDisjoint a b hab) (hDisjoint a c hac) (hDisjoint b c hbc)
 
+/-- A genuine 4-cycle contains four distinct undirected edges. -/
+theorem HasFourCycle.edgeFinset_card_ge_four
+    {W : Type*} [Fintype W]
+    (G : SimpleGraph W)
+    (hC4 : HasFourCycle G) :
+    4 ≤ G.edgeFinset.card := by
+  classical
+  obtain ⟨a,b,c,d,hab,hbc,hcd,hda,hac,hbd,
+    hAB,hBC,hCD,hDA⟩ := hC4
+  let E : Finset (Sym2 W) :=
+    {Sym2.mk (a,b), Sym2.mk (b,c),
+      Sym2.mk (c,d), Sym2.mk (d,a)}
+  have hsub : E ⊆ G.edgeFinset := by
+    intro e he
+    simp only [E, Finset.mem_insert, Finset.mem_singleton] at he
+    rcases he with rfl | rfl | rfl | rfl
+    · simpa only [SimpleGraph.mem_edgeFinset,
+        SimpleGraph.mem_edgeSet] using hAB
+    · simpa only [SimpleGraph.mem_edgeFinset,
+        SimpleGraph.mem_edgeSet] using hBC
+    · simpa only [SimpleGraph.mem_edgeFinset,
+        SimpleGraph.mem_edgeSet] using hCD
+    · simpa only [SimpleGraph.mem_edgeFinset,
+        SimpleGraph.mem_edgeSet] using hDA
+  have hcard : E.card = 4 := by
+    dsimp [E]
+    simp [Sym2.eq_iff,hab,hbc,hcd,hda,hac,hbd,eq_comm]
+  calc
+    4 = E.card := hcard.symm
+    _ ≤ G.edgeFinset.card := Finset.card_le_card hsub
+
+#print axioms HasFourCycle.edgeFinset_card_ge_four
+
 /--
 For a six-point partition and five non-top vertices, *actual* colour graph
 edge classes of size at least four occur in at most two colours.
@@ -464,6 +497,27 @@ theorem five_minima_large_local_colour_classes_card_le_two
   have hB : 4 ≤ B.card := hLarge b hb
   have hD : 4 ≤ D.card := hLarge c hc
   omega
+
+/--
+On five non-top vertices, at most two colours have a genuine 4-cycle.
+This conclusion assumes only that the full vertex set has six elements
+and that local edges have their actual unique incident colours.
+-/
+theorem five_minima_C4_exception_colours_card_le_two
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (P : BinaryEdgePartition V k)
+    (top : V)
+    (hSix : Fintype.card V = 6)
+    (bad : Finset (Fin k))
+    (hC4 : ∀ c ∈ bad, HasFourCycle (localColourGraph P top c)) :
+    bad.card ≤ 2 := by
+  apply five_minima_large_local_colour_classes_card_le_two
+    P top hSix bad
+  intro c hc
+  exact HasFourCycle.edgeFinset_card_ge_four
+    (localColourGraph P top c) (hC4 c hc)
+
+#print axioms five_minima_C4_exception_colours_card_le_two
 
 #print axioms five_minima_large_local_colour_classes_card_le_two
 
