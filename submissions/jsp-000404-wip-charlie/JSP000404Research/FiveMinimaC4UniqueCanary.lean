@@ -15,6 +15,13 @@ isolated research module is not imported by the global JSP-000404 theorem.
 
 namespace JSP000404Research
 
+noncomputable section
+
+private instance graphEdgeSetFintype {W : Type*} [Fintype W]
+    (G : SimpleGraph W) : Fintype G.edgeSet :=
+  Fintype.ofFinite _
+
+
 private def cycleEdgeSet {W : Type*} [DecidableEq W]
     (a b c d : W) : Finset (Sym2 W) :=
   {Sym2.mk a b, Sym2.mk b c,
@@ -30,10 +37,11 @@ private theorem finFive_distinct_fourCycles_share_edge :
       e ≠ g → f ≠ h →
       (cycleEdgeSet a b c d ∩
         cycleEdgeSet e f g h).Nonempty := by
+  classical
   decide
 
 private theorem distinct_fourCycles_share_edge_of_card_five
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (hFive : Fintype.card W = 5)
     {a b c d e f g h : W}
     (hab : a ≠ b) (hbc : b ≠ c)
@@ -89,7 +97,7 @@ private theorem distinct_fourCycles_share_edge_of_card_five
   exact ⟨w,hw⟩
 
 private theorem cycleEdgeSet_subset_edgeFinset
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (G : SimpleGraph W)
     {a b c d : W}
     (hab : G.Adj a b)
@@ -113,7 +121,7 @@ private theorem cycleEdgeSet_subset_edgeFinset
 
 /-- Two edge-disjoint simple graphs on five vertices cannot both contain C4. -/
 theorem disjoint_graphs_on_five_not_both_C4
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (hFive : Fintype.card W = 5)
     (G H : SimpleGraph W)
     (hDisjoint : Disjoint G.edgeFinset H.edgeFinset)
@@ -159,4 +167,5 @@ theorem five_minima_C4_exception_colours_card_le_one
 #print axioms disjoint_graphs_on_five_not_both_C4
 #print axioms five_minima_C4_exception_colours_card_le_one
 
+end
 end JSP000404Research
