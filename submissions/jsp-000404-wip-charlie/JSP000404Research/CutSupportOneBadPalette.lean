@@ -53,11 +53,9 @@ theorem list_sum_eq_member_of_positiveCount_one
       · subst a
         simp [listPositiveCount] at hcount
         simp only [List.sum_cons, zero_add]
-        apply ih hcount
-        · simp only [List.mem_cons] at hmem
-          rcases hmem with hqZero | hqTail
-          · exact False.elim (hq hqZero.symm)
-          · exact ih hcount hqTail hq
+        have hmemTail : q ∈ as := by
+          simpa [hq] using hmem
+        exact ih hcount hmemTail hq
       · have htailCount :
             listPositiveCount as = 0 := by
           simp [listPositiveCount, ha] at hcount
