@@ -72,7 +72,14 @@ theorem cutSaturationBadAt_wrap_quotient_eq_two_of_span_n_sub_one
           (active P i).card
         =
       n + 1 := by
-    simpa [exponent] using hbad'.1
+    have hexpLt := centreExponent_lt_n
+      (C i) n delta t (by omega : 1 ≤ n) hdelta0
+      (by linarith : delta < 1) ht
+    have hcard :
+        (BinaryEdgePartition.active P i).card =
+          n + 1 - centreExponent (C i) t := by
+      simpa [exponent] using hbad'.1
+    omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ active P i ∧
         Fin.last n ∈ active P i) := hbad'.2

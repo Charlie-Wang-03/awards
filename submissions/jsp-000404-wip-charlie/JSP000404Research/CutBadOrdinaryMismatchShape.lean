@@ -168,7 +168,14 @@ theorem cutSaturationBadAt_ordinary_mismatch_shape
   have hsat :
       centreExponent (C i) t + (BinaryEdgePartition.active P i).card =
         n + 1 := by
-    simpa [exponent] using hbad'.1
+    have hexpLt := centreExponent_lt_n
+      (C i) n delta t (by omega : 1 ≤ n) hdelta0
+      (by linarith : delta < 1) ht
+    have hcard :
+        (BinaryEdgePartition.active P i).card =
+          n + 1 - centreExponent (C i) t := by
+      simpa [exponent] using hbad'.1
+    omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ BinaryEdgePartition.active P i ∧
         Fin.last n ∈ BinaryEdgePartition.active P i) :=
@@ -244,7 +251,7 @@ theorem successiveDiffsFrom_length_for_bad_shape
     (successiveDiffsFrom a xs).length = xs.length := by
   induction xs generalizing a with
   | nil => rfl
-  | cons b bs =>
+  | cons b bs ih =>
       simp [successiveDiffsFrom,
         ih b]
 
@@ -253,7 +260,7 @@ theorem successiveNatDiffsFrom_length
     (successiveNatDiffsFrom a xs).length = xs.length := by
   induction xs generalizing a with
   | nil => rfl
-  | cons b bs =>
+  | cons b bs ih =>
       simp [successiveNatDiffsFrom,
         ih b]
 
@@ -328,7 +335,14 @@ theorem cutSaturationBadAt_ordinary_step_counts
           (BinaryEdgePartition.active P i).card
         =
       n + 1 := by
-    simpa [exponent] using hbad'.1
+    have hexpLt := centreExponent_lt_n
+      (C i) n delta t (by omega : 1 ≤ n) hdelta0
+      (by linarith : delta < 1) ht
+    have hcard :
+        (BinaryEdgePartition.active P i).card =
+          n + 1 - centreExponent (C i) t := by
+      simpa [exponent] using hbad'.1
+    omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ BinaryEdgePartition.active P i ∧
         Fin.last n ∈ BinaryEdgePartition.active P i) :=

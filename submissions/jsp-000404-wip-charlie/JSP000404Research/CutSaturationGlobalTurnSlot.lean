@@ -74,7 +74,8 @@ theorem cutSaturationBadAt_has_canonical_large_turnUnit_bad
           (BinaryEdgePartition.active P i).card
         =
       n + 1 := by
-    rw [hsatCard]
+    change (BinaryEdgePartition.active P i).card =
+      n + 1 - centreExponent (C i) t at hsatCard
     omega
   exact exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
     hp hcap hn htpos hlam ht hdelta0 hdeltaHalf
@@ -159,7 +160,8 @@ theorem cutSaturationBadAt_has_canonical_turnUnit_bad
           (BinaryEdgePartition.active P i).card
         =
       n + 1 := by
-    rw [hsatCard]
+    change (BinaryEdgePartition.active P i).card =
+      n + 1 - centreExponent (C i) t at hsatCard
     omega
   exact exists_canonical_turnUnit_bad_of_cut_saturated_failure
     hp hcap hn htpos hlam ht hdelta0 hdeltaHalf
