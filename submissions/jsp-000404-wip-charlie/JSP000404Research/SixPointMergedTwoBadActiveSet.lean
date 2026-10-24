@@ -74,7 +74,7 @@ theorem no_exclusive_colour_at_first_bad
   have hcRoot : c ≠ root := by
     intro h
     subst c
-    exact hc₂ (hrootAll bad₂ htb₂).1
+    exact hc₂ (hrootAll bad₂ htb₂.symm).1
   have hcTop : c ∉ active P top := by
     rw [hrootTop]
     simp [hcRoot]
@@ -119,7 +119,7 @@ theorem no_exclusive_colour_at_first_bad
     dsimp [F]
     rw [card_falseCompletionAt,
       dif_neg hc₂,
-      Finset.card_insert_of_not_mem hc₂,
+      Finset.card_insert_of_notMem hc₂,
       hexact.2.2.1]
     have he : n - (4 + 1) = n - 5 := by omega
     rw [he]
@@ -133,7 +133,7 @@ theorem no_exclusive_colour_at_first_bad
       dsimp [F]
       rw [card_falseCompletionAt,
         dif_neg hcTop,
-        Finset.card_insert_of_not_mem hcTop,
+        Finset.card_insert_of_notMem hcTop,
         hexact.1]
       have he : n - (1 + 1) = n - 2 := by omega
       rw [he, hpow2]
@@ -160,7 +160,7 @@ theorem no_exclusive_colour_at_first_bad
           exact ⟨0, by simp⟩
       · rw [card_falseCompletionAt,
           dif_neg hcv,
-          Finset.card_insert_of_not_mem hcv,
+          Finset.card_insert_of_notMem hcv,
           hcardV]
         have he : n - (3 + 1) = n - 4 := by omega
         rw [he, hpow4]
@@ -209,7 +209,7 @@ theorem no_exclusive_colour_at_first_bad
       (∑ v : V, F v) =
         F bad₂ +
           ∑ v ∈ (Finset.univ.erase bad₂ : Finset V), F v := by
-    rw [← Finset.sum_erase_add F (Finset.mem_univ bad₂)]
+    rw [← Finset.sum_erase_add (Finset.univ : Finset V) F (Finset.mem_univ bad₂)]
     simp [add_comm]
 
   have hmain :
