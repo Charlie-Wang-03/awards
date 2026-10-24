@@ -219,8 +219,8 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hget :
               C.rays.get ⟨rest.length, hm⟩ =
                 rest.getLastD first := by
-            simpa only [hCRays] using
-              get_cons_at_tail_length first rest
+            rw [hCRays]
+            exact get_cons_at_tail_length first rest
           have hstart :
               centreTurnUnitStart C t u =
                 normalizedRayTheta hp t i
@@ -249,9 +249,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
+              simp only [List.getLastD] at hlo
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
+              simp only [List.getLastD] at hhi
               linarith
   | cons lowFirst lowRest =>
       cases high with
@@ -311,8 +313,8 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hget :
               C.rays.get ⟨lowRest.length, hm⟩ =
                 lowRest.getLastD lowFirst := by
-            simpa only [hCRays] using
-              get_cons_at_tail_length lowFirst lowRest
+            rw [hCRays]
+            exact get_cons_at_tail_length lowFirst lowRest
           have hstart :
               centreTurnUnitStart C t u =
                 normalizedRayTheta hp t i
@@ -341,9 +343,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
+              simp only [List.getLastD] at hlo
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
+              simp only [List.getLastD] at hhi
               linarith
       | cons highFirst highRest =>
           -- Genuine split: the seam is the ordinary canonical gap from the
@@ -404,15 +408,15 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
               C.rays.get ⟨m, by omega⟩ =
                 lowRest.getLastD lowFirst := by
             dsimp [m]
-            simpa only [hCRays] using
-              get_cons_append_cons_at_tail_length
+            rw [hCRays]
+            exact get_cons_append_cons_at_tail_length
                 lowFirst lowRest highFirst highRest
           have hright :
               C.rays.get ⟨m + 1, hm⟩ =
                 highFirst := by
             dsimp [m]
-            simpa only [hCRays] using
-              get_cons_append_cons_at_next
+            rw [hCRays]
+            exact get_cons_append_cons_at_next
                 lowFirst lowRest highFirst highRest
           have hfloor :
               Nat.floor
@@ -462,9 +466,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
+              simp only [List.getLastD] at hlo
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
+              simp only [List.getLastD] at hhi
               linarith
 
 /-- Backward-compatible form retaining only the periodic badness witness. -/
