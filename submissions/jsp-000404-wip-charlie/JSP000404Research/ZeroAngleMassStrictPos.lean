@@ -42,7 +42,7 @@ theorem listZeroAngleMass_pos_of_zero_mem_and_angles_pos
             linarith
           · have hzeroTail : 0 ∈ qs := by
               simpa [List.mem_cons, eq_comm, hq] using hzero
-            have ht := ih hlen hrest hzeroTail
+            have ht := ih As hlen hrest hzeroTail
             simpa [listZeroAngleMass, hq] using ht
 
 /-- The original-plane global cap makes every consecutive angle of a nodup
