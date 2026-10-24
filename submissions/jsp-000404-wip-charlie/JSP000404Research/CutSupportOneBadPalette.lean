@@ -1,4 +1,5 @@
 import JSP000404Research.CutSaturatedSupportMismatch
+import JSP000404Research.CutSaturatedEndpointDichotomy
 import JSP000404Research.SaturatedSeamPhaseArithmetic
 import Mathlib.Tactic
 
@@ -53,8 +54,10 @@ theorem list_sum_eq_member_of_positiveCount_one
         simp [listPositiveCount] at hcount
         simp only [List.sum_cons, zero_add]
         apply ih hcount
-        · simpa using hmem
-        · exact hq
+        · simp only [List.mem_cons] at hmem
+          rcases hmem with hqZero | hqTail
+          · exact False.elim (hq hqZero.symm)
+          · exact ih hcount hqTail hq
       · have htailCount :
             listPositiveCount as = 0 := by
           simp [listPositiveCount, ha] at hcount
@@ -90,21 +93,22 @@ theorem le_getLastD_of_mem_pairwise
       simp only [List.mem_cons] at hx
       rcases hx with hxa | hxtail
       · subst x
-        exact head_le_getLastD_of_pairwise a (b :: bs) hsorted
-      · have htail :
-            (b :: bs).Pairwise (· ≤ ·) :=
-          hp.2
-        have h :=
-          ih b htail hxtail
-        simpa [List.getLastD_cons] using h
+        have hab : a ≤ b := hp.1 b (by simp)
+        have hbLast : b ≤ (b :: bs).getLastD a := by
+          have h := ih b hp.2 (by simp : b ∈ b :: bs)
+          cases bs <;> simpa using h
+        exact hab.trans hbLast
+      · have htail : (b :: bs).Pairwise (· ≤ ·) := hp.2
+        have h := ih b htail (by simpa using hxtail)
+        cases bs <;> simpa using h
 
 /-- Main support-one bad-palette span theorem. -/
 theorem cutSaturationBadAt_support_one_four_consecutive_band_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -153,7 +157,9 @@ theorem cutSaturationBadAt_support_one_four_consecutive_band_span
     simpa [CutSaturationBadAt, P, exponent, htop] using hbad
   have hsat :
       centreExponent (C i) t + (active P i).card = n + 1 := by
-    simpa [exponent] using hbad'.1
+    have heq := hbad'.1
+    rw [hexp] at heq ⊢
+    omega
   have hfail :
       ¬ ((0 : Fin (n + 1)) ∈ active P i ∧
         Fin.last n ∈ active P i) :=
