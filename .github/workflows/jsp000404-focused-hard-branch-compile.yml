@@ -8,6 +8,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/FiveMinimaColourGraph.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointOrdinaryInsideBadPalette.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointHardLowSupportGeometry.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SmallPairHardBranchDistinctSupports.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutSaturatedSupportMismatch.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutMergedRepeatedSmallAngle.lean"
       - ".github/workflows/jsp000404-focused-hard-branch-compile.yml"
@@ -57,7 +58,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check five previously failed hard-branch modules
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.FiveMinimaColourGraph JSP000404Research.SixPointOrdinaryInsideBadPalette JSP000404Research.SixPointHardLowSupportGeometry JSP000404Research.CutSaturatedSupportMismatch JSP000404Research.CutMergedRepeatedSmallAngle
+        run: lake build JSP000404Research.FiveMinimaColourGraph JSP000404Research.SixPointOrdinaryInsideBadPalette JSP000404Research.SixPointHardLowSupportGeometry JSP000404Research.SmallPairHardBranchDistinctSupports JSP000404Research.CutSaturatedSupportMismatch JSP000404Research.CutMergedRepeatedSmallAngle
       - name: Scope
         if: always()
         run: echo 'These are focused source-level compilation checks, not a global geometric payment.'

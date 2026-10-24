@@ -1689,3 +1689,4 @@ import JSP000404Research.SeparatedSupportTwoResidualBudget
 -- Actual short-angle triangle propagation for separated support-two minima.
 import JSP000404Research.SeparatedSupportTwoTrianglePropagation
 import JSP000404Research.SmallTriangleApexUniqueness
+import JSP000404Research.SmallPairHardBranchDistinctSupports
