@@ -157,16 +157,22 @@ theorem cutSaturationBadAt_span_n_sub_one_quotient_shape
       (head_le_getLastD_of_pairwise a xs hsorted)
   have hspanEq :
       Nat.floor z = Nat.floor a + (n - 1) := by
-    dsimp [z] at hspan
+    change Nat.floor z - Nat.floor a = n - 1 at hspan
     omega
   have houter : n - Nat.floor z + Nat.floor a = 1 := by
     have hzMem :
         z ∈ R.normalizedValues t := by
       rw [hvalues]
-      exact List.getLastD_mem_cons a xs
-    have hzlt :=
-      floor_lt_n_add_one_of_normalizedValue_mem
-        R htpos hc0 hcpi htop hzMem
+      simpa [z] using
+        (List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)
+    have hzBounds :=
+      R.normalizedValues_mem_bounds htpos hc0 hcpi hzMem
+    have hzFloorReal : (Nat.floor z : ℝ) ≤ z :=
+      Nat.floor_le hzBounds.1
+    have hzBoundReal : (Nat.floor z : ℝ) < (n + 1 : ℕ) :=
+      lt_of_le_of_lt hzFloorReal (lt_trans hzBounds.2 htop)
+    have hzlt : Nat.floor z < n + 1 := by
+      exact_mod_cast hzBoundReal
     rw [hspanEq]
     omega
   have hqWrap : qWrap = 2 := by
