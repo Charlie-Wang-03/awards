@@ -73,8 +73,11 @@ theorem separated_support_two_at_least_six_centres_no_double_zero_at_third
   intro hends
   letI : DecidableEq V := LinearOrder.toDecidableEq
   have hOtherMin : 5 ≤ Fintype.card (OtherVertex i) := by
+    have hSingleton : Fintype.card {v : V // v = i} = 1 := by
+      simp
     change 5 ≤ Fintype.card {v : V // v ≠ i}
     rw [Fintype.card_subtype_compl (fun v : V => v = i)]
+    rw [hSingleton]
     omega
   have hRayCard :
       (Cfam i).rays.length = Fintype.card (OtherVertex i) := by
