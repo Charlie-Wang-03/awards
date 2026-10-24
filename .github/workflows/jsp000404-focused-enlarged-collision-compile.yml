@@ -3,10 +3,10 @@ name: JSP-000404 Focused Enlarged Collision Compilation
 on:
   push:
     branches:
-      - research/jsp-000404-sharp-    paths:
+      - research/jsp-000404-sharp-centre
+    paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualEnlargedCollisionSimpleGraph.lean"
       - ".github/workflows/jsp000404-focused-enlarged-collision-compile.yml"
-e.yml"
   workflow_dispatch:
 
 permissions:
