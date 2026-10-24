@@ -37,11 +37,24 @@ theorem successiveDiffsFrom_sum_telescoping_real
   | cons b bs ih =>
       simp only [successiveDiffsFrom, List.sum_cons]
       rw [ih b]
-      cases bs with
-      | nil =>
-          simp
-      | cons d ds =>
-          cases ds <;> simp [List.getLastD_cons]
+      rw [List.getLastD_cons]
+      ring
+
+/-- Every successive difference of an ordered real list is nonnegative. -/
+theorem successiveDiffsFrom_nonneg_of_pairwise
+    (a : ℝ) (xs : List ℝ)
+    (hsorted : (a :: xs).Pairwise (· ≤ ·)) :
+    ∀ g ∈ successiveDiffsFrom a xs, 0 ≤ g := by
+  induction xs generalizing a with
+  | nil =>
+      simp [successiveDiffsFrom]
+  | cons b bs ih =>
+      intro g hg
+      simp only [successiveDiffsFrom, List.mem_cons] at hg
+      rcases hg with rfl | hg
+      · have hab := (List.pairwise_cons.mp hsorted).1 b (by simp)
+        linarith
+      · exact ih b (List.pairwise_cons.mp hsorted).2 g hg
 
 theorem cyclicRealGapsAt_sum_eq_width
     (width a : ℝ) (xs : List ℝ) :
@@ -476,36 +489,28 @@ theorem cutSaturationBadAt_support_three_has_delta_small_adjacent_band_angle
     simp only [cyclicRealGapsAt, List.mem_append,
       List.mem_singleton] at hg
     rcases hg with hg | rfl
-    · induction xs generalizing a with
-      | nil =>
-          simp [successiveDiffsFrom] at hg
-      | cons b bs ih =>
-          have hpw := List.pairwise_cons.mp hsorted
-          simp only [successiveDiffsFrom, List.mem_cons] at hg
-          rcases hg with rfl | hg
-          · exact sub_nonneg.mpr (hpw.1 b (by simp))
-          · exact ih b hpw.2
-              (fun x hx => hallT x (by simp [hx])) hg
+    · exact successiveDiffsFrom_nonneg_of_pairwise
+        a xs hsorted g hg
     · have hz :
           xs.getLastD a < t :=
-        hallT _ (List.getLastD_mem_cons a xs)
+        hallT _ (List.getLastD_mem_cons (l := xs) (a := a))
       have haz :
           a ≤ xs.getLastD a := by
         cases xs with
         | nil => simp
         | cons b bs =>
-            exact
-              (List.pairwise_cons.mp hsorted).1
-                ((b :: bs).getLastD a)
-                (by simpa using
-                  (List.getLastD_mem_cons a (b :: bs)))
+            have hmem : (b :: bs).getLastD a ∈ b :: bs := by
+              rw [List.getLastD_cons]
+              exact List.getLastD_mem_cons (l := bs) (a := b)
+            exact (List.pairwise_cons.mp hsorted).1
+              ((b :: bs).getLastD a) hmem
       linarith
 
   have hqMap :
       gs.map Nat.floor = qs := by
     dsimp [gs, qs]
     simpa [cyclicRealGapsAt, cyclicGapsAt] using
-      (linearCyclicGapQuotients_eq_floor_cyclicGapsAt
+      (CentreCutRayCycle.linearCyclicGapQuotients_eq_floor_cyclicGapsAt
         t (a :: xs)).symm
 
   let g :=
