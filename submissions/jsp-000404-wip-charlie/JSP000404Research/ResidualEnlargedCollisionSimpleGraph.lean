@@ -1872,8 +1872,8 @@ theorem lowerLoss_enlargedBlock_card_le_two_mul_localSlack
         ≤
       2 * ((retainedActive C v).card - 1) := by
     omega
-  exact Nat.mul_le_mul_right
-    (retainedCompletionWords C v).card hcoef
+  simpa only [mul_assoc] using
+    (Nat.mul_le_mul_right (retainedCompletionWords C v).card hcoef)
 
 theorem topLoss_retainedActive_card_eq_two
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -2573,8 +2573,10 @@ theorem longCycle_pairOverlapWords_pairwiseDisjoint
   have htwo :
       2 ≤ (coreEnlargedCandidateFibre
         C exponent T word).card := by
-    exact Finset.two_le_card.mpr
-      ⟨u,huF,v,hvF,ne_of_lt hpData.2.2⟩
+    have hpos :=
+      Finset.one_lt_card.mpr
+        ⟨u,huF,v,hvF,ne_of_lt hpData.2.2⟩
+    omega
   have hcard :
       (coreEnlargedCandidateFibre
         C exponent T word).card = 2 := by
@@ -2929,7 +2931,7 @@ theorem enlargedBlock_card_le_two_slack_add_hardCredit
         have heq :=
           (mem_projectedLossVertices C exponent v).1 hloss'
         omega
-      simp [hnotExact,hnotTopLoss]
+      simp only [if_neg hnotExact, if_neg hnotTopLoss]
     rw [hcredit]
     simpa using
       strict_enlargedBlock_card_le_two_mul_localSlack
@@ -2948,6 +2950,7 @@ theorem enlargedBlock_card_le_two_slack_add_hardCredit
           C exponent hnonloss,
         retainedCompletionWords_card,
         hexact]
+      rfl
     have hcredit :
         longCycleHardCredit C exponent v =
           2 ^ exponent v := by
@@ -3159,7 +3162,10 @@ theorem topLoss_enlargedBlock_card_current
       (mem_projectedLossVertices C exponent v).1 hvLoss
     unfold projectedFree at hloss
     omega
-  omega
+  have hfactor : n + 1 - exponent v + 1 = 3 := by
+    rw [hvTop]
+    omega
+  rw [hfactor]
 
 theorem two_topLoss_enlargedBlocks_union_eq_univ
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -3297,7 +3303,7 @@ theorem longCycle_at_most_one_topLoss
     intro hsub
     have hc := Finset.card_le_card hsub
     have hpairCard : ({u,v} : Finset V).card = 2 := by
-      simp [huv, huv.symm]
+      simp [huv, (Ne.symm huv)]
     rw [hpairCard] at hc
     omega
   obtain ⟨w,hwT,hwNotPair⟩ :=
@@ -3319,7 +3325,7 @@ theorem longCycle_at_most_one_topLoss
     · exact hvT
     · exact hwT
   have hUCard : U.card = 3 := by
-    simp [U, huv, huv.symm, hwu, hwu.symm, hwv, hwv.symm]
+    simp [U, huv, (Ne.symm huv), hwu, hwu.symm, hwv, hwv.symm]
   have hUProper : U ⊂ T := by
     refine ⟨hUSub,?_⟩
     intro hsub
@@ -3358,7 +3364,7 @@ theorem longCycle_at_most_one_topLoss
           =
         2 ^ exponent u + 2 ^ exponent v +
           2 ^ exponent w := by
-      simp [U, huv, huv.symm, hwu, hwu.symm, hwv, hwv.symm, add_assoc]
+      simp [U, huv, (Ne.symm huv), hwu, hwu.symm, hwv, hwv.symm, add_assoc]
     rw [hsum,huTop,hvTop]
     simp only [Finset.card_univ, Fintype.card_fun,
       Fintype.card_fin, Fintype.card_bool]
@@ -3391,7 +3397,7 @@ theorem longCycleHardCredit_eq_zero_of_not_exact_not_topLoss
           exponent v = n - 1)) :
     longCycleHardCredit C exponent v = 0 := by
   unfold longCycleHardCredit
-  simp [hnotExact,hnotTopLoss]
+  simp only [if_neg hnotExact, if_neg hnotTopLoss]
 
 theorem longCycle_noExact_totalHardCredit_le_topCube
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -3430,6 +3436,7 @@ theorem longCycle_noExact_totalHardCredit_le_topCube
         (retainedCompletionWords C top).card := by
     unfold longCycleHardCredit
     simp [hnoExact top htopT,htopLoss,htopExp]
+  apply le_of_eq
   calc
     (∑ v ∈ T, longCycleHardCredit C exponent v)
       =
@@ -3872,8 +3879,17 @@ theorem deepLoss_enlargedBlock_add_cube_le_two_mul_localSlack
         ≤
       2 * ((retainedActive C v).card - 1) := by
     omega
-  exact Nat.mul_le_mul_right
-    (retainedCompletionWords C v).card hcoef
+  have hmul :=
+    Nat.mul_le_mul_right (retainedCompletionWords C v).card hcoef
+  calc
+    ((retainedActive C v).card + 1) *
+        (retainedCompletionWords C v).card +
+        (retainedCompletionWords C v).card =
+      ((retainedActive C v).card + 2) *
+        (retainedCompletionWords C v).card := by ring
+    _ ≤ 2 * (((retainedActive C v).card - 1) *
+        (retainedCompletionWords C v).card) := by
+      simpa only [mul_assoc] using hmul
 
 theorem lowerLoss_secondLayer_or_deep
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
