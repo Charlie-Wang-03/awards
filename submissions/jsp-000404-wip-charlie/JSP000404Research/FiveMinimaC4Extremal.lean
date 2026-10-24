@@ -24,6 +24,14 @@ This is the local extremal estimate behind the monochromatic-C4 terminal.
 
 namespace JSP000404Research
 
+noncomputable section
+
+local instance edgeSetFintypeFromFinite
+    {W : Type*} [Fintype W] (G : SimpleGraph W) :
+    Fintype G.edgeSet :=
+  Fintype.ofFinite _
+
+
 open BinaryEdgePartition
 
 def HasFourCycle {W : Type*} (G : SimpleGraph W) : Prop :=
@@ -411,8 +419,8 @@ theorem HasFourCycle.edgeFinset_card_ge_four
   obtain ⟨a,b,c,d,hab,hbc,hcd,hda,hac,hbd,
     hAB,hBC,hCD,hDA⟩ := hC4
   let E : Finset (Sym2 W) :=
-    {Sym2.mk (a,b), Sym2.mk (b,c),
-      Sym2.mk (c,d), Sym2.mk (d,a)}
+    {Sym2.mk a b, Sym2.mk b c,
+      Sym2.mk c d, Sym2.mk d a}
   have hsub : E ⊆ G.edgeFinset := by
     intro e he
     simp only [E, Finset.mem_insert, Finset.mem_singleton] at he
@@ -477,7 +485,7 @@ theorem five_minima_large_local_colour_classes_card_le_two
       (⊤ : SimpleGraph (OtherVertex top)).edgeFinset.card = 10 := by
     rw [SimpleGraph.card_edgeFinset_top_eq_card_choose_two,
       card_otherVertex_eq_five_of_card_six hSix top]
-    norm_num
+    decide
   have hsub :
       ((A ∪ B) ∪ D) ⊆
         (⊤ : SimpleGraph (OtherVertex top)).edgeFinset := by
@@ -528,4 +536,5 @@ theorem five_minima_C4_exception_colours_card_le_two
 #print axioms bipartite_edge_card_le_right_add_one_of_left_card_two
 #print axioms localColourGraph_edge_card_lt_active_of_no_fourCycle
 
+end
 end JSP000404Research
