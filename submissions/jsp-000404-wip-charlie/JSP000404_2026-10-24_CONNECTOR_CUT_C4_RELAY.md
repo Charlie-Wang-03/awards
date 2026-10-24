@@ -132,3 +132,24 @@ gate. Those paths are NOT required by the verified direct two-angle theorem.
 `sorry` for the global nonreusing six-source payment into REAL external
 Boolean holes plus genuinely unreserved dyadic surplus. A small angle at
 two centres cannot be treated as a newly discovered hole or as spare mass.
+
+
+## Next verification checkpoint — exact six-point terminal and compiler audit
+
+### Certified after the previous handoff
+
+- [CI 40111507155](https://github.com/Charlie-Wang-03/awards/actions/runs/40111507155): **SUCCESS**, 9,126 Lake jobs. `six_point_cut_shared_C4_and_both_bad_small_angles` has axioms exactly `[propext, Classical.choice, Quot.sound]`, **no sorryAx**. Same true uncovered-cut profile gives *simultaneously* a C4-bearing colour active at each bad minimum and an actual non-top strict sub-lambda angle at each.
+- [CI 40110888692](https://github.com/Charlie-Wang-03/awards/actions/runs/40110888692): **SUCCESS**, 9,121 Lake jobs, direct both-angle theorem; the optional C4/pendant case split is NOT needed to establish this consequence.
+- [CI 40111014343](https://github.com/Charlie-Wang-03/awards/actions/runs/40111014343): **SUCCESS**, 9,116 Lake jobs, original-exponent cut two-bad direct small-angle theorem.
+- [CI 40110980528](https://github.com/Charlie-Wang-03/awards/actions/runs/40110980528): **SUCCESS**, 3,251 jobs; genuine bipartite 5-minimum off-cycle pendant theorem with no sorryAx.
+
+### New code submitted on this continuation
+
+- `TwoBadEachSmallAngle.lean`: replaced a time-consuming C4/pendant case split with a direct proof, while PRESERVING theorem signatures, using the certified 4-to-3 repeated-colour pigeonhole and the actual-cut angle lemma. [CI 40112323821](https://github.com/Charlie-Wang-03/awards/actions/runs/40112323821), gate verdict pending at write time.
+- `FiveMinimaPendantRepeatedSmallAngle.lean`: remains useful as the stronger *non-C4-colour* repeated-edge witness when the bad vertex is pendant off the selected C4. Its declaration and C4 orientation/API repairs are on branch. Independent [CI 40112349807](https://github.com/Charlie-Wang-03/awards/actions/runs/40112349807) checks this stronger structural file, gate pending at write time.
+- `SixPointCutTwoBadCompleteLocalCertificate.lean`: combines exact original n-1 / n-3 exponents, AngleCap and two bad minima into a SINGLE external-auxiliary-free local certificate: sharp top, shared non-root C4-bearing colour, two separately non-top strict small angles, and two different phase-synchronous canonical bad turn-unit slots. Calls three prior research theorems with their EXACT geometric hypotheses. Dedicated [CI 40112599605](https://github.com/Charlie-Wang-03/awards/actions/runs/40112599605), gate pending.
+- `.github/workflows/jsp000404-full-admitted-root-audit.yml`: new explicit whole-root compiler gate [CI 40112204828](https://github.com/Charlie-Wang-03/awards/actions/runs/40112204828), building `JSP000404Research.PlanarLowerBranchProofAdmittedWIP` after the executable-sorry audit. This root file INTENTIONALLY has one global `sorry`. Even a fully green compilation does NOT turn the original problem into a proof.
+
+### Exact unresolved obligation
+
+At the end of `PlanarLowerBranchProofAdmittedWIP.lean` (near line 900), one executable admitted proof remains: for general original numbers of centres with n≥3 beyond the proved special configurations, show an ACTUAL planar nonreusing allocation of the global loss, already-covered soft/hard blocker, duplicate NET target, twin, mixed-rigid and other debts against **TRUE Boolean holes outside translated-loss credit** plus genuinely **unreserved** dyadic profile surplus. A C4-colour or small-angle witness is not itself a Boolean hole, a spare dyadic term or an admissible resource double-charge. No new axioms, no new admitted lemma, no full-prize-proof claim.
