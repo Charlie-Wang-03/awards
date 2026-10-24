@@ -248,11 +248,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
-              simp only [List.getLastD] at hlo ⊢
+              simp only [List.getLastD_eq_getLast?] at hlo ⊢
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
-              simp only [List.getLastD] at hhi ⊢
+              simp only [List.getLastD_eq_getLast?] at hhi ⊢
               linarith
   | cons lowFirst lowRest =>
       cases high with
@@ -341,11 +341,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
-              simp only [List.getLastD] at hlo ⊢
+              simp only [List.getLastD_eq_getLast?] at hlo ⊢
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
-              simp only [List.getLastD] at hhi ⊢
+              simp only [List.getLastD_eq_getLast?] at hhi ⊢
               linarith
       | cons highFirst highRest =>
           -- Genuine split: the seam is the ordinary canonical gap from the
@@ -462,11 +462,11 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
             constructor
             · have hlo := hseam'.2.2.1
               rw [hbeta] at hlo
-              simp only [List.getLastD] at hlo ⊢
+              simp only [List.getLastD_eq_getLast?] at hlo ⊢
               linarith
             · have hhi := hseam'.2.2.2
               rw [hbeta] at hhi
-              simp only [List.getLastD] at hhi ⊢
+              simp only [List.getLastD_eq_getLast?] at hhi ⊢
               linarith
 
 /-- Backward-compatible form retaining only the periodic badness witness. -/
