@@ -9,6 +9,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoResidualBudget.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoSmallPair.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SeparatedSupportTwoTrianglePropagation.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/SmallTriangleApexUniqueness.lean"
       - ".github/workflows/jsp000404-focused-separated-support-two.yml"
   workflow_dispatch:
 
@@ -56,7 +57,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check non-gaining separated support two at hard top deletion
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.SixPointSeparatedSupportTwo JSP000404Research.SeparatedSupportTwoResidualBudget JSP000404Research.SeparatedSupportTwoSmallPair JSP000404Research.SeparatedSupportTwoTrianglePropagation
+        run: lake build JSP000404Research.SixPointSeparatedSupportTwo JSP000404Research.SeparatedSupportTwoResidualBudget JSP000404Research.SeparatedSupportTwoSmallPair JSP000404Research.SeparatedSupportTwoTrianglePropagation JSP000404Research.SmallTriangleApexUniqueness
       - name: Scope
         if: always()
         run: echo 'Necessary separated support-two residual bound is not a global dyadic payment.'
