@@ -93,18 +93,12 @@ theorem le_getLastD_of_mem_pairwise
       · subst x
         have hab : a ≤ b := hp.1 b (by simp)
         have hbLast : b ≤ (b :: bs).getLastD a := by
-          calc
-            b ≤ (b :: bs).getLastD b :=
-              ih b hp.2 (by simp : b ∈ b :: bs)
-            _ = (b :: bs).getLastD a := by
-              cases bs <;> rfl
+          rw [List.getLastD_cons]
+          exact ih b hp.2 (by simp : b ∈ b :: bs)
         exact hab.trans hbLast
       · have htail : (b :: bs).Pairwise (· ≤ ·) := hp.2
-        calc
-          x ≤ (b :: bs).getLastD b :=
-            ih b htail (by simpa using hxtail)
-          _ = (b :: bs).getLastD a := by
-            cases bs <;> rfl
+        rw [List.getLastD_cons]
+        exact ih b htail (by simpa using hxtail)
 
 /-- Main support-one bad-palette span theorem. -/
 theorem cutSaturationBadAt_support_one_four_consecutive_band_span
@@ -237,7 +231,7 @@ theorem cutSaturationBadAt_support_one_four_consecutive_band_span
 
   have heqR :=
     R.local_band_equality_of_active_saturated
-      hp hcap htpos hlam hc0 hcpi n htop (C i) R
+      hp hcap htpos hlam hc0 hcpi n htop (C i)
       (by simpa [P, htop] using hsat)
   have heq :
       listExponent
