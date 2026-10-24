@@ -71,6 +71,8 @@ theorem bipartite_edge_card_le_active_card_of_active_card_le_four
   have hsum4 : L.card + R.card ≤ 4 := by
     rw [hsplit]
     exact hA4
+  have hLle4 : L.card ≤ 4 := by omega
+  have hRle4 : R.card ≤ 4 := by omega
   have hprodLe :
       L.card * R.card ≤ L.card + R.card := by
     interval_cases hL : L.card <;>
@@ -173,9 +175,10 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
   have hEdgeSum :
       (∑ c ∈ U,
         (localColourGraph P top c).edgeFinset.card) = 10 := by
-    simpa [U] using
-      sum_reducedUsedColours_edge_card_eq_ten
-        P top root hcard hrootEdges
+    simpa only [U, SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] using
+      (sum_reducedUsedColours_edge_card_eq_ten
+        P top root hcard hrootEdges)
 
   have hActiveSum :
       (∑ c ∈ U,
@@ -224,7 +227,7 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
       have hlt :=
         localColourGraph_edge_card_lt_active_of_no_fourCycle
           P top c hcard hcTop hcData.2 hnoC4
-      simp [hcb]
+      simp only [if_pos hcb]
       omega
     · have hle :=
         localColourGraph_edge_card_le_active_of_inactive_minimum
@@ -265,6 +268,9 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
     calc
       (∑ c ∈ U, (if c ∈ active P bad then 1 else 0))
           = (U.filter (fun c => c ∈ active P bad)).card := by
+              simp
+              congr 1
+              ext c
               simp
       _ = ((active P bad).erase root).card := by rw [hsetEq]
       _ = 3 := hBadCard
