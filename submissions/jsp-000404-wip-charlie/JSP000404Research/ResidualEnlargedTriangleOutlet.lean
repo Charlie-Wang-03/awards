@@ -82,31 +82,37 @@ theorem enlargedCollisionGraph_triangle_outlet
   rcases
     enlargedCollisionGraph_triangle_loss_shape
       C exponent T huv huw hvw
-    with hU | hV | hW | hUV | hUW | hVW
+    with
+      ⟨hULoss,hVNonloss,hWNonloss⟩
+      | ⟨hVLoss,hUNonloss,hWNonloss⟩
+      | ⟨hWLoss,hUNonloss,hVNonloss⟩
+      | ⟨hULoss,hVLoss⟩
+      | ⟨hULoss,hWLoss⟩
+      | ⟨hVLoss,hWLoss⟩
   · exact EnlargedTriangleOutlet.oneLossUResidual
-      hU.huLoss hU.hvNonloss hU.hwNonloss
+      hULoss hVNonloss hWNonloss
       (enlargedTriangle_oneLoss_has_nonloss_residual_edge
         C exponent hexp honeLoss T
         huv huw hvw
-        hU.huLoss hU.hvNonloss hU.hwNonloss)
+        hULoss hVNonloss hWNonloss)
   · exact EnlargedTriangleOutlet.oneLossVResidual
-      hV.hvLoss hV.huNonloss hV.hwNonloss
+      hVLoss hUNonloss hWNonloss
       (enlargedTriangle_oneLoss_has_nonloss_residual_edge
         C exponent hexp honeLoss T
         huv.symm hvw huw
-        hV.hvLoss hV.huNonloss hV.hwNonloss)
+        hVLoss hUNonloss hWNonloss)
   · exact EnlargedTriangleOutlet.oneLossWResidual
-      hW.hwLoss hW.huNonloss hW.hvNonloss
+      hWLoss hUNonloss hVNonloss
       (enlargedTriangle_oneLoss_has_nonloss_residual_edge
         C exponent hexp honeLoss T
         huw.symm hvw.symm huv
-        hW.hwLoss hW.huNonloss hW.hvNonloss)
+        hWLoss hUNonloss hVNonloss)
   · exact EnlargedTriangleOutlet.twoLossUV
-      hUV.huLoss hUV.hvLoss
+      hULoss hVLoss
   · exact EnlargedTriangleOutlet.twoLossUW
-      hUW.huLoss hUW.hwLoss
+      hULoss hWLoss
   · exact EnlargedTriangleOutlet.twoLossVW
-      hVW.hvLoss hVW.hwLoss
+      hVLoss hWLoss
 
 #print axioms enlargedCollisionGraph_triangle_outlet
 
@@ -219,40 +225,46 @@ theorem enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
   rcases
     enlargedCollisionGraph_triangle_loss_shape
       C exponent T huv huw hvw
-    with hU | hV | hW | hUV | hUW | hVW
+    with
+      ⟨hULoss,hVNonloss,hWNonloss⟩
+      | ⟨hVLoss,hUNonloss,hWNonloss⟩
+      | ⟨hWLoss,hUNonloss,hVNonloss⟩
+      | ⟨hULoss,hVLoss⟩
+      | ⟨hULoss,hWLoss⟩
+      | ⟨hVLoss,hWLoss⟩
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        hvw hU.hvNonloss hU.hwNonloss
+        hvw hVNonloss hWNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        huw hV.huNonloss hV.hwNonloss
+        huw hUNonloss hWNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        huv hW.huNonloss hW.hvNonloss
+        huv hUNonloss hVNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · exact Or.inl
       ⟨u,v,
         (enlargedCollisionGraph C exponent T).ne_of_adj huv,
-        hUV.huLoss,hUV.hvLoss⟩
+        hULoss,hVLoss⟩
   · exact Or.inl
       ⟨u,w,
         (enlargedCollisionGraph C exponent T).ne_of_adj huw,
-        hUW.huLoss,hUW.hwLoss⟩
+        hULoss,hWLoss⟩
   · exact Or.inl
       ⟨v,w,
         (enlargedCollisionGraph C exponent T).ne_of_adj hvw,
-        hVW.hvLoss,hVW.hwLoss⟩
+        hVLoss,hWLoss⟩
 
 #print axioms enlargedTriangle_nonloss_edge_paid_or_exactRecursive
 #print axioms enlargedCollisionGraph_triangle_twoLoss_or_paid_or_exactRecursive
@@ -305,40 +317,46 @@ theorem enlargedCollisionGraph_commonWord_triangle_twoLoss_or_paid_or_exactRecur
   rcases
     enlargedCollisionGraph_triangle_loss_shape
       C exponent T huv huw hvw
-    with hU | hV | hW | hUV | hUW | hVW
+    with
+      ⟨hULoss,hVNonloss,hWNonloss⟩
+      | ⟨hVLoss,hUNonloss,hWNonloss⟩
+      | ⟨hWLoss,hUNonloss,hVNonloss⟩
+      | ⟨hULoss,hVLoss⟩
+      | ⟨hULoss,hWLoss⟩
+      | ⟨hVLoss,hWLoss⟩
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        hvw hU.hvNonloss hU.hwNonloss
+        hvw hVNonloss hWNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        huw hV.huNonloss hV.hwNonloss
+        huw hUNonloss hWNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · rcases
       enlargedTriangle_nonloss_edge_paid_or_exactRecursive
         C exponent hexp honeLoss T
-        huv hW.huNonloss hW.hvNonloss
+        huv hUNonloss hVNonloss
       with hpaid | hrec
     · exact Or.inr (Or.inl hpaid)
     · exact Or.inr (Or.inr hrec)
   · exact Or.inl
       ⟨u,v,
         (enlargedCollisionGraph C exponent T).ne_of_adj huv,
-        hUV.huLoss,hUV.hvLoss,huWord,hvWord⟩
+        hULoss,hVLoss,huWord,hvWord⟩
   · exact Or.inl
       ⟨u,w,
         (enlargedCollisionGraph C exponent T).ne_of_adj huw,
-        hUW.huLoss,hUW.hwLoss,huWord,hwWord⟩
+        hULoss,hWLoss,huWord,hwWord⟩
   · exact Or.inl
       ⟨v,w,
         (enlargedCollisionGraph C exponent T).ne_of_adj hvw,
-        hVW.hvLoss,hVW.hwLoss,hvWord,hwWord⟩
+        hVLoss,hWLoss,hvWord,hwWord⟩
 
 #print axioms enlargedCollisionGraph_commonWord_triangle_twoLoss_or_paid_or_exactRecursive
 
