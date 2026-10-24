@@ -192,7 +192,7 @@ theorem sum_reducedUsedColours_edge_card_eq_ten
             apply Finset.sum_congr rfl
             intro c hc
             simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
-              Fintype.card_eq_nat_card] using
+              SimpleGraph.degree, Fintype.card_eq_nat_card] using
               (SimpleGraph.sum_degrees_eq_twice_card_edges
                 (localColourGraph P top c)).symm
       _ =
