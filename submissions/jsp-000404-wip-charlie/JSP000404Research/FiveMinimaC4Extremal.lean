@@ -313,6 +313,38 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     omega
 
 /--
+Distinct local colours have disjoint *actual* edges on the non-top vertices.
+Unlike the subsequent packing result, this does not assume pairwise
+disjointness: it follows directly from the unique local incident colour.
+-/
+theorem localColourGraph_edgeFinset_disjoint_of_ne
+    {V : Type*} [LinearOrder V] [Fintype V] {k : ℕ}
+    (P : BinaryEdgePartition V k)
+    (top : V)
+    {c d : Fin k}
+    (hcd : c ≠ d) :
+    Disjoint (localColourGraph P top c).edgeFinset
+      (localColourGraph P top d).edgeFinset := by
+  classical
+  apply Finset.disjoint_left.mpr
+  intro e hec hed
+  induction e using Sym2.ind with
+  | _ u v =>
+      have hcAdj : (localColourGraph P top c).Adj u v := by
+        simpa only [SimpleGraph.mem_edgeFinset,
+          SimpleGraph.mem_edgeSet] using hec
+      have hdAdj : (localColourGraph P top d).Adj u v := by
+        simpa only [SimpleGraph.mem_edgeFinset,
+          SimpleGraph.mem_edgeSet] using hed
+      have hcCol :=
+        ((localColourGraph_adj P top c u v).mp hcAdj).2
+      have hdCol :=
+        ((localColourGraph_adj P top d u v).mp hdAdj).2
+      exact hcd (hcCol.symm.trans hdCol)
+
+#print axioms localColourGraph_edgeFinset_disjoint_of_ne
+
+/--
 Three pairwise disjoint edge classes of cardinality at least four cannot
 fit in an ambient edge universe of cardinality at most ten.
 
