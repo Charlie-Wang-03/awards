@@ -17,6 +17,7 @@ mathematical obligation at the main admitted proof root.
 namespace JSP000404Research
 namespace ProjectionOrdered
 open OrderedEdgeColoring
+open DirectionData
 
 theorem planar_lower_branch_capacity_of_eight_source_actual_nonreuse_matching
     {V : Type*} [Fintype V]
