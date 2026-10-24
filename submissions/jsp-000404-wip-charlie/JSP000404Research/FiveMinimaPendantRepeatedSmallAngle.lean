@@ -87,20 +87,20 @@ theorem pendant_bad_has_repeated_nonC4_colour
     intro h
     subst b
     apply hnoBadC4
-    exact ⟨c,d,a,hbc,hcd,hda,hab.symm,hbd,hac.symm,
-      hbcE,hcdE,hdaE,habE.symm⟩
+    exact ⟨c,d,a,hbc,hcd,hda,hab,hbd,hac.symm,
+      hbcE,hcdE,hdaE,habE⟩
   have hbadC : B ≠ c := by
     intro h
     subst c
     apply hnoBadC4
-    exact ⟨d,a,b,hcd,hda,hab,hbc.symm,hac.symm,hbd.symm,
-      hcdE,hdaE,habE,hbcE.symm⟩
+    exact ⟨d,a,b,hcd,hda,hab,hbc,hac.symm,hbd.symm,
+      hcdE,hdaE,habE,hbcE⟩
   have hbadD : B ≠ d := by
     intro h
     subst d
     apply hnoBadC4
-    exact ⟨a,b,c,hda,hab,hbc,hcd.symm,hbd.symm,hac,
-      hdaE,habE,hbcE,hcdE.symm⟩
+    exact ⟨a,b,c,hda,hab,hbc,hcd,hbd.symm,hac,
+      hdaE,habE,hbcE,hcdE⟩
 
   have hdeg : G.degree B = 1 := by
     apply degree_eq_one_of_active_off_fourCycle_no_cycle_through
@@ -158,7 +158,7 @@ theorem pendant_bad_has_repeated_nonC4_colour
       intro h
       apply hdata.1
       apply Subtype.ext
-      exact h
+      exact h.symm
     have hxS : x ∈ S := by
       simp [S, hxTop, hxBad]
     apply Finset.mem_image.mpr
@@ -215,7 +215,7 @@ theorem pendant_bad_has_repeated_nonC4_colour
       apply hxy
       exact congrArg Subtype.val h
     have htwo : 2 ≤ (G.neighborFinset B).card :=
-      Finset.two_le_card.mpr ⟨X,hXB,Y,hYB,hXY⟩
+      (Finset.one_lt_card.mpr ⟨X,hXB,Y,hYB,hXY⟩)
     rw [SimpleGraph.card_neighborFinset_eq_degree, hdeg] at htwo
     omega
 
@@ -330,10 +330,10 @@ theorem pendant_saturation_bad_has_repeated_small_angle
   refine ⟨x,y,hxt,hxb,hyt,hyb,hxy,?_⟩
   exact
     actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
+      (i := bad) (x := x) (y := y)
       hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi huncovered
-      bad x y
-      hxb hyb hxy hbad
+      hxb.symm hyb.symm hxy hbad
       (by simpa [M] using heq)
 
 #print axioms pendant_bad_has_repeated_nonC4_colour
