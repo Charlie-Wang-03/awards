@@ -85,7 +85,7 @@ theorem cutSaturationBadAt_wrap_quotient_eq_two_of_span_n_sub_one
         Fin.last n ∈ active P i) := hbad'.2
 
   obtain ⟨a',xs',hvalues',hseam⟩ :=
-    R.saturated_failure_has_wrap_unit_subslot_data
+    CentreCutRayCycle.saturated_failure_has_wrap_unit_subslot_data
       hp hcap (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
       hc0 hcpi (C i) R
