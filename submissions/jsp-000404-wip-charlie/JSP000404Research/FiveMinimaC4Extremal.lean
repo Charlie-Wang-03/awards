@@ -109,6 +109,8 @@ theorem bipartite_edge_card_le_right_add_one_of_left_card_two
     rw [← SimpleGraph.card_neighborFinset_eq_degree,
         ← SimpleGraph.card_neighborFinset_eq_degree]
     omega
+  simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+    ← Nat.card_eq_fintype_card] at hdeg ⊢
   rw [← hdeg]
   exact hdegCard
 
@@ -292,6 +294,8 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     have hdegLe :=
       SimpleGraph.isBipartiteWith_degree_le hbi huL
     rw [hdeg] at hdegLe
+    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] at hdegLe ⊢
     omega
 
   by_cases hR1 : R.card = 1
@@ -304,6 +308,8 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     have hdegLe :=
       SimpleGraph.isBipartiteWith_degree_le' hbi huR
     rw [hdeg] at hdegLe
+    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] at hdegLe ⊢
     omega
 
   have hL2 : 2 ≤ L.card := by omega
@@ -483,7 +489,13 @@ theorem five_minima_large_local_colour_classes_card_le_two
       Finset.card_union_of_disjoint hAB]
   have hEdgesTop :
       (⊤ : SimpleGraph (OtherVertex top)).edgeFinset.card = 10 := by
-    rw [SimpleGraph.card_edgeFinset_top_eq_card_choose_two,
+    have htopEdges :=
+      (SimpleGraph.card_edgeFinset_top_eq_card_choose_two
+        (V := OtherVertex top))
+    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] at htopEdges ⊢
+    rw [htopEdges]
+    rw [Nat.card_eq_fintype_card,
       card_otherVertex_eq_five_of_card_six hSix top]
     decide
   have hsub :
