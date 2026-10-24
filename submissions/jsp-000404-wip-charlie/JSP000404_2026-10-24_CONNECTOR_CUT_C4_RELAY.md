@@ -74,3 +74,20 @@ other losses against **true external Boolean holes** and **unreserved**
 dyadic surplus under actual AngleCap geometry. Conditional accounting
 identities are not a payment proof, and covered words are not hole
 credits. Do not assert JSP-000404 solved on the basis of this research PR.
+
+
+## Second continuation: pendant vertex and two independent small-angle approaches
+
+### Verified new kernel result
+
+- [Five-minima pendant gate 40110980528](https://github.com/Charlie-Wang-03/awards/actions/runs/40110980528): **SUCCESS**, 3,251 Lake jobs; `degree_eq_one_of_active_off_fourCycle_no_cycle_through` has only `[propext, Classical.choice, Quot.sound]`. This fixes the formerly missing bipartite 2-colouring/no-triangle proof, explicit 12-term 4-cycle witness, and Mathlib finite-neighbour API. The theorem concludes: if an active fifth vertex lies on NO four-cycle in a bipartite five-vertex graph containing a C4, its degree is exactly one.
+
+### Two subsequent routes — do not presume CI success
+
+1. `FiveMinimaPendantRepeatedSmallAngle.lean` and `TwoBadEachSmallAngle.lean` form a *pendant-aware* proof that EACH bad minimum has an actual non-top small angle. The exact bottleneck was the pendant lemma, now certified. [CI 40110980490](https://github.com/Charlie-Wang-03/awards/actions/runs/40110980490), checked separately; investigate all remaining elaboration errors before claiming both-angle result.
+2. `CutMergedTwoBadSmallAngles.lean` has a shorter *direct original-exponent* proof via four minimum-minimum incident edges and three non-root merged colours, followed by boundary merge injectivity and genuine same-cut-band small-angle geometry. Compiler error from reintroducing `lam` after `AngleCap p lam` was fixed in `71c8c76f`; [CI 40111014343](https://github.com/Charlie-Wang-03/awards/actions/runs/40111014343).
+3. The new `SixPointCutBothBadSmallAnglesDirect.lean` bypasses the original-exponent and C4 pendant proof packages for a stronger exact-active-bounds-only result: root-factorize the cut partition, use the certified `four_nonTop_edges_three_nonroot_colours_repeat` at EACH bad vertex, then apply the certified `actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad`. [CI 40110888692](https://github.com/Charlie-Wang-03/awards/actions/runs/40110888692). It is submitted, **not yet certified** at this checkpoint.
+
+### Global proof boundary
+
+The full theorem still needs ONE global six-source payment with a nonreusing injection into **actual true outside-translated Boolean holes** plus genuinely unreserved dyadic surplus. Small-angle witnesses are local geometry and alone provide neither that injection nor adequate surplus. New local modules must not be imported as a fake global proof.
