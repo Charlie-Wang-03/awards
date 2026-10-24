@@ -112,7 +112,7 @@ theorem projectedLoss_word_hole_or_strict_paid_or_exact_loss_fibre
           ¬ exponent w < projectedFree C w := by
         intro hs
         exact hstrictBlocker ⟨w,hwFibre,hs⟩
-      rcases projectedProfile_strict_exact_or_loss
+      rcases largeBlocker_projectedProfile_strict_exact_or_loss
           C exponent hexp honeLoss w
         with hs | hexact | hloss
       · exact False.elim (hnotStrict hs)
