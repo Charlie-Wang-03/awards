@@ -105,8 +105,8 @@ theorem actual_angle_lt_lam_of_equal_uncovered_merged_color_at_saturation_bad
       localIncidentColor_uncoveredCutMerged_eq_merge
         hp hcap C hn htpos hlam ht hdelta0 hdeltaHalf
         hc0 hcpi huncovered i y
-    rw [← hx, ← hy]
-    simpa [P, wrapBit] using heq
+    rw [hx, hy] at heq
+    simpa only [localIncidentColor_mergeLastPartition] using heq
   have hold :
       localIncidentColor P i x =
         localIncidentColor P i y :=
