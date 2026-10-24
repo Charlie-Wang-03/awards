@@ -161,7 +161,7 @@ theorem successiveDiffsFrom_length_real
     (successiveDiffsFrom a xs).length = xs.length := by
   induction xs generalizing a with
   | nil => rfl
-  | cons b bs =>
+  | cons b bs ih =>
       simp [successiveDiffsFrom, ih b]
 
 theorem cyclicRealGapsAt_length_cons
@@ -230,7 +230,7 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
     R.saturated_failure_has_wrap_unit_subslot_data
       hp hcap (by omega : 1 ≤ n)
       htpos hlam ht hdelta0 hdeltaHalf
-      hc0 hcpi (C i) R
+      hc0 hcpi (C i)
       (by
         let htop : t < (n + 1 : ℕ) := by
           rw [ht]; push_cast; linarith
@@ -241,7 +241,13 @@ theorem cutSaturationBadAt_support_two_has_subhalf_angle
         have hb :
             SaturationCollisionFailure P exponent i := by
           simpa [CutSaturationBadAt, P, exponent, htop] using hbad
-        simpa [P, exponent, htop] using hb.1)
+        have hcard := hb.1
+        dsimp [exponent] at hcard
+        have hsat :
+            centreExponent (C i) t + (active P i).card = n + 1 := by
+          rw [hexp] at hcard ⊢
+          omega
+        simpa [P, htop] using hsat)
       (by
         let htop : t < (n + 1 : ℕ) := by
           rw [ht]; push_cast; linarith
@@ -482,7 +488,7 @@ theorem cutSaturationBadAt_support_two_subhalf_pair_avoids_sharp
       intro hv
       apply huv
       apply Subtype.ext
-      exact hu.trans hv.symm
+      exact hu.trans hv
     have houter :=
       outer_angle_ge_one_sub_delta_mul_lam_of_sharp
         hp hcap hti htv v.2.symm hSharp
@@ -497,7 +503,7 @@ theorem cutSaturationBadAt_support_two_subhalf_pair_avoids_sharp
       intro hu
       apply huv
       apply Subtype.ext
-      exact hu.symm.trans hv
+      exact hu.symm.trans hv.symm
     have houter :=
       outer_angle_ge_one_sub_delta_mul_lam_of_sharp
         hp hcap hti htu u.2.symm hSharp

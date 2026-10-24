@@ -316,10 +316,10 @@ theorem localColourGraph_edge_card_lt_active_of_no_fourCycle
     have hEdges : G.edgeFinset.card = G.degree u := by
       simpa only [SimpleGraph.edgeFinset, Set.toFinset_card,
         ← Nat.card_eq_fintype_card] using hdeg.symm
-    have hEdgesLe : G.edgeFinset.card ≤ R.card := by
+    have hEdgesLe : G.edgeFinset.card ≤ L.card := by
       calc
         G.edgeFinset.card = G.degree u := hEdges
-        _ ≤ R.card := hdegLe
+        _ ≤ L.card := hdegLe
     omega
 
   have hL2 : 2 ≤ L.card := by omega

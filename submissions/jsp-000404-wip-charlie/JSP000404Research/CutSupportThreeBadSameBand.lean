@@ -171,7 +171,7 @@ theorem cyclicRealGapsAt_nonneg_of_sorted
               exact hall x (by simp [hx])) hg
   · have hlast :
         xs.getLastD a < width :=
-      hall _ (List.getLastD_mem_cons a xs)
+      hall _ (List.getLastD_mem_cons)
     have hafirst :
         a ≤ xs.getLastD a :=
       head_le_getLastD_of_pairwise a xs hsorted
@@ -289,7 +289,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     rw [List.pairwise_map]
     exact
       (R.normalizedValues_pairwise htpos.le).imp
-        (fun _ _ hxy => Nat.floor_mono hxy)
+        (fun hxy => Nat.floor_mono hxy)
 
   have hlabelSorted :
       (R.rays.map band).Pairwise (· ≤ ·) := by
@@ -306,7 +306,9 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     subst v
     have hnd := R.nodup
     rw [hdec] at hnd
-    simp at hnd
+    have htailNoDup : (u :: u :: post).Nodup :=
+      (List.nodup_append.mp hnd).2
+    simp at htailNoDup
 
   have hcoordLe :
       coord u ≤ coord v := by
@@ -324,7 +326,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
   have hgapFloor :
       Nat.floor (coord v - coord u) = 0 :=
     natFloor_sub_eq_zero_of_floor_eq
-      hcoordU0 hcoordLe hbandEq.symm
+      hcoordU0 hcoordLe (by simpa [band] using hbandEq)
 
   have hgapMem :
       coord v - coord u ∈
@@ -340,7 +342,7 @@ theorem cutSaturationBadAt_support_three_has_delta_small_same_band_angle
     | nil =>
         exact False.elim (R.normalizedValues_nonempty t hv)
     | cons a xs =>
-        exact ⟨a, xs, hv⟩
+        exact ⟨a, xs, rfl⟩
 
   have haMem : a ∈ R.normalizedValues t := by
     rw [hvalues]

@@ -504,7 +504,6 @@ theorem QTT_secondLayer_completion_owner_has_unique_third_active
     · exact hd.1
   have hcard4 :
       ({cx,cy,e,d} : Finset (Fin n)).card = 4 := by
-    symm
     exact (Finset.card_eq_four).2
       ⟨cx,cy,e,d,hcxy,hecx.symm,hd.2.1.symm,
         hecy.symm,hd.2.2.symm,(by intro hed; exact hde hed.symm),rfl⟩
