@@ -20,7 +20,7 @@ namespace JSP000404Research
 open BinaryEdgePartition
 
 theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (hcard : Fintype.card W = 5)
     {bad₁ bad₂ a b c d : W}
     (hbad : bad₁ ≠ bad₂)
@@ -44,10 +44,13 @@ theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
     simp [hnone.2]
   have hcompCard :
       (Finset.univ \ S : Finset W).card = 1 := by
-    rw [Finset.card_sdiff]
-    · rw [Finset.card_univ, hcard, hScard]
-      omega
-    · exact Finset.subset_univ S
+    have hcardDiff :
+        (Finset.univ \ S : Finset W).card =
+          (Finset.univ : Finset W).card - S.card := by
+      rw [Finset.card_sdiff]
+      simp
+    rw [hcardDiff, Finset.card_univ, hcard, hScard]
+    norm_num
   have hEq :=
     Finset.card_eq_one.mp hcompCard
   obtain ⟨z, hz⟩ := hEq
@@ -106,6 +109,7 @@ theorem monochromatic_fourCycle_contains_bad_minimum
 /-- Main geometric incidence consequence: in the two-bad equality branch,
 the forced monochromatic C4 supplies at least one saturation-bad minimum with
 a strict sub-lambda cycle-neighbour angle. -/
+set_option maxHeartbeats 2000000 in
 theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
