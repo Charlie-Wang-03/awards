@@ -348,9 +348,7 @@ theorem enlargedCollisionGraph_degree_one_unique_neighbor
       dsimp [G]
       exact enlargedCollisionGraph_adj_of_cross
         C exponent T u.2 hzT
-        (by
-          intro h
-          exact hzu (congrArg Subtype.val h))
+        (by exact hzu.symm)
         hcross
     have hsubEq : (⟨z,hzT⟩ : {x : V // x ∈ T}) = w :=
       huniq _ huz
@@ -735,10 +733,7 @@ theorem projectedLoss_incident_collision_with_nonloss_is_retained
   · simp [hlt]
     by_contra hnot
     have hres : IsResidual C r u := by
-      unfold IsResidual
-      apply Fin.ext
-      simp
-      omega
+      exact hnot
     exact hrInactive
       (residualCoord_mem_active_of_isResidual
         C hlt hres).1
@@ -747,10 +742,7 @@ theorem projectedLoss_incident_collision_with_nonloss_is_retained
     simp [hlt]
     by_contra hnot
     have hres : IsResidual C u r := by
-      unfold IsResidual
-      apply Fin.ext
-      simp
-      omega
+      exact hnot
     exact hrInactive
       (residualCoord_mem_active_of_isResidual
         C hul hres).2
@@ -899,11 +891,11 @@ theorem enlargedCollisionGraph_triangle_loss_shape
       · exact EnlargedTriangleLossShape.oneLossV
           hvLoss huLoss hwLoss
     · have hwLoss :
-        w.1 ∈ projectedLossVertices C exponent := by
-      rcases hloss with h | h | h
-      · exact False.elim (huLoss h)
-      · exact False.elim (hvLoss h)
-      · exact h
+          w.1 ∈ projectedLossVertices C exponent := by
+        rcases hloss with h | h | h
+        · exact False.elim (huLoss h)
+        · exact False.elim (hvLoss h)
+        · exact h
       exact EnlargedTriangleLossShape.oneLossW
         hwLoss huLoss hvLoss
 
@@ -1564,9 +1556,10 @@ theorem longCycle_sum_shared_cards_eq_two_mul_doubleCovered
         exact hdouble
           ((mem_coreDoubleCoveredWords
             C exponent T word).2 hcard)
-      simpa only [hdouble, if_false] using (by
-        intro v hvT
-        exact hnone v hvT)
+      simp only [if_neg hdouble]
+      apply Finset.sum_eq_zero
+      intro v hvT
+      simp [hnone v hvT]
 
   calc
     (∑ v ∈ T,
@@ -1867,9 +1860,9 @@ theorem lowerLoss_enlargedBlock_card_le_two_mul_localSlack
   have hslack :=
     enlargedLoss_local_slack_eq_translated_minus_one_cube
       C exponent hvLoss
+  rw [hslack]
   rw [enlargedProjectedCandidateBlock_loss
       C exponent hvLoss]
-  rw [hslack]
   rw [hblock]
   have hcoef :
       (retainedActive C v).card + 1
@@ -2539,6 +2532,8 @@ theorem longCycle_pairOverlapWords_pairwiseDisjoint
     (mem_coreOrderedVertexPairs T u v).1 hp
   have hqData :=
     (mem_coreOrderedVertexPairs T x y).1 hq
+  change Disjoint (corePairOverlapWords C exponent (u, v))
+    (corePairOverlapWords C exponent (x, y))
   rw [Finset.disjoint_left]
   intro word hpWord hqWord
   have hpParts := Finset.mem_inter.mp hpWord
@@ -2986,7 +2981,7 @@ theorem enlargedBlock_card_le_two_slack_add_hardCredit
       have hslack :=
         enlargedLoss_local_slack_eq_translated_minus_one_cube
           C exponent hloss
-      rw [hcredit,hblock,hslack,hactive]
+      rw [hcredit,hslack,hblock,hactive]
       omega
     · have hlower :
           exponent v + 2 ≤ n := by
@@ -3457,8 +3452,9 @@ theorem longCycle_noExact_totalHardCredit_le_topCube
           longCycleHardCredit_eq_zero_of_not_exact_not_topLoss
             C exponent
             (hnoExact v hvT) hnotTop
-        rw [Finset.sum_eq_zero fun v hv => hzero v hv]
-        simp
+        exact hz
+      rw [Finset.sum_eq_zero fun v hv => hzero v hv]
+      simp
     _ =
     (retainedCompletionWords C top).card := htopCredit
 
@@ -3858,9 +3854,10 @@ theorem deepLoss_enlargedBlock_add_cube_le_two_mul_localSlack
   have hslack :=
     enlargedLoss_local_slack_eq_translated_minus_one_cube
       C exponent hvLoss
+  rw [hslack]
   rw [enlargedProjectedCandidateBlock_loss
       C exponent hvLoss]
-  rw [hslack,hblock]
+  rw [hblock]
   have hcoef :
       (retainedActive C v).card + 2
         ≤
