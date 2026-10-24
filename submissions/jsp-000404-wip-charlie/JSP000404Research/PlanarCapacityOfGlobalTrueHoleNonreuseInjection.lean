@@ -17,6 +17,7 @@ mathematical obligation at the main admitted proof root.
 namespace JSP000404Research
 namespace ProjectionOrdered
 open OrderedEdgeColoring
+open DirectionData
 
 theorem planar_lower_branch_capacity_of_global_true_hole_nonreuse_injection
     {V : Type*} [Fintype V]
