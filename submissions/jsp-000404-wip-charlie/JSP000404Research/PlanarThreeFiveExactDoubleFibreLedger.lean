@@ -38,12 +38,16 @@ noncomputable def actualLossDoubleHitCandidateWords
 /-- Exact original duplicate debt, n=3, five-centre condition:
 the first debt record of each distinct opposite candidate costs one;
 each double-hit opposite target costs exactly ONE further unit. -/
-theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
+/-- Exact source-native double-hit ledger for n=3 with up to FIVE
+actual projected-loss centres, irrespective of the ambient number of
+original vertices. The number of loss vertices, rather than all
+vertices, is the only structural capacity assumption. -/
+theorem actual_three_five_loss_sparsity_duplicate_debt_exact
     {V : Type*} [LinearOrder V] [Fintype V]
     (C : OrderedEdgeColoring V (3 + 1))
     (exponent : V → ℕ) (choice : V → Fin 3)
     (hexp : ∀ v, exponent v ≤ 2)
-    (hfive : Fintype.card V ≤ 5) :
+    (hloss : (projectedLossVertices C exponent).card ≤ 5) :
     translatedLossDuplicateDebt C exponent choice =
       (actualLossEarliestOppositeCandidateWords C exponent choice).card +
         (actualLossDoubleHitCandidateWords C exponent choice).card := by
@@ -62,8 +66,8 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
       (F q).card = 1 + if 2 ≤ (F q).card then 1 else 0 := by
     have hlo := hpositive q hq
     have hhi : (F q).card ≤ 2 :=
-      actual_three_colour_five_centre_no_triple_loss_fibre
-        C exponent choice hexp hfive q
+      actual_three_colour_five_loss_centre_no_triple_loss_fibre
+        C exponent choice hexp hloss q
     split_ifs <;> omega
   have hfilter :
       (∑ q ∈ O, if 2 ≤ (F q).card then (1 : ℕ) else 0) = D.card := by
@@ -86,6 +90,23 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
         simp
   dsimp only [O, F, D] at hcount
   omega
+
+theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hfive : Fintype.card V ≤ 5) :
+    translatedLossDuplicateDebt C exponent choice =
+      (actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        (actualLossDoubleHitCandidateWords C exponent choice).card := by
+  have hloss : (projectedLossVertices C exponent).card ≤ 5 := by
+    have hbound := Finset.card_le_univ (projectedLossVertices C exponent)
+    omega
+  exact actual_three_five_loss_sparsity_duplicate_debt_exact
+    C exponent choice hexp hloss
+
+#print axioms actual_three_five_loss_sparsity_duplicate_debt_exact
 
 /-- The exact original reuse defect is precisely the NUMBER of
 ACTUAL double-hit opposite words, without any dummy charge. -/
