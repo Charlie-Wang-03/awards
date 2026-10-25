@@ -46,6 +46,8 @@ theorem actual_earliest_loss_debt_tokens_card_eq_duplicate_debt
   rw [Finset.sum_fin_eq_sum_range]
   apply Finset.sum_congr rfl
   intro i hi
+  have hin : i < n := Finset.mem_range.mp hi
+  simp only [dif_pos hin]
   rw [Finset.sum_fin_eq_sum_range]
   rfl
 
