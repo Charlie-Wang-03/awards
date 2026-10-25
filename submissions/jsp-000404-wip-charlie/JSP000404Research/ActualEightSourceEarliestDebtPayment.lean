@@ -37,7 +37,7 @@ abbrev actualEightSourceEarliestDebtTokens
     (Sum ({w : Fin n → Bool //
       w ∈ (chosenLossActualEdgeBlockerTriples B k choice).biUnion
         (lossCoveredBlockerTripleWords B)})
-      (actualEarliestLossDebtTokenType B k choice))))))))
+      (actualEarliestLossDebtTokenType B k choice)))))))
 
 /-- A genuine single nonreused assignment of every original debt source
 including exact (later, earliest-prior, word) loss-duplicate tokens pays
