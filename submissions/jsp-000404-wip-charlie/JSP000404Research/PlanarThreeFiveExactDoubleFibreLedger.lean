@@ -239,7 +239,7 @@ theorem actual_three_loss_centres_every_subfamily_square_local_hall
       actual_three_loss_centres_duplicate_debt_has_no_reuse
         C exponent choice hexp hloss
     change O.card = S.card
-    omega
+    exact (hrecords.trans huniq).symm
   have hinjS : Set.InjOn f S := Finset.card_image_iff.mp hcount
   have hinjT : Set.InjOn f T := by
     intro a ha b hb heq
