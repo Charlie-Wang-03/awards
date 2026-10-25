@@ -1,6 +1,10 @@
 import JSP000404Research.ResidualLossCanonicalOppositeFibreBound
 import Mathlib.Tactic
 
+-- This file unfolds several concrete nested finite membership definitions;
+-- the extra elaborator budget changes NO proposition, proof term or axiom.
+set_option maxHeartbeats 1600000
+
 /-!
 # Exact opposite-corner fibre: ONE determined source word per coordinate pair
 
