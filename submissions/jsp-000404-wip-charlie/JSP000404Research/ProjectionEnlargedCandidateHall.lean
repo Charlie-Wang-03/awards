@@ -462,8 +462,8 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
     projectionOrdered_topExponent_filter_card_le_one
       hp hcap hcard hn hdelta0 hdeltaHalf ht hlam C
   apply Finset.card_le_one.mp htop
-  · simp [exponent, planarCentreExponent, haExp]
-  · simp [exponent, planarCentreExponent, hbExp]
+  · simpa [exponent, planarCentreExponent] using haExp
+  · simpa [exponent, planarCentreExponent] using hbExp
 
 
 theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
@@ -937,7 +937,7 @@ theorem planar_topLoss_word_closed_outlet
           (fun x => centreExponent (C x) t = n - 1) := by
       simp [exponent,planarCentreExponent] at hzTop
       simp [hzTop]
-    have hwEqz := Finset.card_le_one.mp htop hwMem hzMem
+    have hwEqz := Finset.card_le_one.mp htop w hwMem z hzMem
     exact False.elim (hwz hwEqz)
 
 #print axioms planar_secondLayerLoss_word_closed_outlet
@@ -1414,25 +1414,30 @@ theorem planar_deficientCore_girthFree_secondTriple_root
     rcases
       enlargedCollisionGraph_triangle_loss_shape
         R exponent T hUV hUW hVW
-      with hU | hV | hW | hUVLoss | hUWLoss | hVWLoss
+      with ⟨_hULoss, hVNonloss, hWNonloss⟩
+         | ⟨_hVLoss, hUNonloss, hWNonloss⟩
+         | ⟨_hWLoss, hUNonloss, hVNonloss⟩
+         | ⟨hULoss, hVLoss⟩
+         | ⟨hULoss, hWLoss⟩
+         | ⟨hVLoss, hWLoss⟩
     · rcases
         enlargedTriangle_nonloss_edge_paid_or_exactRecursive
           R exponent hexp hone T
-          hVW hU.hvNonloss hU.hwNonloss
+          hVW hVNonloss hWNonloss
         with hpaid | hrec
       · exact Or.inr (Or.inl hpaid)
       · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
     · rcases
         enlargedTriangle_nonloss_edge_paid_or_exactRecursive
           R exponent hexp hone T
-          hUW hV.huNonloss hV.hwNonloss
+          hUW hUNonloss hWNonloss
         with hpaid | hrec
       · exact Or.inr (Or.inl hpaid)
       · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
     · rcases
         enlargedTriangle_nonloss_edge_paid_or_exactRecursive
           R exponent hexp hone T
-          hUV hW.huNonloss hW.hvNonloss
+          hUV hUNonloss hVNonloss
         with hpaid | hrec
       · exact Or.inr (Or.inl hpaid)
       · exact Or.inr (Or.inr (Or.inr (Or.inl hrec)))
@@ -1449,19 +1454,19 @@ theorem planar_deficientCore_girthFree_secondTriple_root
             apply huv
             apply Subtype.ext
             exact h)
-          hUVLoss.huLoss hUVLoss.hvLoss
+          hULoss hVLoss
       with huDeep | hvDeep | huTopSecond | huSecondTop | hBothSecond
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨u.1,hUVLoss.huLoss,huDeep⟩))))
+          (Or.inl ⟨u.1,hULoss,huDeep⟩))))
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨v.1,hUVLoss.hvLoss,hvDeep⟩))))
+          (Or.inl ⟨v.1,hVLoss,hvDeep⟩))))
       · have huLossGeom :
             u.1 ∈ projectedLossVertices
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hUVLoss.huLoss
+          simpa [R,exponent,hn1,hdelta1] using hULoss
         have huTopGeom :
             centreExponent (C u.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using huTopSecond.1
@@ -1479,7 +1484,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hUVLoss.hvLoss
+          simpa [R,exponent,hn1,hdelta1] using hVLoss
         have hvTopGeom :
             centreExponent (C v.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using huSecondTop.2
@@ -1494,7 +1499,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
       · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
           ⟨word,u,v,w,huv,huw,hvw,
             huWord,hvWord,hwWord,hUV,hUW,hVW,
-            Or.inl ⟨hUVLoss.huLoss,hUVLoss.hvLoss,
+            Or.inl ⟨hULoss,hVLoss,
               hBothSecond.1,hBothSecond.2⟩⟩))))
     · rcases
         two_projectedLoss_highLayer_classification
@@ -1509,19 +1514,19 @@ theorem planar_deficientCore_girthFree_secondTriple_root
             apply huw
             apply Subtype.ext
             exact h)
-          hUWLoss.huLoss hUWLoss.hwLoss
+          hULoss hWLoss
       with huDeep | hwDeep | huTopSecond | huSecondTop | hBothSecond
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨u.1,hUWLoss.huLoss,huDeep⟩))))
+          (Or.inl ⟨u.1,hULoss,huDeep⟩))))
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨w.1,hUWLoss.hwLoss,hwDeep⟩))))
+          (Or.inl ⟨w.1,hWLoss,hwDeep⟩))))
       · have huLossGeom :
             u.1 ∈ projectedLossVertices
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hUWLoss.huLoss
+          simpa [R,exponent,hn1,hdelta1] using hULoss
         have huTopGeom :
             centreExponent (C u.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using huTopSecond.1
@@ -1539,7 +1544,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hUWLoss.hwLoss
+          simpa [R,exponent,hn1,hdelta1] using hWLoss
         have hwTopGeom :
             centreExponent (C w.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using huSecondTop.2
@@ -1555,7 +1560,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
           ⟨word,u,v,w,huv,huw,hvw,
             huWord,hvWord,hwWord,hUV,hUW,hVW,
             Or.inr (Or.inl
-              ⟨hUWLoss.huLoss,hUWLoss.hwLoss,
+              ⟨hULoss,hWLoss,
                 hBothSecond.1,hBothSecond.2⟩)⟩))))
     · rcases
         two_projectedLoss_highLayer_classification
@@ -1570,19 +1575,19 @@ theorem planar_deficientCore_girthFree_secondTriple_root
             apply hvw
             apply Subtype.ext
             exact h)
-          hVWLoss.hvLoss hVWLoss.hwLoss
+          hVLoss hWLoss
       with hvDeep | hwDeep | hvTopSecond | hvSecondTop | hBothSecond
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨v.1,hVWLoss.hvLoss,hvDeep⟩))))
+          (Or.inl ⟨v.1,hVLoss,hvDeep⟩))))
       · exact Or.inr (Or.inr (Or.inr (Or.inr
-          (Or.inl ⟨w.1,hVWLoss.hwLoss,hwDeep⟩))))
+          (Or.inl ⟨w.1,hWLoss,hwDeep⟩))))
       · have hvLossGeom :
             v.1 ∈ projectedLossVertices
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hVWLoss.hvLoss
+          simpa [R,exponent,hn1,hdelta1] using hVLoss
         have hvTopGeom :
             centreExponent (C v.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using hvTopSecond.1
@@ -1600,7 +1605,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
               (planarCentreExponent (t := t) hp C) := by
-          simpa [R,exponent,hn1,hdelta1] using hVWLoss.hwLoss
+          simpa [R,exponent,hn1,hdelta1] using hWLoss
         have hwTopGeom :
             centreExponent (C w.1) t = n - 1 := by
           simpa [exponent,planarCentreExponent] using hvSecondTop.2
@@ -1616,7 +1621,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
           ⟨word,u,v,w,huv,huw,hvw,
             huWord,hvWord,hwWord,hUV,hUW,hVW,
             Or.inr (Or.inr
-              ⟨hVWLoss.hvLoss,hVWLoss.hwLoss,
+              ⟨hVLoss,hWLoss,
                 hBothSecond.1,hBothSecond.2⟩)⟩))))
   · obtain ⟨v,hvT,hvExact,hout⟩ := hexactOutlet
     exact Or.inr (Or.inr (Or.inr (Or.inl
@@ -2022,7 +2027,7 @@ theorem planar_deficientCore_girthFree_QTT_root
       · exact Or.inr (Or.inr (Or.inl hexact3))
       · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep3))))
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hdeep2))))
-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hQTT))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨word, hQTT⟩))))
 
 #print axioms planar_deficientCore_girthFree_QTT_root
 
