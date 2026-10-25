@@ -110,6 +110,23 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
 
 /-- The exact original reuse defect is precisely the NUMBER of
 ACTUAL double-hit opposite words, without any dummy charge. -/
+/-- The original reuse defect is exactly the actual number of double-hit
+targets whenever at most five TRUE projected-loss centres exist. -/
+theorem actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 5) :
+    translatedLossDuplicateDebt C exponent choice -
+        (actualLossEarliestOppositeCandidateWords C exponent choice).card =
+      (actualLossDoubleHitCandidateWords C exponent choice).card := by
+  have h := actual_three_five_loss_sparsity_duplicate_debt_exact
+    C exponent choice hexp hloss
+  omega
+
+#print axioms actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
+
 theorem actual_three_five_reuse_defect_eq_double_hit_card
     {V : Type*} [LinearOrder V] [Fintype V]
     (C : OrderedEdgeColoring V (3 + 1))
@@ -127,6 +144,38 @@ theorem actual_three_five_reuse_defect_eq_double_hit_card
 payment: only actual double-hit targets, actual ineligible candidates,
 all other original debts, and REAL nonlocal credit resources remain.
 This is a LOGICAL IFF and is NOT a sufficiency theorem from AngleCap. -/
+/-- Exact global nonlocal payment IFF in the enlarged n=3 regime
+with at most five projected-loss centres, regardless of total vertices. -/
+theorem actual_three_loss_sparsity_payment_iff_double_hit_nonlocal
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 5) :
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        translatedLossDuplicateDebt C exponent choice ≤
+      (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) ↔
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        (actualLossDoubleHitCandidateWords C exponent choice).card +
+        ((actualLossEarliestOppositeCandidateWords C exponent choice) \
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice).card ≤
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) := by
+  have hiff := actual_eight_source_payment_iff_nonlocal_defect_payment
+    C exponent choice
+  have hreuse := actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
+    C exponent choice hexp hloss
+  rw [hreuse] at hiff
+  simpa only [Nat.add_assoc] using hiff
+
+#print axioms actual_three_loss_sparsity_payment_iff_double_hit_nonlocal
+
 theorem actual_three_five_eight_source_payment_iff_double_hit_nonlocal
     {V : Type*} [LinearOrder V] [Fintype V]
     (C : OrderedEdgeColoring V (3 + 1))
