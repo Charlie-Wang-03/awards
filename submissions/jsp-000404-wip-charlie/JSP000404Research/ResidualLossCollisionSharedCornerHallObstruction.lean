@@ -23,7 +23,7 @@ The all-centre AngleCap -> global nonreusing payment obligation remains OPEN.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
-private def lossCollisionSquareWords (n : ℕ)
+private noncomputable def lossCollisionSquareWords (n : ℕ)
     (a : Fin n × Fin n × (Fin n → Bool)) : Finset (Fin n → Bool) :=
   insert a.2.2
     (insert (flipBoolWordAt a.2.2 a.1)
