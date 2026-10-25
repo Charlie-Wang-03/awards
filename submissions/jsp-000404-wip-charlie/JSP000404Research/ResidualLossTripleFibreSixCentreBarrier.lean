@@ -257,9 +257,9 @@ theorem actual_three_colour_triple_fibre_forces_six_centres
     have hsub : S 0 ∪ S 1 ∪ S 2 ⊆ (Finset.univ : Finset V) := by
       intro v _; exact Finset.mem_univ _
     simpa only [Finset.card_univ] using Finset.card_le_card hsub
-  have h0 := htwo (0 : Fin 3)
-  have h1 := htwo (1 : Fin 3)
-  have h2 := htwo (2 : Fin 3)
+  have h0 : 2 ≤ (S 0).card := htwo (0 : Fin 3)
+  have h1 : 2 ≤ (S 1).card := htwo (1 : Fin 3)
+  have h2 : 2 ≤ (S 2).card := htwo (2 : Fin 3)
   rw [hunion] at hle
   omega
 
