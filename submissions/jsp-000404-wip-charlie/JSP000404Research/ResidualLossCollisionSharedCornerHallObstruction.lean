@@ -31,6 +31,79 @@ private def lossCollisionSquareWords (n : ℕ)
         ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
           Finset (Fin n → Bool))))
 
+/-- The total number of distinct REAL square-local exterior holes in ANY
+finite family of cross-coordinate translated-loss collisions is bounded by
+the number of DISTINCT opposite double-flip Boolean words. In particular,
+multiplicity of collision records does not multiply true-hole credits. -/
+theorem actual_cross_loss_family_local_holes_le_distinct_doubleflips
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (S : Finset (Fin n × Fin n × (Fin n → Bool)))
+    (hdifferent : ∀ a ∈ S, a.1 ≠ a.2.1)
+    (hleft : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1)
+    (hright : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1) :
+    (S.biUnion (fun a =>
+      lossCollisionSquareWords n a ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card ≤
+      (S.image (fun a =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card := by
+  classical
+  have hsubset :
+      S.biUnion (fun a =>
+        lossCollisionSquareWords n a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice) ⊆
+      S.image (fun a =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1) := by
+    intro w hw
+    obtain ⟨a, ha, hwa⟩ := Finset.mem_biUnion.mp hw
+    have hSquare :
+        w ∈ insert a.2.2
+          (insert (flipBoolWordAt a.2.2 a.1)
+            (insert (flipBoolWordAt a.2.2 a.2.1)
+              ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
+                Finset (Fin n → Bool)))) := by
+      exact (Finset.mem_inter.mp hwa).1
+    have hHole :
+        w ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice :=
+      (Finset.mem_inter.mp hwa).2
+    have hwOpposite :
+        w = flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 :=
+      cross_loss_collision_square_external_hole_only_double_flip
+        C exponent choice (hdifferent a ha) (hleft a ha) (hright a ha)
+        hSquare hHole
+    exact Finset.mem_image.mpr ⟨a, ha, hwOpposite.symm⟩
+  exact Finset.card_le_card hsubset
+
+/-- If there are more distinct collision records than distinct double-flip
+candidates, the S-indexed LOCAL square-hole neighbourhood fails Hall's
+cardinality test. This does not preclude nonlocal holes or surplus. -/
+theorem actual_cross_loss_family_local_hall_shortfall_of_repeated_candidates
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (S : Finset (Fin n × Fin n × (Fin n → Bool)))
+    (hdifferent : ∀ a ∈ S, a.1 ≠ a.2.1)
+    (hleft : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1)
+    (hright : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1)
+    (hRepeated :
+      (S.image (fun a =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card <
+        S.card) :
+    ¬ S.card ≤
+      (S.biUnion (fun a =>
+        lossCollisionSquareWords n a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  intro hpay
+  have hbound :=
+    actual_cross_loss_family_local_holes_le_distinct_doubleflips
+      C exponent choice S hdifferent hleft hright
+  omega
+
 /-- Any finite family of genuine cross-coordinate translated-loss
 collisions sharing a single opposite double-flip corner has at most ONE
 distinct square-local TRUE exterior-hole credit, including the case where
@@ -105,6 +178,8 @@ theorem actual_cross_loss_family_same_opposite_local_hall_shortfall
       C exponent choice S q hdifferent hleft hright hsame
   omega
 
+#print axioms actual_cross_loss_family_local_holes_le_distinct_doubleflips
+#print axioms actual_cross_loss_family_local_hall_shortfall_of_repeated_candidates
 #print axioms actual_cross_loss_family_common_opposite_local_holes_le_one
 #print axioms actual_cross_loss_family_same_opposite_local_hall_shortfall
 
