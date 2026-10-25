@@ -508,6 +508,99 @@ theorem actual_three_colour_three_loss_centre_no_double_fibre
     C exponent choice hexp q htwo
   omega
 
+/-- Even a SINGLE actual opposite-source record needs TWO distinct
+original projected-loss centres, one in each strict choice-coordinate
+slice of the genuine original record. -/
+theorem actual_three_colour_nonempty_fibre_forces_two_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (q : Fin 3 → Bool)
+    (hpos : 0 < (actualLossOppositeCandidateFibre
+      C exponent choice q).card) :
+    2 ≤ (projectedLossVertices C exponent).card := by
+  classical
+  obtain ⟨a,ha⟩ := Finset.card_pos.mp hpos
+  have hsrc : a ∈ actualEarliestLossCollisionRecords C exponent choice :=
+    (Finset.mem_filter.mp ha).1
+  obtain ⟨hne,_,hw,hz⟩ :=
+    actual_earliest_loss_collision_record_valid
+      C exponent choice a hsrc
+  obtain ⟨v,hvc,_⟩ := Finset.mem_biUnion.mp hw
+  obtain ⟨u,huc,_⟩ := Finset.mem_biUnion.mp hz
+  have hv := (mem_lossCoordinateSlice C exponent choice a.1 v).mp hvc
+  have hu := (mem_lossCoordinateSlice C exponent choice a.2.1 u).mp huc
+  have hneVU : v ≠ u := by
+    intro heq
+    subst u
+    exact hne (hv.2.symm.trans hu.2)
+  have hsub : ({v,u} : Finset V) ⊆ projectedLossVertices C exponent := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact hv.1
+    · exact hu.1
+  have hsize : ({v,u} : Finset V).card = 2 := by simp [hneVU]
+  have hcard := Finset.card_le_card hsub
+  omega
+
+/-- Exactly THREE strict original ordered coordinate pairs are even
+available to one opposite target in n=3; there is no fourth
+coordinate-pair record hidden in the Boolean fibre. -/
+theorem actual_three_colour_opposite_fibre_card_le_three
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (q : Fin 3 → Bool) :
+    (actualLossOppositeCandidateFibre C exponent choice q).card ≤ 3 := by
+  classical
+  let P := actualLossOppositeEligibleSourcePairs C exponent choice q
+  have hEq := actual_loss_opposite_candidate_fibre_card_eq_exact_source_pairs
+    C exponent choice q
+  have hsub : P ⊆ actualLossOrderedCoordinatePairs 3 := by
+    intro x hx
+    exact (Finset.mem_filter.mp hx).1
+  have hbound := Finset.card_le_card hsub
+  have hthree : (actualLossOrderedCoordinatePairs 3).card = 3 := by
+    decide
+  rw [hthree] at hbound
+  exact hEq.trans_le hbound
+
+/-- UNIFORM genuine-source fibre packing inequality for every n=3
+configuration and every source target: the number of original
+projected-loss centres is at least TWICE the number of distinct
+earliest-prior source records of that opposite Boolean candidate.
+This combines the 2-, 4- and 6-centre barriers in one quantitative
+bound, independently of ambient |V|. -/
+theorem actual_three_colour_fibre_twice_card_le_actual_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (q : Fin 3 → Bool) :
+    2 * (actualLossOppositeCandidateFibre C exponent choice q).card ≤
+      (projectedLossVertices C exponent).card := by
+  let m := (actualLossOppositeCandidateFibre C exponent choice q).card
+  have hmax : m ≤ 3 :=
+    actual_three_colour_opposite_fibre_card_le_three C exponent choice q
+  by_cases hzero : m = 0
+  · omega
+  by_cases hone : m = 1
+  · have htwo := actual_three_colour_nonempty_fibre_forces_two_loss_centres
+      C exponent choice q (by omega : 0 < m)
+    omega
+  by_cases htwo : m = 2
+  · have hfour := actual_three_colour_double_fibre_forces_four_loss_centres
+      C exponent choice hexp q (by omega : 2 ≤ m)
+    omega
+  · have hsix := actual_three_colour_triple_fibre_forces_six_loss_centres
+      C exponent choice hexp q (by omega : 3 ≤ m)
+    omega
+
+#print axioms actual_three_colour_nonempty_fibre_forces_two_loss_centres
+#print axioms actual_three_colour_opposite_fibre_card_le_three
+#print axioms actual_three_colour_fibre_twice_card_le_actual_loss_centres
+
 #print axioms actual_three_colour_three_loss_centre_no_double_fibre
 
 #print axioms translated_cube_two_words_agree_at_retained_active
