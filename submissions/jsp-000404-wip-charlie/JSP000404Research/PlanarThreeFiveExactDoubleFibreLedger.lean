@@ -1,6 +1,7 @@
 import JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction
 import JSP000404Research.PlanarThreeFiveLossDuplicateBound
 import JSP000404Research.ResidualLossGlobalNonlocalShortfallLedger
+import JSP000404Research.ActualExternalHoleNonreuseCertificate
 import Mathlib.Tactic
 
 /-!
@@ -363,6 +364,62 @@ theorem actual_three_loss_centres_explicit_original_square_hole_matching
     exact Finset.mem_image.mpr ⟨a, ha, rfl⟩
 
 #print axioms actual_three_loss_centres_explicit_original_square_hole_matching
+
+/-- Source-typed EIGHTH debt lane, now matched to genuinely available
+external credit tokens. The source is the ACTUAL `Fin` range of
+translatedLossDuplicateDebt used by actualEightSourceDebtTokens,
+not an untyped surrogate or a second use of the same opposite word.
+The hypothesis `houtside` is still a real, separate geometric gate. -/
+theorem actual_three_loss_centres_eighth_source_real_credit_injection
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3)
+    (houtside :
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    ∃ alloc :
+      Fin (translatedLossDuplicateDebt C exponent choice) →
+        actualExternalPaymentCredits C exponent choice,
+      Function.Injective alloc := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  have hrecords :
+      S.card = translatedLossDuplicateDebt C exponent choice :=
+    actual_earliest_collision_records_card_eq_duplicate_debt C exponent choice
+  let idx : Fin (translatedLossDuplicateDebt C exponent choice) → S :=
+    fun i => S.equivFin.symm (Fin.cast hrecords.symm i)
+  have hinjIdx : Function.Injective idx := by
+    intro i j heq
+    have hcast :
+        Fin.cast hrecords.symm i = Fin.cast hrecords.symm j :=
+      S.equivFin.symm.injective heq
+    apply Fin.ext
+    exact congrArg Fin.val hcast
+  obtain ⟨f,hinjF,hreal⟩ :=
+    actual_three_loss_centres_explicit_original_square_hole_matching
+      C exponent choice hexp hloss houtside
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let alloc :
+      Fin (translatedLossDuplicateDebt C exponent choice) →
+        actualExternalPaymentCredits C exponent choice :=
+    fun i =>
+      Sum.inl
+        (⟨f (idx i).1,
+            (Finset.mem_inter.mp (hreal (idx i).1 (idx i).2)).2⟩ :
+          {w : Fin 3 → Bool // w ∈ H})
+  refine ⟨alloc, ?_⟩
+  intro i j heq
+  have hwords : f (idx i).1 = f (idx j).1 := by
+    simpa only [alloc, Sum.inl.injEq, Subtype.mk.injEq] using heq
+  have hindices : idx i = idx j := by
+    apply Subtype.ext
+    exact hinjF (idx i).2 (idx j).2 hwords
+  exact hinjIdx hindices
+
+#print axioms actual_three_loss_centres_eighth_source_real_credit_injection
+
 
 
 
