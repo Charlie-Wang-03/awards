@@ -504,6 +504,63 @@ theorem actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterio
 
 #print axioms actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
 
+/-- For the ACTUAL source-native collision squares (not for the global
+eight-source debt family), checking Hall on the ENTIRE original source
+set ALONE is EQUIVALENT to checking Hall on EVERY original subfamily.
+This exceptional simplification is justified by the fact that each
+real source square has at most ONE eligible exterior corner; it is NOT
+a generally valid shortcut for arbitrary bipartite Hall problems. -/
+theorem actual_original_local_hall_all_subfamilies_iff_whole_family
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (∀ T : Finset (Fin n × Fin n × (Fin n → Bool)),
+        T ⊆ actualEarliestLossCollisionRecords C exponent choice →
+        T.card ≤
+          (T.biUnion (fun a =>
+            lossCollisionSquareWords n a ∩
+              lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card) ↔
+      (actualEarliestLossCollisionRecords C exponent choice).card ≤
+        ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+          (fun a =>
+            lossCollisionSquareWords n a ∩
+              lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let f : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hlocal :
+      S.biUnion (fun a => lossCollisionSquareWords n a ∩ H) =
+        S.image f ∩ H :=
+    actual_earliest_loss_collision_local_holes_exact_image_inter
+      C exponent choice
+  constructor
+  · intro h
+    exact h S (Finset.Subset.refl S)
+  · intro h
+    change S.card ≤
+      (S.biUnion (fun a => lossCollisionSquareWords n a ∩ H)).card at h
+    rw [hlocal] at h
+    have himageLe : (S.image f).card ≤ S.card :=
+      Finset.card_image_le
+    have hinterLe : (S.image f ∩ H).card ≤ (S.image f).card :=
+      Finset.card_le_card Finset.inter_subset_left
+    have hcard : (S.image f).card = S.card := by omega
+    have hinj : Set.InjOn f S := Finset.card_image_iff.mp hcard
+    have heq : S.image f ∩ H = S.image f :=
+      Finset.eq_of_subset_of_card_le
+        Finset.inter_subset_left (by omega)
+    have houtside : S.image f ⊆ H := Finset.inter_eq_left.mp heq
+    apply (actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
+      C exponent choice).mpr
+    change Set.InjOn f S ∧ S.image f ⊆ H
+    exact ⟨hinj, houtside⟩
+
+#print axioms actual_original_local_hall_all_subfamilies_iff_whole_family
+
+
+
 /-- An EXACT cardinal identity for the genuinely SOURCE-NATIVE local
 Hall deficit, with arbitrary n and arbitrary finite original geometry:
   source records minus genuinely eligible local holes =
