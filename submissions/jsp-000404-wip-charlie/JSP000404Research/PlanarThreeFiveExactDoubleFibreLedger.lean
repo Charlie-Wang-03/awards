@@ -193,4 +193,80 @@ theorem actual_three_five_payment_impossible_of_double_hit_shortfall
 #print axioms actual_three_five_payment_impossible_of_double_hit_shortfall
 
 end OrderedEdgeColoring
+
+namespace ProjectionOrdered
+
+open OrderedEdgeColoring
+open DirectionData
+
+/-- Genuine planar AngleCap specialization: for exactly three retained
+Boolean coordinates and at most five ORIGINAL plane centres, the real
+canonical earliest-prior source ledger equals the distinct candidate count
+plus the number of ACTUAL double-hit candidate words. No external-hole
+credit is assumed or generated. -/
+theorem planar_three_five_standard_duplicate_debt_exact_double_hit_ledger
+    {V : Type*} [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
+    (hfive : Fintype.card V ≤ 5)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (3 : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (cycles :
+      letI : LinearOrder (ProjectionOrdered V) :=
+        projectionLinearOrder hp
+      ∀ i : ProjectionOrdered V,
+        CentreProjectiveCycle (reindexedPoint_injective hp) i) :
+    letI : LinearOrder (ProjectionOrdered V) :=
+      projectionLinearOrder hp
+    let htpos : 0 < t := by rw [ht]; linarith
+    let hwidth : t < (3 : ℝ) + 1 := by rw [ht]; linarith
+    let D := genericDirectionData_sendov hp hcap htpos hlam
+    let B := standardResidualColoring D 3 (by exact_mod_cast hwidth)
+    let k : ProjectionOrdered V → ℕ :=
+      fun i => centreExponent (cycles i) t
+    ∀ (choice : ProjectionOrdered V → Fin 3),
+      translatedLossDuplicateDebt B k choice =
+        (actualLossEarliestOppositeCandidateWords B k choice).card +
+          (actualLossDoubleHitCandidateWords B k choice).card := by
+  classical
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+  have htpos : 0 < t := by rw [ht]; linarith
+  have hwidth : t < (3 : ℝ) + 1 := by rw [ht]; linarith
+  let D := genericDirectionData_sendov hp hcap htpos hlam
+  let B : OrderedEdgeColoring (ProjectionOrdered V) (3 + 1) :=
+    standardResidualColoring D 3 (by exact_mod_cast hwidth)
+  let k : ProjectionOrdered V → ℕ :=
+    fun i => centreExponent (cycles i) t
+  change ∀ (choice : ProjectionOrdered V → Fin 3),
+    translatedLossDuplicateDebt B k choice =
+      (actualLossEarliestOppositeCandidateWords B k choice).card +
+        (actualLossDoubleHitCandidateWords B k choice).card
+  have hdelta1 : delta < 1 := by linarith
+  have hk : ∀ i : ProjectionOrdered V, k i ≤ 2 := by
+    intro i
+    have hi := centreExponent_lt_n
+      (cycles i) 3 delta t (by decide : 1 ≤ (3 : ℕ))
+      hdelta0 hdelta1 ht
+    dsimp only [k]
+    omega
+  have hsize : Fintype.card (ProjectionOrdered V) ≤ 5 := by
+    have heq : Fintype.card (ProjectionOrdered V) = Fintype.card V := by
+      let e : ProjectionOrdered V ≃ V :=
+        { toFun := ProjectionOrdered.toOriginal
+          invFun := ProjectionOrdered.ofOriginal
+          left_inv := fun _ => rfl
+          right_inv := fun _ => rfl }
+      exact Fintype.card_congr e
+    omega
+  intro choice
+  exact actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
+    B k choice hk hsize
+
+#print axioms planar_three_five_standard_duplicate_debt_exact_double_hit_ledger
+
+end ProjectionOrdered
 end JSP000404Research
