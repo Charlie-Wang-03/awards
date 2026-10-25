@@ -396,7 +396,7 @@ theorem actual_three_loss_centres_eighth_source_real_credit_injection
         Fin.cast hrecords.symm i = Fin.cast hrecords.symm j :=
       S.equivFin.symm.injective heq
     apply Fin.ext
-    exact congrArg Fin.val hcast
+    exact congrArg (fun k : Fin S.card => k.val) hcast
   obtain ⟨f,hinjF,hreal⟩ :=
     actual_three_loss_centres_explicit_original_square_hole_matching
       C exponent choice hexp hloss houtside
