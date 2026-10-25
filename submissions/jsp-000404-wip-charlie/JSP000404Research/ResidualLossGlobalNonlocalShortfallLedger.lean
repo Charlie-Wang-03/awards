@@ -136,6 +136,7 @@ theorem actual_eight_source_payment_iff_nonlocal_defect_payment
   have hholes := Finset.card_sdiff_add_card_inter Q O
   have hcomm : (O ∩ Q).card = (Q ∩ O).card := by
     rw [Finset.inter_comm]
+  dsimp only [O, Q] at hdup hholes hcomm
   omega
 
 /-- In TWO colours the candidate-reuse part is unconditionally zero,
