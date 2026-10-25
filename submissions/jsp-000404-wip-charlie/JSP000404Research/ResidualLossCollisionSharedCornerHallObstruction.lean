@@ -1,4 +1,5 @@
 import JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility
+import JSP000404Research.ResidualLossEarliestCollision
 import Mathlib.Tactic
 
 /-!
@@ -228,6 +229,124 @@ theorem actual_cross_loss_family_same_opposite_local_hall_shortfall
     actual_cross_loss_family_common_opposite_local_holes_le_one
       C exponent choice S q hdifferent hleft hright hsame
   omega
+
+/-
+Canonicalization note: an arbitrary ordered (c,d,w) collision-record set
+is NOT itself a measure of actual duplicate debt: swapping c and d merely
+renames the same two-coordinate intersection.  The exact prior-first
+coordinate ledger counts each word once for every LATER slice after its
+first appearance. The finite records below are taken from those exact
+earliest-prior components, and always satisfy j < i.
+-/
+
+/-- Concrete earliest-prior collision records from the ORIGINAL duplicate
+debt decomposition. A record is (later coordinate i, earliest previous
+coordinate j, shared Boolean word); j < i forbids swapping coordinates
+into a second, spurious record. -/
+noncomputable def actualEarliestLossCollisionRecords
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    Finset (Fin n × Fin n × (Fin n → Bool)) :=
+  (Finset.univ : Finset (Fin n × Fin n × (Fin n → Bool))).filter
+    (fun a =>
+      a.2.1 < a.1 ∧
+        a.2.2 ∈ lossEarliestPairWords
+          (lossSliceAtNat C exponent choice) a.1.val a.2.1.val)
+
+/-- Every genuine prior-first debt record has two DIFFERENT original
+chosen-coordinate slices, with the LATER coordinate stored first.
+No reverse-coordinate copy was inserted into the debt record set. -/
+theorem actual_earliest_loss_collision_record_valid
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (a : Fin n × Fin n × (Fin n → Bool))
+    (ha : a ∈ actualEarliestLossCollisionRecords C exponent choice) :
+    a.1 ≠ a.2.1 ∧
+      a.2.1 < a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+  classical
+  obtain ⟨horder, hfirst⟩ :=
+    (Finset.mem_filter.mp ha).2
+  have hslices :=
+    (Finset.mem_inter.mp (Finset.mem_sdiff.mp hfirst).1)
+  have hi :
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 := by
+    simpa [lossSliceAtNat, a.1.isLt] using hslices.1
+  have hj :
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+    simpa [lossSliceAtNat, a.2.1.isLt] using hslices.2
+  exact ⟨(ne_of_lt horder).symm, horder, hi, hj⟩
+
+/-- Exact (not over-counted) earliest-prior collision-source family:
+its square-local REAL holes equal the distinct opposite corners which
+are actually globally exterior. This now uses the SAME finite records
+appearing in the exact original duplicate-debt sum, not arbitrary
+ordered coordinate pairs or fabricated hole tokens. -/
+theorem actual_earliest_loss_collision_local_holes_exact_image_inter
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (actualEarliestLossCollisionRecords C exponent choice).biUnion
+      (fun a =>
+        lossCollisionSquareWords n a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice) =
+      ((actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)) ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  have hvalid : ∀ a ∈ S,
+      a.1 ≠ a.2.1 ∧ a.2.1 < a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+    intro a ha
+    exact actual_earliest_loss_collision_record_valid C exponent choice a ha
+  exact actual_cross_loss_family_local_holes_exact_image_inter
+    C exponent choice S
+    (fun a ha => (hvalid a ha).1)
+    (fun a ha => (hvalid a ha).2.2.1)
+    (fun a ha => (hvalid a ha).2.2.2)
+
+/-- Any two actual earliest-prior records sharing an opposite corner
+cannot BOTH be paid by distinct TRUE holes WITHIN their source squares.
+This does NOT prohibit other global credits. -/
+theorem actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hRepeated :
+      ((actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card <
+        (actualEarliestLossCollisionRecords C exponent choice).card) :
+    ¬ (actualEarliestLossCollisionRecords C exponent choice).card ≤
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords n a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  have hvalid : ∀ a ∈ S,
+      a.1 ≠ a.2.1 ∧ a.2.1 < a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 ∧
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+    intro a ha
+    exact actual_earliest_loss_collision_record_valid C exponent choice a ha
+  exact actual_cross_loss_family_local_hall_shortfall_of_repeated_candidates
+    C exponent choice S
+    (fun a ha => (hvalid a ha).1)
+    (fun a ha => (hvalid a ha).2.2.1)
+    (fun a ha => (hvalid a ha).2.2.2)
+    hRepeated
+
+#print axioms actual_earliest_loss_collision_record_valid
+#print axioms actual_earliest_loss_collision_local_holes_exact_image_inter
+#print axioms actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
+
 
 #print axioms actual_cross_loss_family_local_holes_exact_image_inter
 #print axioms actual_cross_loss_family_local_holes_le_distinct_doubleflips
