@@ -440,8 +440,10 @@ theorem actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterio
             lossCollisionSquareWords n a ∩
               lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card) ↔
       Set.InjOn
-        (fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)
-        (actualEarliestLossCollisionRecords C exponent choice) ∧
+        (fun a : Fin n × Fin n × (Fin n → Bool) =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)
+        (↑(actualEarliestLossCollisionRecords C exponent choice) :
+          Set (Fin n × Fin n × (Fin n → Bool))) ∧
       actualLossEarliestOppositeCandidateWords C exponent choice ⊆
         lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
   classical
