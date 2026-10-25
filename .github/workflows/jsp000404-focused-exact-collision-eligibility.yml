@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionExactLocalHoleEligibility.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionSharedCornerHallObstruction.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCanonicalDebtTokenCount.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionDoubleFlipExactTrueHole.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionExactSquareHoleBudget.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionThreePointExternalHoleObstruction.lean"
@@ -58,7 +59,7 @@ jobs:
       - name: Kernel-check exact original-source conditions for one real collision-square hole
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction
+          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction JSP000404Research.ResidualLossCanonicalDebtTokenCount
       - name: Scope
         if: always()
-        run: echo 'One square exact hole criterion and finite common-corner collision-family local Hall shortfall; no global payment.'
+        run: echo 'Exact local holes, canonical earliest-prior records, and typed duplicate-debt tokens; global payment still open.'
