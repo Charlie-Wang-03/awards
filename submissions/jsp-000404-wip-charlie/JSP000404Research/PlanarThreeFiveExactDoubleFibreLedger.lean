@@ -65,8 +65,9 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
     split_ifs <;> omega
   have hfilter :
       (∑ q ∈ O, if 2 ≤ (F q).card then (1 : ℕ) else 0) = D.card := by
-    dsimp only [D]
-    simp [actualLossDoubleHitCandidateWords, O, F]
+    change (∑ q ∈ O, if 2 ≤ (F q).card then (1 : ℕ) else 0) =
+      (O.filter (fun q => 2 ≤ (F q).card)).card
+    simp
   have hcount :
       (∑ q ∈ O, (F q).card) = O.card + D.card := by
     calc
@@ -78,7 +79,9 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
       _ = (∑ q ∈ O, (1 : ℕ)) +
           (∑ q ∈ O, if 2 ≤ (F q).card then (1 : ℕ) else 0) := by
             rw [Finset.sum_add_distrib]
-      _ = O.card + D.card := by simp only [Finset.sum_const_zero, Finset.sum_const]; omega
+      _ = O.card + D.card := by
+        rw [hfilter]
+        simp
   dsimp only [O, F, D] at hcount
   omega
 
