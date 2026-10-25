@@ -310,6 +310,61 @@ theorem actual_three_loss_centres_all_subfamilies_hall_iff_exterior
 #print axioms actual_three_loss_centres_every_subfamily_square_local_hall
 #print axioms actual_three_loss_centres_all_subfamilies_hall_iff_exterior
 
+/-- A CONCRETE collision-record-to-true-hole injection, stronger than
+the existential Hall inequality: on <=3 genuine projected-loss centres,
+the canonical opposite double flip gives an injective assignment of
+ALL original earliest-prior source debt records to *their own square*
+external holes, provided those actual candidate words are exterior.
+This does NOT manufacture exterior eligibility or pay other debt types. -/
+theorem actual_three_loss_centres_explicit_original_square_hole_matching
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3)
+    (houtside :
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    ∃ f : (Fin 3 × Fin 3 × (Fin 3 → Bool)) → (Fin 3 → Bool),
+      Set.InjOn f (actualEarliestLossCollisionRecords C exponent choice) ∧
+      ∀ a ∈ actualEarliestLossCollisionRecords C exponent choice,
+        f a ∈ lossCollisionSquareWords 3 a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let f : (Fin 3 × Fin 3 × (Fin 3 → Bool)) → (Fin 3 → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hrecords :
+      S.card = translatedLossDuplicateDebt C exponent choice :=
+    actual_earliest_collision_records_card_eq_duplicate_debt C exponent choice
+  have huniq : translatedLossDuplicateDebt C exponent choice = O.card :=
+    actual_three_loss_centres_duplicate_debt_has_no_reuse
+      C exponent choice hexp hloss
+  have hcount : (S.image f).card = S.card := by
+    change O.card = S.card
+    exact (hrecords.trans huniq).symm
+  have hinj : Set.InjOn f S := Finset.card_image_iff.mp hcount
+  refine ⟨f, hinj, ?_⟩
+  intro a ha
+  change f a ∈ lossCollisionSquareWords 3 a ∩ H
+  apply Finset.mem_inter.mpr
+  constructor
+  · change f a ∈
+      insert a.2.2
+        (insert (flipBoolWordAt a.2.2 a.1)
+          (insert (flipBoolWordAt a.2.2 a.2.1)
+            ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
+              Finset (Fin 3 → Bool))))
+    simp [f]
+  · apply houtside
+    change f a ∈ S.image f
+    exact Finset.mem_image.mpr ⟨a, ha, rfl⟩
+
+#print axioms actual_three_loss_centres_explicit_original_square_hole_matching
+
+
 
 
 
