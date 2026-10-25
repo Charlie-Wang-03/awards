@@ -38,6 +38,9 @@ theorem actual_loss_opposite_pair_signature_injective (n : ℕ) :
   intro a b h
   have hword := congrArg Prod.fst h
   have hpair := congrArg Prod.snd h
+  change flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 =
+    flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1 at hword
+  change (a.1, a.2.1) = (b.1, b.2.1) at hpair
   exact loss_opposite_same_coordinate_pair_injective a b
     (congrArg Prod.fst hpair) (congrArg Prod.snd hpair) hword
 
