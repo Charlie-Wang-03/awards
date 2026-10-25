@@ -35,9 +35,6 @@ noncomputable def actualLossDoubleHitCandidateWords
   (actualLossEarliestOppositeCandidateWords C exponent choice).filter
     (fun q => 2 ≤ (actualLossOppositeCandidateFibre C exponent choice q).card)
 
-/-- Exact original duplicate debt, n=3, five-centre condition:
-the first debt record of each distinct opposite candidate costs one;
-each double-hit opposite target costs exactly ONE further unit. -/
 /-- Exact source-native double-hit ledger for n=3 with up to FIVE
 actual projected-loss centres, irrespective of the ambient number of
 original vertices. The number of loss vertices, rather than all
@@ -108,8 +105,6 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
 
 #print axioms actual_three_five_loss_sparsity_duplicate_debt_exact
 
-/-- The exact original reuse defect is precisely the NUMBER of
-ACTUAL double-hit opposite words, without any dummy charge. -/
 /-- The original reuse defect is exactly the actual number of double-hit
 targets whenever at most five TRUE projected-loss centres exist. -/
 theorem actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
@@ -140,10 +135,6 @@ theorem actual_three_five_reuse_defect_eq_double_hit_card
     C exponent choice hexp hfive
   omega
 
-/-- Fully source-native five-centre form of the original eight-source
-payment: only actual double-hit targets, actual ineligible candidates,
-all other original debts, and REAL nonlocal credit resources remain.
-This is a LOGICAL IFF and is NOT a sufficiency theorem from AngleCap. -/
 /-- Exact global nonlocal payment IFF in the enlarged n=3 regime
 with at most five projected-loss centres, regardless of total vertices. -/
 theorem actual_three_loss_sparsity_payment_iff_double_hit_nonlocal
