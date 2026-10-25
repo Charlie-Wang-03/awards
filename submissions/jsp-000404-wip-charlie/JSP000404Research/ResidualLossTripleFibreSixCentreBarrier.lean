@@ -319,6 +319,197 @@ theorem actual_three_colour_triple_fibre_forces_six_loss_centres
 
 #print axioms actual_three_colour_triple_fibre_forces_six_loss_centres
 
+/-- Two distinct genuine n=3 opposite-candidate debt records require
+at least FOUR distinct original projected-loss centres. The proof uses
+the exact source pair signatures: distinct pair records share one choice
+slice whose inverse source words disagree twice, so that slice needs two
+distinct original owners; the other two slices each need one more. -/
+theorem actual_three_colour_double_fibre_forces_four_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ)
+    (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (q : Fin 3 → Bool)
+    (htwo : 2 ≤ (actualLossOppositeCandidateFibre
+      C exponent choice q).card) :
+    4 ≤ (projectedLossVertices C exponent).card := by
+  classical
+  let P := actualLossOppositeEligibleSourcePairs C exponent choice q
+  have hcardP : 1 < P.card := by
+    have h := actual_loss_opposite_candidate_fibre_card_eq_exact_source_pairs
+      C exponent choice q
+    dsimp only [P]
+    omega
+  have hPsub : P ⊆ actualLossOrderedCoordinatePairs 3 := by
+    intro x hx
+    exact (Finset.mem_filter.mp hx).1
+  have hlegal : actualLossOrderedCoordinatePairs 3 =
+      ({((1 : Fin 3), (0 : Fin 3)),
+        ((2 : Fin 3), (0 : Fin 3)),
+        ((2 : Fin 3), (1 : Fin 3))} : Finset (Fin 3 × Fin 3)) := by
+    decide
+  obtain ⟨x,hx,y,hy,hxy⟩ := Finset.one_lt_card.mp hcardP
+  have hxCases : x = ((1 : Fin 3), (0 : Fin 3)) ∨
+      x = ((2 : Fin 3), (0 : Fin 3)) ∨
+      x = ((2 : Fin 3), (1 : Fin 3)) := by
+    have h := hPsub hx
+    rw [hlegal] at h
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using h
+  have hyCases : y = ((1 : Fin 3), (0 : Fin 3)) ∨
+      y = ((2 : Fin 3), (0 : Fin 3)) ∨
+      y = ((2 : Fin 3), (1 : Fin 3)) := by
+    have h := hPsub hy
+    rw [hlegal] at h
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using h
+  have hpair :
+      (((1 : Fin 3), (0 : Fin 3)) ∈ P ∧
+        ((2 : Fin 3), (0 : Fin 3)) ∈ P) ∨
+      (((1 : Fin 3), (0 : Fin 3)) ∈ P ∧
+        ((2 : Fin 3), (1 : Fin 3)) ∈ P) ∨
+      (((2 : Fin 3), (0 : Fin 3)) ∈ P ∧
+        ((2 : Fin 3), (1 : Fin 3)) ∈ P) := by
+    rcases hxCases with rfl | rfl | rfl <;>
+      rcases hyCases with rfl | rfl | rfl
+    · exact (hxy rfl).elim
+    · exact Or.inl ⟨hx,hy⟩
+    · exact Or.inr (Or.inl ⟨hx,hy⟩)
+    · exact Or.inl ⟨hy,hx⟩
+    · exact (hxy rfl).elim
+    · exact Or.inr (Or.inr ⟨hx,hy⟩)
+    · exact Or.inr (Or.inl ⟨hy,hx⟩)
+    · exact Or.inr (Or.inr ⟨hy,hx⟩)
+    · exact (hxy rfl).elim
+  let w10 := flipBoolWordAt (flipBoolWordAt q (0 : Fin 3)) (1 : Fin 3)
+  let w20 := flipBoolWordAt (flipBoolWordAt q (0 : Fin 3)) (2 : Fin 3)
+  let w21 := flipBoolWordAt (flipBoolWordAt q (1 : Fin 3)) (2 : Fin 3)
+  obtain ⟨hd10_20_1,hd10_20_2,hd10_21_0,hd10_21_2,
+    hd20_21_0,hd20_21_1⟩ :=
+      three_corner_source_disagreement_pattern q
+  have hFour (c d e : Fin 3) (hcd : c ≠ d) (hce : c ≠ e)
+      (hde : d ≠ e) (w z : Fin 3 → Bool)
+      (hwd : w d ≠ z d) (hwe : w e ≠ z e)
+      (hwc : w ∈ translatedLossSliceWords C exponent choice c)
+      (hzc : z ∈ translatedLossSliceWords C exponent choice c)
+      (hwOther : w ∈ translatedLossSliceWords C exponent choice d)
+      (hzOther : z ∈ translatedLossSliceWords C exponent choice e) :
+      4 ≤ (projectedLossVertices C exponent).card := by
+    let S (i : Fin 3) := lossCoordinateSlice C exponent choice i
+    obtain ⟨v,hvc,u,huc,hvu⟩ :=
+      translated_slice_two_disagreements_two_distinct_owners
+        C exponent choice hexp c d e hde w z hwd hwe hwc hzc
+    have htwoC : 2 ≤ (S c).card := by
+      have hsub : ({v,u} : Finset V) ⊆ S c := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact hvc
+        · exact huc
+      have h := Finset.card_le_card hsub
+      have hcard : ({v,u} : Finset V).card = 2 := by simp [hvu]
+      omega
+    obtain ⟨vd,hvd,_⟩ := Finset.mem_biUnion.mp hwOther
+    obtain ⟨ve,hve,_⟩ := Finset.mem_biUnion.mp hzOther
+    have honeD : 1 ≤ (S d).card := Finset.one_le_card.mpr ⟨vd,hvd⟩
+    have honeE : 1 ≤ (S e).card := Finset.one_le_card.mpr ⟨ve,hve⟩
+    have hdisj (a b : Fin 3) (hab : a ≠ b) : Disjoint (S a) (S b) := by
+      apply Finset.disjoint_left.mpr
+      intro v hav hbv
+      have hca := ((mem_lossCoordinateSlice C exponent choice a v).mp hav).2
+      have hcb := ((mem_lossCoordinateSlice C exponent choice b v).mp hbv).2
+      exact hab (hca.symm.trans hcb)
+    have hdcd : Disjoint (S c) (S d) := hdisj c d hcd
+    have hdce : Disjoint (S c) (S e) := hdisj c e hce
+    have hdde : Disjoint (S d) (S e) := hdisj d e hde
+    have hwhole : Disjoint (S c ∪ S d) (S e) :=
+      Finset.disjoint_union_left.mpr ⟨hdce,hdde⟩
+    have hcount :
+        (S c ∪ S d ∪ S e).card =
+          (S c).card + (S d).card + (S e).card := by
+      rw [Finset.card_union_of_disjoint hwhole,
+        Finset.card_union_of_disjoint hdcd]
+    have hsrc (i : Fin 3) :
+        S i ⊆ projectedLossVertices C exponent := by
+      intro v hv
+      exact ((mem_lossCoordinateSlice C exponent choice i v).mp hv).1
+    have hsub :
+        S c ∪ S d ∪ S e ⊆ projectedLossVertices C exponent := by
+      intro v hv
+      rcases Finset.mem_union.mp hv with hv12 | hve
+      · rcases Finset.mem_union.mp hv12 with hvc' | hvd'
+        · exact hsrc c hvc'
+        · exact hsrc d hvd'
+      · exact hsrc e hve
+    have hbound := Finset.card_le_card hsub
+    rw [hcount] at hbound
+    omega
+  rcases hpair with ⟨h10P,h20P⟩ | ⟨h10P,h21P⟩ | ⟨h20P,h21P⟩
+  · have h10 := (Finset.mem_filter.mp h10P).2
+    have h20 := (Finset.mem_filter.mp h20P).2
+    have h10p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h10).1
+    have h20p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h20).1
+    have hw10_0 : w10 ∈ translatedLossSliceWords C exponent choice 0 := by
+      simpa [w10,lossSliceAtNat] using h10p.2
+    have hw10_1 : w10 ∈ translatedLossSliceWords C exponent choice 1 := by
+      simpa [w10,lossSliceAtNat] using h10p.1
+    have hw20_0 : w20 ∈ translatedLossSliceWords C exponent choice 0 := by
+      simpa [w20,lossSliceAtNat] using h20p.2
+    have hw20_2 : w20 ∈ translatedLossSliceWords C exponent choice 2 := by
+      simpa [w20,lossSliceAtNat] using h20p.1
+    exact hFour 0 1 2 (by decide) (by decide) (by decide)
+      w10 w20 hd10_20_1 hd10_20_2 hw10_0 hw20_0 hw10_1 hw20_2
+  · have h10 := (Finset.mem_filter.mp h10P).2
+    have h21 := (Finset.mem_filter.mp h21P).2
+    have h10p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h10).1
+    have h21p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h21).1
+    have hw10_1 : w10 ∈ translatedLossSliceWords C exponent choice 1 := by
+      simpa [w10,lossSliceAtNat] using h10p.1
+    have hw10_0 : w10 ∈ translatedLossSliceWords C exponent choice 0 := by
+      simpa [w10,lossSliceAtNat] using h10p.2
+    have hw21_1 : w21 ∈ translatedLossSliceWords C exponent choice 1 := by
+      simpa [w21,lossSliceAtNat] using h21p.2
+    have hw21_2 : w21 ∈ translatedLossSliceWords C exponent choice 2 := by
+      simpa [w21,lossSliceAtNat] using h21p.1
+    exact hFour 1 0 2 (by decide) (by decide) (by decide)
+      w10 w21 hd10_21_0 hd10_21_2 hw10_1 hw21_1 hw10_0 hw21_2
+  · have h20 := (Finset.mem_filter.mp h20P).2
+    have h21 := (Finset.mem_filter.mp h21P).2
+    have h20p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h20).1
+    have h21p := Finset.mem_inter.mp (Finset.mem_sdiff.mp h21).1
+    have hw20_2 : w20 ∈ translatedLossSliceWords C exponent choice 2 := by
+      simpa [w20,lossSliceAtNat] using h20p.1
+    have hw20_0 : w20 ∈ translatedLossSliceWords C exponent choice 0 := by
+      simpa [w20,lossSliceAtNat] using h20p.2
+    have hw21_2 : w21 ∈ translatedLossSliceWords C exponent choice 2 := by
+      simpa [w21,lossSliceAtNat] using h21p.1
+    have hw21_1 : w21 ∈ translatedLossSliceWords C exponent choice 1 := by
+      simpa [w21,lossSliceAtNat] using h21p.2
+    exact hFour 2 0 1 (by decide) (by decide) (by decide)
+      w20 w21 hd20_21_0 hd20_21_1 hw20_2 hw21_2 hw20_0 hw21_1
+
+#print axioms actual_three_colour_double_fibre_forces_four_loss_centres
+
+/-- At most THREE genuine projected-loss centres imply NO repeat of
+any canonical earliest-prior opposite-candidate source target. This
+holds independent of all other ambient centres and does not assume
+exterior-hole eligibility. -/
+theorem actual_three_colour_three_loss_centre_no_double_fibre
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3)
+    (q : Fin 3 → Bool) :
+    (actualLossOppositeCandidateFibre C exponent choice q).card ≤ 1 := by
+  by_contra hnot
+  have htwo : 2 ≤ (actualLossOppositeCandidateFibre
+      C exponent choice q).card := by omega
+  have hfour := actual_three_colour_double_fibre_forces_four_loss_centres
+    C exponent choice hexp q htwo
+  omega
+
+#print axioms actual_three_colour_three_loss_centre_no_double_fibre
+
 #print axioms translated_cube_two_words_agree_at_retained_active
 #print axioms translated_cube_two_disagreements_impossible
 #print axioms three_colour_projected_loss_two_active
