@@ -3,7 +3,7 @@ import Mathlib.Tactic
 
 -- This file unfolds several concrete nested finite membership definitions;
 -- the extra elaborator budget changes NO proposition, proof term or axiom.
-set_option maxHeartbeats 1600000
+set_option maxHeartbeats 600000
 
 /-!
 # Exact opposite-corner fibre: ONE determined source word per coordinate pair
@@ -74,19 +74,20 @@ theorem actual_loss_opposite_fibre_pair_in_exact_source_pairs
   classical
   obtain ⟨hrecord, hopposite⟩ := Finset.mem_filter.mp ha
   obtain ⟨horder, hsrc⟩ := (Finset.mem_filter.mp hrecord).2
-  change (a.1, a.2.1) ∈
-    (actualLossOrderedCoordinatePairs n).filter
-      (fun cd =>
-        flipBoolWordAt (flipBoolWordAt q cd.2) cd.1 ∈
-          lossEarliestPairWords
-            (lossSliceAtNat C exponent choice) cd.1.val cd.2.val)
-  apply Finset.mem_filter.mpr
-  constructor
-  · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, horder⟩
-  · have hinverse :=
-      (opposite_doubleflip_eq_iff_original_inverse
-        a.2.2 q a.1 a.2.1).mp hopposite
-    simpa only [← hinverse] using hsrc
+  have hinverse : a.2.2 =
+      flipBoolWordAt (flipBoolWordAt q a.2.1) a.1 :=
+    (opposite_doubleflip_eq_iff_original_inverse
+      a.2.2 q a.1 a.2.1).mp hopposite
+  have hsource :
+      flipBoolWordAt (flipBoolWordAt q a.2.1) a.1 ∈
+        lossEarliestPairWords
+          (lossSliceAtNat C exponent choice) a.1.val a.2.1.val := by
+    rw [← hinverse]
+    exact hsrc
+  have hpair :
+      (a.1, a.2.1) ∈ actualLossOrderedCoordinatePairs n :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ _, horder⟩
+  exact Finset.mem_filter.mpr ⟨hpair, hsource⟩
 
 /-- Conversely, an original ordered pair satisfying the exact source
 criterion yields a real unique earliest-prior debt record with that
