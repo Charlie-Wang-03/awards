@@ -41,8 +41,11 @@ theorem actual_loss_opposite_pair_signature_injective (n : ℕ) :
   change flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 =
     flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1 at hword
   change (a.1, a.2.1) = (b.1, b.2.1) at hpair
-  exact loss_opposite_same_coordinate_pair_injective a b
-    (congrArg Prod.fst hpair) (congrArg Prod.snd hpair) hword
+  have hc : a.1 = b.1 :=
+    congrArg (fun pair : Fin n × Fin n => pair.1) hpair
+  have hd : a.2.1 = b.2.1 :=
+    congrArg (fun pair : Fin n × Fin n => pair.2) hpair
+  exact loss_opposite_same_coordinate_pair_injective a b hc hd hword
 
 /-- Legal canonical earliest-prior coordinate pairs; each original
 duplicate debt record has a pair j<i in this finite set. -/
