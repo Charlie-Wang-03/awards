@@ -46,48 +46,20 @@ variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-/- All declarations below use the concrete projection order derived from hp,
-   not an ill-formed ambient instance requiring typeclass inference of hp. -/
+/- Explicit projection-derived order in types and proofs: hp is not inferable by typeclasses. -/
 
 noncomputable def planarEnlargedCandidateBlock
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  1 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (i :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (i : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  ProjectionOrdered V) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     Finset (Fin n → Bool) := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -99,43 +71,16 @@ noncomputable def planarEnlargedCandidateBlock
 
 theorem planarEnlargedCandidateBlock_local_capacity
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  1 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (i :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (i : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  ProjectionOrdered V) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     2 ^ centreExponent (C i) t ≤
       (planarEnlargedCandidateBlock
         hp hcap hn hdelta0 hdeltaHalf ht hlam C i).card := by
@@ -168,48 +113,21 @@ theorem planarEnlargedCandidateBlock_local_capacity
 
 theorem planar_lowerBranch_capacity_of_enlargedBlock_expansion
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  1 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hExpansion :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hExpansion : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ centreExponent (C i) t) ≤
           (S.biUnion
             (planarEnlargedCandidateBlock
-              hp hcap hn hdelta0 hdeltaHalf ht hlam C)).card) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+              hp hcap hn hdelta0 hdeltaHalf ht hlam C)).card) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
@@ -223,48 +141,21 @@ theorem planar_lowerBranch_capacity_of_enlargedBlock_expansion
 
 theorem planar_enlarged_expansion_failure_minimal_core
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  1 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hfail :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hfail : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ¬ ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ centreExponent (C i) t) ≤
           (S.biUnion
             (planarEnlargedCandidateBlock
-              hp hcap hn hdelta0 hdeltaHalf ht hlam C)).card) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+              hp hcap hn hdelta0 hdeltaHalf ht hlam C)).card) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
       BlockDeficient
@@ -305,51 +196,24 @@ theorem planar_enlarged_expansion_failure_minimal_core
 
 theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       2 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  2 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
         T)
-    (hmin :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hmin : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ U : Finset (ProjectionOrdered V),
         U ⊂ T →
         ¬ BlockDeficient
@@ -359,23 +223,14 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
             hdelta0 hdeltaHalf ht hlam C)
           U)
     {i : ProjectionOrdered V}
-    (hiT :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       i ∈ T)
-    (hiLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hiT : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  i ∈ T)
+    (hiLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       i ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
         (planarCentreExponent hp C))
-    (hmaxLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hmaxLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ z : ProjectionOrdered V,
         z ∈ T →
         z ∈ projectedLossVertices
@@ -392,18 +247,12 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam) i).card)
-    (hdegree :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdegree : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       (enlargedCollisionNeighbours
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C) T i).card = 1) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        (planarCentreExponent hp C) T i).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     SharpAt (reindexedPoint p) delta lam i := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -457,55 +306,25 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
 
 theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       2 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  2 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
         T)
-    (hmin :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hmin : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ U : Finset (ProjectionOrdered V),
         U ⊂ T →
         ¬ BlockDeficient
@@ -515,36 +334,21 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
             hdelta0 hdeltaHalf ht hlam C)
           U)
     {a b : ProjectionOrdered V}
-    (haT :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       a ∈ T)
-    (hbT :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       b ∈ T)
-    (haLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (haT : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  a ∈ T)
+    (hbT : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  b ∈ T)
+    (haLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       a ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
         (planarCentreExponent hp C))
-    (hbLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hbLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       b ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
         (planarCentreExponent hp C))
-    (haMax :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (haMax : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ z : ProjectionOrdered V,
         z ∈ T →
         z ∈ projectedLossVertices
@@ -561,10 +365,7 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam) a).card)
-    (hbMax :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hbMax : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ z : ProjectionOrdered V,
         z ∈ T →
         z ∈ projectedLossVertices
@@ -581,27 +382,18 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam) b).card)
-    (haDegree :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (haDegree : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       (enlargedCollisionNeighbours
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
         (planarCentreExponent hp C) T a).card = 1)
-    (hbDegree :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hbDegree : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       (enlargedCollisionNeighbours
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C) T b).card = 1) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        (planarCentreExponent hp C) T b).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     a = b := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -676,51 +468,24 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
 
 theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       2 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  2 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
         T)
-    (hmin :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hmin : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ U : Finset (ProjectionOrdered V),
         U ⊂ T →
         ¬ BlockDeficient
@@ -728,10 +493,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
           (planarEnlargedCandidateBlock
             hp hcap (by omega : 1 ≤ n)
             hdelta0 hdeltaHalf ht hlam C)
-          U) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+          U) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -833,49 +595,22 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
 
 theorem planar_enlarged_expansion_failure_root_reduction
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       2 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  2 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hfail :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hfail : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ¬ ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ centreExponent (C i) t) ≤
           (S.biUnion
             (planarEnlargedCandidateBlock
               hp hcap (by omega : 1 ≤ n)
-              hdelta0 hdeltaHalf ht hlam C)).card) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+              hdelta0 hdeltaHalf ht hlam C)).card) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
       let R :=
@@ -936,74 +671,32 @@ theorem planar_enlarged_expansion_failure_root_reduction
 
 theorem planar_secondLayerLoss_word_closed_outlet
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (s :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V)
-    (hS :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C s) t = n - 1)
+    (s : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  ProjectionOrdered V)
+    (hS : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C s) t = n - 1)
     {v : ProjectionOrdered V}
-    (hvLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hvLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       v ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
         (planarCentreExponent hp C))
-    (hvSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C v) t = n - 2)
+    (hvSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 2)
     {word : Fin n → Bool}
-    (hword :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hword : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       word ∈ retainedCompletionWords
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
-          hdelta0 (by linarith : delta < 1) ht hlam) v) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+          hdelta0 (by linarith : delta < 1) ht hlam) v) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -1113,66 +806,30 @@ theorem planar_secondLayerLoss_word_closed_outlet
 
 theorem planar_topLoss_word_closed_outlet
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {v : ProjectionOrdered V}
-    (hvLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hvLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       v ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
         (planarCentreExponent hp C))
-    (hvTop :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C v) t = n - 1)
+    (hvTop : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 1)
     {word : Fin n → Bool}
-    (hword :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hword : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       word ∈ retainedCompletionWords
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
-          hdelta0 (by linarith : delta < 1) ht hlam) v) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+          hdelta0 (by linarith : delta < 1) ht hlam) v) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -1292,57 +949,24 @@ completion word: its retained completion cube is nonempty, so choose any word
 and apply the word-level top-loss outlet. -/
 theorem planar_topLoss_closed_outlet
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {v : ProjectionOrdered V}
-    (hvLoss :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hvLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       v ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
         (planarCentreExponent hp C))
-    (hvTop :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C v) t = n - 1) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hvTop : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -1398,54 +1022,24 @@ completion word is fed through the planar top-loss closed outlet.  The only
 remaining structural branch is a high-layer two-loss pair. -/
 theorem planar_deficientCore_girthFree_recursive_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -1573,54 +1167,24 @@ planar_topLoss_closed_outlet.  Hence the only remaining high-layer pair is
 second--second. -/
 theorem planar_deficientCore_girthFree_secondPair_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -1731,54 +1295,24 @@ triple-covered word carried by a collision triangle in which at least one
 triangle edge joins two second-layer loss vertices. -/
 theorem planar_deficientCore_girthFree_secondTriple_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -2117,54 +1651,24 @@ contains one Boolean word carried by three distinct second-layer projected-loss
 vertices. -/
 theorem planar_deficientCore_girthFree_threeSecond_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -2370,54 +1874,24 @@ outlets are removed, the only remaining structure is a Q/T/T common-word
 configuration on three distinct second-layer projected-loss vertices. -/
 theorem planar_deficientCore_girthFree_QTT_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -2559,76 +2033,22 @@ distinct support-two centres.  This is the geometry-facing reduction of the
 current Boolean terminal. -/
 theorem planar_QTTT_secondLayer_support_reduction
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {s x y z : ProjectionOrdered V}
-    (hsx :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ x) (hsy :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ y) (hsz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ z)
-    (hxy :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       x ≠ y) (hxz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       x ≠ z) (hyz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       y ≠ z)
-    (hsSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C s) t = n - 2)
-    (hxSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C x) t = n - 2)
-    (hySecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C y) t = n - 2)
-    (hzSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C z) t = n - 2) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hsx : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ x) (hsy : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ y) (hsz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ z)
+    (hxy : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  x ≠ y) (hxz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  x ≠ z) (hyz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  y ≠ z)
+    (hsSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C s) t = n - 2)
+    (hxSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C x) t = n - 2)
+    (hySecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C y) t = n - 2)
+    (hzSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C z) t = n - 2) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     n = 3 ∨
     ∃ a b : ProjectionOrdered V,
       a ≠ b ∧
@@ -2673,76 +2093,22 @@ small-parameter n=3 exception disappears once all four transition
 certificates are packed simultaneously. -/
 theorem planar_QTTT_secondLayer_support_reduction_uniform
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {s x y z : ProjectionOrdered V}
-    (hsx :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ x) (hsy :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ y) (hsz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       s ≠ z)
-    (hxy :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       x ≠ y) (hxz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       x ≠ z) (hyz :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       y ≠ z)
-    (hsSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C s) t = n - 2)
-    (hxSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C x) t = n - 2)
-    (hySecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C y) t = n - 2)
-    (hzSecond :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       centreExponent (C z) t = n - 2) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hsx : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ x) (hsy : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ y) (hsz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  s ≠ z)
+    (hxy : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  x ≠ y) (hxz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  x ≠ z) (hyz : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  y ≠ z)
+    (hsSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C s) t = n - 2)
+    (hxSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C x) t = n - 2)
+    (hySecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C y) t = n - 2)
+    (hzSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C z) t = n - 2) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     ∃ a b : ProjectionOrdered V,
       a ≠ b ∧
       a ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
@@ -2783,54 +2149,24 @@ terminal is immediately reduced geometrically to the small parameter n=3 or
 to the existence of two support-two centres among the four. -/
 theorem planar_deficientCore_girthFree_QTTT_support_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -3007,54 +2343,24 @@ terminal is now uniform in n>=3: it always contains two distinct support-two
 second-layer centres. -/
 theorem planar_deficientCore_girthFree_QTTT_uniform_support_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
-        T) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+        T) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -3174,45 +2480,18 @@ theorem planar_deficientCore_girthFree_QTTT_uniform_support_root
 
 theorem planar_longCycle_overload_recursive_outlet
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       let R :=
         planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
@@ -3222,19 +2501,13 @@ theorem planar_longCycle_overload_recursive_outlet
         (fun x => 2 ^ exponent x)
         (enlargedProjectedCandidateBlock R exponent)
         T)
-    (hgirth :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hgirth : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       let R :=
         planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
       let exponent := planarCentreExponent hp C
-      3 < (enlargedCollisionGraph R exponent T).girth) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+      3 < (enlargedCollisionGraph R exponent T).girth) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -3335,55 +2608,25 @@ theorem planar_longCycle_overload_recursive_outlet
 
 theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {T : Finset (ProjectionOrdered V)}
-    (hdef :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hdef : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap (by omega : 1 ≤ n)
           hdelta0 hdeltaHalf ht hlam C)
         T)
-    (hmin :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hmin : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ U : Finset (ProjectionOrdered V),
         U ⊂ T →
         ¬ BlockDeficient
@@ -3391,10 +2634,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
           (planarEnlargedCandidateBlock
             hp hcap (by omega : 1 ≤ n)
             hdelta0 hdeltaHalf ht hlam C)
-          U) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+          U) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
@@ -3512,53 +2752,23 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
 
 theorem planar_enlarged_expansion_failure_recursive_root
     {lam t delta : ℝ} {n : ℕ}
-    (hcap :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       AngleCap p lam)
-    (hn3 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ n)
-    (hdelta0 :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       0 ≤ delta)
-    (hdeltaHalf :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < (1 : ℝ) / 2)
-    (ht :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       t = (n : ℝ) + delta)
-    (hlam :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       lam = Real.pi / t)
-    (hcard :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       3 ≤ Fintype.card (ProjectionOrdered V))
-    (C :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
+    (hn3 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ n)
+    (hdelta0 : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  0 ≤ delta)
+    (hdeltaHalf : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  delta < (1 : ℝ) / 2)
+    (ht : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  t = (n : ℝ) + delta)
+    (hlam : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  lam = Real.pi / t)
+    (hcard : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  3 ≤ Fintype.card (ProjectionOrdered V))
+    (C : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
-    (hfail :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+    (hfail : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ¬ ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ centreExponent (C i) t) ≤
           (S.biUnion
             (planarEnlargedCandidateBlock
               hp hcap (by omega : 1 ≤ n)
-              hdelta0 hdeltaHalf ht hlam C)).card) :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
+              hdelta0 hdeltaHalf ht hlam C)).card) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
       let R :=
