@@ -27,8 +27,8 @@ theorem any_width_projected_loss_retains_all_but_one
     (v : V) (hv : v ∈ projectedLossVertices C exponent) :
     n ≤ (retainedActive C v).card + 1 := by
   have hrigid := (mem_projectedLossVertices C exponent v).mp hv
-  have hcard : (retainedActive C v).card ≤ n :=
-    Finset.card_le_univ (retainedActive C v)
+  have hcard : (retainedActive C v).card ≤ n := by
+    simpa using Finset.card_le_univ (retainedActive C v)
   have hvbound := hexp v
   unfold projectedFree at hrigid
   omega
