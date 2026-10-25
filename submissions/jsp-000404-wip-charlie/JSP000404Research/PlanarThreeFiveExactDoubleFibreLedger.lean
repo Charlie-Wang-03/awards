@@ -137,5 +137,60 @@ theorem actual_three_five_eight_source_payment_iff_double_hit_nonlocal
 #print axioms actual_three_five_reuse_defect_eq_double_hit_card
 #print axioms actual_three_five_eight_source_payment_iff_double_hit_nonlocal
 
+
+/-- Any successful ORIGINAL eight-source payment must be able to cover
+EVERY genuine two-hit opposite target by real nonlocal outside holes or
+unreserved dyadic surplus. This is a necessary condition, not a construction
+of such credit. -/
+theorem actual_three_five_double_hits_le_available_nonlocal_credit
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hfive : Fintype.card V ≤ 5)
+    (hpay :
+      terminalTwinOtherFiveDebt C exponent +
+          ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+            (lossCoveredBlockerTripleWords C)).card +
+          translatedLossDuplicateDebt C exponent choice ≤
+        (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+          terminalTwinAvailableSurplus C exponent) :
+    (actualLossDoubleHitCandidateWords C exponent choice).card ≤
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \\
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent := by
+  have h := (actual_three_five_eight_source_payment_iff_double_hit_nonlocal
+    C exponent choice hexp hfive).mp hpay
+  omega
+
+/-- A source-native, checkable NEGATIVE certificate for the residual
+eight-source budget: strictly more original double-hit candidates than
+all truly external, nonreused credit already rules out payment.
+The theorem does not assume this shortfall always occurs. -/
+theorem actual_three_five_payment_impossible_of_double_hit_shortfall
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hfive : Fintype.card V ≤ 5)
+    (hshort :
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \\
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent <
+      (actualLossDoubleHitCandidateWords C exponent choice).card) :
+    ¬ (terminalTwinOtherFiveDebt C exponent +
+          ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+            (lossCoveredBlockerTripleWords C)).card +
+          translatedLossDuplicateDebt C exponent choice ≤
+        (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+          terminalTwinAvailableSurplus C exponent) := by
+  intro hpay
+  have hcredit := actual_three_five_double_hits_le_available_nonlocal_credit
+    C exponent choice hexp hfive hpay
+  omega
+
+#print axioms actual_three_five_double_hits_le_available_nonlocal_credit
+#print axioms actual_three_five_payment_impossible_of_double_hit_shortfall
+
 end OrderedEdgeColoring
 end JSP000404Research
