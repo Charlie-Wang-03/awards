@@ -73,6 +73,8 @@ theorem actual_two_colour_earliest_loss_opposite_injOn
   have hb' := actual_earliest_loss_two_colour_record_only_pair
     C exponent choice b hb
   have hword : a.2.2 = b.2.2 := by
+    change flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 =
+      flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1 at heq
     rw [ha'.1, ha'.2, hb'.1, hb'.2] at heq
     exact (flipBoolWordAt_injective (1 : Fin 2))
       ((flipBoolWordAt_injective (0 : Fin 2)) heq)
