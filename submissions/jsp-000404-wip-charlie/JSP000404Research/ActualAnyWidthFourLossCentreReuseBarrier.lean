@@ -37,7 +37,9 @@ theorem any_width_shared_colour_distinct_pairs_two_source_disagreements
   have hflip :
       flipCompletionWord j (flipCompletionWord i w) =
         flipCompletionWord l (flipCompletionWord k z) := by
-    simpa [flipCompletionWord, flipBoolWordAt] using heq
+    change flipCompletionWord j (flipCompletionWord i w) =
+      flipCompletionWord l (flipCompletionWord k z) at heq
+    exact heq
   have hdiff (e : Fin n)
       (hx : ((e = j ∨ e = i) ∧ ¬ (e = l ∨ e = k)) ∨
             (¬ (e = j ∨ e = i) ∧ (e = l ∨ e = k))) :
@@ -216,11 +218,15 @@ theorem actual_any_width_reused_opposite_forces_four_loss_centres
       projectedLossVertices C exponent := by
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl | rfl | rfl
-    · exact ((mem_lossCoordinateSlice C exponent choice a.1 va).mp hva).1
-    · exact ((mem_lossCoordinateSlice C exponent choice a.2.1 ua).mp hua).1
-    · exact ((mem_lossCoordinateSlice C exponent choice b.1 vb).mp hvb).1
-    · exact ((mem_lossCoordinateSlice C exponent choice b.2.1 ub).mp hub).1
+    rcases hx with h | h | h | h
+    · rw [h]
+      exact ((mem_lossCoordinateSlice C exponent choice a.1 va).mp hva).1
+    · rw [h]
+      exact ((mem_lossCoordinateSlice C exponent choice a.2.1 ua).mp hua).1
+    · rw [h]
+      exact ((mem_lossCoordinateSlice C exponent choice b.1 vb).mp hvb).1
+    · rw [h]
+      exact ((mem_lossCoordinateSlice C exponent choice b.2.1 ub).mp hub).1
   have hcard := Finset.card_le_card hsub
   rw [hfour] at hcard
   exact hcard
