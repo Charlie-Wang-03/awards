@@ -225,15 +225,19 @@ theorem actual_three_five_double_hit_forces_local_square_hall_failure
       S.card = translatedLossDuplicateDebt C exponent choice :=
     actual_earliest_collision_records_card_eq_duplicate_debt
       C exponent choice
-  have hledger := actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
-    C exponent choice hexp hfive
+  have hledger :
+      S.card = O.card +
+        (actualLossDoubleHitCandidateWords C exponent choice).card :=
+    hrecords.trans
+      (actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
+        C exponent choice hexp hfive)
   have hRepeated :
       ((actualEarliestLossCollisionRecords C exponent choice).image
         (fun a =>
           flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card <
         (actualEarliestLossCollisionRecords C exponent choice).card := by
     change (S.image f).card < S.card
-    rw [himage, hrecords, hledger]
+    rw [himage, hledger]
     omega
   exact actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
     C exponent choice hRepeated
