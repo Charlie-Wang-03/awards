@@ -120,6 +120,39 @@ theorem actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
     C exponent choice hexp hloss
   omega
 
+/-- With at most THREE genuine projected-loss centres in n=3, no
+opposite Boolean candidate can be claimed twice. The original
+duplicate-debt count therefore equals the number of DISTINCT
+source-native opposite candidates, with no hidden repeated debt.
+This allows arbitrarily many non-loss ambient centres. -/
+theorem actual_three_loss_centres_duplicate_debt_has_no_reuse
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3) :
+    translatedLossDuplicateDebt C exponent choice =
+      (actualLossEarliestOppositeCandidateWords C exponent choice).card := by
+  classical
+  have hfive : (projectedLossVertices C exponent).card ≤ 5 := by
+    omega
+  have hledger := actual_three_five_loss_sparsity_duplicate_debt_exact
+    C exponent choice hexp hfive
+  have hzero : (actualLossDoubleHitCandidateWords C exponent choice).card = 0 := by
+    by_contra hne
+    have hpos : 0 < (actualLossDoubleHitCandidateWords C exponent choice).card := by
+      omega
+    obtain ⟨q,hq⟩ := Finset.card_pos.mp hpos
+    have htwo : 2 ≤ (actualLossOppositeCandidateFibre
+        C exponent choice q).card := (Finset.mem_filter.mp hq).2
+    have hone := actual_three_colour_three_loss_centre_no_double_fibre
+      C exponent choice hexp hloss q
+    omega
+  rw [hzero] at hledger
+  omega
+
+#print axioms actual_three_loss_centres_duplicate_debt_has_no_reuse
+
 #print axioms actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
 
 theorem actual_three_five_reuse_defect_eq_double_hit_card
