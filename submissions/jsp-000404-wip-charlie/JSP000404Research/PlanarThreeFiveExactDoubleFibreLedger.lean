@@ -559,6 +559,59 @@ theorem actual_original_local_hall_all_subfamilies_iff_whole_family
 
 #print axioms actual_original_local_hall_all_subfamilies_iff_whole_family
 
+/-- Direct interface to the EIGHTH source lane, for arbitrary n:
+one original full-family square-local Hall inequality holds IFF the
+literal eighth-lane debt count equals the number of DISTINCT
+opposite words (no original source reuse) AND every such opposite
+word is an actual exterior true hole. No ambient centre bound or
+extra AngleCap hypothesis is hidden here. Other seven debt lanes
+are not discharged. -/
+theorem actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (actualEarliestLossCollisionRecords C exponent choice).card ≤
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords n a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card ↔
+      translatedLossDuplicateDebt C exponent choice =
+        (actualLossEarliestOppositeCandidateWords C exponent choice).card ∧
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let f : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hrecords : S.card = translatedLossDuplicateDebt C exponent choice :=
+    actual_earliest_collision_records_card_eq_duplicate_debt
+      C exponent choice
+  have hlogic :=
+    actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
+      C exponent choice
+  have hwhole :=
+    actual_original_local_hall_all_subfamilies_iff_whole_family
+      C exponent choice
+  constructor
+  · intro h
+    obtain ⟨hinj, houtside⟩ := hlogic.mp (hwhole.mpr h)
+    refine ⟨?_, houtside⟩
+    calc
+      translatedLossDuplicateDebt C exponent choice = S.card := hrecords.symm
+      _ = (S.image f).card := (Finset.card_image_of_injOn hinj).symm
+      _ = O.card := rfl
+  · rintro ⟨hcount, houtside⟩
+    have hinj : Set.InjOn f S := by
+      apply Finset.card_image_iff.mp
+      change O.card = S.card
+      omega
+    exact hwhole.mp (hlogic.mpr ⟨hinj, houtside⟩)
+
+#print axioms actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
+
+
+
 
 
 /-- An EXACT cardinal identity for the genuinely SOURCE-NATIVE local
