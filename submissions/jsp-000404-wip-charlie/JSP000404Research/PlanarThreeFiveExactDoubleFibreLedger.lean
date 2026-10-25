@@ -303,6 +303,79 @@ theorem actual_three_five_double_hit_forces_local_square_hall_failure
   exact actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
     C exponent choice hRepeated
 
+/-- An actual double-hit yields strict local Hall failure even with
+arbitrarily many ambient vertices, so long as at most five original
+projected-loss centres occur. This is an UNCONDITIONAL implication
+under the stated original loss-sparsity hypothesis, not a global
+existence claim about nonlocal credit. -/
+theorem actual_three_loss_sparsity_double_hit_forces_local_hall_failure
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 5)
+    (hdouble :
+      0 < (actualLossDoubleHitCandidateWords C exponent choice).card) :
+    ¬ (actualEarliestLossCollisionRecords C exponent choice).card ≤
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords 3 a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let f : (Fin 3 × Fin 3 × (Fin 3 → Bool)) → (Fin 3 → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have himage : (S.image f).card = O.card := rfl
+  have hrecords :
+      S.card = translatedLossDuplicateDebt C exponent choice :=
+    actual_earliest_collision_records_card_eq_duplicate_debt
+      C exponent choice
+  have hledger :
+      S.card = O.card +
+        (actualLossDoubleHitCandidateWords C exponent choice).card :=
+    hrecords.trans
+      (actual_three_five_loss_sparsity_duplicate_debt_exact
+        C exponent choice hexp hloss)
+  have hRepeated :
+      ((actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card <
+        (actualEarliestLossCollisionRecords C exponent choice).card := by
+    change (S.image f).card < S.card
+    rw [himage, hledger]
+    omega
+  exact actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
+    C exponent choice hRepeated
+
+
+#print axioms actual_three_loss_sparsity_double_hit_forces_local_hall_failure
+
+/-- Under genuine loss-vertex sparsity, successful eight-source
+payment has the necessary source-native nonlocal-credit budget. -/
+theorem actual_three_loss_sparsity_double_hits_le_nonlocal_credit
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 5)
+    (hpay :
+      terminalTwinOtherFiveDebt C exponent +
+          ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+            (lossCoveredBlockerTripleWords C)).card +
+          translatedLossDuplicateDebt C exponent choice ≤
+        (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+          terminalTwinAvailableSurplus C exponent) :
+    (actualLossDoubleHitCandidateWords C exponent choice).card ≤
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent := by
+  have h := (actual_three_loss_sparsity_payment_iff_double_hit_nonlocal
+    C exponent choice hexp hloss).mp hpay
+  omega
+
+#print axioms actual_three_loss_sparsity_double_hits_le_nonlocal_credit
+
 #print axioms actual_three_five_double_hit_forces_local_square_hall_failure
 
 end OrderedEdgeColoring
