@@ -420,6 +420,89 @@ theorem actual_three_loss_centres_eighth_source_real_credit_injection
 
 #print axioms actual_three_loss_centres_eighth_source_real_credit_injection
 
+/-- UNCONDITIONAL EXACT HALL CLASSIFICATION for the ACTUAL original
+earliest-prior source-square family, with ARBITRARY n and arbitrary
+finite original configuration: its every-subfamily local Hall
+inequalities hold iff (1) the canonical opposite-corner map is
+INJECTIVE on the actual source records and (2) EVERY resulting
+opposite word is an ACTUAL exterior true hole.
+In particular NO multiplicity surcharge or fake exterior credit is
+hidden in this equivalence. This is only the local collision lane;
+the global eight-source payment remains OPEN. -/
+theorem actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (∀ T : Finset (Fin n × Fin n × (Fin n → Bool)),
+        T ⊆ actualEarliestLossCollisionRecords C exponent choice →
+        T.card ≤
+          (T.biUnion (fun a =>
+            lossCollisionSquareWords n a ∩
+              lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card) ↔
+      Set.InjOn
+        (fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)
+        (actualEarliestLossCollisionRecords C exponent choice) ∧
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let f : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hlocal :
+      S.biUnion (fun a => lossCollisionSquareWords n a ∩ H) =
+        S.image f ∩ H :=
+    actual_earliest_loss_collision_local_holes_exact_image_inter
+      C exponent choice
+  constructor
+  · intro hAll
+    have hallS : S.card ≤
+        (S.biUnion (fun a => lossCollisionSquareWords n a ∩ H)).card :=
+      hAll S (Finset.Subset.refl S)
+    rw [hlocal] at hallS
+    have hint : (S.image f ∩ H).card ≤ (S.image f).card :=
+      Finset.card_le_card Finset.inter_subset_left
+    have himage : (S.image f).card ≤ S.card := Finset.card_image_le
+    have hcard : (S.image f).card = S.card := by omega
+    have hinj : Set.InjOn f S := Finset.card_image_iff.mp hcard
+    have heq : S.image f ∩ H = S.image f :=
+      Finset.eq_of_subset_of_card_le
+        Finset.inter_subset_left (by omega)
+    have houtside : S.image f ⊆ H := Finset.inter_eq_left.mp heq
+    exact ⟨hinj, houtside⟩
+  · rintro ⟨hinj, houtside⟩ T hT
+    have hinjT : Set.InjOn f T := by
+      intro a ha b hb heq
+      exact hinj (hT ha) (hT hb) heq
+    have hTout : T.image f ⊆ H := by
+      intro q hq
+      obtain ⟨a,ha,rfl⟩ := Finset.mem_image.mp hq
+      exact houtside (Finset.mem_image.mpr ⟨a, hT ha, rfl⟩)
+    have hvalid :
+        ∀ a ∈ T,
+          a.1 ≠ a.2.1 ∧
+          a.2.1 < a.1 ∧
+          a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 ∧
+          a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+      intro a ha
+      exact actual_earliest_loss_collision_record_valid
+        C exponent choice a (hT ha)
+    have hTlocal :
+        T.biUnion (fun a => lossCollisionSquareWords n a ∩ H) =
+          T.image f ∩ H :=
+      actual_cross_loss_family_local_holes_exact_image_inter
+        C exponent choice T
+        (fun a ha => (hvalid a ha).1)
+        (fun a ha => (hvalid a ha).2.2.1)
+        (fun a ha => (hvalid a ha).2.2.2)
+    change T.card ≤
+      (T.biUnion (fun a => lossCollisionSquareWords n a ∩ H)).card
+    rw [hTlocal, Finset.inter_eq_left.mpr hTout]
+    exact (Finset.card_image_of_injOn hinjT).symm.le
+
+#print axioms actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
+
+
 
 
 
