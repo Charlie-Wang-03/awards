@@ -36,10 +36,10 @@ theorem zero_ordinary_step_band_jump_le_one
   let rb : Fin bs.length := ⟨r.val, by simpa [hlen] using r.isLt⟩
   have hdomGet :
       qs.get r ≤ bs.get rb := by
-    exact List.Forall₂.get hdom r rb (by rfl)
+    exact List.Forall₂.get hdom r.isLt rb.isLt
   have hunitGet :
       qs.get r = 0 ∧ bs.get rb ≠ 0 → bs.get rb = 1 := by
-    exact List.Forall₂.get hunit r rb (by rfl)
+    exact List.Forall₂.get hunit r.isLt rb.isLt
   refine ⟨rb, rfl, ?_⟩
   by_cases hb0 : bs.get rb = 0
   · simp [hb0]
