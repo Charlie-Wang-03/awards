@@ -48,7 +48,7 @@ variable (hp : Function.Injective p)
 
 /- Explicit projection-derived order in types and proofs: hp is not inferable by typeclasses. -/
 
-noncomputable def planarEnlargedCandidateBlock
+noncomputable abbrev planarEnlargedCandidateBlock
     {lam t delta : ℝ} {n : ℕ}
     (hcap : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  AngleCap p lam)
     (hn : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  1 ≤ n)
