@@ -43,7 +43,7 @@ theorem actual_loss_opposite_pair_signature_injective (n : ℕ) :
 
 /-- Legal canonical earliest-prior coordinate pairs; each original
 duplicate debt record has a pair j<i in this finite set. -/
-noncomputable def actualLossOrderedCoordinatePairs (n : ℕ) :
+def actualLossOrderedCoordinatePairs (n : ℕ) :
     Finset (Fin n × Fin n) :=
   (Finset.univ : Finset (Fin n × Fin n)).filter
     (fun cd => cd.2 < cd.1)
