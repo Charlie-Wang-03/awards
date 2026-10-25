@@ -104,6 +104,45 @@ theorem actual_two_colour_earliest_loss_opposite_image_card_eq_debt
       actual_earliest_collision_records_card_eq_duplicate_debt
         C exponent choice
 
+/-- In two colours, if EVERY original opposite candidate is indeed a
+TRUE outside-translated hole, the complete ORIGINAL duplicate debt
+is paid by distinct holes within its OWN collision squares. No
+extra candidate-injectivity hypothesis is needed: it was proved
+unconditionally above. Other seven debt classes can still compete
+for the same holes, and the full planar payment remains OPEN. -/
+theorem actual_two_colour_local_true_holes_pay_duplicate_of_all_candidates_real
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (2 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 2)
+    (hreal :
+      ∀ q ∈ ((actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)),
+        q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    translatedLossDuplicateDebt C exponent choice =
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords 2 a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let Q := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let opp : Fin 2 × Fin 2 × (Fin 2 → Bool) → (Fin 2 → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hlocal := actual_earliest_loss_collision_local_holes_exact_image_inter
+    C exponent choice
+  have hinter : S.image opp ∩ Q = S.image opp := by
+    ext q
+    constructor
+    · intro h
+      exact (Finset.mem_inter.mp h).1
+    · intro h
+      exact Finset.mem_inter.mpr ⟨h, hreal q h⟩
+  rw [hlocal, hinter]
+  exact (actual_two_colour_earliest_loss_opposite_image_card_eq_debt
+    C exponent choice).symm
+
+#print axioms actual_two_colour_local_true_holes_pay_duplicate_of_all_candidates_real
 #print axioms actual_loss_duplicate_debt_zero_of_one_colour
 #print axioms actual_earliest_loss_two_colour_record_only_pair
 #print axioms actual_two_colour_earliest_loss_opposite_injOn
