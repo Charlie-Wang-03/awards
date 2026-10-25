@@ -18,6 +18,28 @@ or replacement of the one genuine root sorry appear in this module.
 namespace JSP000404Research
 namespace OrderedEdgeColoring
 
+/-- A triple original-source fibre is impossible whenever at most
+five ACTUAL projected-loss centres occur, even if the AMBIENT
+configuration has more than five original centres. -/
+theorem actual_three_colour_five_loss_centre_no_triple_loss_fibre
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ)
+    (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 5)
+    (q : Fin 3 → Bool) :
+    (actualLossOppositeCandidateFibre C exponent choice q).card ≤ 2 := by
+  by_contra hnot
+  have hthree : 3 ≤
+      (actualLossOppositeCandidateFibre C exponent choice q).card := by
+    omega
+  have hsix := actual_three_colour_triple_fibre_forces_six_loss_centres
+    C exponent choice hexp q hthree
+  omega
+
+#print axioms actual_three_colour_five_loss_centre_no_triple_loss_fibre
+
 /-- A direct, unconditional no-triple-collision theorem for all
 ACTUAL n=3 loss-slice systems on <=5 original vertices under the
 genuine exponent<=2 bound. -/
