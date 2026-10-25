@@ -610,6 +610,72 @@ theorem actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
 
 #print axioms actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
 
+/-- A genuine original earliest-loss-coordinate source record for
+ARBITRARY n (not just three Boolean colours) requires at least TWO
+distinct original projected-loss vertices. The two owners have
+DIFFERENT choice coordinates, so they cannot be the same vertex.
+No exponent, AngleCap, or ambient cardinality bound is assumed. -/
+theorem actual_original_earliest_record_forces_two_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (a : Fin n × Fin n × (Fin n → Bool))
+    (ha : a ∈ actualEarliestLossCollisionRecords C exponent choice) :
+    2 ≤ (projectedLossVertices C exponent).card := by
+  classical
+  obtain ⟨hne, _, hw, hz⟩ :=
+    actual_earliest_loss_collision_record_valid
+      C exponent choice a ha
+  obtain ⟨v, hvc, _⟩ := Finset.mem_biUnion.mp hw
+  obtain ⟨u, huc, _⟩ := Finset.mem_biUnion.mp hz
+  have hv := (mem_lossCoordinateSlice C exponent choice a.1 v).mp hvc
+  have hu := (mem_lossCoordinateSlice C exponent choice a.2.1 u).mp huc
+  have hneVU : v ≠ u := by
+    intro heq
+    subst u
+    exact hne (hv.2.symm.trans hu.2)
+  have hsub :
+      ({v, u} : Finset V) ⊆ projectedLossVertices C exponent := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact hv.1
+    · exact hu.1
+  have hsize : ({v, u} : Finset V).card = 2 := by
+    simp [hneVU]
+  have hcard := Finset.card_le_card hsub
+  omega
+
+/-- A genuine unconditional eight-source simplification for every n:
+with at most ONE original projected-loss centre there CANNOT be any
+original earliest-prior cross-coordinate collision source record.
+Consequently the literal EIGHTH debt lane is exactly ZERO, without
+assuming the existence of exterior holes or any other paid credits.
+The other seven source classes and unrestricted configurations remain. -/
+theorem actual_original_at_most_one_loss_centre_no_eighth_debt
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hloss : (projectedLossVertices C exponent).card ≤ 1) :
+    translatedLossDuplicateDebt C exponent choice = 0 := by
+  classical
+  have hrecords :=
+    actual_earliest_collision_records_card_eq_duplicate_debt
+      C exponent choice
+  by_contra hne
+  have hpos :
+      0 < (actualEarliestLossCollisionRecords C exponent choice).card := by
+    omega
+  obtain ⟨a, ha⟩ := Finset.card_pos.mp hpos
+  have htwo :=
+    actual_original_earliest_record_forces_two_loss_centres
+      C exponent choice a ha
+  omega
+
+#print axioms actual_original_earliest_record_forces_two_loss_centres
+#print axioms actual_original_at_most_one_loss_centre_no_eighth_debt
+
+
 
 
 
