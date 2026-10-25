@@ -46,9 +46,8 @@ variable {V : Type*} [Fintype V]
 variable {p : V → Plane}
 variable (hp : Function.Injective p)
 
-/- All 23 planar statements and proofs explicitly install the *same*
-   projection-induced order from `hp`; a global local instance would be
-   ill-formed because `hp` is not inferable by typeclass synthesis. -/
+/- All declarations below use the concrete projection order derived from hp,
+   not an ill-formed ambient instance requiring typeclass inference of hp. -/
 
 noncomputable def planarEnlargedCandidateBlock
     {lam t delta : ℝ} {n : ℕ}
@@ -211,10 +210,7 @@ theorem planar_lowerBranch_capacity_of_enlargedBlock_expansion
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    (∑ i :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+    (∑ i : ProjectionOrdered V,
       2 ^ centreExponent (C i) t) ≤ 2 ^ n := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -269,20 +265,14 @@ theorem planar_enlarged_expansion_failure_minimal_core
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    ∃ T :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V),
+    ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
       BlockDeficient
         (fun i => 2 ^ centreExponent (C i) t)
         (planarEnlargedCandidateBlock
           hp hcap hn hdelta0 hdeltaHalf ht hlam C)
         T ∧
-      ∀ U :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V),
+      ∀ U : Finset (ProjectionOrdered V),
         U ⊂ T →
         ¬ BlockDeficient
           (fun i => 2 ^ centreExponent (C i) t)
@@ -742,29 +732,14 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1)
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1)
         ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+    let exponent := planarCentreExponent hp C
     (
-      ∃ u v wu wv :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ u v wu wv : ProjectionOrdered V,
         u ∈ T ∧
         v ∈ T ∧
         u ≠ v ∧
@@ -778,9 +753,6 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
     ∨
     (
       ∃ u v w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      
           {x : ProjectionOrdered V // x ∈ T},
         (enlargedCollisionGraph R exponent T).Adj u v ∧
         (enlargedCollisionGraph R exponent T).Adj u w ∧
@@ -904,29 +876,14 @@ theorem planar_enlarged_expansion_failure_root_reduction
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    ∃ T :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V),
+    ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
-      let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+      let R :=
         planarStandardResidualColoring
-          hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-          hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1)
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+      let exponent := planarCentreExponent hp C
       (
         (
           ∃ u v wu wv : ProjectionOrdered V,
@@ -1047,54 +1004,30 @@ theorem planar_secondLayerLoss_word_closed_outlet
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ e :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n,
+      ∃ e : Fin n,
         e ∈ retainedActive R v ∧
         flipBoolWordAt word e ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         ExactProjectedBudget R exponent w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         w ∈ projectedLossVertices R exponent ∧
         exponent w + 1 ≤ n - 2
     ) := by
@@ -1240,53 +1173,29 @@ theorem planar_topLoss_word_closed_outlet
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         ExactProjectedBudget R exponent w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         w ∈ projectedLossVertices R exponent ∧
         exponent w + 3 ≤ n
     ) := by
@@ -1434,53 +1343,29 @@ theorem planar_topLoss_closed_outlet
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         ExactProjectedBudget R exponent w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         w ∈ projectedLossVertices R exponent ∧
         exponent w + 3 ≤ n
     ) := by
@@ -1561,70 +1446,40 @@ theorem planar_deficientCore_girthFree_recursive_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) z
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         ExactProjectedBudget R exponent z
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         z ∈ projectedLossVertices R exponent ∧
         exponent z + 3 ≤ n
     )
     ∨
     (
-      ∃ a b :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       {x : ProjectionOrdered V // x ∈ T},
+      ∃ a b : {x : ProjectionOrdered V // x ∈ T},
         a ≠ b ∧
         a.1 ∈ projectedLossVertices R exponent ∧
         b.1 ∈ projectedLossVertices R exponent ∧
@@ -1766,70 +1621,40 @@ theorem planar_deficientCore_girthFree_secondPair_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) z
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         ExactProjectedBudget R exponent z
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         z ∈ projectedLossVertices R exponent ∧
         exponent z + 3 ≤ n
     )
     ∨
     (
-      ∃ a b :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       {x : ProjectionOrdered V // x ∈ T},
+      ∃ a b : {x : ProjectionOrdered V // x ∈ T},
         a ≠ b ∧
         a.1 ∈ projectedLossVertices R exponent ∧
         b.1 ∈ projectedLossVertices R exponent ∧
@@ -1954,70 +1779,40 @@ theorem planar_deficientCore_girthFree_secondTriple_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) z
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         ExactProjectedBudget R exponent z
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         z ∈ projectedLossVertices R exponent ∧
         exponent z + 3 ≤ n
     )
     ∨
     (
-      ∃ word :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ word : Fin n → Bool,
       ∃ u v w : {x : ProjectionOrdered V // x ∈ T},
         u ≠ v ∧
         u ≠ w ∧
@@ -2370,70 +2165,40 @@ theorem planar_deficientCore_girthFree_threeSecond_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) z
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         ExactProjectedBudget R exponent z
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         z ∈ projectedLossVertices R exponent ∧
         exponent z + 3 ≤ n
     )
     ∨
     (
-      ∃ word :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ word : Fin n → Bool,
       ∃ u v w : {x : ProjectionOrdered V // x ∈ T},
         u ≠ v ∧
         u ≠ w ∧
@@ -2653,70 +2418,40 @@ theorem planar_deficientCore_girthFree_QTT_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) z
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         ExactProjectedBudget R exponent z
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ z :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ z : ProjectionOrdered V,
         z ∈ projectedLossVertices R exponent ∧
         exponent z + 3 ≤ n
     )
     ∨
     (
-      ∃ word :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ word : Fin n → Bool,
       ∃ s x y : ProjectionOrdered V,
       ∃ cx cy : Fin n,
         s ≠ x ∧ s ≠ y ∧ x ≠ y ∧
@@ -2895,19 +2630,10 @@ theorem planar_QTTT_secondLayer_support_reduction
         projectionLinearOrder hp
       
     n = 3 ∨
-    ∃ a b :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+    ∃ a b : ProjectionOrdered V,
       a ≠ b ∧
-      a ∈ ({s,x,y,z} :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V)) ∧
-      b ∈ ({s,x,y,z} :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V)) ∧
+      a ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      b ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
       positiveSupport (centreQuotient (C a) t) = 2 ∧
       positiveSupport (centreQuotient (C b) t) = 2 := by
   letI : LinearOrder (ProjectionOrdered V) :=
@@ -3017,19 +2743,10 @@ theorem planar_QTTT_secondLayer_support_reduction_uniform
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    ∃ a b :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+    ∃ a b : ProjectionOrdered V,
       a ≠ b ∧
-      a ∈ ({s,x,y,z} :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V)) ∧
-      b ∈ ({s,x,y,z} :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V)) ∧
+      a ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
+      b ∈ ({s,x,y,z} : Finset (ProjectionOrdered V)) ∧
       positiveSupport (centreQuotient (C a) t) = 2 ∧
       positiveSupport (centreQuotient (C b) t) = 2 := by
   letI : LinearOrder (ProjectionOrdered V) :=
@@ -3114,70 +2831,40 @@ theorem planar_deficientCore_girthFree_QTTT_support_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) q
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         ExactProjectedBudget R exponent q
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         q ∈ projectedLossVertices R exponent ∧
         exponent q + 3 ≤ n
     )
     ∨
     (
-      ∃ word :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ word : Fin n → Bool,
       ∃ s x y z : ProjectionOrdered V,
       ∃ cx cy cz : Fin n,
         s ≠ x ∧ s ≠ y ∧ s ≠ z ∧
@@ -3368,70 +3055,40 @@ theorem planar_deficientCore_girthFree_QTTT_uniform_support_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) q
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         ExactProjectedBudget R exponent q
     )
     ∨
     (
-      ∃ source :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ source : ProjectionOrdered V,
         ExactRecursiveOutlet R exponent source
     )
     ∨
     (
-      ∃ q :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ q : ProjectionOrdered V,
         q ∈ projectedLossVertices R exponent ∧
         exponent q + 3 ≤ n
     )
     ∨
     (
-      ∃ word :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ word : Fin n → Bool,
       ∃ s x y z : ProjectionOrdered V,
       ∃ cx cy cz : Fin n,
         s ≠ x ∧ s ≠ y ∧ s ≠ z ∧
@@ -3578,58 +3235,34 @@ theorem planar_longCycle_overload_recursive_outlet
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
       ∃ v ∈ T,
         ExactRecursiveOutlet R exponent v
     )
     ∨
     (
-      ∃ hole :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Fin n → Bool,
+      ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         1 ≤ dyadicProfileSurplus
           exponent (projectedFree R) w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         ExactProjectedBudget R exponent w
     )
     ∨
     (
-      ∃ w :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       ProjectionOrdered V,
+      ∃ w : ProjectionOrdered V,
         w ∈ projectedLossVertices R exponent ∧
         exponent w + 3 ≤ n
     ) := by
@@ -3762,23 +3395,11 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+    let R :=
       planarStandardResidualColoring
-        hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-        hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-    let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+        hp hcap (by omega : 1 ≤ n)
+        hdelta0 (by linarith : delta < 1) ht hlam
+    let exponent := planarCentreExponent hp C
     (
       (
         ∃ u v wu wv : ProjectionOrdered V,
@@ -3938,28 +3559,13 @@ theorem planar_enlarged_expansion_failure_recursive_root
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
       
-    ∃ T :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       Finset (ProjectionOrdered V),
+    ∃ T : Finset (ProjectionOrdered V),
       T.Nonempty ∧
-      let R :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      =
+      let R :=
         planarStandardResidualColoring
-          hp hcap (by omega :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       1 ≤ n)
-          hdelta0 (by linarith :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-       delta < 1) ht hlam
-      let exponent :
-      letI : LinearOrder (ProjectionOrdered V) :=
-        projectionLinearOrder hp
-      = planarCentreExponent hp C
+          hp hcap (by omega : 1 ≤ n)
+          hdelta0 (by linarith : delta < 1) ht hlam
+      let exponent := planarCentreExponent hp C
       (
         (
           ∃ u v wu wv : ProjectionOrdered V,
