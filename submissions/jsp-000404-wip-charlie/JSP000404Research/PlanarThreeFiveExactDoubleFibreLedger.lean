@@ -60,8 +60,9 @@ theorem actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
   have hpoint (q : Fin 3 → Bool) (hq : q ∈ O) :
       (F q).card = 1 + if 2 ≤ (F q).card then 1 else 0 := by
     have hlo := hpositive q hq
-    have hhi := actual_three_colour_five_centre_no_triple_loss_fibre
-      C exponent choice hexp hfive q
+    have hhi : (F q).card ≤ 2 :=
+      actual_three_colour_five_centre_no_triple_loss_fibre
+        C exponent choice hexp hfive q
     split_ifs <;> omega
   have hfilter :
       (∑ q ∈ O, if 2 ≤ (F q).card then (1 : ℕ) else 0) = D.card := by
