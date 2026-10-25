@@ -263,6 +263,62 @@ theorem actual_three_colour_triple_fibre_forces_six_centres
   rw [hunion] at hle
   omega
 
+/-- STRONGER original-source six-centre obstruction: a genuine three-hit
+opposite Boolean candidate forces at least SIX actual PROJECTED-LOSS
+vertices, not merely six vertices in the ambient configuration.
+Thus arbitrary numbers of non-loss centres do not weaken this bound. -/
+theorem actual_three_colour_triple_fibre_forces_six_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ)
+    (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (q : Fin 3 → Bool)
+    (hthree : 3 ≤ (actualLossOppositeCandidateFibre
+      C exponent choice q).card) :
+    6 ≤ (projectedLossVertices C exponent).card := by
+  classical
+  let S (c : Fin 3) := lossCoordinateSlice C exponent choice c
+  have htwo := actual_three_colour_triple_fibre_each_slice_two_centres
+    C exponent choice hexp q hthree
+  have hdisj (c d : Fin 3) (hcd : c ≠ d) :
+      Disjoint (S c) (S d) := by
+    apply Finset.disjoint_left.mpr
+    intro v hvc hvd
+    have hcv := ((mem_lossCoordinateSlice C exponent choice c v).mp hvc).2
+    have hdv := ((mem_lossCoordinateSlice C exponent choice d v).mp hvd).2
+    exact hcd (hcv.symm.trans hdv)
+  have h01 : Disjoint (S 0) (S 1) := hdisj 0 1 (by decide)
+  have h02 : Disjoint (S 0) (S 2) := hdisj 0 2 (by decide)
+  have h12 : Disjoint (S 1) (S 2) := hdisj 1 2 (by decide)
+  have h012 : Disjoint (S 0 ∪ S 1) (S 2) :=
+    Finset.disjoint_union_left.mpr ⟨h02, h12⟩
+  have hcard :
+      (S 0 ∪ S 1 ∪ S 2).card =
+        (S 0).card + (S 1).card + (S 2).card := by
+    rw [Finset.card_union_of_disjoint h012,
+      Finset.card_union_of_disjoint h01]
+  have hsource (c : Fin 3) :
+      S c ⊆ projectedLossVertices C exponent := by
+    intro v hv
+    exact ((mem_lossCoordinateSlice C exponent choice c v).mp hv).1
+  have hall :
+      S 0 ∪ S 1 ∪ S 2 ⊆ projectedLossVertices C exponent := by
+    intro v hv
+    rcases Finset.mem_union.mp hv with hv01 | hv2
+    · rcases Finset.mem_union.mp hv01 with hv0 | hv1
+      · exact hsource 0 hv0
+      · exact hsource 1 hv1
+    · exact hsource 2 hv2
+  have hle := Finset.card_le_card hall
+  have h0 := htwo (0 : Fin 3)
+  have h1 := htwo (1 : Fin 3)
+  have h2 := htwo (2 : Fin 3)
+  rw [hcard] at hle
+  omega
+
+#print axioms actual_three_colour_triple_fibre_forces_six_loss_centres
+
 #print axioms translated_cube_two_words_agree_at_retained_active
 #print axioms translated_cube_two_disagreements_impossible
 #print axioms three_colour_projected_loss_two_active
