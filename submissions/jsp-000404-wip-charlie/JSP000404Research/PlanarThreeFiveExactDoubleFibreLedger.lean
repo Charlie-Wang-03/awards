@@ -203,6 +203,115 @@ theorem actual_three_loss_centres_square_local_hall_iff_opposite_exterior
 
 #print axioms actual_three_loss_centres_square_local_hall_iff_opposite_exterior
 
+/-- Stronger than the full-set inequality: with <=3 ACTUAL
+projected-loss centres and true exterior eligibility, EVERY subset
+of the original earliest-prior collision records satisfies the
+genuine source-square Hall condition. Its proof constructs a
+global injection of original records to opposite words from the
+NO-REUSE dyadic debt theorem, then restricts it to each source
+subfamily. No placeholder or duplicate outside-hole credit. -/
+theorem actual_three_loss_centres_every_subfamily_square_local_hall
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3)
+    (houtside :
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice)
+    (T : Finset (Fin 3 × Fin 3 × (Fin 3 → Bool)))
+    (hT : T ⊆ actualEarliestLossCollisionRecords C exponent choice) :
+    T.card ≤
+      (T.biUnion (fun a =>
+        lossCollisionSquareWords 3 a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  let f : (Fin 3 × Fin 3 × (Fin 3 → Bool)) → (Fin 3 → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hcount : (S.image f).card = S.card := by
+    have hrecords :=
+      actual_earliest_collision_records_card_eq_duplicate_debt
+        C exponent choice
+    have huniq :=
+      actual_three_loss_centres_duplicate_debt_has_no_reuse
+        C exponent choice hexp hloss
+    change O.card = S.card
+    omega
+  have hinjS : Set.InjOn f S := Finset.card_image_iff.mp hcount
+  have hinjT : Set.InjOn f T := by
+    intro a ha b hb heq
+    exact hinjS (hT ha) (hT hb) heq
+  have hImageSub : T.image f ⊆ H := by
+    intro q hq
+    obtain ⟨a,ha,rfl⟩ := Finset.mem_image.mp hq
+    apply houtside
+    change f a ∈ S.image f
+    exact Finset.mem_image.mpr ⟨a, hT ha, rfl⟩
+  have hvalid :
+      ∀ a ∈ T,
+        a.1 ≠ a.2.1 ∧
+        a.2.1 < a.1 ∧
+        a.2.2 ∈ translatedLossSliceWords C exponent choice a.1 ∧
+        a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1 := by
+    intro a ha
+    exact actual_earliest_loss_collision_record_valid
+      C exponent choice a (hT ha)
+  have hlocal :
+      T.biUnion (fun a => lossCollisionSquareWords 3 a ∩ H) =
+        T.image f ∩ H :=
+    actual_cross_loss_family_local_holes_exact_image_inter
+      C exponent choice T
+      (fun a ha => (hvalid a ha).1)
+      (fun a ha => (hvalid a ha).2.2.1)
+      (fun a ha => (hvalid a ha).2.2.2)
+  change T.card ≤
+    (T.biUnion (fun a => lossCollisionSquareWords 3 a ∩ H)).card
+  apply le_of_eq
+  calc
+    T.card = (T.image f).card :=
+      (Finset.card_image_of_injOn hinjT).symm
+    _ = (T.image f ∩ H).card := by
+      rw [Finset.inter_eq_left.mpr hImageSub]
+    _ = (T.biUnion (fun a => lossCollisionSquareWords 3 a ∩ H)).card :=
+      congrArg Finset.card hlocal.symm
+
+/-- EXACT all-subfamily Hall characterization in n=3 with at most
+three real projected-loss centres: source-square Hall holds for
+EVERY subfamily iff all distinct opposite candidate words are
+original, genuinely exterior holes. Remaining five other debt types
+are NOT paid by this theorem. -/
+theorem actual_three_loss_centres_all_subfamilies_hall_iff_exterior
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3) :
+    (∀ T : Finset (Fin 3 × Fin 3 × (Fin 3 → Bool)),
+      T ⊆ actualEarliestLossCollisionRecords C exponent choice →
+      T.card ≤
+        (T.biUnion (fun a =>
+          lossCollisionSquareWords 3 a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card) ↔
+    actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  constructor
+  · intro h
+    have hwhole := h (actualEarliestLossCollisionRecords C exponent choice)
+      (Finset.Subset.refl _)
+    exact (actual_three_loss_centres_square_local_hall_iff_opposite_exterior
+      C exponent choice hexp hloss).mp hwhole
+  · intro h T hT
+    exact actual_three_loss_centres_every_subfamily_square_local_hall
+      C exponent choice hexp hloss h T hT
+
+#print axioms actual_three_loss_centres_every_subfamily_square_local_hall
+#print axioms actual_three_loss_centres_all_subfamilies_hall_iff_exterior
+
+
+
 
 
 
