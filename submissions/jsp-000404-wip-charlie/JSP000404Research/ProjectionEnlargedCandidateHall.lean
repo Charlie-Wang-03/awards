@@ -66,7 +66,7 @@ noncomputable def planarEnlargedCandidateBlock
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 (by linarith) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   exact enlargedProjectedCandidateBlock R exponent i
 
 theorem planarEnlargedCandidateBlock_local_capacity
@@ -89,7 +89,7 @@ theorem planarEnlargedCandidateBlock_local_capacity
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 (by linarith) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hdelta1 : delta < 1 := by linarith
   have hexpLt :
       ∀ j : ProjectionOrdered V, exponent j < n := by
@@ -175,7 +175,7 @@ theorem planar_enlarged_expansion_failure_minimal_core
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 (by linarith) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hfail' :
       ¬ ∀ S : Finset (ProjectionOrdered V),
         (∑ i ∈ S, 2 ^ exponent i) ≤
@@ -229,7 +229,7 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (hmaxLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ z : ProjectionOrdered V,
         z ∈ T →
@@ -237,7 +237,7 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam)
-          (planarCentreExponent hp C) →
+          (planarCentreExponent (t := t) hp C) →
         (retainedCompletionWords
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
@@ -252,7 +252,7 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C) T i).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
+        (planarCentreExponent (t := t) hp C) T i).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     SharpAt (reindexedPoint p) delta lam i := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -260,7 +260,7 @@ theorem planar_minimal_enlarged_maxLoss_degree_one_is_sharp
     planarStandardResidualColoring
       hp hcap (by omega : 1 ≤ n)
       hdelta0 (by linarith) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hdelta1 : delta < 1 := by linarith
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n := by
@@ -341,13 +341,13 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (hbLoss : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       b ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (haMax : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       ∀ z : ProjectionOrdered V,
         z ∈ T →
@@ -355,7 +355,7 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam)
-          (planarCentreExponent hp C) →
+          (planarCentreExponent (t := t) hp C) →
         (retainedCompletionWords
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
@@ -372,7 +372,7 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith) ht hlam)
-          (planarCentreExponent hp C) →
+          (planarCentreExponent (t := t) hp C) →
         (retainedCompletionWords
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
@@ -387,13 +387,13 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C) T a).card = 1)
+        (planarCentreExponent (t := t) hp C) T a).card = 1)
     (hbDegree : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
       (enlargedCollisionNeighbours
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith) ht hlam)
-        (planarCentreExponent hp C) T b).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
+        (planarCentreExponent (t := t) hp C) T b).card = 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     a = b := by
   letI : LinearOrder (ProjectionOrdered V) :=
     projectionLinearOrder hp
@@ -401,7 +401,7 @@ theorem planar_minimal_enlarged_no_two_maxLoss_degree_one
     planarStandardResidualColoring
       hp hcap (by omega : 1 ≤ n)
       hdelta0 (by linarith) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hdelta1 : delta < 1 := by linarith
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n := by
@@ -499,7 +499,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1)
         ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ u v wu wv : ProjectionOrdered V,
         u ∈ T ∧
@@ -545,7 +545,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
 
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
@@ -618,7 +618,7 @@ theorem planar_enlarged_expansion_failure_root_reduction
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1)
           ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       (
         (
           ∃ u v wu wv : ProjectionOrdered V,
@@ -689,7 +689,7 @@ theorem planar_secondLayerLoss_word_closed_outlet
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (hvSecond : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 2)
     {word : Fin n → Bool}
     (hword : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
@@ -701,7 +701,7 @@ theorem planar_secondLayerLoss_word_closed_outlet
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ e : Fin n,
         e ∈ retainedActive R v ∧
@@ -731,7 +731,7 @@ theorem planar_secondLayerLoss_word_closed_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
 
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
@@ -822,7 +822,7 @@ theorem planar_topLoss_word_closed_outlet
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (hvTop : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 1)
     {word : Fin n → Bool}
     (hword : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
@@ -834,7 +834,7 @@ theorem planar_topLoss_word_closed_outlet
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -863,7 +863,7 @@ theorem planar_topLoss_word_closed_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
     planarCentreExponent_lt_n
@@ -965,13 +965,13 @@ theorem planar_topLoss_closed_outlet
         (planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam)
-        (planarCentreExponent hp C))
+        (planarCentreExponent (t := t) hp C))
     (hvTop : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp;  centreExponent (C v) t = n - 1) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1000,7 +1000,7 @@ theorem planar_topLoss_closed_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hnonempty :
       (retainedCompletionWords R v).Nonempty := by
     apply Finset.card_pos.mp
@@ -1044,7 +1044,7 @@ theorem planar_deficientCore_girthFree_recursive_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1092,7 +1092,7 @@ theorem planar_deficientCore_girthFree_recursive_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
 
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
@@ -1137,7 +1137,7 @@ theorem planar_deficientCore_girthFree_recursive_root
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith : delta < 1) ht hlam)
-          (planarCentreExponent hp C) := by
+          (planarCentreExponent (t := t) hp C) := by
       simpa [R,exponent,hn1,hdelta1] using htopLoss
     have htopExpGeom :
         centreExponent (C top) t = n - 1 := by
@@ -1189,7 +1189,7 @@ theorem planar_deficientCore_girthFree_secondPair_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1232,7 +1232,7 @@ theorem planar_deficientCore_girthFree_secondPair_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
 
   rcases
     planar_deficientCore_girthFree_recursive_root
@@ -1251,7 +1251,7 @@ theorem planar_deficientCore_girthFree_secondPair_root
             (planarStandardResidualColoring
               hp hcap (by omega : 1 ≤ n)
               hdelta0 (by linarith : delta < 1) ht hlam)
-            (planarCentreExponent hp C) := by
+            (planarCentreExponent (t := t) hp C) := by
         simpa [R,exponent,hn1,hdelta1] using haLoss
       have haTopGeom :
           centreExponent (C a.1) t = n - 1 := by
@@ -1270,7 +1270,7 @@ theorem planar_deficientCore_girthFree_secondPair_root
             (planarStandardResidualColoring
               hp hcap (by omega : 1 ≤ n)
               hdelta0 (by linarith : delta < 1) ht hlam)
-            (planarCentreExponent hp C) := by
+            (planarCentreExponent (t := t) hp C) := by
         simpa [R,exponent,hn1,hdelta1] using hbLoss
       have hbTopGeom :
           centreExponent (C b.1) t = n - 1 := by
@@ -1317,7 +1317,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1381,7 +1381,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
     planarCentreExponent_lt_n
@@ -1460,7 +1460,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hUVLoss.huLoss
         have huTopGeom :
             centreExponent (C u.1) t = n - 1 := by
@@ -1478,7 +1478,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hUVLoss.hvLoss
         have hvTopGeom :
             centreExponent (C v.1) t = n - 1 := by
@@ -1520,7 +1520,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hUWLoss.huLoss
         have huTopGeom :
             centreExponent (C u.1) t = n - 1 := by
@@ -1538,7 +1538,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hUWLoss.hwLoss
         have hwTopGeom :
             centreExponent (C w.1) t = n - 1 := by
@@ -1581,7 +1581,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hVWLoss.hvLoss
         have hvTopGeom :
             centreExponent (C v.1) t = n - 1 := by
@@ -1599,7 +1599,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
               (planarStandardResidualColoring
                 hp hcap (by omega : 1 ≤ n)
                 hdelta0 (by linarith : delta < 1) ht hlam)
-              (planarCentreExponent hp C) := by
+              (planarCentreExponent (t := t) hp C) := by
           simpa [R,exponent,hn1,hdelta1] using hVWLoss.hwLoss
         have hwTopGeom :
             centreExponent (C w.1) t = n - 1 := by
@@ -1628,7 +1628,7 @@ theorem planar_deficientCore_girthFree_secondTriple_root
           (planarStandardResidualColoring
             hp hcap (by omega : 1 ≤ n)
             hdelta0 (by linarith : delta < 1) ht hlam)
-          (planarCentreExponent hp C) := by
+          (planarCentreExponent (t := t) hp C) := by
       simpa [R,exponent,hn1,hdelta1] using htopLoss
     have htopExpGeom :
         centreExponent (C top) t = n - 1 := by
@@ -1673,7 +1673,7 @@ theorem planar_deficientCore_girthFree_threeSecond_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1727,7 +1727,7 @@ theorem planar_deficientCore_girthFree_threeSecond_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
     planarCentreExponent_lt_n
@@ -1771,7 +1771,7 @@ theorem planar_deficientCore_girthFree_threeSecond_root
                 (planarStandardResidualColoring
                   hp hcap (by omega : 1 ≤ n)
                   hdelta0 (by linarith : delta < 1) ht hlam)
-                (planarCentreExponent hp C) := by
+                (planarCentreExponent (t := t) hp C) := by
             simpa [R,exponent,hn1,hdelta1] using hwLoss
           have hwTopGeom :
               centreExponent (C w.1) t = n - 1 := by
@@ -1808,7 +1808,7 @@ theorem planar_deficientCore_girthFree_threeSecond_root
                 (planarStandardResidualColoring
                   hp hcap (by omega : 1 ≤ n)
                   hdelta0 (by linarith : delta < 1) ht hlam)
-                (planarCentreExponent hp C) := by
+                (planarCentreExponent (t := t) hp C) := by
             simpa [R,exponent,hn1,hdelta1] using hvLoss
           have hvTopGeom :
               centreExponent (C v.1) t = n - 1 := by
@@ -1845,7 +1845,7 @@ theorem planar_deficientCore_girthFree_threeSecond_root
                 (planarStandardResidualColoring
                   hp hcap (by omega : 1 ≤ n)
                   hdelta0 (by linarith : delta < 1) ht hlam)
-                (planarCentreExponent hp C) := by
+                (planarCentreExponent (t := t) hp C) := by
             simpa [R,exponent,hn1,hdelta1] using huLoss
           have huTopGeom :
               centreExponent (C u.1) t = n - 1 := by
@@ -1896,7 +1896,7 @@ theorem planar_deficientCore_girthFree_QTT_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -1949,7 +1949,7 @@ theorem planar_deficientCore_girthFree_QTT_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ z : ProjectionOrdered V, exponent z < n :=
     planarCentreExponent_lt_n
@@ -2008,7 +2008,7 @@ theorem planar_deficientCore_girthFree_QTT_root
             (planarStandardResidualColoring
               hp hcap (by omega : 1 ≤ n)
               hdelta0 (by linarith : delta < 1) ht hlam)
-            (planarCentreExponent hp C) := by
+            (planarCentreExponent (t := t) hp C) := by
         simpa [R,exponent,hn1,hdelta1] using htopLoss
       have htopExpGeom :
           centreExponent (C top) t = n - 1 := by
@@ -2171,7 +2171,7 @@ theorem planar_deficientCore_girthFree_QTTT_support_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -2241,7 +2241,7 @@ theorem planar_deficientCore_girthFree_QTTT_support_root
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ q : ProjectionOrdered V, exponent q < n :=
     planarCentreExponent_lt_n
@@ -2288,7 +2288,7 @@ theorem planar_deficientCore_girthFree_QTTT_support_root
             (planarStandardResidualColoring
               hp hcap (by omega : 1 ≤ n)
               hdelta0 (by linarith : delta < 1) ht hlam)
-            (planarCentreExponent hp C) := by
+            (planarCentreExponent (t := t) hp C) := by
         simpa [R,exponent,hn1,hdelta1] using htopLoss
       have htopExpGeom :
           centreExponent (C top) t = n - 1 := by
@@ -2365,7 +2365,7 @@ theorem planar_deficientCore_girthFree_QTTT_uniform_support_root
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ hole : Fin n → Bool,
         hole ∉ coveredCompletionWords R
@@ -2433,7 +2433,7 @@ theorem planar_deficientCore_girthFree_QTTT_uniform_support_root
     planarStandardResidualColoring
       hp hcap (by omega : 1 ≤ n)
       hdelta0 (by linarith : delta < 1) ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   rcases
     planar_deficientCore_girthFree_QTTT_support_root
       hp hcap hn3 hdelta0 hdeltaHalf ht hlam
@@ -2496,7 +2496,7 @@ theorem planar_longCycle_overload_recursive_outlet
         planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       BlockDeficient
         (fun x => 2 ^ exponent x)
         (enlargedProjectedCandidateBlock R exponent)
@@ -2506,13 +2506,13 @@ theorem planar_longCycle_overload_recursive_outlet
         planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       3 < (enlargedCollisionGraph R exponent T).girth) : letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp; 
     let R :=
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       ∃ v ∈ T,
         ExactRecursiveOutlet R exponent v
@@ -2546,7 +2546,7 @@ theorem planar_longCycle_overload_recursive_outlet
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
     planarCentreExponent_lt_n
@@ -2639,7 +2639,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
       planarStandardResidualColoring
         hp hcap (by omega : 1 ≤ n)
         hdelta0 (by linarith : delta < 1) ht hlam
-    let exponent := planarCentreExponent hp C
+    let exponent := planarCentreExponent (t := t) hp C
     (
       (
         ∃ u v wu wv : ProjectionOrdered V,
@@ -2694,7 +2694,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
   let R :=
     planarStandardResidualColoring
       hp hcap hn1 hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp C
+  let exponent := planarCentreExponent (t := t) hp C
   have hexpLt :
       ∀ x : ProjectionOrdered V, exponent x < n :=
     planarCentreExponent_lt_n
@@ -2748,7 +2748,7 @@ theorem planar_minimal_enlarged_leaf_or_triangle_or_recursive
     · exact Or.inr (Or.inr (Or.inr (Or.inl hhole)))
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hpaid))))
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hexact)))))
-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hdeep))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hdeep)))))
 
 theorem planar_enlarged_expansion_failure_recursive_root
     {lam t delta : ℝ} {n : ℕ}
@@ -2775,7 +2775,7 @@ theorem planar_enlarged_expansion_failure_recursive_root
         planarStandardResidualColoring
           hp hcap (by omega : 1 ≤ n)
           hdelta0 (by linarith : delta < 1) ht hlam
-      let exponent := planarCentreExponent hp C
+      let exponent := planarCentreExponent (t := t) hp C
       (
         (
           ∃ u v wu wv : ProjectionOrdered V,
