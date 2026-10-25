@@ -13,12 +13,12 @@ where O is the image of the original source-native opposite map, and
 Q is the genuine global outside-translated true-hole pool.
 
 The original projected-loss duplicate debt splits WITHOUT inequalities:
-  Ddup = |O ∩ Q| + (Ddup - |O|) + |O \\ Q|.
+  Ddup = |O ∩ Q| + (Ddup - |O|) + |O \ Q|.
 The two remaining defects are:
   * genuine repeated opposite targets, and
   * distinct opposite candidates which are NOT eligible true holes.
 The global true-hole pool splits as
-  |Q| = |O ∩ Q| + |Q \\ O|.
+  |Q| = |O ∩ Q| + |Q \ O|.
 We cancel ONLY the SAME real holes on both sides of the original
 NUMERICAL eight-source payment frontier. No injection, or any credit,
 is manufactured. This is an EQUIVALENT exact residual condition,
@@ -76,7 +76,7 @@ theorem actual_loss_duplicate_debt_eq_local_plus_reuse_ineligible
       (actualLossEarliestEligibleLocalHoles C exponent choice).card +
       ((translatedLossDuplicateDebt C exponent choice -
           (actualLossEarliestOppositeCandidateWords C exponent choice).card) +
-        ((actualLossEarliestOppositeCandidateWords C exponent choice) \\
+        ((actualLossEarliestOppositeCandidateWords C exponent choice) \
           lossLedgerOutsideTranslatedTrueHoles C exponent choice).card) := by
   classical
   let S := actualEarliestLossCollisionRecords C exponent choice
@@ -85,7 +85,7 @@ theorem actual_loss_duplicate_debt_eq_local_plus_reuse_ineligible
   change translatedLossDuplicateDebt C exponent choice =
     (O ∩ Q).card +
       ((translatedLossDuplicateDebt C exponent choice - O.card) +
-        (O \\ Q).card)
+        (O \ Q).card)
   have hle : O.card ≤ translatedLossDuplicateDebt C exponent choice := by
     calc
       O.card ≤ S.card := Finset.card_image_le
@@ -118,9 +118,9 @@ theorem actual_eight_source_payment_iff_nonlocal_defect_payment
           (lossCoveredBlockerTripleWords B)).card +
         ((translatedLossDuplicateDebt B k choice -
             (actualLossEarliestOppositeCandidateWords B k choice).card) +
-          ((actualLossEarliestOppositeCandidateWords B k choice) \\
+          ((actualLossEarliestOppositeCandidateWords B k choice) \
             lossLedgerOutsideTranslatedTrueHoles B k choice).card) ≤
-      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \\
+      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \
         actualLossEarliestOppositeCandidateWords B k choice).card +
         terminalTwinAvailableSurplus B k) := by
   classical
@@ -132,7 +132,7 @@ theorem actual_eight_source_payment_iff_nonlocal_defect_payment
   change translatedLossDuplicateDebt B k choice =
       (O ∩ Q).card +
       ((translatedLossDuplicateDebt B k choice - O.card) +
-        (O \\ Q).card) at hdup
+        (O \ Q).card) at hdup
   have hholes := Finset.card_sdiff_add_card_inter Q O
   have hcomm : (O ∩ Q).card = (Q ∩ O).card := by
     rw [Finset.inter_comm]
@@ -156,9 +156,9 @@ theorem actual_two_colour_eight_source_payment_iff_nonlocal_ineligibility
     (terminalTwinOtherFiveDebt B k +
         ((chosenLossActualEdgeBlockerTriples B k choice).biUnion
           (lossCoveredBlockerTripleWords B)).card +
-        ((actualLossEarliestOppositeCandidateWords B k choice) \\
+        ((actualLossEarliestOppositeCandidateWords B k choice) \
           lossLedgerOutsideTranslatedTrueHoles B k choice).card ≤
-      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \\
+      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \
         actualLossEarliestOppositeCandidateWords B k choice).card +
         terminalTwinAvailableSurplus B k) := by
   classical
