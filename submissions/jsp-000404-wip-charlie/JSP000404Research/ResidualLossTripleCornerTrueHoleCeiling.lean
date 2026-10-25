@@ -134,6 +134,7 @@ theorem actual_three_colour_triple_collision_true_holes_card_le_two
   have hcard := Finset.card_le_card hsub
   have hpair : ({q, (fun i => !(q i))} : Finset (Fin 3 → Bool)).card ≤ 2 := by
     simp [Finset.card_insert_eq_ite]
+    split_ifs <;> omega
   omega
 
 #print axioms bool_three_triple_square_cover
