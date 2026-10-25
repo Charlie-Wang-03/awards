@@ -36,7 +36,7 @@ theorem opposite_doubleflip_eq_iff_original_inverse
     have hh := congrArg
       (fun x : Fin n → Bool => flipBoolWordAt (flipBoolWordAt x d) c)
       h
-    simpa only [flipBoolWordAt_involutive] using hh.symm
+    simpa only [flipBoolWordAt_involutive] using hh
   · intro h
     rw [h]
     simp only [flipBoolWordAt_involutive]
