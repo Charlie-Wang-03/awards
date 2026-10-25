@@ -1,3 +1,4 @@
+import JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction
 import JSP000404Research.PlanarThreeFiveLossDuplicateBound
 import JSP000404Research.ResidualLossGlobalNonlocalShortfallLedger
 import Mathlib.Tactic
@@ -191,6 +192,53 @@ theorem actual_three_five_payment_impossible_of_double_hit_shortfall
 
 #print axioms actual_three_five_double_hits_le_available_nonlocal_credit
 #print axioms actual_three_five_payment_impossible_of_double_hit_shortfall
+
+
+/-- Exactly two real original source records at a Boolean candidate
+FORCE strict canonical opposite-target reuse. Thus they activate
+the EXISTING (kernel-certified) obstruction: purely local square holes
+cannot pay the full original collision-record debt, regardless of
+which eligible collision squares one tries to combine.
+
+This conclusion is about GENUINE original source records and actual
+external holes; it makes NO claim that a nonlocal payment exists. -/
+theorem actual_three_five_double_hit_forces_local_square_hall_failure
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hfive : Fintype.card V ≤ 5)
+    (hdouble :
+      0 < (actualLossDoubleHitCandidateWords C exponent choice).card) :
+    ¬ (actualEarliestLossCollisionRecords C exponent choice).card ≤
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords 3 a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let f : (Fin 3 × Fin 3 × (Fin 3 → Bool)) → (Fin 3 → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have himage : (S.image f).card = O.card := rfl
+  have hrecords :
+      S.card = translatedLossDuplicateDebt C exponent choice :=
+    actual_earliest_collision_records_card_eq_duplicate_debt
+      C exponent choice
+  have hledger := actual_three_five_duplicate_debt_eq_candidates_plus_double_hits
+    C exponent choice hexp hfive
+  have hRepeated :
+      ((actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card <
+        (actualEarliestLossCollisionRecords C exponent choice).card := by
+    change (S.image f).card < S.card
+    rw [himage, hrecords, hledger]
+    omega
+  exact actual_earliest_loss_collision_local_hall_shortfall_of_reused_corner
+    C exponent choice hRepeated
+
+#print axioms actual_three_five_double_hit_forces_local_square_hall_failure
 
 end OrderedEdgeColoring
 
