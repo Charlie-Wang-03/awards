@@ -605,7 +605,7 @@ theorem actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
     have hinj : Set.InjOn f S := by
       apply Finset.card_image_iff.mp
       change O.card = S.card
-      omega
+      exact (hrecords.trans hcount).symm
     exact hwhole.mp (hlogic.mpr ⟨hinj, houtside⟩)
 
 #print axioms actual_original_whole_square_local_hall_iff_eighth_no_reuse_and_exterior
