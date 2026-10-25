@@ -502,6 +502,52 @@ theorem actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterio
 
 #print axioms actual_original_all_subfamilies_local_hall_iff_no_reuse_and_true_exterior
 
+/-- An EXACT cardinal identity for the genuinely SOURCE-NATIVE local
+Hall deficit, with arbitrary n and arbitrary finite original geometry:
+  source records minus genuinely eligible local holes =
+  duplicate target reuse debt + truly ineligible opposite targets.
+Thus every unit of the uncovered collision lane is traced either
+to an ACTUAL source reuse or to a FALSE external-hole qualification.
+It does not assume that nonlocal holes or surplus can pay this debt. -/
+theorem actual_original_source_square_local_hall_deficit_exact_partition
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (actualEarliestLossCollisionRecords C exponent choice).card -
+        ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+          (fun a =>
+            lossCollisionSquareWords n a ∩
+              lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card =
+      ((actualEarliestLossCollisionRecords C exponent choice).card -
+        (actualLossEarliestOppositeCandidateWords C exponent choice).card) +
+      ((actualLossEarliestOppositeCandidateWords C exponent choice) \
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice).card := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  have hlocal :
+      S.biUnion (fun a => lossCollisionSquareWords n a ∩ H) = O ∩ H := by
+    simpa only [S,O,H,actualLossEarliestOppositeCandidateWords] using
+      (actual_earliest_loss_collision_local_holes_exact_image_inter
+        C exponent choice)
+  have himage : O.card ≤ S.card := by
+    change
+      (S.image (fun a =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)).card ≤ S.card
+    exact Finset.card_image_le
+  have hpartition :
+      (O ∩ H).card + (O \ H).card = O.card :=
+    Finset.card_inter_add_card_sdiff O H
+  change S.card - (S.biUnion (fun a =>
+    lossCollisionSquareWords n a ∩ H)).card =
+      (S.card - O.card) + (O \ H).card
+  rw [hlocal]
+  omega
+
+#print axioms actual_original_source_square_local_hall_deficit_exact_partition
+
+
 
 
 
