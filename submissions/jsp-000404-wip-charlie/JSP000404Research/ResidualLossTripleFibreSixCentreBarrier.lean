@@ -311,9 +311,9 @@ theorem actual_three_colour_triple_fibre_forces_six_loss_centres
       · exact hsource 1 hv1
     · exact hsource 2 hv2
   have hle := Finset.card_le_card hall
-  have h0 := htwo (0 : Fin 3)
-  have h1 := htwo (1 : Fin 3)
-  have h2 := htwo (2 : Fin 3)
+  have h0 : 2 ≤ (S (0 : Fin 3)).card := htwo 0
+  have h1 : 2 ≤ (S (1 : Fin 3)).card := htwo 1
+  have h2 : 2 ≤ (S (2 : Fin 3)).card := htwo 2
   rw [hcard] at hle
   omega
 
