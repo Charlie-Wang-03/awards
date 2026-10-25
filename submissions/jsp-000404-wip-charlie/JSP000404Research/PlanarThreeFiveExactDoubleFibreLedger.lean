@@ -156,7 +156,7 @@ theorem actual_three_five_double_hits_le_available_nonlocal_credit
         (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
           terminalTwinAvailableSurplus C exponent) :
     (actualLossDoubleHitCandidateWords C exponent choice).card ≤
-      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \\
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
         actualLossEarliestOppositeCandidateWords C exponent choice).card +
         terminalTwinAvailableSurplus C exponent := by
   have h := (actual_three_five_eight_source_payment_iff_double_hit_nonlocal
@@ -174,7 +174,7 @@ theorem actual_three_five_payment_impossible_of_double_hit_shortfall
     (hexp : ∀ v, exponent v ≤ 2)
     (hfive : Fintype.card V ≤ 5)
     (hshort :
-      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \\
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
         actualLossEarliestOppositeCandidateWords C exponent choice).card +
         terminalTwinAvailableSurplus C exponent <
       (actualLossDoubleHitCandidateWords C exponent choice).card) :
