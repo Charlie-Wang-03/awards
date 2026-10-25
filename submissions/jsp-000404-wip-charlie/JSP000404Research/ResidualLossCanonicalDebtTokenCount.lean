@@ -49,7 +49,10 @@ theorem actual_earliest_loss_debt_tokens_card_eq_duplicate_debt
   have hin : i < n := Finset.mem_range.mp hi
   simp only [dif_pos hin]
   rw [Finset.sum_fin_eq_sum_range]
-  rfl
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hj' : j < i := Finset.mem_range.mp hj
+  simp only [dif_pos hj']
 
 /-- The candidate opposite Boolean corner of one *genuine exact debt*
 token, with its earliest prior coordinate lifted back to Fin n. -/
