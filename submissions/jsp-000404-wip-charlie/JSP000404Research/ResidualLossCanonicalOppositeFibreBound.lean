@@ -41,6 +41,7 @@ theorem actual_loss_opposite_fibre_coordinate_pair_injOn
       (fun a : Fin n × Fin n × (Fin n → Bool) => (a.1, a.2.1))
       (actualLossOppositeCandidateFibre C exponent choice q) := by
   intro a ha b hb hp
+  change (a.1, a.2.1) = (b.1, b.2.1) at hp
   have ha' : flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 = q :=
     (Finset.mem_filter.mp ha).2
   have hb' : flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1 = q :=
