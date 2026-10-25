@@ -260,6 +260,7 @@ theorem actual_three_colour_triple_fibre_forces_six_centres
   have h0 := htwo (0 : Fin 3)
   have h1 := htwo (1 : Fin 3)
   have h2 := htwo (2 : Fin 3)
+  rw [hunion] at hle
   omega
 
 #print axioms translated_cube_two_words_agree_at_retained_active
