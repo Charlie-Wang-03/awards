@@ -70,8 +70,10 @@ theorem actual_at_most_two_loss_centres_original_pair_unique
     · exact huaL
   have htwo : ({va, ua} : Finset V).card = 2 := by
     simp [hneA]
+  have hLcard : L.card ≤ 2 := hloss
   have hL : ({va, ua} : Finset V) = L :=
-    Finset.eq_of_subset_of_card_le hsubset (by omega)
+    Finset.eq_of_subset_of_card_le hsubset (by
+      simpa only [htwo] using hLcard)
   have hvbCases : vb = va ∨ vb = ua := by
     have hh : vb ∈ ({va, ua} : Finset V) := by
       rw [hL]
@@ -123,8 +125,11 @@ theorem actual_at_most_two_loss_centres_opposite_injective
   have hpair :=
     actual_at_most_two_loss_centres_original_pair_unique
       C exponent choice hloss a b ha hb
-  exact loss_opposite_same_coordinate_pair_injective a b
-    (congrArg Prod.fst hpair) (congrArg Prod.snd hpair) heq
+  have hc : a.1 = b.1 :=
+    congrArg (fun cd : Fin n × Fin n => cd.1) hpair
+  have hd : a.2.1 = b.2.1 :=
+    congrArg (fun cd : Fin n × Fin n => cd.2) hpair
+  exact loss_opposite_same_coordinate_pair_injective a b hc hd heq
 
 /-- Original eighth-lane duplicate debt equals its count of distinct
 canonical opposite candidates, with no reuse, in this two-source regime. -/
@@ -208,7 +213,7 @@ theorem actual_at_most_two_loss_centres_payment_iff_nonlocal
   have hno :=
     actual_at_most_two_loss_centres_duplicate_debt_no_reuse
       C exponent choice hloss
-  rw [hno] at hiff
+  rw [hno] at hiff ⊢
   simpa only [Nat.sub_self, zero_add, Nat.add_assoc] using hiff
 
 #print axioms actual_earliest_record_has_distinct_original_loss_owners
