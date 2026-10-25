@@ -14,6 +14,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossGlobalNonlocalShortfallLedger.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarLowerBranchNonlocalCollisionDefectFrontier.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCanonicalOppositePairRigidity.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCanonicalOppositeSignatureBound.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionDoubleFlipExactTrueHole.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionExactSquareHoleBudget.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionThreePointExternalHoleObstruction.lean"
@@ -65,7 +66,7 @@ jobs:
       - name: Kernel-check exact original-source conditions for one real collision-square hole
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction JSP000404Research.ResidualLossCanonicalDebtTokenCount JSP000404Research.ActualEightSourceEarliestDebtPayment JSP000404Research.ResidualLossCanonicalRecordDebtEquiv JSP000404Research.ResidualLossTwoColourOppositeNoReuse JSP000404Research.ResidualLossGlobalNonlocalShortfallLedger JSP000404Research.PlanarLowerBranchNonlocalCollisionDefectFrontier JSP000404Research.ResidualLossCanonicalOppositePairRigidity
+          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction JSP000404Research.ResidualLossCanonicalDebtTokenCount JSP000404Research.ActualEightSourceEarliestDebtPayment JSP000404Research.ResidualLossCanonicalRecordDebtEquiv JSP000404Research.ResidualLossTwoColourOppositeNoReuse JSP000404Research.ResidualLossGlobalNonlocalShortfallLedger JSP000404Research.PlanarLowerBranchNonlocalCollisionDefectFrontier JSP000404Research.ResidualLossCanonicalOppositePairRigidity JSP000404Research.ResidualLossCanonicalOppositeSignatureBound
       - name: Scope
         if: always()
         run: echo 'Exact local holes, canonical earliest-prior records, and typed duplicate-debt tokens; global payment still open.'
