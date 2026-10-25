@@ -664,9 +664,31 @@ theorem planar_enlarged_expansion_failure_root_reduction
       hp hcap (by omega : 1 ≤ n) hdelta0
       hdeltaHalf ht hlam C hfail
   refine ⟨T,hT,?_⟩
-  exact planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
-    hp hcap hn hdelta0 hdeltaHalf ht hlam C
-    hdef hmin
+  let hn1 : 1 ≤ n := by omega
+  let hdelta1 : delta < 1 := by linarith
+  let R := planarStandardResidualColoring
+    hp hcap hn1 hdelta0 hdelta1 ht hlam
+  let exponent := planarCentreExponent (t := t) hp C
+  have hexpLt : ∀ x : ProjectionOrdered V, exponent x < n :=
+    planarCentreExponent_lt_n hp hn1 hdelta0 hdelta1 ht C
+  have hexp : ∀ x : ProjectionOrdered V, exponent x ≤ n := by
+    intro x
+    exact Nat.le_of_lt (hexpLt x)
+  have hone : ∀ x, (active R x).card ≤ n - exponent x + 1 :=
+    planarStandardResidual_oneLayer_budget
+      hp hcap hn1 hdelta0 hdelta1 ht hlam C
+  rcases
+    planar_minimal_enlarged_leaf_or_triangle_or_exact_or_topLoss
+      hp hcap hn hdelta0 hdeltaHalf ht hlam C hdef hmin
+    with hleaf | htri | hexact | htop
+  · exact Or.inl hleaf
+  · obtain ⟨u,v,w,huv,huw,hvw⟩ := htri
+    exact Or.inr (Or.inl
+      ⟨u,v,w,
+        enlargedCollisionGraph_triangle_outlet
+          R exponent hexp hone T huv huw hvw⟩)
+  · exact Or.inr (Or.inr (Or.inl hexact))
+  · exact Or.inr (Or.inr (Or.inr htop))
 
 
 theorem planar_secondLayerLoss_word_closed_outlet
