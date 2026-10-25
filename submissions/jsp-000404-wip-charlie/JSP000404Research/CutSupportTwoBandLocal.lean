@@ -42,8 +42,10 @@ theorem zero_ordinary_step_band_jump_le_one
     exact List.Forall₂.get hunit r.isLt rb.isLt
   refine ⟨rb, rfl, ?_⟩
   by_cases hb0 : bs.get rb = 0
-  · simp [hb0]
-  · have hb1 := hunitGet ⟨hr0, hb0⟩
+  · change bs.get rb ≤ 1
+    omega
+  · change bs.get rb ≤ 1
+    have hb1 := hunitGet ⟨hr0, hb0⟩
     omega
 
 #print axioms zero_ordinary_step_band_jump_le_one
