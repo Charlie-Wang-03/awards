@@ -31,6 +31,57 @@ private def lossCollisionSquareWords (n : ℕ)
         ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
           Finset (Fin n → Bool))))
 
+/-- Exact source-native finite-family identity: the UNION of all REAL
+square-local exterior holes is precisely the set of distinct opposite
+double-flip words that are genuinely exterior to every translated loss
+and every original retained completion cube.  No credit is invented. -/
+theorem actual_cross_loss_family_local_holes_exact_image_inter
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (S : Finset (Fin n × Fin n × (Fin n → Bool)))
+    (hdifferent : ∀ a ∈ S, a.1 ≠ a.2.1)
+    (hleft : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.1)
+    (hright : ∀ a ∈ S,
+      a.2.2 ∈ translatedLossSliceWords C exponent choice a.2.1) :
+    S.biUnion (fun a =>
+      lossCollisionSquareWords n a ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) =
+      (S.image (fun a =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)) ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  ext target
+  constructor
+  · intro htarget
+    obtain ⟨a, ha, hlocal⟩ := Finset.mem_biUnion.mp htarget
+    obtain ⟨hsquare, hhole⟩ := Finset.mem_inter.mp hlocal
+    have hSquare :
+        target ∈ insert a.2.2
+          (insert (flipBoolWordAt a.2.2 a.1)
+            (insert (flipBoolWordAt a.2.2 a.2.1)
+              ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
+                Finset (Fin n → Bool)))) := hsquare
+    have heq : target =
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 :=
+      cross_loss_collision_square_external_hole_only_double_flip
+        C exponent choice (hdifferent a ha) (hleft a ha) (hright a ha)
+        hSquare hhole
+    exact Finset.mem_inter.mpr
+      ⟨Finset.mem_image.mpr ⟨a, ha, heq.symm⟩, hhole⟩
+  · intro htarget
+    obtain ⟨himage, hhole⟩ := Finset.mem_inter.mp htarget
+    obtain ⟨a, ha, heq⟩ := Finset.mem_image.mp himage
+    refine Finset.mem_biUnion.mpr ⟨a, ha, Finset.mem_inter.mpr ⟨?_, hhole⟩⟩
+    change target ∈ insert a.2.2
+      (insert (flipBoolWordAt a.2.2 a.1)
+        (insert (flipBoolWordAt a.2.2 a.2.1)
+          ({flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1} :
+            Finset (Fin n → Bool))))
+    rw [← heq]
+    simp
+
 /-- The total number of distinct REAL square-local exterior holes in ANY
 finite family of cross-coordinate translated-loss collisions is bounded by
 the number of DISTINCT opposite double-flip Boolean words. In particular,
@@ -178,6 +229,7 @@ theorem actual_cross_loss_family_same_opposite_local_hall_shortfall
       C exponent choice S q hdifferent hleft hright hsame
   omega
 
+#print axioms actual_cross_loss_family_local_holes_exact_image_inter
 #print axioms actual_cross_loss_family_local_holes_le_distinct_doubleflips
 #print axioms actual_cross_loss_family_local_hall_shortfall_of_repeated_candidates
 #print axioms actual_cross_loss_family_common_opposite_local_holes_le_one
