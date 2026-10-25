@@ -153,6 +153,101 @@ theorem actual_three_loss_centres_duplicate_debt_has_no_reuse
 
 #print axioms actual_three_loss_centres_duplicate_debt_has_no_reuse
 
+/-- SHARP source-square local Hall criterion at n=3 and at most three
+original projected-loss centres: there is no source reuse whatsoever.
+Thus the original collision records can all be paid by their OWN
+exterior opposite corners if and only if EVERY genuine opposite
+candidate is actually an exterior true hole. No nonlocal credit
+is silently counted as square-local payment. -/
+theorem actual_three_loss_centres_square_local_hall_iff_opposite_exterior
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3) :
+    (actualEarliestLossCollisionRecords C exponent choice).card ≤
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords 3 a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card ↔
+      actualLossEarliestOppositeCandidateWords C exponent choice ⊆
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let H := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  have hcard : S.card = O.card := by
+    have hrecords :=
+      actual_earliest_collision_records_card_eq_duplicate_debt
+        C exponent choice
+    have hunique :=
+      actual_three_loss_centres_duplicate_debt_has_no_reuse
+        C exponent choice hexp hloss
+    exact hrecords.trans hunique
+  have hlocal : (S.biUnion (fun a => lossCollisionSquareWords 3 a ∩ H)) =
+      O ∩ H := by
+    simpa only [S, O, H] using
+      (actual_earliest_loss_collision_local_holes_exact_image_inter
+        C exponent choice)
+  change S.card ≤ (S.biUnion (fun a =>
+    lossCollisionSquareWords 3 a ∩ H)).card ↔ O ⊆ H
+  rw [hlocal, hcard]
+  constructor
+  · intro h
+    have hsubset : O ∩ H ⊆ O := Finset.inter_subset_left
+    have heq : O ∩ H = O :=
+      Finset.eq_of_subset_of_card_le hsubset h
+    exact Finset.inter_eq_left.mp heq
+  · intro h
+    rw [Finset.inter_eq_left.mpr h]
+
+#print axioms actual_three_loss_centres_square_local_hall_iff_opposite_exterior
+
+/-- In the same loss-sparse regime, the exact original eight-source
+payment inequality has NO duplicate-source term. The remaining
+nonlocal gap consists solely of genuine blocker/twin debt and
+candidate words that are NOT actual outside true holes. -/
+theorem actual_three_loss_centres_payment_iff_exterior_nonlocal
+    {V : Type*} [LinearOrder V] [Fintype V]
+    (C : OrderedEdgeColoring V (3 + 1))
+    (exponent : V → ℕ) (choice : V → Fin 3)
+    (hexp : ∀ v, exponent v ≤ 2)
+    (hloss : (projectedLossVertices C exponent).card ≤ 3) :
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        translatedLossDuplicateDebt C exponent choice ≤
+      (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) ↔
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        ((actualLossEarliestOppositeCandidateWords C exponent choice) \
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice).card ≤
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) := by
+  have hfive : (projectedLossVertices C exponent).card ≤ 5 := by omega
+  have hiff :=
+    actual_three_loss_sparsity_payment_iff_double_hit_nonlocal
+      C exponent choice hexp hfive
+  have hzero : (actualLossDoubleHitCandidateWords C exponent choice).card = 0 := by
+    classical
+    by_contra hne
+    have hpos : 0 < (actualLossDoubleHitCandidateWords C exponent choice).card := by
+      omega
+    obtain ⟨q,hq⟩ := Finset.card_pos.mp hpos
+    have htwo : 2 ≤ (actualLossOppositeCandidateFibre
+        C exponent choice q).card := (Finset.mem_filter.mp hq).2
+    have hone := actual_three_colour_three_loss_centre_no_double_fibre
+      C exponent choice hexp hloss q
+    omega
+  rw [hzero] at hiff
+  simpa only [Nat.add_zero, Nat.add_assoc] using hiff
+
+#print axioms actual_three_loss_centres_payment_iff_exterior_nonlocal
+
+
 #print axioms actual_three_loss_sparsity_reuse_defect_eq_double_hit_card
 
 theorem actual_three_five_reuse_defect_eq_double_hit_card
