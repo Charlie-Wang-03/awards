@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionExactLocalHoleEligibility.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionSharedCornerHallObstruction.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionDoubleFlipExactTrueHole.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionExactSquareHoleBudget.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ResidualLossCollisionThreePointExternalHoleObstruction.lean"
@@ -57,7 +58,7 @@ jobs:
       - name: Kernel-check exact original-source conditions for one real collision-square hole
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility
+          lake build JSP000404Research.ResidualLossCollisionExactLocalHoleEligibility JSP000404Research.ResidualLossCollisionSharedCornerHallObstruction
       - name: Scope
         if: always()
-        run: echo 'One square hole iff original source cross-activity and third-party/translated exclusions; no global payment.'
+        run: echo 'One square exact hole criterion and finite common-corner collision-family local Hall shortfall; no global payment.'
