@@ -12,7 +12,7 @@ and exactly six original centres. We now eliminate every possible
 LARGER original configuration using the strict-support interval
 packing theorem, which gives #centres <= 6 at the actual integer
 scale t=3, lambda=pi/3. The existing unconditional small-centre
-capacity (<=4) and genuine five-/six-centre capacities then exhaust
+capacity (<=4) and genuine five-centre and six-centre capacities then exhaust
 every original finite planar configuration.
 
 This is a COMPLETE unconditional geometric lower-branch CAPACITY
