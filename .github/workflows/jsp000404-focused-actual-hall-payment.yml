@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceHallPaymentCriterion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceFilteredNonlocalNecessity.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEarliestExactCoveredVsTranslatedDefect.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceNonreuseCertificate.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualExternalHoleNonreuseCertificate.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointCutBothBadSmallAnglesDirect.lean"
@@ -64,7 +65,7 @@ jobs:
       - name: Kernel-check eight-source true-hole Hall matching criterion
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ActualEightSourceHallPaymentCriterion JSP000404Research.ActualEightSourceFilteredNonlocalNecessity
+          lake build JSP000404Research.ActualEightSourceHallPaymentCriterion JSP000404Research.ActualEightSourceFilteredNonlocalNecessity JSP000404Research.ActualEarliestExactCoveredVsTranslatedDefect
       - name: Scope
         if: always()
         run: echo 'Conditional genuine credit Hall expansion only; geometric existence unproved; global payment remains open; global six-source payment remains unproved.'
