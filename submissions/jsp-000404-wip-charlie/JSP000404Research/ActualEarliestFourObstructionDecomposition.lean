@@ -77,7 +77,19 @@ theorem actual_earliest_record_nonlocal_defect_iff_four_obstructions
         q ∈ retainedCompletionWords C z) ∨
       q ∈ translatedLossAllCoordinateWords C exponent choice := by
     simp only [not_and_or, not_forall, not_imp, not_not]
-    aesop
+    constructor
+    · intro h
+      rcases h with h | h | ⟨z, hzv, hzu, hzq⟩ | h
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl ⟨z, hzv, hzu, hzq⟩))
+      · exact Or.inr (Or.inr (Or.inr h))
+    · intro h
+      rcases h with h | h | ⟨z, hzv, hzu, hzq⟩ | h
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr (Or.inl ⟨z, hzv, hzu, hzq⟩))
+      · exact Or.inr (Or.inr (Or.inr h))
   calc
     q ∈ (actualLossEarliestOppositeCandidateWords C exponent choice \
       lossLedgerOutsideTranslatedTrueHoles C exponent choice) ↔
