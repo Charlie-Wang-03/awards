@@ -79,9 +79,15 @@ theorem planar_three_dyadic_eq_original_card_add_low_support_excess
       _ = Fintype.card V +
             (∑ i : V, (2 ^ centreExponent (C i) t - 1)) := by
             simp [add_comm]
-  change (∑ i : V, 2 ^ centreExponent (C i) t) =
-    Fintype.card V + (∑ i ∈ L, 2 ^ centreExponent (C i) t - 1)
-  rw [hsplit, hfilter]
+  have hclosed :
+      (∑ i : V, 2 ^ centreExponent (C i) t) =
+        Fintype.card V +
+          (∑ i ∈ L, (2 ^ centreExponent (C i) t - 1)) := by
+    calc
+      _ = Fintype.card V +
+          (∑ i : V, (2 ^ centreExponent (C i) t - 1)) := hsplit
+      _ = _ := by rw [hfilter]
+  simpa [L] using hclosed
 
 /-- Exact equivalence: for genuine n=3 projective cycles, the
 full dyadic capacity is *precisely* a count-plus-low-support-excess
