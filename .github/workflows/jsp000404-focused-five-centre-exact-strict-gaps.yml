@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeFiveExactScaleStrictGapExclusion.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeFiveExactScaleFullCapacity.lean"
       - ".github/workflows/jsp000404-focused-five-centre-exact-strict-gaps.yml"
   workflow_dispatch:
 
@@ -53,7 +54,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check strict real AngleCap gap saturation exclusion at t=3
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ThreeFiveExactScaleStrictGapExclusion
+        run: lake build JSP000404Research.ThreeFiveExactScaleStrictGapExclusion JSP000404Research.ThreeFiveExactScaleFullCapacity
       - name: Scope
         if: always()
-        run: echo 'Exact integer strip real-gap geometry only; arbitrary delta and global all-source payment remain open.'
+        run: echo 'Unconditional original n=3 five-centre capacity at delta=0 IF kernel succeeds; arbitrary delta and global payment remain open.'
