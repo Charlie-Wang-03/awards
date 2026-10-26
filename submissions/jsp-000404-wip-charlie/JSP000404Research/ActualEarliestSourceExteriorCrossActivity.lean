@@ -86,7 +86,7 @@ theorem actual_earliest_exterior_record_owner_other_active
         flipBoolWordAt (flipBoolWordAt a.2.2 c) a.1 ∈
           lossLedgerGlobalTrueHoles C := by
       rw [hcsecond]
-      rw [flipBoolWordAt_commute a.2.2 (ne_of_lt horder).symm]
+      rw [← flipBoolWordAt_commute a.2.2 (ne_of_lt horder).symm]
       exact hglobal
     exact actual_translated_owner_true_hole_forces_other_active
       C v c a.1 a.2.2 hw hcq
