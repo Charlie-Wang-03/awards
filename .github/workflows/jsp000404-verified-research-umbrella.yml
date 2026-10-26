@@ -62,4 +62,4 @@ jobs:
           lake build JSP000404Research
       - name: Scope
         if: always()
-        run: echo 'Umbrella import closure includes original admitted root: exactly one genuine sorry persists, no complete JSP-000404 claim.'
+        run: echo 'Umbrella imports retain precisely one genuine research sorry and do not prove JSP-000404.'
