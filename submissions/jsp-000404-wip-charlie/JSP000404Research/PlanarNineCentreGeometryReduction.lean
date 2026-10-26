@@ -71,6 +71,28 @@ theorem nine_point_angle_cap_obstruction_implies_global_card_le_eight
     original_nine_subconfiguration_preserves_angle_cap hp hcap hcard
   exact (hNine (fun j : Fin 9 => p (e j)) hqinj) hqcap
 
+
+/-- Exact fixed-nine frontier at one angle cap λ, for ordinary small
+finite linear orders: uniform original AngleCap cardinality <=8
+is equivalent to its FIRST nontrivial nine-point exclusion.
+This is a conditional EQUIVALENCE, not a proof of the nine-point
+angle obstruction on the right. -/
+theorem nine_point_obstruction_iff_uniform_cardinality_eight
+    (lam : ℝ) :
+    (∀ (q : Fin 9 → Plane), Function.Injective q → ¬ AngleCap q lam) ↔
+      (∀ (V : Type) [LinearOrder V] [Fintype V] (p : V → Plane),
+        Function.Injective p → AngleCap p lam → Fintype.card V ≤ 8) := by
+  constructor
+  · intro h V _ _ p hp hcap
+    exact nine_point_angle_cap_obstruction_implies_global_card_le_eight
+      hp hcap h
+  · intro h q hq hc
+    have hh : Fintype.card (Fin 9) ≤ 8 :=
+      h (Fin 9) q hq hc
+    norm_num at hh
+
+#print axioms nine_point_obstruction_iff_uniform_cardinality_eight
+
 #print axioms original_nine_subconfiguration_preserves_angle_cap
 #print axioms nine_point_angle_cap_obstruction_implies_global_card_le_eight
 
