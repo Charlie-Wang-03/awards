@@ -117,6 +117,7 @@ theorem planar_three_integer_many_centres_dyadic_le_card_add_two
     exact planar_exact_integer_many_centres_exponent_le_n_sub_two
       hp hcap (by decide : 2 ≤ (3 : ℕ))
       (by omega : (3 : ℕ) + 2 ≤ Fintype.card V) ht3 hlam i (C i)
+  change (∑ i : V, (2 : ℕ) ^ k i) ≤ Fintype.card V + 2
   have hmass := zero_one_dyadic_sum_eq_card_add_ones k hk
   have hcnt : ((Finset.univ : Finset V).filter (fun i => k i = 1)).card ≤ 2 :=
     planar_three_integer_many_centres_next_card_le_two
