@@ -70,7 +70,7 @@ jobs:
       - name: Kernel-check full planar capacity from actual eight-source Hall expansion
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.PlanarCapacityOfEightSourceHallExpansion JSP000404Research.PlanarCapacityOfEarliestSourceHallExpansion JSP000404Research.PlanarLowerBranchExactCoveredTranslatedFrontier
+          lake build JSP000404Research.PlanarCapacityOfEightSourceHallExpansion JSP000404Research.PlanarCapacityOfEarliestSourceHallExpansion JSP000404Research.PlanarLowerBranchExactCoveredTranslatedFrontier JSP000404Research.PlanarOverweightNecessaryTwoDefectShortfall JSP000404Research.PlanarOverweightCanonicalActiveShortfallWitness
       - name: Scope
         if: always()
         run: echo 'Conditional all-cardinality true-hole Hall expansion bridge only; global payment remains open; global six-source payment remains unproved.'
