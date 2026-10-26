@@ -94,7 +94,7 @@ theorem actual_one_high_loss_centre_opposite_fibre_le_low_centres
       exact ⟨((mem_lossCoordinateSlice C exponent choice a.1.2.1
         (owner a).2).mp (hos a).2.1).1, by omega⟩
     have heq : (owner a).1 = (owner a).2 :=
-      (Finset.card_le_one.mp hhigh) (owner a).1 (owner a).2 hva hua
+      (Finset.card_le_one.mp hhigh) (owner a).1 hva (owner a).2 hua
     exact (htwo a) heq
   let pick (a : F) : V :=
     if exponent (owner a).1 ≤ 2 then (owner a).1 else (owner a).2
