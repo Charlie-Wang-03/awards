@@ -32,7 +32,7 @@ theorem exists_three_way_small_summand
   push Not at hnone
   have hstrict : ∀ i ∈ S, d < 3 * f i := by
     intro i hi
-    exact lt_of_not_ge (hnone i hi)
+    exact hnone i hi
   have hsumstrict : (∑ i ∈ S, d) < (∑ i ∈ S, 3 * f i) := by
     apply Finset.sum_lt_sum
     · intro i hi
