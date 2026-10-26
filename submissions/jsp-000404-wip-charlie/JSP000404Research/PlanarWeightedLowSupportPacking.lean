@@ -43,9 +43,9 @@ theorem planar_weighted_low_support_subfamily_card_le_two_n
     let I := {i : V // positiveSupport (centreQuotient (C i) t) ≤ 2}
     Fintype.card I +
       ((Finset.univ : Finset I).filter
-        (fun i =>
-          positiveSupport (centreQuotient (C i) t) = 1 ∧
-          1 ≤ centreExponent (C i) t)).card ≤ 2 * n := by
+        (fun (i : I) =>
+          positiveSupport (centreQuotient (C (i : V)) t) = 1 ∧
+          1 ≤ centreExponent (C (i : V)) t)).card ≤ 2 * n := by
   classical
   let I : Type _ :=
     {i : V // positiveSupport (centreQuotient (C i) t) ≤ 2}
@@ -96,11 +96,17 @@ theorem planar_weighted_low_support_subfamily_card_le_two_n
     apply Finset.sum_le_sum
     intro r _
     exact hcost r
+  have hcardExtra :
+      (∑ r : I, if cost r then (1 : ℕ) else 0) =
+        ((Finset.univ : Finset I).filter cost).card := by
+    rw [← Finset.sum_filter]
+    simp
   have hcount :
       (∑ r : I, (1 + if cost r then (1 : ℕ) else 0)) =
         Fintype.card I +
           ((Finset.univ : Finset I).filter cost).card := by
-    simp [Finset.sum_add_distrib, Finset.sum_ite]
+    rw [Finset.sum_add_distrib, hcardExtra]
+    simp
   have hresult :
       Fintype.card I +
         ((Finset.univ : Finset I).filter cost).card ≤ 2 * n := by
