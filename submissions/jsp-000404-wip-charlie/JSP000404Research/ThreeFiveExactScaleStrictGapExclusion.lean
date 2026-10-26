@@ -46,7 +46,6 @@ theorem five_centre_exact_three_scale_forbids_quotient_sum_three
     change Fintype.card {j : V // j ≠ i} = 4
     rw [Fintype.card_subtype_compl (fun j : V => j = i),
       Fintype.card_subtype_eq, hcard]
-    decide
   have hraylen : C.rays.length = Fintype.card (OtherVertex i) := by
     rw [← List.toFinset_card_of_nodup C.nodup, C.complete]
     simp
@@ -57,7 +56,7 @@ theorem five_centre_exact_three_scale_forbids_quotient_sum_three
       _ = 4 := hother
   have hzero : ∃ r : Fin C.gaps.length, centreQuotient C t r = 0 := by
     by_contra hnone
-    push_neg at hnone
+    push Not at hnone
     have hmin : ∀ r : Fin C.gaps.length, 1 ≤ centreQuotient C t r := by
       intro r
       have hpos := hnone r
@@ -84,7 +83,7 @@ theorem five_centre_exact_three_scale_forbids_quotient_sum_three
       (C.gaps_nonneg (C.gaps.get j) (List.get_mem _ _))
   have hgsum : (∑ j : Fin C.gaps.length, C.gaps.get j) = 1 := by
     rw [← List.sum_ofFn]
-    exact C.gaps_sum
+    simpa using C.gaps_sum
   have hqsum :
       (∑ j : Fin C.gaps.length, Nat.floor (t * C.gaps.get j)) = 3 := by
     simpa [centreQuotient] using hsum
