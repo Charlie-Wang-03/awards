@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEarliestActiveRectangleNecessary.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEarliestBicolourRecordCapacity.lean"
       - ".github/workflows/jsp000404-focused-original-active-rectangle.yml"
   workflow_dispatch:
 
@@ -53,7 +54,7 @@ jobs:
       - name: Kernel-check original loss-centre active-incidence K2,2 necessary condition
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ActualEarliestActiveRectangleNecessary
+          lake build JSP000404Research.ActualEarliestActiveRectangleNecessary JSP000404Research.ActualEarliestBicolourRecordCapacity
       - name: Scope
         if: always()
         run: echo 'Payable original eighth-debt local hole forces genuine two-centre two-colour K2,2; global payment remains open.'
