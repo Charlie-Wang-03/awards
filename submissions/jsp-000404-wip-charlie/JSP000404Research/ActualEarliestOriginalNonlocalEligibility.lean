@@ -108,7 +108,7 @@ theorem actual_earliest_record_exterior_iff_full_owner_eligibility
 /-- A REAL ORIGINAL source record which fails cross-activity at even
 one of its two actual owner vertices has an opposite word covered by
 an original retained cube, and the very same candidate enters the
-CANONICAL nonlocal ineligible-opposite deficit set O \\ H.
+CANONICAL nonlocal ineligible-opposite deficit set O \ H.
 No synthetic tokens, missing-source assumptions or exterior credits. -/
 theorem actual_earliest_cross_inactive_forces_covered_nonlocal_defect
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -126,7 +126,7 @@ theorem actual_earliest_cross_inactive_forces_covered_nonlocal_defect
       a.1 ∉ retainedActive C u) :
     let q := flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
     q ∈ coveredCompletionWords C ∧
-    q ∈ (actualLossEarliestOppositeCandidateWords C exponent choice \\
+    q ∈ (actualLossEarliestOppositeCandidateWords C exponent choice \
       lossLedgerOutsideTranslatedTrueHoles C exponent choice) := by
   classical
   dsimp only
