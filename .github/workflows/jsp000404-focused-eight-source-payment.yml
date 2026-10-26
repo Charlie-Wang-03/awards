@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceNonreuseCertificate.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceEarliestHallBridge.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualExternalHoleNonreuseCertificate.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointCutBothBadSmallAnglesDirect.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/SixPointMergedRepeatedColour.lean"
@@ -62,7 +63,7 @@ jobs:
       - name: Kernel-check eight actual debt classes and one nonreusing payment
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.ActualEightSourceNonreuseCertificate
+          lake build JSP000404Research.ActualEightSourceNonreuseCertificate JSP000404Research.ActualEightSourceEarliestHallBridge
       - name: Scope
         if: always()
         run: echo 'Eight-class tagged payment condition only; geometric existence unproved; global payment remains open; global six-source payment remains unproved.'
