@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEightSourceHallExpansion.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEarliestSourceHallExpansion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceHallPaymentCriterion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEightSourceNonreuseMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceNonreuseCertificate.lean"
@@ -66,7 +67,7 @@ jobs:
       - name: Kernel-check full planar capacity from actual eight-source Hall expansion
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research.PlanarCapacityOfEightSourceHallExpansion
+          lake build JSP000404Research.PlanarCapacityOfEightSourceHallExpansion JSP000404Research.PlanarCapacityOfEarliestSourceHallExpansion
       - name: Scope
         if: always()
         run: echo 'Conditional all-cardinality true-hole Hall expansion bridge only; global payment remains open; global six-source payment remains unproved.'
