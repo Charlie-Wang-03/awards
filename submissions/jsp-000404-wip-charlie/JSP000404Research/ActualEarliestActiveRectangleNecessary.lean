@@ -80,7 +80,7 @@ theorem actual_earliest_no_original_rectangle_no_local_credit
         c = d) :
     actualLossEarliestEligibleLocalHoles C exponent choice = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro q hq
   obtain ⟨v,u,c,d,hne,hcd,hv,hu,hvc,huc,hvd,hud⟩ :=
     actual_earliest_exterior_forces_original_active_rectangle
