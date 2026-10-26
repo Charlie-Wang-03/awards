@@ -22,7 +22,7 @@ actual projective cycles. It does not imply the n=3 positive-delta
 branch nor any arbitrary-n true-hole payment.
 
 The root admitted theorem can now close its ENTIRE n=3,delta=0
-disjunct before the sole remaining global sorry.
+disjunct before the sole remaining global admitted obligation.
 -/
 
 namespace JSP000404Research
