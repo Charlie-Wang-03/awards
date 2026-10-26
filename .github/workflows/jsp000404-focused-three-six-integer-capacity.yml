@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarThreeManyIntegerNextPacking.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarFourSixExactIntegerCapacity.lean"
       - ".github/workflows/jsp000404-focused-three-six-integer-capacity.yml"
   workflow_dispatch:
 
