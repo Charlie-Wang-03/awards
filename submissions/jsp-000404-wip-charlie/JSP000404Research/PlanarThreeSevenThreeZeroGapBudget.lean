@@ -34,13 +34,19 @@ theorem quotient_zero_filter_card_eq_total_sub_support
         (Finset.univ.filter (fun i => q i ≠ 0)).card := by
     unfold positiveSupport
     simp [Finset.sum_ite]
-  have hsplit :
-      (Finset.univ.filter (fun i => q i = 0)).card +
-        (Finset.univ.filter (fun i => q i ≠ 0)).card =
-          Fintype.card I := by
-    simpa using
-      (Finset.filter_card_add_filter_neg_card_eq_card
-        (s := (Finset.univ : Finset I)) (p := fun i => q i = 0))
+  let Z : Finset I := Finset.univ.filter (fun i => q i = 0)
+  let P : Finset I := Finset.univ.filter (fun i => q i ≠ 0)
+  have hp : P = (Finset.univ : Finset I) \ Z := by
+    ext i
+    simp [P, Z]
+  have hpart := Finset.card_sdiff_add_card_inter
+    (Finset.univ : Finset I) Z
+  have hsplit : Z.card + P.card = Fintype.card I := by
+    rw [hp]
+    simpa [add_comm] using hpart
+  change Z.card = Fintype.card I - positiveSupport q
+  have hpos' : positiveSupport q = P.card := by
+    simpa [P] using hpos
   omega
 
 /-- Actual seven-plus-centre AngleCap geometry forces at least three
