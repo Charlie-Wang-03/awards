@@ -100,6 +100,19 @@ theorem planar_overweight_has_canonical_active_two_class_shortfall
   have hstrict :=
     planar_overweight_forces_exact_two_class_nonlocal_shortfall
       hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hover choice hactive
+  change ∃ choice : ProjectionOrdered V → Fin n,
+      (∀ v ∈ projectedLossVertices B k,
+        choice v ∈ retainedActive B v) ∧
+      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \
+        actualLossEarliestOppositeCandidateWords B k choice).card +
+        terminalTwinAvailableSurplus B k <
+      terminalTwinOtherFiveDebt B k +
+        ((chosenLossActualEdgeBlockerTriples B k choice).biUnion
+          (lossCoveredBlockerTripleWords B)).card +
+        ((translatedLossDuplicateDebt B k choice -
+            (actualLossEarliestOppositeCandidateWords B k choice).card) +
+          ((actualEarliestCoveredOppositeDefect B k choice).card +
+            (actualEarliestUncoveredTranslatedOppositeDefect B k choice).card))
   exact ⟨choice, hactive, hstrict⟩
 
 #print axioms planar_overweight_has_canonical_active_two_class_shortfall
