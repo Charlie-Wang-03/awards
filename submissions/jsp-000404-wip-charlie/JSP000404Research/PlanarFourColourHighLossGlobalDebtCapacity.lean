@@ -100,6 +100,8 @@ theorem planar_four_colour_original_duplicate_debt_le_low_loss_mul_opposites
     intro v hv u hu
     have hv' : 3 ≤ k v := (Finset.mem_filter.mp hv).2
     have hu' : 3 ≤ k u := (Finset.mem_filter.mp hu).2
+    have hvbound : k v ≤ 3 := hbound v
+    have hubound : k u ≤ 3 := hbound u
     apply hunique v u <;> omega
   intro choice
   exact actual_one_high_loss_centre_global_duplicate_debt_le_low_mul_candidates
