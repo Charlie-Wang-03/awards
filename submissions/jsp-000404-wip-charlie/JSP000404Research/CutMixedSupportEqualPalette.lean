@@ -27,9 +27,9 @@ open BinaryEdgePartition
 theorem support_one_equal_palette_forces_other_ordinary_quotients_le_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -124,9 +124,9 @@ theorem support_one_equal_palette_forces_other_ordinary_quotients_le_one
 theorem support_one_equal_palette_other_positive_ordinary_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -206,9 +206,9 @@ cut-wrap quotient exactly n-2. -/
 theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
