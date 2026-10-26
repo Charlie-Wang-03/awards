@@ -46,7 +46,7 @@ theorem planar_high_support_card_add_two_n_ge_total
     simpa [L, Fintype.card_subtype] using
       (planar_low_support_subfamily_card_le_two_n
         hp hcap hn hdelta0 hdeltaHalf ht hlam C)
-  have hcomp : H = (Finset.univ : Finset V) \\ L := by
+  have hcomp : H = (Finset.univ : Finset V) \ L := by
     ext i
     simp only [H, L, Finset.mem_filter, Finset.mem_univ,
       true_and, Finset.mem_sdiff]
