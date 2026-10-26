@@ -88,6 +88,19 @@ theorem planar_overweight_forces_exact_two_class_nonlocal_shortfall
     standardResidualColoring D n (by exact_mod_cast hwidth)
   let k : ProjectionOrdered V → ℕ :=
     fun i => centreExponent (cycles i) t
+  change ∀ choice : ProjectionOrdered V → Fin n,
+      (∀ v ∈ projectedLossVertices B k,
+        choice v ∈ retainedActive B v) →
+      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \
+        actualLossEarliestOppositeCandidateWords B k choice).card +
+        terminalTwinAvailableSurplus B k <
+      terminalTwinOtherFiveDebt B k +
+        ((chosenLossActualEdgeBlockerTriples B k choice).biUnion
+          (lossCoveredBlockerTripleWords B)).card +
+        ((translatedLossDuplicateDebt B k choice -
+            (actualLossEarliestOppositeCandidateWords B k choice).card) +
+          ((actualEarliestCoveredOppositeDefect B k choice).card +
+            (actualEarliestUncoveredTranslatedOppositeDefect B k choice).card))
   intro choice hactive
   by_contra hnot
   have hbudget :
