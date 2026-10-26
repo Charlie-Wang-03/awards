@@ -43,7 +43,7 @@ theorem actual_eight_source_payment_requires_bicolour_filtered_nonlocal_credit
           (lossCoveredBlockerTripleWords B)).card +
         (translatedLossDuplicateDebt B k choice -
           (actualEarliestBicolourRecordCandidates B k choice).card) ≤
-      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \\
+      ((lossLedgerOutsideTranslatedTrueHoles B k choice) \
         actualLossEarliestOppositeCandidateWords B k choice).card +
         terminalTwinAvailableSurplus B k := by
   classical
