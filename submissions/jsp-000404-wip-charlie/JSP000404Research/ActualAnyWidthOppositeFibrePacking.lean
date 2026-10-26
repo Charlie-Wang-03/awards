@@ -213,11 +213,10 @@ theorem actual_any_width_opposite_fibre_twice_card_le_loss_centres
           ((Finset.univ : Finset (F × Fin 2)).image pick).card :=
         (Finset.card_image_of_injective _ hinj).symm
       _ ≤ L.card := Finset.card_le_card hsub
-  simpa only [Finset.card_univ, Fintype.card_prod,
-    Fintype.card_coe, Fintype.card_fin] using
-      (show (F.card * 2) ≤ L.card from hbound) |> (by
-        intro h
-        simpa only [mul_comm] using h)
+  have hcard : F.card * 2 ≤ L.card := by
+    simpa only [Finset.card_univ, Fintype.card_prod,
+      Fintype.card_coe, Fintype.card_fin] using hbound
+  simpa only [mul_comm] using hcard
 
 #print axioms actual_any_width_same_opposite_distinct_records_owner_disjoint
 #print axioms actual_any_width_opposite_fibre_twice_card_le_loss_centres
