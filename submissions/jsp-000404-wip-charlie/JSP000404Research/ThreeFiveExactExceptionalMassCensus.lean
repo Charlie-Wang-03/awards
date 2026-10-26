@@ -71,10 +71,13 @@ theorem planar_three_five_overweight_mass_eq_nine_or_ten
         centreExponent (C i) t = 2 → i = s := by
       intro i hi
       by_contra hne
+      have hsi : s ≠ i := by
+        intro hsi
+        exact hne hsi.symm
       exact top_exponent_unique_of_card_ge_three
         hp hcap (by decide : 3 ≤ (3 : ℕ))
         (by omega : 3 ≤ Fintype.card V)
-        hdelta0 hdeltaHalf ht hlam C s i hne.symm hs hi
+        hdelta0 hdeltaHalf ht hlam C s i hsi hs hi
     have hOne :
         ((Finset.univ : Finset V).filter
           (fun i => centreExponent (C i) t = 1)) = {a} := by
