@@ -8,6 +8,7 @@ on:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEightSourceHallExpansion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEarliestSourceHallExpansion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarLowerBranchExactCoveredTranslatedFrontier.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarOverweightNecessaryTwoDefectShortfall.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceHallPaymentCriterion.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarCapacityOfEightSourceNonreuseMatching.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourceNonreuseCertificate.lean"
