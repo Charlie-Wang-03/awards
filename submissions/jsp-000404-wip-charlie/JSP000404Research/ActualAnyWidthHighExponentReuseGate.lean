@@ -174,7 +174,8 @@ theorem actual_any_width_reused_opposite_four_centres_or_high_exponent
           hvc hud hv hu hw hz
       have hvL : v ∈ projectedLossVertices C exponent :=
         ((mem_lossCoordinateSlice C exponent choice c v).mp hv).1
-      exact (by omega : False)
+      have hvlow : exponent v ≤ 2 := hlow v hvL
+      omega
     have hVV := hcross va vb a.1 b.1 hva hvb (Or.inl rfl) (Or.inl rfl) hwva hwvb
     have hVU := hcross va ub a.1 b.2.1 hva hub (Or.inl rfl) (Or.inr rfl) hwva hwub
     have hUV := hcross ua vb a.2.1 b.1 hua hvb (Or.inr rfl) (Or.inl rfl) hwua hwvb
