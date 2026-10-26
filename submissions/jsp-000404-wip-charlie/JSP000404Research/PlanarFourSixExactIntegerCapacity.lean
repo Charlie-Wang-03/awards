@@ -79,6 +79,7 @@ theorem planar_four_six_exact_integer_dyadic_capacity
     intro i
     exact planar_exact_integer_many_centres_exponent_le_n_sub_two
       hp hcap (by decide : 2 ≤ (4 : ℕ)) hcard6 htFour hlam i (C i)
+  change (∑ i : V, (2 : ℕ) ^ k i) ≤ 16
   have hmass := ternary_dyadic_sum_exact k hk
   change (∑ i : V, (2 : ℕ) ^ k i) =
       Fintype.card V + S1.card + 3 * S2.card at hmass
