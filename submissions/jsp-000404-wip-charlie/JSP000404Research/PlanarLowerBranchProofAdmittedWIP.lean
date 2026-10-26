@@ -2,6 +2,7 @@ import JSP000404Research.PlanarKnownSmallCentreCapacity
 import JSP000404Research.ThreeFiveExactScaleFullCapacity
 import JSP000404Research.PlanarFourSixExactIntegerCapacity
 import JSP000404Research.PlanarThreeManyIntegerNextPacking
+import JSP000404Research.PlanarThreeIntegerGlobalCapacity
 import JSP000404Research.PlanarFirstBranchNoThree
 import JSP000404Research.PlanarLowerTwoFourUnconditionalCapacity
 import JSP000404Research.PlanarLowerTwoGlobalCapacity
@@ -201,8 +202,7 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       ((Fintype.card (ProjectionOrdered V) ≤ 2 ∨
         (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
         (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)) ∨
-        ((n = 3 ∧ Fintype.card (ProjectionOrdered V) = 5 ∧ delta = 0) ∨
-          (n = 3 ∧ Fintype.card (ProjectionOrdered V) = 6 ∧ delta = 0) ∨
+        ((n = 3 ∧ delta = 0) ∨
           (n = 4 ∧ Fintype.card (ProjectionOrdered V) = 6 ∧ delta = 0)))
   · rcases hknownClosed with hnOne | hnTwo | hsmallOrExact
     · -- n = 1: AngleCap forbids three original points.
@@ -227,32 +227,20 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       · exact planar_lower_branch_known_small_centre_dyadic_capacity
           hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
       · rcases hIntegerCases with
-          ⟨hnThree, hcardFive, hdeltaExact⟩ |
-          ⟨hnThree, hcardSix, hdeltaExact⟩ |
+          ⟨hnThree, hdeltaExact⟩ |
           ⟨hnFour, hcardSix, hdeltaExact⟩
-        · -- Certified original planar n=3 five-centre exact endpoint.
-          have hcapRe : AngleCap (reindexedPoint p) lam :=
-            angleCap_reindexedPoint hp hcap
+        · -- NEW: entire n=3 integer endpoint closed for EVERY number
+          -- of actual original planar centres, by strict-support
+          -- packing #centres ≤6 plus the verified <=4,5,6 branches.
+          -- No global external-hole payment is assumed here.
           have htThree : t = (3 : ℝ) + delta := by
             simpa [hnThree] using ht
           have hbound :
               (∑ i : ProjectionOrdered V,
                 2 ^ centreExponent (cycles i) t) ≤ 8 :=
-            planar_three_five_exact_three_scale_dyadic_capacity
-              (reindexedPoint_injective hp) hcapRe hcardFive
-              hdelta0 hdeltaHalf hdeltaExact htThree hlam cycles
-          simpa [hnThree] using hbound
-        · -- NEW genuinely closed n=3 SIX-centre δ=0 configuration.
-          have hcapRe : AngleCap (reindexedPoint p) lam :=
-            angleCap_reindexedPoint hp hcap
-          have htThree : t = (3 : ℝ) + delta := by
-            simpa [hnThree] using ht
-          have hbound :
-              (∑ i : ProjectionOrdered V,
-                2 ^ centreExponent (cycles i) t) ≤ 8 :=
-            planar_three_six_exact_integer_dyadic_capacity
-              (reindexedPoint_injective hp) hcapRe hcardSix
-              hdelta0 hdeltaHalf hdeltaExact htThree hlam cycles
+            planar_three_integer_all_centre_dyadic_capacity
+              hp hcap hdelta0 hdeltaHalf hdeltaExact
+              htThree hlam cycles
           simpa [hnThree] using hbound
         · -- NEW genuinely closed n=4 SIX-centre δ=0 configuration.
           have hcapRe : AngleCap (reindexedPoint p) lam :=
