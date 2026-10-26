@@ -76,8 +76,7 @@ theorem actual_earliest_record_nonlocal_defect_iff_four_obstructions
       (∃ z : V, z ≠ v ∧ z ≠ u ∧
         q ∈ retainedCompletionWords C z) ∨
       q ∈ translatedLossAllCoordinateWords C exponent choice := by
-    push_neg
-    tauto
+    simp only [not_and_or, not_forall, not_imp, not_not]
   calc
     q ∈ (actualLossEarliestOppositeCandidateWords C exponent choice \
       lossLedgerOutsideTranslatedTrueHoles C exponent choice) ↔
