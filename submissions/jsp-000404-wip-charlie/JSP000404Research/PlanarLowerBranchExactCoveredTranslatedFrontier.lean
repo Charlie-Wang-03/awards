@@ -110,7 +110,7 @@ theorem planar_lower_branch_capacity_of_exact_covered_translated_nonlocal_paymen
   exact planar_lower_branch_capacity_of_actual_retainedEdge_payment
     hp hcap hn hdelta0 hdeltaHalf ht hlam cycles horiginal
 
-#print axioms planar_lower_branch_capacity_of_nonlocal_collision_defect_payment
+#print axioms planar_lower_branch_capacity_of_exact_covered_translated_nonlocal_payment
 
 end ProjectionOrdered
 end JSP000404Research
