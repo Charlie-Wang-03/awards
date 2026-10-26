@@ -1,6 +1,7 @@
 import JSP000404Research.ActualAnyWidthHighExponentReuseGate
 import JSP000404Research.PlanarUniqueTopExponent
 import JSP000404Research.PlanarThreeFiveLossDuplicateBound
+import JSP000404Research.PlanarLowerTwoGlobalCapacity
 import Mathlib.Tactic
 
 /-!
@@ -122,11 +123,14 @@ theorem planar_four_colour_reused_opposite_source_is_unique_top
     simpa only [k, Nat.reduceSub] using hvtop
   have huSharp : centreExponent (cycles u) t = 4 - 1 := by
     simpa only [k, Nat.reduceSub] using hu
+  have hvne : v ≠ u := by
+    intro heq
+    exact hne heq.symm
   exact top_exponent_unique_of_card_ge_three
     (reindexedPoint_injective hp)
     (angleCap_reindexedPoint hp hcap)
     (by decide : 3 ≤ (4 : ℕ)) hcardRe
-    hdelta0 hdeltaHalf ht hlam cycles v u hne.symm hvSharp huSharp
+    hdelta0 hdeltaHalf ht hlam cycles v u hvne hvSharp huSharp
 
 #print axioms planar_four_colour_reused_opposite_source_is_unique_top
 
