@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarThreeTopForcesHighSupportMultiplicity.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarWeightedLowSupportPacking.lean"
       - ".github/workflows/jsp000404-focused-top-high-support-multiplicity.yml"
   workflow_dispatch:
 
