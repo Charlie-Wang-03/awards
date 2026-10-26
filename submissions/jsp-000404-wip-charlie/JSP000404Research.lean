@@ -1724,3 +1724,12 @@ import JSP000404Research.PlanarThreeTruePaymentProfileHardStop
 import JSP000404Research.PlanarWeightedLowSupportPacking
 import JSP000404Research.PlanarThreeTopForcesHighSupportMultiplicity
 import JSP000404Research.PlanarExactTransitionCostPacking
+
+-- Certified source-native n=3 frontier: an exact-nine original AngleCap
+-- test is equivalent to the uniform no-overcrowding conclusion.  The
+-- nine-point geometric exclusion ITSELF remains an explicit open premise.
+import JSP000404Research.PlanarNineCentreGeometryReduction
+
+-- Certified n=3 top/next support-one case: all but at most three
+-- ORIGINAL centres have quotient support three; no true-hole credit asserted.
+import JSP000404Research.PlanarThreeTopNextSupportOnePacking
