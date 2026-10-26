@@ -6,6 +6,7 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeFiveExactExceptionalMassCensus.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ThreeFiveMassTenAllNextRigidity.lean"
       - ".github/workflows/jsp000404-focused-three-five-exceptional-mass.yml"
   workflow_dispatch:
 
@@ -53,7 +54,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check actual n=3 five-centre exceptional dyadic mass census
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ThreeFiveExactExceptionalMassCensus
+        run: lake build JSP000404Research.ThreeFiveExactExceptionalMassCensus JSP000404Research.ThreeFiveMassTenAllNextRigidity
       - name: Scope
         if: always()
         run: echo 'Exact five-centre n=3 overweight totals 9 or 10 if verified; two geometric motifs and global payment still open.'
