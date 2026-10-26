@@ -25,9 +25,12 @@ noncomputable def original_nine_point_order_embedding
     {V : Type*} [LinearOrder V] [Fintype V]
     (hcard : 9 ≤ Fintype.card V) : Fin 9 ↪o V := by
   classical
-  obtain ⟨S, _hsub, hS⟩ :=
+  let hex :
+      ∃ S : Finset V, S ⊆ (Finset.univ : Finset V) ∧ S.card = 9 :=
     (Finset.univ : Finset V).exists_subset_card_eq
       (by simpa using hcard : 9 ≤ (Finset.univ : Finset V).card)
+  let S : Finset V := Classical.choose hex
+  have hS : S.card = 9 := (Classical.choose_spec hex).2
   exact S.orderEmbOfFin hS
 
 /-- Transport of ACTUAL AngleCap geometry to any injectively chosen
