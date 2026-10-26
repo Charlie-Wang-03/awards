@@ -24,6 +24,7 @@ theorem exists_three_way_small_summand
     {I : Type*} [DecidableEq I] (S : Finset I)
     (f : I → ℝ) (d : ℝ)
     (hcard : 3 ≤ S.card)
+    (hd0 : 0 ≤ d)
     (hsum : (∑ i ∈ S, f i) ≤ d) :
     ∃ i ∈ S, 3 * f i ≤ d := by
   classical
@@ -41,13 +42,6 @@ theorem exists_three_way_small_summand
   have hcount : (∑ _i ∈ S, d) = (S.card : ℝ) * d := by simp
   have hscale : (∑ i ∈ S, 3 * f i) = 3 * (∑ i ∈ S, f i) := by
     rw [Finset.mul_sum]
-  have hd0 : 0 ≤ d := by
-    by_contra hd
-    have hh : (S.card : ℝ) ≥ 3 := by exact_mod_cast hcard
-    have hq : (S.card : ℝ) * d ≤ 3 * d := by
-      exact mul_le_mul_of_nonpos_right hh hd.le
-    rw [hcount, hscale] at hsumstrict
-    linarith
   have hcardR : (3 : ℝ) ≤ (S.card : ℝ) := by
     exact_mod_cast hcard
   rw [hcount, hscale] at hsumstrict
@@ -83,7 +77,7 @@ theorem planar_three_seven_has_zero_gap_one_third_slack
     Finset.univ.filter (fun r => centreQuotient (C i) t r = 0)
   have hsmall :=
     exists_three_way_small_summand S
-      (fun r => t * (C i).gaps.get r) delta hzeros hslack
+      (fun r => t * (C i).gaps.get r) delta hzeros hdelta0 hslack
   obtain ⟨r,hr,hbound⟩ := hsmall
   have hq : centreQuotient (C i) t r = 0 :=
     (Finset.mem_filter.mp hr).2
