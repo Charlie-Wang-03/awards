@@ -304,6 +304,20 @@ theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
 
   rw [hdecomp, List.sum_append] at hfullSum
   simp only [List.sum_singleton] at hfullSum
+  have hsPos : 1 ≤ s := by
+    by_contra hsNot
+    have hsZero : s = 0 := by omega
+    have hzeroSupp :
+        positiveSupport (centreQuotient (C j) t) = 0 := by
+      rw [hSupportJ]
+      exact hsZero
+    have hqzero :=
+      positiveSupport_eq_zero_imp
+        (centreQuotient (C j) t) hzeroSupp
+    have hexpZero : centreExponent (C j) t = 0 := by
+      unfold centreExponent floorExcess
+      simp [hqzero]
+    omega
   have hqWrap : qWrap = n - 2 := by
     dsimp [qWrap] at *
     omega
