@@ -59,7 +59,7 @@ jobs:
       - name: Build integrated original research library with exact admitted global gate
         working-directory: submissions/jsp-000404-wip-charlie
         run: |
-          lake build JSP000404Research
+          lake build JSP000404Research JSP000404Research.PlanarLowerBranchProofAdmittedWIP
       - name: Scope
         if: always()
-        run: echo 'Umbrella imports retain precisely one genuine research sorry and do not prove JSP-000404.'
+        run: echo 'Sound research umbrella and separate admitted WIP root compile together; sole global sorry persists.'
