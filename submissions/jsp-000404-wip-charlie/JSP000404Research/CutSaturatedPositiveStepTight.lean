@@ -61,9 +61,10 @@ position. -/
 theorem cutSaturationBadAt_positive_steps_band_tight
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -199,9 +200,10 @@ corresponding old band jump. -/
 theorem cutSaturationBadAt_positive_ordinary_steps_band_tight
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
