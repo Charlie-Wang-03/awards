@@ -98,8 +98,9 @@ theorem cutGapQuotients_decompose
 theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -164,8 +165,9 @@ theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
 theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -202,8 +204,9 @@ theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
 theorem consecutiveCut_changesOnlyOnPositive
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -256,8 +259,9 @@ theorem cutCentre_changesOnlyOnPositive
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -354,8 +358,9 @@ theorem cutCentre_support_two_transitionCount_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
