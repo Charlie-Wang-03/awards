@@ -129,11 +129,12 @@ theorem uncovered_cut_two_bad_old_palettes_differ_only_boundary
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
+    intro u v
     simpa [P, wrapBit, htop] using
-      cutBoundaryWrapBit_separates
+      (cutBoundaryWrapBit_separates
         hp hcap C (by omega : 1 ≤ n)
         htpos hlam ht hdelta0 hdeltaHalf
-        hc0 hcpi huncovered
+        hc0 hcpi huncovered (u := u) (v := v))
 
   let M :=
     uncoveredCutMergedPartition
