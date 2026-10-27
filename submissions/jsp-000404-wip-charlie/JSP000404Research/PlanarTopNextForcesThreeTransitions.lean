@@ -110,7 +110,7 @@ theorem planar_three_top_next_no_two_one_transition_centres
     sendov_scale_pos (by decide : 1 ≤ (3 : ℕ)) hdelta0 ht
   have htone : 1 ≤ t :=
     sendov_scale_one_le (by decide : 1 ≤ (3 : ℕ)) hdelta0 ht
-  let HS := Classical.choose
+  let HS := Classical.choice
     (exists_highExponentTransitionIntervalCertificate
       hp hcap (by decide : 1 ≤ (3 : ℕ))
       hdelta0 hdelta1 ht hlam
