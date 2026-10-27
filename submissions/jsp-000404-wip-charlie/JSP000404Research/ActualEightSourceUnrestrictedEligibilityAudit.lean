@@ -37,7 +37,7 @@ inequalities exactly when the TOTAL source cardinality is bounded by
 the TOTAL credit cardinality. In particular allowing arbitrary
 eligibility makes Hall no more than a counting inequality. -/
 theorem complete_finite_eligibility_hall_iff_card_le
-    {α β : Type*} [Fintype α] [Fintype β] :
+    {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β] :
     (∀ S : Finset α,
       S.card ≤ (S.biUnion
         (fun _ => (Finset.univ : Finset β))).card) ↔
