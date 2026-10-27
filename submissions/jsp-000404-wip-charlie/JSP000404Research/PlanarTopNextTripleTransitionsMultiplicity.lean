@@ -1,6 +1,7 @@
 import JSP000404Research.PlanarTopNextForcesThreeTransitions
 import JSP000404Research.PlanarThreeTopNextSupportOnePacking
 import JSP000404Research.ThreeFiveSupportThreeRigidity
+import JSP000404Research.PlanarThreeCrowdedTopTinyGap
 import Mathlib.Tactic
 
 /-!
@@ -23,6 +24,8 @@ the unrestricted eight-class source payment.
 -/
 
 namespace JSP000404Research
+
+open Classical
 
 /-- The actual sign transition count of the canonical projective ray
 cycle, witnessed using its FIRST REAL ray and remaining ordered rays. -/
