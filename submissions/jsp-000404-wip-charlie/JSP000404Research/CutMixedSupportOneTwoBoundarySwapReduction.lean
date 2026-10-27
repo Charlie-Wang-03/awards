@@ -231,11 +231,20 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
   let cert : ∀ r : Fin 4,
       SupportIntervalCertificate (p := p) (centre r) := by
     intro r
-    fin_cases r
-    · simpa [centre] using STop
-    · simpa [centre] using SA
-    · simpa [centre] using SB
-    · simpa [centre] using SD
+    by_cases hr0 : r = 0
+    · subst r
+      simpa [centre] using STop
+    by_cases hr1 : r = 1
+    · subst r
+      simpa [centre] using SA
+    by_cases hr2 : r = 2
+    · subst r
+      simpa [centre] using SB
+    have hr3 : r = 3 := by
+      have hlt := r.isLt
+      omega
+    subst r
+    simpa [centre] using SD
 
   have hpack :
       (∑ r : Fin 4, (cert r).turnLength) ≤
