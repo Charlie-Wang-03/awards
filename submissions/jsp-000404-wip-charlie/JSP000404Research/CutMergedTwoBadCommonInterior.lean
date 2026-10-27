@@ -126,9 +126,10 @@ theorem interiorCutPalette_card_ge_three_of_card_four
 theorem uncovered_cut_two_bad_common_interior_palette
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
