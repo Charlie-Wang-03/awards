@@ -6,6 +6,9 @@ on:
       - research/jsp-000404-connector-compiler-repair-20261024
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutBoundarySwapWrapBound.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ZeroCarry.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/StableCyclicSupport.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessDeficitTwo.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutCentreSignPath.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutMergedTwoBadCommonInterior.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutMixedSupportBoundarySwapExact.lean"
