@@ -2,6 +2,7 @@
 import JSP000404Research.ExactWitnessCentreBound
 import JSP000404Research.DeficitTwo
 import JSP000404Research.SingleSupportDeficit
+import JSP000404Research.StableCyclicSupport
 import Mathlib.Data.List.OfFn
 import Mathlib.Tactic
 
@@ -123,35 +124,8 @@ theorem exactWitness_deficitTwo_support_two
   · exact h2
 
 
-noncomputable def positiveIndexSet
-    {I : Type*} [Fintype I]
-    (q : I → ℕ) : Finset I := by
-  classical
-  exact Finset.univ.filter fun i => q i ≠ 0
-
-@[simp] theorem mem_positiveIndexSet
-    {I : Type*} [Fintype I]
-    (q : I → ℕ) (i : I) :
-    i ∈ positiveIndexSet q ↔ q i ≠ 0 := by
-  classical
-  simp [positiveIndexSet]
-
-theorem positiveIndexSet_card_eq_positiveSupport
-    {I : Type*} [Fintype I]
-    (q : I → ℕ) :
-    (positiveIndexSet q).card = positiveSupport q := by
-  classical
-  unfold positiveIndexSet positiveSupport
-  have hbool :
-      (∑ i : I, if q i ≠ 0 then 1 else 0) =
-        ((Finset.univ.filter fun i => q i ≠ 0).card) := by
-    simpa using
-      (Finset.sum_boole (R := ℕ)
-        (fun i : I => q i ≠ 0) (Finset.univ : Finset I))
-  rw [← hbool]
-  apply Finset.sum_congr rfl
-  intro i _
-  by_cases hqi : q i = 0 <;> simp [hqi]
+/- The shared positiveIndexSet/membership/cardinality API is imported from
+   StableCyclicSupport, avoiding duplicate declarations in combined imports. -/
 
 /-- A support-two quotient vector containing a unit entry and having total n
 has one unique other positive coordinate of value n-1. -/

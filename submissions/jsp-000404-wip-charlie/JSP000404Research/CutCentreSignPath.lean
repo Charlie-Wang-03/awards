@@ -92,7 +92,7 @@ theorem cutGapQuotients_decompose
         unfold consecutiveCutRayQuotients
         congr 1
         ring
-        all_goals rfl
+        all_goals cases rs <;> rfl
   · unfold cutWrapRayQuotient cutNormalizedRayTheta
     rw [map_getLastD]
     congr 1
