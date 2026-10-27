@@ -2,7 +2,6 @@ import JSP000404Research.CutMixedSupportOneTwoBoundarySwap
 import JSP000404Research.ThirdLayerTransitionPacking
 import JSP000404Research.SupportThreeTransitionDichotomy
 import JSP000404Research.ExposedSupportIntervalGeneral
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
