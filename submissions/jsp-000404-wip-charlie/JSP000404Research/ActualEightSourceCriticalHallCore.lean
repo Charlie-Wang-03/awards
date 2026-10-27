@@ -159,6 +159,73 @@ theorem actual_eight_earliest_hall_or_minimal_shadow_deficit
       minimal_hall_unit_deficit_all_sources_shadowed
         eligible T hUnit hCrit⟩
 
+
+/-- Each genuinely eligible payment credit in an inclusion-minimal
+one-credit Hall-deficient core is offered to at least TWO DISTINCT
+source tokens inside that core. This upgrades equality of shadowed
+neighbourhood unions to source-native credit-reuse witnesses. -/
+theorem minimal_hall_unit_deficit_all_credits_double_claimed
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (eligible : α → Finset β)
+    (T : Finset α)
+    (hUnit : (T.biUnion eligible).card + 1 = T.card)
+    (hCritical : ∀ U : Finset α, U ⊂ T →
+        U.card ≤ (U.biUnion eligible).card) :
+    ∀ c ∈ T.biUnion eligible,
+      ∃ a b : α,
+        a ∈ T ∧ b ∈ T ∧ a ≠ b ∧
+        c ∈ eligible a ∧ c ∈ eligible b := by
+  intro c hc
+  obtain ⟨a, ha, hca⟩ := Finset.mem_biUnion.mp hc
+  have hShadow :=
+    minimal_hall_unit_deficit_all_sources_shadowed
+      eligible T hUnit hCritical a ha
+  have hcErase : c ∈ (T.erase a).biUnion eligible := by
+    rw [hShadow]
+    exact hc
+  obtain ⟨b, hbErase, hcb⟩ := Finset.mem_biUnion.mp hcErase
+  have hb : b ∈ T := (Finset.mem_erase.mp hbErase).2
+  have hab : a ≠ b := (Finset.mem_erase.mp hbErase).1.symm
+  exact ⟨a, b, ha, hb, hab, hca, hcb⟩
+
+/-- The ACTUAL earliest-prior eight-lane debt ledger:
+a failed source-to-real-credit Hall relation exhibits one critical
+one-credit deficit T in which EVERY candidate TRUE-hole or actually
+unreserved-surplus credit is claimed by TWO DISTINCT genuine source
+tokens. Both source memberships are original, not anonymous Fin
+debts; every eligible credit remains one of the two legally usable
+global payment types.
+
+No universal AngleCap exclusion of this necessary double-claim
+motif is asserted. -/
+theorem actual_eight_earliest_failed_hall_has_double_claimed_credit_core
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (B : OrderedEdgeColoring V (n + 1))
+    (k : V → ℕ) (choice : V → Fin n)
+    (eligible :
+      actualEightSourceEarliestDebtTokens B k choice →
+        Finset (actualExternalPaymentCredits B k choice))
+    (hFail :
+      ∃ S : Finset (actualEightSourceEarliestDebtTokens B k choice),
+        (S.biUnion eligible).card < S.card) :
+    ∃ T : Finset (actualEightSourceEarliestDebtTokens B k choice),
+      (T.biUnion eligible).card + 1 = T.card ∧
+      (∀ c ∈ T.biUnion eligible,
+        ∃ a b : actualEightSourceEarliestDebtTokens B k choice,
+          a ∈ T ∧ b ∈ T ∧ a ≠ b ∧
+          c ∈ eligible a ∧ c ∈ eligible b) := by
+  classical
+  obtain ⟨S, hS⟩ := hFail
+  obtain ⟨T, _hTS, hUnit, hCritical⟩ :=
+    finite_hall_failure_contains_minimal_unit_deficit
+      eligible S hS
+  exact ⟨T, hUnit,
+    minimal_hall_unit_deficit_all_credits_double_claimed
+      eligible T hUnit hCritical⟩
+
+#print axioms minimal_hall_unit_deficit_all_credits_double_claimed
+#print axioms actual_eight_earliest_failed_hall_has_double_claimed_credit_core
+
 #print axioms finite_hall_failure_contains_minimal_unit_deficit
 #print axioms minimal_hall_unit_deficit_all_sources_shadowed
 #print axioms actual_eight_earliest_hall_or_minimal_shadow_deficit
