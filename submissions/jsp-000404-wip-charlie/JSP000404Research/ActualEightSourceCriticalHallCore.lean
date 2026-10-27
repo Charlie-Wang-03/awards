@@ -309,6 +309,8 @@ theorem actual_eight_earliest_critical_core_each_source_deletable
     (hCritical :
       ∀ U : Finset (actualEightSourceEarliestDebtTokens B k choice),
         U ⊂ T → U.card ≤ (U.biUnion eligible).card) :
+    letI : DecidableEq (actualEightSourceEarliestDebtTokens B k choice) :=
+      Classical.decEq _
     ∀ a ∈ T,
       ∃ f : {x : actualEightSourceEarliestDebtTokens B k choice //
                 x ∈ T.erase a} →
