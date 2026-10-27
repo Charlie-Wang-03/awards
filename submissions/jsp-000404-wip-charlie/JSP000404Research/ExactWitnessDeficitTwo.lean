@@ -2,7 +2,7 @@
 import JSP000404Research.ExactWitnessCentreBound
 import JSP000404Research.DeficitTwo
 import JSP000404Research.SingleSupportDeficit
-import JSP000404Research.StableCyclicSupport
+import JSP000404Research.ZeroCarry
 import Mathlib.Data.List.OfFn
 import Mathlib.Tactic
 
@@ -124,8 +124,8 @@ theorem exactWitness_deficitTwo_support_two
   · exact h2
 
 
-/- The shared positiveIndexSet/membership/cardinality API is imported from
-   StableCyclicSupport, avoiding duplicate declarations in combined imports. -/
+/- The common finite positiveIndexSet/membership/cardinality API is
+   imported from ZeroCarry and applies to arbitrary finite index types. -/
 
 /-- A support-two quotient vector containing a unit entry and having total n
 has one unique other positive coordinate of value n-1. -/

@@ -27,27 +27,8 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-noncomputable def positiveIndexSet
-    {m : ℕ} (q : Fin m → ℕ) : Finset (Fin m) := by
-  classical
-  exact Finset.univ.filter fun i => q i ≠ 0
-
-@[simp] theorem mem_positiveIndexSet
-    {m : ℕ} (q : Fin m → ℕ) (i : Fin m) :
-    i ∈ positiveIndexSet q ↔ q i ≠ 0 := by
-  classical
-  simp [positiveIndexSet]
-
-theorem positiveIndexSet_card_eq_positiveSupport
-    {m : ℕ} (q : Fin m → ℕ) :
-    (positiveIndexSet q).card = positiveSupport q := by
-  classical
-  unfold positiveIndexSet positiveSupport
-  rw [Finset.card_eq_sum_ones]
-  rw [Finset.sum_filter]
-  apply Finset.sum_congr rfl
-  intro i _
-  by_cases hi : q i = 0 <;> simp [hi]
+/- The finite-support definition and card lemma are provided by ZeroCarry
+   for any finite index type; Fin m is an instance of that generic API. -/
 
 /-- Every positive quotient is followed by a zero quotient in cyclic order. -/
 def CyclicSeparatedPositive
