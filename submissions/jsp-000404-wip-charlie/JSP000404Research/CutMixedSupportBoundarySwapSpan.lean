@@ -37,8 +37,9 @@ zero. -/
 theorem first_floor_eq_zero_of_zero_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -70,8 +71,9 @@ n. -/
 theorem last_floor_eq_n_of_top_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -111,8 +113,9 @@ theorem last_floor_eq_n_of_top_active
 theorem floor_bounds_of_active_band
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -148,8 +151,9 @@ the other centre's floor span to be at least n-3. -/
 theorem support_one_low_boundary_swap_other_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
@@ -220,8 +224,9 @@ theorem support_one_low_boundary_swap_other_span_ge
 theorem support_one_high_boundary_swap_other_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
