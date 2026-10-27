@@ -57,8 +57,8 @@ theorem finite_hall_failure_contains_unit_deficit
           exact Finset.mem_biUnion.mpr
             ⟨i, Finset.mem_insert_of_mem hi, hbi⟩
         have hmono := Finset.card_le_card hsubset
-        have hcard : (insert a S).card = S.card + 1 :=
-          Finset.card_insert_of_not_mem ha
+        have hcard : (insert a S).card = S.card + 1 := by
+          simp [ha]
         refine ⟨insert a S, Finset.Subset.rfl, ?_⟩
         omega
 
