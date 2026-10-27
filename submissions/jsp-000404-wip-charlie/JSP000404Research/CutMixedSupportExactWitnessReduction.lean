@@ -26,9 +26,10 @@ theorem exactWitness_centre_ne_support_two_bad_of_one_two_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -104,9 +105,10 @@ theorem exactWitness_forced_support_three_three_transitions_of_one_two_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
