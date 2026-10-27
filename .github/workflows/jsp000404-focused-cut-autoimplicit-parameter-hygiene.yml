@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/CutBoundarySwapWrapBound.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarThreeSevenAngleSlackBarrier.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/PlanarThreeNineSharpAngleReduction.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ZeroCarry.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/StableCyclicSupport.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ExactWitnessDeficitTwo.lean"
@@ -63,9 +64,9 @@ jobs:
       - name: Restore pinned Mathlib oleans
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
-      - name: Kernel-check nine original cut files without AngleCap autoimplicit shadow binding
+      - name: Kernel-check cut and original planar angle-frontier lemmas
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.PlanarThreeSevenAngleSlackBarrier JSP000404Research.CutBoundarySwapWrapBound JSP000404Research.CutCentreSignPath JSP000404Research.CutMergedTwoBadCommonInterior JSP000404Research.CutMixedSupportBoundarySwapExact JSP000404Research.CutMixedSupportBoundarySwapSpan JSP000404Research.CutMixedSupportExactWitnessReduction JSP000404Research.CutMixedSupportOneTwoBoundarySwap JSP000404Research.CutMixedSupportOneTwoBoundarySwapReduction JSP000404Research.CutSaturatedPositiveStepTight
+        run: lake build JSP000404Research.PlanarThreeNineSharpAngleReduction JSP000404Research.PlanarThreeSevenAngleSlackBarrier JSP000404Research.CutBoundarySwapWrapBound JSP000404Research.CutCentreSignPath JSP000404Research.CutMergedTwoBadCommonInterior JSP000404Research.CutMixedSupportBoundarySwapExact JSP000404Research.CutMixedSupportBoundarySwapSpan JSP000404Research.CutMixedSupportExactWitnessReduction JSP000404Research.CutMixedSupportOneTwoBoundarySwap JSP000404Research.CutMixedSupportOneTwoBoundarySwapReduction JSP000404Research.CutSaturatedPositiveStepTight
       - name: Scope
         if: always()
-        run: echo 'Compiling four legacy cut modules is a structural proof repair and does not complete JSP-000404.'
+        run: echo 'Compiling original Cut and conditional angle-frontier modules does not discharge the global JSP-000404 WIP sorry.'
