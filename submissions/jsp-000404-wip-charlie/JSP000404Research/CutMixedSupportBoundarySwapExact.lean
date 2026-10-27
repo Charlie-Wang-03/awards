@@ -25,8 +25,9 @@ open BinaryEdgePartition
 theorem active_of_occupiedNatBand_value
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -63,8 +64,9 @@ not 0.  The partner span is exactly n-1. -/
 theorem support_one_low_boundary_swap_other_span_eq
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
@@ -168,8 +170,9 @@ not n.  The partner span is exactly n-1. -/
 theorem support_one_high_boundary_swap_other_span_eq
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
