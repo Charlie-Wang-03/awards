@@ -62,9 +62,13 @@ theorem actual_one_transition_has_positive_certificate
       (liftedCentreSignPath hp i first rest)
       (quotientList t C.gaps)
       hchanges htrans
-  exact exists_highExponentTransitionIntervalCertificate_of_decomposition
+  obtain ⟨H, hHqe⟩ :=
+    exists_highExponentTransitionIntervalCertificate_of_decomposition
       hp htpos i C first rest pre post qe
       hrays hqe hq hsign
+  refine ⟨H, ?_⟩
+  rw [hHqe]
+  exact hqe
 
 /-- Four distinct ORIGINAL centres cannot consist of a top,
 a next support-one, and two other actual one-transition centres
