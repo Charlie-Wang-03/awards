@@ -184,6 +184,75 @@ theorem actual_eighth_exterior_candidate_forces_two_biactive_centres
   change 2 ≤ T.card
   omega
 
+/-- Concrete closed subcase of the ORIGINAL eighth-source local
+eligibility problem: if at most one actual projected-loss centre retains
+two distinct colours, then NO original opposite candidate is an exterior
+true Boolean hole. This is not a claim that other source debts vanish. -/
+theorem actual_eighth_no_local_exterior_of_biactive_card_le_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n,
+          c ≠ d ∧
+          c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 1) :
+    actualLossEarliestOppositeCandidateWords C exponent choice ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice = ∅ := by
+  classical
+  ext q
+  constructor
+  · intro hq
+    have htwo :=
+      actual_eighth_exterior_candidate_forces_two_biactive_centres
+        C exponent choice hchoice q hq
+    omega
+  · intro hq
+    exact (Finset.not_mem_empty q hq).elim
+
+/-- In the same count-controlled subcase, ALL genuine original eighth
+opposite candidates lie in the actual nonlocal-ineligible deficit
+O \\ H; NONE can be silently booked as local exterior payment. -/
+theorem actual_eighth_all_nonlocal_of_biactive_card_le_one
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n,
+          c ≠ d ∧
+          c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 1) :
+    (actualLossEarliestOppositeCandidateWords C exponent choice \\
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice) =
+      actualLossEarliestOppositeCandidateWords C exponent choice := by
+  classical
+  have hEmpty :=
+    actual_eighth_no_local_exterior_of_biactive_card_le_one
+      C exponent choice hchoice hsmall
+  ext q
+  constructor
+  · intro h
+    exact (Finset.mem_sdiff.mp h).1
+  · intro hq
+    have hnot : q ∉ lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+      intro hh
+      have hboth : q ∈
+          actualLossEarliestOppositeCandidateWords C exponent choice ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice :=
+        Finset.mem_inter.mpr ⟨hq, hh⟩
+      rw [hEmpty] at hboth
+      exact Finset.not_mem_empty q hboth
+    exact Finset.mem_sdiff.mpr ⟨hq, hnot⟩
+
+#print axioms actual_eighth_no_local_exterior_of_biactive_card_le_one
+#print axioms actual_eighth_all_nonlocal_of_biactive_card_le_one
+
 #print axioms actual_eighth_exterior_candidate_has_biactive_rectangle
 #print axioms actual_eighth_exterior_candidate_forces_two_biactive_centres
 
