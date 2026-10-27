@@ -258,7 +258,7 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
           2 * lam + lam
         ≤
       ∑ r : Fin 4, (cert r).turnLength := by
-    simpa [cert, centre, Fin.sum_univ_succ] using
+    simpa [cert, centre, Fin.sum_univ_succ, add_assoc] using
       add_le_add
         (add_le_add
           (add_le_add hturnTop hturnA)

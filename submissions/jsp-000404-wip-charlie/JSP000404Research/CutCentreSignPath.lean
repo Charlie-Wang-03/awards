@@ -92,6 +92,7 @@ theorem cutGapQuotients_decompose
         unfold consecutiveCutRayQuotients
         congr 1
         ring
+        all_goals rfl
   · unfold cutWrapRayQuotient cutNormalizedRayTheta
     rw [map_getLastD]
     congr 1
@@ -200,7 +201,7 @@ theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
       1 ≤ Nat.floor
         (t * ((cutRayTheta hp c i first + Real.pi -
           cutRayTheta hp c i last) / Real.pi)) := by
-    exact Nat.le_floor hone
+    exact Nat.le_floor (by exact_mod_cast hone)
   omega
 
 theorem consecutiveCut_changesOnlyOnPositive
@@ -252,7 +253,7 @@ theorem consecutiveCut_changesOnlyOnPositive
             1 ≤ Nat.floor
               (t * ((cutRayTheta hp c i r -
                 cutRayTheta hp c i prev) / Real.pi)) := by
-          exact Nat.le_floor hone
+          exact Nat.le_floor (by exact_mod_cast hone)
         omega
       · exact ih r hnod.2 hpair.2
 
@@ -323,7 +324,7 @@ theorem cutCentre_changesOnlyOnPositive
       rw [htheta]
       field_simp [hpi]
     rw [harg]
-    have hfloor : 1 ≤ Nat.floor t := Nat.le_floor htone
+    have hfloor : 1 ≤ Nat.floor t := Nat.le_floor (by exact_mod_cast htone)
     omega
   · let last := rest.getLastD first
     have hlastMem : last ∈ rest := by
@@ -331,11 +332,11 @@ theorem cutCentre_changesOnlyOnPositive
       cases rest with
       | nil => contradiction
       | cons r rs =>
-          exact (List.getLastD_mem_cons : (r :: rs).getLastD first ∈ r :: rs)
+          simpa only [List.getLastD_cons] using
+            (List.getLastD_mem_cons : rs.getLastD r ∈ r :: rs)
     have hfl : first ≠ last := by
       intro h
-      subst last
-      exact (List.nodup_cons.mp hnod).1 hlastMem
+      exact (List.nodup_cons.mp hnod).1 (by simpa [h] using hlastMem)
     have horder :
         cutRayTheta hp c i first ≤
           cutRayTheta hp c i last :=

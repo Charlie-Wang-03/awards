@@ -181,6 +181,10 @@ theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
     exact ordinary_band_jump_sum_eq_floor_span a xs hsorted
   have hspan0 := hspan R a xs hvalues
 
+  have hs4 : s ≤ 4 := by
+    have hcount := positiveCount_eq_add_mismatch_of_forall₂_le hdom
+    rw [hqPos, hbPos, hmismatch] at hcount
+    omega
   have hqOrdLower :
       n + s - 7 ≤ qOrd.sum := by
     rw [hbSpan] at hbandSum
