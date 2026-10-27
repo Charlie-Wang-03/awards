@@ -230,5 +230,97 @@ theorem actual_eight_earliest_failed_hall_has_double_claimed_credit_core
 #print axioms minimal_hall_unit_deficit_all_sources_shadowed
 #print axioms actual_eight_earliest_hall_or_minimal_shadow_deficit
 
+
+/-- Hall-critical one-credit cores admit a LEGAL injective matching
+after deleting ANY chosen source token.  The matching is constructed
+over the actual dependent subtype of remaining sources, so it neither
+requires fictional extra source slots nor pays the deleted token.
+
+This is strictly stronger than neighbourhood shadowing: the other
+sources can in fact be assigned DISTINCT legal credits. -/
+theorem minimal_hall_unit_deficit_erase_has_injective_payment
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (eligible : α → Finset β)
+    (T : Finset α)
+    (hUnit : (T.biUnion eligible).card + 1 = T.card)
+    (hCritical : ∀ U : Finset α, U ⊂ T →
+      U.card ≤ (U.biUnion eligible).card) :
+    ∀ a ∈ T,
+      ∃ f : {x : α // x ∈ T.erase a} → β,
+        Function.Injective f ∧
+        ∀ x, f x ∈ eligible x.1 := by
+  classical
+  intro a ha
+  let E : {x : α // x ∈ T.erase a} → Finset β :=
+    fun x => eligible x.1
+  have hHall :
+      ∀ S : Finset {x : α // x ∈ T.erase a},
+        S.card ≤ (S.biUnion E).card := by
+    intro S
+    let emb : {x : α // x ∈ T.erase a} ↪ α :=
+      ⟨Subtype.val, by
+        intro x y h
+        exact Subtype.ext h⟩
+    let U : Finset α := S.map emb
+    have hUdel : U ⊆ T.erase a := by
+      intro x hx
+      obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hx
+      exact v.property
+    have hUcrit : U ⊂ T :=
+      ssubset_of_subset_of_ssubset hUdel (Finset.erase_ssubset ha)
+    have hBase := hCritical U hUcrit
+    have hCard : U.card = S.card := by
+      simp [U]
+    have hNeigh : U.biUnion eligible = S.biUnion E := by
+      ext b
+      constructor
+      · intro hb
+        obtain ⟨x, hx, hbx⟩ := Finset.mem_biUnion.mp hb
+        obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hx
+        exact Finset.mem_biUnion.mpr ⟨v, hv, hbx⟩
+      · intro hb
+        obtain ⟨v, hv, hbv⟩ := Finset.mem_biUnion.mp hb
+        exact Finset.mem_biUnion.mpr
+          ⟨emb v, Finset.mem_map.mpr ⟨v, hv, rfl⟩, hbv⟩
+    calc
+      S.card = U.card := hCard.symm
+      _ ≤ (U.biUnion eligible).card := hBase
+      _ = (S.biUnion E).card := congrArg Finset.card hNeigh
+  obtain ⟨f, hinj, hlegal⟩ :=
+    (Finset.all_card_le_biUnion_card_iff_exists_injective E).mp hHall
+  exact ⟨f, hinj, hlegal⟩
+
+/-- Source-native ACTUAL eight-class version: if the selected true-hole
+and unreserved-surplus eligibility relation has an inclusion-minimal
+one-credit Hall deficit, then removing ANY genuine original debt
+token leaves a fully NONREUSING legal payment for all other tokens.
+
+It does NOT pay the deleted source, establish universal AngleCap
+expansion, or remove the genuine global WIP sorry. -/
+theorem actual_eight_earliest_critical_core_each_source_deletable
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (B : OrderedEdgeColoring V (n + 1))
+    (k : V → ℕ) (choice : V → Fin n)
+    (eligible :
+      actualEightSourceEarliestDebtTokens B k choice →
+        Finset (actualExternalPaymentCredits B k choice))
+    (T : Finset (actualEightSourceEarliestDebtTokens B k choice))
+    (hUnit : (T.biUnion eligible).card + 1 = T.card)
+    (hCritical :
+      ∀ U : Finset (actualEightSourceEarliestDebtTokens B k choice),
+        U ⊂ T → U.card ≤ (U.biUnion eligible).card) :
+    ∀ a ∈ T,
+      ∃ f : {x : actualEightSourceEarliestDebtTokens B k choice //
+                x ∈ T.erase a} →
+          actualExternalPaymentCredits B k choice,
+        Function.Injective f ∧
+        ∀ x, f x ∈ eligible x.1 := by
+  classical
+  exact minimal_hall_unit_deficit_erase_has_injective_payment
+    eligible T hUnit hCritical
+
+#print axioms minimal_hall_unit_deficit_erase_has_injective_payment
+#print axioms actual_eight_earliest_critical_core_each_source_deletable
+
 end OrderedEdgeColoring
 end JSP000404Research
