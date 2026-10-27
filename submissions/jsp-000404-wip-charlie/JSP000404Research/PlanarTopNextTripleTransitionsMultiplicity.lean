@@ -79,13 +79,12 @@ theorem planar_three_top_next_other_one_transition_card_le_one
 least THREE distinct original support-three centres, each with
 exactly three genuine canonical sign transitions. No Boolean-hole
 existence, source matching or extra geometric hypothesis is assumed. -/
-theorem planar_three_seven_top_next_forces_three_triple_transition_centres
+theorem planar_three_top_next_triple_transitions_card_add_four_ge_total
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
     {lam t delta : ℝ}
     (hcap : AngleCap p lam)
-    (hseven : 7 ≤ Fintype.card V)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
     (ht : t = (3 : ℝ) + delta)
@@ -95,10 +94,10 @@ theorem planar_three_seven_top_next_forces_three_triple_transition_centres
     (hs : centreExponent (C s) t = 2)
     (ha : centreExponent (C a) t = 1)
     (hsupA : positiveSupport (centreQuotient (C a) t) = 1) :
-    3 ≤ ((Finset.univ : Finset V).filter
+    Fintype.card V ≤ ((Finset.univ : Finset V).filter
       (fun i =>
         positiveSupport (centreQuotient (C i) t) = 3 ∧
-        HasActualSignTransitions hp (C i) 3)).card := by
+        HasActualSignTransitions hp (C i) 3)).card + 4 := by
   classical
   let H : Finset V := Finset.univ.filter
     (fun i => 3 ≤ positiveSupport (centreQuotient (C i) t))
@@ -108,10 +107,10 @@ theorem planar_three_seven_top_next_forces_three_triple_transition_centres
   let T : Finset V := Finset.univ.filter
     (fun i => positiveSupport (centreQuotient (C i) t) = 3 ∧
       HasActualSignTransitions hp (C i) 3)
-  have hH : 4 ≤ H.card := by
+  have hH : Fintype.card V ≤ H.card + 3 := by
     simpa only [H] using
-      (planar_three_seven_top_next_support_one_forces_four_high
-        hp hcap hseven hdelta0 hdeltaHalf ht hlam
+      (planar_three_top_next_support_one_forces_high_support_plus_three
+        hp hcap hdelta0 hdeltaHalf ht hlam
         C s a hs ha hsupA)
   have hE : E.card ≤ 1 := by
     simpa only [E] using
@@ -157,10 +156,40 @@ theorem planar_three_seven_top_next_forces_three_triple_transition_centres
     calc
       H.card ≤ (E ∪ T).card := Finset.card_le_card hcovered
       _ ≤ E.card + T.card := Finset.card_union_le E T
-  change 3 ≤ T.card
+  change Fintype.card V ≤ T.card + 4
   omega
 
+
+/-- The original seven-centre corollary from the quantitative
+all-cardinality trichotomy.  Four or more genuinely three-transition
+original centres are NOT asserted to be disjoint Boolean hole credits. -/
+theorem planar_three_seven_top_next_forces_three_triple_transition_centres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane}
+    (hp : Function.Injective p)
+    {lam t delta : ℝ}
+    (hcap : AngleCap p lam)
+    (hseven : 7 ≤ Fintype.card V)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (ht : t = (3 : ℝ) + delta)
+    (hlam : lam = Real.pi / t)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    {s a : V} (hsa : s ≠ a)
+    (hs : centreExponent (C s) t = 2)
+    (ha : centreExponent (C a) t = 1)
+    (hsupA : positiveSupport (centreQuotient (C a) t) = 1) :
+    3 ≤ ((Finset.univ : Finset V).filter
+      (fun i =>
+        positiveSupport (centreQuotient (C i) t) = 3 ∧
+        HasActualSignTransitions hp (C i) 3)).card := by
+  have h := planar_three_top_next_triple_transitions_card_add_four_ge_total
+    hp hcap hdelta0 hdeltaHalf ht hlam C hsa hs ha hsupA
+  omega
+
+
 #print axioms planar_three_top_next_other_one_transition_card_le_one
+#print axioms planar_three_top_next_triple_transitions_card_add_four_ge_total
 #print axioms planar_three_seven_top_next_forces_three_triple_transition_centres
 
 end JSP000404Research
