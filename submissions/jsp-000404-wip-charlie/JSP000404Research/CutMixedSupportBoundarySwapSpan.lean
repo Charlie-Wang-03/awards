@@ -102,10 +102,12 @@ theorem last_floor_eq_n_of_top_active
   have hlastMem :
       xs.getLastD a ∈ R.normalizedValues t := by
     rw [hvalues]
-    exact List.getLastD_mem_cons a xs
-  have hlastTop :=
-    floor_lt_n_add_one_of_normalizedValue_mem
-      R ht hc0 hcpi htop hlastMem
+    exact (List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)
+  have hlastBounds :=
+    R.normalizedValues_mem_bounds ht hc0 hcpi hlastMem
+  have hlastTop : Nat.floor (xs.getLastD a) < n + 1 := by
+    exact (Nat.floor_lt hlastBounds.1).2
+      (hlastBounds.2.trans htop)
   have hxn : Nat.floor x = n := by simpa using hxfloor
   rw [hxn] at hle
   omega

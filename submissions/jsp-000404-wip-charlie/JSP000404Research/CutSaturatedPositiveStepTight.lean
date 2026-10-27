@@ -183,7 +183,7 @@ theorem cutSaturationBadAt_positive_steps_band_tight
         omega
       simpa [occupiedNatBands] using hoccValues
     dsimp [bs]
-    simp only [List.map_cons]
+    simp only [List.map_cons] at hocc4 ⊢
     rw [h, hocc4]
     omega
 

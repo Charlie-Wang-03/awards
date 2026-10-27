@@ -82,7 +82,7 @@ theorem no_fourth_support_le_two_of_support_one_two_span_n_sub_one
       hta htb htd hab had hbd
       (C top) (C a) (C b) (C d)
       hTop hA hsupA
-      (by rw [hsupB]; omega) hsupD
+      (by omega) hsupD
   have hHB2 :=
     cut_span_n_sub_one_support_two_any_transition_qe_eq_two
       hp hcap C hn5 hdelta0 hdeltaHalf ht hlam
@@ -151,11 +151,11 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
   obtain ⟨HA, _hHApos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam
-      a (C a) (by rw [hsupA]; omega)
+      a (C a) (by omega)
   obtain ⟨HB, _hHBpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam
-      b (C b) (by rw [hsupB]; omega)
+      b (C b) (by omega)
   obtain ⟨SD, hturnD⟩ :=
     exists_supportIntervalCertificate_of_strictlyExposed
       hp hcap htpos htone hlam
@@ -229,8 +229,13 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
       try { exact False.elim (hbd huv.symm) }
 
   let cert : ∀ r : Fin 4,
-      SupportIntervalCertificate (p := p) (centre r) :=
-    ![STop,SA,SB,SD]
+      SupportIntervalCertificate (p := p) (centre r) := by
+    intro r
+    fin_cases r
+    · simpa [centre] using STop
+    · simpa [centre] using SA
+    · simpa [centre] using SB
+    · simpa [centre] using SD
 
   have hpack :
       (∑ r : Fin 4, (cert r).turnLength) ≤
@@ -253,11 +258,15 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
 
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    rw [Nat.cast_sub (by omega : 2 ≤ n)]
+    norm_num
   have hpi : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
-  rw [hncast, hpi, ht] at hpack hlower
+  rw [hncast] at hlower
+  rw [hpi, ht] at hpack
+  have hdeltaT : (0 : ℝ) < 1 - 2 * delta := by linarith
+  have hprod := mul_pos hlampos hdeltaT
   nlinarith
 
 /-- A remaining exact n-3 minimum is forced into the support-three,
@@ -321,13 +330,13 @@ theorem fourth_minimum_support_three_three_transitions_of_support_one_two_span
         hp hcap C hn5 hdelta0 hdeltaHalf ht hlam hc0 hcpi
         hta htb htd hab had hbd hTop hA hsupA hB hsupB
         hBadB R hvalues hspan
-        (by rw [h1.1]; omega)
+        (by omega)
     · exfalso
       exact no_fourth_support_le_two_of_support_one_two_span_n_sub_one
         hp hcap C hn5 hdelta0 hdeltaHalf ht hlam hc0 hcpi
         hta htb htd hab had hbd hTop hA hsupA hB hsupB
         hBadB R hvalues hspan
-        (by rw [h2.1]; omega)
+        (by omega)
     · exact h3.1
   have hnotExposed :
       ¬ StrictlyExposedAt p d := by
