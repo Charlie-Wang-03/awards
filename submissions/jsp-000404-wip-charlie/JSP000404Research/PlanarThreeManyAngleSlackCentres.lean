@@ -73,9 +73,7 @@ theorem original_many_wide_angle_apices
     exact hbnot hwideB
   have hCover : G ∪ B = (Finset.univ : Finset V) := by
     ext i
-    simp only [Finset.mem_union, Finset.mem_filter,
-      Finset.mem_univ, true_and]
-    exact (em (OriginalWideAngleApex p i)).symm
+    simp [G, B]
   have hsum : Fintype.card V ≤ G.card + B.card := by
     calc
       Fintype.card V = (G ∪ B).card := by simp [hCover]
