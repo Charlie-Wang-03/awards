@@ -33,6 +33,21 @@ def OriginalWideAngleApex
     Real.pi - Real.pi / 3 <
       EuclideanGeometry.angle (p a) (p i) (p c)
 
+/-- Definitional finset packaging avoids making the classical
+decidability of a real-angle existence test into an extra premise
+of the geometric cardinality theorem. -/
+noncomputable def originalWideAngleApexFinset
+    {V : Type*} [Fintype V] (p : V → Plane) : Finset V := by
+  classical
+  exact Finset.univ.filter (OriginalWideAngleApex p)
+
+@[simp] theorem mem_originalWideAngleApexFinset
+    {V : Type*} [Fintype V] (p : V → Plane) (i : V) :
+    i ∈ originalWideAngleApexFinset p ↔ OriginalWideAngleApex p i := by
+  classical
+  simp [originalWideAngleApexFinset]
+
+
 /-- ALL finite injective original planar point sets have at least
 N-6 distinct original >120-degree angle apex vertices. -/
 theorem original_many_wide_angle_apices
@@ -40,11 +55,9 @@ theorem original_many_wide_angle_apices
     (p : V → Plane)
     (hp : Function.Injective p) :
     Fintype.card V ≤
-      ((Finset.univ : Finset V).filter
-        (OriginalWideAngleApex p)).card + 6 := by
+      (originalWideAngleApexFinset p).card + 6 := by
   classical
-  let G : Finset V :=
-    (Finset.univ : Finset V).filter (OriginalWideAngleApex p)
+  let G : Finset V := originalWideAngleApexFinset p
   let B : Finset V :=
     (Finset.univ : Finset V).filter (fun i => ¬ OriginalWideAngleApex p i)
   have hB : B.card ≤ 6 := by
@@ -73,7 +86,9 @@ theorem original_many_wide_angle_apices
     exact hbnot hwideB
   have hCover : G ∪ B = (Finset.univ : Finset V) := by
     ext i
-    simp [G, B]
+    by_cases hi : OriginalWideAngleApex p i
+    · simp [G, B, hi]
+    · simp [G, B, hi]
   have hsum : Fintype.card V ≤ G.card + B.card := by
     calc
       Fintype.card V = (G ∪ B).card := by simp [hCover]
@@ -130,8 +145,7 @@ theorem planar_three_many_paid_wide_angle_centres
               (EuclideanGeometry.angle (p a) (p i) (p c) -
                 (Real.pi - Real.pi / 3)) ≤ Real.pi * delta)).card + 6 := by
   classical
-  let G : Finset V :=
-    (Finset.univ : Finset V).filter (OriginalWideAngleApex p)
+  let G : Finset V := originalWideAngleApexFinset p
   let P : Finset V :=
     (Finset.univ : Finset V).filter
       (fun i : V =>
@@ -145,13 +159,13 @@ theorem planar_three_many_paid_wide_angle_centres
   have hsub : G ⊆ P := by
     intro i hi
     have hwi : OriginalWideAngleApex p i :=
-      (Finset.mem_filter.mp hi).2
+      (mem_originalWideAngleApexFinset p i).1 hi
     exact Finset.mem_filter.mpr
       ⟨Finset.mem_univ i,
         original_wide_angle_apex_has_paid_strip_witness
           hcap hdelta0 ht hlam hwi⟩
-  have hg : Fintype.card V ≤ G.card + 6 := by
-    simpa only [G] using original_many_wide_angle_apices p hp
+  have hg : Fintype.card V ≤ G.card + 6 :=
+    original_many_wide_angle_apices p hp
   have hc : G.card ≤ P.card := Finset.card_le_card hsub
   change Fintype.card V ≤ P.card + 6
   omega
