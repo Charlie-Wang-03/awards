@@ -114,6 +114,18 @@ theorem planar_three_thirteen_centres_joint_exact_angle_narrow_gap
   exact ⟨i, ⟨a, c, hai, hac, hic, hwide, hexact⟩, hgap⟩
 
 
+/-- The original, source-native intersection of wide angle apexes and
+quotient-support-three centres. Real-angle existence is classically
+decidable and the resulting finite set is intentionally noncomputable. -/
+noncomputable def originalThreeWideHighSupportCentres
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} {hp : Function.Injective p}
+    (t : ℝ) (C : ∀ i : V, CentreProjectiveCycle hp i) : Finset V := by
+  classical
+  exact (Finset.univ : Finset V).filter
+    (fun i => OriginalWideAngleApex p i ∧
+      3 ≤ positiveSupport (centreQuotient (C i) t))
+
 /-- Global ALL-CARDINALITY original-vertex count at scale 3+delta:
 at least N-12 vertices are BOTH strict >120-degree original angle
 apices AND original centres with quotient positive support >=3.
@@ -131,9 +143,7 @@ theorem planar_three_wide_angle_and_high_support_card_add_twelve
     (hlam : lam = Real.pi / t)
     (C : ∀ i : V, CentreProjectiveCycle hp i) :
     Fintype.card V ≤
-      ((Finset.univ : Finset V).filter
-        (fun i => OriginalWideAngleApex p i ∧
-          3 ≤ positiveSupport (centreQuotient (C i) t))).card + 12 := by
+      (originalThreeWideHighSupportCentres t C).card + 12 := by
   classical
   let G : Finset V := originalWideAngleApexFinset p
   let H : Finset V := (Finset.univ : Finset V).filter
@@ -148,12 +158,9 @@ theorem planar_three_wide_angle_and_high_support_card_add_twelve
   have hU : (G ∪ H).card ≤ Fintype.card V := by
     simpa using (Finset.card_le_card (Finset.subset_univ (G ∪ H)))
   have hCount := Finset.card_union_add_card_inter G H
-  have hEq : G ∩ H =
-      (Finset.univ : Finset V).filter
-        (fun i => OriginalWideAngleApex p i ∧
-          3 ≤ positiveSupport (centreQuotient (C i) t)) := by
+  have hEq : G ∩ H = originalThreeWideHighSupportCentres t C := by
     ext i
-    simp [G, H]
+    simp [G, H, originalThreeWideHighSupportCentres]
   rw [hEq] at hCount
   omega
 
@@ -196,9 +203,7 @@ theorem planar_three_thirteen_centres_joint_zero_exponent_rigidity
         ((Fintype.card V - 4 : ℕ) : ℝ) *
           (t * (C i).gaps.get r) ≤ delta) := by
   classical
-  let S : Finset V := (Finset.univ : Finset V).filter
-    (fun i => OriginalWideAngleApex p i ∧
-      3 ≤ positiveSupport (centreQuotient (C i) t))
+  let S : Finset V := originalThreeWideHighSupportCentres t C
   have hcount : Fintype.card V ≤ S.card + 12 := by
     exact planar_three_wide_angle_and_high_support_card_add_twelve
       hp hcap hdelta0 hdeltaHalf ht hlam C
@@ -206,7 +211,7 @@ theorem planar_three_thirteen_centres_joint_zero_exponent_rigidity
   obtain ⟨i, hi⟩ := Finset.card_pos.mp hpos
   have hpair : OriginalWideAngleApex p i ∧
       3 ≤ positiveSupport (centreQuotient (C i) t) := by
-    exact (Finset.mem_filter.mp hi).2
+    simpa [S, originalThreeWideHighSupportCentres] using hi
   obtain ⟨hk, hsupport, _hmass⟩ :=
     three_scale_high_support_exact_rigidity
       (C i) hdelta0 hdeltaHalf ht hpair.2
