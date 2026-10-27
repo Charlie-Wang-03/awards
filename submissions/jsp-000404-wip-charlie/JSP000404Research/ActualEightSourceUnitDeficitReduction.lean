@@ -1,4 +1,5 @@
 import JSP000404Research.PlanarActualEarliestEightSourceHallFrontier
+import JSP000404Research.ActualEighthNoBicolourHallHardStop
 import Mathlib.Tactic
 
 /-!
@@ -125,6 +126,55 @@ theorem actual_eight_earliest_no_unit_deficit_implies_payment
       B k choice eligible).mpr hNoUnit
   exact actual_eight_source_earliest_hall_implies_global_payment
     B k choice eligible hHall
+
+/-- Concrete eighth-lane source-native LOCAL obstruction: if no
+two distinct original loss centres both have two retained active
+colours, and an actual opposite collision candidate exists, then
+the *true exterior-hole square-local eligibility scheme* has a
+real earliest-prior collision-record family with exactly ONE
+missing local credit. This makes the earlier failed whole-family
+Hall test quantitatively sharp at the level of an actual subset.
+
+This does NOT refute global JSP-000404: genuine NONLOCAL exterior
+holes or already unreserved surplus may still pay that source. -/
+theorem actual_eighth_no_bicolour_forces_local_unit_deficit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hnoPair : ∀ v u : V,
+      v ∈ projectedLossVertices C exponent →
+      u ∈ projectedLossVertices C exponent →
+      v ≠ u →
+      (∀ c d : Fin n, c ∈ retainedActive C v →
+        d ∈ retainedActive C v → c = d) ∨
+      (∀ c d : Fin n, c ∈ retainedActive C u →
+        d ∈ retainedActive C u → c = d))
+    (hnonempty :
+      (actualLossEarliestOppositeCandidateWords C exponent choice).Nonempty) :
+    ∃ T ⊆ actualEarliestLossCollisionRecords C exponent choice,
+      (T.biUnion (fun a =>
+        lossCollisionSquareWords n a ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card +
+        1 = T.card := by
+  classical
+  have hnot :=
+    actual_eighth_square_hall_impossible_of_no_bicolour_pair
+      C exponent choice hchoice hnoPair hnonempty
+  have hdef :
+      ((actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun a =>
+          lossCollisionSquareWords n a ∩
+            lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card <
+        (actualEarliestLossCollisionRecords C exponent choice).card := by
+    omega
+  exact finite_hall_failure_contains_unit_deficit
+    (fun a => lossCollisionSquareWords n a ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice)
+    (actualEarliestLossCollisionRecords C exponent choice) hdef
+
+#print axioms actual_eighth_no_bicolour_forces_local_unit_deficit
 
 #print axioms finite_hall_failure_contains_unit_deficit
 #print axioms finite_hall_iff_no_unit_deficit
