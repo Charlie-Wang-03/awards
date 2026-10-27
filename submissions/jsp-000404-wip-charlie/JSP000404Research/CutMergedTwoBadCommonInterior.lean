@@ -58,8 +58,7 @@ theorem mem_interiorCutPalette_iff
       simp at hav
       omega
     · intro ha
-      have hav := congrArg Fin.val ha
-      simp at hav
+      have hav : a.val = n := by simpa using congrArg Fin.val ha
       omega
 
 theorem interiorCutPalette_eq_of_interior_membership
@@ -106,7 +105,7 @@ theorem interiorCutPalette_card_ge_three_of_card_four
         Fin.last n ∉ S.erase (0 : Fin (n + 1)) := by
       simp [hnS]
     unfold interiorCutPalette
-    rw [Finset.erase_eq_of_not_mem hnErase,
+    rw [Finset.erase_eq_of_notMem hnErase,
         Finset.card_erase_of_mem h0,
         hcard]
     omega
@@ -114,12 +113,12 @@ theorem interiorCutPalette_card_ge_three_of_card_four
     · have h0Erase :
           (0 : Fin (n + 1)) ∉ S := h0
       unfold interiorCutPalette
-      rw [Finset.erase_eq_of_not_mem h0Erase]
+      rw [Finset.erase_eq_of_notMem h0Erase]
       rw [Finset.card_erase_of_mem hnS, hcard]
       omega
     · unfold interiorCutPalette
-      rw [Finset.erase_eq_of_not_mem h0,
-          Finset.erase_eq_of_not_mem hnS,
+      rw [Finset.erase_eq_of_notMem h0,
+          Finset.erase_eq_of_notMem hnS,
           hcard]
       omega
 

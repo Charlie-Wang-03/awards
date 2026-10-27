@@ -45,7 +45,7 @@ theorem forall₂_positive_eq_of_le_excess_eq
     List.Forall₂
       (fun q b => q ≠ 0 → q = b)
       qs bs := by
-  induction hle generalizing hex with
+  induction hle with
   | nil =>
       exact List.Forall₂.nil
   | @cons q b qs bs hqb htail ih =>
@@ -183,6 +183,7 @@ theorem cutSaturationBadAt_positive_steps_band_tight
         omega
       simpa [occupiedNatBands] using hoccValues
     dsimp [bs]
+    simp only [List.map_cons]
     rw [h, hocc4]
     omega
 

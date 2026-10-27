@@ -1,4 +1,5 @@
 import JSP000404Research.CutSpanNMinusOneQuotientShape
+import JSP000404Research.CutSupportOneBadPalette
 import JSP000404Research.MixedSupportTransitionCeiling
 import JSP000404Research.DeficitThreeSupportTwoHidden
 import JSP000404Research.CutQuotientRotation
