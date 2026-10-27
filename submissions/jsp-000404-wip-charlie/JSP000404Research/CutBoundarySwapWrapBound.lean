@@ -81,9 +81,10 @@ wrap quotient is at most four. -/
 theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
