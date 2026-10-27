@@ -79,7 +79,8 @@ theorem finite_hall_failure_contains_minimal_unit_deficit
           exact Finset.mem_biUnion.mpr
             ⟨i, (Finset.mem_erase.mp hi).2, hbi⟩
         have hCardDel : (A.erase a).card + 1 = A.card := by
-          simp [Finset.card_erase_of_mem ha]
+          simp only [Finset.card_erase_of_mem ha]
+          omega
         refine ⟨A, Finset.Subset.rfl, ?_, hCritical⟩
         omega
   exact hStrong S.card S rfl hbad
@@ -107,7 +108,8 @@ theorem minimal_hall_unit_deficit_all_sources_shadowed
   have hHallErase :=
     hCritical (T.erase a) (Finset.erase_ssubset ha)
   have hSize : (T.erase a).card + 1 = T.card := by
-    simp [Finset.card_erase_of_mem ha]
+    simp only [Finset.card_erase_of_mem ha]
+    omega
   have hEqCard :
       (T.biUnion eligible).card =
         ((T.erase a).biUnion eligible).card := by omega
@@ -125,6 +127,8 @@ theorem actual_eight_earliest_hall_or_minimal_shadow_deficit
     (eligible :
       actualEightSourceEarliestDebtTokens B k choice →
         Finset (actualExternalPaymentCredits B k choice)) :
+    letI : DecidableEq (actualEightSourceEarliestDebtTokens B k choice) :=
+      Classical.decEq _
     (∀ S : Finset (actualEightSourceEarliestDebtTokens B k choice),
       S.card ≤ (S.biUnion eligible).card) ∨
     (∃ T : Finset (actualEightSourceEarliestDebtTokens B k choice),
