@@ -123,7 +123,7 @@ theorem uncovered_cut_two_bad_old_palettes_differ_only_boundary
   let exponent : V → ℕ :=
     fun i => centreExponent (C i) t
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
