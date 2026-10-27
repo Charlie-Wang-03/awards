@@ -215,7 +215,7 @@ theorem actual_eighth_no_local_exterior_of_biactive_card_le_one
 
 /-- In the same count-controlled subcase, ALL genuine original eighth
 opposite candidates lie in the actual nonlocal-ineligible deficit
-O \\ H; NONE can be silently booked as local exterior payment. -/
+O \ H; NONE can be silently booked as local exterior payment. -/
 theorem actual_eighth_all_nonlocal_of_biactive_card_le_one
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
     (C : OrderedEdgeColoring V (n + 1))
@@ -228,7 +228,7 @@ theorem actual_eighth_all_nonlocal_of_biactive_card_le_one
           c ≠ d ∧
           c ∈ retainedActive C v ∧
           d ∈ retainedActive C v)).card ≤ 1) :
-    (actualLossEarliestOppositeCandidateWords C exponent choice \\
+    (actualLossEarliestOppositeCandidateWords C exponent choice \
       lossLedgerOutsideTranslatedTrueHoles C exponent choice) =
       actualLossEarliestOppositeCandidateWords C exponent choice := by
   classical
