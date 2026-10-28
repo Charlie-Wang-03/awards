@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEighthNoBicolourHallHardStop.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualExteriorChoiceDominanceNoReuse.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualExteriorChoiceColourFibrePacking.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEighthTokenLocalPrepayment.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourcePrepaidResidualMatching.lean"
       - ".github/workflows/jsp000404-focused-eighth-no-bicolour-hall.yml"
