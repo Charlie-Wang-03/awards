@@ -19,8 +19,12 @@ namespace JSP000404Research
 
 open BinaryEdgePartition
 
+-- The fully expanded eight-way subtype/angle case analysis is expensive to
+-- elaborate. This increases the compiler budget only, not proof strength.
+set_option maxHeartbeats 10000000
+
 theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
-    {W : Type*} [Fintype W]
+    {W : Type*} [Fintype W] [DecidableEq W]
     (hcard : Fintype.card W = 5)
     {bad₁ bad₂ a b c d : W}
     (hbad : bad₁ ≠ bad₂)
@@ -38,16 +42,20 @@ theorem one_of_two_distinct_vertices_mem_fourCycle_vertices
       Ne.symm hda, Ne.symm hac, Ne.symm hbd]
   by_contra hnone
   push_neg at hnone
-  have hb1Comp : bad₁ ∈ (Finset.univ  S : Finset W) := by
-    simp [hnone.1]
-  have hb2Comp : bad₂ ∈ (Finset.univ  S : Finset W) := by
-    simp [hnone.2]
+  have hb1NotS : bad₁ ∉ S := by simpa only [S] using hnone.1
+  have hb2NotS : bad₂ ∉ S := by simpa only [S] using hnone.2
+  have hb1Comp : bad₁ ∈ (Finset.univ \ S : Finset W) :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hb1NotS⟩
+  have hb2Comp : bad₂ ∈ (Finset.univ \ S : Finset W) :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hb2NotS⟩
   have hcompCard :
-      (Finset.univ  S : Finset W).card = 1 := by
-    rw [Finset.card_sdiff]
-    · rw [Finset.card_univ, hcard, hScard]
-      omega
-    · exact Finset.subset_univ S
+      (Finset.univ \ S : Finset W).card = 1 := by
+    have hcardDiff :
+        (Finset.univ \ S : Finset W).card =
+          (Finset.univ : Finset W).card - S.card := by
+      rw [Finset.card_sdiff]
+      simp
+    rw [hcardDiff, Finset.card_univ, hcard, hScard]
   have hEq :=
     Finset.card_eq_one.mp hcompCard
   obtain ⟨z, hz⟩ := hEq
@@ -185,83 +193,49 @@ theorem two_bad_monochromatic_fourCycle_gives_bad_small_angle
       colour hcycle
   let B₁ : OtherVertex top := ⟨bad₁, htb₁.symm⟩
   let B₂ : OtherVertex top := ⟨bad₂, htb₂.symm⟩
+
+  -- Normalize the four possible cycle corners once, rather than
+  -- elaborating the heavy geometric lemma in eight duplicated branches.
+  have hcorner (w : OtherVertex top)
+      (hw : w ∈ ({a,b,d,e} : Finset (OtherVertex top))) :
+      ∃ x y : OtherVertex top,
+        w ≠ x ∧ w ≠ y ∧ x ≠ y ∧
+        (localColourGraph M top colour).Adj w x ∧
+        (localColourGraph M top colour).Adj y w := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with h | h | h | h
+    · subst w
+      exact ⟨b,e,hab,hea.symm,hbe,habE,heaE⟩
+    · subst w
+      exact ⟨d,a,hbd,hab.symm,had.symm,hbdE,habE⟩
+    · subst w
+      exact ⟨e,b,hde,hbd.symm,hbe.symm,hdeE,hbdE⟩
+    · subst w
+      exact ⟨a,d,hea,hde.symm,had,heaE,hdeE⟩
+
   rcases hmem with hmem1 | hmem2
-  · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem1
-    rcases hmem1 with h1 | h1 | h1 | h1
-    · subst a
-      refine ⟨bad₁,b.1,e.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h.symm)
-      · exact fun h => hea (Subtype.ext h)
-      · exact fun h => hbe (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
+  · obtain ⟨x,y,hx,hy,hxy,hax,hya⟩ :=
+      hcorner B₁ hmem1
+    refine ⟨bad₁,x.1,y.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
+    · exact fun h => hx (Subtype.ext h)
+    · exact fun h => hy (Subtype.ext h)
+    · exact fun h => hxy (Subtype.ext h)
+    · simpa only [B₁] using
+        (saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
           hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hab hea hbe
-          habE heaE hbadCut₁
-    · subst b
-      refine ⟨bad₁,a.1,d.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h)
-      · exact fun h => hbd (Subtype.ext h.symm)
-      · exact fun h => had (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
+          hc0 hcpi huncovered top colour hx hy hxy
+          hax hya hbadCut₁)
+  · obtain ⟨x,y,hx,hy,hxy,hax,hya⟩ :=
+      hcorner B₂ hmem2
+    refine ⟨bad₂,x.1,y.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
+    · exact fun h => hx (Subtype.ext h)
+    · exact fun h => hy (Subtype.ext h)
+    · exact fun h => hxy (Subtype.ext h)
+    · simpa only [B₂] using
+        (saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
           hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hab hbd had
-          habE.symm hbdE hbadCut₁
-    · subst d
-      refine ⟨bad₁,b.1,e.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hbd (Subtype.ext h)
-      · exact fun h => hde (Subtype.ext h.symm)
-      · exact fun h => hbe (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hbd hde hbe
-          hbdE.symm hdeE hbadCut₁
-    · subst e
-      refine ⟨bad₁,d.1,a.1,Or.inl rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hde (Subtype.ext h)
-      · exact fun h => hea (Subtype.ext h.symm)
-      · exact fun h => had (Subtype.ext h.symm)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hde hea had
-          hdeE.symm heaE hbadCut₁
-  · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem2
-    rcases hmem2 with h2 | h2 | h2 | h2
-    · subst a
-      refine ⟨bad₂,b.1,e.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h.symm)
-      · exact fun h => hea (Subtype.ext h)
-      · exact fun h => hbe (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hab hea hbe
-          habE heaE hbadCut₂
-    · subst b
-      refine ⟨bad₂,a.1,d.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hab (Subtype.ext h)
-      · exact fun h => hbd (Subtype.ext h.symm)
-      · exact fun h => had (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hab hbd had
-          habE.symm hbdE hbadCut₂
-    · subst d
-      refine ⟨bad₂,b.1,e.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hbd (Subtype.ext h)
-      · exact fun h => hde (Subtype.ext h.symm)
-      · exact fun h => hbe (Subtype.ext h)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hbd hde hbe
-          hbdE.symm hdeE hbadCut₂
-    · subst e
-      refine ⟨bad₂,d.1,a.1,Or.inr rfl, ?_, ?_, ?_, ?_⟩
-      · exact fun h => hde (Subtype.ext h)
-      · exact fun h => hea (Subtype.ext h.symm)
-      · exact fun h => had (Subtype.ext h.symm)
-      · exact saturation_bad_vertex_of_monochromatic_fourCycle_has_small_angle
-          hp hcap C (by omega : 1 ≤ n) htpos hlam ht hdelta0 hdeltaHalf
-          hc0 hcpi huncovered top colour hde hea had
-          hdeE.symm heaE hbadCut₂
+          hc0 hcpi huncovered top colour hx hy hxy
+          hax hya hbadCut₂)
 
 #print axioms one_of_two_distinct_vertices_mem_fourCycle_vertices
 #print axioms monochromatic_fourCycle_contains_bad_minimum

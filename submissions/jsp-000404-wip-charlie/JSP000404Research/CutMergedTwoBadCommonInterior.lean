@@ -54,12 +54,10 @@ theorem mem_interiorCutPalette_iff
   · rintro ⟨haS, ha0, haN⟩
     refine ⟨?_, ?_, haS⟩
     · intro ha
-      have hav := congrArg Fin.val ha
-      simp at hav
+      have hav : a.val = n := by simpa using congrArg Fin.val ha
       omega
     · intro ha
-      have hav := congrArg Fin.val ha
-      simp at hav
+      have hav : a.val = 0 := by simpa using congrArg Fin.val ha
       omega
 
 theorem interiorCutPalette_eq_of_interior_membership
@@ -106,29 +104,30 @@ theorem interiorCutPalette_card_ge_three_of_card_four
         Fin.last n ∉ S.erase (0 : Fin (n + 1)) := by
       simp [hnS]
     unfold interiorCutPalette
-    rw [Finset.erase_eq_of_not_mem hnErase,
+    rw [Finset.erase_eq_of_notMem hnErase,
         Finset.card_erase_of_mem h0,
         hcard]
-    omega
+    all_goals omega
   · by_cases hnS : Fin.last n ∈ S
     · have h0Erase :
           (0 : Fin (n + 1)) ∉ S := h0
       unfold interiorCutPalette
-      rw [Finset.erase_eq_of_not_mem h0Erase]
+      rw [Finset.erase_eq_of_notMem h0Erase]
       rw [Finset.card_erase_of_mem hnS, hcard]
-      omega
+      all_goals omega
     · unfold interiorCutPalette
-      rw [Finset.erase_eq_of_not_mem h0,
-          Finset.erase_eq_of_not_mem hnS,
+      rw [Finset.erase_eq_of_notMem h0,
+          Finset.erase_eq_of_notMem hnS,
           hcard]
       omega
 
 theorem uncovered_cut_two_bad_common_interior_palette
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)

@@ -1,4 +1,5 @@
 import JSP000404Research.CutSpanNMinusOneQuotientShape
+import JSP000404Research.CutSupportOneBadPalette
 import JSP000404Research.MixedSupportTransitionCeiling
 import JSP000404Research.DeficitThreeSupportTwoHidden
 import JSP000404Research.CutQuotientRotation
@@ -32,9 +33,10 @@ theorem cut_span_n_sub_one_support_two_any_transition_qe_eq_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -121,9 +123,10 @@ theorem cut_span_n_sub_one_support_two_transition_qe_eq_two
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -227,9 +230,10 @@ theorem cut_span_n_sub_one_support_two_hidden_angle_ge_n_sub_three
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)

@@ -35,9 +35,9 @@ theorem cut_equal_palette_support_two_transition_qe_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -105,17 +105,8 @@ theorem cut_equal_palette_support_two_transition_qe_eq_one
       (C top) (C a) (C b)
       hTop hA hsupA H
 
-  obtain ⟨R, x0, xs, hvalues, hwrap⟩ :=
-    support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
-      hp hcap C hcardV hn5 htpos hlam ht
-      hdelta0 hdeltaHalf hc0 hcpi
-      hA hB hsupA hsupB
-      hBadA hBadB hactiveEq
-
-  obtain ⟨_R2, _a2, _xs2, _hv2, _hspan2,
-      hqLen, _hbLen, _hdom, hqPos,
-      _hbPos, hqLe⟩ :=
-    support_one_equal_palette_forces_other_ordinary_quotients_le_one
+  obtain ⟨R, x0, xs, hvalues, hwrap, hqLe⟩ :=
+    support_one_equal_palette_other_wrap_and_ordinary_bound
       hp hcap C hcardV hn5 htpos hlam ht
       hdelta0 hdeltaHalf hc0 hcpi
       hA hB hsupA hsupB
@@ -160,9 +151,9 @@ theorem cut_equal_palette_support_two_exact_cut_shape
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -290,9 +281,9 @@ theorem cut_equal_palette_support_one_two_hidden_large_angle
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
@@ -376,15 +367,8 @@ theorem cut_equal_palette_support_one_two_hidden_large_angle
         H0.qe ∈ quotientList t (C b).gaps :=
       H0.qe_mem
     -- Use the same cut quotient classification.
-    obtain ⟨R, x0, xs, hvalues, hwrap⟩ :=
-      support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
-        hp hcap C hcardV hn5 htpos hlam ht
-        hdelta0 hdeltaHalf hc0 hcpi
-        hA hB hsupA hsupB hBadA hBadB hactiveEq
-    obtain ⟨_R2, _a2, _xs2, _hv2, _hspan2,
-        _hqLen, _hbLen, _hdom, _hqPos,
-        _hbPos, hqLe⟩ :=
-      support_one_equal_palette_forces_other_ordinary_quotients_le_one
+    obtain ⟨R, x0, xs, hvalues, hwrap, hqLe⟩ :=
+      support_one_equal_palette_other_wrap_and_ordinary_bound
         hp hcap C hcardV hn5 htpos hlam ht
         hdelta0 hdeltaHalf hc0 hcpi
         hA hB hsupA hsupB hBadA hBadB hactiveEq
@@ -413,10 +397,12 @@ theorem cut_equal_palette_support_one_two_hidden_large_angle
     rw [← hH0qe]
     exact hH0one
 
-  subst qe
+  have hqUnit :
+      quotientList t (C b).gaps = pre ++ 1 :: post := by
+    simpa only [hqOne] using hq
   have hsupportList :
       listPositiveCount (pre ++ 1 :: post) = 2 := by
-    rw [← hq, ← centreQuotient_ofFn]
+    rw [← hqUnit, ← centreQuotient_ofFn]
     rw [listPositiveCount_ofFn_eq_positiveSupport]
     exact hsupB
 
@@ -427,13 +413,13 @@ theorem cut_equal_palette_support_one_two_hidden_large_angle
       hdelta0 hdelta1 ht hB hsupB
   have hsumList :
       (pre ++ 1 :: post).sum = n - 1 := by
-    rw [← hq, ← centreQuotient_sum_eq_list_sum (C b) t]
+    rw [← hqUnit, ← centreQuotient_sum_eq_list_sum (C b) t]
     exact hsumFn
 
   exact deficit_three_support_two_unit_transition_hidden_angle
     hp htpos hlam b (C b)
     (by omega : 4 ≤ n)
-    first rest pre post hrays hq hsign
+    first rest pre post hrays hqUnit hsign
     hsupportList hsumList
 
 #print axioms cut_equal_palette_support_two_transition_qe_eq_one

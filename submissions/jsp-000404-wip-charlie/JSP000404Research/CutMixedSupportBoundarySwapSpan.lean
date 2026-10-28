@@ -37,8 +37,9 @@ zero. -/
 theorem first_floor_eq_zero_of_zero_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -60,18 +61,20 @@ theorem first_floor_eq_zero_of_zero_active
   have hs :
       (a :: xs).Pairwise (· ≤ ·) := by
     simpa [hvalues] using R.normalizedValues_pairwise ht.le
-  have hle :=
-    floor_head_le_floor_of_mem_sorted hs
+  have hle : Nat.floor a ≤ Nat.floor x :=
+    head_floor_le_of_mem_sorted hs
       (by simpa [hvalues] using hx)
-  simpa using hle
+  have hxn : Nat.floor x = 0 := by simpa using hxfloor
+  omega
 
 /-- Active top band n forces the last floor of a sorted cut-value list to be
 n. -/
 theorem last_floor_eq_n_of_top_active
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -93,16 +96,18 @@ theorem last_floor_eq_n_of_top_active
   have hs :
       (a :: xs).Pairwise (· ≤ ·) := by
     simpa [hvalues] using R.normalizedValues_pairwise ht.le
-  have hle :=
-    floor_of_mem_le_floor_last_sorted hs
-      (by simpa [hvalues] using hx)
+  have hle : Nat.floor x ≤ Nat.floor (xs.getLastD a) :=
+    Nat.floor_mono (le_getLastD_of_mem_pairwise a xs hs
+      (by simpa [hvalues] using hx))
   have hlastMem :
       xs.getLastD a ∈ R.normalizedValues t := by
     rw [hvalues]
-    exact List.getLastD_mem_cons a xs
-  have hlastTop :=
-    floor_lt_n_add_one_of_normalizedValue_mem
-      R ht hc0 hcpi htop hlastMem
+    exact (List.getLastD_mem_cons : xs.getLastD a ∈ a :: xs)
+  have hlastBounds :=
+    R.normalizedValues_mem_bounds ht hc0 hcpi hlastMem
+  have hlastTop : Nat.floor (xs.getLastD a) < n + 1 := by
+    exact (Nat.floor_lt hlastBounds.1).2
+      (hlastBounds.2.trans htop)
   have hxn : Nat.floor x = n := by simpa using hxfloor
   rw [hxn] at hle
   omega
@@ -111,8 +116,9 @@ theorem last_floor_eq_n_of_top_active
 theorem floor_bounds_of_active_band
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -134,12 +140,12 @@ theorem floor_bounds_of_active_band
   have hs :
       (a :: xs).Pairwise (· ≤ ·) := by
     simpa [hvalues] using R.normalizedValues_pairwise ht.le
-  have hlo :=
-    floor_head_le_floor_of_mem_sorted hs
+  have hlo : Nat.floor a ≤ Nat.floor x :=
+    head_floor_le_of_mem_sorted hs
       (by simpa [hvalues] using hx)
-  have hhi :=
-    floor_of_mem_le_floor_last_sorted hs
-      (by simpa [hvalues] using hx)
+  have hhi : Nat.floor x ≤ Nat.floor (xs.getLastD a) :=
+    Nat.floor_mono (le_getLastD_of_mem_pairwise a xs hs
+      (by simpa [hvalues] using hx))
   rw [hxfloor] at hlo hhi
   exact ⟨hlo,hhi⟩
 
@@ -148,8 +154,9 @@ the other centre's floor span to be at least n-3. -/
 theorem support_one_low_boundary_swap_other_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
@@ -196,7 +203,7 @@ theorem support_one_low_boundary_swap_other_span_ge
       hp hcap ht hlam hc0 hcpi n htop Ci Ri b3).2
     refine ⟨xsi.getLastD ai, ?_, ?_⟩
     · rw [hvi]
-      exact List.getLastD_mem_cons ai xsi
+      exact (List.getLastD_mem_cons : xsi.getLastD ai ∈ ai :: xsi)
     · simpa [b3] using hlastI
   have hb3J :
       b3 ∈ active
@@ -220,8 +227,9 @@ theorem support_one_low_boundary_swap_other_span_ge
 theorem support_one_high_boundary_swap_other_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)

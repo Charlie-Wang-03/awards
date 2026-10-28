@@ -37,7 +37,9 @@ theorem transitionCount_le_positiveCount_of_changesOnlyOnPositive
           by_cases hab : a = b
           · subst b
             simp [boolTransitionCountFrom]
-            exact hi
+            have hmono : listPositiveCount qs ≤ listPositiveCount (q :: qs) := by
+              by_cases hq : q = 0 <;> simp [listPositiveCount, hq]
+            exact hi.trans hmono
           · have hq : q ≠ 0 := hchange hab
             simp [boolTransitionCountFrom, hab,
               listPositiveCount, hq]
@@ -49,8 +51,8 @@ theorem centre_support_two_transitionCount_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t : ℝ}
+    (hcap : AngleCap p lam)
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)

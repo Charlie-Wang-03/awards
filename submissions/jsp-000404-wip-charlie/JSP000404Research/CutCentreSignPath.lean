@@ -1,5 +1,6 @@
 import JSP000404Research.CutCentreTransitionPath
 import JSP000404Research.CutLocalBandCycle
+import JSP000404Research.CutSupportInvariant
 import JSP000404Research.SupportTwoTransitionCount
 import Mathlib.Tactic
 
@@ -28,7 +29,7 @@ namespace JSP000404Research
 
 open Real
 
-def consecutiveCutRayQuotients
+noncomputable def consecutiveCutRayQuotients
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t c : ℝ) :
@@ -40,7 +41,7 @@ def consecutiveCutRayQuotients
           cutRayTheta hp c i prev) / Real.pi))
         :: consecutiveCutRayQuotients hp i t c r rs
 
-def cutWrapRayQuotient
+noncomputable def cutWrapRayQuotient
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (i : V) (t c : ℝ)
@@ -49,7 +50,7 @@ def cutWrapRayQuotient
     (t * ((cutRayTheta hp c i first + Real.pi -
       cutRayTheta hp c i last) / Real.pi))
 
-def cutLiftedCentreSignPath
+noncomputable def cutLiftedCentreSignPath
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
     (c : ℝ) (i : V)
@@ -78,6 +79,7 @@ theorem cutGapQuotients_decompose
         rest.map (cutNormalizedRayTheta hp t c i) by
       simp [CentreCutRayCycle.normalizedValues, hrays]]
   simp only [linearCyclicGapQuotients]
+  clear hrays
   congr 1
   · induction rest generalizing first with
     | nil =>
@@ -90,16 +92,20 @@ theorem cutGapQuotients_decompose
         unfold consecutiveCutRayQuotients
         congr 1
         ring
+        all_goals cases rs <;> rfl
   · unfold cutWrapRayQuotient cutNormalizedRayTheta
     rw [map_getLastD]
     congr 1
+    ring_nf
+    field_simp [Real.pi_ne_zero]
     ring
 
 theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -134,8 +140,6 @@ theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
             (c + cutRayTheta hp c i first + Real.pi) := by
     rw [cutRayRepAt_eq hp c i first]
     rw [signedRayDirection_not_add_pi]
-    congr 2
-    ring
 
   rw [cutRayRepAt_eq hp c i last, hfirstShift] at hcap'
 
@@ -164,9 +168,11 @@ theorem one_le_t_mul_cut_wrap_gap_of_sign_ne
 theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
+    (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (i : V)
@@ -181,7 +187,7 @@ theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
     cutWrapRayQuotient hp i t c first last ≠ 0 := by
   have hone :=
     one_le_t_mul_cut_wrap_gap_of_sign_ne
-      hp hcap ht hlam hc0 hcpi i hfl horder hsign
+      hp hcap ht htone hlam hc0 hcpi i hfl horder hsign
   have hfirst0 :=
     cutRayTheta_nonneg hp hc0 hcpi i first
   have hlastPi :=
@@ -195,15 +201,15 @@ theorem floor_cut_wrap_gap_ne_zero_of_sign_ne
       1 ≤ Nat.floor
         (t * ((cutRayTheta hp c i first + Real.pi -
           cutRayTheta hp c i last) / Real.pi)) := by
-    apply Nat.le_floor hnonneg
-    exact_mod_cast hone
+    exact Nat.le_floor (by exact_mod_cast hone)
   omega
 
 theorem consecutiveCut_changesOnlyOnPositive
     {V : Type*} {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
@@ -247,8 +253,7 @@ theorem consecutiveCut_changesOnlyOnPositive
             1 ≤ Nat.floor
               (t * ((cutRayTheta hp c i r -
                 cutRayTheta hp c i prev) / Real.pi)) := by
-          apply Nat.le_floor hgap0
-          exact_mod_cast hone
+          exact Nat.le_floor (by exact_mod_cast hone)
         omega
       · exact ih r hnod.2 hpair.2
 
@@ -256,8 +261,9 @@ theorem cutCentre_changesOnlyOnPositive
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
     (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
@@ -313,27 +319,30 @@ theorem cutCentre_changesOnlyOnPositive
     have harg :
         t * ((cutRayTheta hp c i first + Real.pi -
           cutRayTheta hp c i first) / Real.pi) = t := by
+      have htheta :
+          cutRayTheta hp c i first + Real.pi - cutRayTheta hp c i first = Real.pi := by ring
+      rw [htheta]
       field_simp [hpi]
     rw [harg]
-    have ht0 : 0 ≤ t := ht.le
-    have hfloor : 1 ≤ Nat.floor t := by
-      apply Nat.le_floor ht0
-      exact_mod_cast htone
+    have hfloor : 1 ≤ Nat.floor t := Nat.le_floor (by exact_mod_cast htone)
     omega
   · let last := rest.getLastD first
     have hlastMem : last ∈ rest := by
       dsimp [last]
-      exact List.getLastD_mem hrest
+      cases rest with
+      | nil => contradiction
+      | cons r rs =>
+          simpa only [List.getLastD_cons] using
+            (List.getLastD_mem_cons : rs.getLastD r ∈ r :: rs)
     have hfl : first ≠ last := by
       intro h
-      subst last
-      exact (List.nodup_cons.mp hnod).1 hlastMem
+      exact (List.nodup_cons.mp hnod).1 (by simpa [h] using hlastMem)
     have horder :
         cutRayTheta hp c i first ≤
           cutRayTheta hp c i last :=
       (List.pairwise_cons.mp hsorted).1 last hlastMem
     exact floor_cut_wrap_gap_ne_zero_of_sign_ne
-      hp hcap ht hlam hc0 hcpi i
+      hp hcap ht htone hlam hc0 hcpi i
       hfl horder hsign
 
 theorem cutLiftedCentreSignPath_last_not
@@ -354,9 +363,11 @@ theorem cutCentre_support_two_transitionCount_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t)
+    (htone : 1 ≤ t)
     (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {i : V}

@@ -1710,3 +1710,26 @@ import JSP000404Research.AngleCapStrictProjectiveTheta
 -- distinct strict sub-lambda quadrilateral interior angles (opposite/adjacent).
 -- This does NOT assert graph-theoretic monochromatic C4 is convex.
 import JSP000404Research.ConvexFourCycleTwoSmallCap
+
+
+-- Verified October 2026 source-native frontier: exact n=3 overweight
+-- profile and all-n genuine terminal-payment necessary cardinality gate.
+-- These are sound necessary conditions, NOT a completed root proof.
+import JSP000404Research.PlanarTruePaymentCardinalityHardStop
+import JSP000404Research.PlanarThreeTruePaymentProfileHardStop
+
+-- Verified original strict-transition geometry: support-one exponent cost
+-- and consequent three high-support centres around any n=3 top at N>=7.
+-- No original TRUE exterior Boolean-hole credit is inferred.
+import JSP000404Research.PlanarWeightedLowSupportPacking
+import JSP000404Research.PlanarThreeTopForcesHighSupportMultiplicity
+import JSP000404Research.PlanarExactTransitionCostPacking
+
+-- Certified source-native n=3 frontier: an exact-nine original AngleCap
+-- test is equivalent to the uniform no-overcrowding conclusion.  The
+-- nine-point geometric exclusion ITSELF remains an explicit open premise.
+import JSP000404Research.PlanarNineCentreGeometryReduction
+
+-- Certified n=3 top/next support-one case: all but at most three
+-- ORIGINAL centres have quotient support three; no true-hole credit asserted.
+import JSP000404Research.PlanarThreeTopNextSupportOnePacking

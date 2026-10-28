@@ -45,7 +45,7 @@ theorem forall₂_positive_eq_of_le_excess_eq
     List.Forall₂
       (fun q b => q ≠ 0 → q = b)
       qs bs := by
-  induction hle generalizing hex with
+  induction hle with
   | nil =>
       exact List.Forall₂.nil
   | @cons q b qs bs hqb htail ih =>
@@ -61,9 +61,10 @@ position. -/
 theorem cutSaturationBadAt_positive_steps_band_tight
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -182,6 +183,7 @@ theorem cutSaturationBadAt_positive_steps_band_tight
         omega
       simpa [occupiedNatBands] using hoccValues
     dsimp [bs]
+    simp only [List.map_cons] at hocc4 ⊢
     rw [h, hocc4]
     omega
 
@@ -199,9 +201,10 @@ corresponding old band jump. -/
 theorem cutSaturationBadAt_positive_ordinary_steps_band_tight
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)

@@ -2,7 +2,6 @@ import JSP000404Research.CutMixedSupportOneTwoBoundarySwap
 import JSP000404Research.ThirdLayerTransitionPacking
 import JSP000404Research.SupportThreeTransitionDichotomy
 import JSP000404Research.ExposedSupportIntervalGeneral
-import Mathlib.Data.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
@@ -38,9 +37,10 @@ theorem no_fourth_support_le_two_of_support_one_two_span_n_sub_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -82,7 +82,7 @@ theorem no_fourth_support_le_two_of_support_one_two_span_n_sub_one
       hta htb htd hab had hbd
       (C top) (C a) (C b) (C d)
       hTop hA hsupA
-      (by rw [hsupB]; omega) hsupD
+      (by omega) hsupD
   have hHB2 :=
     cut_span_n_sub_one_support_two_any_transition_qe_eq_two
       hp hcap C hn5 hdelta0 hdeltaHalf ht hlam
@@ -96,9 +96,10 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -150,11 +151,11 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
   obtain ⟨HA, _hHApos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam
-      a (C a) (by rw [hsupA]; omega)
+      a (C a) (by omega)
   obtain ⟨HB, _hHBpos⟩ :=
     exists_transitionIntervalCertificate_of_support_le_two
       hp hcap htpos htone hlam
-      b (C b) (by rw [hsupB]; omega)
+      b (C b) (by omega)
   obtain ⟨SD, hturnD⟩ :=
     exists_supportIntervalCertificate_of_strictlyExposed
       hp hcap htpos htone hlam
@@ -228,8 +229,22 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
       try { exact False.elim (hbd huv.symm) }
 
   let cert : ∀ r : Fin 4,
-      SupportIntervalCertificate (p := p) (centre r) :=
-    ![STop,SA,SB,SD]
+      SupportIntervalCertificate (p := p) (centre r) := by
+    intro r
+    by_cases hr0 : r = 0
+    · subst r
+      simpa [centre] using STop
+    by_cases hr1 : r = 1
+    · subst r
+      simpa [centre] using SA
+    by_cases hr2 : r = 2
+    · subst r
+      simpa [centre] using SB
+    have hr3 : r = 3 := by
+      have hlt := r.isLt
+      omega
+    subst r
+    simpa [centre] using SD
 
   have hpack :
       (∑ r : Fin 4, (cert r).turnLength) ≤
@@ -243,7 +258,7 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
           2 * lam + lam
         ≤
       ∑ r : Fin 4, (cert r).turnLength := by
-    simpa [cert, centre, Fin.sum_univ_succ] using
+    simpa [cert, centre, Fin.sum_univ_succ, add_assoc] using
       add_le_add
         (add_le_add
           (add_le_add hturnTop hturnA)
@@ -252,11 +267,15 @@ theorem no_fourth_strictlyExposed_of_support_one_two_span_n_sub_one
 
   have hncast :
       ((n - 2 : ℕ) : ℝ) = (n : ℝ) - 2 := by
-    exact_mod_cast (Nat.sub_add_cancel (by omega : 2 ≤ n))
+    rw [Nat.cast_sub (by omega : 2 ≤ n)]
+    norm_num
   have hpi : Real.pi = t * lam := by
     rw [hlam]
     field_simp [ne_of_gt htpos]
-  rw [hncast, hpi, ht] at hpack hlower
+  rw [hncast] at hlower
+  rw [hpi, ht] at hpack
+  have hdeltaT : (0 : ℝ) < 1 - 2 * delta := by linarith
+  have hprod := mul_pos hlampos hdeltaT
   nlinarith
 
 /-- A remaining exact n-3 minimum is forced into the support-three,
@@ -265,9 +284,10 @@ theorem fourth_minimum_support_three_three_transitions_of_support_one_two_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -319,13 +339,13 @@ theorem fourth_minimum_support_three_three_transitions_of_support_one_two_span
         hp hcap C hn5 hdelta0 hdeltaHalf ht hlam hc0 hcpi
         hta htb htd hab had hbd hTop hA hsupA hB hsupB
         hBadB R hvalues hspan
-        (by rw [h1.1]; omega)
+        (by omega)
     · exfalso
       exact no_fourth_support_le_two_of_support_one_two_span_n_sub_one
         hp hcap C hn5 hdelta0 hdeltaHalf ht hlam hc0 hcpi
         hta htb htd hab had hbd hTop hA hsupA hB hsupB
         hBadB R hvalues hspan
-        (by rw [h2.1]; omega)
+        (by omega)
     · exact h3.1
   have hnotExposed :
       ¬ StrictlyExposedAt p d := by

@@ -32,9 +32,9 @@ open BinaryEdgePartition
 theorem uncovered_cut_two_bad_old_palettes_differ_only_boundary
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
     (hlam : lam = Real.pi / t)
@@ -123,17 +123,18 @@ theorem uncovered_cut_two_bad_old_palettes_differ_only_boundary
   let exponent : V → ℕ :=
     fun i => centreExponent (C i) t
   let wrapBit :=
-    cutBoundaryWrapBit hp n htpos htop hc0 hcpi
+    cutBoundaryWrapBit (delta := delta) hp n htpos htop hc0 hcpi
   have hwrap :
       ∀ {u v : V}, u < v →
         ((P.edgeColor u v).val = 0 ∨
           (P.edgeColor u v).val = n) →
         wrapBit u ≠ wrapBit v := by
+    intro u v
     simpa [P, wrapBit, htop] using
-      cutBoundaryWrapBit_separates
+      (cutBoundaryWrapBit_separates
         hp hcap C (by omega : 1 ≤ n)
         htpos hlam ht hdelta0 hdeltaHalf
-        hc0 hcpi huncovered
+        hc0 hcpi huncovered (u := u) (v := v))
 
   let M :=
     uncoveredCutMergedPartition

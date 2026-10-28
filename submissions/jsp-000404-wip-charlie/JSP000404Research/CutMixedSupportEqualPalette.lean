@@ -27,9 +27,9 @@ open BinaryEdgePartition
 theorem support_one_equal_palette_forces_other_ordinary_quotients_le_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -124,9 +124,9 @@ theorem support_one_equal_palette_forces_other_ordinary_quotients_le_one
 theorem support_one_equal_palette_other_positive_ordinary_eq_one
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -203,12 +203,12 @@ theorem list_sum_eq_positiveCount_of_all_le_one
 
 /-- In the mixed support-one equal-palette branch, the other bad centre has
 cut-wrap quotient exactly n-2. -/
-theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
+theorem support_one_equal_palette_other_wrap_and_ordinary_bound
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -248,7 +248,8 @@ theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
     ∃ R : CentreCutRayCycle hp (C j) c,
       ∃ a : ℝ, ∃ xs : List ℝ,
         R.normalizedValues t = a :: xs ∧
-        Nat.floor (a + t - xs.getLastD a) = n - 2 := by
+        Nat.floor (a + t - xs.getLastD a) = n - 2 ∧
+        (∀ q ∈ (successiveDiffsFrom a xs).map Nat.floor, q ≤ 1) := by
   obtain ⟨R,a,xs,hvalues,_hspan,
       _hqLen,_hbLen,_hdom,hqPos,_hbPos,hqLe⟩ :=
     support_one_equal_palette_forces_other_ordinary_quotients_le_one
@@ -304,11 +305,80 @@ theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
 
   rw [hdecomp, List.sum_append] at hfullSum
   simp only [List.sum_singleton] at hfullSum
+  have hsPos : 1 ≤ s := by
+    by_contra hsNot
+    have hsZero : s = 0 := by omega
+    have hzeroSupp :
+        positiveSupport (centreQuotient (C j) t) = 0 := by
+      rw [hSupportJ]
+      exact hsZero
+    have hqzero :=
+      positiveSupport_eq_zero_imp
+        (centreQuotient (C j) t) hzeroSupp
+    have hexpZero : centreExponent (C j) t = 0 := by
+      unfold centreExponent floorExcess
+      simp [hqzero]
+    omega
   have hqWrap : qWrap = n - 2 := by
     dsimp [qWrap] at *
     omega
-  exact ⟨R,a,xs,hvalues,hqWrap⟩
+  exact ⟨R,a,xs,hvalues,hqWrap,hqLe⟩
 
+theorem support_one_equal_palette_other_wrap_quotient_eq_n_sub_two
+    {V : Type*} [LinearOrder V] [Fintype V]
+    {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ} {n s : ℕ}
+    (hcap : AngleCap p lam)
+    (C : ∀ i : V, CentreProjectiveCycle hp i)
+    (hcardV : Fintype.card V = 6)
+    (hn5 : 5 ≤ n)
+    (htpos : 0 < t)
+    (hlam : lam = Real.pi / t)
+    (ht : t = (n : ℝ) + delta)
+    (hdelta0 : 0 ≤ delta)
+    (hdeltaHalf : delta < (1 : ℝ) / 2)
+    (hc0 : 0 ≤ c)
+    (hcpi : c < Real.pi)
+    {i j : V}
+    (hExpI : centreExponent (C i) t = n - 3)
+    (hExpJ : centreExponent (C j) t = n - 3)
+    (hSupportI :
+      positiveSupport (centreQuotient (C i) t) = 1)
+    (hSupportJ :
+      positiveSupport (centreQuotient (C j) t) = s)
+    (hBadI :
+      CutSaturationBadAt
+        hp hcap C htpos hlam ht hdelta0
+        (by linarith : delta < 1)
+        hc0 hcpi i)
+    (hBadJ :
+      CutSaturationBadAt
+        hp hcap C htpos hlam ht hdelta0
+        (by linarith : delta < 1)
+        hc0 hcpi j)
+    (hactiveEq :
+      active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith)) i
+        =
+      active
+          (cutProjectiveBandPartition
+            hp hcap htpos hlam hc0 hcpi n
+              (by rw [ht]; push_cast; linarith)) j) :
+    ∃ R : CentreCutRayCycle hp (C j) c,
+      ∃ a : ℝ, ∃ xs : List ℝ,
+        R.normalizedValues t = a :: xs ∧
+        Nat.floor (a + t - xs.getLastD a) = n - 2 := by
+  obtain ⟨R,a,xs,hvalues,hwrap,_hqLe⟩ :=
+    support_one_equal_palette_other_wrap_and_ordinary_bound
+      hp hcap C hcardV hn5 htpos hlam ht
+      hdelta0 hdeltaHalf hc0 hcpi
+      hExpI hExpJ hSupportI hSupportJ
+      hBadI hBadJ hactiveEq
+  exact ⟨R,a,xs,hvalues,hwrap⟩
+
+#print axioms support_one_equal_palette_other_wrap_and_ordinary_bound
 #print axioms support_one_equal_palette_forces_other_ordinary_quotients_le_one
 #print axioms support_one_equal_palette_other_positive_ordinary_eq_one
 

@@ -31,6 +31,36 @@ def floorExcess {I : Type*} [Fintype I] (q : I → ℕ) : ℕ :=
 def positiveSupport {I : Type*} [Fintype I] (q : I → ℕ) : ℕ :=
   ∑ i, if q i = 0 then 0 else 1
 
+/-- The finite set of nonzero quotient indices, uniformly over all finite
+index types (including Fin m). This shared definition avoids duplicated
+specialized and polymorphic APIs when proof modules are jointly imported. -/
+noncomputable def positiveIndexSet
+    {I : Type*} [Fintype I] (q : I → ℕ) : Finset I := by
+  classical
+  exact Finset.univ.filter fun i => q i ≠ 0
+
+@[simp] theorem mem_positiveIndexSet
+    {I : Type*} [Fintype I] (q : I → ℕ) (i : I) :
+    i ∈ positiveIndexSet q ↔ q i ≠ 0 := by
+  classical
+  simp [positiveIndexSet]
+
+theorem positiveIndexSet_card_eq_positiveSupport
+    {I : Type*} [Fintype I] (q : I → ℕ) :
+    (positiveIndexSet q).card = positiveSupport q := by
+  classical
+  unfold positiveIndexSet positiveSupport
+  have hbool :
+      (∑ i : I, if q i ≠ 0 then 1 else 0) =
+        ((Finset.univ.filter fun i : I => q i ≠ 0).card) := by
+    simpa using
+      (Finset.sum_boole (R := ℕ)
+        (fun i : I => q i ≠ 0) (Finset.univ : Finset I))
+  rw [← hbool]
+  apply Finset.sum_congr rfl
+  intro i _
+  by_cases hqi : q i = 0 <;> simp [hqi]
+
 /-- Removing one unit from every positive entry and then restoring one unit
 per positive entry recovers the original sum exactly. -/
 theorem floorExcess_add_positiveSupport

@@ -46,19 +46,46 @@ theorem fourCycle_through_offcycle_vertex_of_two_cycle_neighbors
       z ≠ v ∧ u ≠ w ∧
       G.Adj z u ∧ G.Adj u v ∧
       G.Adj v w ∧ G.Adj w z := by
-  rcases hxMem with rfl | rfl | rfl | rfl <;>
-    rcases hyMem with rfl | rfl | rfl | rfl
+  -- A bipartite colouring forbids an edge between two distinct
+  -- neighbours of z: it would create a monochromatic triangle.
+  have hnotXY : ¬ G.Adj x y := by
+    intro hxyE
+    obtain ⟨χ⟩ := hbi
+    have hzxColour : χ z ≠ χ x := χ.valid hzx
+    have hzyColour : χ z ≠ χ y := χ.valid hzy
+    have hxyColour : χ x ≠ χ y := χ.valid hxyE
+    have hnoThree :
+        ∀ i j k : Fin 2, i ≠ j → i ≠ k → j ≠ k → False := by
+      decide
+    exact hnoThree (χ z) (χ x) (χ y)
+      hzxColour hzyColour hxyColour
+  rcases hxMem with hx | hx | hx | hx <;>
+    rcases hyMem with hy | hy | hy | hy <;>
+    subst x <;> subst y
   <;> try { exact False.elim (hxy rfl) }
   all_goals
     first
-    | exact ⟨a,b,c,hzA,hab,hbc,hzC,hac,hzx,habE,hbcE,hzy.symm⟩
-    | exact ⟨a,d,c,hzA,hda.symm,hcd.symm,hzC,hac,hzx,hdaE.symm,hcdE.symm,hzy.symm⟩
-    | exact ⟨b,a,d,hzB,hab.symm,hda,hzD,hbd,hzx,habE.symm,hdaE,hzy.symm⟩
-    | exact ⟨b,c,d,hzB,hbc,hcd,hzD,hbd,hzx,hbcE,hcdE,hzy.symm⟩
-    | exact ⟨c,b,a,hzC,hbc.symm,hab.symm,hzA,hac,hzx,hbcE.symm,habE.symm,hzy.symm⟩
-    | exact ⟨c,d,a,hzC,hcd,hda,hzA,hac,hzx,hcdE,hdaE,hzy.symm⟩
-    | exact ⟨d,a,b,hzD,hda.symm,hab,hzB,hbd,hzx,hdaE.symm,habE,hzy.symm⟩
-    | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB,hbd,hzx,hcdE.symm,hbcE.symm,hzy.symm⟩
+    | exact ⟨a,b,c,hzA,hab,hbc,hzC.symm,hzB,hac,hzx,habE,hbcE,hzy.symm⟩
+    | exact ⟨a,d,c,hzA,hda.symm,hcd.symm,hzC.symm,hzD,hac,hzx,
+        hdaE.symm,hcdE.symm,hzy.symm⟩
+    | exact ⟨b,a,d,hzB,hab.symm,hda.symm,hzD.symm,hzA,hbd,hzx,
+        habE.symm,hdaE.symm,hzy.symm⟩
+    | exact ⟨b,c,d,hzB,hbc,hcd,hzD.symm,hzC,hbd,hzx,hbcE,hcdE,hzy.symm⟩
+    | exact ⟨c,b,a,hzC,hbc.symm,hab.symm,hzA.symm,hzB,hac.symm,hzx,
+        hbcE.symm,habE.symm,hzy.symm⟩
+    | exact ⟨c,d,a,hzC,hcd,hda,hzA.symm,hzD,hac.symm,hzx,
+        hcdE,hdaE,hzy.symm⟩
+    | exact ⟨d,a,b,hzD,hda,hab,hzB.symm,hzA,hbd.symm,hzx,
+        hdaE,habE,hzy.symm⟩
+    | exact ⟨d,c,b,hzD,hcd.symm,hbc.symm,hzB.symm,hzC,hbd.symm,hzx,
+        hcdE.symm,hbcE.symm,hzy.symm⟩
+    | exfalso
+      apply hnotXY
+      assumption
+    | exfalso
+      apply hnotXY
+      symm
+      assumption
 
 /-- Five-vertex specialization: if z is active in a C4 colour but no C4 of
 that colour contains z, then z has degree exactly one. -/
@@ -90,7 +117,7 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
   have hdegPos : 1 ≤ G.degree z := by
     obtain ⟨u,hzu⟩ := hzSupport
     rw [← SimpleGraph.card_neighborFinset_eq_degree]
-    exact Finset.one_le_card.mpr ⟨u, SimpleGraph.mem_neighborFinset.mpr hzu⟩
+    exact Finset.one_le_card.mpr ⟨u, by simpa using hzu⟩
   have hcycleSet :
       ({a,b,c,d} : Finset W).card = 4 := by
     simp [hab,hbc,hcd,hda,hac,hbd,
@@ -112,19 +139,20 @@ theorem degree_eq_one_of_active_off_fourCycle_no_cycle_through
         Ne.symm hda,Ne.symm hac,Ne.symm hbd]
     have hSuniv : S = Finset.univ := by
       apply Finset.eq_univ_of_card
-      rw [hfive, Finset.card_univ, hcard]
+      simpa only [hfive] using hcard.symm
     have hxS : x ∈ S := by rw [hSuniv]; simp
-    simp [S, hx.1, hx.2.1, hx.2.2.1, hx.2.2.2.1] at hxS
+    simp [S, hx.1, hx.2.1, hx.2.2.1,
+      hx.2.2.2.1, hx.2.2.2.2] at hxS
 
   by_contra hdegNe
   have hdeg2 : 2 ≤ G.degree z := by omega
   rw [← SimpleGraph.card_neighborFinset_eq_degree] at hdeg2
   obtain ⟨x,hxN,y,hyN,hxy⟩ :=
-    Finset.two_le_card.mp hdeg2
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset z).card)
   have hzx : G.Adj z x :=
-    SimpleGraph.mem_neighborFinset.mp hxN
+    by simpa using hxN
   have hzy : G.Adj z y :=
-    SimpleGraph.mem_neighborFinset.mp hyN
+    by simpa using hyN
   have hxNeZ : x ≠ z := hzx.ne'
   have hyNeZ : y ≠ z := hzy.ne'
   have hxMem :

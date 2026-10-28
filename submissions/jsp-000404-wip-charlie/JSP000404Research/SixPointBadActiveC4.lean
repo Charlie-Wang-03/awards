@@ -31,6 +31,15 @@ reduced colour whose colour graph contains a C4.
 
 namespace JSP000404Research
 
+noncomputable section
+
+-- Locally materialize finite edge sets of the colour graphs. Without this
+-- instance, `edgeFinset` cannot elaborate in the support-cardinality lemma.
+local instance edgeSetFintypeBadActiveC4
+    {W : Type*} [Fintype W] (G : SimpleGraph W) :
+    Fintype G.edgeSet :=
+  Fintype.ofFinite _
+
 open BinaryEdgePartition
 open scoped BigOperators
 
@@ -57,20 +66,24 @@ theorem bipartite_edge_card_le_active_card_of_active_card_le_four
   have hprod :
       G.edgeFinset.card ≤ L.card * R.card := by
     rw [hdeg] at hdegBound
+    simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] at hdegBound ⊢
     simpa [Nat.mul_comm] using hdegBound
   by_cases hL0 : L.card = 0
-  · rw [hL0] at hprod
-    simp at hprod
+  · have hedges0 : G.edgeFinset.card = 0 := by
+      simpa [hL0] using hprod
     omega
   by_cases hR0 : R.card = 0
-  · rw [hR0] at hprod
-    simp at hprod
+  · have hedges0 : G.edgeFinset.card = 0 := by
+      simpa [hR0] using hprod
     omega
   have hLpos : 1 ≤ L.card := by omega
   have hRpos : 1 ≤ R.card := by omega
   have hsum4 : L.card + R.card ≤ 4 := by
     rw [hsplit]
     exact hA4
+  have hLle4 : L.card ≤ 4 := by omega
+  have hRle4 : R.card ≤ 4 := by omega
   have hprodLe :
       L.card * R.card ≤ L.card + R.card := by
     interval_cases hL : L.card <;>
@@ -127,7 +140,6 @@ theorem localColourGraph_edge_card_le_active_of_inactive_minimum
         (Finset.univ.erase bad : Finset (OtherVertex top)).card = 4 := by
       rw [Finset.card_erase_of_mem (Finset.mem_univ bad),
           Finset.card_univ, hfive]
-      norm_num
     rw [hcomp] at hle
     exact hle
   exact
@@ -173,9 +185,10 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
   have hEdgeSum :
       (∑ c ∈ U,
         (localColourGraph P top c).edgeFinset.card) = 10 := by
-    simpa [U] using
-      sum_reducedUsedColours_edge_card_eq_ten
-        P top root hcard hrootEdges
+    simpa only [U, SimpleGraph.edgeFinset, Set.toFinset_card,
+      ← Nat.card_eq_fintype_card] using
+      (sum_reducedUsedColours_edge_card_eq_ten
+        P top root hcard hrootEdges)
 
   have hActiveSum :
       (∑ c ∈ U,
@@ -224,7 +237,9 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
       have hlt :=
         localColourGraph_edge_card_lt_active_of_no_fourCycle
           P top c hcard hcTop hcData.2 hnoC4
-      simp [hcb]
+      simp only [if_pos hcb]
+      simp only [SimpleGraph.edgeFinset, Set.toFinset_card,
+        ← Nat.card_eq_fintype_card] at hlt ⊢
       omega
     · have hle :=
         localColourGraph_edge_card_le_active_of_inactive_minimum
@@ -265,7 +280,15 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
     calc
       (∑ c ∈ U, (if c ∈ active P bad then 1 else 0))
           = (U.filter (fun c => c ∈ active P bad)).card := by
-              simp
+              have hfilter :
+                  U ∩ active P bad =
+                    U.filter (fun c => c ∈ active P bad) := by
+                ext c
+                simp
+              calc
+                _ = (U ∩ active P bad).card := by simp
+                _ = (U.filter (fun c => c ∈ active P bad)).card := by
+                  rw [hfilter]
       _ = ((active P bad).erase root).card := by rw [hsetEq]
       _ = 3 := hBadCard
 
@@ -287,4 +310,5 @@ theorem bad_minimum_active_in_some_monochromatic_fourCycle
 #print axioms localColourGraph_edge_card_le_active_of_inactive_minimum
 #print axioms bad_minimum_active_in_some_monochromatic_fourCycle
 
+end
 end JSP000404Research

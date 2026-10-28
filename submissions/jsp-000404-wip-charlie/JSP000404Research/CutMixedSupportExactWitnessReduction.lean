@@ -1,5 +1,6 @@
 import JSP000404Research.CutMixedSupportOneTwoBoundarySwapReduction
 import JSP000404Research.ExactWitnessUniqueTransition
+import JSP000404Research.ExactWitnessSupportThreeTransition
 import JSP000404Research.SixPointExactWitnessTerminal
 import Mathlib.Tactic
 
@@ -26,9 +27,10 @@ theorem exactWitness_centre_ne_support_two_bad_of_one_two_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -70,7 +72,7 @@ theorem exactWitness_centre_ne_support_two_bad_of_one_two_span
       hrays, hqe0, hq, hsign⟩ :=
     exists_transition_decomposition_of_support_le_two
       hp hcap htpos htone hlam
-      W.b (C W.b) (by rw [hsupB]; omega)
+      W.b (C W.b) (by omega)
 
   have hqeOne :
       qe = 1 :=
@@ -104,9 +106,10 @@ theorem exactWitness_forced_support_three_three_transitions_of_one_two_span
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane}
     (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n : ℕ}
+ {n : ℕ}
     (hn5 : 5 ≤ n)
     (hdelta0 : 0 ≤ delta)
     (hdeltaHalf : delta < (1 : ℝ) / 2)
@@ -162,7 +165,8 @@ theorem exactWitness_forced_support_three_three_transitions_of_one_two_span
         hdelta0 hdeltaHalf ht hlam
         W (C W.b) hWexp
     apply hnot
-    simpa [h] using hsupA
+    rw [h]
+    exact hsupA
   have hWb :
       W.b ≠ b :=
     exactWitness_centre_ne_support_two_bad_of_one_two_span

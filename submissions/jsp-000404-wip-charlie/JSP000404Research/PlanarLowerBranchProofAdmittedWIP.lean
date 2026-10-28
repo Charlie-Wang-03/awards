@@ -1,4 +1,8 @@
 import JSP000404Research.PlanarKnownSmallCentreCapacity
+import JSP000404Research.ThreeFiveExactScaleFullCapacity
+import JSP000404Research.PlanarFourSixExactIntegerCapacity
+import JSP000404Research.PlanarThreeManyIntegerNextPacking
+import JSP000404Research.PlanarThreeIntegerGlobalCapacity
 import JSP000404Research.PlanarFirstBranchNoThree
 import JSP000404Research.PlanarLowerTwoFourUnconditionalCapacity
 import JSP000404Research.PlanarLowerTwoGlobalCapacity
@@ -195,10 +199,12 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
   letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   by_cases hknownClosed :
       n = 1 ∨ n = 2 ∨
-      (Fintype.card (ProjectionOrdered V) ≤ 2 ∨
+      ((Fintype.card (ProjectionOrdered V) ≤ 2 ∨
         (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
-        (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n))
-  · rcases hknownClosed with hnOne | hnTwo | hsmall
+        (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n)) ∨
+        ((n = 3 ∧ delta = 0) ∨
+          (n = 4 ∧ Fintype.card (ProjectionOrdered V) = 6 ∧ delta = 0)))
+  · rcases hknownClosed with hnOne | hnTwo | hsmallOrExact
     · -- n = 1: AngleCap forbids three original points.
       have hcapRe : AngleCap (reindexedPoint p) lam :=
         angleCap_reindexedPoint hp hcap
@@ -217,8 +223,37 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
       simpa [hnTwo] using
         (planar_lower_branch_n_two_all_centre_dyadic_capacity
           hp hcap hdelta0 hdeltaHalf htTwo hlam cycles)
-    · exact planar_lower_branch_known_small_centre_dyadic_capacity
-        hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
+    · rcases hsmallOrExact with hsmall | hIntegerCases
+      · exact planar_lower_branch_known_small_centre_dyadic_capacity
+          hp hcap hn hdelta0 hdeltaHalf ht hlam cycles hsmall
+      · rcases hIntegerCases with
+          ⟨hnThree, hdeltaExact⟩ |
+          ⟨hnFour, hcardSix, hdeltaExact⟩
+        · -- NEW: entire n=3 integer endpoint closed for EVERY number
+          -- of actual original planar centres, by strict-support
+          -- packing #centres ≤6 plus the verified <=4,5,6 branches.
+          -- No global external-hole payment is assumed here.
+          have htThree : t = (3 : ℝ) + delta := by
+            simpa [hnThree] using ht
+          have hbound :
+              (∑ i : ProjectionOrdered V,
+                2 ^ centreExponent (cycles i) t) ≤ 8 :=
+            planar_three_integer_all_centre_dyadic_capacity
+              hp hcap hdelta0 hdeltaHalf hdeltaExact
+              htThree hlam cycles
+          simpa [hnThree] using hbound
+        · -- NEW genuinely closed n=4 SIX-centre δ=0 configuration.
+          have hcapRe : AngleCap (reindexedPoint p) lam :=
+            angleCap_reindexedPoint hp hcap
+          have htFour : t = (4 : ℝ) + delta := by
+            simpa [hnFour] using ht
+          have hbound :
+              (∑ i : ProjectionOrdered V,
+                2 ^ centreExponent (cycles i) t) ≤ 16 :=
+            planar_four_six_exact_integer_dyadic_capacity
+              (reindexedPoint_injective hp) hcapRe hcardSix
+              hdelta0 hdeltaHalf hdeltaExact htFour hlam cycles
+          simpa [hnFour] using hbound
   · -- At this point the first two genuine planar branches and every
     -- configuration of at most four centres have been eliminated.
     -- The unique admitted six-source payment is therefore needed only
@@ -239,7 +274,7 @@ theorem planar_lower_branch_dyadic_capacity_admitted_wip
           (Fintype.card (ProjectionOrdered V) = 3 ∧ 2 ≤ n) ∨
           (Fintype.card (ProjectionOrdered V) = 4 ∧ 3 ≤ n) := by
         omega
-      exact hknownClosed (Or.inr (Or.inr hsmall))
+      exact hknownClosed (Or.inr (Or.inr (Or.inl hsmall)))
     -- Genuine all-cardinality geometry: at least five actual centres
     -- exclude two distinct top exponent n-1 vertices, since each is
     -- sharp and any third centre violates the AngleCap triangle sum.

@@ -25,8 +25,9 @@ open BinaryEdgePartition
 theorem active_of_occupiedNatBand_value
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     (n : ℕ) (htop : t < (n + 1 : ℕ))
@@ -63,8 +64,9 @@ not 0.  The partner span is exactly n-1. -/
 theorem support_one_low_boundary_swap_other_span_eq
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
@@ -134,7 +136,7 @@ theorem support_one_low_boundary_swap_other_span_eq
       (⟨1, by omega⟩ : Fin (n + 1)) ∈
         active (cutProjectiveBandPartition
           hp hcap ht hlam hc0 hcpi n htop) j :=
-    (hinterior ⟨1,by omega⟩ (by simp) (by omega)).1 hband1I
+    (hinterior ⟨1,by omega⟩ (by simp) (by simp only [Fin.val_mk]; omega)).1 hband1I
   have hboundsJ :=
     floor_bounds_of_active_band
       hp hcap ht hlam hc0 hcpi n htop
@@ -161,15 +163,16 @@ theorem support_one_low_boundary_swap_other_span_eq
     simpa using hboundsJ.1
   have hfirstJ : Nat.floor aj = 1 := by omega
   rw [hlastJ, hfirstJ]
-  omega
+  all_goals omega
 
 /-- High-end swap: support-one centre uses n but not 0, partner uses 0 but
 not n.  The partner span is exactly n-1. -/
 theorem support_one_high_boundary_swap_other_span_eq
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
-    (hcap : AngleCap p lam)
     {lam t c : ℝ}
+    (hcap : AngleCap p lam)
+
     (ht : 0 < t) (hlam : lam = Real.pi / t)
     (hc0 : 0 ≤ c) (hcpi : c < Real.pi)
     {n : ℕ} (hn5 : 5 ≤ n)
@@ -244,8 +247,9 @@ theorem support_one_high_boundary_swap_other_span_eq
       (⟨n - 1, by omega⟩ : Fin (n + 1)) ∈
         active (cutProjectiveBandPartition
           hp hcap ht hlam hc0 hcpi n htop) j :=
-    (hinterior ⟨n - 1,by omega⟩ (by omega) (by omega)).1
-      hbandNm1I
+    (hinterior ⟨n - 1,by omega⟩
+      (by simp only [Fin.val_mk]; omega)
+      (by simp only [Fin.val_mk]; omega)).1 hbandNm1I
   have hboundsJ :=
     floor_bounds_of_active_band
       hp hcap ht hlam hc0 hcpi n htop
@@ -258,10 +262,10 @@ theorem support_one_high_boundary_swap_other_span_eq
     have hlastMem :
         xsj.getLastD aj ∈ Rj.normalizedValues t := by
       rw [hvj]
-      exact List.getLastD_mem_cons aj xsj
-    have hlt :=
-      floor_lt_n_add_one_of_normalizedValue_mem
-        Rj ht hc0 hcpi htop hlastMem
+      exact (List.getLastD_mem_cons : xsj.getLastD aj ∈ aj :: xsj)
+    have hbounds := Rj.normalizedValues_mem_bounds ht hc0 hcpi hlastMem
+    have hlt : Nat.floor (xsj.getLastD aj) < n + 1 :=
+      (Nat.floor_lt hbounds.1).2 (hbounds.2.trans htop)
     have hleN : Nat.floor (xsj.getLastD aj) ≤ n := by omega
     by_contra hnot
     have heqN : Nat.floor (xsj.getLastD aj) = n := by omega

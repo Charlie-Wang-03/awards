@@ -1,5 +1,6 @@
 import JSP000404Research.CutSaturatedPositiveStepTight
 import JSP000404Research.CutBadOrdinaryMismatchShape
+import JSP000404Research.CutBadFourConsecutiveStepShape
 import Mathlib.Tactic
 
 /-!
@@ -39,7 +40,7 @@ theorem sum_band_eq_sum_q_add_mismatch
         qs bs) :
     bs.sum =
       qs.sum + zeroPositiveMismatchCount qs bs := by
-  induction hdom generalizing htight hunit with
+  induction hdom with
   | nil =>
       simp [zeroPositiveMismatchCount]
   | @cons q b qs bs hqb hrest ih =>
@@ -52,13 +53,13 @@ theorem sum_band_eq_sum_q_add_mismatch
           · subst q
             by_cases hb0 : b = 0
             · subst b
-              simp [zeroPositiveMismatchCount, hi]
+              simp [zeroPositiveMismatchCount, hi] <;> omega
             · have hb1 := hunitHead ⟨rfl, hb0⟩
               subst b
-              simp [zeroPositiveMismatchCount, hi]
+              simp [zeroPositiveMismatchCount, hi] <;> omega
           · have hqbEq := htightHead hq0
             subst b
-            simp [zeroPositiveMismatchCount, hq0, hi]
+            simp [zeroPositiveMismatchCount, hq0, hi] <;> omega
 
 /-- Ordinary band jumps telescope to the first/last floor span. -/
 theorem ordinary_band_jump_sum_eq_floor_span
@@ -69,9 +70,7 @@ theorem ordinary_band_jump_sum_eq_floor_span
     Nat.floor (xs.getLastD a) - Nat.floor a := by
   have hfloorSorted :
       (Nat.floor a :: xs.map Nat.floor).Pairwise (· ≤ ·) := by
-    have h :=
-      hsorted.imp (fun _ _ hxy => Nat.floor_mono hxy)
-    simpa using h
+    exact floorLabels_pairwise a xs hsorted
   rw [successiveNatDiffsFrom_sum_eq_last_sub_first
     (Nat.floor a) (xs.map Nat.floor) hfloorSorted]
   rw [map_getLastD_eq]
@@ -81,9 +80,10 @@ wrap quotient is at most four. -/
 theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
     {V : Type*} [LinearOrder V] [Fintype V]
     {p : V → Plane} (hp : Function.Injective p)
+    {lam t delta c : ℝ}
     (hcap : AngleCap p lam)
     (C : ∀ i : V, CentreProjectiveCycle hp i)
-    {lam t delta c : ℝ} {n s : ℕ}
+ {n s : ℕ}
     (hcardV : Fintype.card V = 6)
     (hn5 : 5 ≤ n)
     (htpos : 0 < t)
@@ -103,7 +103,7 @@ theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
         (by linarith : delta < 1)
         hc0 hcpi i)
     (hspan :
-      ∀ R a xs,
+      ∀ (R : CentreCutRayCycle hp (C i) c) (a : ℝ) (xs : List ℝ),
         R.normalizedValues t = a :: xs →
         n - 3 ≤ Nat.floor (xs.getLastD a) - Nat.floor a) :
     ∃ R : CentreCutRayCycle hp (C i) c,
@@ -123,9 +123,21 @@ theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
       hdelta0 hdeltaHalf hc0 hcpi
       i hexp hsupport hbad
 
-  have hlistEq :
-      a :: xs = a' :: xs' := by
-    rw [← hvalues, hvalues']
+  have hpermRays : R.rays.Perm R'.rays :=
+    R.rays_perm_canonical.trans R'.rays_perm_canonical.symm
+  have hpermValues : (R.normalizedValues t).Perm (R'.normalizedValues t) := by
+    unfold CentreCutRayCycle.normalizedValues
+    exact hpermRays.map (cutNormalizedRayTheta hp t c i)
+  have hvaluesEq : R.normalizedValues t = R'.normalizedValues t :=
+    List.Perm.eq_of_pairwise
+      (fun x y _ _ hxy hyx => le_antisymm hxy hyx)
+      (R.normalizedValues_pairwise htpos.le)
+      (R'.normalizedValues_pairwise htpos.le) hpermValues
+  have hlistEq : a :: xs = a' :: xs' := by
+    calc
+      a :: xs = R.normalizedValues t := hvalues.symm
+      _ = R'.normalizedValues t := hvaluesEq
+      _ = a' :: xs' := hvalues'
   have haa : a = a' := (List.cons.inj hlistEq).1
   have hxx : xs = xs' := (List.cons.inj hlistEq).2
   subst a'
@@ -134,8 +146,7 @@ theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
   -- Both chosen cut cycles enumerate the same sorted values, so the ordinary
   -- tightness statement transfers to the first witness.
   have hvaluesRR :
-      R.normalizedValues t = R'.normalizedValues t := by
-    rw [hvalues, hvalues']
+      R.normalizedValues t = R'.normalizedValues t := hvaluesEq
   have hRaysValues :
       (successiveDiffsFrom a xs).map Nat.floor =
         (successiveDiffsFrom a xs).map Nat.floor := rfl
@@ -170,6 +181,10 @@ theorem cutSaturationBadAt_wrap_quotient_le_four_of_span_ge
     exact ordinary_band_jump_sum_eq_floor_span a xs hsorted
   have hspan0 := hspan R a xs hvalues
 
+  have hs4 : s ≤ 4 := by
+    have hcount := positiveCount_eq_add_mismatch_of_forall₂_le hdom
+    rw [hqPos, hbPos, hmismatch] at hcount
+    omega
   have hqOrdLower :
       n + s - 7 ≤ qOrd.sum := by
     rw [hbSpan] at hbandSum
