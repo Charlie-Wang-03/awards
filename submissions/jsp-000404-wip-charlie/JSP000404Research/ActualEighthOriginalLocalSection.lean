@@ -187,6 +187,60 @@ theorem actual_eighth_allwidth_payment_iff_unmatched_original_record_count
       (Q \ O).card + terminalTwinAvailableSurplus C exponent)
   constructor <;> intro h <;> omega
 
+
+/-- Canonical all-width partial payment INSIDE the ORIGINAL global
+eight-source credit type, without the low-bichromatic restriction.
+Every actual local exterior true hole is used exactly ONCE by a
+source-native original earliest-prior collision record. All unselected
+records and all other seven original debt classes are expressly left
+unpaid, hence the global eight-source AngleCap payment is still OPEN. -/
+theorem actual_eighth_allwidth_local_section_injects_into_global_credits
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    ∃ T : Finset (Fin n × Fin n × (Fin n → Bool)),
+      T ⊆ actualEarliestLossCollisionRecords C exponent choice ∧
+      T.image (fun a : Fin n × Fin n × (Fin n → Bool) =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1) =
+          actualLossEarliestEligibleLocalHoles C exponent choice ∧
+      ∃ allocate :
+        {a : Fin n × Fin n × (Fin n → Bool) // a ∈ T} →
+          actualExternalPaymentCredits C exponent choice,
+        Function.Injective allocate ∧
+        ∀ a, ∃ q : {q : Fin n → Bool //
+            q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice},
+          allocate a = Sum.inl q ∧
+          q.1 = flipBoolWordAt (flipBoolWordAt a.1.2.2 a.1.1) a.1.2.1 := by
+  classical
+  obtain ⟨T, hsub, himage, hinj⟩ :=
+    actual_eighth_allwidth_true_local_holes_have_original_section
+      C exponent choice
+  let f : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hreal (a : {a : Fin n × Fin n × (Fin n → Bool) // a ∈ T}) :
+      f a.1 ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+    have hm : f a.1 ∈ actualLossEarliestEligibleLocalHoles C exponent choice := by
+      rw [← himage]
+      exact Finset.mem_image.mpr ⟨a.1, a.2, rfl⟩
+    exact (Finset.mem_inter.mp hm).2
+  let hole (a : {a : Fin n × Fin n × (Fin n → Bool) // a ∈ T}) :
+      {q : Fin n → Bool //
+        q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice} :=
+    ⟨f a.1, hreal a⟩
+  let allocate (a : {a : Fin n × Fin n × (Fin n → Bool) // a ∈ T}) :
+      actualExternalPaymentCredits C exponent choice :=
+    Sum.inl (hole a)
+  have hInjective : Function.Injective allocate := by
+    intro a b hab
+    have hh : hole a = hole b := Sum.inl.inj hab
+    have hword : f a.1 = f b.1 := congrArg Subtype.val hh
+    exact Subtype.ext (hinj a.2 b.2 hword)
+  refine ⟨T, hsub, himage, allocate, hInjective, ?_⟩
+  intro a
+  exact ⟨hole a, rfl, rfl⟩
+
+#print axioms actual_eighth_allwidth_local_section_injects_into_global_credits
+
 #print axioms finite_image_has_source_native_nonreuse_section
 #print axioms actual_eighth_allwidth_true_local_holes_have_original_section
 #print axioms actual_eighth_allwidth_payment_iff_unmatched_original_record_count
