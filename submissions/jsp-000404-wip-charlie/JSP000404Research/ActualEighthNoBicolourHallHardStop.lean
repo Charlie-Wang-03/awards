@@ -338,6 +338,58 @@ theorem actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
     _ = (actualLossEarliestEligibleLocalHoles C exponent choice).card := by
       rw [actual_eighth_payable_records_image_eq_true_local_holes]
 
+
+/-- A SOURCE-TYPED, explicit, nonreusing assignment of every genuinely
+locally payable original eighth-debt record into the FIRST (TRUE
+external hole) summand of the ACTUAL global credit type. This does
+not allocate ANY of the other seven debt classes, nor any source
+whose opposite word is covered or translated-loss-captured. -/
+theorem actual_eighth_payable_records_have_real_credit_injection_of_biactive_le_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n, c ≠ d ∧ c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 3) :
+    ∃ allocation :
+        {a : Fin n × Fin n × (Fin n → Bool) //
+          a ∈ actualEighthLocallyPayableRecords C exponent choice} →
+          actualExternalPaymentCredits C exponent choice,
+      Function.Injective allocation ∧
+      ∀ a, ∃ h :
+          {q : Fin n → Bool //
+            q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice},
+        allocation a = Sum.inl h ∧
+        h.1 = flipBoolWordAt (flipBoolWordAt a.1.2.2 a.1.1) a.1.2.1 := by
+  classical
+  let opp : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  let hole (a : {a : Fin n × Fin n × (Fin n → Bool) //
+      a ∈ actualEighthLocallyPayableRecords C exponent choice}) :
+      {q : Fin n → Bool //
+        q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice} :=
+    ⟨opp a.1, (Finset.mem_filter.mp a.2).2⟩
+  let allocation (a : {a : Fin n × Fin n × (Fin n → Bool) //
+      a ∈ actualEighthLocallyPayableRecords C exponent choice}) :
+      actualExternalPaymentCredits C exponent choice :=
+    Sum.inl (hole a)
+  have hinjOn :=
+    actual_eighth_payable_records_injOn_of_biactive_card_le_three
+      C exponent choice hchoice hsmall
+  refine ⟨allocation, ?_, ?_⟩
+  · intro a b heq
+    have hsub : hole a = hole b := Sum.inl.inj heq
+    have hword : opp a.1 = opp b.1 :=
+      congrArg Subtype.val hsub
+    exact Subtype.ext (hinjOn a.2 b.2 hword)
+  · intro a
+    exact ⟨hole a, rfl, rfl⟩
+
+#print axioms actual_eighth_payable_records_have_real_credit_injection_of_biactive_le_three
+
 #print axioms actual_eighth_payable_records_image_eq_true_local_holes
 #print axioms actual_eighth_payable_records_injOn_of_biactive_card_le_three
 #print axioms actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
