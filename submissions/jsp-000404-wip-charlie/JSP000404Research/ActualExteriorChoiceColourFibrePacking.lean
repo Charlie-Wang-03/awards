@@ -142,7 +142,7 @@ theorem actual_true_exterior_fibre_le_bichromatic_away_from_one_chosen_colour
       exact hab (Subtype.ext heq)
     have htarget :
         flipBoolWordAt (flipBoolWordAt a.1.2.2 a.1.1) a.1.2.1 =
-        flipBoolWordAt (flipBoolWordAt b.1.2.2 b.1) b.1.2.1 :=
+        flipBoolWordAt (flipBoolWordAt b.1.2.2 b.1.1) b.1.2.1 :=
       (hm a).2.trans (hm b).2.symm
     by_cases ha0 : a.1.1 = c0
     · by_cases hb0 : b.1.1 = c0
