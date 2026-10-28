@@ -55,7 +55,7 @@ theorem finite_image_has_source_native_nonreuse_section
       have hqz : q = z.1 := by
         calc
           q = f a := hfa.symm
-          _ = f (sec z) := congrArg f haz
+          _ = f (sec z) := congrArg f haz.symm
           _ = z.1 := (hsec z).2
       rw [hqz]
       exact z.2
@@ -75,9 +75,9 @@ theorem finite_image_has_source_native_nonreuse_section
       apply Subtype.ext
       calc
         qa.1 = f (sec qa) := (hsec qa).2.symm
-        _ = f a := congrArg f haeq.symm
+        _ = f a := congrArg f haeq
         _ = f b := hab
-        _ = f (sec qb) := congrArg f hbeq
+        _ = f (sec qb) := congrArg f hbeq.symm
         _ = qb.1 := (hsec qb).2
     calc
       a = sec qa := haeq.symm
