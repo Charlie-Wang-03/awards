@@ -225,6 +225,123 @@ theorem actual_eighth_exterior_no_record_reuse_of_biactive_card_le_three
       C exponent choice hchoice a b ha hb hab hopposite hq
   omega
 
+
+/-- The ORIGINAL eighth-debt records whose literal opposite-corner word
+is a genuine outside-translated TRUE hole.  This is a source-native
+subset of the already-certified earliest-prior collision records,
+not an anonymous cardinality proxy or a new credit supply. -/
+noncomputable def actualEighthLocallyPayableRecords
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    Finset (Fin n × Fin n × (Fin n → Bool)) :=
+  (actualEarliestLossCollisionRecords C exponent choice).filter
+    (fun a =>
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 ∈
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice)
+
+/-- Exactly, not merely by subset inclusion, the opposite images of
+locally payable ORIGINAL records are the already defined actual
+eligible eighth-lane TRUE exterior holes. -/
+theorem actual_eighth_payable_records_image_eq_true_local_holes
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n) :
+    (actualEighthLocallyPayableRecords C exponent choice).image
+      (fun a : Fin n × Fin n × (Fin n → Bool) =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1) =
+      actualLossEarliestEligibleLocalHoles C exponent choice := by
+  classical
+  ext q
+  constructor
+  · intro hq
+    obtain ⟨a, ha, hqeq⟩ := Finset.mem_image.mp hq
+    obtain ⟨hrecord, hreal⟩ := Finset.mem_filter.mp ha
+    have hcandidate :
+        q ∈ actualLossEarliestOppositeCandidateWords C exponent choice := by
+      apply Finset.mem_image.mpr
+      exact ⟨a, hrecord, hqeq⟩
+    have hcredit :
+        q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+      simpa only [hqeq] using hreal
+    exact Finset.mem_inter.mpr ⟨hcandidate, hcredit⟩
+  · intro hq
+    obtain ⟨hcandidate, hcredit⟩ := Finset.mem_inter.mp hq
+    change q ∈
+      (actualEarliestLossCollisionRecords C exponent choice).image
+        (fun a : Fin n × Fin n × (Fin n → Bool) =>
+          flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)
+        at hcandidate
+    obtain ⟨a, ha, hqeq⟩ := Finset.mem_image.mp hcandidate
+    apply Finset.mem_image.mpr
+    refine ⟨a, ?_, hqeq⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨ha, ?_⟩
+    simpa only [hqeq] using hcredit
+
+/-- With at most THREE bichromatic projected-loss centres, each
+genuine exterior eighth candidate has at most ONE original collision
+record preimage. Thus the source-native opposite map is injective on
+the real locally payable records; covered/nonlocal opposite words
+are explicitly excluded from this claim. -/
+theorem actual_eighth_payable_records_injOn_of_biactive_card_le_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n, c ≠ d ∧ c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 3) :
+    Set.InjOn
+      (fun a : Fin n × Fin n × (Fin n → Bool) =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1)
+      (actualEighthLocallyPayableRecords C exponent choice : Set _) := by
+  classical
+  intro a ha b hb heq
+  change a ∈ actualEighthLocallyPayableRecords C exponent choice at ha
+  change b ∈ actualEighthLocallyPayableRecords C exponent choice at hb
+  obtain ⟨haRecord, haCredit⟩ := Finset.mem_filter.mp ha
+  obtain ⟨hbRecord, _⟩ := Finset.mem_filter.mp hb
+  exact actual_eighth_exterior_no_record_reuse_of_biactive_card_le_three
+    C exponent choice hchoice hsmall a b haRecord hbRecord heq haCredit
+
+/-- A genuine full, NONREUSING LOCAL payment for the entire subfamily
+of actually payable ORIGINAL eighth-lane collision records: there is
+one distinct TRUE exterior hole for each source, not just an upper
+bound on the hole count. The other original debts and the unpayable
+eighth records remain outside this local certificate. -/
+theorem actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n, c ≠ d ∧ c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 3) :
+    (actualEighthLocallyPayableRecords C exponent choice).card =
+      (actualLossEarliestEligibleLocalHoles C exponent choice).card := by
+  classical
+  let f : (Fin n × Fin n × (Fin n → Bool)) → (Fin n → Bool) :=
+    fun a => flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1
+  have hinj : Set.InjOn f
+      (actualEighthLocallyPayableRecords C exponent choice : Set _) :=
+    actual_eighth_payable_records_injOn_of_biactive_card_le_three
+      C exponent choice hchoice hsmall
+  calc
+    (actualEighthLocallyPayableRecords C exponent choice).card =
+        ((actualEighthLocallyPayableRecords C exponent choice).image f).card :=
+      (Finset.card_image_of_injOn hinj).symm
+    _ = (actualLossEarliestEligibleLocalHoles C exponent choice).card := by
+      rw [actual_eighth_payable_records_image_eq_true_local_holes]
+
+#print axioms actual_eighth_payable_records_image_eq_true_local_holes
+#print axioms actual_eighth_payable_records_injOn_of_biactive_card_le_three
+#print axioms actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
+
 #print axioms actual_eighth_exterior_no_record_reuse_of_biactive_card_le_three
 
 #print axioms actual_eighth_square_hall_impossible_of_no_bicolour_pair
