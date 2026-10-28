@@ -134,7 +134,8 @@ theorem actual_eight_original_genuine_eighth_prepayment_exists
     exact ⟨x.1, hxd.symm⟩
   have hsource (d : {d : actualEightSourceEarliestDebtTokens C exponent choice //
       d ∈ P}) : ∃ x : E, tag x = d.1 := by
-    exact Finset.mem_image.mp d.2
+    obtain ⟨x, _hx, hxd⟩ := Finset.mem_image.mp d.2
+    exact ⟨x, hxd⟩
   let choose (d : {d : actualEightSourceEarliestDebtTokens C exponent choice //
       d ∈ P}) : E := Classical.choose (hsource d)
   have hchoose (d : {d : actualEightSourceEarliestDebtTokens C exponent choice //
