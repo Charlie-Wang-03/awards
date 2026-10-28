@@ -116,7 +116,7 @@ theorem actual_eight_original_genuine_eighth_prepayment_exists
           q ∈ lossLedgerOutsideTranslatedTrueHoles C exponent choice},
           prepay d = Sum.inl q) := by
   classical
-  obtain ⟨T, _hsub, _himage, local, hlocalinj, hlocalreal⟩ :=
+  obtain ⟨T, _hsub, _himage, localPay, hlocalinj, hlocalreal⟩ :=
     actual_eighth_allwidth_dependent_tokens_local_credit_injection
       C exponent choice
   let e := actualEarliestLossDebtEquivCollisionRecord C exponent choice
@@ -142,7 +142,7 @@ theorem actual_eight_original_genuine_eighth_prepayment_exists
       d ∈ P}) : tag (choose d) = d.1 := Classical.choose_spec (hsource d)
   let prepay (d : {d : actualEightSourceEarliestDebtTokens C exponent choice //
       d ∈ P}) : actualExternalPaymentCredits C exponent choice :=
-    local (choose d)
+    localPay (choose d)
   have hpreinj : Function.Injective prepay := by
     intro a b hab
     have hab' : choose a = choose b := hlocalinj hab
