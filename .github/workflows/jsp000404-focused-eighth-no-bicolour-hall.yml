@@ -7,6 +7,7 @@ on:
     paths:
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEighthNoBicolourHallHardStop.lean"
       - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEighthTokenLocalPrepayment.lean"
+      - "submissions/jsp-000404-wip-charlie/JSP000404Research/ActualEightSourcePrepaidResidualMatching.lean"
       - ".github/workflows/jsp000404-focused-eighth-no-bicolour-hall.yml"
   workflow_dispatch:
 
@@ -63,7 +64,7 @@ jobs:
         run: lake exe cache get
       - name: Kernel-check actual source eighth Hall obstruction and remaining nonlocal debt
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake build JSP000404Research.ActualEighthNoBicolourHallHardStop JSP000404Research.ActualEighthTokenLocalPrepayment
+        run: lake build JSP000404Research.ActualEighthNoBicolourHallHardStop JSP000404Research.ActualEighthTokenLocalPrepayment JSP000404Research.ActualEightSourcePrepaidResidualMatching
       - name: Scope
         if: always()
         run: echo 'Negative eighth-lane local Hall obstruction only; global eight-source payment remains open.'
