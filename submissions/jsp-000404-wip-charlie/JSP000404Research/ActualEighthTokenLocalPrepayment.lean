@@ -59,8 +59,10 @@ theorem actual_eighth_allwidth_dependent_tokens_local_credit_injection
     fun x => ⟨(e x.1).1, x.2⟩
   have hrecinj : Function.Injective asRecord := by
     intro x y hxy
-    have hval : (e x.1).1 = (e y.1).1 :=
-      congrArg Subtype.val hxy
+    have hval : (e x.1).1 = (e y.1).1 := by
+      exact congrArg
+        (fun a : {a : Fin n × Fin n × (Fin n → Bool) // a ∈ T} => a.1)
+        hxy
     have heq : e x.1 = e y.1 := Subtype.ext hval
     exact Subtype.ext (e.injective heq)
   let payment :
