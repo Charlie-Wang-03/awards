@@ -390,6 +390,74 @@ theorem actual_eighth_payable_records_have_real_credit_injection_of_biactive_le_
 
 #print axioms actual_eighth_payable_records_have_real_credit_injection_of_biactive_le_three
 
+
+/-- EXACT original eight-source remaining-payment gate with at most
+three genuine bichromatic projected-loss centres. The eighth-source
+debt that remains AFTER the explicitly constructed injective TRUE-hole
+payment is the literal finite set of original earliest-prior records
+whose opposite target is NOT a true external credit.
+
+This is an equivalence, NOT an assertion that AngleCap pays the
+unmatched source records or the other seven original debt families.
+No fake or double-used hole/surplus credits are introduced. -/
+theorem actual_eighth_biactive_le_three_payment_iff_unpaid_original_records
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n, c ≠ d ∧ c ∈ retainedActive C v ∧
+          d ∈ retainedActive C v)).card ≤ 3) :
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        translatedLossDuplicateDebt C exponent choice ≤
+      (lossLedgerOutsideTranslatedTrueHoles C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) ↔
+    (terminalTwinOtherFiveDebt C exponent +
+        ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+          (lossCoveredBlockerTripleWords C)).card +
+        ((actualEarliestLossCollisionRecords C exponent choice) \
+          actualEighthLocallyPayableRecords C exponent choice).card ≤
+      ((lossLedgerOutsideTranslatedTrueHoles C exponent choice) \
+        actualLossEarliestOppositeCandidateWords C exponent choice).card +
+        terminalTwinAvailableSurplus C exponent) := by
+  classical
+  let S := actualEarliestLossCollisionRecords C exponent choice
+  let P := actualEighthLocallyPayableRecords C exponent choice
+  let O := actualLossEarliestOppositeCandidateWords C exponent choice
+  let Q := lossLedgerOutsideTranslatedTrueHoles C exponent choice
+  have hsubset : P ⊆ S := by
+    intro a ha
+    exact (Finset.mem_filter.mp ha).1
+  have hpart := Finset.card_sdiff_add_card_inter S P
+  have hinter : S ∩ P = P := Finset.inter_eq_right.mpr hsubset
+  rw [hinter] at hpart
+  have hholes := Finset.card_sdiff_add_card_inter Q O
+  have hpayable : P.card = (Q ∩ O).card := by
+    rw [Finset.inter_comm]
+    exact actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
+      C exponent choice hchoice hsmall
+  have hsource : translatedLossDuplicateDebt C exponent choice = S.card :=
+    (actual_earliest_collision_records_card_eq_duplicate_debt
+      C exponent choice).symm
+  change
+    (terminalTwinOtherFiveDebt C exponent +
+      ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+        (lossCoveredBlockerTripleWords C)).card +
+      translatedLossDuplicateDebt C exponent choice ≤
+      Q.card + terminalTwinAvailableSurplus C exponent) ↔
+    (terminalTwinOtherFiveDebt C exponent +
+      ((chosenLossActualEdgeBlockerTriples C exponent choice).biUnion
+        (lossCoveredBlockerTripleWords C)).card +
+      (S \ P).card ≤
+      (Q \ O).card + terminalTwinAvailableSurplus C exponent)
+  constructor <;> intro h <;> omega
+
+#print axioms actual_eighth_biactive_le_three_payment_iff_unpaid_original_records
+
 #print axioms actual_eighth_payable_records_image_eq_true_local_holes
 #print axioms actual_eighth_payable_records_injOn_of_biactive_card_le_three
 #print axioms actual_eighth_payable_records_card_eq_real_holes_of_biactive_le_three
