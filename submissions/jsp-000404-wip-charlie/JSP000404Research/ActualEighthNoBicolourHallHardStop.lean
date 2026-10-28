@@ -190,6 +190,43 @@ theorem actual_eighth_constant_biactive_choice_singleton_hall_deficit
 #print axioms actual_eighth_constant_biactive_choice_each_square_has_no_exterior
 #print axioms actual_eighth_constant_biactive_choice_singleton_hall_deficit
 
+
+/-- A sharpened original-source TRUE-hole nonreuse gate. For ANY
+Boolean width and ANY original exponent data, if at most THREE
+projected-loss centres have two different retained-active colours,
+the original earliest-prior opposite map cannot send TWO DISTINCT
+records to the SAME GENUINE exterior true hole. This follows from
+the FOUR-bichromatic-owner theorem; covered or translated candidates
+are NOT asserted injective, and the other seven debts remain. -/
+theorem actual_eighth_exterior_no_record_reuse_of_biactive_card_le_three
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsmall :
+      ((projectedLossVertices C exponent).filter (fun v =>
+        ∃ c d : Fin n,
+          c ≠ d ∧ c ∈ retainedActive C v ∧
+            d ∈ retainedActive C v)).card ≤ 3)
+    (a b : Fin n × Fin n × (Fin n → Bool))
+    (ha : a ∈ actualEarliestLossCollisionRecords C exponent choice)
+    (hb : b ∈ actualEarliestLossCollisionRecords C exponent choice)
+    (hopposite :
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 =
+        flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1)
+    (hq :
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 ∈
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    a = b := by
+  by_contra hab
+  have hfour :=
+    actual_eighth_reused_exterior_forces_four_biactive_loss_centres
+      C exponent choice hchoice a b ha hb hab hopposite hq
+  omega
+
+#print axioms actual_eighth_exterior_no_record_reuse_of_biactive_card_le_three
+
 #print axioms actual_eighth_square_hall_impossible_of_no_bicolour_pair
 #print axioms actual_eighth_no_bicolour_global_payment_requires_nonlocal_candidates
 
