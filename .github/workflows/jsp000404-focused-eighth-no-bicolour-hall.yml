@@ -48,7 +48,16 @@ jobs:
       - name: Resolve dependencies if uncached
         if: steps.lake-packages.outputs.cache-hit != 'true'
         working-directory: submissions/jsp-000404-wip-charlie
-        run: lake update
+        run: |
+          for attempt in 1 2 3 4; do
+            if lake update; then
+              exit 0
+            fi
+            echo "Lean/Lake dependency download attempt ${attempt} failed; retrying."
+            sleep 10
+          done
+          echo "Dependency resolution failed after four attempts." >&2
+          exit 1
       - name: Restore pinned Mathlib oleans
         working-directory: submissions/jsp-000404-wip-charlie
         run: lake exe cache get
