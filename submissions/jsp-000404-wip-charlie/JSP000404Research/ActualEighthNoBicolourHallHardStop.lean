@@ -138,7 +138,7 @@ theorem actual_eighth_constant_biactive_choice_each_square_has_no_exterior
           lossLedgerOutsideTranslatedTrueHoles C exponent choice) = ∅ := by
     rw [actual_earliest_local_holes_eq_eligible_candidates]
     exact hzero
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro q hq
   have hwholemem : q ∈
       (actualEarliestLossCollisionRecords C exponent choice).biUnion
@@ -184,7 +184,7 @@ theorem actual_eighth_constant_biactive_choice_singleton_hall_deficit
   refine ⟨{a}, ?_, ?_, ?_⟩
   · simp [ha]
   · simp
-  · simp only [Finset.biUnion_singleton, hzero]
+  · simp only [Finset.singleton_biUnion, hzero]
     simp
 
 #print axioms actual_eighth_constant_biactive_choice_each_square_has_no_exterior
