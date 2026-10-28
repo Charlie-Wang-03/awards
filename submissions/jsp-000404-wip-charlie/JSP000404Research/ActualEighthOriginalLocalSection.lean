@@ -163,7 +163,9 @@ theorem actual_eighth_allwidth_payment_iff_unmatched_original_record_count
         (Finset.card_image_of_injOn hinj).symm
       _ = (actualLossEarliestEligibleLocalHoles C exponent choice).card :=
         congrArg Finset.card himage
-      _ = (Q ∩ O).card := by rw [Finset.inter_comm]
+      _ = (Q ∩ O).card := by
+        change (O ∩ Q).card = (Q ∩ O).card
+        exact congrArg Finset.card (Finset.inter_comm O Q)
   have hsplit : (S \ T).card + T.card = S.card := by
     have h := Finset.card_sdiff_add_card_inter S T
     rw [Finset.inter_eq_right.mpr hsub] at h
