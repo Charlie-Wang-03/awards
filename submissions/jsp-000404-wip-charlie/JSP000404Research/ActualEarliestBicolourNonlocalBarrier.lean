@@ -398,6 +398,127 @@ theorem actual_eighth_exterior_forces_two_biactive_choice_colours
   change 2 ≤ (T.image choice).card
   omega
 
+
+/-- If TWO genuinely distinct original earliest-prior collision records
+claim the SAME TRUE EXTERIOR eighth-lane opposite candidate, their four
+original source owners must be DISTINCT and EACH must retain TWO
+different active colours. Hence a locally reused real exterior hole
+requires at least FOUR bichromatic actual loss centres, not merely four
+loss centres. No exponent upper bound or AngleCap is assumed. -/
+theorem actual_eighth_reused_exterior_forces_four_biactive_loss_centres
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (a b : Fin n × Fin n × (Fin n → Bool))
+    (ha : a ∈ actualEarliestLossCollisionRecords C exponent choice)
+    (hb : b ∈ actualEarliestLossCollisionRecords C exponent choice)
+    (hab : a ≠ b)
+    (hopposite :
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 =
+        flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1)
+    (hq :
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 ∈
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    4 ≤ ((projectedLossVertices C exponent).filter (fun v =>
+      ∃ c d : Fin n,
+        c ≠ d ∧ c ∈ retainedActive C v ∧ d ∈ retainedActive C v)).card := by
+  classical
+  obtain ⟨v, u, hv, hu, hw, hz⟩ :=
+    actual_earliest_record_has_two_word_owners C exponent choice a ha
+  obtain ⟨x, y, hx, hy, hxw, hyw⟩ :=
+    actual_earliest_record_has_two_word_owners C exponent choice b hb
+  have hqB :
+      flipBoolWordAt (flipBoolWordAt b.2.2 b.1) b.2.1 ∈
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+    rw [← hopposite]
+    exact hq
+  have havalid : a.1 ≠ a.2.1 :=
+    (actual_earliest_loss_collision_record_valid C exponent choice a ha).1
+  have hbvalid : b.1 ≠ b.2.1 :=
+    (actual_earliest_loss_collision_record_valid C exponent choice b hb).1
+  have hvdata := (mem_lossCoordinateSlice C exponent choice a.1 v).mp hv
+  have hudata := (mem_lossCoordinateSlice C exponent choice a.2.1 u).mp hu
+  have hxdata := (mem_lossCoordinateSlice C exponent choice b.1 x).mp hx
+  have hydata := (mem_lossCoordinateSlice C exponent choice b.2.1 y).mp hy
+  have hvc : a.1 ∈ retainedActive C v := by
+    rw [← hvdata.2]
+    exact hchoice v hvdata.1
+  have huc : a.2.1 ∈ retainedActive C u := by
+    rw [← hudata.2]
+    exact hchoice u hudata.1
+  have hxc : b.1 ∈ retainedActive C x := by
+    rw [← hxdata.2]
+    exact hchoice x hxdata.1
+  have hyc : b.2.1 ∈ retainedActive C y := by
+    rw [← hydata.2]
+    exact hchoice y hydata.1
+  have hvd : a.2.1 ∈ retainedActive C v :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice a ha hq v a.1 (Or.inl rfl) hv hw).1 rfl
+  have hud : a.1 ∈ retainedActive C u :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice a ha hq u a.2.1 (Or.inr rfl) hu hz).2 rfl
+  have hxd : b.2.1 ∈ retainedActive C x :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice b hb hqB x b.1 (Or.inl rfl) hx hxw).1 rfl
+  have hyd : b.1 ∈ retainedActive C y :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice b hb hqB y b.2.1 (Or.inr rfl) hy hyw).2 rfl
+  have hvu : v ≠ u := by
+    intro heq
+    have hc := congrArg choice heq
+    rw [hvdata.2, hudata.2] at hc
+    exact havalid hc
+  have hxy : x ≠ y := by
+    intro heq
+    have hc := congrArg choice heq
+    rw [hxdata.2, hydata.2] at hc
+    exact hbvalid hc
+  have hvx : v ≠ x :=
+    actual_any_width_exterior_same_opposite_distinct_records_owner_disjoint
+      C exponent choice a b ha hb hab hopposite hq
+      v x a.1 b.1 (Or.inl rfl) (Or.inl rfl) hv hx hw hxw
+  have hvy : v ≠ y :=
+    actual_any_width_exterior_same_opposite_distinct_records_owner_disjoint
+      C exponent choice a b ha hb hab hopposite hq
+      v y a.1 b.2.1 (Or.inl rfl) (Or.inr rfl) hv hy hw hyw
+  have hux : u ≠ x :=
+    actual_any_width_exterior_same_opposite_distinct_records_owner_disjoint
+      C exponent choice a b ha hb hab hopposite hq
+      u x a.2.1 b.1 (Or.inr rfl) (Or.inl rfl) hu hx hz hxw
+  have huy : u ≠ y :=
+    actual_any_width_exterior_same_opposite_distinct_records_owner_disjoint
+      C exponent choice a b ha hb hab hopposite hq
+      u y a.2.1 b.2.1 (Or.inr rfl) (Or.inr rfl) hu hy hz hyw
+  let T : Finset V := (projectedLossVertices C exponent).filter (fun z =>
+    ∃ c d : Fin n,
+      c ≠ d ∧ c ∈ retainedActive C z ∧ d ∈ retainedActive C z)
+  have hvT : v ∈ T :=
+    Finset.mem_filter.mpr ⟨hvdata.1, ⟨a.1,a.2.1,havalid,hvc,hvd⟩⟩
+  have huT : u ∈ T :=
+    Finset.mem_filter.mpr ⟨hudata.1, ⟨a.1,a.2.1,havalid,hud,huc⟩⟩
+  have hxT : x ∈ T :=
+    Finset.mem_filter.mpr ⟨hxdata.1, ⟨b.1,b.2.1,hbvalid,hxc,hxd⟩⟩
+  have hyT : y ∈ T :=
+    Finset.mem_filter.mpr ⟨hydata.1, ⟨b.1,b.2.1,hbvalid,hyd,hyc⟩⟩
+  have hsub : ({v,u,x,y} : Finset V) ⊆ T := by
+    intro z hzmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hzmem
+    rcases hzmem with rfl | rfl | rfl | rfl
+    · exact hvT
+    · exact huT
+    · exact hxT
+    · exact hyT
+  have hfour : ({v,u,x,y} : Finset V).card = 4 := by
+    simp [hvu,hxy,hvx,hvy,hux,huy]
+  have hle := Finset.card_le_card hsub
+  change 4 ≤ T.card
+  omega
+
+#print axioms actual_eighth_reused_exterior_forces_four_biactive_loss_centres
+
 #print axioms actual_eighth_exterior_forces_two_biactive_choice_colours
 
 #print axioms actual_eighth_exterior_has_distinct_choice_biactive_centres
