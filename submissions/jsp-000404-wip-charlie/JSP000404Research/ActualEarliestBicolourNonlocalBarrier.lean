@@ -250,6 +250,107 @@ theorem actual_eighth_all_nonlocal_of_biactive_card_le_one
       simp at hboth
     exact Finset.mem_sdiff.mpr ⟨hq, hnot⟩
 
+/-- A stronger source-native geometric *necessary* witness: the two
+bichromatic original loss centres must have DISTINCT chosen loss
+colours. This rules out genuine local exterior eighth-credit not only
+with <=1 biactive centre but also when many biactive centres exist
+and every such centre chooses the SAME original colour. -/
+theorem actual_eighth_exterior_has_distinct_choice_biactive_centres
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (q : Fin n → Bool)
+    (hq : q ∈ actualLossEarliestOppositeCandidateWords C exponent choice ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    ∃ v u : V,
+      v ≠ u ∧
+      v ∈ projectedLossVertices C exponent ∧
+      u ∈ projectedLossVertices C exponent ∧
+      choice v ≠ choice u ∧
+      ∃ c d : Fin n,
+        c ≠ d ∧
+        c ∈ retainedActive C v ∧
+        d ∈ retainedActive C v ∧
+        c ∈ retainedActive C u ∧
+        d ∈ retainedActive C u := by
+  classical
+  obtain ⟨hsrc, hhole⟩ := Finset.mem_inter.mp hq
+  change q ∈
+    (actualEarliestLossCollisionRecords C exponent choice).image
+      (fun a : Fin n × Fin n × (Fin n → Bool) =>
+        flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1) at hsrc
+  obtain ⟨a, ha, heq⟩ := Finset.mem_image.mp hsrc
+  have hreal :
+      flipBoolWordAt (flipBoolWordAt a.2.2 a.1) a.2.1 ∈
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice := by
+    simpa only [heq] using hhole
+  obtain ⟨v, u, hv, hu, hw, hz⟩ :=
+    actual_earliest_record_has_two_word_owners C exponent choice a ha
+  have hvdata := (mem_lossCoordinateSlice C exponent choice a.1 v).mp hv
+  have hudata := (mem_lossCoordinateSlice C exponent choice a.2.1 u).mp hu
+  have hvc : a.1 ∈ retainedActive C v := by
+    rw [← hvdata.2]
+    exact hchoice v hvdata.1
+  have huc : a.2.1 ∈ retainedActive C u := by
+    rw [← hudata.2]
+    exact hchoice u hudata.1
+  have hvd : a.2.1 ∈ retainedActive C v :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice a ha hreal v a.1 (Or.inl rfl) hv hw).1 rfl
+  have hucfirst : a.1 ∈ retainedActive C u :=
+    (actual_earliest_exterior_record_owner_other_active
+      C exponent choice a ha hreal u a.2.1 (Or.inr rfl) hu hz).2 rfl
+  have hcd : a.1 ≠ a.2.1 :=
+    (actual_earliest_loss_collision_record_valid
+      C exponent choice a ha).1
+  have hchoiceNe : choice v ≠ choice u := by
+    rw [hvdata.2, hudata.2]
+    exact hcd
+  have hne : v ≠ u := by
+    intro heq
+    exact hchoiceNe (congrArg choice heq)
+  exact ⟨v, u, hne, hvdata.1, hudata.1, hchoiceNe,
+    a.1, a.2.1, hcd, hvc, hvd, hucfirst, huc⟩
+
+/-- Further genuine local-eligibility closure. Even arbitrarily many
+bichromatic projected-loss centres cannot generate an ACTUAL eligible
+eighth-debt exterior hole when their chosen colours are all equal.
+This is strictly less restrictive than requiring ≤1 such centre. -/
+theorem actual_eighth_no_local_exterior_of_biactive_choice_constant
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsame : ∀ v u : V,
+      v ∈ projectedLossVertices C exponent →
+      u ∈ projectedLossVertices C exponent →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C v ∧ d ∈ retainedActive C v) →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C u ∧ d ∈ retainedActive C u) →
+      choice v = choice u) :
+    actualLossEarliestOppositeCandidateWords C exponent choice ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice = ∅ := by
+  classical
+  ext q
+  constructor
+  · intro hq
+    obtain ⟨v, u, _hne, hv, hu, hchosen, c, d,
+      hcd, hvc, hvd, huc, hud⟩ :=
+      actual_eighth_exterior_has_distinct_choice_biactive_centres
+        C exponent choice hchoice q hq
+    exact (hchosen (hsame v u hv hu
+      ⟨c, d, hcd, hvc, hvd⟩
+      ⟨c, d, hcd, huc, hud⟩)).elim
+  · intro hq
+    simp at hq
+
+#print axioms actual_eighth_exterior_has_distinct_choice_biactive_centres
+#print axioms actual_eighth_no_local_exterior_of_biactive_choice_constant
+
 #print axioms actual_eighth_no_local_exterior_of_biactive_card_le_one
 #print axioms actual_eighth_all_nonlocal_of_biactive_card_le_one
 
