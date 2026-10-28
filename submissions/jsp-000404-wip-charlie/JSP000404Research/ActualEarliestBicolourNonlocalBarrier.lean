@@ -178,7 +178,7 @@ theorem actual_eighth_exterior_candidate_forces_two_biactive_centres
       rw [hwu']
       exact huT
   have htwo : ({v, u} : Finset V).card = 2 := by
-    simp [hne, hne.symm]
+    simp [hne]
   have hle : ({v, u} : Finset V).card ≤ T.card :=
     Finset.card_le_card hsubset
   change 2 ≤ T.card
@@ -211,7 +211,7 @@ theorem actual_eighth_no_local_exterior_of_biactive_card_le_one
         C exponent choice hchoice q hq
     omega
   · intro hq
-    exact (Finset.not_mem_empty q hq).elim
+    simp at hq
 
 /-- In the same count-controlled subcase, ALL genuine original eighth
 opposite candidates lie in the actual nonlocal-ineligible deficit
@@ -247,7 +247,7 @@ theorem actual_eighth_all_nonlocal_of_biactive_card_le_one
             lossLedgerOutsideTranslatedTrueHoles C exponent choice :=
         Finset.mem_inter.mpr ⟨hq, hh⟩
       rw [hEmpty] at hboth
-      exact Finset.not_mem_empty q hboth
+      simp at hboth
     exact Finset.mem_sdiff.mpr ⟨hq, hnot⟩
 
 #print axioms actual_eighth_no_local_exterior_of_biactive_card_le_one
