@@ -103,6 +103,93 @@ theorem actual_eighth_no_bicolour_global_payment_requires_nonlocal_candidates
   rw [hnonlocal] at hremaining
   exact hremaining
 
+
+/-- A stronger, directly original-source local obstruction. It is enough
+that every genuinely bichromatic loss centre has the SAME selected loss
+colour; unlike the earlier hypothesis, TWO or more bichromatic centres
+are explicitly allowed. Every actual earliest-prior collision record
+then has ZERO spendable true exterior holes in its own square. -/
+theorem actual_eighth_constant_biactive_choice_each_square_has_no_exterior
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsame : ∀ v u : V,
+      v ∈ projectedLossVertices C exponent →
+      u ∈ projectedLossVertices C exponent →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C v ∧ d ∈ retainedActive C v) →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C u ∧ d ∈ retainedActive C u) →
+      choice v = choice u)
+    (a : Fin n × Fin n × (Fin n → Bool))
+    (ha : a ∈ actualEarliestLossCollisionRecords C exponent choice) :
+    lossCollisionSquareWords n a ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice = ∅ := by
+  classical
+  have hzero :
+      actualLossEarliestEligibleLocalHoles C exponent choice = ∅ :=
+    actual_eighth_no_local_exterior_of_biactive_choice_constant
+      C exponent choice hchoice hsame
+  have hwhole :
+      (actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun b => lossCollisionSquareWords n b ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice) = ∅ := by
+    rw [actual_earliest_local_holes_eq_eligible_candidates]
+    exact hzero
+  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  intro q hq
+  have hwholemem : q ∈
+      (actualEarliestLossCollisionRecords C exponent choice).biUnion
+        (fun b => lossCollisionSquareWords n b ∩
+          lossLedgerOutsideTranslatedTrueHoles C exponent choice) :=
+    Finset.mem_biUnion.mpr ⟨a, ha, hq⟩
+  rw [hwhole] at hwholemem
+  simp at hwholemem
+
+/-- A SINGLE genuine original collision record is already an
+inclusion-minimal one-credit local Hall deficit in the chosen-colour-
+constant regime. This is strictly sharper than merely extracting an
+unspecified finite unit deficit from failed whole-family Hall.
+It concerns only local exterior square credits, not nonlocal or surplus
+resources needed for global eight-source payment. -/
+theorem actual_eighth_constant_biactive_choice_singleton_hall_deficit
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (hsame : ∀ v u : V,
+      v ∈ projectedLossVertices C exponent →
+      u ∈ projectedLossVertices C exponent →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C v ∧ d ∈ retainedActive C v) →
+      (∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C u ∧ d ∈ retainedActive C u) →
+      choice v = choice u)
+    (hnonempty :
+      (actualEarliestLossCollisionRecords C exponent choice).Nonempty) :
+    ∃ T : Finset (Fin n × Fin n × (Fin n → Bool)),
+      T ⊆ actualEarliestLossCollisionRecords C exponent choice ∧
+      T.card = 1 ∧
+      (T.biUnion (fun b => lossCollisionSquareWords n b ∩
+        lossLedgerOutsideTranslatedTrueHoles C exponent choice)).card +
+        1 = T.card := by
+  classical
+  obtain ⟨a, ha⟩ := hnonempty
+  have hzero :=
+    actual_eighth_constant_biactive_choice_each_square_has_no_exterior
+      C exponent choice hchoice hsame a ha
+  refine ⟨{a}, ?_, ?_, ?_⟩
+  · simp [ha]
+  · simp
+  · simp only [Finset.biUnion_singleton, hzero]
+    simp
+
+#print axioms actual_eighth_constant_biactive_choice_each_square_has_no_exterior
+#print axioms actual_eighth_constant_biactive_choice_singleton_hall_deficit
+
 #print axioms actual_eighth_square_hall_impossible_of_no_bicolour_pair
 #print axioms actual_eighth_no_bicolour_global_payment_requires_nonlocal_candidates
 
