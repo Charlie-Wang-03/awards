@@ -348,6 +348,58 @@ theorem actual_eighth_no_local_exterior_of_biactive_choice_constant
   · intro hq
     simp at hq
 
+/-- Quantitative source-native form of the distinct-choice obstruction:
+a genuinely eligible exterior eighth candidate forces at least TWO
+DIFFERENT chosen loss colours among the genuinely bichromatic original
+projected-loss centres. Counting vertices alone is strictly weaker. -/
+theorem actual_eighth_exterior_forces_two_biactive_choice_colours
+    {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
+    (C : OrderedEdgeColoring V (n + 1))
+    (exponent : V → ℕ) (choice : V → Fin n)
+    (hchoice : ∀ v ∈ projectedLossVertices C exponent,
+      choice v ∈ retainedActive C v)
+    (q : Fin n → Bool)
+    (hq : q ∈ actualLossEarliestOppositeCandidateWords C exponent choice ∩
+      lossLedgerOutsideTranslatedTrueHoles C exponent choice) :
+    2 ≤ (((projectedLossVertices C exponent).filter (fun v =>
+      ∃ c d : Fin n, c ≠ d ∧
+        c ∈ retainedActive C v ∧
+        d ∈ retainedActive C v)).image choice).card := by
+  classical
+  obtain ⟨v, u, _hne, hv, hu, hchoiceNe, c, d,
+    hcd, hvc, hvd, huc, hud⟩ :=
+    actual_eighth_exterior_has_distinct_choice_biactive_centres
+      C exponent choice hchoice q hq
+  let T : Finset V := (projectedLossVertices C exponent).filter (fun w =>
+    ∃ x y : Fin n, x ≠ y ∧
+      x ∈ retainedActive C w ∧
+      y ∈ retainedActive C w)
+  have hvT : v ∈ T :=
+    Finset.mem_filter.mpr ⟨hv, ⟨c, d, hcd, hvc, hvd⟩⟩
+  have huT : u ∈ T :=
+    Finset.mem_filter.mpr ⟨hu, ⟨c, d, hcd, huc, hud⟩⟩
+  have hvI : choice v ∈ T.image choice :=
+    Finset.mem_image.mpr ⟨v, hvT, rfl⟩
+  have huI : choice u ∈ T.image choice :=
+    Finset.mem_image.mpr ⟨u, huT, rfl⟩
+  have hsubset : ({choice v, choice u} : Finset (Fin n)) ⊆
+      T.image choice := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with hxv | hxu
+    · rw [hxv]
+      exact hvI
+    · have hxueq : x = choice u := Finset.mem_singleton.mp hxu
+      rw [hxueq]
+      exact huI
+  have htwo : ({choice v, choice u} : Finset (Fin n)).card = 2 := by
+    simp [hchoiceNe]
+  have hle : ({choice v, choice u} : Finset (Fin n)).card ≤
+      (T.image choice).card := Finset.card_le_card hsubset
+  change 2 ≤ (T.image choice).card
+  omega
+
+#print axioms actual_eighth_exterior_forces_two_biactive_choice_colours
+
 #print axioms actual_eighth_exterior_has_distinct_choice_biactive_centres
 #print axioms actual_eighth_no_local_exterior_of_biactive_choice_constant
 
