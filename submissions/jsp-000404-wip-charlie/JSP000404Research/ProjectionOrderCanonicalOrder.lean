@@ -82,7 +82,8 @@ theorem canonicalPointLt_projectionValue_lt
     linarith
   · change p j 1 - p i 1 = 0 at hy0
     change 0 < p j 0 - p i 0 at hx
-    nlinarith
+    rw [sub_eq_zero.mp hy0]
+    linarith
 
 namespace ProjectionOrdered
 
@@ -91,8 +92,9 @@ theorem canonicalPointLt_iff_projection_lt
     {p : V → Plane}
     (hp : Function.Injective p)
     (u v : ProjectionOrdered V) :
-    CanonicalPointLt p u.toOriginal v.toOriginal ↔
-      @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v := by
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+    CanonicalPointLt p u.toOriginal v.toOriginal ↔ u < v := by
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
   constructor
   · intro hcan
     rw [lt_iff_projectionCoord_lt hp]
@@ -105,9 +107,7 @@ theorem canonicalPointLt_iff_projection_lt
       exact h
     rcases canonicalPointLt_total_of_ne hp hne with hcan | hrev
     · exact hcan
-    · have hvult :
-          @LT.lt (ProjectionOrdered V)
-            (projectionLinearOrder hp) v u := by
+    · have hvult : v < u := by
         rw [lt_iff_projectionCoord_lt hp]
         exact canonicalPointLt_projectionValue_lt hrev
       exact False.elim (lt_asymm huv hvult)
@@ -117,9 +117,10 @@ theorem projection_lt_iff_canonicalPointLt
     {p : V → Plane}
     (hp : Function.Injective p)
     (u v : ProjectionOrdered V) :
-    @LT.lt (ProjectionOrdered V) (projectionLinearOrder hp) u v ↔
-      CanonicalPointLt p u.toOriginal v.toOriginal :=
-  (canonicalPointLt_iff_projection_lt hp u v).symm
+    letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+    u < v ↔ CanonicalPointLt p u.toOriginal v.toOriginal := by
+  letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+  exact (canonicalPointLt_iff_projection_lt hp u v).symm
 
 #print axioms canonicalPointLt_iff_projection_lt
 #print axioms projection_lt_iff_canonicalPointLt
