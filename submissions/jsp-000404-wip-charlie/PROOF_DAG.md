@@ -177,6 +177,14 @@ from the deeper geometric capacity gap.
 
 No priority claim or new upstream submission is justified by this audit.
 
+The additional public claim [#4684](https://github.com/TheJustinSunPrize/awards/pull/4684)
+was rechecked on 2026-11-05: the PR is closed and unmerged, and its linked
+`kunjunsong-code/jsp-000404-lean-proof` repository returns GitHub API 404 to
+the available connection. Its stated proof is therefore unavailable for
+independent inspection; no proof claim is inferred from its "zero sorry"
+description. Fresh searches for JSP-000404 and Erdős 504 found no additional
+unconditional all-N source among the returned relevant submissions.
+
 ## Excluded shortcuts
 
 The retained historical witnesses rule out unconditional compensated deletion,

@@ -68,6 +68,7 @@ Updated: 2026-11-05 (Asia/Shanghai).
   The same integer witness now also passes the stronger cosine inequality
   needed at upper-strip t=15/4. A complete five-point binary-family argument
   excludes this unchanged-subset recursion for every 3<t<4.
+  This extension is reproducible at `50197263d4aac8fd4620c2c7c7955b667cadc444`.
 - [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md) now refute the
   proposed at-most-one-full common-phase premise in the genuine lower strip
   `t=349/100`. Exact rational interval arithmetic verifies all 60 angles,
@@ -96,6 +97,12 @@ Updated: 2026-11-05 (Asia/Shanghai).
   New reproducible logs/hashes are in [verification](verification/windows-20261105/README.md).
 
 Next: finish the full replay and repair actual errors without removing imports.
+The prepared `scripts/write_axiom_audits.py` generates module-based transitive
+axiom audits for the umbrella and admitted root separately. A real probe on
+the already-built upper closure passed: 16 defining modules, 411 declarations,
+including private declarations, no axioms beyond the standard three. The
+umbrella and admitted-root audit files have NOT yet been run. They must run
+after the corresponding builds, and the admitted-root audit must reject sorryAx.
 Then pursue the original unweighted thresholds directly, or prove genuine
 global non-reusing payment. Both the at-most-one-full phase premise and the
 universal completion-mass lower bound `M>=2*|S|-1` are now excluded. A proof

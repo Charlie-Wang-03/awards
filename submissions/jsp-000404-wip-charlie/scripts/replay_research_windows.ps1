@@ -13,6 +13,7 @@ $PSNativeCommandUseErrorActionPreference = $false
 $projectDirectory = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $previousThreads = $env:LEAN_NUM_THREADS
 $failures = [System.Collections.Generic.List[string]]::new()
+$successfulTargets = [System.Collections.Generic.HashSet[string]]::new()
 Push-Location -LiteralPath $projectDirectory
 try {
     $env:LEAN_NUM_THREADS = [string] $Threads
@@ -83,11 +84,45 @@ try {
         & lake build $target 2>&1 | Tee-Object -FilePath $targetLog
         $targetExit = $LASTEXITCODE
         "exit_code=$targetExit" | Add-Content -Encoding utf8 $targetLog
-        if ($targetExit -ne 0) { $failures.Add($target) }
+        if ($targetExit -ne 0) {
+            $failures.Add($target)
+        } else {
+            [void] $successfulTargets.Add($target)
+        }
+    }
+
+    # Audit only roots whose build passed in THIS replay. Otherwise an old
+    # olean could give an irrelevant successful audit after a source failure.
+    $generatorLog = Join-Path $logDirectory 'axiom-audit-generator.log'
+    & python -B -X utf8 scripts/write_axiom_audits.py --output $logDirectory 2>&1 |
+        Tee-Object -FilePath $generatorLog
+    $generatorExit = $LASTEXITCODE
+    "exit_code=$generatorExit" | Add-Content -Encoding utf8 $generatorLog
+    if ($generatorExit -ne 0) {
+        $failures.Add('axiom-audit-generator')
+    } else {
+        $audits = @(
+            @{ Name = 'RootAxiomAudit'; Target = 'JSP000404Research' },
+            @{ Name = 'AdmittedAxiomAudit'; Target = 'JSP000404Research.PlanarLowerBranchProofAdmittedWIP' }
+        )
+        foreach ($audit in $audits) {
+            $axiomLog = Join-Path $logDirectory "$($audit.Name).log"
+            if (-not $successfulTargets.Contains($audit.Target)) {
+                'status=SKIPPED; corresponding build failed in this replay' |
+                    Set-Content -Encoding utf8 $axiomLog
+                $failures.Add($audit.Name)
+                continue
+            }
+            $axiomSource = Join-Path $logDirectory "$($audit.Name).lean"
+            & lake env lean $axiomSource 2>&1 | Tee-Object -FilePath $axiomLog
+            $axiomExit = $LASTEXITCODE
+            "exit_code=$axiomExit" | Add-Content -Encoding utf8 $axiomLog
+            if ($axiomExit -ne 0) { $failures.Add($audit.Name) }
+        }
     }
 
     $auditLog = Join-Path $logDirectory 'strict-sorry-audit.log'
-    & python -X utf8 scripts/jsp000404_sorry_audit.py 2>&1 | Tee-Object -FilePath $auditLog
+    & python -B -X utf8 scripts/jsp000404_sorry_audit.py 2>&1 | Tee-Object -FilePath $auditLog
     $auditExit = $LASTEXITCODE
     "exit_code=$auditExit" | Add-Content -Encoding utf8 $auditLog
     if ($auditExit -ne 0) { $failures.Add('strict-sorry-audit') }

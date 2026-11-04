@@ -92,3 +92,51 @@ insufficient memory. The two-thread attempt was interrupted to repair the
 canonical-order bridge. Neither attempt is a root PASS. Their full raw logs,
 and the intermediate failed focused attempts, remain in ignored
 `artifacts/restore-20261105/`.
+
+## Module-based transitive axiom collector
+
+`scripts/write_axiom_audits.py` generates separate standalone Lean commands
+for the umbrella and admitted root. It enumerates declarations by their
+defining module, including private declarations; each declaration is checked
+with Lean 4.34.0's `Lean.collectAxioms`, the collector used by `#print axioms`.
+Every dependency outside `{propext, Classical.choice, Quot.sound}` causes an
+error. An unavailable declaration or an empty audit also causes an error.
+This audit does not establish that a theorem's hypotheses are discharged.
+
+The collector has been executed on the already-built
+`JSP000404Research.OriginalUpperBound` closure, without starting a second
+Lake build. The actual command was:
+
+```powershell
+$env:LEAN_NUM_THREADS = '1'
+lake env lean artifacts/restore-20261105/axiom-audits/CollectorProbe.lean
+```
+
+The probe is the generated `RootAxiomAudit.lean` with only its first import
+changed to `JSP000404Research.OriginalUpperBound`. It inspected 16 defining
+modules and 411 declarations, including the 13 external upper modules,
+`SharpCentre`, `OriginalProblemStatement`, and `OriginalUpperBound`.
+There were zero unexpected axiom dependencies; the process exited 0.
+The four local statement/sharpness theorems are unchanged from verified
+source commit `3acbdd0ad52bebb3dd43dd86d380bf04a6eeb984`.
+
+`collector-probe-success.log` contains every output line, with only UTF-8/LF
+line endings normalized. SHA-256:
+
+    6e14cef7cf8e0061dec9406ef57612e0f1c8f6baf5aec9d80dded190303ebd01
+
+Raw `artifacts/restore-20261105/axiom-audits/collector-probe.log` SHA-256:
+
+    7f7ed78051f8039f4d79eb70ee8faa498adff7e5485d52ff3993ede608239c12
+
+The exact generated `CollectorProbe.lean` SHA-256:
+
+    d5f4a0a659dc8dd6abdff4d7108bb4cc192eae720f08cf31566e91e220e79677
+
+The umbrella and admitted-root audits have not yet been executed. The probe
+is evidence for the upper closure and collector only, not a full-root PASS.
+The replay script now runs these two audits after the builds. A root whose
+build failed in that same replay is explicitly skipped and counted as a
+failed check, so a stale olean cannot produce a misleading audit PASS.
+The already-running `replay-20261104-195532` process uses the earlier script;
+the new audit steps apply to the next replay.
