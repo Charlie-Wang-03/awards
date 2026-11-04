@@ -65,6 +65,9 @@ Updated: 2026-11-05 (Asia/Shanghai).
   [five integer points](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md) refute
   unchanged-subset binary width-drop recursion at t=10/3. The integer
   checker passes ten triples and 32 colourings. Neither is Lean-certified.
+  The same integer witness now also passes the stronger cosine inequality
+  needed at upper-strip t=15/4. A complete five-point binary-family argument
+  excludes this unchanged-subset recursion for every 3<t<4.
 - [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md) now refute the
   proposed at-most-one-full common-phase premise in the genuine lower strip
   `t=349/100`. Exact rational interval arithmetic verifies all 60 angles,

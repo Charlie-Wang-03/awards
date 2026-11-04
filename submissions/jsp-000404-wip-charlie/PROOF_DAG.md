@@ -201,8 +201,10 @@ Neither construction is Lean-certified yet; the full upper bound of ten is
 respected, and the original classification is not refuted.
 
 New recursion audit: [WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md)
-gives five integer points at t=10/3 for which no two-colouring produces two
+gives five integer points at t=10/3 and t=15/4 for which no two-colouring produces two
 unchanged subsets with AngleCap at t-1. All ten angle witnesses are checked
 by strict integer dot-product inequalities. Any width-drop recursion would
 need a genuinely new direction-changing construction and a proof that it
-preserves the needed geometric invariants.
+preserves the needed geometric invariants. The same note now proves failure
+for every 3<t<4 by a five-point binary-family limit argument; restricting
+the unchanged-subset recursion to the upper strip does not fix it.

@@ -32,6 +32,8 @@ def certificate():
         d, uu, vv = dot(u, v), dot(u, u), dot(v, v)
         assert uu > 0 and vv > 0 and d < 0
         assert 4 * uu * vv < 25 * d * d
+        # Stronger lower bound on the obtuse angle, used at t=15/4.
+        assert 81 * uu * vv < 400 * d * d
         assert 49 * d * d < 16 * uu * vv
         print("".join(map(str, triple)), j, d, uu, vv)
 
@@ -41,6 +43,7 @@ def certificate():
     for colours in assignments:
         assert any(len({colours[i] for i in triple}) == 1 for triple in triples)
     print("PASS: 10 exact angle certificates; all 32 partitions have a bad triple.")
+    print("The strengthened cosine bound also certifies the upper-strip witness at t=15/4.")
     print("Not a Lean proof and not a solution of JSP-000404.")
 
 
