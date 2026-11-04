@@ -96,10 +96,10 @@ theorem QTTT_common_colour_eq_cx_bit_cut
       C hcxX hxT
   have hyBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hcyY hyd hcxy.symm hyT
+      C hcyY hyd hcxy hyT
   have hzBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hczZ hzd hcxz.symm hzT
+      C hczZ hzd hcxz hzT
   constructor
   · rw [← hsBit, hxBit]
     cases h : retainedBit C x cx <;>
@@ -141,10 +141,10 @@ theorem QTTT_common_colour_eq_cy_bit_cut
       C hcyY hyT
   have hxBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hcxX hxd hcxy hxT
+      C hcxX hxd hcxy.symm hxT
   have hzBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hczZ hzd hcyz.symm hzT
+      C hczZ hzd hcyz hzT
   constructor
   · rw [← hsBit, hyBit]
     cases h : retainedBit C y cy <;>
@@ -185,10 +185,10 @@ theorem QTTT_common_colour_eq_cz_bit_cut
       C hczZ hzT
   have hxBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hcxX hxd hcxz hxT
+      C hcxX hxd hcxz.symm hxT
   have hyBit :=
     translated_word_bit_eq_retainedBit_of_other_active
-      C hcyY hyd hcyz hyT
+      C hcyY hyd hcyz.symm hyT
   constructor
   · rw [← hsBit, hzBit]
     cases h : retainedBit C z cz <;>

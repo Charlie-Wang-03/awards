@@ -30,24 +30,14 @@ theorem three_distinct_members_card_three_eq
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
     (ha : a ∈ S) (hb : b ∈ S) (hc : c ∈ S) :
     S = {a,b,c} := by
+  symm
   apply Finset.eq_of_subset_of_card_le
   · intro x hx
-    by_contra hnot
-    have hsub :
-        ({a,b,c,x} : Finset α) ⊆ S := by
-      intro q hq
-      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
-      rcases hq with rfl | rfl | rfl | rfl
-      · exact ha
-      · exact hb
-      · exact hc
-      · exact hx
-    have hfour :
-        ({a,b,c,x} : Finset α).card = 4 := by
-      simp [hab,hac,hbc,hnot]
-    have hle := Finset.card_le_card hsub
-    rw [hfour,hcard] at hle
-    omega
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact ha
+    · exact hb
+    · exact hc
   · simp [hab,hac,hbc,hcard]
 
 theorem QTTT_common_cx_forces_y_or_z_palette_eq_s
@@ -119,7 +109,7 @@ theorem QTTT_common_cx_forces_y_or_z_palette_eq_s
           hcxY hcyY hczY
       simpa [hsActive] using hyEq
   · obtain ⟨hzylt,hret,hcol⟩ := hbackward
-    rcases hcol with hczEdge | hcyEdge
+    rcases hcol.symm with hczEdge | hcyEdge
     · left
       have hczY :
           cz ∈ retainedActive C y := by
@@ -186,6 +176,7 @@ theorem QTTT_common_cy_forces_x_or_z_palette_eq_s
   -- Relabel common coordinate cy as the first coordinate of the generic lemma.
   have h :=
     QTTT_common_cx_forces_y_or_z_palette_eq_s
+      (x := y)
       C exponent hexp honeLoss
       hxz hsLoss hxLoss hzLoss
       hsSecond hxSecond hzSecond
@@ -193,8 +184,10 @@ theorem QTTT_common_cy_forces_x_or_z_palette_eq_s
       (cx := cy) (cy := cx) (cz := cz)
       hcxy.symm hcyz hcxz
       (by
-        simpa [Finset.pair_comm, Finset.insert_comm, Finset.insert_left_comm]
-          using hsActive)
+        rw [hsActive]
+        ext q
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto)
       hcyX hcyZ hcxX hczZ hxT hzT
   exact h
 
@@ -230,6 +223,7 @@ theorem QTTT_common_cz_forces_x_or_y_palette_eq_s
     retainedActive C y = retainedActive C s := by
   have h :=
     QTTT_common_cx_forces_y_or_z_palette_eq_s
+      (x := z)
       C exponent hexp honeLoss
       hxy hsLoss hxLoss hyLoss
       hsSecond hxSecond hySecond
@@ -237,8 +231,10 @@ theorem QTTT_common_cz_forces_x_or_y_palette_eq_s
       (cx := cz) (cy := cx) (cz := cy)
       hcxz.symm hcyz.symm hcxy
       (by
-        simpa [Finset.pair_comm, Finset.insert_comm, Finset.insert_left_comm]
-          using hsActive)
+        rw [hsActive]
+        ext q
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto)
       hczX hczY hcxX hcyY hxT hyT
   exact h
 
@@ -288,6 +284,7 @@ theorem QTTT_common_colour_forces_some_translated_palette_eq_s
   rcases hd with rfl | rfl | rfl
   · rcases
       QTTT_common_cx_forces_y_or_z_palette_eq_s
+        (x := x)
         C exponent hexp honeLoss
         hyz hsLoss hyLoss hzLoss
         hsSecond hySecond hzSecond
@@ -298,6 +295,7 @@ theorem QTTT_common_colour_forces_some_translated_palette_eq_s
     · exact Or.inr (Or.inr hzEq)
   · rcases
       QTTT_common_cy_forces_x_or_z_palette_eq_s
+        (y := y)
         C exponent hexp honeLoss
         hxz hsLoss hxLoss hzLoss
         hsSecond hxSecond hzSecond
@@ -308,6 +306,7 @@ theorem QTTT_common_colour_forces_some_translated_palette_eq_s
     · exact Or.inr (Or.inr hzEq)
   · rcases
       QTTT_common_cz_forces_x_or_y_palette_eq_s
+        (z := z)
         C exponent hexp honeLoss
         hxy hsLoss hxLoss hyLoss
         hsSecond hxSecond hySecond

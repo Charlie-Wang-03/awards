@@ -73,13 +73,7 @@ theorem minimal_enlargedCandidate_loss_has_shared_translated_word
     unfold allActiveLossCandidateBlock at hparts
     rcases Finset.mem_union.mp hparts.1 with hQ | hT
     · exact hQ
-    · exfalso
-      exact hnone word hshared hT
-        (by
-          intro hQ
-          exact Finset.disjoint_left.mp
-            (allActiveTranslatedWords_disjoint_original C v)
-            hT hQ)
+    · exact hnone word hshared hT
   have hcard :
       (sharedBlockWords
         (enlargedProjectedCandidateBlock C exponent)

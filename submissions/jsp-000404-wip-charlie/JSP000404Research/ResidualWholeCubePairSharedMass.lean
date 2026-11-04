@@ -175,6 +175,7 @@ theorem wholeCubeQTPair_secondLayer_block_intersection_ge_demand
   have hfree : projectedFree C v = n - 3 := by
     rw [hvSecond] at hlossEq
     omega
+  change n - (retainedActive C v).card = n - 3 at hfree
   have hbase :=
     wholeCubeQTPair_block_intersection_card_ge_two_cubes
       C exponent hsLoss hvLoss hcV hwhole
@@ -251,9 +252,8 @@ theorem wholeCubeQTPair_enlargedBlock_inter_eq_two_cubes
   · intro word hword
     have hvBlock := (Finset.mem_inter.mp hword).1
     have hsBlock := (Finset.mem_inter.mp hword).2
-    rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss,
-        enlargedProjectedCandidateBlock_loss C exponent hsLoss] at
-      hvBlock hsBlock
+    rw [enlargedProjectedCandidateBlock_loss C exponent hvLoss] at hvBlock
+    rw [enlargedProjectedCandidateBlock_loss C exponent hsLoss] at hsBlock
     unfold allActiveLossCandidateBlock at hvBlock hsBlock
     rcases Finset.mem_union.mp hvBlock with hvQ | hvTrans
     · exact Finset.mem_union_left _ hvQ

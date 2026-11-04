@@ -180,7 +180,7 @@ theorem minimal_enlargedCandidate_loss_has_owned_collision_edge
   have hsem :=
     loss_translated_collision_with_enlarged_block_edge_semantics
       C exponent hexp honeLoss
-      hvLoss hwv hc hvWord hwWord
+      hvLoss hwv.symm hc hvWord hwWord
   refine ⟨w,hwT,hwv,word,c,hc,hvWord,hwWord,?_⟩
   rcases hsem with hnon | hloss
   · rcases hnon.2 with hright | hleft

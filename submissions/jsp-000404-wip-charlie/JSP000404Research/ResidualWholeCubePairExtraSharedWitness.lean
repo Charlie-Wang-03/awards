@@ -39,7 +39,9 @@ theorem secondLayer_projectedLoss_completion_card_eq
   have hloss :=
     (mem_projectedLossVertices C exponent v).1 hvLoss
   rw [hvSecond] at hloss
-  omega
+  change n - 2 = (n - (retainedActive C v).card) + 1 at hloss
+  have hfree : n - (retainedActive C v).card = n - 3 := by omega
+  rw [hfree]
 
 theorem secondLayer_projectedLoss_enlargedBlock_card_eq
     {V : Type*} [LinearOrder V] [Fintype V] {n : ℕ}
@@ -85,6 +87,7 @@ theorem secondLayer_projectedLoss_enlargedBlock_slack_eq
       2 ^ (n - 1) = 2 * 2 ^ (n - 2) := by
     have hs : n - 2 + 1 = n - 1 := by omega
     rw [← hs, pow_succ]
+    omega
   rw [hpow]
   omega
 
@@ -148,6 +151,7 @@ theorem wholeCubeQTPair_secondLayer_two_cubes_card_eq_demand
       hvSecond]
   have hs : n - 3 + 1 = n - 2 := by omega
   rw [← hs,pow_succ]
+  omega
 
 /-- Minimality forces a genuinely new shared word outside the two whole cubes
 already explained by a core whole-cube Q/T partner. -/
@@ -226,7 +230,7 @@ theorem minimal_core_wholeCubeQTPair_has_extra_shared_word
     have hsNot : word ∉ retainedCompletionWords C s := by
       intro hs
       exact hout (Finset.mem_union_right _ hs)
-    exact hno word hword hvNot hsNot
+    exact hsNot (hno word hword hvNot)
   have hcardUpper :=
     Finset.card_le_card hsub
   rw [htwoCard] at hcardUpper
