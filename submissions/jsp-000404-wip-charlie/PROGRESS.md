@@ -1,78 +1,83 @@
 # JSP-000404 progress
 
-Status: **INCOMPLETE — goal active; no complete mathematical or Lean proof.**
+Status: **INCOMPLETE — goal active; the full original problem is not proved.**
 Updated: 2026-11-05 (Asia/Shanghai).
 
 - Workspace: `D:\awards`; branch `codex/jsp-000404-goal-20261105`.
-- Baseline: `d7e5c780362d09057102c651427fc1203b9165f2`, from
-  `origin/research/jsp-000404-connector-compiler-repair-20261024`.
-- Upstream rules inspected at `f8801a856529dce27e738c6b305e46d76e7c387c`.
-  Main was not merged, reset, or modified. Existing research branches preserved.
-- Pins: Lean `v4.34.0`; Mathlib `5ed2965256430c3649e86755f9576b54eca72435`.
-  No tracked manifest existed at restoration; a complete manifest now records
-  the resolved dependencies. Official Windows toolchain archive SHA-256:
-  `c07e88d1fe4839ec96a79f54637b2a3a983ea6c5b7e82ff35afa22a7700a86b7`.
-  `lake exe cache get` completed with exit 0 (8,908 files).
-  Initial root build suffered file-read failures while Windows reported
-  insufficient memory. Task-owned stale LSP processes were stopped; the root
-  build was restarted with process-local `LEAN_NUM_THREADS=2`, then interrupted
-  to prioritize the canonical-order compiler repair. No local root PASS is
-  claimed. Incremental outputs are preserved.
-- Last locally verified Lean source commit:
-  `ac8a70e12193092ac04221999c5bcd5c4a9ea2b6`.
-  `lake build JSP000404Research.ProjectionOrderCanonicalOrder` passed
-  (3,213 jobs); all four printed declarations have only
-  `propext`, `Classical.choice`, `Quot.sound`. The repair explicitly uses
-  `projectionLinearOrder hp` and first substitutes equal y-coordinates on
-  horizontal edges. This is a focused bridge result, not root PASS.
-- Last verified remote evidence: baseline's focused run
+  Baseline: `d7e5c780362d09057102c651427fc1203b9165f2` (connector repair).
+  Upstream rules inspected at `f8801a856529dce27e738c6b305e46d76e7c387c`.
+  Main and all pre-existing research branches are preserved.
+- Pins: Lean `v4.34.0`; Mathlib
+  `5ed2965256430c3649e86755f9576b54eca72435`.
+  The complete Lake manifest is tracked. Official Windows toolchain archive
+  hash and restoration evidence are retained in the earlier checkpoint.
+  `lake exe cache get` passes: exit 0, 8,908 files.
+- **Last verified original-problem component:**
+  `3acbdd0ad52bebb3dd43dd86d380bf04a6eeb984`.
+  `lake build JSP000404Research.OriginalUpperBound` passes (3,243 jobs).
+  `original_sharpness_allN` proves ordinary-point epsilon sharpness for
+  every N >= 3. Three further theorems identify the injective Fin N,
+  finite-set, and genuine geometric-extremum formulations. All four
+  print only `propext`, `Classical.choice`, `Quot.sound`.
+  `OriginalProblem` is a precise proposition, **not a proved theorem**.
+- This closes the sharpness branch and statement-correspondence branch of
+  [PROOF_DAG.md](PROOF_DAG.md). It uses attributed prior constructions,
+  not a new priority claim. [Written proof](SHARPNESS_CONSTRUCTIONS.md);
+  [source attribution](EXTERNAL_PROOF_ATTRIBUTION.md).
+  The external dependency is `aznikline/jsp-000404-lean` at
+  `cbfbbef188f5f98eead6045d7c3548de3c1b701a`.
+  Its 13-module upper closure excludes the conditional lower theorem.
+  All 14 vendored source/license Git-blob hashes match its upstream manifest.
+  No third-party source code or PDFs are vendored into this repository.
+- Verified compiler repairs:
+  `ac8a70e12193092ac04221999c5bcd5c4a9ea2b6` fixes the genuine projection order;
+  `51db72e85ec50fc7cbd4bde998b5ab518385fff0` fixes both canonical QTT wrappers.
+  Their builds pass (3,213 / 3,447 jobs), with only the standard three axioms.
+  `b678ab677969688ef3837aea8fcf9004d45a5b79` fixes six collision/whole-cube
+  dependencies that compiled successfully during downstream failing attempts.
+  The canonical whole-cube wrapper and augmenting-terminal repair still await the
+  complete whole-cube target result. No assumptions or admissions were added.
+- **Full replay now running:** `scripts/replay_research_windows.ps1 -Threads 2 -SkipCache`.
+  Logs: `artifacts/replay-20261104-195532/`; driver:
+  `artifacts/restore-20261105/full-replay-driver.log`.
+  It builds the umbrella, the separate admitted root, the repaired bridges,
+  and the all-N upper theorem, then runs the strict sorry audit.
+  Root is NOT yet PASS. Earlier root attempts were interrupted after memory
+  failures / to repair concrete compiler errors. Process-local two-thread
+  execution preserves the user's other processes and system settings.
+- Current import inventory: 1,686 local modules including the umbrella;
+  995 in its revised closure, 691 outside. The admitted root is outside it;
+  its separate closure has 451 modules, 60 absent from the umbrella closure.
+  A successful umbrella alone would therefore not certify the admitted root.
+- Strict lexical audit: 1 executable `sorry`, at
+  `PlanarLowerBranchProofAdmittedWIP.lean:935`; audit exits 1.
+  The mathematical gap is broader: unrestricted lower-strip payment,
+  upper-strip weighted capacity, and the unconditional all-N lower bound.
+  The exact remaining payment and two sufficient unweighted threshold
+  families are recorded in [PROOF_DAG.md](PROOF_DAG.md).
+- Excluded routes, with complete written counterexamples:
+  [four-centre / perfect-GC witness](UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md)
+  has mass ten at n=3, delta=3/4 and refutes the printed strengthened maximum
+  nine. It preserves the original capacity ten. An odd-n family extends it.
+  [five integer points](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md) refute
+  unchanged-subset binary width-drop recursion at t=10/3. The integer
+  checker passes ten triples and 32 colourings. Neither is Lean-certified.
+- Sendov Acta pp. 39–40 and 42 were independently inspected as images.
+  Arbitrary-s induction remains missing; numerator 2 and epsilon inversion
+  are required. Public #5131 takes `GeometricCertificates` for general lower
+  bounds; #100/#647 claim finite certificates through N=16. Their finite
+  lower results have not been locally replayed and do not close all N.
+- Historical CI: focused connector run
   [40653990253](https://github.com/Charlie-Wang-03/awards/actions/runs/40653990253)
-  passed; it checks local eighth-source results, not the whole problem.
-  The admitted-root run
+  passes. Admitted-root run
   [40330564100](https://github.com/Charlie-Wang-03/awards/actions/runs/40330564100)
-  checks `4501f656ddf9357e69a256a2bb515659f2ca6f2f` and explicitly prints
-  `sorryAx`. Its successful build is not a proof.
-- Local lexical audit: one executable `sorry`, in
-  `PlanarLowerBranchProofAdmittedWIP.lean:935`. Strict audit exits 1.
-- Static import inventory: 1,684 project modules including the umbrella;
-  952 reachable from the umbrella, 732 not reached. The admitted module is
-  not reachable from the umbrella. Its own closure has 451 modules.
-  `ResidualQTTTCanonicalOrderRigidity` originally imported nonexistent
-  `GenericProjectionCanonicalOrder`; the working tree corrects this to
-  `ProjectionOrderCanonicalOrder` and scopes the geometric order in its
-  dependent binders. That repair's build is still pending.
-- Mathematical DAG reduction this session: **none yet**. See [PROOF_DAG.md](PROOF_DAG.md).
-  General lower payment, general upper capacity, and the final original-problem
-  assembly remain open. No new admission or unproved assumption was introduced.
-- A concrete rational four-centre AngleCap witness refutes the source-inspired
-  stronger upper estimate 9 at n=3, delta=3/4: its genuine exponents are
-  [2,2,0,0], mass 10. The full proposed capacity 10 is respected.
-  [Exact proof and scope](UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md); not Lean-certified yet.
-  A symbolic four-point family extends this obstruction to every odd n>=3,
-  with genuine profile [n-1,n-1,n-3,n-3] at delta=3/4.
-  A separate exact perfect-GC construction now gives ten leaves and
-  GA=11*pi/15 at the rational four-centre witness, directly contradicting
-  the source's printed case-c.2 maximum of nine. This written construction
-  preserves the full upper capacity ten and is not Lean-certified.
-- A new direct two-part width-drop route is false even at t=10/3 in the
-  lower strip: five integer points have AngleCap 7*pi/10, while every triple
-  has an angle >3*pi/5>4*pi/7, the required child cap. See
-  [exact certificate](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md).
-  The companion integer checker passes all ten triples and 32 colourings.
-  This excludes unchanged-subset recursion; it is not a Lean result or a
-  main-DAG reduction.
-- Sendov Acta pp. 39–40 and 42 independently inspected as page images.
-  The arbitrary-centre induction still lacks the claimed profile derivation.
-  The first classification numerator is 2. The blanket inverse equality needs
-  replacement by a threshold/epsilon argument.
-- Public prior work: #5131 has an explicit `GeometricCertificates` premise;
-  #100 and #647 additionally claim checked finite certificates through N=16.
-  These finite results do not prove general weighted capacity. No code copied.
-- Evidence: ignored `artifacts/restore-20261105/` holds primary-source PDF,
-  extracted text/page images, and downloaded historical CI logs. Do not upload
-  third-party source PDFs or treat their presence as proof verification.
+  explicitly prints `sorryAx`; its green build is not a proof.
+  New reproducible logs/hashes are in [verification](verification/windows-20261105/README.md).
 
-Next: finish the full umbrella and admitted-root builds,
-repair actual compiler errors without changing geometric meaning, then attack
-the unconditional all-centre payment (or a genuinely equivalent geometric
-capacity proof). A finite-certificate import alone is not the goal.
+Next: finish the full replay and repair actual errors without removing imports.
+Then pursue the original unweighted thresholds directly, or prove genuine
+global non-reusing payment. One candidate is a common phase with sufficiently
+few full direction-band vertices; its existence is UNPROVED. Numerical
+falsification attempts in ignored artifacts establish no theorem.
+No upstream complete-proof PR, prize claim, or eligibility change is authorized
+by the current incomplete evidence.

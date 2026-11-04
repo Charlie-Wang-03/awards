@@ -1,0 +1,37 @@
+ℹ [3202/3211] Replayed JSP000404Research.SharpCentre
+info: JSP000404Research/SharpCentre.lean:171:0: 'JSP000404Research.two_delta_lam_lt_lam' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:172:0: 'JSP000404Research.three_delta_lam_lt_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:173:0: 'JSP000404Research.no_three_sharp' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:174:0: 'JSP000404Research.no_three_sharp_sendov' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:175:0: 'JSP000404Research.two_sharp_no_third_small_delta' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [3203/3211] Built Jsp000404.Basic (40s)
+✔ [3204/3211] Built JSP404.Basic (41s)
+⚠ [3205/3211] Built Jsp000404.GC (22s)
+warning: Jsp000404/GC.lean:60:10: Variable name `h` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _h
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [3206/3211] Built JSP404.HierarchicalConstruction (33s)
+⚠ [3207/3211] Built Jsp000404.Statement (25s)
+warning: Jsp000404/Statement.lean:79:8: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: Jsp000404/Statement.lean:87:8: `if_neg` has been deprecated: Use `ite_eq_right` instead
+✔ [3208/3211] Built JSP404.BinaryConstruction (23s)
+✔ [3209/3225] Built JSP000404Research.OriginalProblemStatement (18s)
+✔ [3236/3243] Built JSP404.ClusterConstruction (15s)
+✔ [3237/3243] Built JSP404.BinaryEncoding (14s)
+✔ [3238/3243] Built JSP404.DirectionalCover (14s)
+✔ [3239/3243] Built JSP404.EquallySpacedDirections (17s)
+✔ [3240/3243] Built JSP404.ClassicalBounds (18s)
+✔ [3241/3243] Built JSP404.ThreeClusterGeometry (25s)
+ℹ [3242/3243] Built Jsp000404.UpperBound (32s)
+info: Jsp000404/UpperBound.lean:118:0: 'Jsp404.alpha_le_alphaN' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Jsp000404/UpperBound.lean:119:0: 'Jsp404.sendov_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3243/3243] Built JSP000404Research.OriginalUpperBound (30s)
+info: JSP000404Research/OriginalUpperBound.lean:84:0: 'JSP000404Research.original_sharpness_allN' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OriginalUpperBound.lean:85:0: 'JSP000404Research.originalProblem_iff_all_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OriginalUpperBound.lean:86:0: 'JSP000404Research.originalLowerBound_iff_guaranteed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OriginalUpperBound.lean:87:0: 'JSP000404Research.originalProblem_iff_geometric_alpha_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (3243 jobs).
+exit_code=0

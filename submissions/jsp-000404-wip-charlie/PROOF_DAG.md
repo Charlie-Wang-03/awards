@@ -1,6 +1,7 @@
 # JSP-000404 original-problem dependency ledger
 
-Restoration date: 2026-11-05. Research only. No final proof theorem exists yet.
+Restoration date: 2026-11-05. Research only. The original problem is now stated
+in Lean, but no theorem proving the full statement exists yet.
 
 ## Original statement and acceptance target
 
@@ -41,7 +42,7 @@ of the geometric infimum problem.
 
 ```text
 Original all-N equality / lower + epsilon sharpness                  OPEN
-|-- geometric extremum definition and exact finite-set correspondence MISSING HERE
+|-- geometric extremum definition and exact finite-set correspondence LOCAL PASS
 |-- arbitrary-N lower bound                                         OPEN
 |   |-- actual cycles from injective planar points; order/cap transfer
 |   |-- lower strip: t=n+delta, 0<=delta<1/2, sum 2^k <= 2^n          OPEN
@@ -55,11 +56,23 @@ Original all-N equality / lower + epsilon sharpness                  OPEN
 |   |           genuinely unreserved dyadic surplus                  OPEN
 |   |-- upper strip: 1/2<=delta<1, sum 2^k <= 2^n+2^(n-2)            OPEN
 |   `-- threshold inversion, endpoints, finite maximum               NOT ASSEMBLED
-`-- matching constructions for all N and epsilon > 0                 NOT ASSEMBLED HERE
+`-- ordinary matching constructions for all N and epsilon > 0        LOCAL PASS
 ```
 
 `PRESENT` records a source result with historical focused evidence, not a
 claim that the entire restored dependency closure currently builds locally.
+
+The construction branch has a complete written ordinary-point proof in
+[SHARPNESS_CONSTRUCTIONS.md](SHARPNESS_CONSTRUCTIONS.md). Its corresponding
+all-N Lean theorem is now supplied by the pinned, attributed external upper
+construction, transported in `OriginalUpperBound.lean`. Source commit
+`3acbdd0ad52bebb3dd43dd86d380bf04a6eeb984` builds this target locally with
+exit 0 (3,243 jobs). Its four printed statements use only the standard
+three axioms. See [EXTERNAL_PROOF_ATTRIBUTION.md](EXTERNAL_PROOF_ATTRIBUTION.md).
+The complete original statement is `OriginalProblem`; the proved equivalence
+`originalProblem_iff_geometric_alpha_eq` ties it to the genuine geometric
+supremum/infimum, without proving the remaining lower bound. The entire
+research umbrella is still awaiting a successful build.
 
 The exact remaining lower-strip premise is in
 `PlanarLowerBranchActualEdgeCarrierFrontier.lean`:
@@ -128,8 +141,10 @@ from the deeper geometric capacity gap.
   explicitly takes `GeometricCertificates`; that proposition quantifies the
   overweight deletion/emission certificate for all n>=3. The N<=8 result has
   no such premise. Its all-N upper constructions are attributed to
-  superpilot69 and ChatGPT 6 Astra. This session has not independently rebuilt
-  that external package. API state is open, despite a maintainer comment saying
+  superpilot69 and ChatGPT 6 Astra. This session has now independently built
+  the 13-module upper closure, excluding `CertificateIntegration`, `Induction`,
+  and `MainTheorem`; its lower results have not been independently replayed.
+  API state is open, despite a maintainer comment saying
   it is being closed for partial scope; do not infer state from that comment.
 - [#100](https://github.com/TheJustinSunPrize/awards/pull/100), zilan520:
   `d869ab901722fab0b2d980b38b7bd958cf52c128` claims exact N=5..10 and all

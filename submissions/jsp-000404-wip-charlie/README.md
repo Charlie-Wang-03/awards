@@ -8,6 +8,14 @@ original-problem obligations, see [PROGRESS.md](PROGRESS.md) and
 [PROOF_DAG.md](PROOF_DAG.md). The older module inventory below is historical;
 it is not evidence of a current full-root build or a completed original proof.
 
+The ordinary-point sharpness / upper-bound half for every `N >= 3` is now
+locally verified at `3acbdd0ad52bebb3dd43dd86d380bf04a6eeb984`, using the
+[attributed pinned construction](EXTERNAL_PROOF_ATTRIBUTION.md).
+`OriginalProblemStatement.lean` states the complete original problem, and
+`OriginalUpperBound.lean` proves sharpness and exact formulation equivalences.
+There is **no theorem proving `OriginalProblem`**: its arbitrary-N lower bound
+and the genuine global capacity/payment step remain open.
+
 ## Current gate — Source Closure
 
 Status: **SOURCE_CLOSURE_GATE = OPEN**.

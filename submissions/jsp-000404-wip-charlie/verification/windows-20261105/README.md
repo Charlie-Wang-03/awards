@@ -38,6 +38,47 @@ has SHA-256:
 These hashes cover this focused result only. They do not certify later
 working-tree repairs or other modules.
 
+The next verified source commit is
+`51db72e85ec50fc7cbd4bde998b5ab518385fff0`. It repairs the concrete-order
+binders and definition unfolding in the two QTT wrappers. The command
+
+```powershell
+lake build JSP000404Research.ResidualQTTTCanonicalOrderRigidity JSP000404Research.ProjectionQTTTCanonicalOrderRigidity
+```
+
+completed with exit 0 (3,447 jobs). The two printed declarations in each
+target have only `propext`, `Classical.choice`, and `Quot.sound`.
+`qttt-order-success.log` retains every message, with only UTF-8/LF line
+endings and trailing whitespace normalized. SHA-256:
+
+    2be608b42519e3274390b89aadacbf5f9201140349991c8984c173c1adb37378
+
+The raw capture `artifacts/restore-20261105/qttt-canonical-fixed2.log` has
+SHA-256:
+
+    adcc962a7d41fb298f49453d440d4ffd78b2028785a384d47abc67070206cd09
+
+At source commit `3acbdd0ad52bebb3dd43dd86d380bf04a6eeb984`, the command
+`lake build JSP000404Research.OriginalUpperBound` passes (3,243 jobs,
+exit 0). This proves all-N ordinary epsilon sharpness and exact correspondence
+of the injective, finite-set, and geometric-extremum statements. All four
+printed local declarations and both printed external upper declarations have
+only the standard three axioms. It does not prove the all-N lower bound.
+
+`original-upper-success.log` retains the entire captured output under the
+same line-ending/whitespace normalization. SHA-256:
+
+    ca9bc64be3cdeb38056485d66e472bd9bec58c1337c62a8e00f76006b02443ba
+
+Raw `artifacts/restore-20261105/original-upper-bound-first.log` SHA-256:
+
+    2ec52ffacc1b1688ba8724c21eff900b36d904f704951df4a72799764be222e1
+
+The external package is fixed at
+`cbfbbef188f5f98eead6045d7c3548de3c1b701a`; its 13-module upper dependency
+closure excludes the conditional lower theorem. Attribution and the original
+source SHA are recorded in `EXTERNAL_PROOF_ATTRIBUTION.md`.
+
 For the broader outstanding research checks, use
 `scripts/replay_research_windows.ps1`. It builds the umbrella, the separate
 admitted module, and the projection-order dependents, then runs the strict

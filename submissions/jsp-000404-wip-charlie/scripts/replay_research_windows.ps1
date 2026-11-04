@@ -7,6 +7,9 @@ param(
 # Research replay only. There is no completed original-problem root theorem.
 # A successful module build must never be reported as solving JSP-000404.
 $ErrorActionPreference = 'Stop'
+# Keep a failing native build as a recorded check result, then continue to
+# the separate admitted-root build and strict audit. This is script-local.
+$PSNativeCommandUseErrorActionPreference = $false
 $projectDirectory = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $previousThreads = $env:LEAN_NUM_THREADS
 $failures = [System.Collections.Generic.List[string]]::new()
@@ -26,6 +29,13 @@ try {
     if ($mathlib.Count -ne 1 -or
         $mathlib[0].rev -ne '5ed2965256430c3649e86755f9576b54eca72435') {
         throw 'Mathlib manifest does not match the audited research pin.'
+    }
+    $upperProof = @($manifest.packages | Where-Object {
+        $_.url -eq 'https://github.com/aznikline/jsp-000404-lean.git'
+    })
+    if ($upperProof.Count -ne 1 -or
+        $upperProof[0].rev -ne 'cbfbbef188f5f98eead6045d7c3548de3c1b701a') {
+        throw 'External sharpness proof does not match its audited immutable pin.'
     }
 
     $version = & lake --version 2>&1
@@ -65,7 +75,8 @@ try {
         'JSP000404Research.ProjectionOrderCanonicalOrder',
         'JSP000404Research.ResidualQTTTCanonicalOrderRigidity',
         'JSP000404Research.ProjectionQTTTCanonicalOrderRigidity',
-        'JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder'
+        'JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder',
+        'JSP000404Research.OriginalUpperBound'
     )
     foreach ($target in $targets) {
         $targetLog = Join-Path $logDirectory "$target.log"
