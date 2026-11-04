@@ -1,0 +1,131 @@
+CHECKED RESEARCH SOURCE b24bf60107959020e7b29b6e1263b739509987b0
+This is a clean Git checkpoint and an incremental pinned Lake replay.
+It is not a fresh-machine rebuild or a proof of OriginalProblem.
+RUN .\scripts\replay_research_windows.ps1 -Threads 2 -SkipCache
+RAW_DIRECTORY artifacts/replay-20261104-222505
+TEXT_FILES UTF-8/LF, trailing horizontal whitespace normalized.
+
+BEGIN environment.log
+UTC=2026-11-04T22:25:05.8344767Z
+project=D:\awards\submissions\jsp-000404-wip-charlie
+toolchain=leanprover/lean4:v4.34.0
+lake=warning: could not canonicalize path: 'D:\awards\submissions\jsp-000404-wip-charlie' warning: could not canonicalize path: 'D:\awards\submissions\jsp-000404-wip-charlie' Lake version 5.0.0-src+293d5d0 (Lean version 4.34.0)
+LEAN_NUM_THREADS=2
+status=INCOMPLETE; research replay, not a complete-proof certificate
+repository=D:/awards
+branch=codex/jsp-000404-goal-20261105
+HEAD=b24bf60107959020e7b29b6e1263b739509987b0
+working_tree_status:
+remotes (read only):
+origin	https://github.com/Charlie-Wang-03/awards.git (fetch)
+origin	https://github.com/Charlie-Wang-03/awards.git (push)
+upstream	https://github.com/TheJustinSunPrize/awards.git (fetch)
+upstream	https://github.com/TheJustinSunPrize/awards.git (push)
+END environment.log
+
+BEGIN dependency-pins-start.log
+PACKAGE name=jsp-000404 expected=cbfbbef188f5f98eead6045d7c3548de3c1b701a actual=cbfbbef188f5f98eead6045d7c3548de3c1b701a clean=True pass=True
+PACKAGE name=mathlib expected=5ed2965256430c3649e86755f9576b54eca72435 actual=5ed2965256430c3649e86755f9576b54eca72435 clean=True pass=True
+PACKAGE name=plausible expected=118aa17ee84656b8bd727fef7c458ee8c833385c actual=118aa17ee84656b8bd727fef7c458ee8c833385c clean=True pass=True
+PACKAGE name=LeanSearchClient expected=ddf04cf3949fa556442341e87d47f9f6e6074707 actual=ddf04cf3949fa556442341e87d47f9f6e6074707 clean=True pass=True
+PACKAGE name=importGraph expected=e928b72544873815af278d38681b31c0293588e3 actual=e928b72544873815af278d38681b31c0293588e3 clean=True pass=True
+PACKAGE name=proofwidgets expected=106ff4fafc74ef4ac99d81dbf3ab399118f497a5 actual=106ff4fafc74ef4ac99d81dbf3ab399118f497a5 clean=True pass=True
+PACKAGE name=aesop expected=355695d523e41d0554926416cba2a2b3544fbbc9 actual=355695d523e41d0554926416cba2a2b3544fbbc9 clean=True pass=True
+PACKAGE name=Qq expected=6a489d9af5d0c47e5b259e2e8bcdfc1811b5a259 actual=6a489d9af5d0c47e5b259e2e8bcdfc1811b5a259 clean=True pass=True
+PACKAGE name=batteries expected=f2effa3d803fda822b1f97b806c47cf2adfbcbc2 actual=f2effa3d803fda822b1f97b806c47cf2adfbcbc2 clean=True pass=True
+PACKAGE name=Cli expected=e92c9f15fdfacc8536f31cfb3b7ad26c3c8cd204 actual=e92c9f15fdfacc8536f31cfb3b7ad26c3c8cd204 clean=True pass=True
+END dependency-pins-start.log
+
+BEGIN dependency-pins-end.log
+PACKAGE name=jsp-000404 expected=cbfbbef188f5f98eead6045d7c3548de3c1b701a actual=cbfbbef188f5f98eead6045d7c3548de3c1b701a clean=True pass=True
+PACKAGE name=mathlib expected=5ed2965256430c3649e86755f9576b54eca72435 actual=5ed2965256430c3649e86755f9576b54eca72435 clean=True pass=True
+PACKAGE name=plausible expected=118aa17ee84656b8bd727fef7c458ee8c833385c actual=118aa17ee84656b8bd727fef7c458ee8c833385c clean=True pass=True
+PACKAGE name=LeanSearchClient expected=ddf04cf3949fa556442341e87d47f9f6e6074707 actual=ddf04cf3949fa556442341e87d47f9f6e6074707 clean=True pass=True
+PACKAGE name=importGraph expected=e928b72544873815af278d38681b31c0293588e3 actual=e928b72544873815af278d38681b31c0293588e3 clean=True pass=True
+PACKAGE name=proofwidgets expected=106ff4fafc74ef4ac99d81dbf3ab399118f497a5 actual=106ff4fafc74ef4ac99d81dbf3ab399118f497a5 clean=True pass=True
+PACKAGE name=aesop expected=355695d523e41d0554926416cba2a2b3544fbbc9 actual=355695d523e41d0554926416cba2a2b3544fbbc9 clean=True pass=True
+PACKAGE name=Qq expected=6a489d9af5d0c47e5b259e2e8bcdfc1811b5a259 actual=6a489d9af5d0c47e5b259e2e8bcdfc1811b5a259 clean=True pass=True
+PACKAGE name=batteries expected=f2effa3d803fda822b1f97b806c47cf2adfbcbc2 actual=f2effa3d803fda822b1f97b806c47cf2adfbcbc2 clean=True pass=True
+PACKAGE name=Cli expected=e92c9f15fdfacc8536f31cfb3b7ad26c3c8cd204 actual=e92c9f15fdfacc8536f31cfb3b7ad26c3c8cd204 clean=True pass=True
+END dependency-pins-end.log
+
+BEGIN source-checkpoint.log
+start_HEAD=b24bf60107959020e7b29b6e1263b739509987b0
+end_HEAD=b24bf60107959020e7b29b6e1263b739509987b0
+clean_unchanged_checkpoint=True
+start_working_tree_status:
+end_working_tree_status:
+These endpoint checks require that sources are not edited during the replay.
+END source-checkpoint.log
+
+COMMAND lake build JSP000404Research
+Build completed successfully (9933 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.PlanarLowerBranchProofAdmittedWIP
+Build completed successfully (3853 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.ProjectionOrderCanonicalOrder
+Build completed successfully (3213 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.ResidualQTTTCanonicalOrderRigidity
+Build completed successfully (3444 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.ProjectionQTTTCanonicalOrderRigidity
+Build completed successfully (3446 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder
+Build completed successfully (3742 jobs).
+exit_code=0
+
+COMMAND lake build JSP000404Research.OriginalUpperBound
+Build completed successfully (3243 jobs).
+exit_code=0
+
+COMMAND lake env lean RootAxiomAudit.lean
+AUDIT_COUNTS modules=1008 declarations=10619 failures=0
+exit_code=0
+COMPLETE_NORMALIZED_LOG immutable-root-axioms.log SHA256 46764af89e0b2b20da973bf42b111e2018d9c77710edeb58146354574ed1462c
+
+COMMAND lake env lean AdmittedAxiomAudit.lean
+AUDIT_COUNTS modules=451 declarations=4238 failures=1
+exit_code=1
+COMPLETE_NORMALIZED_LOG immutable-admitted-axioms.log SHA256 1b6686f38ac99592510d3c6309be89ddad282030501d303ec4b5543a8646fbe9
+
+BEGIN strict-sorry-audit.log
+scanner self-test: PASS (8 cases)
+Lean source files scanned: 1685
+JSP000404Research\PlanarLowerBranchProofAdmittedWIP.lean:935: explicit sorry
+FAILED: 1 unauthorised holes or audit violations
+exit_code=1
+END strict-sorry-audit.log
+
+BEGIN result.log
+status=INCOMPLETE
+No all-N original-problem theorem is certified by this script.
+failed_checks=AdmittedAxiomAudit, strict-sorry-audit
+END result.log
+
+RAW SHA-256 and byte lengths (unmodified files):
+b21ecf7a9d189d14af0aad3a1f5aff77aefea762b3eface76ea801d42dcac4a9 1821 AdmittedAxiomAudit.lean
+5d5c58a5b48c0d51df7f8e496e88652769956667f817d2d5f831868e098cc2ca 685467 AdmittedAxiomAudit.log
+9af0b85f2da7684424f5d6adb45a93e8c193f044c3807776397ca245160341b8 215 axiom-audit-generator.log
+0072d75c14f01836450557d585e7df3a0646ebbc8e6bd46f72a00b50035702f2 1424 dependency-pins-end.log
+0072d75c14f01836450557d585e7df3a0646ebbc8e6bd46f72a00b50035702f2 1424 dependency-pins-start.log
+67868445ffb0acdd18b8ba3241412cd370c4280d3f00d97fe8354aafc8302970 849 environment.log
+2f9f0878be4125bca0e616bbb2bbae08a6932cd218130765ded62cfc77ef795a 1081430 JSP000404Research.log
+12ecfc6ba83be1e81f0a18cfebcbb5998ddd6d4202a2213b32bdb2823d9fb24f 2662 JSP000404Research.OriginalUpperBound.log
+f0ecf88cc00a761924f15b59f5e0388c1bad3081be2e1babc86539b7ad637f19 467178 JSP000404Research.PlanarLowerBranchProofAdmittedWIP.log
+80450ab325830118556fd67961dd90bd14af039b9eb44f9c3234ac4d8b647151 13623 JSP000404Research.ProjectionOrderCanonicalOrder.log
+59719091c178cd7aa64e6c7463f5418333d925c350a4ee5edd2acbf3a6f4e8b7 278837 JSP000404Research.ProjectionQTTTCanonicalOrderRigidity.log
+cc826ae45bc919f29bea8458cb502ed2ccc0aa7ed30ec7c94635dbf285abff2a 389735 JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder.log
+b7aabd06a018ddc4e8afbe13098e9214e89be999ff2b0d623fd8c408b7bcd6c4 278275 JSP000404Research.ResidualQTTTCanonicalOrderRigidity.log
+c0126ceb063cf039bb677b5a3a136feeffa9e4c5506b0d6c982e95ebfef86261 137 result.log
+6697b82859ce35069fed50e23a9642306295c81ea04a40682ac9d995ecc05311 1787 RootAxiomAudit.lean
+ea90173146ed3333cf571227f89e2b3fd46bed9c5c5dfdb3afd9112e54774d20 1654185 RootAxiomAudit.log
+2cbe77a376f843f97f6a86fcb50d61730bb9592ef29b17222be724a6a1f9ccb6 269 source-checkpoint.log
+15b39693bf7332123df3288fd164d399fc005a9bb88fe403df48c6df3cb8a275 209 strict-sorry-audit.log

@@ -1,8 +1,60 @@
 # Local Windows evidence, 2026-11-05
 
-This directory records a focused compiler repair, not a complete proof of
-JSP-000404. The general geometric payment and the final all-N theorem remain
-unproved. The original admitted theorem still contains `sorry`.
+**Verdict: INCOMPLETE.** All seven requested research targets now build.
+The all-N ordinary sharpness theorem is proved. The all-N lower theorem is
+absent, and the separate admitted planar payment root still uses `sorryAx`.
+
+## Final immutable research replay
+
+Checked source: [`b24bf60107959020e7b29b6e1263b739509987b0`](https://github.com/Charlie-Wang-03/awards/commit/b24bf60107959020e7b29b6e1263b739509987b0),
+branch `codex/jsp-000404-goal-20261105`. This report and its logs are stored
+after the checked commit. They describe the source at that SHA, not a later
+commit. The Windows working tree was clean at both endpoints; the source
+was not edited during the replay. All ten dependency checkouts had clean
+tracked trees and matched all forty characters of their manifest SHAs at
+both endpoints. The previously restored cache was reused: this is an
+incremental Lake replay from clean source, not a fresh-machine build.
+
+From the project directory at that source commit, with the pinned toolchain:
+
+```powershell
+Set-Location D:\awards\submissions\jsp-000404-wip-charlie
+lake exe cache get
+.\scripts\replay_research_windows.ps1 -Threads 2 -SkipCache
+```
+
+| Check | Actual outcome |
+| --- | --- |
+| `lake build JSP000404Research` | PASS, 9,933 jobs, exit 0 |
+| Separate admitted WIP build | PASS, 3,853 jobs, exit 0; its `#print axioms` includes `sorryAx` |
+| Four canonical projection/order targets | All PASS, including the 3,742-job whole-cube target |
+| `OriginalUpperBound` | PASS, 3,243 jobs, exit 0 |
+| Umbrella transitive axiom audit | PASS, 1,008 defining modules and 10,619 declarations, 0 failures |
+| Separate WIP transitive axiom audit | FAIL, 451 modules and 4,238 declarations; precisely one declaration has `sorryAx` |
+| Strict source audit | FAIL, 1 executable `sorry`, at `PlanarLowerBranchProofAdmittedWIP.lean:935` |
+| Full replay exit | **1**; only `AdmittedAxiomAudit` and `strict-sorry-audit` failed |
+
+The 1,008 modules are 995 local research modules (including the umbrella)
+and 13 attributed external upper-bound modules. The separate WIP is not
+imported by the umbrella. The collector checks transitive axioms used by
+each declaration, including its Mathlib dependencies. Its allowlist is only
+`propext`, `Classical.choice`, `Quot.sound`. It does not discharge explicit
+theorem premises. No theorem inhabiting the all-N `OriginalProblem` was built.
+
+- [Replay summary and raw file hashes](immutable-replay-summary.log): SHA-256
+  `f24be7775b0882c3eb4caae5efc19862576ab0e97ee60a78f36c2bd5011f9809`.
+- [Complete umbrella axiom output](immutable-root-axioms.log): SHA-256
+  `46764af89e0b2b20da973bf42b111e2018d9c77710edeb58146354574ed1462c`.
+- [Complete separate WIP axiom output](immutable-admitted-axioms.log): SHA-256
+  `1b6686f38ac99592510d3c6309be89ddad282030501d303ec4b5543a8646fbe9`.
+
+The two published audit outputs retain all lines with UTF-8/LF and trailing
+horizontal whitespace normalized. The summary contains each raw file's SHA-256
+and byte count, both dependency snapshots, both source endpoints, all seven
+build exits, both audit counts, and the complete strict audit/result. Raw
+build and audit streams remain in `artifacts/replay-20261104-222505/` locally.
+
+## Earlier focused evidence
 
 Source commit: `ac8a70e12193092ac04221999c5bcd5c4a9ea2b6` on
 `codex/jsp-000404-goal-20261105` in Charlie-Wang-03/awards.
@@ -133,13 +185,13 @@ The exact generated `CollectorProbe.lean` SHA-256:
 
     d5f4a0a659dc8dd6abdff4d7108bb4cc192eae720f08cf31566e91e220e79677
 
-The umbrella audit has not yet been executed. The upper probe is evidence
+At the time of this upper probe, the umbrella audit had not yet run. This probe is evidence
 for the upper closure and collector only, not a full-root PASS.
 The replay script now runs these two audits after the builds. A root whose
 build failed in that same replay is explicitly skipped and counted as a
 failed check, so a stale olean cannot produce a misleading audit PASS.
 The completed `replay-20261104-195532` process used the earlier script;
-the new audit steps apply to the next full replay.
+the new audit steps were subsequently executed in the immutable replay above.
 
 The admitted-root audit was subsequently run separately with
 `lake env lean artifacts/restore-20261105/axiom-audits/AdmittedAxiomAudit.lean`.
@@ -217,5 +269,5 @@ both endpoints. A dirty endpoint or changed HEAD is a failed
 a committed, clean tree and do not edit sources during it; endpoint checks
 alone cannot detect an edit that is subsequently undone. The completed
 older replay had no such checks and included edits while running,
-so it cannot certify one immutable source commit. These new end-to-end
-checkpoint steps still await the next complete replay.
+so it cannot certify one immutable source commit. The final replay above
+did execute the end-to-end checkpoint checks at the named immutable SHA.

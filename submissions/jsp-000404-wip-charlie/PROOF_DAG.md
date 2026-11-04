@@ -71,8 +71,10 @@ exit 0 (3,243 jobs). Its four printed statements use only the standard
 three axioms. See [EXTERNAL_PROOF_ATTRIBUTION.md](EXTERNAL_PROOF_ATTRIBUTION.md).
 The complete original statement is `OriginalProblem`; the proved equivalence
 `originalProblem_iff_geometric_alpha_eq` ties it to the genuine geometric
-supremum/infimum, without proving the remaining lower bound. The entire
-research umbrella is still awaiting a successful build.
+supremum/infimum, without proving the remaining lower bound. The research
+umbrella built at clean source `b24bf60107959020e7b29b6e1263b739509987b0`
+(9,933 Lake jobs, exit 0). This is a library of results, not a theorem
+proving `OriginalProblem`. The separate WIP still depends on `sorryAx`.
 
 The exact remaining lower-strip premise is in
 `PlanarLowerBranchActualEdgeCarrierFrontier.lean`:
@@ -185,6 +187,56 @@ independent inspection; no proof claim is inferred from its "zero sorry"
 description. Fresh searches for JSP-000404 and Erdős 504 found no additional
 unconditional all-N source among the returned relevant submissions.
 
+The [Bulgarian Academy bibliography](https://www.math.bas.bg/serdica/bibl.pdf)
+also identifies the 1993 Comptes Rendus paper as vol. 46(5), pp. 27-30,
+and an exposition in Mathematica Plus (1993), no. 2, pp. 8-13. Bibliographic
+metadata, not a verified proof of the general induction, was obtained for
+these two items. An actual missing derivation would change this assessment.
+
+Three additional public research repositories were inspected at fixed
+commits on 2026-11-05. None supplies the missing arbitrary-N lower bound:
+
+- [Jackie1021](https://github.com/Jackie1021/jsp000404-lean/tree/3e8b0127db073a4d5b7f2baea478b2e1abfb904e),
+  `3e8b0127db073a4d5b7f2baea478b2e1abfb904e`: the source of
+  `GlobalDirections.cardinality_bound` gives s <= 2^k under t <= k.
+  Taking the ceiling at noninteger t is too weak. The completion contract
+  proves an equivalence with six obligations, not those obligations.
+  The reported five-row deletion obstruction is a direction model;
+  real planar coordinates are not asserted. No local rebuild is claimed.
+- [DF-dan](https://github.com/DF-dan/jsp-000404-sendov-audit/blob/33c3c3eff9a6de37ecc00ecb34ad4e451f56a0ba/lean/Branch17Certificate.lean),
+  `33c3c3eff9a6de37ecc00ecb34ad4e451f56a0ba`: the 17-row theorem
+  `branch_forces_half_step` assumes ten specified triangle-order
+  inequalities before proving t >= 9/2. Other order choices are not
+  excluded by this statement. No local rebuild is claimed.
+- [jerrylijize1224-star](https://github.com/jerrylijize1224-star/jsp404-lean-partial/tree/09b2ee9cab2da6ca977f682f1c8359b5e90d13d0),
+  `09b2ee9cab2da6ca977f682f1c8359b5e90d13d0`: the 2026-11-04
+  snapshot has the same Lean/Mathlib pins. The ZIP SHA-256 is
+  `34839c6043eedccec8b383823aeb65f7479ec5496e2d230d4e715a8c6d12e9b0`;
+  all 762 manifest entries were verified without extracting a worktree.
+  Inspection of `Basic`, `Target`, `SeventeenTwentyExact`, and
+  `TwentysevenExact` confirms the ordinary finite-set definitions and the
+  exact ranges of the theorems: 17..20 at 7*pi/9 and 27..32 at 4*pi/5.
+  Its own log reports a 3,280-job build; 2,711 printed axiom entries were
+  found in its supplied audit. These are **publisher logs**, not a local
+  Lean replay. The project credits #100 and #647 for earlier finite cases.
+  It leaves 21..26 between 140 and 144 degrees and its full `SendovClaim`
+  as an unproved proposition.
+
+The November snapshot also contains an obstruction directly relevant to the
+second threshold at n=4. Its *abstract* 21-row family has nine single-arc
+and twelve three-arc rows, period 18, and diameter <= 43/6 < 36/5.
+Our [independent rational checker](scripts/check_public_arc_obstruction.py)
+reconstructs the intervals from the published starts; it does not execute
+any archived program or rely on the stored solver witnesses. All 210 pairs
+have antipodal intersections. Thus row diameter and pairwise compatibility
+alone do not imply the desired bound of 20. For rows 7, 9, 10, every
+permitted direction choice satisfies w<u<v and v-w<9. But the direction
+of the sum of the two nonparallel edges, v, must lie strictly between u
+and w on their common open half-circle. This contradiction excludes the
+fixed model from the plane, not all 21-point configurations. The model and
+the discovery of this obstruction belong to that cited project; only the
+independent check is ours. The third-party archive is not committed.
+
 ## Excluded shortcuts
 
 The retained historical witnesses rule out unconditional compensated deletion,
@@ -194,6 +246,21 @@ An abstract bipartite K5 colouring can have active profile 3,3,2,2,2 and a
 unique C4; a bad vertex can be pendant to that C4. A convex-C4 lemma cannot
 therefore be applied without proving convexity and incidence. None of these
 countermodels is itself a counterexample to the original planar statement.
+
+A stronger wide-sector shortcut also fails for arbitrary circular edge
+labels. In lexicographic edge order on vertices 0..5, take the labels
+`3,0,2,6,9,8,7,13,11,12,1,14,10,5,4` modulo 15, in units of pi/15.
+For a triangle T let D(T) be 15 minus its largest circular gap. Over all
+20 triangles, min D(T)=5. Yet
+`max_s min_T max_{a in T} (1 + ((a-s-1) mod 15)) = 7`, for s=0..14
+and a ranging over T's three edge labels. Thus for a phase s+x, 0<=x<1,
+some triangle has all its labels at forward offsets in [1-x,7-x]. Every
+open sector of width (3/2)*5 contains a triangle. This refutes only that
+uniform 3/2 strengthening from per-triangle circular-span data, not the
+smaller width required at a particular t. The order of the 15 labelled
+crossings admits no one of the 720 starting vertex permutations for which
+all crossings swap adjacent projections. It is not a planar witness.
+The actual wide-sector existence route remains unproved.
 
 The next proof attempt must derive a global geometric credit supply, or prove
 weighted capacity directly. Rephrasing it as Hall, recording another fibre

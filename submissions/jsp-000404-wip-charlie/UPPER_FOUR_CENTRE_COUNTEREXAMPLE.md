@@ -5,6 +5,12 @@ classification and **not** the upper capacity bound 2^n + 2^(n-2).
 The argument below is an exact natural-language proof. It has not yet been
 formalized with the project's `CentreProjectiveCycle` definitions.
 
+Prior public research already reported the four-centre issue, including
+[#300](https://github.com/TheJustinSunPrize/awards/pull/300) and
+[Jackie1021's earlier direction-model work](https://github.com/Jackie1021/jsp000404-lean/tree/3e8b0127db073a4d5b7f2baea478b2e1abfb904e).
+The coordinates and perfect-GC calculation below are this workspace's
+check of the printed bound; they do not establish priority for finding it.
+
 The source-motivated strengthening being tested is:
 
 > For four actual centres satisfying AngleCap at t=n+delta,

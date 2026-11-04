@@ -55,7 +55,8 @@ and equality with the genuine geometric extremum `JSP404.alpha`.
 Those equivalences do not assert that the outstanding lower bound holds.
 
 The all-N sharpness branch is therefore locally proved. This is a focused
-result; the entire research umbrella has not yet passed. The original
+result. The entire research umbrella subsequently passed at source commit
+`b24bf60107959020e7b29b6e1263b739509987b0` (9,933 jobs). The original
 arbitrary-N lower bound, including the genuine
 global capacity/payment problem, remains open. No complete-prize submission
 is justified by this dependency or its integration.
