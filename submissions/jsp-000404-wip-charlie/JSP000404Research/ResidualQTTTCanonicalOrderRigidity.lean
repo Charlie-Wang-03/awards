@@ -1,5 +1,5 @@
 import JSP000404Research.ResidualQTTTOrderRigidity
-import JSP000404Research.GenericProjectionCanonicalOrder
+import JSP000404Research.ProjectionOrderCanonicalOrder
 import Mathlib.Tactic
 
 /-!
@@ -26,10 +26,13 @@ theorem QTT_canonical_left_side_outer_edge_eq_left_owner
     {p : V → Plane}
     (hp : Function.Injective p)
     {n : ℕ}
-    (C : OrderedEdgeColoring (ProjectionOrdered V) (n + 1))
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      OrderedEdgeColoring (ProjectionOrdered V) (n + 1))
     (exponent : ProjectionOrdered V → ℕ)
     (hexp : ∀ q, exponent q ≤ n)
     (honeLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ q,
         (OrderedEdgeColoring.active C q).card
           ≤ n - exponent q + 1)
@@ -39,19 +42,28 @@ theorem QTT_canonical_left_side_outer_edge_eq_left_owner
     (hys :
       CanonicalPointLt p y.toOriginal s.toOriginal)
     (hxLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       x ∈ OrderedEdgeColoring.projectedLossVertices C exponent)
     (hyLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       y ∈ OrderedEdgeColoring.projectedLossVertices C exponent)
     {word : Fin n → Bool}
     {cx cy : Fin n}
-    (hcx : cx ∈ OrderedEdgeColoring.retainedActive C x)
-    (hcy : cy ∈ OrderedEdgeColoring.retainedActive C y)
+    (hcx :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      cx ∈ OrderedEdgeColoring.retainedActive C x)
+    (hcy :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      cy ∈ OrderedEdgeColoring.retainedActive C y)
     (hcxy : cx ≠ cy)
     (hsQ :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.retainedCompletionWords C s)
     (hxT :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.translatedCompletionWords C x cx)
     (hyT :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.translatedCompletionWords C y cy) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp
@@ -76,10 +88,13 @@ theorem QTT_canonical_right_side_outer_edge_eq_right_owner
     {p : V → Plane}
     (hp : Function.Injective p)
     {n : ℕ}
-    (C : OrderedEdgeColoring (ProjectionOrdered V) (n + 1))
+    (C :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      OrderedEdgeColoring (ProjectionOrdered V) (n + 1))
     (exponent : ProjectionOrdered V → ℕ)
     (hexp : ∀ q, exponent q ≤ n)
     (honeLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ q,
         (OrderedEdgeColoring.active C q).card
           ≤ n - exponent q + 1)
@@ -89,19 +104,28 @@ theorem QTT_canonical_right_side_outer_edge_eq_right_owner
     (hxy :
       CanonicalPointLt p x.toOriginal y.toOriginal)
     (hxLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       x ∈ OrderedEdgeColoring.projectedLossVertices C exponent)
     (hyLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       y ∈ OrderedEdgeColoring.projectedLossVertices C exponent)
     {word : Fin n → Bool}
     {cx cy : Fin n}
-    (hcx : cx ∈ OrderedEdgeColoring.retainedActive C x)
-    (hcy : cy ∈ OrderedEdgeColoring.retainedActive C y)
+    (hcx :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      cx ∈ OrderedEdgeColoring.retainedActive C x)
+    (hcy :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
+      cy ∈ OrderedEdgeColoring.retainedActive C y)
     (hcxy : cx ≠ cy)
     (hsQ :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.retainedCompletionWords C s)
     (hxT :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.translatedCompletionWords C x cx)
     (hyT :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       word ∈ OrderedEdgeColoring.translatedCompletionWords C y cy) :
     letI : LinearOrder (ProjectionOrdered V) :=
       projectionLinearOrder hp

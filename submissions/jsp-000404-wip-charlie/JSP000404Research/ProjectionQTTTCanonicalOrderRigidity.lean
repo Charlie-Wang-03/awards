@@ -1,6 +1,8 @@
 import JSP000404Research.ProjectionOrderCanonicalOrder
 import JSP000404Research.ResidualQTTTOrderRigidity
 import JSP000404Research.ProjectionStandardBandBudget
+import JSP000404Research.PlanarStandardResidualColoring
+import JSP000404Research.PlanarCentreExponent
 import Mathlib.Tactic
 
 /-!
@@ -33,6 +35,7 @@ theorem planar_QTT_same_canonical_lower_side_outer_edge_eq_far_owner
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {s x y : ProjectionOrdered V}
@@ -43,15 +46,17 @@ theorem planar_QTT_same_canonical_lower_side_outer_edge_eq_far_owner
     {word : Fin n → Bool}
     {cx cy : Fin n}
     (hxLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       x ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hyLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       y ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hcx :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -100,7 +105,7 @@ theorem planar_QTT_same_canonical_lower_side_outer_edge_eq_far_owner
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp Cfam
+  let exponent := planarCentreExponent (t := t) hp Cfam
 
   have hxy : x < y :=
     (canonicalPointLt_iff_projection_lt hp x y).1 hxyCan
@@ -113,11 +118,12 @@ theorem planar_QTT_same_canonical_lower_side_outer_edge_eq_far_owner
   have hexp : ∀ q, exponent q ≤ n := by
     intro q
     exact Nat.le_of_lt
-      (by simpa [exponent] using hprofile.1 q)
+      (by simpa [exponent, planarCentreExponent] using hprofile.1 q)
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R,exponent] using hprofile.2 q
+    simpa [R, exponent, planarCentreExponent, planarStandardResidualColoring]
+      using hprofile.2 q
 
   exact QTT_same_left_side_outer_edge_eq_left_owner
     R exponent hexp hone
@@ -143,6 +149,7 @@ theorem planar_QTT_same_canonical_upper_side_outer_edge_eq_far_owner
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {s x y : ProjectionOrdered V}
@@ -153,15 +160,17 @@ theorem planar_QTT_same_canonical_upper_side_outer_edge_eq_far_owner
     {word : Fin n → Bool}
     {cx cy : Fin n}
     (hxLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       x ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hyLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       y ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hcx :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -210,7 +219,7 @@ theorem planar_QTT_same_canonical_upper_side_outer_edge_eq_far_owner
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp Cfam
+  let exponent := planarCentreExponent (t := t) hp Cfam
 
   have hsx : s < x :=
     (canonicalPointLt_iff_projection_lt hp s x).1 hsxCan
@@ -223,11 +232,12 @@ theorem planar_QTT_same_canonical_upper_side_outer_edge_eq_far_owner
   have hexp : ∀ q, exponent q ≤ n := by
     intro q
     exact Nat.le_of_lt
-      (by simpa [exponent] using hprofile.1 q)
+      (by simpa [exponent, planarCentreExponent] using hprofile.1 q)
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R,exponent] using hprofile.2 q
+    simpa [R, exponent, planarCentreExponent, planarStandardResidualColoring]
+      using hprofile.2 q
 
   exact QTT_same_right_side_outer_edge_eq_right_owner
     R exponent hexp hone
