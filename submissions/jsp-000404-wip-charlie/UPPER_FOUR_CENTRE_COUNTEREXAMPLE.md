@@ -96,6 +96,46 @@ This example supplies no missing global payment and does not settle any
 unproved all-N branch. It strengthens the reason to target the capacity
 inequality itself instead of the source's asserted extremizer shape.
 
+## The same obstruction occurs at every odd n >= 3
+
+This is not restricted to n=3. Write n=2*r+1 with integer r>=1, and set
+
+    delta=3/4, t=n+3/4, lambda=pi/t,
+    a=3*lambda/5, b=7*lambda/10,
+    A=(-1,0), B=(1,0), C=(0,tan(a)), D=(0,tan(b)).
+
+We have 0<a<b<pi/2 because lambda<=4*pi/15. Thus tangent is strictly
+increasing on this interval and the four points are distinct. The preceding
+angle and projective-gap tables apply unchanged. Each actual angle is below
+pi-lambda: pi-2*a<pi-lambda, pi-2*b<pi-lambda, and
+
+    pi/2+a+lambda = pi/2+8*lambda/5
+                    <= pi/2+32*pi/75 < pi.
+
+The base angles satisfy b+lambda=17*lambda/10<=34*pi/75<pi;
+the remaining angles pi/2-b are also below pi-lambda since
+lambda-b=3*lambda/10<=2*pi/25<pi/2.
+
+At either base, the scaled gaps are 3/5, 1/10, and n+1/20, hence the
+quotients are 0,0,n and the exponent is n-1. At C the scaled gaps are
+
+    r+11/40, r+11/40, 6/5,
+
+and at D they are
+
+    r+7/40, r+7/40, 7/5.
+
+Their quotients are r,r,1, giving exponent 2*(r-1)=n-3 at both C and D.
+Consequently the genuine geometric profile is
+
+    [n-1,n-1,n-3,n-3],
+    sum 2^k = 2^n + 2^(n-2) > 2^n + 2^(n-3).
+
+This family saturates the full proposed upper capacity at every odd n>=3
+while violating the smaller four-centre estimate. No numerical search or
+unproved geometric feasibility premise is used in this derivation.
+Its Lean formalization remains outstanding.
+
 Attribution: Sendov for the problem, capacity framework, and source profile;
 this explicit rational witness and its verification were developed in the
 Charlie-Wang-03 workspace with Codex assistance. No priority claim is made.
