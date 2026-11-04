@@ -138,11 +138,110 @@ moves points, or of an induction with additional justified hypotheses.
 The family is a written mathematical proof; no Lean formalization of
 this counterexample is claimed.
 
+## Sixteen points exclude the recursion for every t>4
+
+The obstruction is not confined to the n=3 induction step. It persists for
+every real t>4, so supplying finitely many small base cases does not repair
+this unchanged-subset recursion.
+
+First fix 0<beta<pi/2 and put
+
+    u0=e(0), u1=e(beta), u2=e(pi/2), u3=e(pi/2+beta),
+    p_b(h)=sum_(j=0)^3 h^j*b_j*u_j,     b in {0,1}^4.
+
+Here e(theta)=(cos(theta),sin(theta)) and 0<h<1/4. The first differing
+coordinate argument above proves that these sixteen points are distinct.
+After positive rescaling, each difference vector is a signed unit u_j
+plus an error of norm less than r=h/(1-h)<1. Its angle d from that signed
+unit lies in [0,pi/2), because their inner product is positive. Resolving
+the error into parallel and perpendicular components gives
+
+    tan(d) < r/(1-r) = h/(1-2*h),
+    d <= tan(d) < h/(1-2*h).
+
+The inequality d<=tan(d) follows, for example, by differentiating tan(d)-d
+on [0,pi/2). The angle between two vectors changes by at most the sum of
+their angular changes: this is the triangle inequality for shortest arc
+distance on the unit circle. Thus every triple angle differs from its
+leading-vector angle by less than E=2*h/(1-2*h).
+
+For three distinct words, their first splitting level k separates one word
+from a pair; that pair first splits at a later level l. Their leading-vector
+angles are 0, theta, pi-theta for the two directions u_k,u_l. All these
+angles are at most
+
+    L = pi - min(beta, pi/2-beta).
+
+If (k,l) is (0,1) or (2,3), the largest leading-vector angle is pi-beta.
+Call these designated triples. Every two-colouring of the sixteen words
+has a monochromatic designated triple, as follows.
+
+Group the words by their first two bits, giving four groups of four words.
+Every triple inside one group has levels (2,3). If none of these triples
+is monochromatic, each group must contain exactly two words of each colour.
+Choose one word of colour zero from each of groups 00, 01, and 10. These
+three words have splitting levels (0,1), so they form a monochromatic
+designated triple after all. This argument includes partitions with an
+empty part, since such a partition already fails inside each group.
+
+Now let t>4, lambda=pi/t, lambda'=pi/(t-1), A=pi-lambda, B=pi-lambda'.
+Since lambda<pi/4 and lambda'>lambda, the interval
+
+    lambda < beta < min(lambda', pi/2-lambda)
+
+is nonempty; choose its midpoint. Then min(beta,pi/2-beta)>lambda,
+so L<A, while pi-beta>B. Let
+
+    m=min(A-L, pi-beta-B)>0,
+    h=min(1/8,m/16)>0.
+
+This h is less than 1/4, and
+
+    E=2*h/(1-2*h) <= (8/3)*h <= m/6 < m/2.
+
+Consequently every angle of the sixteen-point set is less than L+E<A.
+Every designated triple has an angle greater than pi-beta-E>B. The
+colouring argument therefore prevents any partition into two unchanged
+subsets both satisfying the child cap B. This is a genuine ordinary-point
+counterexample for each t>4, not an abstract colouring offered as geometry.
+
+## One explicit algebraic set works in both n=4 strips
+
+Take beta=pi/4 and h=1/100. Multiplying all points by the positive factor
+2*10^6 gives the following exact sixteen-point set, indexed by four bits:
+
+    x_b=2000000*b0 + 10000*sqrt(2)*b1 - sqrt(2)*b3,
+    y_b=10000*sqrt(2)*b1 + 200*b2 + sqrt(2)*b3.
+
+Here L=pi-beta=3*pi/4 and the preceding angular error bound is E=1/49.
+Since pi>3 and 68<3*49, we have E<pi/68. At lower-strip t=17/4,
+the parent and child caps are respectively 13*pi/17 and 9*pi/13;
+their margins around L are
+
+    13*pi/17-L=pi/68,       L-9*pi/13=3*pi/52.
+
+At upper-strip t=19/4 the caps are 15*pi/19 and 11*pi/15, with margins
+
+    15*pi/19-L=3*pi/76,     L-11*pi/15=pi/60.
+
+All four margins are at least pi/68. Thus the same exact set satisfies
+both parent caps strictly, while every partition has a designated triple
+violating the corresponding child cap strictly. No floating-point
+trigonometric computation enters this certificate.
+
+These arguments do not address the isolated parameter t=4. They exclude
+the unrestricted unchanged-subset step for every 3<t<4 and every t>4;
+in particular, starting that step at n>=4 cannot rescue it. They neither
+refute the original minimax classification nor rule out a different
+induction with a proved geometric transformation.
+
 ## Exact arithmetic replay
 
 The companion script `scripts/check_width_drop_counterexample.py` recomputes
 the table from integer coordinates, checks every inequality using integers,
-and exhausts all two-colour assignments. It checks a finite certificate;
+and exhausts all 32 two-colour assignments. It also computes the 272
+designated triples among four-bit words and exhausts all 65,536 colourings.
+It checks these finite certificates;
 the trigonometric deductions above are part of the written proof. It is
 not a Lean kernel certificate and does not change the unresolved main DAG.
 

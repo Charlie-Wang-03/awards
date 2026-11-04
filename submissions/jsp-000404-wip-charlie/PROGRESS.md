@@ -35,13 +35,18 @@ Updated: 2026-11-05 (Asia/Shanghai).
   Their builds pass (3,213 / 3,447 jobs), with only the standard three axioms.
   `b678ab677969688ef3837aea8fcf9004d45a5b79` fixes six collision/whole-cube
   dependencies that compiled successfully during downstream failing attempts.
-  The canonical whole-cube wrapper and augmenting-terminal repair still await the
-  complete whole-cube target result. No assumptions or admissions were added.
+  The augmenting-terminal repair has now compiled during the full replay;
+  the canonical whole-cube wrapper still awaits its target result.
+  No assumptions or admissions were added.
 - **Full replay now running:** `scripts/replay_research_windows.ps1 -Threads 2 -SkipCache`.
   Logs: `artifacts/replay-20261104-195532/`; driver:
   `artifacts/restore-20261105/full-replay-driver.log`.
   It builds the umbrella, the separate admitted root, the repaired bridges,
   and the all-N upper theorem, then runs the strict sorry audit.
+  The first umbrella pass has finished with exit 1 on
+  `SupportTwoIndexedCertificate` and `ResidualWholeCubeSecondCoordinateCollision`.
+  Both source repairs pass direct Lean checks; a fresh umbrella rebuild is
+  still required. The script is now building the separate WIP root.
   Root is NOT yet PASS. Earlier root attempts were interrupted after memory
   failures / to repair concrete compiler errors. Process-local two-thread
   execution preserves the user's other processes and system settings.
@@ -53,8 +58,11 @@ Updated: 2026-11-05 (Asia/Shanghai).
   now reuses the genuine endpoint definition and its proved formula; its
   angle-excess consumer was adapted without changing any theorem statement.
   A second import probe found differently ordered, same-name list helpers
-  in the two projective cut-rotation modules. The gap-cut helpers now have
-  distinct names; their statements and proofs are unchanged. The remaining
+  in the two projective cut-rotation modules. The helpers in
+  `ProjectiveCutRotation` now have distinct names, and their one external
+  call is updated; their statements and proofs are unchanged. This choice
+  affects 47 umbrella modules rather than 118 for renaming the gap-cut
+  variants. The remaining
   suspected duplicate theorems passed a joint import probe. These repairs
   still await a completed rebuild.
   The actual build log also reveals native-decision axiom dependencies in
@@ -86,6 +94,12 @@ Updated: 2026-11-05 (Asia/Shanghai).
   needed at upper-strip t=15/4. A complete five-point binary-family argument
   excludes this unchanged-subset recursion for every 3<t<4.
   This extension is reproducible at `50197263d4aac8fd4620c2c7c7955b667cadc444`.
+  A further sixteen-point construction now excludes every t>4, so starting
+  the same induction above the small cases does not repair it. Explicit
+  algebraic coordinates work in both n=4 strips. The written geometric
+  proof uses a uniform angular-error bound; an integer check verifies all
+  65,536 colourings against 272 designated triples. The isolated t=4 is
+  not addressed. This is not a Lean theorem or an original-problem solution.
 - [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md) now refute the
   proposed at-most-one-full common-phase premise in the genuine lower strip
   `t=349/100`. Exact rational interval arithmetic verifies all 60 angles,

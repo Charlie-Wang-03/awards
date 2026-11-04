@@ -216,3 +216,12 @@ need a genuinely new direction-changing construction and a proof that it
 preserves the needed geometric invariants. The same note now proves failure
 for every 3<t<4 by a five-point binary-family limit argument; restricting
 the unchanged-subset recursion to the upper strip does not fix it.
+It now also gives an ordinary sixteen-point family for every t>4. Two
+separated direction pairs make 272 designated binary-word triples too large
+for the child cap, and every two-colouring contains one such triple. A
+uniform angular-error estimate proves the Euclidean realization. An explicit
+set in Q(sqrt(2)) works at both t=17/4 and t=19/4; all 65,536 colourings were
+checked with integers. Thus adding small base cases and starting this
+unchanged-subset induction at n>=4 also fails. The isolated t=4 is not
+settled by these counterexamples. These are written/executable certificates,
+not Lean geometry theorems or a counterexample to the original problem.
