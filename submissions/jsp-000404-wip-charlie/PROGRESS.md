@@ -45,6 +45,9 @@ Updated: 2026-11-05 (Asia/Shanghai).
   Root is NOT yet PASS. Earlier root attempts were interrupted after memory
   failures / to repair concrete compiler errors. Process-local two-thread
   execution preserves the user's other processes and system settings.
+  This replay has exposed a duplicate `positiveIndexSet` declaration in
+  `SupportTwoIndexedCertificate`; its source now reuses the identical
+  `ZeroCarry` definition, but that repair awaits a completed rebuild.
 - Current import inventory: 1,686 local modules including the umbrella;
   995 in its revised closure, 691 outside. The admitted root is outside it;
   its separate closure has 451 modules, 60 absent from the umbrella closure.
@@ -70,6 +73,13 @@ Updated: 2026-11-05 (Asia/Shanghai).
   This certificate is written/executable mathematics, not a Lean theorem.
   A second integer witness also has full four-bit completion mass 8..10
   at every phase, refuting the weaker universal target `M>=2*|S|-1=11`.
+  Both are reproducible at `92e5a2ada0dffbeb319430f2c072a28c38eae4ed`.
+- The historical four-point compensated-deletion witness has also been
+  checked exactly at `t=17/5`: 12 strict angle checks and every root/child
+  quotient floor pass; mass 7 becomes 6 after each deletion. See Section 7
+  of [the audit](COMPENSATED_DELETION_HARD_STOP_2026-09-20.md). Since 7<8,
+  this excludes unconditional deletion, not deletion restricted to a
+  hypothetical minimal overweight configuration. No Lean geometry claim.
 - Sendov Acta pp. 39–40 and 42 were independently inspected as images.
   Arbitrary-s induction remains missing; numerator 2 and epsilon inversion
   are required. Public #5131 takes `GeometricCertificates` for general lower
@@ -87,6 +97,7 @@ Then pursue the original unweighted thresholds directly, or prove genuine
 global non-reusing payment. Both the at-most-one-full phase premise and the
 universal completion-mass lower bound `M>=2*|S|-1` are now excluded. A proof
 using minimal overweight geometry would need new geometric structure; none
-is assumed. Numerical falsification attempts alone establish no theorem.
+is assumed. The wide-wrap bipartite-phase route also remains UNPROVED;
+its latest numerical search found no counterexample, which proves nothing.
 No upstream complete-proof PR, prize claim, or eligibility change is authorized
 by the current incomplete evidence.

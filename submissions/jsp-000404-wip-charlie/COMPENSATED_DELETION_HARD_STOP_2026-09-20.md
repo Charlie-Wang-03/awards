@@ -2,6 +2,11 @@
 
 Status: **numerically stable geometric counterexample candidate + exact Lean arithmetic profile**.
 
+**2026-11-05 audit:** the same integer points now have an exact rational
+interval certificate at the fixed parameter `t=17/5`; see Section 7.
+That audit does not upgrade the separate exact-maximum normalization below
+to a kernel-checked geometric result.
+
 This note records the concrete four-point configuration used to falsify the
 over-strong conjecture
 
@@ -250,3 +255,40 @@ unconditional final induction step.
 
 The main proof search should therefore prioritize the support-cone /
 turn-packing and adaptive even-partition routes.
+
+## 7. Exact fixed-parameter audit, 2026-11-05
+
+For the integer points from Section 1A, set `t=17/5`, `n=3`, `delta=2/5`
+and `lambda=5*pi/17`. Every actual angle is strictly below
+`pi-lambda=12*pi/17`. This is the genuine `AngleCap` hypothesis at a
+fixed lower-strip parameter; `lambda` need not be the exact supplement of
+the maximum angle for this formulation.
+
+The independent checker
+
+```powershell
+python -B -X utf8 scripts/check_compensated_deletion_counterexample.py
+```
+
+uses the alternating-arctangent and Machin rational enclosures documented
+in [the phase certificate](FULL_BAND_PHASE_COUNTEREXAMPLE.md). For all 12
+angles it proves noncollinearity and the strict cap. At every root and
+child centre it sorts the exact projective directions by disjoint interval
+enclosures, includes the cyclic wrap gap, and divides each gap by `lambda`.
+The floors of the lower and upper rational endpoints agree in every case.
+Thus no guessed floating-point floor or forced-boundary rounding is used.
+
+The resulting exact root quotient lists are
+`[1,1,1]`, `[2,0,0]`, `[0,0,2]`, `[0,0,2]`, giving exponents `0,1,1,1`
+and mass 7. After any of the four deletions, all three exponents are 1,
+giving mass 6. The full quotient lists are printed by the checker; cyclic
+rotations of those lists do not affect the exponents. Hence no fixed-t
+deletion is compensated in this actual geometric configuration.
+
+This confirms the failure of the **unconditional fixed-t** deletion route.
+It does **not** disprove a deletion theorem restricted to a hypothetical
+minimal overweight configuration: the witness has mass `7<2^3=8`.
+Proving a sufficient deletion-or-capacity alternative in that restricted
+setting is still a genuine mathematical obligation. The original witness
+is due to the historical workspace search; this update supplies a rigorous
+fixed-parameter audit, not a new-discovery claim or a Lean geometry proof.

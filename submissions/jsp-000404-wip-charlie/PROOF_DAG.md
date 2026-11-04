@@ -92,6 +92,15 @@ the one executable sorry. `PlanarUpperBranchHardDefect` similarly consumes
 an unproved hard-word payment bound with extra allowance 2^(n-2).
 Neither conditional implication proves that geometry supplies the premise.
 
+The original unweighted lower problem does not require proving the full
+weighted statement for every generalized configuration. In a minimal
+overweight induction, the historical unconditional-deletion counterexample
+does not settle the issue: its mass is only 7<8. Its fixed-t geometric
+realization has now been checked exactly at `t=17/5` (see Section 7 of
+[the deletion audit](COMPENSATED_DELETION_HARD_STOP_2026-09-20.md)). A new
+restricted deletion-or-capacity argument is still unproved; it must not be
+inserted as an assumed induction step.
+
 ## Smaller sufficient targets for a replacement route
 
 The weighted capacity route is sufficient, but the original lower bound can
