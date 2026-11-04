@@ -149,6 +149,14 @@ The live global routes are therefore:
 Numerical falsification is used only to kill over-strong conjectures; passing
 random tests is never treated as proof.
 
+**2026-11-05 correction to item 2:** the at-most-one-full common-phase
+condition is false. [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md)
+at `t=349/100` satisfy the actual angle cap but have at least two full vertices
+for every phase, including event endpoints. The rational interval checker
+passes all 60 angle and 60 phase-cell checks. A bound using the entire
+completion-mass defect is a different, unproved condition; no such condition
+is silently substituted for the failed one.
+
 ### Notation / indexing warning
 
 There are two different integer scales in the full Blumenthal/Sendov story and

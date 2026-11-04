@@ -62,6 +62,12 @@ Updated: 2026-11-05 (Asia/Shanghai).
   [five integer points](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md) refute
   unchanged-subset binary width-drop recursion at t=10/3. The integer
   checker passes ten triples and 32 colourings. Neither is Lean-certified.
+- [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md) now refute the
+  proposed at-most-one-full common-phase premise in the genuine lower strip
+  `t=349/100`. Exact rational interval arithmetic verifies all 60 angles,
+  all 60 event cells, and the endpoint convention: every phase has 2..4
+  full vertices. The original cardinality bound remains respected.
+  This certificate is written/executable mathematics, not a Lean theorem.
 - Sendov Acta pp. 39–40 and 42 were independently inspected as images.
   Arbitrary-s induction remains missing; numerator 2 and epsilon inversion
   are required. Public #5131 takes `GeometricCertificates` for general lower
@@ -76,8 +82,9 @@ Updated: 2026-11-05 (Asia/Shanghai).
 
 Next: finish the full replay and repair actual errors without removing imports.
 Then pursue the original unweighted thresholds directly, or prove genuine
-global non-reusing payment. One candidate is a common phase with sufficiently
-few full direction-band vertices; its existence is UNPROVED. Numerical
-falsification attempts in ignored artifacts establish no theorem.
+global non-reusing payment. The at-most-one-full phase route is now excluded.
+A phase criterion retaining the entire Hansel completion mass is weaker and
+still UNPROVED; it must first survive adversarial testing. Numerical
+falsification attempts alone establish no theorem.
 No upstream complete-proof PR, prize claim, or eligibility change is authorized
 by the current incomplete evidence.
