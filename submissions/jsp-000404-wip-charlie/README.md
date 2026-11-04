@@ -3,6 +3,11 @@
 This directory is a research-only Lean workspace for the still-incomplete
 JSP-000404 / Erdős 504 / Sendov minimax-angle proof.
 
+For the 2026-11-05 restoration, exact pins, actual build evidence, and unresolved
+original-problem obligations, see [PROGRESS.md](PROGRESS.md) and
+[PROOF_DAG.md](PROOF_DAG.md). The older module inventory below is historical;
+it is not evidence of a current full-root build or a completed original proof.
+
 ## Current gate — Source Closure
 
 Status: **SOURCE_CLOSURE_GATE = OPEN**.
@@ -154,22 +159,26 @@ and the lower-branch generalized-configuration target is
 ]
 
 This `n` is the integer part of the normalized angular parameter `t`.
-It is **not** the outer dyadic index `m` used when the final Blumenthal
-classification is written in ranges such as `2^m < N <= 2^(m+1)`.
+The outer dyadic index `m` in ranges such as `2^m < N <= 2^(m+1)` has
+a different role; their values may coincide after the parameter is fixed.
 
-For example, the final critical value just above `2^m` has
-`GA = pi * (1 - 1/(2m+1))`, hence `t=2m+1`; therefore the Lemma-4.12
-integer is `n=2m+1`, not `m`.
+For example, the first final critical value just above `2^m` (with `m>=2`)
+is `GA = pi * (1 - 2/(2m+1))`. Hence `t=(2m+1)/2=m+1/2`, and the
+capacity integer at this endpoint is `n=m`. The numerator is **2**, as
+printed in Sendov's Acta 1995 Theorem 4.1, p. 42; the earlier numerator 1
+in this README was an error. At the second critical value,
+`GA=pi*(1-1/(m+1))`, one has `t=m+1`. Its strict lower-angle argument
+uses parameters approaching this endpoint from below, with `n=m` and
+`delta<1`, rather than silently applying that strip at `delta=1`.
 
 Consequences for this research branch:
 
 - every theorem stated purely as an `n`-bit / `2^n` capacity theorem remains
   mathematically meaningful;
-- `CriticalFiberBalance` is an internal critical-capacity counting lemma and
-  must not be described as the original Blumenthal `N=2^n+1` case without an
-  additional bridge;
-- all future prose must distinguish the Lemma-4.12 integer `n=floor(t)` from
-  the outer final-classification dyadic index.
+- `CriticalFiberBalance` is an internal counting lemma; an original-problem
+  lower bound still requires the actual geometric cap and cardinality bridge;
+- the capacity integer `n=floor(t)` and outer dyadic index must be related
+  using the exact parameter and endpoint, as above.
 
 ### Exact-normalization correction
 
