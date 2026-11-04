@@ -153,9 +153,10 @@ random tests is never treated as proof.
 condition is false. [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md)
 at `t=349/100` satisfy the actual angle cap but have at least two full vertices
 for every phase, including event endpoints. The rational interval checker
-passes all 60 angle and 60 phase-cell checks. A bound using the entire
-completion-mass defect is a different, unproved condition; no such condition
-is silently substituted for the failed one.
+passes all 60 angle and 60 phase-cell checks. A second integer witness in
+the same certificate has full completion mass at most 10 for every phase,
+so the weaker universal target `M>=2*|S|-1=11` also fails. Neither condition
+can be silently inserted into a geometric capacity proof.
 
 ### Notation / indexing warning
 

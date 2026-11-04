@@ -29,8 +29,8 @@ even for genuine planar points in the strict lower strip.
 The six-point configuration is consistent with the required bound `6<=2^3`.
 The abstract theorem `hansel_card_le_two_pow_of_atMostOne_full` remains valid;
 its proposed geometric premise fails. The stronger every-vertex-missing
-premise fails as well. A phase argument retaining the entire completion mass
-is a different, still unproved possibility.
+premise fails as well. The strengthening below also excludes a proposed
+universal completion-mass lower bound.
 
 ## Exact angle and event certificate
 
@@ -122,3 +122,48 @@ Scope: exact rational interval certificate, NOT a Lean theorem.
 
 The failed conjecture was a proposed route in this research workspace, not an
 assumption of the original problem or a claim attributed to another author.
+
+## Stronger witness: the full completion mass also stays below 2|S|-1
+
+Keep the same `t` and `lambda`, and replace only points 0 and 5:
+
+```
+0 = ( 106,  12)     1 = ( 69, 69)     2 = (-72,  67)
+3 = (-102,   1)     4 = (-47,-92)     5 = ( 50, -88).
+```
+
+Write `b_v(phi)` for the number of incident bins occupied at vertex `v` and
+`M(phi)=sum_v 2^(4-b_v(phi))` for the full four-bit Hansel completion mass.
+For **every** phase, this configuration satisfies
+
+    all triple angles < pi-lambda,     8 <= M(phi) <= 10 < 2*6-1.
+
+Consequently, the suggested universal statement
+`exists phi, M(phi)>=2*|S|-1` is false even in the strict lower strip.
+It is weaker than the at-most-one-full premise, but still too strong.
+It cannot be used to prove the original cardinality bound. This does not
+exclude a genuinely new argument exploiting hypothetical overweight
+configurations; that restriction would require its own proof.
+
+The same checker now checks both configurations. For the second it again
+verifies all 60 angles, strictly separates all 60 event enclosures, and
+computes each bin and completion mass by exact integer/rational arithmetic.
+The certified event order and mass in the following open cell are:
+
+```
+12:0 10   45:0  9   14:1  9   03:0  8   02:3  8   05:1  8
+23:1  8   34:2  8   01:2  8   13:0  8   25:2  8   12:3  8
+45:3  9   03:3 10   15:1 10   04:0  8   35:2  8   13:3 10
+24:1 10   14:0  9   04:3 10   02:2 10   05:0  9   23:0  8
+34:1  8   01:1  8   25:1  8   12:2  8   45:2  8   14:3 10
+03:2 10   15:0  9   05:3  9   23:3 10   35:1 10   13:2 10
+24:0  8   15:3 10   04:2 10   02:1 10   34:0 10   01:0  9
+24:3 10   25:0  8   12:1  8   45:1  8   14:2  8   03:1  8
+05:2  8   23:2  8   34:3  9   01:3 10   35:0  9   13:1  9
+25:3 10   15:2 10   04:1 10   02:0  8   35:3 10   24:2 10
+```
+
+The endpoint argument above applies unchanged, so this is an all-phase
+statement, not a statement only about finitely many sampled phases.
+The second run prints `Completion mass range: 8..10.` It is still a written
+and executable rational certificate, not a kernel-checked Lean result.

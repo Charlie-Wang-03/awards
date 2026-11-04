@@ -10,6 +10,7 @@ from itertools import combinations
 
 
 POINTS = ((105, 13), (69, 69), (-72, 67), (-102, 1), (-47, -92), (48, -83))
+MASS_POINTS = ((106, 12), (69, 69), (-72, 67), (-102, 1), (-47, -92), (50, -88))
 T = Q(349, 100)
 TERMS = 24
 
@@ -73,15 +74,15 @@ def mod_pi(a):
     return result
 
 
-def vector(a, b):
-    return (POINTS[b][0] - POINTS[a][0], POINTS[b][1] - POINTS[a][1])
+def vector(a, b, points):
+    return (points[b][0] - points[a][0], points[b][1] - points[a][1])
 
 
-def check_angle_cap():
+def check_angle_cap(points):
     checked = 0
     for centre in range(6):
         for a, b in combinations((i for i in range(6) if i != centre), 2):
-            u, v = vector(centre, a), vector(centre, b)
+            u, v = vector(centre, a, points), vector(centre, b, points)
             dot = u[0] * v[0] + u[1] * v[1]
             det = abs(u[0] * v[1] - u[1] * v[0])
             assert det > 0  # Also certifies that no triple is collinear.
@@ -96,9 +97,9 @@ def check_angle_cap():
     return checked
 
 
-def check_phase_cells():
+def check_phase_cells(points, mass_bound=None):
     edges = list(combinations(range(6), 2))
-    angles = {e: projective_angle(vector(*e)) for e in edges}
+    angles = {e: projective_angle(vector(*e, points)) for e in edges}
     events = [(mod_pi(sub(angles[e], scale(LAM, j))), e, j)
               for e in edges for j in range(4)]
     events.sort(key=lambda row: row[0][0])
@@ -106,6 +107,7 @@ def check_phase_cells():
     assert all(events[k][0][1] < events[k + 1][0][0] for k in range(59))
 
     full_sets = []
+    masses = []
     for k, (bounds, edge, boundary) in enumerate(events):
         # The last cell crosses phase zero.  Its part below pi suffices,
         # since there is no event at zero and all bins are pi-periodic.
@@ -123,22 +125,32 @@ def check_phase_cells():
         full = tuple(v for v, mask in enumerate(masks) if mask == 15)
         assert len(full) >= 2
         full_sets.append(full)
+        mass = sum(2 ** (4 - mask.bit_count()) for mask in masks)
+        if mass_bound is not None:
+            assert mass <= mass_bound
+        masses.append(mass)
         print(f"{k + 1:02d} event={edge[0]}{edge[1]}:{boundary} "
-              f"full_after={''.join(map(str, full))}")
+              f"full_after={''.join(map(str, full))} mass={mass}")
 
     # At an isolated event theta_e - phase = j*lambda (mod pi), the
     # half-open bin at the event equals the bin immediately BEFORE it:
     # j for j=1,2,3, and 0 for j=0 (the wrap 0 -> 3).  All other edges
     # stay fixed because event enclosures are disjoint.  Thus endpoint
     # full sets are exactly those of the preceding open cells.
-    return len(events), min(map(len, full_sets)), max(map(len, full_sets))
+    return (len(events), min(map(len, full_sets)), max(map(len, full_sets)),
+            min(masses), max(masses))
 
 
 if __name__ == "__main__":
-    assert len(set(POINTS)) == 6 and 3 < T < Q(7, 2)
-    angles_checked = check_angle_cap()
-    cells, minimum, maximum = check_phase_cells()
-    print(f"PASS: {angles_checked} strict angle checks; {cells} disjoint event "
-          f"enclosures; full counts {minimum}..{maximum} in every open cell.")
+    assert 3 < T < Q(7, 2)
+    for name, points, bound in (("original full-band witness", POINTS, None),
+                                ("stronger completion-mass witness", MASS_POINTS, 10)):
+        assert len(set(points)) == 6
+        print(name)
+        angles_checked = check_angle_cap(points)
+        cells, minimum, maximum, min_mass, max_mass = check_phase_cells(points, bound)
+        print(f"PASS: {angles_checked} strict angle checks; {cells} disjoint event "
+              f"enclosures; full counts {minimum}..{maximum} in every open cell.")
+        print(f"Completion mass range: {min_mass}..{max_mass}.")
     print("Every event inherits its preceding cell by the half-open convention.")
     print("Scope: exact rational interval certificate, NOT a Lean theorem.")

@@ -68,6 +68,8 @@ Updated: 2026-11-05 (Asia/Shanghai).
   all 60 event cells, and the endpoint convention: every phase has 2..4
   full vertices. The original cardinality bound remains respected.
   This certificate is written/executable mathematics, not a Lean theorem.
+  A second integer witness also has full four-bit completion mass 8..10
+  at every phase, refuting the weaker universal target `M>=2*|S|-1=11`.
 - Sendov Acta pp. 39–40 and 42 were independently inspected as images.
   Arbitrary-s induction remains missing; numerator 2 and epsilon inversion
   are required. Public #5131 takes `GeometricCertificates` for general lower
@@ -82,9 +84,9 @@ Updated: 2026-11-05 (Asia/Shanghai).
 
 Next: finish the full replay and repair actual errors without removing imports.
 Then pursue the original unweighted thresholds directly, or prove genuine
-global non-reusing payment. The at-most-one-full phase route is now excluded.
-A phase criterion retaining the entire Hansel completion mass is weaker and
-still UNPROVED; it must first survive adversarial testing. Numerical
-falsification attempts alone establish no theorem.
+global non-reusing payment. Both the at-most-one-full phase premise and the
+universal completion-mass lower bound `M>=2*|S|-1` are now excluded. A proof
+using minimal overweight geometry would need new geometric structure; none
+is assumed. Numerical falsification attempts alone establish no theorem.
 No upstream complete-proof PR, prize claim, or eligibility change is authorized
 by the current incomplete evidence.

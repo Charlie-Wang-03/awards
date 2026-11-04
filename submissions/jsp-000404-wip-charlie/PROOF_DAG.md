@@ -123,9 +123,10 @@ these exact cardinality thresholds can be found.
 The proposed shortcut of choosing a common phase with at most one full
 direction-band vertex is now FALSE, even for six ordinary integer points
 and `t=349/100<7/2`. [The exact certificate](FULL_BAND_PHASE_COUNTEREXAMPLE.md)
-checks all 60 angle conditions and every phase cell and endpoint. It does
-not refute a criterion retaining the full Hansel completion mass, which
-remains unproved, or the original lower bound.
+checks all 60 angle conditions and every phase cell and endpoint. A second
+integer witness also refutes the weaker universal claim that some phase has
+full Hansel mass at least `2*|S|-1`: its mass is always between 8 and 10,
+while `2*|S|-1=11`. Neither witness refutes the original lower bound.
 
 ## Source and public-proof audits
 
