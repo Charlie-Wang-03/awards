@@ -133,13 +133,45 @@ The exact generated `CollectorProbe.lean` SHA-256:
 
     d5f4a0a659dc8dd6abdff4d7108bb4cc192eae720f08cf31566e91e220e79677
 
-The umbrella and admitted-root audits have not yet been executed. The probe
-is evidence for the upper closure and collector only, not a full-root PASS.
+The umbrella audit has not yet been executed. The upper probe is evidence
+for the upper closure and collector only, not a full-root PASS.
 The replay script now runs these two audits after the builds. A root whose
 build failed in that same replay is explicitly skipped and counted as a
 failed check, so a stale olean cannot produce a misleading audit PASS.
-The already-running `replay-20261104-195532` process uses the earlier script;
-the new audit steps apply to the next replay.
+The completed `replay-20261104-195532` process used the earlier script;
+the new audit steps apply to the next full replay.
+
+The admitted-root audit was subsequently run separately with
+`lake env lean artifacts/restore-20261105/axiom-audits/AdmittedAxiomAudit.lean`.
+It checked 451 modules and 4,238 declarations and exited 1. Exactly one
+declaration failed:
+`JSP000404Research.ProjectionOrdered.planar_lower_branch_dyadic_capacity_admitted_wip`.
+Its axioms include `sorryAx`. No uncommitted Lean source intersects this
+root's 451-module closure at source checkpoint
+`80e47652f35c047547e285fb8187d3d033bc81b8`; the overall working tree was dirty,
+so this does not replace a clean, immutable full replay. Raw log:
+`artifacts/restore-20261105/axiom-audits/admitted-first-audit.log`, SHA-256:
+
+    4de3b0f0a9c3e1eb5399d6e51589975d6e99a10350255fa87bdcda5fddf7e0bc
+
+## Whole-cube outward-order repair
+
+With `LEAN_NUM_THREADS=2`,
+`lake build JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder`
+passed (3,742 jobs, exit 0). The five repaired modules and all six of their
+printed theorem audits occur in the successful target log. The repairs
+correct argument orientation, dependent-order binders, disjunction
+construction, and equality chains that previously rewrote both sides.
+Their mathematical assumptions are unchanged.
+
+`whole-cube-success-excerpt.log` explicitly contains an excerpt, source
+SHA-256 hashes, and the full raw log hash. Its SHA-256 is:
+
+    1fd73ce1ba7ac3e1e6625464e55b9f5afc524fb857ac2e7ac9ad106a45dc9d4c
+
+The first replay failed the umbrella and this target before the repairs.
+This later focused PASS does not retroactively change either failure and
+does not certify the umbrella or the original problem.
 
 ## Kernel-checked finite arithmetic tables
 
@@ -170,3 +202,20 @@ These checks establish the finite arithmetic propositions, not their
 geometric realizations or the missing global payment. They also do not
 replace a fresh umbrella build and its module-wide axiom audit: the old
 oleans were deliberately left untouched by these direct checks.
+
+## Source and dependency checkpoint checks
+
+The replay now checks every Git package's actual checkout root, clean tracked
+status, and full HEAD against the immutable manifest revision. It repeats
+this at the end and records both snapshots. The checker was executed against
+all ten present package checkouts; every SHA matched and every tracked tree
+was clean. The PowerShell parser also accepted the updated script.
+
+The script records the source repository's HEAD and working-tree status at
+both endpoints. A dirty endpoint or changed HEAD is a failed
+`source-checkpoint`, even if compilation succeeds. Run the final replay from
+a committed, clean tree and do not edit sources during it; endpoint checks
+alone cannot detect an edit that is subsequently undone. The completed
+older replay had no such checks and included edits while running,
+so it cannot certify one immutable source commit. These new end-to-end
+checkpoint steps still await the next complete replay.

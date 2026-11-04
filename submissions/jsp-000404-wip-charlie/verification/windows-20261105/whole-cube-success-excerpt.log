@@ -1,0 +1,32 @@
+EXCERPT: lake build JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder
+Lean 4.34.0; LEAN_NUM_THREADS=2.
+This is a focused build, not an umbrella or original-problem proof.
+Raw full log: artifacts/restore-20261105/whole-cube-outward-repair.log
+RAW_LOG_SHA256 3cb729c59644581ab464b505ac0cff0592effa485d206e2eb742c8064428c541
+
+SOURCE_SHA256 JSP000404Research/ProjectionWholeCubeTQCanonicalOutwardOrder.lean 1382ec3ecda133ed87dad631f9bdc5543527fee9abbec88d6d06432b79ee5ba0
+SOURCE_SHA256 JSP000404Research/ResidualQTTTWholeCubeAugmentingTerminal.lean d89663ae0a14ac86f7687e0e7f219e85a0b57619d42ebd02c6e9bb65c0621cdd
+SOURCE_SHA256 JSP000404Research/ResidualWholeCubeSecondCoordinateCollision.lean 333597ca1ece186973d0106e8ac3f451760ac9e80cf8faf95adefc8a48692f09
+SOURCE_SHA256 JSP000404Research/ResidualWholeCubeTQCoordinateIdentification.lean 7b245f3abdb684cbdd600fa1bfcde4e34185138bc8631d6cdaf4e7950f9a072f
+SOURCE_SHA256 JSP000404Research/ResidualWholeCubeTQOutwardOrder.lean 17ee8a2e2d689ee71580148ef9a7c6d608f5c3293b72c7893b9f323796b8ea4d
+
+info: JSP000404Research/ResidualQTTTWholeCubeAugmentingTerminal.lean:113:0: 'JSP000404Research.OrderedEdgeColoring.QTTT_wholeCube_augmenting_or_single_fresh_terminal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ResidualQTTTWholeCubeAugmentingTerminal.lean:195:0: 'JSP000404Research.OrderedEdgeColoring.QTTT_wholeCube_forces_third_core_source' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ResidualWholeCubeSecondCoordinateCollision.lean:76:0: 'JSP000404Research.OrderedEdgeColoring.wholeCubeSecondCoordinate_secondLayer_TQ_or_TT' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ResidualWholeCubeTQCoordinateIdentification.lean:98:0: 'JSP000404Research.OrderedEdgeColoring.second_TQ_coordinate_eq_known_translated_owner' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ResidualWholeCubeTQOutwardOrder.lean:118:0: 'JSP000404Research.OrderedEdgeColoring.QTT_second_TQ_forces_partner_closer_on_same_side' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionWholeCubeTQCanonicalOutwardOrder.lean:168:0: 'JSP000404Research.ProjectionOrdered.planar_wholeCube_TQ_partner_closer_in_canonical_order' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+Build completed successfully (3742 jobs).
+exit_code=0

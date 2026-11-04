@@ -1,5 +1,6 @@
 import JSP000404Research.FourCentreTransitionCases
 import JSP000404Research.GapRemainder
+import JSP000404Research.ZeroCarry
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
@@ -27,22 +28,11 @@ namespace JSP000404Research
 
 open scoped BigOperators
 
-def positiveIndexSet
-    {I : Type*} [Fintype I]
-    (q : I → ℕ) : Finset I :=
-  (Finset.univ : Finset I).filter fun i => q i ≠ 0
-
 theorem positiveIndexSet_card
     {I : Type*} [Fintype I]
     (q : I → ℕ) :
-    (positiveIndexSet q).card = positiveSupport q := by
-  classical
-  unfold positiveIndexSet positiveSupport
-  rw [Finset.card_eq_sum_ones]
-  rw [Finset.sum_filter]
-  apply Finset.sum_congr rfl
-  intro i hi
-  by_cases hq : q i = 0 <;> simp [hq]
+    (positiveIndexSet q).card = positiveSupport q :=
+  positiveIndexSet_card_eq_positiveSupport q
 
 structure SupportTwoUnitTransitionIndexedCertificate
     {V : Type*} [LinearOrder V] [Fintype V]

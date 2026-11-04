@@ -1733,3 +1733,14 @@ import JSP000404Research.PlanarNineCentreGeometryReduction
 -- Certified n=3 top/next support-one case: all but at most three
 -- ORIGINAL centres have quotient support three; no true-hole credit asserted.
 import JSP000404Research.PlanarThreeTopNextSupportOnePacking
+
+-- Canonical geometric order is the concrete generic projection order.
+-- These wrappers preserve that order in every dependent colouring binder.
+import JSP000404Research.ResidualQTTTCanonicalOrderRigidity
+import JSP000404Research.ProjectionQTTTCanonicalOrderRigidity
+import JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder
+
+-- Complete original statement plus attributed all-N ordinary sharpness.
+-- The unconditional all-N lower bound remains unproved; OriginalProblem
+-- is a proposition to be proved, not an admitted theorem or a custom axiom.
+import JSP000404Research.OriginalUpperBound

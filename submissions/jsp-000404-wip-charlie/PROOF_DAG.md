@@ -222,6 +222,8 @@ for the child cap, and every two-colouring contains one such triple. A
 uniform angular-error estimate proves the Euclidean realization. An explicit
 set in Q(sqrt(2)) works at both t=17/4 and t=19/4; all 65,536 colourings were
 checked with integers. Thus adding small base cases and starting this
-unchanged-subset induction at n>=4 also fails. The isolated t=4 is not
+unrestricted unchanged-subset step at n>=4 also fails. No minimal-overweight
+property is established for these witnesses, so a step restricted to that
+domain is not refuted by them. The isolated t=4 is not
 settled by these counterexamples. These are written/executable certificates,
 not Lean geometry theorems or a counterexample to the original problem.

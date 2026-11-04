@@ -35,10 +35,12 @@ Updated: 2026-11-05 (Asia/Shanghai).
   Their builds pass (3,213 / 3,447 jobs), with only the standard three axioms.
   `b678ab677969688ef3837aea8fcf9004d45a5b79` fixes six collision/whole-cube
   dependencies that compiled successfully during downstream failing attempts.
-  The augmenting-terminal repair has now compiled during the full replay;
-  the canonical whole-cube wrapper still awaits its target result.
+  The five further whole-cube repairs now pass the canonical outward-order
+  target together (3,742 jobs, exit 0); all six printed theorems use only
+  the standard three axioms. The complete target log and source hashes are
+  identified in `verification/windows-20261105/whole-cube-success-excerpt.log`.
   No assumptions or admissions were added.
-- **Full replay now running:** `scripts/replay_research_windows.ps1 -Threads 2 -SkipCache`.
+- **First full replay finished, exit 1:** `scripts/replay_research_windows.ps1 -Threads 2 -SkipCache`.
   Logs: `artifacts/replay-20261104-195532/`; driver:
   `artifacts/restore-20261105/full-replay-driver.log`.
   It builds the umbrella, the separate admitted root, the repaired bridges,
@@ -46,13 +48,14 @@ Updated: 2026-11-05 (Asia/Shanghai).
   The first umbrella pass has finished with exit 1 on
   `SupportTwoIndexedCertificate` and `ResidualWholeCubeSecondCoordinateCollision`.
   Both source repairs pass direct Lean checks; a fresh umbrella rebuild is
-  still required. The script is now building the separate WIP root.
+  still required. The separate WIP root passed (3,853 jobs), but its actual
+  printed axioms include `sorryAx`. Its subsequent module-wide audit checked
+  451 modules / 4,238 declarations and rejected exactly that admitted theorem.
   Root is NOT yet PASS. Earlier root attempts were interrupted after memory
   failures / to repair concrete compiler errors. Process-local two-thread
   execution preserves the user's other processes and system settings.
-  This replay has exposed a duplicate `positiveIndexSet` declaration in
-  `SupportTwoIndexedCertificate`; its source now reuses the identical
-  `ZeroCarry` definition, but that repair awaits a completed rebuild.
+  `SupportTwoIndexedCertificate` now reuses the identical `ZeroCarry`
+  definition of `positiveIndexSet`; that repair awaits an umbrella rebuild.
   A separate real import probe also found a `criticalBadWidth` definition
   collision between `CriticalUnitQuotient` and `CriticalBadMass`. The latter
   now reuses the genuine endpoint definition and its proved formula; its
@@ -99,7 +102,10 @@ Updated: 2026-11-05 (Asia/Shanghai).
   algebraic coordinates work in both n=4 strips. The written geometric
   proof uses a uniform angular-error bound; an integer check verifies all
   65,536 colourings against 272 designated triples. The isolated t=4 is
-  not addressed. This is not a Lean theorem or an original-problem solution.
+  not addressed. The extension is reproducible at
+  `80e47652f35c047547e285fb8187d3d033bc81b8`. It does not exclude recursion
+  restricted to hypothetical minimal overweight configurations. This is
+  not a Lean theorem or an original-problem solution.
 - [Six integer points](FULL_BAND_PHASE_COUNTEREXAMPLE.md) now refute the
   proposed at-most-one-full common-phase premise in the genuine lower strip
   `t=349/100`. Exact rational interval arithmetic verifies all 60 angles,
@@ -127,13 +133,17 @@ Updated: 2026-11-05 (Asia/Shanghai).
   explicitly prints `sorryAx`; its green build is not a proof.
   New reproducible logs/hashes are in [verification](verification/windows-20261105/README.md).
 
-Next: finish the full replay and repair actual errors without removing imports.
+Next: replay from a clean committed checkpoint and repair actual errors without
+removing imports. Do not edit sources during that replay. The updated script
+checks all ten dependency checkout SHAs/clean tracked trees and the source
+HEAD/clean tree at both endpoints. Its dependency-checking function has passed
+an actual probe; the end-to-end updated replay is still pending.
 The prepared `scripts/write_axiom_audits.py` generates module-based transitive
 axiom audits for the umbrella and admitted root separately. A real probe on
 the already-built upper closure passed: 16 defining modules, 411 declarations,
 including private declarations, no axioms beyond the standard three. The
-umbrella and admitted-root audit files have NOT yet been run. They must run
-after the corresponding builds, and the admitted-root audit must reject sorryAx.
+umbrella audit has NOT yet run. The admitted-root audit ran and correctly
+rejected `sorryAx`; its raw log hash and exact counts are in verification.
 Then pursue the original unweighted thresholds directly, or prove genuine
 global non-reusing payment. Both the at-most-one-full phase premise and the
 universal completion-mass lower bound `M>=2*|S|-1` are now excluded. A proof

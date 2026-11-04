@@ -88,8 +88,7 @@ theorem QTT_second_TQ_forces_partner_closer_on_same_side
           retainedColor C x y hretNew := by
       apply Fin.ext
       rfl
-    rw [hcolRig,hcolNew,hdeq] at heq
-    exact hcxy heq
+    exact hcxy (hcolRig.symm.trans (heq.trans (hcolNew.trans hdeq)))
   · obtain ⟨hsy,hyx⟩ := hright
     obtain ⟨hretRig,hcolRig⟩ :=
       QTT_same_right_side_outer_edge_eq_right_owner
@@ -114,8 +113,7 @@ theorem QTT_second_TQ_forces_partner_closer_on_same_side
           retainedColor C y x hretNew := by
       apply Fin.ext
       rfl
-    rw [hcolRig,hcolNew,hdeq] at heq
-    exact hcxy heq.symm
+    exact hcxy (hcolRig.symm.trans (heq.trans (hcolNew.trans hdeq)))
 
 #print axioms QTT_second_TQ_forces_partner_closer_on_same_side
 

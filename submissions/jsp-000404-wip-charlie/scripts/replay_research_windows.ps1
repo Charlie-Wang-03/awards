@@ -14,6 +14,44 @@ $projectDirectory = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).P
 $previousThreads = $env:LEAN_NUM_THREADS
 $failures = [System.Collections.Generic.List[string]]::new()
 $successfulTargets = [System.Collections.Generic.HashSet[string]]::new()
+
+function Get-DependencySnapshot($Manifest, [string] $ProjectDirectory) {
+    $rows = [System.Collections.Generic.List[string]]::new()
+    $valid = $true
+    foreach ($package in $Manifest.packages) {
+        if ($package.type -ne 'git' -or $package.rev -notmatch '^[0-9a-f]{40}$') {
+            $rows.Add("INVALID_PIN name=$($package.name)")
+            $valid = $false
+            continue
+        }
+        # Lake serializes the hyphenated package name with Lean name quotes.
+        $packageName = ([string] $package.name).Trim([char[]] '«»')
+        $packageDirectory = Join-Path $ProjectDirectory "$($Manifest.packagesDir)/$packageName"
+        if (-not (Test-Path -LiteralPath $packageDirectory -PathType Container)) {
+            $rows.Add("MISSING_PACKAGE name=$packageName")
+            $valid = $false
+            continue
+        }
+        $packageRoot = & git -C $packageDirectory rev-parse --show-toplevel 2>&1
+        $rootExit = $LASTEXITCODE
+        $packageStatus = @(& git -C $packageDirectory status --porcelain --untracked-files=no 2>&1)
+        $statusExit = $LASTEXITCODE
+        $packageHead = & git -C $packageDirectory rev-parse HEAD 2>&1
+        $headExit = $LASTEXITCODE
+        $rootMatches = $rootExit -eq 0 -and
+            [IO.Path]::GetFullPath([string] $packageRoot) -eq
+                [IO.Path]::GetFullPath($packageDirectory)
+        $passed = $rootMatches -and $statusExit -eq 0 -and $headExit -eq 0 -and
+            $packageStatus.Count -eq 0 -and [string] $packageHead -eq $package.rev
+        $rows.Add("PACKAGE name=$packageName expected=$($package.rev) actual=$packageHead clean=$($packageStatus.Count -eq 0) pass=$passed")
+        if (-not $passed) {
+            $valid = $false
+            foreach ($line in $packageStatus) { $rows.Add([string] $line) }
+        }
+    }
+    return [pscustomobject] @{ Valid = $valid; Lines = $rows.ToArray() }
+}
+
 Push-Location -LiteralPath $projectDirectory
 try {
     $env:LEAN_NUM_THREADS = [string] $Threads
@@ -44,6 +82,10 @@ try {
     if ($versionExit -ne 0 -or "$version" -notmatch 'Lean version 4\.34\.0\)') {
         throw "Pinned Lake is unavailable: $version"
     }
+    $startHead = & git rev-parse HEAD
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot identify the source commit.' }
+    $startStatus = @(& git status --short)
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect the source working tree.' }
     $metadata = @(
         "UTC=$([DateTime]::UtcNow.ToString('o'))"
         "project=$projectDirectory"
@@ -53,9 +95,9 @@ try {
         'status=INCOMPLETE; research replay, not a complete-proof certificate'
         "repository=$(& git rev-parse --show-toplevel)"
         "branch=$(& git branch --show-current)"
-        "HEAD=$(& git rev-parse HEAD)"
+        "HEAD=$startHead"
         'working_tree_status:'
-        (& git status --short)
+        $startStatus
         'remotes (read only):'
         (& git remote -v)
     )
@@ -66,6 +108,12 @@ try {
         $cacheExit = $LASTEXITCODE
         "exit_code=$cacheExit" | Add-Content -Encoding utf8 (Join-Path $logDirectory 'cache-get.log')
         if ($cacheExit -ne 0) { $failures.Add('cache-get') }
+    }
+
+    $startDependencies = Get-DependencySnapshot $manifest $projectDirectory
+    $startDependencies.Lines | Set-Content -Encoding utf8 (Join-Path $logDirectory 'dependency-pins-start.log')
+    if (-not $startDependencies.Valid) {
+        throw 'Actual dependency checkouts do not match clean, immutable manifest pins; see dependency-pins-start.log.'
     }
 
     # Check both the umbrella and the admitted module: the latter is not in
@@ -126,6 +174,27 @@ try {
     $auditExit = $LASTEXITCODE
     "exit_code=$auditExit" | Add-Content -Encoding utf8 $auditLog
     if ($auditExit -ne 0) { $failures.Add('strict-sorry-audit') }
+
+    $endDependencies = Get-DependencySnapshot $manifest $projectDirectory
+    $endDependencies.Lines | Set-Content -Encoding utf8 (Join-Path $logDirectory 'dependency-pins-end.log')
+    if (-not $endDependencies.Valid) { $failures.Add('dependency-pins-end') }
+    $endHead = & git rev-parse HEAD
+    $endHeadExit = $LASTEXITCODE
+    $endStatus = @(& git status --short)
+    $endStatusExit = $LASTEXITCODE
+    $checkpointPassed = $endHeadExit -eq 0 -and $endStatusExit -eq 0 -and
+        $startHead -eq $endHead -and $startStatus.Count -eq 0 -and $endStatus.Count -eq 0
+    @(
+        "start_HEAD=$startHead"
+        "end_HEAD=$endHead"
+        "clean_unchanged_checkpoint=$checkpointPassed"
+        'start_working_tree_status:'
+        $startStatus
+        'end_working_tree_status:'
+        $endStatus
+        'These endpoint checks require that sources are not edited during the replay.'
+    ) | Set-Content -Encoding utf8 (Join-Path $logDirectory 'source-checkpoint.log')
+    if (-not $checkpointPassed) { $failures.Add('source-checkpoint') }
 
     @(
         'status=INCOMPLETE'

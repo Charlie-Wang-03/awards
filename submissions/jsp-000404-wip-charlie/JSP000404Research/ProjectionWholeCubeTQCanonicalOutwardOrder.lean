@@ -32,6 +32,7 @@ theorem planar_wholeCube_TQ_partner_closer_in_canonical_order
     (ht : t = (n : ℝ) + delta)
     (hlam : lam = Real.pi / t)
     (Cfam :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       ∀ i : ProjectionOrdered V,
         CentreProjectiveCycle (reindexedPoint_injective hp) i)
     {s x y : ProjectionOrdered V}
@@ -41,15 +42,17 @@ theorem planar_wholeCube_TQ_partner_closer_in_canonical_order
     {common extra : Fin n → Bool}
     {cx cy d : Fin n}
     (hxLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       x ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hyLoss :
+      letI : LinearOrder (ProjectionOrdered V) := projectionLinearOrder hp
       y ∈ projectedLossVertices
         (planarStandardResidualColoring
           hp hcap hn hdelta0 hdelta1 ht hlam)
-        (planarCentreExponent hp Cfam))
+        (planarCentreExponent (t := t) hp Cfam))
     (hcx :
       letI : LinearOrder (ProjectionOrdered V) :=
         projectionLinearOrder hp
@@ -120,7 +123,7 @@ theorem planar_wholeCube_TQ_partner_closer_in_canonical_order
   let R :=
     planarStandardResidualColoring
       hp hcap hn hdelta0 hdelta1 ht hlam
-  let exponent := planarCentreExponent hp Cfam
+  let exponent := planarCentreExponent (t := t) hp Cfam
 
   have hprofile :=
     genericProjection_lowerBranch_profile_hypotheses
@@ -128,11 +131,12 @@ theorem planar_wholeCube_TQ_partner_closer_in_canonical_order
   have hexp : ∀ q, exponent q ≤ n := by
     intro q
     exact Nat.le_of_lt
-      (by simpa [exponent] using hprofile.1 q)
+      (by simpa [exponent, planarCentreExponent] using hprofile.1 q)
   have hone :
       ∀ q, (active R q).card ≤ n - exponent q + 1 := by
     intro q
-    simpa [R,exponent] using hprofile.2 q
+    simpa [R, exponent, planarCentreExponent, planarStandardResidualColoring]
+      using hprofile.2 q
 
   have hraw :=
     QTT_second_TQ_forces_partner_closer_on_same_side

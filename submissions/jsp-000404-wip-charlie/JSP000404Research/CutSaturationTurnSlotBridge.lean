@@ -369,7 +369,7 @@ theorem exists_canonical_large_turnUnit_bad_of_cut_saturated_failure
           have hlastAppend :
               (highRest ++ (lowFirst :: lowRest)).getLastD highFirst =
                 lowRest.getLastD lowFirst := by
-            exact getLastD_append_cons
+            exact getLastD_append_cons_projectiveCut
               highRest lowFirst lowRest highFirst
           have hzEq : z =
               cutNormalizedRayTheta hp t c i

@@ -39,7 +39,7 @@ theorem critical_bad_width_mul_eq_angle_excess
     lam * criticalBadWidth delta s =
       angle - ((n : ℝ) - 1) * lam := by
   rw [hangle, hpi]
-  unfold criticalBadWidth
+  rw [criticalBadWidth_eq]
   ring
 
 /-- Criticality bounds turn the angle excess into a nonnegative quantity no
@@ -60,11 +60,11 @@ theorem critical_angle_excess_bounds
   rw [← hid]
   constructor
   · apply mul_nonneg hlam0
-    unfold criticalBadWidth
+    rw [criticalBadWidth_eq]
     linarith
   · have hw :
         criticalBadWidth delta s ≤ delta := by
-      unfold criticalBadWidth
+      rw [criticalBadWidth_eq]
       linarith
     calc
       lam * criticalBadWidth delta s ≤ lam * delta :=

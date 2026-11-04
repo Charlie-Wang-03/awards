@@ -1,4 +1,5 @@
 import JSP000404Research.CriticalTurnBudget
+import JSP000404Research.CriticalUnitQuotient
 import Mathlib.Tactic
 
 /-!
@@ -26,18 +27,18 @@ immediately yields
 
 when `delta < 1/2` and `t>0`.
 
-Thus the bad intervals cannot cover the full phase circle.  This module
-isolates precisely that arithmetic shell; the remaining geometric theorem is
-still only the global total-turn estimate.
+Under that explicit budget hypothesis, the bad intervals cannot cover the
+full phase circle. This module proves only its arithmetic consequences: it
+neither selects a geometric obstruction family nor proves that its budget
+holds. No unconditional global payment follows from these theorems.
 -/
 
 namespace JSP000404Research
 
 open scoped BigOperators
 
-/-- Normalized bad-phase width attached to a critical transition. -/
-def criticalBadWidth (delta s : ℝ) : ℝ :=
-  1 + delta - s
+-- Reuse the width defined from genuine phase endpoints in
+-- CriticalUnitQuotient. Its proved formula is criticalBadWidth_eq.
 
 /-- A critical width at least one pays for its own bad interval by a
 `delta` fraction of the turn width. -/
@@ -46,7 +47,7 @@ theorem criticalBadWidth_le_delta_mul
     (hdelta0 : 0 ≤ delta)
     (hs : 1 ≤ s) :
     criticalBadWidth delta s ≤ delta * s := by
-  unfold criticalBadWidth
+  rw [criticalBadWidth_eq]
   nlinarith
 
 /-- Summed version over a finite critical family. -/

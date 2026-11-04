@@ -235,6 +235,13 @@ in particular, starting that step at n>=4 cannot rescue it. They neither
 refute the original minimax classification nor rule out a different
 induction with a proved geometric transformation.
 
+The sixteen-point sets are not claimed to be minimal overweight witnesses.
+Their ordinary cardinality is already within the proposed parent capacity
+for t>4, and no weighted-overweight property is established here. Thus this
+does not refute a partition assertion restricted to a hypothetical minimal
+overweight configuration. Proving such a restricted assertion would be a
+separate geometric task; the unrestricted recursion is what fails above.
+
 ## Exact arithmetic replay
 
 The companion script `scripts/check_width_drop_counterexample.py` recomputes

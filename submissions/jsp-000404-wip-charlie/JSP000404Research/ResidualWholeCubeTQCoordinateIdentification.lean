@@ -75,12 +75,9 @@ theorem second_TQ_coordinate_eq_known_translated_owner
           retainedColor C v w hretOld := by
       apply Fin.ext
       rfl
-    rw [hcolNew] at heq
     rcases hcolOld with hc | hb
-    · rw [hc] at heq
-      exact False.elim (hdc heq)
-    · rw [hb] at heq
-      exact heq
+    · exact False.elim (hdc (hcolNew.symm.trans (heq.trans hc)))
+    · exact hcolNew.symm.trans (heq.trans hb)
   · obtain ⟨_,hretNew,hcolNew⟩ :=
       hNew.resolve_left (by
         rintro ⟨h,_⟩
@@ -94,12 +91,9 @@ theorem second_TQ_coordinate_eq_known_translated_owner
           retainedColor C w v hretOld := by
       apply Fin.ext
       rfl
-    rw [hcolNew] at heq
     rcases hcolOld with hc | hb
-    · rw [hc] at heq
-      exact False.elim (hdc heq)
-    · rw [hb] at heq
-      exact heq
+    · exact False.elim (hdc (hcolNew.symm.trans (heq.trans hc)))
+    · exact hcolNew.symm.trans (heq.trans hb)
 
 #print axioms second_TQ_coordinate_eq_known_translated_owner
 

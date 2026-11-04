@@ -90,18 +90,18 @@ theorem QTTT_wholeCube_augmenting_or_single_fresh_terminal
   · left
     exact minimal_core_wholeCubeQTPair_has_third_source
       C exponent hn3 hdef hmin
-      hxT hsx hxLoss hsLoss
+      hxT hsx hsLoss hxLoss
       hxSecond hcx hxWhole
   · right; left
     exact minimal_core_wholeCubeQTPair_has_third_source
       C exponent hn3 hdef hmin
-      hyT hsy hyLoss hsLoss
+      hyT hsy hsLoss hyLoss
       hySecond hcy hyWhole
   · by_cases hzT : z ∈ T
     · right; right; left
       exact minimal_core_wholeCubeQTPair_has_third_source
         C exponent hn3 hdef hmin
-        hzT hsz hzLoss hsLoss
+        hzT hsz hsLoss hzLoss
         hzSecond hcz hzWhole
     · right; right; right
       have hsT : s ∈ T := by
@@ -166,16 +166,16 @@ theorem QTTT_wholeCube_forces_third_core_source
   · exact Or.inl
       (minimal_core_wholeCubeQTPair_has_third_source
         C exponent hn3 hdef hmin
-        hxT hsx hxLoss hsLoss hxSecond hcx hxWhole)
+        hxT hsx hsLoss hxLoss hxSecond hcx hxWhole)
   · exact Or.inr (Or.inl
       (minimal_core_wholeCubeQTPair_has_third_source
         C exponent hn3 hdef hmin
-        hyT hsy hyLoss hsLoss hySecond hcy hyWhole))
+        hyT hsy hsLoss hyLoss hySecond hcy hyWhole))
   · by_cases hzT : z ∈ T
     · exact Or.inr (Or.inr (Or.inl
         (minimal_core_wholeCubeQTPair_has_third_source
           C exponent hn3 hdef hmin
-          hzT hsz hzLoss hsLoss hzSecond hcz hzWhole)))
+          hzT hsz hsLoss hzLoss hzSecond hcz hzWhole)))
     · have hsT : s ∈ T := by
         rcases hthirdT with hsT | hzT'
         · exact hsT
@@ -190,7 +190,7 @@ theorem QTTT_wholeCube_forces_third_core_source
       exact Or.inr (Or.inr (Or.inr
         (minimal_core_wholeCubeQTPair_has_third_source
           C exponent hn3 hdef hmin
-          hsT hsz.symm hsLoss hzLoss hsSecond hczS hsym)))
+          hsT hsz.symm hzLoss hsLoss hsSecond hczS hsym)))
 
 #print axioms QTTT_wholeCube_forces_third_core_source
 

@@ -33,7 +33,7 @@ namespace JSP000404Research
 
 open Real
 
-theorem getLastD_append_cons
+theorem getLastD_append_cons_projectiveCut
     {α : Type*}
     (xs : List α) (b : α) (bs : List α) (d : α) :
     (xs ++ b :: bs).getLastD d =
@@ -103,7 +103,7 @@ theorem listExponent_quotientList_map_add
   rw [normalizedProjectiveGaps_map_add]
 
 /-- Split successive differences at a nonempty second block. -/
-theorem successiveDiffsFrom_append_cons
+theorem successiveDiffsFrom_append_cons_projectiveCut
     (a : ℝ) (xs : List ℝ)
     (b : ℝ) (bs : List ℝ) :
     successiveDiffsFrom a (xs ++ b :: bs)
@@ -130,8 +130,8 @@ theorem projectiveGaps_two_block_decomp
     (successiveDiffsFrom b bs ++
       [a + Real.pi - bs.getLastD b]) := by
   simp only [List.cons_append, projectiveGaps]
-  rw [successiveDiffsFrom_append_cons]
-  rw [getLastD_append_cons]
+  rw [successiveDiffsFrom_append_cons_projectiveCut]
+  rw [getLastD_append_cons_projectiveCut]
   simp [List.append_assoc]
 
 noncomputable def anglesAfterProjectiveCut
@@ -299,7 +299,7 @@ theorem listExponent_after_projective_cut_any
 #print axioms projectiveGaps_map_add
 #print axioms normalizedProjectiveGaps_map_add
 #print axioms listExponent_quotientList_map_add
-#print axioms successiveDiffsFrom_append_cons
+#print axioms successiveDiffsFrom_append_cons_projectiveCut
 #print axioms projectiveGaps_two_block_decomp
 #print axioms projectiveGaps_after_cut_eq_rotate
 #print axioms normalizedProjectiveGaps_after_cut_eq_rotate
