@@ -1,0 +1,75 @@
+Research finite-table checks only; not an original-problem proof.
+Lean 4.34.0; LEAN_NUM_THREADS=1; no olean output.
+The logs below are complete, concatenated with source/hash headers; line endings normalized to LF and trailing whitespace removed.
+
+COMMAND lake env lean JSP000404Research/AggregateSplitExistenceHardStop.lean
+SOURCE_SHA256 c97335ed0152453f43db81ed7370ba6ba9b61e3a88dd47291a00796140b0d9f8
+RAW_LOG_SHA256 7815a37fb6801557a99c1dd46c7d0b12e6adb3a6da3beacd03661d7927039431
+'JSP000404Research.aggregateExistenceHardStop_root_weight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.aggregateExistenceHardStop_every_row_fails' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.aggregateExistenceHardStop_no_row' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/AggregateSplitHardStopResolution.lean
+SOURCE_SHA256 4dad981e2fa62273e7a85f8b47c90995c69142446132a695201ab1c3d8313bc7
+RAW_LOG_SHA256 7fd15ff7ab88291c0c1406b9a722251ffa6e1b085426c92b09e90abbf8544b4e
+'JSP000404Research.aggregateHardStop_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/BalancedBinarySplitHardStop.lean
+SOURCE_SHA256 9ac1610f8a4e6141062b6407e5243c32a56e30ed53c8e2c28e8adfd1c86b1c69
+RAW_LOG_SHA256 66d5716102e2af75325fee757c827e6372baa73cd82288e6823441ef0aa976d8
+JSP000404Research/BalancedBinarySplitHardStop.lean:69:2: warning: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+'JSP000404Research.balancedHardStop_old_weight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.singletonHardStop_each_split_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.singletonHardStop_no_gain_child' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.balancedHardStop_covers_all_two_subsets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.balancedHardStop_no_table_gain_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.balancedHardStop_every_two_three_split_fails' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/BinaryKraftTree.lean
+SOURCE_SHA256 78b204fec68d9236aca1649c20645f57ccffe190a04d547245d19a0a27426d35
+RAW_LOG_SHA256 e8b3b832da65b53f7d48643ea7cc56dede81d23c10f98265d793826af182e96b
+'JSP000404Research.BinaryKraftTree.dyadic_depth_sum_eq' depends on axioms: [propext, Quot.sound]
+'JSP000404Research.BinaryKraftTree.dyadic_sum_le_of_tree_profile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.BinaryKraftTree.two_distinct_four_leaf_extremizers' depends on axioms: [propext]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/BinarySplitHardStopResolution.lean
+SOURCE_SHA256 5060c79fa03490a332ebaf1bc2a473e05aafd3691fcc0e1ab42bf2208d7e0b25
+RAW_LOG_SHA256 bc52884b814bb2c6c12150058114e9a5b43c90b5442e007918f720e87c68f860
+'JSP000404Research.hardStop_closed_by_binary_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/CompensatedDeletionHardStop.lean
+SOURCE_SHA256 be9e104cd2e7097f43d4ae42c4271b7e0762f5a50a5e9f71b3f25a7a990d4b6c
+RAW_LOG_SHA256 0bef701b8d7ef0f3befb519deb61ef4091a7e64c12d4574d3a28b28c19bd7948
+'JSP000404Research.compensatedHardStop_original_weight' depends on axioms: [propext]
+'JSP000404Research.compensatedHardStop_post_weight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.compensatedHardStop_no_compensated_deletion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+exit_code=0
+
+COMMAND lake env lean JSP000404Research/StableCounterexampleData.lean
+SOURCE_SHA256 51c85269e91ca8516caae8d4501296a5ae2095427bad2d456c19139d1f78737b
+RAW_LOG_SHA256 a182b0d3ab42f60a12f5bffcd6f4a52917e06eb6c413347bf923af4e31578cb6
+'JSP000404Research.stableExample_positiveSupport' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.stableExample_floorExcess' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.stableExample_total_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.stableExample_every_merge_zero_gain' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit_code=0

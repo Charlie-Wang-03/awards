@@ -52,12 +52,12 @@ def balancedHardStopPostExp : Fin 10 → Fin 5 → ℕ
 
 theorem balancedHardStop_old_weight :
     (∑ v : Fin 5, 2 ^ balancedHardStopOldExp v) = 6 := by
-  native_decide
+  decide
 
 theorem balancedHardStop_left_card
     (r : Fin 10) :
     (balancedHardStopLeft r).card = 2 := by
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 /-- Every two-element subset of Fin 5 appears exactly once in the table. -/
 theorem balancedHardStop_covers_all_two_subsets :
@@ -71,7 +71,7 @@ theorem balancedHardStop_covers_all_two_subsets :
       ((Finset.univ : Finset (Fin 10)).filter
         (fun r => balancedHardStopLeft r = ({a,b} : Finset (Fin 5)))).card = 1 := by
     fin_cases a <;> fin_cases b <;>
-      simp_all <;> native_decide
+      simp_all <;> decide
   obtain ⟨r, hr⟩ := Finset.card_eq_one.mp hcount
   have hrmem : r ∈ (Finset.univ : Finset (Fin 10)).filter
       (fun k => balancedHardStopLeft k = ({a,b} : Finset (Fin 5))) := by
@@ -92,7 +92,7 @@ theorem balancedHardStop_each_split_fails
     ∃ v : Fin 5,
       balancedHardStopPostExp r v <
         balancedHardStopOldExp v + 1 := by
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 /-- Hence no table entry satisfies the pointwise +1 gain condition. -/
 theorem balancedHardStop_no_table_gain_split :
@@ -122,7 +122,7 @@ theorem singletonHardStop_each_split_fails
       v ≠ removed ∧
       singletonHardStopPostExp removed v <
         balancedHardStopOldExp v + 1 := by
-  fin_cases removed <;> native_decide
+  fin_cases removed <;> decide
 
 /-- Thus no singleton leaf can be peeled off while making every vertex in the
 remaining four-point child gain one exponent unit. -/

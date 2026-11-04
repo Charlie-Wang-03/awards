@@ -140,3 +140,33 @@ build failed in that same replay is explicitly skipped and counted as a
 failed check, so a stale olean cannot produce a misleading audit PASS.
 The already-running `replay-20261104-195532` process uses the earlier script;
 the new audit steps apply to the next replay.
+
+## Kernel-checked finite arithmetic tables
+
+The full replay exposed generated `._native.native_decide.ax_...` dependencies
+in historical arithmetic certificates. All 29 `native_decide` calls in the
+umbrella closure were replaced by `decide` in these seven modules, without
+changing any theorem statement:
+
+- `AggregateSplitExistenceHardStop`
+- `AggregateSplitHardStopResolution`
+- `BalancedBinarySplitHardStop`
+- `BinaryKraftTree`
+- `BinarySplitHardStopResolution`
+- `CompensatedDeletionHardStop`
+- `StableCounterexampleData`
+
+Each source was checked with `LEAN_NUM_THREADS=1` and
+`lake env lean JSP000404Research/<module>.lean`, without emitting an olean.
+All seven commands exited 0; the printed theorems use only a subset of
+`propext`, `Classical.choice`, and `Quot.sound`. The complete outputs, each
+source SHA-256, and each raw log SHA-256 are in `kernel-decide-success.log`.
+UTF-8/LF line endings and trailing whitespace were normalized when concatenating the outputs.
+The combined log SHA-256 is:
+
+    da830f9a3966a9f774a42aad636dfb648cb4c6c4cccca8ca3eeb517019057486
+
+These checks establish the finite arithmetic propositions, not their
+geometric realizations or the missing global payment. They also do not
+replace a fresh umbrella build and its module-wide axiom audit: the old
+oleans were deliberately left untouched by these direct checks.

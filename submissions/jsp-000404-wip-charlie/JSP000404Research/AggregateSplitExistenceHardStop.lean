@@ -48,11 +48,11 @@ def aggregateExistenceHardStopRows : Fin 10 → AggregateSplitMassRow :=
 
 theorem aggregateExistenceHardStop_root_weight :
     (∑ v : Fin 5, 2 ^ aggregateExistenceHardStopOldExp v) = 24 := by
-  native_decide
+  decide
 
 theorem aggregateExistenceHardStop_root_capacity :
     (∑ v : Fin 5, 2 ^ aggregateExistenceHardStopOldExp v) ≤ 2 ^ 5 := by
-  native_decide
+  decide
 
 /-- No listed 2+3 partition doubles the old dyadic mass on both children. -/
 theorem aggregateExistenceHardStop_every_row_fails
@@ -63,7 +63,7 @@ theorem aggregateExistenceHardStop_every_row_fails
       2 * (aggregateExistenceHardStopRows r).oldB
         ≤ (aggregateExistenceHardStopRows r).postB
     ) := by
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 /-- Therefore the finite table contains no aggregate-doubling first split. -/
 theorem aggregateExistenceHardStop_no_row :
@@ -85,7 +85,7 @@ theorem aggregateExistenceHardStop_pair_side_gap :
       2 * (aggregateExistenceHardStopRows
         ⟨r.val, by omega⟩).oldA := by
   intro r
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 #print axioms aggregateExistenceHardStop_root_weight
 #print axioms aggregateExistenceHardStop_every_row_fails

@@ -177,7 +177,7 @@ are exact Kraft extremizers. -/
 theorem two_distinct_four_leaf_extremizers :
     (sendovComb4.depths.map (fun d => 2 ^ (3 - d))).sum = 2 ^ 3 ∧
     (balanced4.depths.map (fun d => 2 ^ (3 - d))).sum = 2 ^ 3 := by
-  native_decide
+  decide
 
 #print axioms dyadic_depth_sum_eq
 #print axioms dyadic_sum_le_of_tree_profile

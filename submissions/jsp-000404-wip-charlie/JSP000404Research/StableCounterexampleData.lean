@@ -44,15 +44,15 @@ def succ6 (i : Fin 6) : Fin 6 :=
 
 theorem stableExample_positiveSupport :
     positiveSupport stableExampleQ = 3 := by
-  native_decide
+  decide
 
 theorem stableExample_floorExcess :
     floorExcess stableExampleQ = 1 := by
-  native_decide
+  decide
 
 theorem stableExample_quotient_sum :
     (∑ i, stableExampleQ i) = 4 := by
-  native_decide
+  decide
 
 theorem stableExample_remainder_sum :
     (∑ i, stableExampleR i) = (23 : ℝ) / 21 := by

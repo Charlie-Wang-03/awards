@@ -40,27 +40,27 @@ def hardStopPairPostExp (_ : Fin 4) : ℕ := 2
 theorem hardStop_pair_partition :
     Disjoint hardStopLeftPair hardStopRightPair ∧
       hardStopLeftPair ∪ hardStopRightPair = Finset.univ := by
-  native_decide
+  decide
 
 theorem hardStop_pair_gain_left :
     ∀ v ∈ hardStopLeftPair,
       hardStopOldExp v + 1 ≤ hardStopPairPostExp v := by
   intro v hv
-  fin_cases v <;> native_decide
+  fin_cases v <;> decide
 
 theorem hardStop_pair_gain_right :
     ∀ v ∈ hardStopRightPair,
       hardStopOldExp v + 1 ≤ hardStopPairPostExp v := by
   intro v hv
-  fin_cases v <;> native_decide
+  fin_cases v <;> decide
 
 theorem hardStop_pair_child_weight_left :
     (∑ v ∈ hardStopLeftPair, 2 ^ hardStopPairPostExp v) ≤ 2 ^ 3 := by
-  native_decide
+  decide
 
 theorem hardStop_pair_child_weight_right :
     (∑ v ∈ hardStopRightPair, 2 ^ hardStopPairPostExp v) ≤ 2 ^ 3 := by
-  native_decide
+  decide
 
 /-- Binary split closes the exact abstract hard-stop profile. -/
 theorem hardStop_closed_by_binary_split :

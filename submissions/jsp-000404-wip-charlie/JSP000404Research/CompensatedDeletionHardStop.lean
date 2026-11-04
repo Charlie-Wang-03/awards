@@ -49,22 +49,22 @@ def totalDyadicWeight (profiles : List (List ℕ)) : ℕ :=
 theorem compensatedHardStop_original_exponents :
     compensatedHardStopOriginal.map listFloorExcess =
       [0,1,1,1] := by
-  native_decide
+  decide
 
 theorem compensatedHardStop_original_weight :
     totalDyadicWeight compensatedHardStopOriginal = 7 := by
-  native_decide
+  decide
 
 theorem compensatedHardStop_post_exponents
     (r : Fin 4) :
     (compensatedHardStopAfterDelete r).map listFloorExcess =
       [1,1,1] := by
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 theorem compensatedHardStop_post_weight
     (r : Fin 4) :
     totalDyadicWeight (compensatedHardStopAfterDelete r) = 6 := by
-  fin_cases r <;> native_decide
+  fin_cases r <;> decide
 
 theorem compensatedHardStop_no_compensated_deletion :
     ¬ ∃ r : Fin 4,

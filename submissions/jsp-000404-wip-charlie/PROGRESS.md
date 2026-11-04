@@ -48,6 +48,23 @@ Updated: 2026-11-05 (Asia/Shanghai).
   This replay has exposed a duplicate `positiveIndexSet` declaration in
   `SupportTwoIndexedCertificate`; its source now reuses the identical
   `ZeroCarry` definition, but that repair awaits a completed rebuild.
+  A separate real import probe also found a `criticalBadWidth` definition
+  collision between `CriticalUnitQuotient` and `CriticalBadMass`. The latter
+  now reuses the genuine endpoint definition and its proved formula; its
+  angle-excess consumer was adapted without changing any theorem statement.
+  A second import probe found differently ordered, same-name list helpers
+  in the two projective cut-rotation modules. The gap-cut helpers now have
+  distinct names; their statements and proofs are unchanged. The remaining
+  suspected duplicate theorems passed a joint import probe. These repairs
+  still await a completed rebuild.
+  The actual build log also reveals native-decision axiom dependencies in
+  historical finite arithmetic certificates. All 29 such tactic calls in
+  the umbrella closure have been changed to kernel-checked `decide`, with
+  statements unchanged. Direct `lake env lean` checks of all seven source
+  files pass, and their printed theorems use only the standard three axioms;
+  complete logs/source hashes are retained in verification. The cached
+  modules and their dependents still require a full rebuild. This strengthens
+  checking of those tables, not the missing geometry.
 - Current import inventory: 1,686 local modules including the umbrella;
   995 in its revised closure, 691 outside. The admitted root is outside it;
   its separate closure has 451 modules, 60 absent from the umbrella closure.

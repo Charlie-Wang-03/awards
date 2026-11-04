@@ -39,27 +39,27 @@ def aggregateHardStopPostExp : Fin 5 → ℕ :=
 theorem aggregateHardStop_partition :
     Disjoint aggregateHardStopLeft aggregateHardStopRight ∧
       aggregateHardStopLeft ∪ aggregateHardStopRight = Finset.univ := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_old_left_mass :
     (∑ v ∈ aggregateHardStopLeft,
       2 ^ balancedHardStopOldExp v) = 3 := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_old_right_mass :
     (∑ v ∈ aggregateHardStopRight,
       2 ^ balancedHardStopOldExp v) = 3 := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_post_left_mass :
     (∑ v ∈ aggregateHardStopLeft,
       2 ^ aggregateHardStopPostExp v) = 8 := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_post_right_mass :
     (∑ v ∈ aggregateHardStopRight,
       2 ^ aggregateHardStopPostExp v) = 7 := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_left_doubles :
     2 * (∑ v ∈ aggregateHardStopLeft,
@@ -67,7 +67,7 @@ theorem aggregateHardStop_left_doubles :
       ≤
     ∑ v ∈ aggregateHardStopLeft,
       2 ^ aggregateHardStopPostExp v := by
-  native_decide
+  decide
 
 theorem aggregateHardStop_right_doubles :
     2 * (∑ v ∈ aggregateHardStopRight,
@@ -75,7 +75,7 @@ theorem aggregateHardStop_right_doubles :
       ≤
     ∑ v ∈ aggregateHardStopRight,
       2 ^ aggregateHardStopPostExp v := by
-  native_decide
+  decide
 
 /-- The stable pointwise-gain hard stop closes under aggregate binary split. -/
 theorem aggregateHardStop_closed :
