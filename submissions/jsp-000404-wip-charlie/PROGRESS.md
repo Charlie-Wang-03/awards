@@ -50,6 +50,10 @@ Updated: 2026-11-05 (Asia/Shanghai).
   [Exact proof and scope](UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md); not Lean-certified yet.
   A symbolic four-point family extends this obstruction to every odd n>=3,
   with genuine profile [n-1,n-1,n-3,n-3] at delta=3/4.
+  A separate exact perfect-GC construction now gives ten leaves and
+  GA=11*pi/15 at the rational four-centre witness, directly contradicting
+  the source's printed case-c.2 maximum of nine. This written construction
+  preserves the full upper capacity ten and is not Lean-certified.
 - A new direct two-part width-drop route is false even at t=10/3 in the
   lower strip: five integer points have AngleCap 7*pi/10, while every triple
   has an angle >3*pi/5>4*pi/7, the required child cap. See

@@ -162,8 +162,11 @@ ceiling, or adding finite cases does not close the unresolved DAG.
 New exact geometric witness: [UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md](UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md)
 rules out the stronger four-centre fixed-parameter upper bound 2^n+2^(n-3).
 Unlike a merely abstract Kraft profile, it gives four rational points, all
-actual triple angles, and every projective gap and floor. It does not claim
-a formalized perfect-GC realization or refute the full upper bound.
+actual triple angles, and every projective gap and floor. A separate written
+two-level binary-circle construction gives a perfect GC with ten leaves and
+exact GA=11*pi/15, refuting the source's printed four-centre maximum of nine.
+Neither construction is Lean-certified yet; the full upper bound of ten is
+respected, and the original classification is not refuted.
 
 New recursion audit: [WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md](WIDTH_DROP_PARTITION_COUNTEREXAMPLE.md)
 gives five integer points at t=10/3 for which no two-colouring produces two

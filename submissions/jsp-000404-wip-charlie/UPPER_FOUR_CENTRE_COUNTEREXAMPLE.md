@@ -13,9 +13,10 @@ The source-motivated strengthening being tested is:
 
 This is the numerical maximum printed in Sendov's Acta 1995 proof of Lemma
 4.1, case c.2, p. 39. The source is phrased using perfect generalized
-configurations; the counterexample here directly addresses the corresponding
-fixed-parameter **ordinary-centre** inequality. No equivalence to the source's
-exact-GA perfect-GC hypothesis is silently assumed.
+configurations. The first part below refutes the corresponding fixed-parameter
+ordinary-centre inequality. A separate construction below supplies an actual
+perfect generalized configuration with exactly the source's prescribed
+maximum angle, so the printed four-centre maximum is also false as stated.
 
 ## Configuration
 
@@ -86,10 +87,88 @@ The source and project use k=sum(max(floor(gap/lambda)-1,0)). Therefore
 The proposed stronger bound is 2^3+2^(3-3)=9, so it is false. The full
 upper capacity bound is 2^3+2^(3-2)=10 and is respected with equality.
 
+## Perfect-GC realization with the exact prescribed maximum
+
+The ordinary centres alone have a strict cap, whereas the source uses
+GA(V)=pi-lambda. The following construction supplies that equality; it does
+not assume it from the preceding ordinary-point calculation.
+
+At A use two internal projective directions
+
+    theta_A1=b+lambda, theta_A2=b+2*lambda.
+
+At B use
+
+    theta_B1=lambda, theta_B2=2*lambda.
+
+The inequality pi-b>3*lambda proved above puts both A directions inside
+the gap (b,pi), at distance at least lambda from both ends. For every
+external direction r in {0,a,b}, theta_Aj-r is between lambda and
+pi-lambda. At B, each theta_Bj is at least lambda above 0 and at least
+lambda below pi-b. For each r in {0,pi-b,pi-a}, the absolute difference
+from theta_Bj is again between lambda and pi-lambda. Thus every internal
+line is projectively separated by at least lambda from every line to a
+different root centre. The two internal directions at either root differ
+by exactly lambda.
+
+Put disjoint small root circles at A,B,C,D. The C and D circles are
+primitive. In the A circle place two child circles whose centre difference
+has direction theta_A1. In each child place two primitive circles whose
+centre difference has direction theta_A2. Do the analogous construction
+at B. This gives four primitive leaves under A, four under B, and one
+each at C,D: ten leaves in total. Every nonprimitive circle has exactly
+two children. The two child contents at A are equivalent two-point GCs
+because their oriented leaf differences agree in direction; the same is
+true at B. All other nonprimitive circles have two singleton contents.
+The resulting GC is therefore perfect under the source's definition.
+
+Here is also how to satisfy the source's position and circle conditions,
+without assuming that a parent centre is the midpoint of its children.
+Choose each new pair of centres at a fixed sufficiently small positive
+separation in the required direction, with its midpoint allowed to move
+in a small open disk inside its parent. Given the finitely many previously
+chosen centres, forbid the midpoint lines for which either new centre
+lies on a line through two previous centres, and the lines parallel to
+the pair direction for which a previous centre lies on the new pair's
+line. These are finitely many lines and cannot cover an open disk: take
+a line segment in a direction different from all of them and omit its
+finitely many intersection points. Choose the midpoint on what remains.
+Repeat for each pair. This ensures no three circle centres are collinear.
+After selecting a sibling pair strictly inside a parent, choose positive
+child radii less than one third of the sibling separation and less than
+their positive distance to the parent's boundary. This ensures disjoint
+sibling circles and strict containment. Subsequent choices are inside
+these circles. Translating a pair's midpoint changes none of the specified
+directions or the two-point equivalences, so it does not change the GC's
+generalized directions. This constructs the required circle arrangement.
+
+We can check its maximum generalized angle directly by the three possible
+locations of a triple of leaves:
+
+1. If the leaves belong to three different root circles, their generalized
+   angles are ordinary angles of A,B,C,D, already proved below pi-lambda.
+2. If exactly two leaves lie in one root circle, their internal direction
+   is one of its two theta directions; the external direction is a line
+   to another root centre. The separation inequalities above imply that
+   either choice of ray signs gives an angle at most pi-lambda. The angle
+   at the single external leaf is zero.
+3. If all three leaves lie under A (or under B), two lie in the same child
+   and the third in the other child. The internal pair uses theta_2,
+   while the cross-child direction uses theta_1. Since their difference
+   is lambda<pi/2, the two angles at the internal pair are lambda and
+   pi-lambda, and the third generalized angle is zero.
+
+The last case exists, and hence GA(V)=pi-lambda exactly. For the source's
+parameter u=2*t=15/2 we have floor(u/2)=3 and delta=3/4, with four root
+centres and ten points. This contradicts the printed case-c.2 maximum
+2^3+2^(3-3)=9. It respects Lemma 4.1's full upper capacity of ten and
+does not disprove that lemma's final inequality or the classification.
+
 ## Consequence for the proof route
 
 Do not repair the general upper branch by importing the printed s=4
-maximum as this ordinary-centre lemma, or by using its smaller allowance
+maximum, either as a perfect-GC assertion or as an ordinary-centre lemma,
+or by using its smaller allowance
 in a terminal ledger. An actual geometric proof must permit simultaneous
 exponents 2,2 at two centres and the two remaining exponent-zero centres.
 This example supplies no missing global payment and does not settle any
