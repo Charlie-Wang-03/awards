@@ -171,3 +171,12 @@ retimings and all 78,268 simple cycles in its selected small examples.
 Current verification is scoped in
 `verification/cyclic-wires-20261105/README.md`. The earlier full umbrella audit
 continues to refer to its recorded immutable source.
+
+The subsequent `IntegralWireCapacity` module kernel-checks integer retiming
+and the modular signed-band injection into n-bit words. `DirectionCutOrder`
+kernel-checks the moving cut order, adjacent crossing endpoints under strict
+betweenness, and reversal between the initial and final cuts. These are
+standalone checked modules at this stage. The remaining A bridge consists
+of building the cyclic event graph, extracting its one/two-turn simple cycles,
+and deriving its local incident-gap inequalities. Family B remains open.
+The focused evidence is in `verification/integral-wire-20261105/`.

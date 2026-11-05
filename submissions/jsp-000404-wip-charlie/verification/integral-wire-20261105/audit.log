@@ -1,0 +1,35 @@
+JSP000404Research.IntegralWire.exists_integer_retiming.{u_1, u_2} {E : Type u_1} [Quiver E]
+  (delay wrap : {u v : E} → (u ⟶ v) → ℤ) (period : ℤ) (original : E → ℝ) (root : E)
+  (hconnected : ∀ (u v : E), Nonempty (Quiver.Path u v))
+  (hsource : ∀ {u v : E} (e : u ⟶ v), ↑(delay e) < original v - original u + ↑(wrap e) * (↑period + 1 / 2))
+  (hwinding :
+    ∀ (v : E) (p : Quiver.Path v v),
+      p.vertices.dropLast.Nodup →
+        p.length ≠ 0 →
+          JSP000404Research.CyclicGraph.pathWeight (fun {u v} => wrap) p = 1 ∨
+            JSP000404Research.CyclicGraph.pathWeight (fun {u v} => wrap) p = 2) :
+  ∃ time, ∀ {u v : E} (e : u ⟶ v), delay e ≤ time v - time u + period * wrap e
+JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events.{u_1, u_2} {V : Type u_1} {E : Type u_2} [Fintype V]
+  (period : ℕ) (hperiod : 0 < period) (time : E → ℤ) (incident : V → E → Prop) (sign : V → E → Bool)
+  (hspan : ∀ (v : V) (e f : E), incident v e → incident v f → |time f - time e| ≤ ↑period)
+  (hsame : ∀ (v : V) (e f : E), incident v e → incident v f → sign v e = sign v f → |time f - time e| < ↑period)
+  (hdifferent : ∀ (v : V) (e f : E), incident v e → incident v f → sign v e ≠ sign v f → 1 ≤ |time f - time e|)
+  (hpair : ∀ (v w : V), v ≠ w → ∃ e, incident v e ∧ incident w e ∧ sign v e ≠ sign w e) : Fintype.card V ≤ 2 ^ period
+JSP000404Research.DirectionCut.crossing_endpoints_adjacent.{u_1} {V : Type u_1} [LinearOrder V] (value : V → V → ℝ)
+  (hbetween :
+    ∀ {i j k : V},
+      i < j → j < k → value i j < value i k ∧ value i k < value j k ∨ value j k < value i k ∧ value i k < value i j)
+  {i j : V} (hij : i < j) :
+  ¬∃ k,
+      JSP000404Research.DirectionCut.less value (value i j) i k ∧
+        JSP000404Research.DirectionCut.less value (value i j) k j
+'JSP000404Research.IntegralWire.exists_integer_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.IntegralWire.phaseSign_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.IntegralWire.phaseSign_eq_of_congruent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.DirectionCut.less_trans' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionCut.crossing_endpoints_adjacent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionCut.less_at_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionCut.less_at_width' depends on axioms: [propext, Classical.choice, Quot.sound]

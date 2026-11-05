@@ -1,0 +1,15 @@
+import JSP000404Research.IntegralWireCapacity
+import JSP000404Research.DirectionCutOrder
+
+#check JSP000404Research.IntegralWire.exists_integer_retiming
+#check JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events
+#check JSP000404Research.DirectionCut.crossing_endpoints_adjacent
+
+#print axioms JSP000404Research.IntegralWire.exists_integer_retiming
+#print axioms JSP000404Research.IntegralWire.phaseSign_ne
+#print axioms JSP000404Research.IntegralWire.phaseSign_eq_of_congruent
+#print axioms JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events
+#print axioms JSP000404Research.DirectionCut.less_trans
+#print axioms JSP000404Research.DirectionCut.crossing_endpoints_adjacent
+#print axioms JSP000404Research.DirectionCut.less_at_zero
+#print axioms JSP000404Research.DirectionCut.less_at_width

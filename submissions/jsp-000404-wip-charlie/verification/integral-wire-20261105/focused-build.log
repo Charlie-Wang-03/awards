@@ -1,0 +1,38 @@
+ℹ [3093/3098] Replayed JSP000404Research.CyclicGraphPotential
+info: JSP000404Research/CyclicGraphPotential.lean:142:0: 'JSP000404Research.CyclicGraph.pathWeight_comp' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:143:0: 'JSP000404Research.CyclicGraph.exists_nodup_path_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:144:0: 'JSP000404Research.CyclicGraph.closed_walk_nonpos_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:145:0: 'JSP000404Research.CyclicGraph.exists_potential_of_closed_walk_nonpos' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:146:0: 'JSP000404Research.CyclicGraph.exists_potential_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3094/3098] Replayed JSP000404Research.CyclicHalfGrid
+info: JSP000404Research/CyclicHalfGrid.lean:107:0: 'JSP000404Research.CyclicGraph.pathWeight_le_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:108:0: 'JSP000404Research.CyclicGraph.pathWeight_lt_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:109:0: 'JSP000404Research.CyclicGraph.exists_half_grid_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3095/3098] Replayed JSP000404Research.WeightedHansel
+info: JSP000404Research/WeightedHansel.lean:92:0: 'JSP000404Research.completeWord_sigma_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:93:0: 'JSP000404Research.card_freeCoordinates' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:94:0: 'JSP000404Research.weighted_hansel' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:95:0: 'JSP000404Research.weighted_hansel_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3096/3098] Replayed JSP000404Research.IntegralWireCapacity
+info: JSP000404Research/IntegralWireCapacity.lean:157:0: 'JSP000404Research.IntegralWire.phaseSign_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:158:0: 'JSP000404Research.IntegralWire.exists_integer_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:159:0: 'JSP000404Research.IntegralWire.phaseSign_eq_of_congruent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:160:0: 'JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3097/3098] Replayed JSP000404Research.OrderedDirections
+info: JSP000404Research/OrderedDirections.lean:100:0: 'JSP000404Research.DirectionData.triple_constraints' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:101:0: 'JSP000404Research.DirectionData.threePoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:102:0: 'JSP000404Research.DirectionData.fourPoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3098/3098] Built JSP000404Research.DirectionCutOrder (26s)
+info: JSP000404Research/DirectionCutOrder.lean:123:0: 'JSP000404Research.DirectionCut.less_trans' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/DirectionCutOrder.lean:124:0: 'JSP000404Research.DirectionCut.crossing_endpoints_adjacent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/DirectionCutOrder.lean:125:0: 'JSP000404Research.DirectionCut.less_at_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/DirectionCutOrder.lean:126:0: 'JSP000404Research.DirectionCut.less_at_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (3098 jobs).

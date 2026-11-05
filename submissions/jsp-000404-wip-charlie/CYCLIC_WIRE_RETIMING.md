@@ -284,3 +284,69 @@ The new return-path and graph-potential lemmas are components of the proposed
 global route. The missing actual projection-graph construction, its simple
 cycle path extraction, and the algebraic cut-transport connection remain
 visible obligations. Family A is still awaiting a complete kernel chain.
+
+## Integral coding continuation after afe0cc61
+
+`IntegralWireCapacity.lean` now kernel-checks the modular sign rule and the
+dyadic bound for an integral event system. Its hypotheses give, at every
+centre, an absolute incident-time difference at most n, a strict bound below
+n when original movement signs agree, and a lower bound of one when they
+differ. Every two centres must share an event with opposite signs. These
+conditions imply consistent signs in every residue band and distinct n-bit
+words. The module also derives integer-time retiming from the half-grid
+potential theorem by division by two. The connection from consecutive wire
+arcs to these incident-time inequalities remains to be proved.
+
+There are two possible ways to formalize the embedded-cycle bridge.
+
+- Use the original rotating projections and construct each cut cycle path
+  as a continuous piecewise projection graph. The checked reflected-strip
+  theorem then bounds the number of paths by two. A finite linear dual
+  arrangement also works. After a generic rotation, let the dual wire of
+  (x_i,y_i) be y_i-s*x_i. Choose M beyond all crossing parameters. The endpoint
+  orders at -M and M are reversed, and every path is piecewise affine.
+- Derive a finite adjacent-swap reversal sequence from strict triangle
+  betweenness. Order all pair events by their original direction, breaking
+  disjoint ties arbitrarily. At each cut, the pair comparison obtained by
+  flipping the already crossed pairs is transitive. A simple cycle has at
+  most one selected route through each crossing event. Its selected tracks
+  therefore preserve their order during every adjacent swap. The reflected
+  return order again gives an involution with one orbit. This route would
+  establish the winding bound directly from a coherent strict direction
+  array and could use the existing original-plane direction bridge.
+
+`DirectionCutOrder.lean` now checks that triangle betweenness produces a
+strict total cut order, that strict betweenness makes crossing endpoints
+adjacent immediately before their event, and that the endpoint orders at
+cuts zero and the full width are the original order and its reverse.
+
+For the second route, a shared-wire tie must be excluded. The existing
+`rayThetaAt_injective_of_AngleCap` supplies this for actual point sets, and
+`genericLocalDirectionValue_eq_cutRotate` relates those parameters to the
+generic DirectionData values. The new finite return-network proof has not
+yet been implemented. These alternatives describe the outstanding bridge,
+without supplying it as an assumed original-problem theorem.
+
+For a finite sweep proof, remove the wrapping arcs from a simple circuit.
+The remaining components run from one cut edge to the next in increasing
+event order. At each crossing gate, at most one such component uses the
+crossing vertex. Any component whose active wire were incident to an unused
+crossing would have to pass through that vertex, because wire arcs connect
+consecutive events. Thus a gate moves at most one selected component through
+two adjacent positions, while the others avoid those positions. Their order
+is preserved. At the end, the same wrapping-wire set is met in reverse order.
+The induced return has one orbit because the original circuit is one cycle.
+
+One concrete extraction approach tracks the set of selected arcs crossing
+each cut between successive events. At a selected crossing, replace its
+unique incoming circuit arc by its unique outgoing arc. At every other
+crossing this active set is unchanged. Start and end active sets are exactly
+the wrapping arcs. Tracking these replacements gives the cut return map.
+The two remaining finite obligations are the order preservation of the
+active tracks and the one-orbit correspondence with the original circuit.
+
+The upper-strip signed-gap relaxation was also probed without betweenness.
+At doubled period five, six centres returned UNSAT. At doubled periods seven
+and nine, the first forbidden sizes eleven and twenty-one timed out after
+30 and 180 seconds. These SMT observations have no kernel proof and do not
+settle the upper-strip relaxation.

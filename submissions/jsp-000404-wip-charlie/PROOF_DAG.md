@@ -350,3 +350,12 @@ for the stronger transported-order interpretation. This is a new proof
 candidate for all of A, with no unconditional A declaration claimed yet.
 The half-integer-period capacity required for B is still open. The actual
 geometry and full-scope acceptance obligations remain in the root DAG.
+
+The standalone `IntegralWireCapacity` now completes the algebraic coding part
+of step 6, conditional only on the explicit incident-time gap inequalities.
+It also obtains integral times at the lower half-integer threshold.
+`DirectionCutOrder` supplies actual strict total cut orders and adjacent
+crossing endpoints from triangle betweenness. The outstanding parts of steps
+1, 2, and 6 are the cyclic graph construction, its simple-cycle winding bound,
+and the incident-gap connection to that graph. The full original result
+and the B-family bound remain open.
