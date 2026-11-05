@@ -162,6 +162,14 @@ The freely coloured unit collapse also succeeds on the obstructing schedule
 at phase 1/2. Its nine wires respect the original B(3) ceiling of ten.
 Euclidean realization of this newly synthesized abstract order is unverified.
 
+At q=9, a further targeted query found a seventeen-wire fixed-schedule
+obstruction to cyclic-pair-deletion encodings. Its canonical retiming admits
+the five-cycle `(0,1,2,7,8)` and edges `(3,4)` and `(5,6)`. A subsequent
+200-array targeted run produced four distinct canonical signed-row arrays,
+all with successful encodings. The outputs are
+`artifacts/canonical-encoding-repair-17.json` and
+`artifacts/canonical-encoding-repair-17-9-audit.json`.
+
 Free-colour interval collapse survived 982 distinct varied feasible schedules,
 with 698 duplicates discarded. It remains a separate unproved route.
 
@@ -188,6 +196,59 @@ hull size. For example, an eight-point input has q=7 and a six-point hull.
 The sharp twenty-point example has a nine-vertex hull and a nine-unit
 critical cycle, which motivated the failed guess. A universal convex-hull
 reduction should therefore be dropped.
+
+## A local criterion for the canonical clock
+
+The following argument identifies a precise selection rule to investigate.
+It supplies no graph encoding yet.
+
+Use integer doubled period q, with q odd. Place the cut immediately after
+phase zero and normalize event clocks into `(-q,0]`, so phase-zero events
+have clock zero and other phases j have clock j-q. A wire arc e from u to v
+has nonnegative wrap m_e and delay d_e in {0,1}, with
+
+    H_u <= H_v + q*m_e - 2*d_e.
+
+Call the arc tight when equality holds. Suppose every event with negative
+clock has an outgoing tight arc. Follow these arcs. A path either reaches
+a zero-clock event or enters a directed cycle. A cycle consisting entirely
+of zero-delay tight arcs would have zero total wrap and is excluded by the
+original strictly increasing event order. Every other tight cycle advances
+its phase by two for each unit-delay arc. Since q is odd, a closed sequence
+of these advances visits every residue, including zero. Thus every event
+has a tight path to a zero-clock event.
+
+For any feasible competitor K with all K_e<=0, telescope the upper-bound
+inequalities along that tight path. Its endpoint has K<=0, while H has value
+zero. The resulting inequality is K_e<=H_e at the starting event. Therefore
+H is the greatest feasible clock under the all-zero upper bounds.
+
+Conversely, a greatest integer clock must have an outgoing tight arc at
+every negative event. Otherwise all of that event's finitely many outgoing
+integer inequalities have slack at least one. Increasing just its clock by
+one preserves them and the zero upper bound, while incoming inequalities
+become easier. This contradicts greatestness. The argument uses the ordinary
+consecutive-event quiver with at least two distinct events per wire.
+
+The criterion can be expressed in a finite-domain search with event phases
+in {0,...,q-1}. Give tied events a rank consistent with every triple's crossing
+order. A nonzero event must have either a later same-phase event on one of
+its wires, or an incident event exactly two phase units ahead cyclically
+with the appropriate movement-sign change. The signed-gap bounds ensure
+that an incident tight pair expands to tight consecutive arcs.
+
+Adding this criterion to the targeted encoding-counterexample query returned
+UNSAT at N=9, q=7 in about 1.8 seconds. The corresponding N=17, q=9 query
+timed out after 180 seconds. Both searches fix event (0,1) at phase zero.
+These solver outputs have no kernel or independent UNSAT certificate. The
+criterion's argument above is written mathematics, and its Lean proof and
+the general encoding construction remain outstanding.
+
+The current targeted search is
+`artifacts/refute_smoothing_encoding.py --canonical`. A proof should explain
+how this tight-edge structure yields an encoding, or identify a counterexample
+to that implication. The successful experiments alone leave that implication
+open.
 
 ## Next mathematical obligation
 

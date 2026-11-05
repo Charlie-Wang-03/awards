@@ -244,3 +244,16 @@ must therefore select a retiming. Its construction remains open. The
 formulation, exact obstruction and repair, excluded local-gap and convex-hull
 shortcuts, and next obligation are recorded in
 `HALF_GRID_INDEPENDENT_SET_RESEARCH.md`.
+
+The selected-retiming investigation now has a written local criterion for
+the canonical clock, based on outgoing tight arcs and odd phase increments.
+Targeted fixed-schedule failures at N=17, q=9 were repaired in 200 tested
+arrays, yielding four distinct canonical row arrays. The canonical constrained
+countersearch returned UNSAT at N=9, q=7 and timed out at N=17, q=9. These
+solver results and the written criterion remain outside the Lean chain.
+
+Requiring a straight-line separator is also excluded for independent child
+retimings. The retained twenty-point witness has 190 such partitions, and
+every one has an exact obstructing child cycle at width 18/5. An unrestricted
+ten-plus-ten split remains feasible. The independent checker is
+`scripts/check_projection_partition_retiming.py`.

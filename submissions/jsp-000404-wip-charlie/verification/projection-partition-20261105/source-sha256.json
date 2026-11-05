@@ -1,0 +1,10 @@
+{
+  "HALF_GRID_INDEPENDENT_SET_RESEARCH.md": "8f4b3f8052349ff59990588f5ac0d1fcc519ae0eeab4a5c63cac0f91090da909",
+  "UNIT_INTERVAL_RETIMING_RESEARCH.md": "f064719ba6a890adbd15f3582651bc3d9c52c6bc1fb1572bf837c8c5b8b34ffd",
+  "PROGRESS.md": "05d52b3ca59b481f5cce88bbb5a2dd03a8d7419ca93e5faa60c9e7efe407d01c",
+  "scripts/check_projection_partition_retiming.py": "67029562d95d8f3ba8b6b7023de9574b81ae8b8c500144e31c01ddd46f4c960f",
+  "scripts/check_cyclic_wire_retiming.py": "959f4f5a27e3a3f09883abd4aea9f65a5126e50fb97799e51aa0d0e96ac726c0",
+  "verification/affine-partition-20261105/cover.json": "2d47a2c1cebea734a70c5f12cd09f408bedcd2bbc581d368a03d1ffbcc5bf06a",
+  "verification/projection-partition-20261105/check.log": "b31249639a109c93225cf560687efc57a8737b6b26042f09aed2b4d94e2b1ed7",
+  "verification/projection-partition-20261105/README.md": "c20906bcb439e5e843a62d3694c5aacaea5fbbfcb63a22d76601000fadf38e4d"
+}

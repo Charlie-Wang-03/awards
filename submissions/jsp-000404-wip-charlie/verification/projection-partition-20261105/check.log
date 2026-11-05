@@ -1,0 +1,5 @@
+PASS actual rational projection sweep and all 190 separated bipartitions
+PASS each separated bipartition has a child with an exact negative cycle at width 18/5
+Negative-cycle ratios among checked children {Fraction(4, 1): 137, Fraction(9, 2): 53}
+PASS a non-separated ten-plus-ten partition has feasible independent child retimings
+Finite order-based obstruction. Universal unrestricted partition and original B remain open.
