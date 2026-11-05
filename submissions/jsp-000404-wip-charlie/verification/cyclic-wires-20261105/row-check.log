@@ -1,0 +1,6 @@
+PASS: 21 integer rows, diameter <=7, and all 210 antipodal pair conditions.
+PASS: every triple has a cyclic bearing choice with maximal gap <=9.
+PASS: 27 inner choices split into 18 semicircle obstructions and nine conditional four-cycles.
+PASS: all 18 unconditional forced-projection graphs are acyclic.
+Continuous conclusion: individually realizable triples but no joint realization after any
+row-run expansion by epsilon with 0<epsilon<10 degrees. Full Lean geometry is pending.

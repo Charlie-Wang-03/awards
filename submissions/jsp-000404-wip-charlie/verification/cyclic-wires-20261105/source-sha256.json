@@ -1,0 +1,13 @@
+{
+  "JSP000404Research.lean": "3e1f7d169a800d672f090daaad9c45f50f16e3c84e612cc6bbf08797777fcf68",
+  "JSP000404Research/MobiusReturnOrder.lean": "8e90110f6bf9abdbf105193414fad37349384c537ccf00cb55c07f76b4c7624a",
+  "JSP000404Research/CyclicGraphPotential.lean": "cc2237f5eb05bd0e203c6f9778aeb54b86caaa593d1e34afb32699adf6ef472e",
+  "JSP000404Research/CyclicHalfGrid.lean": "07be08208955bc7f572e80f67bc6cc55f0ed66df8482284bc0d0d654aaa79a5d",
+  "CYCLIC_WIRE_RETIMING.md": "de7c3bbea8bbf4d4413b19569b8a3b1aa4d4c1a1bba1aa01ee02c47fe1aa5cb4",
+  "DIRECTION_ORDER_RESEARCH.md": "4dffd773adff6ba855b8c6d96266b73d8e6e98405bdc751fe7d1fd5277d0895c",
+  "PROGRESS.md": "a7e5b979c9b8e6e2e1804cdd5abbd4c8c725fda7254543225f59e37034b69390",
+  "PROOF_DAG.md": "3eee8f00f220dde0c69033de5e219b0d6bd83ed587cbb6ffbf57e7bb5855ae39",
+  "scripts/check_cyclic_wire_retiming.py": "959f4f5a27e3a3f09883abd4aea9f65a5126e50fb97799e51aa0d0e96ac726c0",
+  "scripts/check_half_grid_coherence.py": "29178b8fc67677be5f1abff3ddd9a9b68411a31bdf17efc982940b59430164a6",
+  "verification/cyclic-wires-20261105/Audit.lean": "a5338ac7cd9f1cf142dbeed53ceceb098efbcc5038298f3d1d8a7454464d8ba4"
+}

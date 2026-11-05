@@ -1,0 +1,42 @@
+JSP000404Research.reflected_strip_single_orbit_card_le_two.{u_1} {V : Type u_1} [LinearOrder V] [Fintype V]
+  (path : V → ℝ → ℝ) (next : V → V) {a b : ℝ} (hab : a ≤ b) (hcont : ∀ (v : V), ContinuousOn (path v) (Set.Icc a b))
+  (hdisjoint : ∀ (v w : V), v ≠ w → ∀ x ∈ Set.Icc a b, path v x ≠ path w x) (hstart : StrictMono fun v => path v a)
+  (hreturn : ∀ (v : V), path v b = -path (next v) a) (start : V) (horbit : ∀ (v : V), ∃ k, next^[k] start = v) :
+  Fintype.card V ≤ 2
+JSP000404Research.CyclicGraph.exists_potential_of_simple_closed_nonpos.{u_1, u_2, u_3} {V : Type u_1} [Quiver V]
+  {R : Type u_2} [AddCommGroup R] [ConditionallyCompleteLinearOrder R] [IsOrderedAddMonoid R]
+  (weight : {u v : V} → (u ⟶ v) → R) (root : V) (hconnected : ∀ (u v : V), Nonempty (Quiver.Path u v))
+  (hsimple :
+    ∀ (v : V) (p : Quiver.Path v v),
+      p.vertices.dropLast.Nodup → JSP000404Research.CyclicGraph.pathWeight (fun {u v} => weight) p ≤ 0) :
+  ∃ potential, ∀ {u v : V} (e : u ⟶ v), weight e ≤ potential v - potential u
+JSP000404Research.CyclicGraph.exists_half_grid_retiming.{u_1, u_2} {V : Type u_1} [Quiver V]
+  (delay wrap : {u v : V} → (u ⟶ v) → ℤ) (halfUnits : ℤ) (original : V → ℝ) (root : V)
+  (hconnected : ∀ (u v : V), Nonempty (Quiver.Path u v))
+  (hsource : ∀ {u v : V} (e : u ⟶ v), ↑(delay e) < original v - original u + ↑(wrap e) * (↑halfUnits + 1) / 2)
+  (hwinding :
+    ∀ (v : V) (p : Quiver.Path v v),
+      p.vertices.dropLast.Nodup →
+        p.length ≠ 0 →
+          JSP000404Research.CyclicGraph.pathWeight (fun {u v} => wrap) p = 1 ∨
+            JSP000404Research.CyclicGraph.pathWeight (fun {u v} => wrap) p = 2) :
+  ∃ doubledTime, ∀ {u v : V} (e : u ⟶ v), 2 * delay e ≤ doubledTime v - doubledTime u + halfUnits * wrap e
+'JSP000404Research.disjoint_graphs_preserve_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.finite_strictAnti_involutive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.finite_strictAnti_orbit_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.reflected_strip_return_strictAnti' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.reflected_strip_single_orbit_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.CyclicGraph.pathWeight_comp' depends on axioms: [propext]
+'JSP000404Research.CyclicGraph.exists_nodup_path_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.CyclicGraph.closed_walk_nonpos_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.CyclicGraph.exists_potential_of_closed_walk_nonpos' depends on axioms: [propext]
+'JSP000404Research.CyclicGraph.exists_potential_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.CyclicGraph.pathWeight_le_potential_difference' depends on axioms: [propext]
+'JSP000404Research.CyclicGraph.pathWeight_lt_potential_difference' depends on axioms: [propext]
+'JSP000404Research.CyclicGraph.exists_half_grid_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]

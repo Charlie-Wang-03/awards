@@ -1749,3 +1749,7 @@ import JSP000404Research.OriginalUpperBound
 import JSP000404Research.TwoObserverGeometry
 import JSP000404Research.IntervalPrivateDirections
 import JSP000404Research.AffineTraceBound
+
+-- Components of the cyclic projection-wire route. The geometric bridge remains open.
+import JSP000404Research.MobiusReturnOrder
+import JSP000404Research.CyclicHalfGrid

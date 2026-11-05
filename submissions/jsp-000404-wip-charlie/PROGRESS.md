@@ -144,3 +144,30 @@ checker exhausts all 524,288 complementary colouring classes. The scalar trace
 inequality is formalized separately; the full counterexample's Lean geometry
 is pending. The original lower bound remains open. The next live mathematical
 target is the one-top upper ordered-direction conjecture and its weighted form.
+
+## Cyclic projection-wire continuation
+
+Checkpoint `7091e8ca0f0f1e23d7ad3aead1842dd9ad116fab`, including the preserved
+e2168310 history, was pushed and verified against the tracking and remote SHAs.
+
+The [cyclic-wire route](CYCLIC_WIRE_RETIMING.md) gives a proposed general
+derivation of threshold A. Its projection graph lies on a reflected strip.
+A simple directed cycle would have one or two turns, forcing half-integer
+retiming. Integer-band signs then give the dyadic bound. Three new Lean
+modules verify the disjoint-path return argument, loop erasure, graph
+potentials, and exact half-grid rounding with the graph hypotheses explicit.
+The actual projection-graph construction, simple-cycle path extraction, and
+incident-sign coding bridge remain to be assembled in Lean. No unconditional
+all-n A theorem has yet been kernel-checked. Family B remains mathematically open.
+
+The [direction-order note](DIRECTION_ORDER_RESEARCH.md) also gives an exact
+21-row integral-grid obstruction. Each triple is separately realizable after
+a small arc expansion, and every unconditional forced-projection graph is
+acyclic. A conditional four-cycle excludes joint realization of the twelve
+three-arc rows. Its checker and written proof are retained, with full Lean
+geometry pending. The standard-library cyclic checker verifies 61 exact
+retimings and all 78,268 simple cycles in its selected small examples.
+
+Current verification is scoped in
+`verification/cyclic-wires-20261105/README.md`. The earlier full umbrella audit
+continues to refer to its recorded immutable source.

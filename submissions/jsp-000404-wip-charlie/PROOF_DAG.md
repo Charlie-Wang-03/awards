@@ -329,3 +329,24 @@ property is established for these witnesses, so a step restricted to that
 domain is not refuted by them. The isolated t=4 is not
 settled by these counterexamples. These are written/executable certificates,
 not Lean geometry theorems or a counterexample to the original problem.
+
+## Cyclic-wire proof candidate
+
+The [new direction-order derivation](CYCLIC_WIRE_RETIMING.md) routes threshold A
+through an embedded cyclic projection graph. Its proposed dependency chain is
+
+1. Construct consecutive projection-wire arcs from an arbitrary strict-cap set.
+2. Extract disjoint continuous graph paths from each simple cycle.
+3. Apply the reflected-strip return theorem to bound winding by two.
+4. Convert the original strict delays to nonpositive integral cycle weights.
+5. Erase loops and construct an integer event-time potential.
+6. Sum incident-wire delays and encode the retimed signs in n Boolean bands.
+
+Steps 3, 4, and 5 have kernel-checked general lemmas in `MobiusReturnOrder`,
+`CyclicHalfGrid`, and `CyclicGraphPotential`. They retain explicit path and
+graph hypotheses. Steps 1, 2, and 6 remain formalization obligations. The
+written argument explains these steps and gives a finite three-event check
+for the stronger transported-order interpretation. This is a new proof
+candidate for all of A, with no unconditional A declaration claimed yet.
+The half-integer-period capacity required for B is still open. The actual
+geometry and full-scope acceptance obligations remain in the root DAG.

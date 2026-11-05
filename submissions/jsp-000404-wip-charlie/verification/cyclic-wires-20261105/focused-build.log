@@ -1,0 +1,23 @@
+ℹ [3093/3097] Replayed JSP000404Research.CyclicGraphPotential
+info: JSP000404Research/CyclicGraphPotential.lean:142:0: 'JSP000404Research.CyclicGraph.pathWeight_comp' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:143:0: 'JSP000404Research.CyclicGraph.exists_nodup_path_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:144:0: 'JSP000404Research.CyclicGraph.closed_walk_nonpos_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:145:0: 'JSP000404Research.CyclicGraph.exists_potential_of_closed_walk_nonpos' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:146:0: 'JSP000404Research.CyclicGraph.exists_potential_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3094/3097] Replayed JSP000404Research.CyclicHalfGrid
+info: JSP000404Research/CyclicHalfGrid.lean:107:0: 'JSP000404Research.CyclicGraph.pathWeight_le_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:108:0: 'JSP000404Research.CyclicGraph.pathWeight_lt_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:109:0: 'JSP000404Research.CyclicGraph.exists_half_grid_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3097/3097] Replayed JSP000404Research.MobiusReturnOrder
+info: JSP000404Research/MobiusReturnOrder.lean:82:0: 'JSP000404Research.disjoint_graphs_preserve_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/MobiusReturnOrder.lean:83:0: 'JSP000404Research.finite_strictAnti_involutive' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/MobiusReturnOrder.lean:84:0: 'JSP000404Research.finite_strictAnti_orbit_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/MobiusReturnOrder.lean:85:0: 'JSP000404Research.reflected_strip_return_strictAnti' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/MobiusReturnOrder.lean:86:0: 'JSP000404Research.reflected_strip_single_orbit_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (3097 jobs).

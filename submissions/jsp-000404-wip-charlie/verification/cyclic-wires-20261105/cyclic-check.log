@@ -1,0 +1,6 @@
+PASS: 61 cyclic optima have an exact half-integer cycle certificate.
+PASS: every exact potential array retains a total cut order and all triangle inequalities.
+PASS: integral-period endpoint signs give consistent, distinct Boolean words.
+PASS: all 78268 enumerated simple cycles have winding one or two.
+The twenty-point affine obstruction has cyclic optimum 9/2.
+These finite checks do not replace the general embedded-cycle and retiming proof.
