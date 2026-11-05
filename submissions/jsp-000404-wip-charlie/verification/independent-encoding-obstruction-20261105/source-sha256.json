@@ -1,0 +1,10 @@
+{
+  "HALF_GRID_INDEPENDENT_SET_RESEARCH.md": "d20ac5454340e0d9804cabfab1f5fa371780160211777c0a73ef6e698c4ec854",
+  "PROGRESS.md": "17e7a5bfd7744c17d0e87824f39e7e9ba24f56cc5e98ad6d88e3442b5ca44553",
+  "PROOF_DAG.md": "80ce9fb0a509c381eeca7e3c15c715c8da9f0d1731ec3f0ee4e64408c3079342",
+  "scripts/check_half_grid_encoding_obstruction.py": "4af31593e1d03417de533e97f4bb9e25e36025c986570d7f5cf10d9e75ba3449",
+  "scripts/check_half_grid_independent_encoding.py": "fcbdcf1054d024c21f300eab5250b98cc358db076826e502ae65cc9f9a16d795",
+  "verification/independent-encoding-obstruction-20261105/check.log": "d90dad0f9912da1ad69a03c6b6b90c5075b006a89db1ad39a63b71e808e8efa6",
+  "verification/independent-encoding-obstruction-20261105/counterexample.json": "1f7fe89a8e835cd53c07f7947fbff73947fafc63324fd69c8e9912c02fd30b37",
+  "verification/independent-encoding-obstruction-20261105/README.md": "e9ffd3976c7fd89b3833d5e450c6e2725bc8e7911ecd2cca51bbd051fd062552"
+}

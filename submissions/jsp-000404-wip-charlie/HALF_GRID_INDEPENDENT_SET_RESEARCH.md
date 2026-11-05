@@ -1,8 +1,10 @@
 # Half-grid signs and maximal independent sets
 
 2026-11-05, after the completed family-A checkpoint `449be4d2`. Family B
-remains open. This note proposes a different counting invariant and records
-exact finite certificates. Its universal representation statement is unproved.
+remains open. The fixed-schedule representation proposed at `727fc926` now
+has an exact coherent counterexample, even allowing arbitrary coordinate
+polarity choices and any triangle-free graph. The version selecting a prior
+retiming remains open and survives that counterexample.
 
 ## The matching extremal numbers
 
@@ -54,16 +56,17 @@ cycle of length at least five. Keep that residual cycle in its inherited
 cyclic order, together with all recorded disjoint edges. Call the resulting
 graph H. Its maximum degree is two and it is triangle-free.
 
-The strong candidate asserts that for every coherent half-grid schedule,
+The initial strong candidate asserted that for every coherent half-grid schedule,
 some such H and one common choice of sign polarity let every signed row
 extend to a maximal independent set I_v of H, with
 
     P_v subset I_v, and I_v intersect N_v empty.
 
-The opposite-sign overlap makes v ↦ I_v injective. The graph bound then gives
-`|V| <= 5*2^((q-5)/2)`. A weaker statement allowing a suitable prior retiming
+The opposite-sign overlap makes v ↦ I_v injective. The graph bound would then
+give `|V| <= 5*2^((q-5)/2)`. The fixed-schedule assertion is false by the
+counterexample below. A weaker statement allowing a suitable prior retiming
 of each actual planar projection graph would also suffice for the original
-problem. Both versions remain unproved.
+problem. Its construction remains open.
 
 For these particular H, one can also count directly. A disjoint edge
 contributes a factor two, and an odd residual cycle of length r>=5 has at
@@ -122,6 +125,43 @@ JSON audits retain the tested rows and successful graph certificates.
 
 ## Other falsification work in this continuation
 
+A targeted solver query produced a coherent nine-wire schedule at q=7 that
+excludes every proposed fixed-sign graph. The independent checker
+`scripts/check_half_grid_encoding_obstruction.py` verifies its 84 triangle
+constraints and explicit 36-event adjacent-swap reversal. For each of the
+128 coordinate-polarity choices, any admissible graph edge must avoid
+co-occurrence among the forced positive coordinates. This reduces the full
+graph search to 22,752 polarity/edge-subset choices. All 21,328 triangle-free
+choices fail to extend at least one row to a maximal independent set.
+This excludes every triangle-free graph on the seven coordinates, including
+graphs outside the cyclic-pair-deletion family.
+
+The original polarity allows nine possible graph edges, and its complete
+reversal allows eight. Their 512 and 256 edge-subsets already refute the
+original common-polarity proposal. The larger exhaustive check also covers
+independent flips of individual coordinates.
+
+The same cyclic wire order has a canonical greatest feasible potential below
+the all-zero initial upper bounds. Its period remains 7/2. That retiming
+admits the five-cycle `(0,3,4,5,6)` and separate edge `(1,2)`, after a common
+sign reversal. The checker verifies every original consecutive delay and
+closing delay for the new times, then verifies all nine distinct MIS codes.
+Thus a theorem selecting a retiming remains viable. The fixed-schedule
+obstruction and its explicit repair are retained under
+`verification/independent-encoding-obstruction-20261105/`.
+
+A targeted follow-up generated 1,000 distinct coherent nine-wire time arrays
+that all defeat the fixed cyclic-pair-deletion encoding. Rebuilding their
+wire graphs with an adjacent-swap tie refinement and taking the canonical
+greatest feasible potential produced only five distinct signed-row arrays.
+All five admit the encoding. The local audit is
+`artifacts/canonical-encoding-repair-audit.json`. This supports investigating
+the canonical selection rule, while its universal proof remains open.
+
+The freely coloured unit collapse also succeeds on the obstructing schedule
+at phase 1/2. Its nine wires respect the original B(3) ceiling of ten.
+Euclidean realization of this newly synthesized abstract order is unverified.
+
 Free-colour interval collapse survived 982 distinct varied feasible schedules,
 with 698 duplicates discarded. It remains a separate unproved route.
 
@@ -130,6 +170,17 @@ one second, both with and without triangle betweenness. N=10, q=7 returned
 SAT and supplied the first certificate above. N=21, q=9 timed out after
 180 seconds. These runs fixed event (0,1) at zero. They supply exploratory
 solver outcomes, without a universal theorem or a kernel certificate.
+
+The bounded signed-gap relaxation at N=21, q=9 now has an explicit exact
+counterexample. Orienting the earlier twenty-one rows by a topological order
+of their forced projection relation and choosing one allowed bearing for
+each pair gives all 1,330 signed-gap triple constraints, but violates
+betweenness on 127 triples. The data are in
+`artifacts/bounded-signed-gap-21-explicit.json`. A separate finite signed-row
+solver also found 21 compatible rows with an acyclic ambient-order relation.
+Thus adding a total ambient order to the local signed-gap conditions is
+insufficient. Any replacement graph construction must use stronger global
+coherence or actual geometry.
 
 The guess that every odd critical optimum equals half the original convex
 hull size fails. Among 46 actual-point odd-optimum inputs, 44 had a different
@@ -140,8 +191,9 @@ reduction should therefore be dropped.
 
 ## Next mathematical obligation
 
-Construct the graph H from global coherence, or produce a coherent schedule
-refuting the fixed-schedule representation. A promising source of additional
+Construct a suitable retiming and graph H jointly, or refute a specified
+selection rule such as the canonical greatest potential. The fixed-schedule
+form is excluded and should be abandoned. A possible source of additional
 structure is an optimal half-grid potential and its embedded tight-edge
 graph. The graph-potential and simple-cycle theorems are already checked,
 but they currently supply no independent-set representation.

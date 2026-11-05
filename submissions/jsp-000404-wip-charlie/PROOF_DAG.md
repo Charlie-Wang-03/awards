@@ -380,5 +380,8 @@ The [independent-set representation candidate](HALF_GRID_INDEPENDENT_SET_RESEARC
 offers a second B route. Half-grid rows would extend, preserving their signs,
 to distinct maximal independent sets of a triangle-free graph on 2n+1
 coordinates. The required graph count is the Hujter–Tuza bound. Four finite
-graph certificates have independent exact checks. The arbitrary-configuration
-representation and its Lean proof remain open.
+graph certificates have independent exact checks. The stronger claim for
+every fixed schedule is now refuted by a coherent nine-wire certificate,
+with all triangle-free graphs and all coordinate polarities exhausted.
+A canonical retiming of that same order has a valid encoding. The
+arbitrary-configuration selection of retiming and representation remains open.

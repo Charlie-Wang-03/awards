@@ -1,0 +1,7 @@
+PASS all 84 triangle constraints and the 36-event adjacent-swap reversal
+PASS polarity mask 0: all 512 allowed-edge subgraphs, 448 triangle-free graphs, zero encodings
+PASS polarity mask 127: all 256 allowed-edge subgraphs, 256 triangle-free graphs, zero encodings
+PASS all 128 coordinate polarity choices, 22752 graph choices, 21328 triangle-free choices, zero encodings
+PASS canonical retiming of the fixed-sign obstruction: 9 wires, 36 events, 7 graph vertices, 10 maximal independent sets
+PASS the same cyclic wire order has a sign-preserving encoding after retiming
+The fixed-schedule representation fails. The prior-retiming version remains open.
