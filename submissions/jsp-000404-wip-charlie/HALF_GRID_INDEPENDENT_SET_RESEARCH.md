@@ -250,6 +250,116 @@ how this tight-edge structure yields an encoding, or identify a counterexample
 to that implication. The successful experiments alone leave that implication
 open.
 
+## Critical-root potentials
+
+A second selection rule removes the exceptional zero-clock sinks. At the
+minimum feasible period, choose an event on a zero-total-weight critical
+cycle. Assign each event the minimum upper-bound path weight from it to
+that chosen root. Strong connectivity makes the path family nonempty.
+Nonnegative cycle weights allow loop erasure, so a shortest path exists.
+Prepending an arrow gives every required difference inequality, and the
+first arrow of a shortest path is tight. At the root, the critical cycle
+has total slack zero, so its outgoing arrow is tight too. Thus every event
+has an outgoing tight arrow.
+
+This is the min-plus eigenvector condition for the cyclic constraint graph.
+The graph construction and its one/two-turn cycle theorem make the optimum
+the maximum of a finite nonempty family of integer or half-integer cycle
+ratios. In particular, the optimum is attained. If that optimum is at most
+the integer n, integer potentials and the checked signed-band packing give
+cardinality at most 2^n. The remaining B case has optimum exactly n+1/2 and
+can use the critical-root selection above.
+
+Testing this rule on 61 retained odd-period orders with q in {7,9,11,13}
+gave a cyclic-pair-deletion MIS encoding in every case. The sharp twenty-point
+order and the targeted seventeen-wire obstruction also passed. The stronger
+forced-active-bit collapse rule failed at source indices 41, 305, 419, 526,
+and 590, and on the seventeen-wire example. The proposed MIS representation
+therefore remains the relevant target for this selection rule. The audit is
+`artifacts/critical-eigen-encoding-audit.json`.
+
+The tight graph had exactly one cyclic strongly connected component in all
+71 odd-optimum inputs from the original 599-order collection. Among its
+528 integer-optimum inputs, four had two cyclic components and the other
+524 had one. These observations suggest a possible additional odd-period
+structure theorem, which is unproved and is unnecessary for existence of a
+critical-root potential. The data are `artifacts/odd-critical-components.json`
+and `artifacts/even-critical-components.json`.
+
+The search flag `--harmonic` in `refute_smoothing_encoding.py` requires an
+outgoing tight continuation even at phase-zero events. Tied-event order is
+read directly from each triangle's crossing order, eliminating auxiliary
+event-rank variables. The N=17, q=9 encoding query returned UNKNOWN after
+300 seconds. The N=21, q=9 overweight coherent-schedule query returned
+UNKNOWN after 1,200 seconds. Neither timeout decides its mathematical claim.
+
+## Consecutive cores fail even for critical-root clocks
+
+All 66 original retained encoding arrays, 442 varied-potential arrays, and
+63 critical-root arrays admitted a five-cycle on five consecutive coordinates
+with the remaining coordinates paired. This suggested restricting the core
+to a single consecutive block. A targeted search refuted that restriction.
+
+There are now exact witnesses with N=11, q=11 and N=17, q=9. Each has an
+explicit adjacent-swap reversal, all triangle inequalities, a feasible
+clock, a tight critical cycle of winding two, and a tight path from every
+event to a chosen event on that cycle. The paths prove that the displayed
+clock, after subtracting its root value, is the shortest-path potential to
+that root. Every outgoing clock inequality is checked, and every event has
+an outgoing tight arc. The critical-cycle equality also proves optimality
+of the period for that fixed cyclic wire order.
+
+For every cyclic block of five coordinates and either common polarity,
+some row has no compatible maximal independent set on its five-cycle.
+The standard-library checker enumerates all five maximal independent sets
+for each core. Thus the restriction fails for a selected critical-root
+clock itself. The greatest all-zero-upper-bound clocks of these same two
+orders also failed the exploratory consecutive-core test.
+
+Both witnesses have valid sparse five-cycle encodings. In the supplied
+phase normalization, the eleven-wire example uses core `(0,1,2,7,8)` and
+pairs `(3,4)`, `(5,6)`, `(9,10)`. The seventeen-wire example uses core
+`(1,2,3,6,7)` and pairs `(0,8)`, `(4,5)`. These graphs have respectively
+40 and 20 maximal independent sets. Their codes are checked independently.
+The new abstract orders' Euclidean realizations have not been established.
+
+The certificates, path witnesses and reproduction instructions are in
+`verification/critical-clock-core-20261105/`. The checker is
+`scripts/check_critical_clock_core_obstruction.py`. The general selected-
+retiming encoding remains open.
+
+## Reducing cyclic pair deletion to the core alone
+
+The matching can always use edges of the original coordinate cycle.
+Indeed, after cyclic adjacent-pair deletion, each gap between successive
+retained core vertices contains an even number of deleted vertices. Pair
+those vertices consecutively within each gap. These pairs are adjacent in
+the original cycle. Conversely, such even gaps provide an explicit valid
+deletion sequence. Equivalently, the cyclic distances between consecutive
+core vertices are all odd.
+
+For every row, its positive and negative supports are independent in the
+original cycle. It therefore extends to exactly one chosen endpoint of
+each new matching edge. If an endpoint is positive it must be chosen, and
+if one is negative its neighbor can be chosen. The two endpoints cannot
+both be positive or both negative. If neither endpoint is prescribed,
+either choice works. Choices on separate matching edges are independent.
+
+Consequently, existence of an encoding after cyclic pair deletion is
+equivalent to existence of an odd core of size at least five, with all
+cyclic gaps odd, such that every signed row extends to a maximal independent
+set of the core cycle under one common polarity. Nested matching edges
+provide no additional possibilities. The restricted size-five candidate
+needs only five possible core codes per row. This yields a substantially
+smaller countersearch than enumerating all matching completions.
+
+For a consecutive five-coordinate core, the original four path edges
+already make the positive and negative supports independent. Its only
+minimal forbidden partial patterns, with dots denoting unspecified entries,
+are `+...+` and `-.+.-`. These patterns explain the targeted search above.
+The general five-coordinate core need not retain these four original edges,
+so its checker must test all five maximal independent sets directly.
+
 ## Next mathematical obligation
 
 Construct a suitable retiming and graph H jointly, or refute a specified

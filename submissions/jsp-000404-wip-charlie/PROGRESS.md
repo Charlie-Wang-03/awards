@@ -257,3 +257,13 @@ retimings. The retained twenty-point witness has 190 such partitions, and
 every one has an exact obstructing child cycle at width 18/5. An unrestricted
 ten-plus-ten split remains feasible. The independent checker is
 `scripts/check_projection_partition_retiming.py`.
+
+Critical-root potentials now provide a second precise clock selection rule.
+Tight root paths and a critical cycle certify their attainment and period
+optimality. Exact eleven-wire and seventeen-wire examples exclude restricting
+the MIS core to five consecutive coordinates, even for this selection rule.
+Both admit sparse five-coordinate cores. The independent replay is
+`scripts/check_critical_clock_core_obstruction.py`, with evidence under
+`verification/critical-clock-core-20261105/`. A written matching simplification
+reduces cyclic pair-deletion encodings to the retained odd core and its odd
+cyclic gaps. The arbitrary-configuration representation remains open.

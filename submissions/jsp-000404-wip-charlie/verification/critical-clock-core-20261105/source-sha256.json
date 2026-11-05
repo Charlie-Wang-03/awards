@@ -1,0 +1,45 @@
+{
+  "normalization": "UTF-8 source bytes, CRLF converted to LF",
+  "files": [
+    {
+      "path": "HALF_GRID_INDEPENDENT_SET_RESEARCH.md",
+      "sha256": "c372ab4cc5da0677166b077e2fe341a72f5a5ceaac5ce952981ed65102e51844",
+      "bytes": 21176
+    },
+    {
+      "path": "PROGRESS.md",
+      "sha256": "bc904e81b69bf855c2197137421df1139ea7dcbaf51403297c9d29339c353a77",
+      "bytes": 16552
+    },
+    {
+      "path": "PROOF_DAG.md",
+      "sha256": "53ab699c22b6e480c9bb8918a816184f3798e0ce91e98d27711c0354780b2924",
+      "bytes": 23953
+    },
+    {
+      "path": "scripts/check_critical_clock_core_obstruction.py",
+      "sha256": "e304f8d2b8ab43b7bffc667e66cce2686ac0895121520d38dd4f8a368c058dea",
+      "bytes": 4741
+    },
+    {
+      "path": "scripts/check_half_grid_independent_encoding.py",
+      "sha256": "fcbdcf1054d024c21f300eab5250b98cc358db076826e502ae65cc9f9a16d795",
+      "bytes": 5355
+    },
+    {
+      "path": "verification/critical-clock-core-20261105/check.log",
+      "sha256": "1140f8a3471e23dd40ff3623c56ef85fe5058d0d1cdc10859fc7d5f91e2fd0c9",
+      "bytes": 675
+    },
+    {
+      "path": "verification/critical-clock-core-20261105/README.md",
+      "sha256": "312cc1d44caa43bf01b88b93274e59a4a90bce55dd4f139e507ed54c41086686",
+      "bytes": 2514
+    },
+    {
+      "path": "verification/critical-clock-core-20261105/witnesses.json",
+      "sha256": "d0fb489d47321b8b48314195a1bcb9a728dbfd62be6f023f2b626155362745ea",
+      "bytes": 53972
+    }
+  ]
+}

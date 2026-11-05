@@ -385,3 +385,11 @@ every fixed schedule is now refuted by a coherent nine-wire certificate,
 with all triangle-free graphs and all coordinate polarities exhausted.
 A canonical retiming of that same order has a valid encoding. The
 arbitrary-configuration selection of retiming and representation remains open.
+
+The critical-root clock selection has a written shortest-path construction.
+Two independently checked finite examples show that its encoding core cannot
+always be five consecutive coordinates. Both examples have sparse five-cycle
+encodings, so the general selection obligation remains open. Tight paths and
+critical cycles certify that these are optimal critical-root clocks for their
+given abstract wire orders. The evidence is in
+`verification/critical-clock-core-20261105/` and remains outside the Lean chain.

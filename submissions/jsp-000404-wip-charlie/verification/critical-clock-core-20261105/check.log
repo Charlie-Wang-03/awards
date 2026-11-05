@@ -1,0 +1,8 @@
+PASS N=11, q=11: feasible clock, critical cycle with winding 2, tight paths from every event to its root
+PASS N=11, q=11: all 22 consecutive-core/polarity choices fail
+PASS 11-wire sparse core repair: 11 wires, 55 events, 11 graph vertices, 40 maximal independent sets
+PASS N=17, q=9: feasible clock, critical cycle with winding 2, tight paths from every event to its root
+PASS N=17, q=9: all 18 consecutive-core/polarity choices fail
+PASS 17-wire sparse core repair: 17 wires, 136 events, 9 graph vertices, 20 maximal independent sets
+The consecutive-core restriction fails for critical-root clocks.
+The general choice of a core and the original family-B bound remain open.
