@@ -232,3 +232,12 @@ Continue research on family B. The stronger fixed-schedule interval-colouring
 shortcut remains excluded by the nine-wire certificate. A freely coloured
 collapse, a prior-retiming version, or a different upper-strip invariant
 remains available for investigation.
+
+The latest B continuation studies a sign-preserving encoding by maximal
+independent sets of a triangle-free graph on 2n+1 half-grid coordinates.
+The Hujter–Tuza extremal count is exactly 5*2^(n-2). A specific cyclic-pair
+deletion representation has passed finite schedule tests and four independent
+exact certificates, including the nine-wire forced-colouring obstruction.
+Its general existence remains unproved. The formulation, solver outcomes,
+excluded convex-hull shortcut, and next obligation are recorded in
+`HALF_GRID_INDEPENDENT_SET_RESEARCH.md`.

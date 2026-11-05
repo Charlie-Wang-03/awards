@@ -90,8 +90,15 @@ phase fails, including schedules other than the current canonical graph
 potentials. If such a schedule is found, distinguish a failure for that
 fixed schedule from failure of the version allowing a prior retiming.
 
-If the conjecture survives, its proof must explain how a phase is selected
-and how the partially fixed movement bits extend across all bad triples.
-The observed colourability supplies no such argument. The one/two-turn cycle
-bound and its original-plane formalization are still needed independently
-for the preceding half-grid reduction.
+If the conjecture survives, its proof must explain how a phase and freely
+chosen colours satisfy all bad-triple clauses. The prescribed active-bit
+version has already failed. The one/two-turn cycle theorem and its
+original-plane construction are now kernel-checked in the completed family-A
+chain at `449be4d2`. The coherent-cut interpretation of a weak retiming would
+still need its own formal bridge for this induction.
+
+A further varied-potential search checked 982 distinct schedules and found a
+free-colour collapse in every case, discarding 698 duplicates. The output is
+`artifacts/free-compression-varied-audit.json`. A separate
+[maximal-independent-set encoding](HALF_GRID_INDEPENDENT_SET_RESEARCH.md)
+now provides another candidate route to the same B constant.

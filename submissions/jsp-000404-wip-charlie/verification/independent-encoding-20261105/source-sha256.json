@@ -1,0 +1,10 @@
+{
+  "HALF_GRID_INDEPENDENT_SET_RESEARCH.md": "2fb365da71c37ccbb10f817b8ebca4bb318da1867a00c61158999ca24d2c8a4d",
+  "UNIT_INTERVAL_RETIMING_RESEARCH.md": "93e88d9a0e586f727baf0e1c11ecb41fcc5274e0894075e6aec7447d901b4a65",
+  "PROGRESS.md": "67e05072338e682c9c1ed877e5c95f8a072ffec74d751dad18dfd3ffd167d21d",
+  "PROOF_DAG.md": "04d3a456a96b433f21ffbaea52342239029bdf9c95ed51d1ea2e2834a2590961",
+  "scripts/check_half_grid_independent_encoding.py": "fcbdcf1054d024c21f300eab5250b98cc358db076826e502ae65cc9f9a16d795",
+  "verification/independent-encoding-20261105/check.log": "a78fa76981ca34d022f035568a024eca7f602f4219a43953263f37db9f2bebda",
+  "verification/independent-encoding-20261105/examples.json": "6c7464b299456688a4f4f146dbf1ba96e47347d3bc723e87f9c7f477ab27892f",
+  "verification/independent-encoding-20261105/README.md": "c5ac4fbf94dc036025a8416e268482c6d687f3f2082633b4f66acefff9a5562c"
+}

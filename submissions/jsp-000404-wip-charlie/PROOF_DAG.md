@@ -375,3 +375,10 @@ For B, the unrestricted coherent unit-collapse induction remains a conjecture.
 Its strengthened requirement that all events inside the chosen interval cross
 between colours has an exact nine-wire all-phase counterexample. That example
 still permits a free-colour collapse, and preserves the full B(4) capacity.
+
+The [independent-set representation candidate](HALF_GRID_INDEPENDENT_SET_RESEARCH.md)
+offers a second B route. Half-grid rows would extend, preserving their signs,
+to distinct maximal independent sets of a triangle-free graph on 2n+1
+coordinates. The required graph count is the Hujter–Tuza bound. Four finite
+graph certificates have independent exact checks. The arbitrary-configuration
+representation and its Lean proof remain open.

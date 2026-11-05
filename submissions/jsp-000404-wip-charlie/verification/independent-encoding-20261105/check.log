@@ -1,0 +1,5 @@
+PASS ten-wire independently synthesized sharp schedule: 10 wires, 45 events, 7 graph vertices, 10 maximal independent sets
+PASS twenty-point affine-obstruction order after cyclic retiming: 20 wires, 190 events, 9 graph vertices, 20 maximal independent sets
+PASS nine-wire fixed-interval-colouring obstruction: 9 wires, 36 events, 9 graph vertices, 20 maximal independent sets
+PASS uniform seven-wire polygon schedule: 7 wires, 21 events, 7 graph vertices, 7 maximal independent sets
+Finite exact verification complete. The arbitrary-size encoding remains unproved.
