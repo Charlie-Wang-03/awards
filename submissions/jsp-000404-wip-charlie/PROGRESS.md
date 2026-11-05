@@ -1,9 +1,9 @@
 # JSP-000404 progress
 
-**INCOMPLETE — active research on the unconditional all-N geometric lower bound.**
+**INCOMPLETE — family A is kernel-checked, family B remains open.**
 2026-11-05, Windows. No complete original-problem theorem or prize submission.
 
-**Last reproducible research source:** `b24bf60107959020e7b29b6e1263b739509987b0`
+**Historical full-replay source:** `b24bf60107959020e7b29b6e1263b739509987b0`
 on `Charlie-Wang-03/awards:codex/jsp-000404-goal-20261105`. Baseline:
 `d7e5c780362d09057102c651427fc1203b9165f2`. Upstream rules were inspected
 at `f8801a856529dce27e738c6b305e46d76e7c387c`; main and earlier research
@@ -47,14 +47,18 @@ superpilot69/ChatGPT 6 Astra, with aznikline's all-N packaging pinned at
 `cbfbbef188f5f98eead6045d7c3548de3c1b701a`.
 
 **Remaining root obligation:** `∀ N, 3 ≤ N → OriginalLowerBound N`.
-For n >= 2, the two exact unweighted threshold families still needed in
-general say that strict caps at (1-2/(2n+1))*pi and (1-1/(n+1))*pi imply,
-respectively, cardinalities <= 2^n and <= 5*2^(n-2). The source's
-arbitrary-centre induction does not derive these inequalities. The current
-lower-strip route needs an actual retained-active choice whose covered
-blockers, duplicate losses and other terminal/twin debt are paid **jointly**
-by exterior true holes and unreserved dyadic surplus, without reuse.
-The upper-strip global capacity also lacks an unconditional proof.
+The first exact unweighted family is now proved for every n >= 1. A strict
+cap at (1-2/(2n+1))*pi implies cardinality <= 2^n for every finite injective
+planar configuration. `PlanarFirstThreshold` closes the actual-point chain
+through continuous projection curves, one/two-turn simple cycles, integer
+retiming and signed-band packing. `OriginalFirstBranch` proves
+`OriginalLowerBound 3` and the exact first branch of the original formula.
+
+The remaining general family B says that a strict cap at (1-1/(n+1))*pi
+implies cardinality <= 5*2^(n-2), for n >= 2. Its mathematical proof remains
+open. The older weighted lower-strip payment route also remains conditional,
+but family A no longer depends on that route. The source's arbitrary-centre
+induction still supplies neither missing weighted theorem.
 [Exact premises, alternatives and sources](PROOF_DAG.md).
 
 ## Excluded routes and resumption condition
@@ -147,6 +151,9 @@ target is the one-top upper ordered-direction conjecture and its weighted form.
 
 ## Cyclic projection-wire continuation
 
+The paragraphs below record the successive checkpoints before the completed
+family-A chain described at the end of this section.
+
 Checkpoint `7091e8ca0f0f1e23d7ad3aead1842dd9ad116fab`, including the preserved
 e2168310 history, was pushed and verified against the tracking and remote SHAs.
 
@@ -198,3 +205,30 @@ bichromatic for every fixed schedule. It covers every real phase by exact
 affine threshold checks and exhausts all 512 colourings per phase case.
 The freely coloured collapse works on that same schedule. The original
 upper-strip bound and the free-colour induction remain open.
+
+## Completed first-threshold chain
+
+The continuation after `58f97b1b249c95f1e14ba76b40912350d29af6fa` closes all
+geometric premises for actual planar points. `WireCurveTrace` pastes the
+actual continuous antiperiodic curves while retaining a half-open arrow
+occurrence for every trace point. `WireCurveEmbedding` derives separation
+of arrow sources from sorted local events and complete pair-crossing data.
+`SimpleWireCycle` uses the nodup vertex list to identify repeated occurrences.
+`PeriodicCycleOrder` then forces the winding to be one or two.
+
+`ProjectionWireCurves` proves the exact trigonometric crossing equation.
+`OrderedDirectionCurves` applies it to the existing forward polar lift.
+`PlanarFirstThreshold` has no geometry, winding, colouring or payment premise
+beyond the ordinary point injection and the stated angle cap. Its strict
+threshold theorem includes empty and small finite types and all planar
+degeneracies. Finite strict-cap slack is proved separately and used explicitly.
+
+`OriginalFirstBranch` matches the audited formula and proves its complete
+first branch and N=3. The umbrella now imports this chain. Focused verification
+is recorded in `verification/first-threshold-20261105/`. The earlier full-root
+audit remains historical evidence at its recorded source.
+
+Continue research on family B. The stronger fixed-schedule interval-colouring
+shortcut remains excluded by the nine-wire certificate. A freely coloured
+collapse, a prior-retiming version, or a different upper-strip invariant
+remains available for investigation.

@@ -1,0 +1,20 @@
+{
+  "JSP000404Research/OrderedDirectionCurves.lean": "9081686db30c8f5705816c4343eaf1ff1f74ef1f752f710c0344d9770e7715d3",
+  "JSP000404Research/OriginalFirstBranch.lean": "b57119b5206d1c4837aa34e48fe88a6cc10d767145b43efb7391c6f155f0db18",
+  "JSP000404Research/PeriodicCycleOrder.lean": "aa650f7f1ceb479a101d733389fded989cf658f3f9b069cfc1c155fe91947afa",
+  "JSP000404Research/PlanarFirstThreshold.lean": "46e8867837dd3c43e9e1cf6e0c253d76b022e5e91fb5a67aa4a47c0c682165fe",
+  "JSP000404Research/ProjectionWireCurves.lean": "add774b5e4d1dabe38d05185a8c80d2b29e48fa0b96716737f6e9be99261f5cb",
+  "JSP000404Research/SimpleWireCycle.lean": "5f550da536c3e5398f7bf5417c368fdb4ee4328a553654554844a0a07d80d25c",
+  "JSP000404Research/WireCurveEmbedding.lean": "66f69eeaee2f058b7ec8bcf36038f44a0fe61bac9cf6151de471eac4cc5f6c1d",
+  "JSP000404Research/WireCurveTrace.lean": "edfecdfee055341d736fccdb886582bb79cb79574ba1e8863491aac65eaba309",
+  "JSP000404Research.lean": "32a18d71eee2ef875118d356c6a2c8af3459484307cd966a81f85bc6091cf8a0",
+  "PROGRESS.md": "b23837eb7605214dc3763260a598b4bb1a8d3ed4df09675c5bdb9a86dd3493f5",
+  "PROOF_DAG.md": "ccd751eaf1c6595cfc7a5abd4d6a568bfb6f60e337ff59dad77c56b69e22b4eb",
+  "CYCLIC_WIRE_RETIMING.md": "ab8fa60363a6d40292a414befa5766e0c769e5e1bf7f04ed90663eb2bab18e04",
+  "verification/first-threshold-20261105/Audit.lean": "ac2d5338f7f10994dd85c59d4c63f0d7232340c13abd20c69ea6952334128e1e",
+  "verification/first-threshold-20261105/audit.log": "b74247e3b0746e4265deb7680cc7d28802d0ff775def105308a5b4d56dd8a818",
+  "verification/first-threshold-20261105/dependencies.json": "3a552feba5504f2569eee3777d4e02e2517cc89a13e9c1264a94f81181fa76d9",
+  "verification/first-threshold-20261105/focused-build.log": "9fa920340816eaf8eaad527359cb87511618d8df1b53eccac85ab17d6b6c0030",
+  "verification/first-threshold-20261105/README.md": "762d9cecd6bceb056491971b97d78b6046640e3607dbf1d02082ae1d3392326d",
+  "verification/first-threshold-20261105/umbrella-file-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

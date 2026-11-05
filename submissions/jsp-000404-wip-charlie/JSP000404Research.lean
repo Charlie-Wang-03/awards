@@ -1750,6 +1750,8 @@ import JSP000404Research.TwoObserverGeometry
 import JSP000404Research.IntervalPrivateDirections
 import JSP000404Research.AffineTraceBound
 
--- Components of the cyclic projection-wire route. The geometric bridge remains open.
+-- Cyclic projection wires prove the first unconditional threshold family.
+-- The second threshold family and the complete original lower bound remain open.
 import JSP000404Research.MobiusReturnOrder
 import JSP000404Research.CyclicHalfGrid
+import JSP000404Research.OriginalFirstBranch

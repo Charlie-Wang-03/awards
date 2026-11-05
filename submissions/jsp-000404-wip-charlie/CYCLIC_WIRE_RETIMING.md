@@ -2,12 +2,13 @@
 
 Research continuation after `7091e8ca`, 2026-11-05.
 
-This is a proposed all-n proof of threshold family A through a new finite
-arrangement argument. Its graph construction, cycle extraction, and retiming
-bridge still require complete Lean formalization and further checking. The
-reflected-strip return-order lemma and graph rounding algebra are kernel-checked. Family B
-remains open, including at the level of the proposed argument. No complete
-original-problem theorem follows from the present files.
+The all-n proof of threshold family A is now complete in Lean. The actual
+projection graph, continuous cycle trace, one/two-turn bound, integer
+retiming and signed-band injection are connected in `PlanarFirstThreshold`.
+`OriginalFirstBranch` proves N=3 and the exact first branch of the original
+formula. Family B remains mathematically open. The continuation sections
+below retain the earlier checkpoint history and are superseded by the
+completed chain at the end of this note.
 
 ## The cyclic graph
 
@@ -401,3 +402,72 @@ records a new unproved partition statement on coherent half-grid schedules.
 It survived 723 exact-schedule tests, including a stronger version fixing
 the already active movement bits. Its phase-selection and colouring proofs
 remain open.
+
+## Completed actual-point proof after 58f97b1b
+
+The continuous construction uses the forward lift already obtained from a
+generic projection. For a point p=(x,y), define its wire height at normalized
+time s by
+
+    f_p(s) = x*sin(base + lambda*s) - y*cos(base + lambda*s).
+
+These functions are continuous and satisfy f_p(s+t)=-f_p(s), where
+t=pi/lambda. For an increasing pair i<j with positive polar representation
+p_j-p_i=rho_ij*(cos(theta_ij),sin(theta_ij)), their height difference is
+
+    f_j(s)-f_i(s) = rho_ij*sin(base + lambda*s - theta_ij).
+
+Consequently every intersection occurs precisely at the pair event modulo
+t. Positivity of rho and the exact integer classification of sine zeros
+prove this assertion in `ProjectionWireCurves`.
+
+Every consecutive wire arrow is treated as a half-open interval, including
+its source event and excluding its target. Strictly ordered local times
+imply that an incident event inside such an interval is its source. Two
+overlapping arrow intervals on the same wire therefore have the same source.
+For distinct wires, their common height is a shared pair event, so the same
+conclusion follows. This is `sourceSeparated_of_crossingsComplete`.
+
+For a directed walk, paste the actual wire functions at successive event
+times. They agree at every junction, including reflected seam crossings.
+`exists_trace` supplies a continuous function on the full lifted interval
+and records the particular half-open arrow occurrence at every point before
+the final endpoint. The index of that source occurrence is strictly smaller
+than the walk length. For a simple cycle, the vertex list with its last
+vertex removed is nodup, so equal source vertices imply equal prefix lengths
+and then equal path prefixes. Thus two period translates of its trace cannot
+coincide within the half-open period interval. An arrow spans at most one
+period, which rules out distinct integer translates of the same occurrence.
+
+If the cycle has r turns, split the lifted trace into r translated pieces,
+with alternating vertical reflection. Their endpoint return is the cyclic
+permutation `finRotate r`. Disjoint continuous graph paths preserve vertical
+order by the intermediate value theorem. The reflected seam makes the return
+order reversing. An order-reversing permutation of a finite linear order is
+an involution. Its single orbit therefore has at most two elements. Positive
+arrow durations imply r>0, giving r=1 or r=2.
+
+This discharges every simple-cycle premise of `card_le_two_pow_of_winding`.
+For an actual cap at width t<n+1/2, scale the original event times to period
+n+1/2. Every unit-delay inequality becomes strict, and local injectivity
+makes every zero-delay inequality strict. The checked half-grid theorem at
+even doubled period 2n gives integer doubled times. Dividing by two gives
+integer times at period n. Consecutive delay bounds yield the incident-time
+gap conditions, and modular sign transport injects the point set into n-bit
+words. Hence its cardinality is at most 2^n.
+
+For a strict original cap at pi-pi/(n+1/2), take the maximum of the finitely
+many admissible triple angles together with zero. Its average with the
+strict threshold yields a smaller non-strict angle cap and a width strictly
+below n+1/2. This supplies the slack needed by the preceding argument. Sets
+of cardinality at most two are handled directly. No general-position
+assumption is added to the theorem. Collinear triples are incompatible with
+the positive cap inside its proof, and the contraposed forced-angle theorem
+continues to quantify over every injective planar configuration.
+
+The final checked declarations are
+`planar_card_le_two_pow_of_strict_angles`, `planar_first_threshold_angle`,
+`original_lower_three`, and `original_lower_first_branch`. The first two
+hold for every n>=1. Their transitive axioms are exactly the standard Lean
+logical axioms allowed by the project. Family B has no proved replacement
+for its half-integer-period capacity step yet.

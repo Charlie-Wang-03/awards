@@ -44,10 +44,11 @@ of the geometric infimum problem.
 Original all-N equality / lower + epsilon sharpness                  OPEN
 |-- geometric extremum definition and exact finite-set correspondence LOCAL PASS
 |-- arbitrary-N lower bound                                         OPEN
-|   |-- direct unweighted A and B at the first forbidden sizes       OPEN
-|   |   |-- three-angle affine certificate, equivalent per orbit     WRITTEN
-|   |   |-- force a certificate from cardinality alone               OPEN
-|   |   `-- A for two parts each seen in a sufficiently narrow cone  WRITTEN
+|   |-- direct unweighted threshold route
+|   |   |-- A for every n>=1 via cyclic projection wires             LEAN PASS
+|   |   |-- OriginalLowerBound 3 and exact original first branch     LEAN PASS
+|   |   |-- B for every n>=2                                         OPEN
+|   |   `-- optional affine certificate approach to B                OPEN
 |   `-- alternative sufficient weighted route:
 |       |-- actual cycles from injective planar points; order/cap transfer
 |       |-- lower strip: 0<=delta<1/2, sum 2^k <= 2^n                OPEN
@@ -117,11 +118,11 @@ inserted as an assumed induction step.
 
 ## Smaller sufficient targets for a replacement route
 
-The weighted capacity route is sufficient, but the original lower bound can
-also be obtained directly from the following two UNPROVED families, for every
-integer n>=2 and every finite set of distinct planar points S:
+The original lower bound follows from the following two families for every
+integer n>=2 and every finite set of distinct planar points S. Family A now
+has a complete Lean proof, also covering n=1. Family B remains open.
 
-    all triple angles < (1-2/(2*n+1))*pi  ==>  |S| <= 2^n;
+    all triple angles < (1-2/(2*n+1))*pi  ==>  |S| <= 2^n
     all triple angles < (1-1/(n+1))*pi    ==>  |S| <= 5*2^(n-2).
 
 For the first interval of the classification, its N is greater than 2^n,
@@ -129,19 +130,18 @@ so the first implication gives the required angle by contraposition. For
 the second interval, N>5*2^(n-2), and the second implication does the same.
 The cases N=3,4 are treated separately. Conversely, the classification's
 lower bound at the first integer above either threshold gives the displayed
-implication, by taking a subset if |S| is larger. Thus these families isolate
-the precise unweighted lower-bound problem; they are not new proved lemmas.
+implication, by taking a subset if |S| is larger. The exact original first
+branch and N=3 are proved in `OriginalFirstBranch`.
 
 A strict finite cap at an endpoint can be lowered slightly while still
 exceeding all finitely many angles. This is why an open lower strip
 delta<1/2 suffices for the first family, and an open upper strip delta<1
 for the second. Endpoint equality must not be inserted into an existing
-strict-strip lemma. The sharpness constructions remain a separate obligation.
+strict-strip lemma. `exists_stronger_angleCap` now certifies this finite-slack
+step. All-N sharpness has its separate checked and attributed construction.
 
-A direct proof of these two families would bypass the weighted payment DAG.
-It is therefore unnecessary to insist on a false extremizer profile or on
-a particular allocation mechanism if an unconditional geometric proof of
-these exact cardinality thresholds can be found.
+The first family already bypasses the weighted payment DAG. The same direct
+strategy remains available for B, along with the older optional approaches.
 
 For an ordinary set of the first forbidden size with no three collinear,
 [the affine alternative](UNWEIGHTED_AFFINE_THRESHOLD.md) now shows that
@@ -330,10 +330,10 @@ domain is not refuted by them. The isolated t=4 is not
 settled by these counterexamples. These are written/executable certificates,
 not Lean geometry theorems or a counterexample to the original problem.
 
-## Cyclic-wire proof candidate
+## Completed cyclic-wire proof of family A
 
-The [new direction-order derivation](CYCLIC_WIRE_RETIMING.md) routes threshold A
-through an embedded cyclic projection graph. Its proposed dependency chain is
+The [direction-order proof](CYCLIC_WIRE_RETIMING.md) proves threshold A
+through an embedded cyclic projection graph. Its checked dependency chain is
 
 1. Construct consecutive projection-wire arcs from an arbitrary strict-cap set.
 2. Extract disjoint continuous graph paths from each simple cycle.
@@ -342,25 +342,8 @@ through an embedded cyclic projection graph. Its proposed dependency chain is
 5. Erase loops and construct an integer event-time potential.
 6. Sum incident-wire delays and encode the retimed signs in n Boolean bands.
 
-Steps 3, 4, and 5 have kernel-checked general lemmas in `MobiusReturnOrder`,
-`CyclicHalfGrid`, and `CyclicGraphPotential`. They retain explicit path and
-graph hypotheses. Steps 1, 2, and 6 remain formalization obligations. The
-written argument explains these steps and gives a finite three-event check
-for the stronger transported-order interpretation. This is a new proof
-candidate for all of A, with no unconditional A declaration claimed yet.
-The half-integer-period capacity required for B is still open. The actual
-geometry and full-scope acceptance obligations remain in the root DAG.
-
-The standalone `IntegralWireCapacity` now completes the algebraic coding part
-of step 6, conditional only on the explicit incident-time gap inequalities.
-It also obtains integral times at the lower half-integer threshold.
-`DirectionCutOrder` supplies actual strict total cut orders and adjacent
-crossing endpoints from triangle betweenness. The outstanding parts of steps
-1, 2, and 6 are the cyclic graph construction, its simple-cycle winding bound,
-and the incident-gap connection to that graph. The full original result
-and the B-family bound remain open.
-
-The following standalone chain now makes the constructed graph explicit.
+All six steps are connected for actual planar point maps. The principal
+modules and their roles follow.
 
 - `CyclicWireLocalGaps` derives the incident-time inequalities and cardinality
   code from consecutive integer delays and the reflected closing delay.
@@ -372,11 +355,21 @@ The following standalone chain now makes the constructed graph explicit.
   and strict source delays after scaling from t<n+1/2.
 - `ProjectionStrictWireDirections` supplies local injectivity from the actual
   positive AngleCap through the existing generic projection bridge.
+- `WireCurveTrace` constructs continuous lifted walks with half-open arrow
+  provenance. `WireCurveEmbedding` proves source separation from the exact
+  pair-crossing property. `SimpleWireCycle` uses path simplicity to obtain
+  disjoint period pieces, and `PeriodicCycleOrder` bounds their number by two.
+- `ProjectionWireCurves` proves the actual trigonometric intersection formula.
+  `OrderedDirectionCurves` uses it to discharge the concrete graph's winding
+  premise from the forward polar lift.
+- `PlanarFirstThreshold` proves the complete ordinary family A, including
+  finite strict-cap slack and all small-cardinality cases. `OriginalFirstBranch`
+  proves `OriginalLowerBound 3` and the exact first interval of `alphaN`.
 
-The main combinatorial obligation is now the one/two-turn theorem for simple
-cycles of this concrete consecutive-event graph. The continuous reflected
-strip argument is written and its return-order core is checked, but cycle
-curve construction and disjointness have not yet been connected in Lean.
+The umbrella imports the complete first-threshold chain. Its proof uses
+`propext`, `Classical.choice`, and `Quot.sound`. Focused evidence is in
+`verification/first-threshold-20261105/`. The half-integer-period capacity
+required for B and the remaining full-scope acceptance work stay open.
 
 For B, the unrestricted coherent unit-collapse induction remains a conjecture.
 Its strengthened requirement that all events inside the chosen interval cross
