@@ -1755,3 +1755,6 @@ import JSP000404Research.AffineTraceBound
 import JSP000404Research.MobiusReturnOrder
 import JSP000404Research.CyclicHalfGrid
 import JSP000404Research.OriginalFirstBranch
+
+-- Small odd-phase capacities complete every original lower bound through N=20.
+import JSP000404Research.OriginalSmallCases

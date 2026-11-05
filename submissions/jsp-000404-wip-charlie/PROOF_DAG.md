@@ -47,7 +47,9 @@ Original all-N equality / lower + epsilon sharpness                  OPEN
 |   |-- direct unweighted threshold route
 |   |   |-- A for every n>=1 via cyclic projection wires             LEAN PASS
 |   |   |-- OriginalLowerBound 3 and exact original first branch     LEAN PASS
-|   |   |-- B for every n>=2                                         OPEN
+|   |   |-- B at n=2,3 via five/seven-phase capacities               LEAN PASS
+|   |   |-- exact original lower bounds for all 3<=N<=20              LEAN PASS
+|   |   |-- B for every n>=4                                         OPEN
 |   |   `-- optional affine certificate approach to B                OPEN
 |   `-- alternative sufficient weighted route:
 |       |-- actual cycles from injective planar points; order/cap transfer
@@ -393,3 +395,25 @@ encodings, so the general selection obligation remains open. Tight paths and
 critical cycles certify that these are optimal critical-root clocks for their
 given abstract wire orders. The evidence is in
 `verification/critical-clock-core-20261105/` and remains outside the Lean chain.
+
+## Completed small odd-phase branch
+
+`SmallOddWireCapacity` transports integer doubled times to partial proper
+cycle colourings and preserves every pair separation. Its three- and
+five-phase completion certificates yield capacities three and five.
+`OddWireSchedule` proves all incident signed-gap inequalities from the
+consecutive and reflected closing constraints, then applies the existing
+half-grid potential theorem. `PlanarSmallOddThresholds` supplies the actual
+projection-curve bridge, finite strict-cap slack, and pi/2 and 2*pi/3 results.
+
+`SevenPhaseCapacity` verifies the full finite 42-position / fourfold cover
+and derives capacity ten by disjoint support. `PlanarSevenPhaseThreshold`
+therefore proves the unconditional 3*pi/4 threshold, which is B at n=3.
+`OriginalSmallCases` assembles every exact original lower bound through N=20.
+The remaining general B obligation starts at n=4, and N=21 is the first
+unresolved cardinality. The umbrella imports the complete new chain.
+
+The written proof is `SMALL_ODD_THRESHOLD_PROOF.md`. The focused build and
+53-module / 940-declaration transitive axiom audit pass in
+`verification/small-odd-thresholds-20261105/`. No nonstandard axioms or
+conditional geometric-capacity hypotheses occur in these exported results.

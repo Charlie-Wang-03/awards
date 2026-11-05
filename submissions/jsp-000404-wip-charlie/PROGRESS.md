@@ -1,6 +1,6 @@
 # JSP-000404 progress
 
-**INCOMPLETE — family A is kernel-checked, family B remains open.**
+**INCOMPLETE — family A and all original cases through N=20 are kernel-checked.**
 2026-11-05, Windows. No complete original-problem theorem or prize submission.
 
 **Historical full-replay source:** `b24bf60107959020e7b29b6e1263b739509987b0`
@@ -54,9 +54,11 @@ through continuous projection curves, one/two-turn simple cycles, integer
 retiming and signed-band packing. `OriginalFirstBranch` proves
 `OriginalLowerBound 3` and the exact first branch of the original formula.
 
-The remaining general family B says that a strict cap at (1-1/(n+1))*pi
-implies cardinality <= 5*2^(n-2), for n >= 2. Its mathematical proof remains
-open. The older weighted lower-strip payment route also remains conditional,
+The general family B says that a strict cap at (1-1/(n+1))*pi implies
+cardinality <= 5*2^(n-2), for n >= 2. Its n=2 and n=3 cases are now proved
+by the small odd-phase capacities. The general n>=4 proof remains open;
+the first unresolved original cardinality is 21. The older weighted
+lower-strip payment route also remains conditional,
 but family A no longer depends on that route. The source's arbitrary-centre
 induction still supplies neither missing weighted theorem.
 [Exact premises, alternatives and sources](PROOF_DAG.md).
@@ -267,3 +269,21 @@ Both admit sparse five-coordinate cores. The independent replay is
 `verification/critical-clock-core-20261105/`. A written matching simplification
 reduces cyclic pair-deletion encodings to the retained odd core and its odd
 cyclic gaps. The arbitrary-configuration representation remains open.
+
+## Small odd-phase capacities — 2026-11-05
+
+`SmallOddWireCapacity`, `OddWireSchedule`, and `PlanarSmallOddThresholds`
+prove unconditional capacities three and five at strict caps pi/2 and
+2*pi/3. `SevenPhaseCapacity` kernel-checks a 42-position binary covering
+certificate: each proper partial seven-cycle colouring extends at least
+four positions. Disjoint support therefore bounds separated rows by ten.
+`PlanarSevenPhaseThreshold` connects that count to every actual configuration
+with strict cap 3*pi/4. `OriginalSmallCases` matches the exact original formula
+and proves `OriginalLowerBound N` for all 3<=N<=20.
+
+The focused build passed with 3,261 jobs. The imported research closure has
+53 modules / 940 declarations / zero unexpected transitive axioms. Every
+collected axiom is `propext`, `Classical.choice`, or `Quot.sound`. The updated
+umbrella file also compiles. The proof and evidence are
+`SMALL_ODD_THRESHOLD_PROOF.md` and `verification/small-odd-thresholds-20261105/`.
+Family B for n>=4 and the full original goal remain open.
