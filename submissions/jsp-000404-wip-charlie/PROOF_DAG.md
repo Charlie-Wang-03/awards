@@ -47,9 +47,9 @@ Original all-N equality / lower + epsilon sharpness                  OPEN
 |   |-- direct unweighted threshold route
 |   |   |-- A for every n>=1 via cyclic projection wires             LEAN PASS
 |   |   |-- OriginalLowerBound 3 and exact original first branch     LEAN PASS
-|   |   |-- B at n=2,3 via five/seven-phase capacities               LEAN PASS
-|   |   |-- exact original lower bounds for all 3<=N<=20              LEAN PASS
-|   |   |-- B for every n>=4                                         OPEN
+|   |   |-- B at n=2,3,4 via five/seven/coherent-nine-phase capacities LEAN PASS
+|   |   |-- exact original lower bounds for all 3<=N<=40              LEAN PASS
+|   |   |-- B for every n>=5                                         OPEN
 |   |   `-- optional affine certificate approach to B                OPEN
 |   `-- alternative sufficient weighted route:
 |       |-- actual cycles from injective planar points; order/cap transfer
@@ -417,3 +417,26 @@ The written proof is `SMALL_ODD_THRESHOLD_PROOF.md`. The focused build and
 53-module / 940-declaration transitive axiom audit pass in
 `verification/small-odd-thresholds-20261105/`. No nonstandard axioms or
 conditional geometric-capacity hypotheses occur in these exported results.
+
+## Completed coherent nine-phase branch
+
+`NinePhaseData` proves catalog completion and the exact twofold 42-word
+cover. `NinePhaseBooleanCertificate` contains an explicit Boolean proof;
+`NinePhaseMatching` checks its semantic cover/conflict premises.
+`NinePhaseFiveRowObstruction` excludes both mandatory saturation cores by
+three-point phase order. `NinePhaseCapacity` combines these facts to bound
+coherent row families by twenty.
+
+`NinePhaseRows`, `NinePhaseOrder`, and `NinePhaseSchedule` preserve shared
+pair phases and full triple coherence under reduction modulo nine.
+`OrderedNinePhase` proves that the sorted original directions retain their
+betweenness after integer retiming. `PlanarNinePhaseThreshold` discharges
+all premises from actual points, finite slack, and the existing projection
+curve/winding construction. `OriginalFortyCases` matches the exact original
+formula for all 3<=N<=40. Thus B is proved at n=2,3,4; B for n>=5 remains
+the general obligation, and N=41 is the first unresolved cardinality.
+
+The written proof is `NINE_PHASE_CAPACITY_PROOF.md`; focused evidence is in
+`verification/nine-phase-threshold-20261105/`. The 64-module / 1,088-declaration
+transitive audit passes with only the three standard axioms. No geometric
+capacity assumption is hidden in the exported original-point theorems.

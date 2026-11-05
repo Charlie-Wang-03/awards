@@ -1,0 +1,157 @@
+{
+  "normalization": "UTF-8 source bytes, CRLF converted to LF",
+  "raw_streams": [
+    {
+      "path": "artifacts/original-forty-cases-build.log",
+      "sha256": "99cd5f5845b18b419dbe44e53be5863188fcd7a0be4d4840a64c44a099a7927a",
+      "bytes": 83024
+    },
+    {
+      "path": "artifacts/nine-phase-audit.log",
+      "sha256": "2004695e7ca762dad7150740d9111c634a7f4078a26a281c0225521c347df046",
+      "bytes": 139760
+    },
+    {
+      "path": "artifacts/nine-phase-umbrella.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "JSP000404Research/NinePhaseBooleanCertificate.lean",
+      "sha256": "18b1a216835c574b98b2ff83b595aab84ff0ef57ecfcfed3139078b949a0321b",
+      "bytes": 186912
+    },
+    {
+      "path": "JSP000404Research/NinePhaseData.lean",
+      "sha256": "316ab7c7a4f292ba5931b3a6551f2945b41750d86768ecc94e0bfccc92e5b83c",
+      "bytes": 3870
+    },
+    {
+      "path": "JSP000404Research/NinePhaseOrder.lean",
+      "sha256": "8ba47e7a113fa8cb56cc8c8ae47286db2e2eb6d7c6807b6155c1829537fb2fd4",
+      "bytes": 3832
+    },
+    {
+      "path": "JSP000404Research/NinePhaseMatching.lean",
+      "sha256": "53c22308ab772a9af75386a292d1aff72eff1e46a8f3d38142f4ffe1025b67c1",
+      "bytes": 29572
+    },
+    {
+      "path": "JSP000404Research/NinePhaseFiveRowObstruction.lean",
+      "sha256": "603c4c30fc200e06f60ebbcea54ac04f458ce0ed27136b83d68c33d9a321e2a9",
+      "bytes": 3998
+    },
+    {
+      "path": "JSP000404Research/NinePhaseCapacity.lean",
+      "sha256": "0c1ef24403ae68c3796176875ef8717166ed50fce4c198f7c8c5df2d4fdab564",
+      "bytes": 5899
+    },
+    {
+      "path": "JSP000404Research/NinePhaseRows.lean",
+      "sha256": "3a848a8fa472d27f9b255d0ff2e00ed9db903e7cc21ed76f8c41e9b60c14aa2c",
+      "bytes": 4836
+    },
+    {
+      "path": "JSP000404Research/NinePhaseSchedule.lean",
+      "sha256": "7a2ab51354028d342dc400deb64816c0a8079f35b48250adc4bb78d18d79dbb3",
+      "bytes": 5742
+    },
+    {
+      "path": "JSP000404Research/OrderedNinePhase.lean",
+      "sha256": "cab113ce0ac4106ec25d5184cf4aea844b748b43f9c9c4afe7605520b0f21ba2",
+      "bytes": 6657
+    },
+    {
+      "path": "JSP000404Research/PlanarNinePhaseThreshold.lean",
+      "sha256": "6d89ae387075d0a84c2efe1764bc03bd20996094410a5a5896cfb46187fd728a",
+      "bytes": 3050
+    },
+    {
+      "path": "JSP000404Research/OriginalFortyCases.lean",
+      "sha256": "e2973e9525b594dfe00014859c89aca64319c64e58a18d4e1ed505ced37c6bc2",
+      "bytes": 1459
+    },
+    {
+      "path": "JSP000404Research.lean",
+      "sha256": "129c0e43a03c818cbf96c36bea378fea28597284a7e02ce087a510338ce61bde",
+      "bytes": 37511
+    },
+    {
+      "path": "NINE_PHASE_CAPACITY_PROOF.md",
+      "sha256": "827d8edbe99ae17469cfb8a4596e90fd28f778e90541eeaab3ee54e4ab7ac723",
+      "bytes": 6868
+    },
+    {
+      "path": "PROGRESS.md",
+      "sha256": "4e117cf38bc64877e27354aa7166aa3ede491b7b00520920963414fef30bebcf",
+      "bytes": 19070
+    },
+    {
+      "path": "PROOF_DAG.md",
+      "sha256": "e69691d7a8ed12ba2842690d0dc7d9833a7bcc6fdc51fb79f81814720f6387e5",
+      "bytes": 26709
+    },
+    {
+      "path": "scripts/check_nine_phase_capacity.py",
+      "sha256": "bce208f115daa0f90cf6c541983b969e1337370927da58e0a0ea922fbc75b3fc",
+      "bytes": 6104
+    },
+    {
+      "path": "scripts/generate_nine_phase_data.py",
+      "sha256": "95103c25004b9dc8ad9b6eb04b1eb89bb2a067295137412e99ad36af16b52211",
+      "bytes": 3771
+    },
+    {
+      "path": "scripts/generate_nine_phase_boolean_certificate.py",
+      "sha256": "247e78ec9eed6c16c3c0ec74955179564984bf14160cd39cc07fdfb868a8ed79",
+      "bytes": 5138
+    },
+    {
+      "path": "scripts/generate_nine_phase_matching.py",
+      "sha256": "9486503d7552d1973927bbbf8af9a11171aa3fdd5ece94809e99d8052bbc2ad4",
+      "bytes": 3894
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/Audit.lean",
+      "sha256": "dea84f6aecaf776417267db5bb0d2302466927a68302d0aacf734b42538c4039",
+      "bytes": 2283
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/audit.log",
+      "sha256": "9ddcb3960e474bb9e464a00f50fa34d5331c59a3e15ab32428767abae36e535d",
+      "bytes": 138618
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/dependencies.json",
+      "sha256": "7865d62681407beac4455ba8ec5880f9d4e87cc09130bbe51946381b7f9ee287",
+      "bytes": 1967
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/focused-build.log",
+      "sha256": "a134b4fda3def1a7518f951c4c62e650b1bae4073ced94b43f32665330b9a049",
+      "bytes": 81755
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/independent-check.json",
+      "sha256": "aac53a70f536ee4ca9405ddaeef58e198a474e9dc06d4b81b8dc809b6b20d566",
+      "bytes": 5226
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/independent-check.log",
+      "sha256": "2f9b63154a94273ece74718467c6b96eae74f16069fa5b4009da8a4d23b8fe47",
+      "bytes": 299
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/README.md",
+      "sha256": "1087ecae0a7cf7ae25567cfa8203701d2c0da80d77b9deb1f4d55f0933fc4c38",
+      "bytes": 2273
+    },
+    {
+      "path": "verification/nine-phase-threshold-20261105/umbrella.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}

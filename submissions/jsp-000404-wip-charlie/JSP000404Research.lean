@@ -1758,3 +1758,6 @@ import JSP000404Research.OriginalFirstBranch
 
 -- Small odd-phase capacities complete every original lower bound through N=20.
 import JSP000404Research.OriginalSmallCases
+
+-- Triple coherence excludes saturation of the nine-phase cover, completing N<=40.
+import JSP000404Research.OriginalFortyCases

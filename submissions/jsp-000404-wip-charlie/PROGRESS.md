@@ -1,6 +1,6 @@
 # JSP-000404 progress
 
-**INCOMPLETE — family A and all original cases through N=20 are kernel-checked.**
+**INCOMPLETE — family A and all original cases through N=40 are kernel-checked.**
 2026-11-05, Windows. No complete original-problem theorem or prize submission.
 
 **Historical full-replay source:** `b24bf60107959020e7b29b6e1263b739509987b0`
@@ -55,9 +55,10 @@ retiming and signed-band packing. `OriginalFirstBranch` proves
 `OriginalLowerBound 3` and the exact first branch of the original formula.
 
 The general family B says that a strict cap at (1-1/(n+1))*pi implies
-cardinality <= 5*2^(n-2), for n >= 2. Its n=2 and n=3 cases are now proved
-by the small odd-phase capacities. The general n>=4 proof remains open;
-the first unresolved original cardinality is 21. The older weighted
+cardinality <= 5*2^(n-2), for n >= 2. Its n=2, n=3, and n=4 cases are now
+proved by the five-, seven-, and coherent nine-phase capacities. The general
+n>=5 proof remains open; the first unresolved original cardinality is 41.
+The older weighted
 lower-strip payment route also remains conditional,
 but family A no longer depends on that route. The source's arbitrary-centre
 induction still supplies neither missing weighted theorem.
@@ -287,3 +288,26 @@ collected axiom is `propext`, `Classical.choice`, or `Quot.sound`. The updated
 umbrella file also compiles. The proof and evidence are
 `SMALL_ODD_THRESHOLD_PROOF.md` and `verification/small-odd-thresholds-20261105/`.
 Family B for n>=4 and the full original goal remain open.
+
+## Coherent nine-phase capacity — 2026-11-05
+
+The nine-phase branch now proves family B at n=4. Every maximal proper C9
+row has a two-position support in an explicit 42-word cover. Separation
+gives cardinality at most 21. Saturation forces one of two five-row cores,
+via an explicit Boolean case-split proof; triple phase coherence rules out
+both cores. This yields capacity twenty. The crucial geometric bridge
+retains original pair-direction betweenness through monotone integer
+retiming and then reduces it to the phase-order predicate.
+
+`PlanarNinePhaseThreshold` consequently proves the unconditional 4*pi/5
+threshold for all finite injective planar configurations.
+`OriginalFortyCases` proves every original lower bound for 3<=N<=40.
+Family B for n>=5 remains open; the first unresolved original N is 41.
+
+The focused build passes with 3,272 jobs, the transitive imported-closure
+audit passes with 64 modules / 1,088 declarations / zero failures, and the
+updated umbrella file compiles. The independent finite checker enumerates
+all partial rows and all saturated families; all three generated Lean
+sources reproduce byte-for-byte. See `NINE_PHASE_CAPACITY_PROOF.md` and
+`verification/nine-phase-threshold-20261105/`. This is a research checkpoint,
+not a complete original-problem solution or prize submission.
