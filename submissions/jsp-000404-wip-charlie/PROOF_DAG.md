@@ -44,18 +44,23 @@ of the geometric infimum problem.
 Original all-N equality / lower + epsilon sharpness                  OPEN
 |-- geometric extremum definition and exact finite-set correspondence LOCAL PASS
 |-- arbitrary-N lower bound                                         OPEN
-|   |-- actual cycles from injective planar points; order/cap transfer
-|   |-- lower strip: t=n+delta, 0<=delta<1/2, sum 2^k <= 2^n          OPEN
-|   |   |-- n=1, n=2; selected small-centre/exact-integer cases        PRESENT
-|   |   `-- unrestricted geometric payment or equivalent capacity    OPEN
-|   |       |-- genuine active choice for projected loss vertices
-|   |       |-- terminal / twin / mixed / soft debts
-|   |       |-- actual retained-edge covered blockers
-|   |       |-- translated-loss duplicate debts
-|   |       `-- disjoint payment into actual exterior holes plus
-|   |           genuinely unreserved dyadic surplus                  OPEN
-|   |-- upper strip: 1/2<=delta<1, sum 2^k <= 2^n+2^(n-2)            OPEN
-|   `-- threshold inversion, endpoints, finite maximum               NOT ASSEMBLED
+|   |-- direct unweighted A and B at the first forbidden sizes       OPEN
+|   |   |-- three-angle affine certificate, equivalent per orbit     WRITTEN
+|   |   |-- force a certificate from cardinality alone               OPEN
+|   |   `-- A for two parts each seen in a sufficiently narrow cone  WRITTEN
+|   `-- alternative sufficient weighted route:
+|       |-- actual cycles from injective planar points; order/cap transfer
+|       |-- lower strip: 0<=delta<1/2, sum 2^k <= 2^n                OPEN
+|       |   |-- n=1, n=2; selected small-centre/exact-integer cases   PRESENT
+|       |   `-- unrestricted geometric payment or equivalent capacity OPEN
+|       |       |-- genuine active choice for projected loss vertices
+|       |       |-- terminal / twin / mixed / soft debts
+|       |       |-- actual retained-edge covered blockers
+|       |       |-- translated-loss duplicate debts
+|       |       `-- disjoint payment into actual exterior holes plus
+|       |           genuinely unreserved dyadic surplus               OPEN
+|       |-- upper strip: 1/2<=delta<1, sum 2^k <= 2^n+2^(n-2)         OPEN
+|       `-- threshold inversion, endpoints, finite maximum            NOT ASSEMBLED
 `-- ordinary matching constructions for all N and epsilon > 0        LOCAL PASS
 ```
 
@@ -130,6 +135,15 @@ A direct proof of these two families would bypass the weighted payment DAG.
 It is therefore unnecessary to insist on a false extremizer profile or on
 a particular allocation mechanism if an unconditional geometric proof of
 these exact cardinality thresholds can be found.
+
+For an ordinary set of the first forbidden size with no three collinear,
+[the affine alternative](UNWEIGHTED_AFFINE_THRESHOLD.md) now shows that
+forcing the angle throughout its affine orbit is equivalent to a positive
+definite average of at most three of its angle matrices with
+4 det C >= cot²(lambda). A universal selection theorem for such angles
+would suffice for A or B and is **not proved**. The same note proves a
+restriction on every minimal A counterexample, tested at n=4. Neither
+result depends on a dyadic payment premise.
 
 The proposed shortcut of choosing a common phase with at most one full
 direction-band vertex is now FALSE, even for six ordinary integer points
@@ -260,11 +274,17 @@ uniform 3/2 strengthening from per-triangle circular-span data, not the
 smaller width required at a particular t. The order of the 15 labelled
 crossings admits no one of the 720 starting vertex permutations for which
 all crossings swap adjacent projections. It is not a planar witness.
-The actual wide-sector existence route remains unproved.
+An [ordinary Euclidean construction](UNWEIGHTED_SECTOR_COUNTEREXAMPLE.md)
+now disproves the universal wide-sector premise for all n>=64, even at
+the smaller width pi/n. It leaves an overweight-only claim undecided.
 
-The next proof attempt must derive a global geometric credit supply, or prove
-weighted capacity directly. Rephrasing it as Hall, recording another fibre
-ceiling, or adding finite cases does not close the unresolved DAG.
+The [new five-cycle check](UNWEIGHTED_ROW_CYCLES.md) rules out every
+18-row subset of the fixed 21-row model, including a four-row obstruction
+in which all triples are separately realizable. There is still no
+universal exclusion of a geometric 21-point counterexample to B(4).
+
+Credit supply or direct weighted capacity would suffice on the weighted
+route. The direct unweighted route has no such prerequisite.
 
 New exact geometric witness: [UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md](UPPER_FOUR_CENTRE_COUNTEREXAMPLE.md)
 rules out the stronger four-centre fixed-parameter upper bound 2^n+2^(n-3).

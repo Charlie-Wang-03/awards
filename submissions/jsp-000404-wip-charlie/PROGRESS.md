@@ -79,7 +79,37 @@ The upper-strip global capacity also lacks an unconditional proof.
 A useful next input is a checkable arbitrary-centre derivation, or a direct
 proof of the two unweighted thresholds using genuine cross-triangle geometry.
 For the deletion approach, the specific test is a non-losing fixed-t deletion
-on **overweight** configurations, not arbitrary safe ones. For the direct
-wide-sector approach, the required phase must be proved to exist in a real
-point configuration. Neither existence assertion is currently proved.
+on **overweight** configurations, not arbitrary safe ones.
 There is no qualified catalog PR, award claim, or change to eligibility.
+
+## Direct unweighted continuation — 2026-11-05
+
+The two unweighted families A and B are the targets; the six-source
+payment is one earlier sufficient route. No Lean source changed after
+the verified `b24bf60107959020e7b29b6e1263b739509987b0` in this round.
+`040c691e903b2d845732914a1a17eb2cb1c0c0fd` records the earlier replay
+and evidence, not a second source replay.
+
+- [Affine certificate and narrow-view bound](UNWEIGHTED_AFFINE_THRESHOLD.md):
+  for any given set of at least five points with no collinear triple,
+  failure of its entire affine class to meet a strict cap above 90° is
+  witnessed by at most three actual angles on at most nine points. For
+  each target it remains to force such a certificate at its first
+  forbidden cardinality. For A an observer's cone of aperture λ/2
+  contains at most 2^(n−1) other points; the bound is attained and
+  rules out a two-part narrow-view split in a putative counterexample.
+- [Wide-sector counterexample](UNWEIGHTED_SECTOR_COUNTEREXAMPLE.md):
+  for every n≥64 an ordinary set strictly satisfying A's angle
+  hypothesis has a triangle in every open direction interval of width
+  π/n. Even a partition into n triangle-free intervals of unequal widths
+  need not exist. The construction has fewer than 2^n points.
+- [21-row projection cycles](UNWEIGHTED_ROW_CYCLES.md): at least four
+  prescribed rows must be discarded, so no 18 of this fixed model are
+  simultaneously realizable. Its obstructed quartet has four individually
+  realizable triples. This does not exclude an arbitrary 21-point set.
+
+The [exact checker](scripts/check_unweighted_thresholds.py) verifies four
+affine optima on historical examples, both saturated narrow views and
+all 1,680 angles in a 16-point A(4) check, and five cycles in the pinned
+archive. The general arguments above are written proofs, not Lean
+theorems. Neither unconditional all-n cardinality bound is proved.
