@@ -1,0 +1,73 @@
+JSP000404Research.WireGraph.card_le_two_pow_of_simple_cycle_winding.{u, v} {V : Type u} {E : Type v} {m : ℕ} [Fintype V]
+  (period : ℕ) (hperiod : 0 < period) (wire : V → Fin (m + 1) → E) (sign : V → E → Bool) (original : E → ℝ)
+  (hcover : ∀ (e : E), ∃ v i, wire v i = e)
+  (hpair : ∀ (v w : V), v ≠ w → ∃ i j, wire v i = wire w j ∧ sign v (wire v i) ≠ sign w (wire w j))
+  (hadjacent :
+    ∀ (v : V) (i : Fin m),
+      (if sign v (wire v i.castSucc) = sign v (wire v i.succ) then 0 else 1) <
+        original (wire v i.succ) - original (wire v i.castSucc))
+  (hclosing :
+    ∀ (v : V),
+      (if sign v (wire v (Fin.last m)) = sign v (wire v 0) then 1 else 0) <
+        original (wire v 0) - original (wire v (Fin.last m)) + (↑period + 1 / 2))
+  (hcycles :
+    ∀ (e : JSP000404Research.WireGraph.Event wire) (p : Quiver.Path e e),
+      p.vertices.dropLast.Nodup →
+        p.length ≠ 0 →
+          JSP000404Research.CyclicGraph.pathWeight (fun {u v} => JSP000404Research.WireGraph.winding wire) p = 1 ∨
+            JSP000404Research.CyclicGraph.pathWeight (fun {u v} => JSP000404Research.WireGraph.winding wire) p = 2) :
+  Fintype.card V ≤ 2 ^ period
+JSP000404Research.OrderedWires.card_le_two_pow_of_winding.{u_1} {V : Type u_1} [LinearOrder V] [Fintype V] {width : ℝ}
+  (D : JSP000404Research.DirectionData V width) (hinjective : ∀ (v : V), Function.Injective (D.localDirectionValue v))
+  {m : ℕ} (hcard : Fintype.card V = m + 2) (hm : 0 < m) (hwidth : 0 < width) (n : ℕ) (hn : 0 < n)
+  (hbound : width < ↑n + 1 / 2)
+  (hcycles :
+    ∀ (e : JSP000404Research.WireGraph.Event (JSP000404Research.OrderedWires.wire D hinjective hcard))
+      (p : Quiver.Path e e),
+      p.vertices.dropLast.Nodup →
+        p.length ≠ 0 →
+          JSP000404Research.CyclicGraph.pathWeight
+                (fun {u v} =>
+                  JSP000404Research.WireGraph.winding (JSP000404Research.OrderedWires.wire D hinjective hcard))
+                p =
+              1 ∨
+            JSP000404Research.CyclicGraph.pathWeight
+                (fun {u v} =>
+                  JSP000404Research.WireGraph.winding (JSP000404Research.OrderedWires.wire D hinjective hcard))
+                p =
+              2) :
+  Fintype.card V ≤ 2 ^ n
+JSP000404Research.ProjectionOrdered.generic_localDirectionValue_injective.{u_1} {V : Type u_1} [Fintype V]
+  {p : V → JSP000404Research.Plane} (hp : Function.Injective p) {lam width : ℝ}
+  (hcap : JSP000404Research.AngleCap p lam) (hwidth : 0 < width) (hlam : lam = Real.pi / width)
+  (v : JSP000404Research.ProjectionOrdered V) :
+  Function.Injective
+    ((JSP000404Research.ProjectionOrdered.genericDirectionData_sendov hp hcap hwidth hlam).localDirectionValue v)
+'JSP000404Research.IntegralWire.sign_eq_of_equal_time' depends on axioms: [propext, Quot.sound]
+'JSP000404Research.IntegralWire.local_signed_gaps_of_monotone_schedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.IntegralWire.local_signed_gaps_of_cyclic_delays' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.IntegralWire.card_le_two_pow_of_cyclic_wire_schedules' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.WireGraph.path_on_wire' depends on axioms: [propext, Quot.sound]
+'JSP000404Research.WireGraph.strongly_connected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.WireGraph.card_le_two_pow_of_simple_cycle_winding' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.OrderedWires.different_sign_local_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.same_sign_local_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.value_wire_strictMono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.wire_covers' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.wire_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.scaled_wire_delays' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.OrderedWires.card_le_two_pow_of_winding' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionData.strict_between_of_local_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.ProjectionOrdered.generic_localDirectionValue_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

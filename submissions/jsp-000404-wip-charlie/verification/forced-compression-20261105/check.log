@@ -1,0 +1,7 @@
+PASS: nine wires, 36 adjacent swaps, reversed endpoint order, and all parent gaps.
+PASS: all 512 colourings checked at each of 20 exact phase cases.
+PASS: affine threshold checks cover every open phase interval.
+PASS: allowing independent active-component flips still leaves no extension.
+CONCLUSION: the prescribed active source/sink bits admit no unit-collapse extension at any phase.
+A freely chosen colouring does work at phase zero: [[0, 2, 3, 4, 5, 6, 8], [1, 7]]
+Scope: a coherent weak schedule at period 9/2. Full Lean certification is pending.

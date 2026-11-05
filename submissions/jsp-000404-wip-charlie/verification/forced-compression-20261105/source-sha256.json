@@ -1,0 +1,5 @@
+{
+  "scripts/check_forced_compression_obstruction.py": "643fdd612e02ac8be1a19858fd7299ff7720d1451f7220dd2d8de3cf7bf2d0f2",
+  "verification/forced-compression-20261105/witness.json": "a5cb0e2f83b37e798c0d22b27f59bbde5f30e6d7603eaaab8441a2e0e5407240",
+  "FORCED_INTERVAL_COMPRESSION_COUNTEREXAMPLE.md": "2248bbe22f710b320a8c3cfc4d0c06f9ebda8633aef20e76c85463030ac332dc"
+}

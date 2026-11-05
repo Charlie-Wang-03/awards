@@ -1,0 +1,12 @@
+{
+  "JSP000404Research/CyclicWireLocalGaps.lean": "05c1b4347eb23f805aa2beb0b350bfe0a010d7728d2d252455679403e32a9d46",
+  "JSP000404Research/CyclicWireGraph.lean": "cd531a3c2389a272885cd9ebb55bb9b6d8c597d493fe8d59f29cbfb0ac1910a2",
+  "JSP000404Research/OrderedDirectionWires.lean": "9c9a0bfdda61518fccf9af922855544addc93645e6a2f4d4af48c124940687bf",
+  "JSP000404Research/ProjectionStrictWireDirections.lean": "b3c929b7d6cbc52fcd5695c8cca3c3d8e6ffe1c8e43c1e9d89a31b13a8cd6fbc",
+  "CYCLIC_WIRE_RETIMING.md": "2ef062a92f0f014d24a9058bb68327a96159995c8b5d856411e732180216bbae",
+  "UNIT_INTERVAL_RETIMING_RESEARCH.md": "06c5868af6645a8d8ce5c300eb19e17b3f7d7fbb442b1fdca9c9cb02f3a916fc",
+  "FORCED_INTERVAL_COMPRESSION_COUNTEREXAMPLE.md": "2248bbe22f710b320a8c3cfc4d0c06f9ebda8633aef20e76c85463030ac332dc",
+  "PROGRESS.md": "b40fb9a6c7ea71c001f8381f8c04d71ea56cf86500aa8173e1507b4f9d18728c",
+  "PROOF_DAG.md": "8b1bb896483fbda99a39345b2f863fa735cbbfeb171118d4ea690cb3756871b7",
+  "verification/ordered-wire-20261105/Audit.lean": "1a1fcf27e6e72304d807c67df4c90e7e9154d1cf74b189d9f3b47b582a01ae28"
+}

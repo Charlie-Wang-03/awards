@@ -1,0 +1,432 @@
+ℹ [3092/3110] Replayed JSP000404Research.CyclicGraphPotential
+info: JSP000404Research/CyclicGraphPotential.lean:142:0: 'JSP000404Research.CyclicGraph.pathWeight_comp' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:143:0: 'JSP000404Research.CyclicGraph.exists_nodup_path_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:144:0: 'JSP000404Research.CyclicGraph.closed_walk_nonpos_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicGraphPotential.lean:145:0: 'JSP000404Research.CyclicGraph.exists_potential_of_closed_walk_nonpos' depends on axioms: [propext]
+info: JSP000404Research/CyclicGraphPotential.lean:146:0: 'JSP000404Research.CyclicGraph.exists_potential_of_simple_closed_nonpos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3093/3110] Replayed JSP000404Research.CyclicHalfGrid
+info: JSP000404Research/CyclicHalfGrid.lean:107:0: 'JSP000404Research.CyclicGraph.pathWeight_le_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:108:0: 'JSP000404Research.CyclicGraph.pathWeight_lt_potential_difference' depends on axioms: [propext]
+info: JSP000404Research/CyclicHalfGrid.lean:109:0: 'JSP000404Research.CyclicGraph.exists_half_grid_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3094/3110] Replayed JSP000404Research.WeightedHansel
+info: JSP000404Research/WeightedHansel.lean:92:0: 'JSP000404Research.completeWord_sigma_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:93:0: 'JSP000404Research.card_freeCoordinates' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:94:0: 'JSP000404Research.weighted_hansel' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:95:0: 'JSP000404Research.weighted_hansel_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3095/3110] Replayed JSP000404Research.IntegralWireCapacity
+info: JSP000404Research/IntegralWireCapacity.lean:157:0: 'JSP000404Research.IntegralWire.phaseSign_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:158:0: 'JSP000404Research.IntegralWire.exists_integer_retiming' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:159:0: 'JSP000404Research.IntegralWire.phaseSign_eq_of_congruent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntegralWireCapacity.lean:160:0: 'JSP000404Research.IntegralWire.card_le_two_pow_of_integral_events' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3096/3110] Replayed JSP000404Research.CyclicWireLocalGaps
+info: JSP000404Research/CyclicWireLocalGaps.lean:150:0: 'JSP000404Research.IntegralWire.sign_eq_of_equal_time' depends on axioms: [propext, Quot.sound]
+info: JSP000404Research/CyclicWireLocalGaps.lean:151:0: 'JSP000404Research.IntegralWire.local_signed_gaps_of_monotone_schedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicWireLocalGaps.lean:152:0: 'JSP000404Research.IntegralWire.local_signed_gaps_of_cyclic_delays' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CyclicWireLocalGaps.lean:153:0: 'JSP000404Research.IntegralWire.card_le_two_pow_of_cyclic_wire_schedules' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3097/3110] Replayed JSP000404Research.CyclicWireGraph
+info: JSP000404Research/CyclicWireGraph.lean:123:0: 'JSP000404Research.WireGraph.path_on_wire' depends on axioms: [propext, Quot.sound]
+info: JSP000404Research/CyclicWireGraph.lean:124:0: 'JSP000404Research.WireGraph.strongly_connected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CyclicWireGraph.lean:125:0: 'JSP000404Research.WireGraph.card_le_two_pow_of_simple_cycle_winding' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3098/3110] Replayed JSP000404Research.OrderedDirections
+info: JSP000404Research/OrderedDirections.lean:100:0: 'JSP000404Research.DirectionData.triple_constraints' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:101:0: 'JSP000404Research.DirectionData.threePoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:102:0: 'JSP000404Research.DirectionData.fourPoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3099/3110] Replayed JSP000404Research.WeightedDefect
+info: JSP000404Research/WeightedDefect.lean:125:0: 'JSP000404Research.weighted_hansel_defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedDefect.lean:126:0: 'JSP000404Research.weighted_hansel_one_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedDefect.lean:127:0: 'JSP000404Research.weighted_hansel_all_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3100/3110] Replayed JSP000404Research.OrderedBandCode
+info: JSP000404Research/OrderedBandCode.lean:149:0: 'JSP000404Research.DirectionData.bandBit_ne_of_edge_mem_band' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedBandCode.lean:150:0: 'JSP000404Research.DirectionData.unitBand_separates' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedBandCode.lean:151:0: 'JSP000404Research.DirectionData.unitBand_weighted_capacity' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedBandCode.lean:152:0: 'JSP000404Research.DirectionData.unitBand_defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedBandCode.lean:153:0: 'JSP000404Research.DirectionData.unitBand_one_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3212/3238] Replayed JSP000404Research.SharpCentre
+info: JSP000404Research/SharpCentre.lean:171:0: 'JSP000404Research.two_delta_lam_lt_lam' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:172:0: 'JSP000404Research.three_delta_lam_lt_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:173:0: 'JSP000404Research.no_three_sharp' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:174:0: 'JSP000404Research.no_three_sharp_sendov' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:175:0: 'JSP000404Research.two_sharp_no_third_small_delta' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3215/3238] Replayed JSP000404Research.AngleCapNoncollinear
+info: JSP000404Research/AngleCapNoncollinear.lean:57:0: 'JSP000404Research.angleCap_not_collinear_of_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/AngleCapNoncollinear.lean:58:0: 'JSP000404Research.angleCap_actual_angle_pos_of_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3216/3238] Replayed JSP000404Research.ProjectiveInterval
+warning: JSP000404Research/ProjectiveInterval.lean:58:5: Variable name `hwidth0` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hwidth0
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/ProjectiveInterval.lean:146:0: 'JSP000404Research.norm_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:147:0: 'JSP000404Research.inner_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:148:0: 'JSP000404Research.angle_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:149:0: 'JSP000404Research.signedRay_projective_close' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:150:0: 'JSP000404Research.projectiveCloseAt_of_signed_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:151:0: 'JSP000404Research.sharpAt_of_signed_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3217/3238] Replayed JSP000404Research.PlanarComplexCoordinates
+info: JSP000404Research/PlanarComplexCoordinates.lean:49:0: 'JSP000404Research.planeToComplex_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarComplexCoordinates.lean:50:0: 'JSP000404Research.planeToComplex_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarComplexCoordinates.lean:51:0: 'JSP000404Research.planeToComplex_signedRayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3218/3238] Replayed JSP000404Research.CanonicalProjectiveRay
+warning: JSP000404Research/CanonicalProjectiveRay.lean:47:17: Variable name `hx` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hx
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: JSP000404Research/CanonicalProjectiveRay.lean:84:37: `if_false` has been deprecated: Use `ite_false` instead
+warning: JSP000404Research/CanonicalProjectiveRay.lean:94:37: `if_false` has been deprecated: Use `ite_false` instead
+info: JSP000404Research/CanonicalProjectiveRay.lean:117:0: 'JSP000404Research.planeToComplex_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:118:0: 'JSP000404Research.norm_smul_rayDirection_arg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:119:0: 'JSP000404Research.exists_canonical_projective_representation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:120:0: 'JSP000404Research.exists_canonical_projective_representation_sub' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3219/3238] Replayed JSP000404Research.FiniteProjectiveRays
+info: JSP000404Research/FiniteProjectiveRays.lean:120:0: 'JSP000404Research.canonicalRayRep' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/FiniteProjectiveRays.lean:121:0: 'JSP000404Research.displacement_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/FiniteProjectiveRays.lean:122:0: 'JSP000404Research.rayRhoAt_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/FiniteProjectiveRays.lean:123:0: 'JSP000404Research.rayThetaAt_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/FiniteProjectiveRays.lean:124:0: 'JSP000404Research.rayThetaAt_lt_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/FiniteProjectiveRays.lean:125:0: 'JSP000404Research.rayRepAt_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3220/3238] Replayed JSP000404Research.LocalDirectionValueCore
+warning: JSP000404Research/LocalDirectionValueCore.lean:21:5: Variable name `h` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _h
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/LocalDirectionValueCore.lean:54:0: 'JSP000404Research.DirectionData.localDirectionValue_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/LocalDirectionValueCore.lean:55:0: 'JSP000404Research.DirectionData.localDirectionValue_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3221/3238] Replayed JSP000404Research.OrderedDirectionWires
+info: JSP000404Research/OrderedDirectionWires.lean:223:0: 'JSP000404Research.OrderedWires.different_sign_local_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:224:0: 'JSP000404Research.OrderedWires.same_sign_local_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:225:0: 'JSP000404Research.OrderedWires.value_wire_strictMono' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:226:0: 'JSP000404Research.OrderedWires.wire_covers' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:227:0: 'JSP000404Research.OrderedWires.wire_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:228:0: 'JSP000404Research.OrderedWires.scaled_wire_delays' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirectionWires.lean:229:0: 'JSP000404Research.OrderedWires.card_le_two_pow_of_winding' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3222/3238] Replayed JSP000404Research.GenericProjectionOrder
+info: JSP000404Research/GenericProjectionOrder.lean:158:0: 'JSP000404Research.genericProjectionSlope_not_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/GenericProjectionOrder.lean:159:0: 'JSP000404Research.projectionValue_ne_of_slope_ne_bad' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/GenericProjectionOrder.lean:160:0: 'JSP000404Research.genericProjectionValue_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/GenericProjectionOrder.lean:161:0: 'JSP000404Research.projection_difference_pos_of_value_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3223/3238] Replayed JSP000404Research.ProjectionOrderedVertices
+warning: JSP000404Research/ProjectionOrderedVertices.lean:71:0: Definition `JSP000404Research.ProjectionOrdered.projectionLinearOrder` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+warning: JSP000404Research/ProjectionOrderedVertices.lean:108:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/ProjectionOrderedVertices.lean:129:0: 'JSP000404Research.ProjectionOrdered.projectionCoord_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionOrderedVertices.lean:130:0: 'JSP000404Research.ProjectionOrdered.projectionLinearOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionOrderedVertices.lean:131:0: 'JSP000404Research.ProjectionOrdered.projection_increment_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionOrderedVertices.lean:132:0: 'JSP000404Research.ProjectionOrdered.reindexedPoint_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3224/3238] Replayed JSP000404Research.ProjectionHalfPlaneAngle
+warning: JSP000404Research/ProjectionHalfPlaneAngle.lean:147:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/ProjectionHalfPlaneAngle.lean:170:0: 'JSP000404Research.planeToComplex_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionHalfPlaneAngle.lean:171:0: 'JSP000404Research.rotatedPlane_re' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionHalfPlaneAngle.lean:172:0: 'JSP000404Research.rotatedPlane_arg_mem_right_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionHalfPlaneAngle.lean:173:0: 'JSP000404Research.generic_edge_liftedAngle_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionHalfPlaneAngle.lean:174:0: 'JSP000404Research.rotatedPlane_polar' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3225/3238] Replayed JSP000404Research.RightHalfPlaneArg
+warning: JSP000404Research/RightHalfPlaneArg.lean:78:15: This simp argument is unused:
+  complexSlope
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Complex.add_re, Complex.add_im]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: JSP000404Research/RightHalfPlaneArg.lean:81:15: This simp argument is unused:
+  complexSlope
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Complex.add_re, Complex.add_im]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: JSP000404Research/RightHalfPlaneArg.lean:130:0: 'JSP000404Research.arg_eq_arctan_complexSlope_of_re_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/RightHalfPlaneArg.lean:131:0: 'JSP000404Research.complexSlope_add_between_of_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/RightHalfPlaneArg.lean:132:0: 'JSP000404Research.complexSlope_add_between' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/RightHalfPlaneArg.lean:133:0: 'JSP000404Research.arg_add_between_of_re_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3226/3238] Replayed JSP000404Research.ProjectionAngleBetweenness
+warning: JSP000404Research/ProjectionAngleBetweenness.lean:120:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionAngleBetweenness.lean:141:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+info: JSP000404Research/ProjectionAngleBetweenness.lean:147:0: 'JSP000404Research.rotatedPlane_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionAngleBetweenness.lean:148:0: 'JSP000404Research.projectionLiftedAngle_add_between' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionAngleBetweenness.lean:149:0: 'JSP000404Research.generic_projection_liftedAngle_between' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3227/3238] Replayed JSP000404Research.ProjectionPolarReconstruction
+warning: JSP000404Research/ProjectionPolarReconstruction.lean:73:12: Unused tactic linter: `push_cast` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: JSP000404Research/ProjectionPolarReconstruction.lean:143:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/ProjectionPolarReconstruction.lean:151:0: 'JSP000404Research.complex_div_eq_norm_div_mul_exp_arg_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionPolarReconstruction.lean:152:0: 'JSP000404Research.projectionLiftedRho_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionPolarReconstruction.lean:153:0: 'JSP000404Research.planeToComplex_eq_projection_polar' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionPolarReconstruction.lean:154:0: 'JSP000404Research.projection_polar_repr' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionPolarReconstruction.lean:155:0: 'JSP000404Research.generic_edge_liftedRho_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3228/3238] Replayed JSP000404Research.PlanarDirectionBridge
+warning: JSP000404Research/PlanarDirectionBridge.lean:206:5: Variable name `ht` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _ht
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/PlanarDirectionBridge.lean:303:0: 'JSP000404Research.ForwardAngleLift.angle_middle_eq_pi_sub_abs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:304:0: 'JSP000404Research.ForwardAngleLift.angle_first_eq_abs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:305:0: 'JSP000404Research.ForwardAngleLift.angle_last_eq_abs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:306:0: 'JSP000404Research.ForwardAngleLift.toDirectionData' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:307:0: 'JSP000404Research.ForwardAngleLift.toDirectionData_sendov' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3229/3238] Replayed JSP000404Research.GenericForwardAngleLift
+warning: JSP000404Research/GenericForwardAngleLift.lean:140:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/GenericForwardAngleLift.lean:144:0: 'JSP000404Research.ProjectionOrdered.angleCap_reindexed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/GenericForwardAngleLift.lean:145:0: 'JSP000404Research.ProjectionOrdered.genericForwardAngleLift' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/GenericForwardAngleLift.lean:146:0: 'JSP000404Research.ProjectionOrdered.genericDirectionData_sendov' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/GenericForwardAngleLift.lean:147:0: 'JSP000404Research.ProjectionOrdered.genericDirectionData_sendov_value' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3230/3238] Replayed JSP000404Research.SignedRayAngle
+info: JSP000404Research/SignedRayAngle.lean:219:0: 'JSP000404Research.angle_signedRayDirection_eq_of_sign_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SignedRayAngle.lean:220:0: 'JSP000404Research.angle_signedRayDirection_eq_pi_sub_of_sign_ne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/SignedRayAngle.lean:221:0: 'JSP000404Research.lam_le_parameter_gap_of_opposite_signs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SignedRayAngle.lean:222:0: 'JSP000404Research.one_le_t_mul_normalized_gap_of_opposite_signs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3231/3238] Replayed JSP000404Research.CanonicalRayReversal
+info: JSP000404Research/CanonicalRayReversal.lean:163:0: 'JSP000404Research.canonical_signed_projective_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalRayReversal.lean:164:0: 'JSP000404Research.canonical_signed_projective_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalRayReversal.lean:165:0: 'JSP000404Research.rayThetaAt_reverse_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalRayReversal.lean:166:0: 'JSP000404Research.raySignAt_reverse_eq_not' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3232/3238] Replayed JSP000404Research.ProjectionCanonicalRayBridge
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:91:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:149:17: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:150:28: `if_false` has been deprecated: Use `ite_false` instead
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:208:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:232:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionCanonicalRayBridge.lean:344:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:480:0: 'JSP000404Research.ProjectionOrdered.centreForwardLiftedAngle_mem_branch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:481:0: 'JSP000404Research.ProjectionOrdered.rayTheta_lt_projectionCut_iff_forward_nonneg' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:482:0: 'JSP000404Research.ProjectionOrdered.projectionCut_le_rayTheta_iff_forward_neg' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:483:0: 'JSP000404Research.ProjectionOrdered.centreForwardLiftedAngle_eq_rayTheta_of_below_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:484:0: 'JSP000404Research.ProjectionOrdered.centreForwardLiftedAngle_eq_rayTheta_sub_pi_of_above_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:486:0: 'JSP000404Research.projectionAngleBase_gt_neg_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:487:0: 'JSP000404Research.projectionAngleBase_lt_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:488:0: 'JSP000404Research.generic_edge_liftedAngle_window' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:489:0: 'JSP000404Research.canonicalRayRep_theta_eq_canonicalize_of_polar_window' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionCanonicalRayBridge.lean:490:0: 'JSP000404Research.ProjectionOrdered.rayThetaAt_eq_canonicalize_centreForwardLiftedAngle' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3233/3238] Replayed JSP000404Research.ProjectionLocalDirectionValue
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:52:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:59:8: `dif_pos` has been deprecated: Use `dite_eq_left` instead
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:61:8: `dif_neg` has been deprecated: Use `dite_eq_right` instead
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:65:8: `dif_neg` has been deprecated: Use `dite_eq_right` instead
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:67:8: `dif_pos` has been deprecated: Use `dite_eq_left` instead
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:90:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:122:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:155:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:160:8: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: JSP000404Research/ProjectionLocalDirectionValue.lean:163:8: `if_neg` has been deprecated: Use `ite_eq_right` instead
+info: JSP000404Research/ProjectionLocalDirectionValue.lean:176:0: 'JSP000404Research.ProjectionOrdered.genericLocalDirectionValue_eq_forward' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionLocalDirectionValue.lean:177:0: 'JSP000404Research.ProjectionOrdered.genericLocalDirectionValue_eq_below_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionLocalDirectionValue.lean:178:0: 'JSP000404Research.ProjectionOrdered.genericLocalDirectionValue_eq_above_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionLocalDirectionValue.lean:179:0: 'JSP000404Research.ProjectionOrdered.genericLocalDirectionValue_eq_cutRotate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionLocalDirectionValue.lean:180:0: 'JSP000404Research.ProjectionOrdered.pi_div_lam_eq_t' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3234/3238] Replayed JSP000404Research.SortedProjectiveRays
+warning: JSP000404Research/SortedProjectiveRays.lean:44:0: Definition `JSP000404Research.otherVertexRayOrder` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+warning: JSP000404Research/SortedProjectiveRays.lean:86:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: JSP000404Research/SortedProjectiveRays.lean:87:2: Try this:
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: JSP000404Research/SortedProjectiveRays.lean:121:0: 'JSP000404Research.rayOrderKey_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SortedProjectiveRays.lean:122:0: 'JSP000404Research.rayTheta_le_of_rayOrder_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SortedProjectiveRays.lean:123:0: 'JSP000404Research.exists_theta_sorted_other_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SortedProjectiveRays.lean:124:0: 'JSP000404Research.theta_sorted_other_vertices_length' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3235/3238] Replayed JSP000404Research.CyclicProjectiveGaps
+info: JSP000404Research/CyclicProjectiveGaps.lean:159:0: 'JSP000404Research.successiveDiffsFrom_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CyclicProjectiveGaps.lean:160:0: 'JSP000404Research.projectiveGaps_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CyclicProjectiveGaps.lean:161:0: 'JSP000404Research.projectiveGaps_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CyclicProjectiveGaps.lean:162:0: 'JSP000404Research.normalizedProjectiveGaps_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CyclicProjectiveGaps.lean:163:0: 'JSP000404Research.normalizedProjectiveGaps_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3236/3238] Replayed JSP000404Research.CentreProjectiveCycle
+warning: JSP000404Research/CentreProjectiveCycle.lean:127:25: Variable name `hj` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hj
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/CentreProjectiveCycle.lean:205:0: 'JSP000404Research.CentreProjectiveCycle.gaps_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CentreProjectiveCycle.lean:206:0: 'JSP000404Research.CentreProjectiveCycle.gaps_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CentreProjectiveCycle.lean:207:0: 'JSP000404Research.exists_centreProjectiveCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3237/3238] Replayed JSP000404Research.AngleCapStrictProjectiveTheta
+warning: JSP000404Research/AngleCapStrictProjectiveTheta.lean:80:8: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+info: JSP000404Research/AngleCapStrictProjectiveTheta.lean:126:0: 'JSP000404Research.successiveDiffsFrom_pos_of_sorted_nodup' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/AngleCapStrictProjectiveTheta.lean:127:0: 'JSP000404Research.centreProjectiveCycle_gaps_pos_of_AngleCap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/AngleCapStrictProjectiveTheta.lean:129:0: 'JSP000404Research.rayThetaAt_injective_of_AngleCap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/AngleCapStrictProjectiveTheta.lean:130:0: 'JSP000404Research.centreProjectiveCycle_angles_nodup_of_AngleCap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3238/3238] Built JSP000404Research.ProjectionStrictWireDirections (69s)
+info: JSP000404Research/ProjectionStrictWireDirections.lean:67:0: 'JSP000404Research.ProjectionOrdered.generic_localDirectionValue_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/ProjectionStrictWireDirections.lean:71:0: 'JSP000404Research.DirectionData.strict_between_of_local_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+Build completed successfully (3238 jobs).

@@ -180,3 +180,21 @@ standalone checked modules at this stage. The remaining A bridge consists
 of building the cyclic event graph, extracting its one/two-turn simple cycles,
 and deriving its local incident-gap inequalities. Family B remains open.
 The focused evidence is in `verification/integral-wire-20261105/`.
+
+The next four standalone modules now construct the consecutive-event graph,
+prove its connectivity, derive all local gap conditions from integral cyclic
+delays, and apply the dyadic code. `OrderedDirectionWires.card_le_two_pow_of_winding`
+is the concrete DirectionData reduction. Its remaining premise is that every
+nonempty simple cycle of this constructed graph has winding one or two.
+`ProjectionStrictWireDirections` proves the local injectivity needed to use
+that graph for actual planar AngleCap data. The winding theorem remains open
+in Lean, so the all-n A conclusion is still a proof candidate. Focused
+verification is recorded in `verification/ordered-wire-20261105/`.
+
+For B, [unit-interval collapse](UNIT_INTERVAL_RETIMING_RESEARCH.md) is a new
+unproved induction candidate. A [nine-wire exact obstruction](FORCED_INTERVAL_COMPRESSION_COUNTEREXAMPLE.md)
+rules out requiring all crossings in the collapsed interval to be
+bichromatic for every fixed schedule. It covers every real phase by exact
+affine threshold checks and exhausts all 512 colourings per phase case.
+The freely coloured collapse works on that same schedule. The original
+upper-strip bound and the free-colour induction remain open.

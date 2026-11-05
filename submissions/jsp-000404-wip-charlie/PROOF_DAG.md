@@ -359,3 +359,26 @@ crossing endpoints from triangle betweenness. The outstanding parts of steps
 1, 2, and 6 are the cyclic graph construction, its simple-cycle winding bound,
 and the incident-gap connection to that graph. The full original result
 and the B-family bound remain open.
+
+The following standalone chain now makes the constructed graph explicit.
+
+- `CyclicWireLocalGaps` derives the incident-time inequalities and cardinality
+  code from consecutive integer delays and the reflected closing delay.
+- `CyclicWireGraph` defines the adjacent and closing arrows, proves strong
+  connectivity from shared pair events, and composes the retiming and coding
+  theorems with its simple-cycle winding premise.
+- `OrderedDirectionWires` builds sorted incident event lists from DirectionData
+  with injective local values. It proves event coverage, opposite pair signs,
+  and strict source delays after scaling from t<n+1/2.
+- `ProjectionStrictWireDirections` supplies local injectivity from the actual
+  positive AngleCap through the existing generic projection bridge.
+
+The main combinatorial obligation is now the one/two-turn theorem for simple
+cycles of this concrete consecutive-event graph. The continuous reflected
+strip argument is written and its return-order core is checked, but cycle
+curve construction and disjointness have not yet been connected in Lean.
+
+For B, the unrestricted coherent unit-collapse induction remains a conjecture.
+Its strengthened requirement that all events inside the chosen interval cross
+between colours has an exact nine-wire all-phase counterexample. That example
+still permits a free-colour collapse, and preserves the full B(4) capacity.

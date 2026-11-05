@@ -350,3 +350,54 @@ At doubled period five, six centres returned UNSAT. At doubled periods seven
 and nine, the first forbidden sizes eleven and twenty-one timed out after
 30 and 180 seconds. These SMT observations have no kernel proof and do not
 settle the upper-strip relaxation.
+
+An abstract target for the remaining A construction is a `DirectionData V t`
+with t<n+1/2 and injective local direction values at every centre. The latter
+turns its weak triangle betweenness into strict betweenness. It is available
+for actual strict-cap point sets by the projective-ray injectivity bridge.
+Sets with at most two points should be handled directly. With at least three
+points, each local wire has at least two distinct events, so its closing gap
+is constrained by an actual three-point angle.
+
+For a strict source schedule at period n+1/2, the original DirectionData
+times of width t can be scaled by (n+1/2)/t. The zero-delay consecutive gaps
+are strictly positive by local injectivity. Every one-delay gap is at least
+one before scaling and becomes strictly greater than one. Thus this scaling
+provides the exact strict edge premise of the checked rounding theorem. It
+avoids strengthening the definition of `DirectionData` itself.
+
+For the local integer gap connection, it suffices to prove monotonicity along
+each finite wire list and constancy of the sign on every equal-time plateau.
+An incident span equal to the entire period forces the two events to be at
+the first and last time plateaus. The closing delay then forces their signs
+to differ. Integer-valued times supply the unit lower bound for unequal
+signs. This is the local-array proof being developed in `CyclicWireLocalGaps`.
+
+That local-array proof has now passed the kernel. `CyclicWireGraph` constructs
+the consecutive and closing arrows, proves connectivity using shared events,
+and composes retiming with the dyadic code. `OrderedDirectionWires` constructs
+the graph from an actual ordered direction array with injective local values,
+including opposite shared-event signs and the scaled strict delays. Its
+`card_le_two_pow_of_winding` retains one explicit combinatorial premise,
+the one-or-two-turn bound for every nonempty simple cycle of this concrete
+graph. That premise remains open in Lean.
+
+`ProjectionStrictWireDirections` also checks local-value injectivity for the
+generic DirectionData of an actual positive-angle-cap point set, and derives
+strict triangle betweenness from local injectivity. The remaining winding
+premise is attached to the concrete graph, with the original-plane direction
+bridge available for its eventual application.
+
+A possible simplification for the geometric cycle proof starts at any cycle
+event and lifts the entire cycle to a continuous graph F on [a,a+r*T], where
+r is its winding. The r graphs (-1)^j*F(x+j*T), for 0<=j<r and
+a<=x<=a+T, have the cyclic return map `finRotate r`. The cycle endpoint
+identity supplies the reflected boundary condition, and simplicity plus
+the consecutive-wire embedding supplies their pairwise disjointness. This
+avoids a separate first-return decomposition of the wrapping edges.
+
+For family B, the [unit-interval collapse note](UNIT_INTERVAL_RETIMING_RESEARCH.md)
+records a new unproved partition statement on coherent half-grid schedules.
+It survived 723 exact-schedule tests, including a stronger version fixing
+the already active movement bits. Its phase-selection and colouring proofs
+remain open.

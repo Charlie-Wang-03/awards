@@ -1,0 +1,22 @@
+import JSP000404Research.ProjectionStrictWireDirections
+
+#check JSP000404Research.WireGraph.card_le_two_pow_of_simple_cycle_winding
+#check JSP000404Research.OrderedWires.card_le_two_pow_of_winding
+#check JSP000404Research.ProjectionOrdered.generic_localDirectionValue_injective
+
+#print axioms JSP000404Research.IntegralWire.sign_eq_of_equal_time
+#print axioms JSP000404Research.IntegralWire.local_signed_gaps_of_monotone_schedule
+#print axioms JSP000404Research.IntegralWire.local_signed_gaps_of_cyclic_delays
+#print axioms JSP000404Research.IntegralWire.card_le_two_pow_of_cyclic_wire_schedules
+#print axioms JSP000404Research.WireGraph.path_on_wire
+#print axioms JSP000404Research.WireGraph.strongly_connected
+#print axioms JSP000404Research.WireGraph.card_le_two_pow_of_simple_cycle_winding
+#print axioms JSP000404Research.OrderedWires.different_sign_local_gap
+#print axioms JSP000404Research.OrderedWires.same_sign_local_gap
+#print axioms JSP000404Research.OrderedWires.value_wire_strictMono
+#print axioms JSP000404Research.OrderedWires.wire_covers
+#print axioms JSP000404Research.OrderedWires.wire_pair
+#print axioms JSP000404Research.OrderedWires.scaled_wire_delays
+#print axioms JSP000404Research.OrderedWires.card_le_two_pow_of_winding
+#print axioms JSP000404Research.DirectionData.strict_between_of_local_injective
+#print axioms JSP000404Research.ProjectionOrdered.generic_localDirectionValue_injective
