@@ -51,6 +51,9 @@ Original all-N equality / lower + epsilon sharpness                  OPEN
 |   `-- alternative sufficient weighted route:
 |       |-- actual cycles from injective planar points; order/cap transfer
 |       |-- lower strip: 0<=delta<1/2, sum 2^k <= 2^n                OPEN
+|       |   |-- a top-exponent centre, via one narrow observer      WRITTEN
+|       |   |   |-- private-direction weighted interval packing    LEAN PASS
+|       |   |   `-- canonical gap exponent -> private directions    WRITTEN
 |       |   |-- n=1, n=2; selected small-centre/exact-integer cases   PRESENT
 |       |   `-- unrestricted geometric payment or equivalent capacity OPEN
 |       |       |-- genuine active choice for projected loss vertices
@@ -60,6 +63,10 @@ Original all-N equality / lower + epsilon sharpness                  OPEN
 |       |       `-- disjoint payment into actual exterior holes plus
 |       |           genuinely unreserved dyadic surplus               OPEN
 |       |-- upper strip: 1/2<=delta<1, sum 2^k <= 2^n+2^(n-2)         OPEN
+|       |   |-- two top-exponent centres, via two narrow observers  WRITTEN
+|       |   |   |-- actual-coordinate narrow-observer bound         LEAN PASS
+|       |   |   `-- private-direction weighted residual bound       LEAN PASS
+|       |   `-- zero/one top-exponent centre                        OPEN
 |       `-- threshold inversion, endpoints, finite maximum            NOT ASSEMBLED
 `-- ordinary matching constructions for all N and epsilon > 0        LOCAL PASS
 ```
@@ -252,6 +259,14 @@ the discovery of this obstruction belong to that cited project; only the
 independent check is ours. The third-party archive is not committed.
 
 ## Excluded shortcuts
+
+The [separate-affine-map width-drop recursion](AFFINE_PARTITION_OBSTRUCTION.md)
+also fails on twenty integer points at t=23/5. A rational cover by 296 angle
+matrix certificates shows that every bipartition has a part whose every affine
+image exceeds the child cap at t-1=18/5. All parent angles pass exact arithmetic.
+The full geometric counterexample is written and executable; its Lean geometry
+is pending. It respects the original capacity twenty and leaves an assertion
+restricted to minimal overweight configurations open.
 
 The retained historical witnesses rule out unconditional compensated deletion,
 unique-comb or pointwise-comb assertions, coarse support-only capacity, arbitrary

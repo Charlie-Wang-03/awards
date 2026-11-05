@@ -1744,3 +1744,8 @@ import JSP000404Research.ProjectionWholeCubeTQCanonicalOutwardOrder
 -- The unconditional all-N lower bound remains unproved; OriginalProblem
 -- is a proposition to be proved, not an admitted theorem or a custom axiom.
 import JSP000404Research.OriginalUpperBound
+
+-- Local geometric bounds from one or two narrow observers.
+import JSP000404Research.TwoObserverGeometry
+import JSP000404Research.IntervalPrivateDirections
+import JSP000404Research.AffineTraceBound

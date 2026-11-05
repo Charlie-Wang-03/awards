@@ -1,0 +1,9 @@
+{
+  "n": 5,
+  "delta": "99/100",
+  "residual": 25,
+  "status": "unknown",
+  "z3": "5.3.3",
+  "scope": "Abstract ordered directions; planar realization is an extra obligation",
+  "reason": "timeout"
+}

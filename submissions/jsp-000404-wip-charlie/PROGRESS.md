@@ -1,6 +1,6 @@
 # JSP-000404 progress
 
-**INCOMPLETE — blocked on the unconditional all-N geometric lower bound.**
+**INCOMPLETE — active research on the unconditional all-N geometric lower bound.**
 2026-11-05, Windows. No complete original-problem theorem or prize submission.
 
 **Last reproducible research source:** `b24bf60107959020e7b29b6e1263b739509987b0`
@@ -113,3 +113,34 @@ affine optima on historical examples, both saturated narrow views and
 all 1,680 angles in a 16-point A(4) check, and five cycles in the pinned
 archive. The general arguments above are written proofs, not Lean
 theorems. Neither unconditional all-n cardinality bound is proved.
+
+## Narrow-observer continuation
+
+`e2168310a609cdbc29e987da325856b7e23a87b0` was verified as the clean initial
+HEAD, with parent `040c691e903b2d845732914a1a17eb2cb1c0c0fd`; its exact checker
+was rerun successfully. That commit and all earlier history are preserved.
+
+[Narrow observer capacity](NARROW_OBSERVER_CAPACITY.md) derives a common
+direction interval of width at most pi-3*lambda for points seen narrowly from
+both ends of a base edge. Lean checks prove the ordered-direction statement,
+the actual coordinate-geometric finite-set bound, and the weighted result for
+explicit private-direction families, with standard axioms only. The written
+gap construction identifies these families with the old centre exponents,
+giving the lower weighted bound when a top-exponent centre exists and the upper
+weighted bound when two top-exponent centres exist. That `centreExponent`
+connection remains to be formalized. The no-top lower cases and zero/one-top upper cases
+remain open. The independent affine audit also confirms fixed-orbit attainment
+and explains why positive active-trace balance implies a global optimum.
+
+One-top upper ordered-direction experiments at delta=0.99 returned UNSAT for
+the first forbidden residual sizes for n=2,3,4, SAT at residual size 12 for n=4,
+and timeout for n=5. These are solver outputs with no Lean proof.
+
+The [separate-affine-map recursion](AFFINE_PARTITION_OBSTRUCTION.md) has now
+been refuted at t=23/5 by twenty integer points. All 3,420 parent-angle checks
+pass exactly. For each bipartition, 296 rational matrix certificates force an
+angle above the child cap in one part's entire affine orbit. The independent
+checker exhausts all 524,288 complementary colouring classes. The scalar trace
+inequality is formalized separately; the full counterexample's Lean geometry
+is pending. The original lower bound remains open. The next live mathematical
+target is the one-top upper ordered-direction conjecture and its weighted form.

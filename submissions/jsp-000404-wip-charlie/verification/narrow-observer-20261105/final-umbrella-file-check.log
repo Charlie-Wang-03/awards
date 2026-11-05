@@ -1,0 +1,4 @@
+COMMAND=lake env lean JSP000404Research.lean
+EXIT=0
+COMPILER_OUTPUT=empty
+Dependency modules were already built.

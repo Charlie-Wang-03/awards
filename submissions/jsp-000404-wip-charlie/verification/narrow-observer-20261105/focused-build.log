@@ -1,0 +1,118 @@
+ℹ [3091/3106] Replayed JSP000404Research.OrderedDirections
+info: JSP000404Research/OrderedDirections.lean:100:0: 'JSP000404Research.DirectionData.triple_constraints' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:101:0: 'JSP000404Research.DirectionData.threePoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedDirections.lean:102:0: 'JSP000404Research.DirectionData.fourPoint_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3092/3106] Replayed JSP000404Research.DirectionRestriction
+info: JSP000404Research/DirectionRestriction.lean:62:0: 'JSP000404Research.DirectionData.restrict' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/DirectionRestriction.lean:63:0: 'JSP000404Research.DirectionData.restrictFinset' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3093/3106] Replayed JSP000404Research.WeightedHansel
+info: JSP000404Research/WeightedHansel.lean:92:0: 'JSP000404Research.completeWord_sigma_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:93:0: 'JSP000404Research.card_freeCoordinates' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:94:0: 'JSP000404Research.weighted_hansel' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedHansel.lean:95:0: 'JSP000404Research.weighted_hansel_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3094/3106] Replayed JSP000404Research.WeightedDefect
+info: JSP000404Research/WeightedDefect.lean:125:0: 'JSP000404Research.weighted_hansel_defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedDefect.lean:126:0: 'JSP000404Research.weighted_hansel_one_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/WeightedDefect.lean:127:0: 'JSP000404Research.weighted_hansel_all_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3095/3106] Replayed JSP000404Research.OrderedEdgeColor
+info: JSP000404Research/OrderedEdgeColor.lean:238:0: 'JSP000404Research.OrderedEdgeColoring.bit_eq_true_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:239:0: 'JSP000404Research.OrderedEdgeColoring.bit_eq_false_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:240:0: 'JSP000404Research.OrderedEdgeColoring.edgeColor_bit_lower_eq_false' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:241:0: 'JSP000404Research.OrderedEdgeColoring.edgeColor_bit_upper_eq_true' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:242:0: 'JSP000404Research.OrderedEdgeColoring.edgeColor_bit_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:243:0: 'JSP000404Research.OrderedEdgeColoring.bit_eq_false_of_not_mem_active' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:244:0: 'JSP000404Research.OrderedEdgeColoring.separates' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:245:0: 'JSP000404Research.OrderedEdgeColoring.weighted_capacity' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:246:0: 'JSP000404Research.OrderedEdgeColoring.card_le_two_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:247:0: 'JSP000404Research.OrderedEdgeColoring.expected_weight_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:248:0: 'JSP000404Research.OrderedEdgeColoring.capacity_of_active_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:249:0: 'JSP000404Research.OrderedEdgeColoring.cluster_capacity_of_active_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:250:0: 'JSP000404Research.OrderedEdgeColoring.defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:251:0: 'JSP000404Research.OrderedEdgeColoring.one_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/OrderedEdgeColor.lean:252:0: 'JSP000404Research.OrderedEdgeColoring.all_missing' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3096/3106] Replayed JSP000404Research.NarrowObserverDirections
+info: JSP000404Research/NarrowObserverDirections.lean:221:0: 'JSP000404Research.card_le_two_pow_of_edge_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/NarrowObserverDirections.lean:222:0: 'JSP000404Research.DirectionData.low_observer_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/NarrowObserverDirections.lean:223:0: 'JSP000404Research.DirectionData.two_observer_edge_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/NarrowObserverDirections.lean:224:0: 'JSP000404Research.DirectionData.two_observer_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3208/3215] Replayed JSP000404Research.SharpCentre
+info: JSP000404Research/SharpCentre.lean:171:0: 'JSP000404Research.two_delta_lam_lt_lam' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:172:0: 'JSP000404Research.three_delta_lam_lt_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:173:0: 'JSP000404Research.no_three_sharp' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:174:0: 'JSP000404Research.no_three_sharp_sendov' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/SharpCentre.lean:175:0: 'JSP000404Research.two_sharp_no_third_small_delta' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3209/3215] Replayed JSP000404Research.ProjectiveInterval
+warning: JSP000404Research/ProjectiveInterval.lean:58:5: Variable name `hwidth0` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hwidth0
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/ProjectiveInterval.lean:146:0: 'JSP000404Research.norm_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:147:0: 'JSP000404Research.inner_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:148:0: 'JSP000404Research.angle_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:149:0: 'JSP000404Research.signedRay_projective_close' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:150:0: 'JSP000404Research.projectiveCloseAt_of_signed_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/ProjectiveInterval.lean:151:0: 'JSP000404Research.sharpAt_of_signed_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3210/3215] Replayed JSP000404Research.PlanarComplexCoordinates
+info: JSP000404Research/PlanarComplexCoordinates.lean:49:0: 'JSP000404Research.planeToComplex_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarComplexCoordinates.lean:50:0: 'JSP000404Research.planeToComplex_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarComplexCoordinates.lean:51:0: 'JSP000404Research.planeToComplex_signedRayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3211/3215] Replayed JSP000404Research.CanonicalProjectiveRay
+warning: JSP000404Research/CanonicalProjectiveRay.lean:47:17: Variable name `hx` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hx
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: JSP000404Research/CanonicalProjectiveRay.lean:84:37: `if_false` has been deprecated: Use `ite_false` instead
+warning: JSP000404Research/CanonicalProjectiveRay.lean:94:37: `if_false` has been deprecated: Use `ite_false` instead
+info: JSP000404Research/CanonicalProjectiveRay.lean:117:0: 'JSP000404Research.planeToComplex_rayDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:118:0: 'JSP000404Research.norm_smul_rayDirection_arg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:119:0: 'JSP000404Research.exists_canonical_projective_representation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/CanonicalProjectiveRay.lean:120:0: 'JSP000404Research.exists_canonical_projective_representation_sub' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3212/3215] Replayed JSP000404Research.PlanarDirectionBridge
+warning: JSP000404Research/PlanarDirectionBridge.lean:206:5: Variable name `ht` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _ht
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: JSP000404Research/PlanarDirectionBridge.lean:303:0: 'JSP000404Research.ForwardAngleLift.angle_middle_eq_pi_sub_abs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:304:0: 'JSP000404Research.ForwardAngleLift.angle_first_eq_abs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:305:0: 'JSP000404Research.ForwardAngleLift.angle_last_eq_abs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:306:0: 'JSP000404Research.ForwardAngleLift.toDirectionData' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/PlanarDirectionBridge.lean:307:0: 'JSP000404Research.ForwardAngleLift.toDirectionData_sendov' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3213/3215] Replayed JSP000404Research.UpperHalfPlaneDirections
+info: JSP000404Research/UpperHalfPlaneDirections.lean:143:0: 'JSP000404Research.forwardAngleLift_of_polar' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/UpperHalfPlaneDirections.lean:144:0: 'JSP000404Research.upperHalfPlaneForwardLift' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/UpperHalfPlaneDirections.lean:145:0: 'JSP000404Research.heightCoordinates_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/UpperHalfPlaneDirections.lean:146:0: 'JSP000404Research.heightLinearOrder_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3214/3215] Replayed JSP000404Research.TwoObserverGeometry
+info: JSP000404Research/TwoObserverGeometry.lean:64:0: 'JSP000404Research.two_narrow_observer_card_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3215/3215] Built JSP000404Research.IntervalPrivateDirections (30s)
+info: JSP000404Research/IntervalPrivateDirections.lean:82:0: 'JSP000404Research.weighted_capacity_of_private_directions' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: JSP000404Research/IntervalPrivateDirections.lean:193:0: 'JSP000404Research.DirectionData.PrivateDirections.capacity_in_interval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/IntervalPrivateDirections.lean:194:0: 'JSP000404Research.DirectionData.PrivateDirections.low_observer_capacity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: JSP000404Research/IntervalPrivateDirections.lean:195:0: 'JSP000404Research.DirectionData.PrivateDirections.two_observer_capacity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+Build completed successfully (3215 jobs).

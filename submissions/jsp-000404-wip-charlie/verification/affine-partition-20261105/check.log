@@ -1,0 +1,6 @@
+SHA-256 2d47a2c1cebea734a70c5f12cd09f408bedcd2bbc581d368a03d1ffbcc5bf06a
+PASS: 20 integer points; all 3420 triple angles strictly below 18*pi/23.
+PASS: 296 rational positive-matrix certificates with 4*det(C)>3/4.
+PASS: all 524288 complementary colouring classes contain a monochromatic certificate.
+Every bipartition has a part whose every nonsingular affine image has an angle >13*pi/18.
+Scope: exact executable arithmetic and written geometry; not a Lean theorem.

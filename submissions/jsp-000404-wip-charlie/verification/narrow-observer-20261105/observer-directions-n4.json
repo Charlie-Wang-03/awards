@@ -1,0 +1,8 @@
+{
+  "n": 4,
+  "delta": "99/100",
+  "residual": 13,
+  "status": "unsat",
+  "z3": "5.3.3",
+  "scope": "Abstract ordered directions; planar realization is an extra obligation"
+}

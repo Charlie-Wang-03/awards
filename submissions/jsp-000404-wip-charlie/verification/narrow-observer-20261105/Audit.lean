@@ -1,0 +1,20 @@
+import JSP000404Research.TwoObserverGeometry
+import JSP000404Research.IntervalPrivateDirections
+
+#check JSP000404Research.two_narrow_observer_card_bound
+#check JSP000404Research.DirectionData.PrivateDirections.low_observer_capacity
+#check JSP000404Research.DirectionData.PrivateDirections.two_observer_capacity
+
+#print axioms JSP000404Research.forwardAngleLift_of_polar
+#print axioms JSP000404Research.upperHalfPlaneForwardLift
+#print axioms JSP000404Research.heightCoordinates_injective
+#print axioms JSP000404Research.heightLinearOrder_forward
+#print axioms JSP000404Research.card_le_two_pow_of_edge_interval
+#print axioms JSP000404Research.DirectionData.low_observer_card_le
+#print axioms JSP000404Research.DirectionData.two_observer_edge_interval
+#print axioms JSP000404Research.DirectionData.two_observer_card_le
+#print axioms JSP000404Research.two_narrow_observer_card_bound
+#print axioms JSP000404Research.weighted_capacity_of_private_directions
+#print axioms JSP000404Research.DirectionData.PrivateDirections.capacity_in_interval
+#print axioms JSP000404Research.DirectionData.PrivateDirections.low_observer_capacity
+#print axioms JSP000404Research.DirectionData.PrivateDirections.two_observer_capacity

@@ -1,0 +1,33 @@
+JSP000404Research.two_narrow_observer_card_bound.{u_1} {V : Type u_1} {p : V → JSP000404Research.Plane}
+  (hp : Function.Injective p) {lam t : ℝ} (hcap : JSP000404Research.AngleCap p lam) (hlam : 0 < lam) (ht : 0 < t)
+  (hscale : Real.pi = t * lam) (S : Finset V) {a b : V} (hlevel : (p a).ofLp 1 = (p b).ofLp 1)
+  (hleft : (p a).ofLp 0 < (p b).ofLp 0) (habove : ∀ i ∈ S, (p a).ofLp 1 < (p i).ofLp 1)
+  (hview : ∀ i ∈ S, EuclideanGeometry.angle (p b) (p a) (p i) < lam ∧ EuclideanGeometry.angle (p a) (p b) (p i) < lam)
+  (k : ℕ) (hwidth : t - 3 < ↑k) : S.card ≤ 2 ^ k
+JSP000404Research.DirectionData.PrivateDirections.low_observer_capacity.{u_1} {V : Type u_1} [LinearOrder V] {width : ℝ}
+  {D : JSP000404Research.DirectionData V width} (P : D.PrivateDirections) (S : Finset V) {a : V} {lo hi : ℝ}
+  (hbefore : ∀ i ∈ S, a < i) (hview : ∀ i ∈ S, lo ≤ D.value a i ∧ D.value a i ≤ hi) (hhi : hi < 1) (k : ℕ) (hk : 0 < k)
+  (hwidth : width - 2 + (hi - lo) < ↑k) : ∑ i ∈ S, 2 ^ (P.directions i).card ≤ 2 ^ k
+JSP000404Research.DirectionData.PrivateDirections.two_observer_capacity.{u_1} {V : Type u_1} [LinearOrder V] {width : ℝ}
+  {D : JSP000404Research.DirectionData V width} (P : D.PrivateDirections) (S : Finset V) {a b : V} (hab : a < b)
+  (hbefore : ∀ i ∈ S, b < i) (hlow : ∀ i ∈ S, D.value a i < 1) (hhigh : ∀ i ∈ S, width - 1 < D.value b i) (k : ℕ)
+  (hk : 0 < k) (hwidth : width - 3 < ↑k) : ∑ i ∈ S, 2 ^ (P.directions i).card ≤ 2 ^ k
+'JSP000404Research.forwardAngleLift_of_polar' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.upperHalfPlaneForwardLift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.heightCoordinates_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.heightLinearOrder_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.card_le_two_pow_of_edge_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionData.low_observer_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionData.two_observer_edge_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionData.two_observer_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.two_narrow_observer_card_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.weighted_capacity_of_private_directions' depends on axioms: [propext, Classical.choice, Quot.sound]
+'JSP000404Research.DirectionData.PrivateDirections.capacity_in_interval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.DirectionData.PrivateDirections.low_observer_capacity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'JSP000404Research.DirectionData.PrivateDirections.two_observer_capacity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

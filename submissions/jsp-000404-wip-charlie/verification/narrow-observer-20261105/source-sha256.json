@@ -1,0 +1,50 @@
+[
+  {
+    "Path": "JSP000404Research.lean",
+    "SHA256": "269dfd415f9056458c2c57fb5e82d2cff50da3418420652435ce2e49e899e64f"
+  },
+  {
+    "Path": "JSP000404Research/NarrowObserverDirections.lean",
+    "SHA256": "60b5022361c090e7fa5e64231ab17b3736107b2c2f3b70eaa6576d9093d56a83"
+  },
+  {
+    "Path": "JSP000404Research/UpperHalfPlaneDirections.lean",
+    "SHA256": "28ad24141ea40a8f4e3daa97c2db379ecea0376e20db5d68d2aa69a28d15870c"
+  },
+  {
+    "Path": "JSP000404Research/TwoObserverGeometry.lean",
+    "SHA256": "f881a1be2ca3fbd5cf2bfa2dc56053d1b095c24d224838a1505ffac20a19384b"
+  },
+  {
+    "Path": "JSP000404Research/IntervalPrivateDirections.lean",
+    "SHA256": "03f1380adbe1d39ea2d7ef61f76aa68dc1ce81f93b52daa10b91eb4b98ab8324"
+  },
+  {
+    "Path": "JSP000404Research/AffineTraceBound.lean",
+    "SHA256": "e115b3498319e641a5c2310d7d684abd3a609e19f234355f9729661d528caed4"
+  },
+  {
+    "Path": "scripts/probe_narrow_observer_directions.py",
+    "SHA256": "b8b30c9f3fc018932c0fc72c8af204e4cfced40cd210f4b01f1661101d1593e5"
+  },
+  {
+    "Path": "scripts/check_affine_partition_obstruction.py",
+    "SHA256": "e350efbeaf4c9d87fec05c0fd3be82e8ee9bafd9cd5cab12c0c14612d30e3228"
+  },
+  {
+    "Path": "verification/narrow-observer-20261105/Audit.lean",
+    "SHA256": "c3c0b61019513945d14a1edf7627bbd0dc5f73d785de71281c2aa7c074872437"
+  },
+  {
+    "Path": "verification/affine-partition-20261105/cover.json",
+    "SHA256": "2d47a2c1cebea734a70c5f12cd09f408bedcd2bbc581d368a03d1ffbcc5bf06a"
+  },
+  {
+    "Path": "lean-toolchain",
+    "SHA256": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632"
+  },
+  {
+    "Path": "lake-manifest.json",
+    "SHA256": "9c0aeff0229790cebeb41ad2e5292a5d0ff2492ec04c1096e3e58eea8faaeb52"
+  }
+]
