@@ -1,0 +1,175 @@
+{
+  "normalization": "UTF-8/source bytes with CRLF converted to LF",
+  "files": [
+    {
+      "path": "JSP000404Research/ElevenPhaseCNFModel.lean",
+      "bytes": 5990,
+      "sha256": "0b1f102c0e73037fa604000d03123208ed32adc3c9b859dbd709c987888c5c68"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCNFSemantics.lean",
+      "bytes": 5554,
+      "sha256": "4edd446440b252d9725d8641a4b85a2e82d759cd27ea5e59d1d8a72a015fcf0e"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCatalog.lean",
+      "bytes": 1183,
+      "sha256": "8d33a3fc2c723f5e34f7ed25dfd195232a3704ab8457c2b496487ea664399820"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCoreLemmas.lean",
+      "bytes": 2667,
+      "sha256": "6a839fdd20f99722fcd2c45b4a7ca503aff0604798b7a23eddbb16ddcf76306f"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCores.lean",
+      "bytes": 4746,
+      "sha256": "214a2500cd71620080f45975f0320a11ca0419a491879354e8cc69ddf8ce7947"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCountTransport.lean",
+      "bytes": 4512,
+      "sha256": "6480180d844a8f1eb413fa1d6a02eb1427bb94fd03cae3a0dae115aa345cdaea"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCounting.lean",
+      "bytes": 7501,
+      "sha256": "152192aea4890308fa52b3bf51aad485513ff3a4684f958805511dd65fb52ab7"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCoverData.lean",
+      "bytes": 3265,
+      "sha256": "547d8567d8db8838cb8684f833de1aa988b6ca42b794224537c8bc17d3e4a82f"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseData.lean",
+      "bytes": 5271,
+      "sha256": "16057faa5e6afed55e88e2ba765ae109ac7041f0c564db38ab1b951cadb5ceff"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseLRAT.lean",
+      "bytes": 1517,
+      "sha256": "2bf610067ef064142dd5714c7480f8c651d0fcd6bf45c0964ca88d9dd390cd43"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseMaximal.lean",
+      "bytes": 2759,
+      "sha256": "30ea7f3f594b671a59f7516ee36bb11357968e517696a3c96620c653c4e890e3"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseObstructionSets.lean",
+      "bytes": 3557,
+      "sha256": "9bed55436ce8675cb3c322f93be79b1834964be1eb67244495f41477a60c5c5c"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseOrder.lean",
+      "bytes": 3852,
+      "sha256": "ef75f269d305b6138750df3cd78a4fcfaf2c918a7b57df640e2bf608a86ca3d2"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhasePackingLogic.lean",
+      "bytes": 6886,
+      "sha256": "6bac88d68e9b0ad8eb0d270ac8f9939f84407371947914e5208355481ccc53bd"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseRows.lean",
+      "bytes": 4864,
+      "sha256": "b9e52a22065ad50122ca127b2d015fc403d2a8b2f1c3bd49f30022820185d439"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseSATHelpers.lean",
+      "bytes": 2088,
+      "sha256": "587d7ef49008920eb51da174a2d4f6111fa075a29771a3edb484c1a3ee0f2e7a"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseSchedule.lean",
+      "bytes": 5756,
+      "sha256": "a80bef89c4caa99f7fa1163801482c0f05283d7ad631c1cca2d13ad0bae201eb"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseSequential.lean",
+      "bytes": 3727,
+      "sha256": "5118ce1065352e36f7c9960bd6da8c4d92bace7d6d2ab1f9cc0b3a9e4870dca6"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseValuation.lean",
+      "bytes": 3443,
+      "sha256": "dcd49ac5af164c0dd487b7c90eaf7f4873cbe6396c3af619f9ea05820b22112f"
+    },
+    {
+      "path": "JSP000404Research/OrderedElevenPhase.lean",
+      "bytes": 6661,
+      "sha256": "8444df6d959dfe3449aa165fe81fe086153ef51788d4cf191b86b49e9d18e911"
+    },
+    {
+      "path": "JSP000404Research/PlanarElevenPhaseThreshold.lean",
+      "bytes": 3047,
+      "sha256": "6e4c42d8914e302ebf3547ea48ae9d64520108b26918e43464baecb5e1e9e3f6"
+    },
+    {
+      "path": "scripts/generate_eleven_phase_bridges.py",
+      "bytes": 1336,
+      "sha256": "95aa5ec463f5a18fca72539c0665ea1912e0ac9b8c8b0e22057a21ff95ee3ea9"
+    },
+    {
+      "path": "scripts/generate_eleven_phase_cnf.py",
+      "bytes": 2833,
+      "sha256": "698d9fe59162eb8c999804cabaedd2addf186a2184ccaadb328cc3c64b434816"
+    },
+    {
+      "path": "scripts/generate_eleven_phase_cnf_model.py",
+      "bytes": 5109,
+      "sha256": "9fc0414a033e3cb34304a305fb92c6f7e745f7222898f5dc45e26702b91c89d8"
+    },
+    {
+      "path": "scripts/generate_eleven_phase_cores.py",
+      "bytes": 5733,
+      "sha256": "ee413d115e4f898c8faa334f050ae821df17217e4878a5e1d40047dc272f4d35"
+    },
+    {
+      "path": "scripts/generate_eleven_phase_data.py",
+      "bytes": 3718,
+      "sha256": "aa2e4f8b3682f47c010a4b50b97ed3dfe86543908453a648f5fd3f5159b4f853"
+    },
+    {
+      "path": "scripts/trim_eleven_lrat.py",
+      "bytes": 1502,
+      "sha256": "40752cebe220d56e834229c04a6f425df7c3ab7b79c1e523b55b5fae745ebb6d"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCertificate/packing.cnf",
+      "bytes": 63571,
+      "sha256": "97e34261c6b703a28ba9744f678e34d46868aa97435ead92d61f055390247def"
+    },
+    {
+      "path": "JSP000404Research/ElevenPhaseCertificate/packing.lrat",
+      "bytes": 823837,
+      "sha256": "cbf26119806dbd539fc8a1d35e0603395d8d17c4e7f63781e56930662d3b3434"
+    },
+    {
+      "path": "PROGRESS.md",
+      "bytes": 21737,
+      "sha256": "6f51fc39fbb77f581fcd55b5b7db154604191f6201c5562f057d91b16bacdfff"
+    },
+    {
+      "path": "verification/eleven-phase-wip-20261106/build-evidence.json",
+      "bytes": 5902,
+      "sha256": "1646cfb4fff7d818dce94583b2cee0be15796a4ddd1980b36052d543ff3e2e90"
+    },
+    {
+      "path": "verification/eleven-phase-wip-20261106/coherence-search.json",
+      "bytes": 5306,
+      "sha256": "4b90d5c71c28fddcb17d331ac60b9dbd10a21fa06052d6421253a77a30350e3d"
+    },
+    {
+      "path": "verification/eleven-phase-wip-20261106/dependencies.json",
+      "bytes": 1967,
+      "sha256": "7865d62681407beac4455ba8ec5880f9d4e87cc09130bbe51946381b7f9ee287"
+    },
+    {
+      "path": "verification/eleven-phase-wip-20261106/README.md",
+      "bytes": 3227,
+      "sha256": "513996aa14ba4956bd1ee1ac57e5b90665c2ce2eaa81d175d958c5bc1a2aa749"
+    }
+  ]
+}

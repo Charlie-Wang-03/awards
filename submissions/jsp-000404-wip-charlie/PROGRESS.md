@@ -311,3 +311,44 @@ all partial rows and all saturated families; all three generated Lean
 sources reproduce byte-for-byte. See `NINE_PHASE_CAPACITY_PROOF.md` and
 `verification/nine-phase-threshold-20261105/`. This is a research checkpoint,
 not a complete original-problem solution or prize submission.
+
+## Eleven-phase work in progress — 2026-11-06
+
+The next target is B at n=5, corresponding to cardinality at most 40 under a
+strict 5*pi/6 angle cap. This target is **not yet proved**. Computation found
+198 maximal proper C11 rows and 132 binary covering words with integer weights
+2, 3, or 6. The weights total 506 and each row covers weight exactly 12.
+Pairwise separation gives disjoint support. If there were 41 rows, the uncovered
+weight would be 14. The 22 weight-two words can only be covered by rows with
+six occupied coordinates, six such words per row. Disjointness forces exactly
+three such rows and leaves four weight-two words uncovered. The remaining
+uncovered weight is six. A parity argument for the other weight-six orbit
+forces all 22 of its words to be covered.
+
+An exploratory finite search then refutes the residual saturation constraints
+using 66 three-row and 22 five-row phase-order obstructions. The explicit
+CNF/LRAT pair has been converted into an ordinary Lean theorem by
+`ElevenPhaseLRAT`; it uses only `propext`. `ElevenPhaseCores` independently
+kernel-checks the corresponding finite coherence obstructions using only
+standard axioms. The structured CNF, its propositional semantics, the unary
+counter interpretation, the conditional packing contradiction, and the
+disjoint-cover counting theorem have also built individually. The remaining
+links from actual coherent row families through these conditions are unfinished:
+`ElevenPhaseCountTransport` has build errors, `ElevenPhaseObstructionSets` is
+unbuilt, and catalog completion was interrupted at the user's pause request.
+The later original-point bridge is unbuilt and imports a capacity module that
+does not yet exist. The umbrella does not import this incomplete chain. The
+integer modulo-11 order bridge `ElevenPhaseOrder` has built. No complete
+eleven-phase or general family B theorem is claimed.
+
+The cut-shortening route remains another unproved candidate. For integer event
+times and integer period, every fixed-colouring constraint is affine between
+successive integer cuts with integral endpoint values and slope at most one in
+absolute value. It follows that if a real cut works, its two neighbouring
+integer cuts work. This exact observation reduces the proposed cut search to
+finitely many phases, but does not prove a colouring exists. The stronger
+requirement that all crossings at the middle phase be bichromatic passed the
+sampled clocks; the targeted q=9 solver search returned UNKNOWN, so this is
+not a theorem. The reproducibility scripts, finite search output, build status,
+and exact resume points are recorded in
+`verification/eleven-phase-wip-20261106/`.

@@ -1,0 +1,149 @@
+{
+  "scope": "Focused local build records, not a full closure audit",
+  "targets": [
+    {
+      "module": "ElevenPhaseOrder",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-order-build.log",
+      "raw_sha256": "8b132296d9e572483a818213321434a01a5d1c7d4aea72f90e85646f0d703e5d",
+      "markers": [
+        "\u2139 [3099/3099] Built JSP000404Research.ElevenPhaseOrder (36s)",
+        "Build completed successfully (3099 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCores",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-cores-build.log",
+      "raw_sha256": "dc3610b7fe5f45fff3e8cfb9d3b677b11fe77807bc85f386c0c2abda9ebd2381",
+      "markers": [
+        "\u2139 [3101/3101] Built JSP000404Research.ElevenPhaseCores (88s)",
+        "Build completed successfully (3101 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCoreLemmas",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-core-lemmas-build.log",
+      "raw_sha256": "bebad742269123fc416aec29997a239acbc11914398e2e54b2dc998bdbc6d385",
+      "markers": [
+        "\u2139 [3102/3102] Built JSP000404Research.ElevenPhaseCoreLemmas (56s)",
+        "Build completed successfully (3102 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseLRAT",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-lrat-build.log",
+      "raw_sha256": "fb5c06632de00ba7b62b6f5a532b8715e61d16723815a4928e808421b3e85d62",
+      "markers": [
+        "\u2139 [105/105] Built JSP000404Research.ElevenPhaseLRAT (96s)",
+        "Build completed successfully (105 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCNFModel",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-cnf-model-build.log",
+      "raw_sha256": "7ec4f09cb9386a8c2d15072611a10a1437eddd098c0bf7cc64aa508ce700837c",
+      "markers": [
+        "\u2139 [3103/3103] Built JSP000404Research.ElevenPhaseCNFModel (65s)",
+        "Build completed successfully (3103 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseSATHelpers",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-sat-helpers-build.log",
+      "raw_sha256": "7b870b25caaf550f289dadf5cd38240b8a81eb5358006f64025d675aa86e38c7",
+      "markers": [
+        "\u26a0 [3102/3102] Built JSP000404Research.ElevenPhaseSATHelpers (27s)",
+        "Build completed successfully (3102 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCNFSemantics",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-cnf-semantics-build.log",
+      "raw_sha256": "661d8de48a526e9aee4efc72c9193fa97905300a4d5e1dc5277dce812be73441",
+      "markers": [
+        "\u26a0 [3105/3105] Built JSP000404Research.ElevenPhaseCNFSemantics (26s)",
+        "Build completed successfully (3105 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseSequential",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-sequential-build.log",
+      "raw_sha256": "d0e2f8405981f2a92d0d7ce673750a6a3a2309b30f26e8bff51380df552c51ac",
+      "markers": [
+        "\u26a0 [3105/3105] Built JSP000404Research.ElevenPhaseSequential (26s)",
+        "Build completed successfully (3105 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseValuation",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-valuation-build.log",
+      "raw_sha256": "e7f3ab838f29dc566963c32d5409329caf2b657df0516272369a8d0676cbbc23",
+      "markers": [
+        "\u2139 [3105/3105] Built JSP000404Research.ElevenPhaseValuation (41s)",
+        "Build completed successfully (3105 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhasePackingLogic",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-packing-logic-build.log",
+      "raw_sha256": "7c46d43385e10dd9256051ab08ece619236cf88f9a5ceedd278896d4933d593c",
+      "markers": [
+        "\u26a0 [3108/3108] Built JSP000404Research.ElevenPhasePackingLogic (22s)",
+        "Build completed successfully (3108 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCoverData",
+      "status": "passed",
+      "raw_log": "artifacts/eleven-cover-data-build.log",
+      "raw_sha256": "5b629a533649d6de5ed7ec0669408d6c3eded91c8f9d2ecb9fe9a1d0a29e6a4b",
+      "markers": [
+        "\u2139 [3104/3104] Built JSP000404Research.ElevenPhaseCoverData (92s)",
+        "Build completed successfully (3104 jobs)."
+      ]
+    },
+    {
+      "module": "ElevenPhaseCounting",
+      "status": "passed_as_dependency",
+      "raw_log": "artifacts/eleven-count-transport-build.log",
+      "raw_sha256": "2b7a945d940faf5bece5f99e55b040c141987b1186bead650c40a88d0b1ee045",
+      "markers": [
+        "\u2139 [3110/3111] Built JSP000404Research.ElevenPhaseCounting (32s)",
+        "info: JSP000404Research/ElevenPhaseCounting.lean:150:0: 'JSP000404Research.ElevenPhase.saturation_counts' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "module": "ElevenPhaseCountTransport",
+      "status": "failed",
+      "raw_log": "artifacts/eleven-count-transport-build.log",
+      "raw_sha256": "2b7a945d940faf5bece5f99e55b040c141987b1186bead650c40a88d0b1ee045",
+      "errors": [
+        "error: JSP000404Research/ElevenPhaseCountTransport.lean:11:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern",
+        "error: JSP000404Research/ElevenPhaseCountTransport.lean:30:2: No goals to be solved",
+        "error: JSP000404Research/ElevenPhaseCountTransport.lean:43:2: maximum recursion depth has been reached",
+        "error: JSP000404Research/ElevenPhaseCountTransport.lean:58:2: maximum recursion depth has been reached"
+      ]
+    },
+    {
+      "module": "ElevenPhaseMaximal/ElevenPhaseCatalog",
+      "status": "interrupted_on_pause"
+    },
+    {
+      "module": "ElevenPhaseObstructionSets",
+      "status": "unbuilt"
+    },
+    {
+      "module": "ElevenPhaseRows/Schedule/OrderedElevenPhase/PlanarElevenPhaseThreshold",
+      "status": "unbuilt_missing_ElevenPhaseCapacity"
+    }
+  ]
+}
